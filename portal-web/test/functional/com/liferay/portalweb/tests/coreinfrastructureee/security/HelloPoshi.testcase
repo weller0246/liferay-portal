@@ -1,23 +1,20 @@
 definition {
-  property testray.main.component.name = "Blogs";
 
-  setUp {
-    User.firstLoginPG();
-  }
+	property testray.main.component.name = "Blogs";
 
-  test HelloWorld {
+	setUp {
+		User.firstLoginPG();
+	}
 
-	ProductMenu.gotoPortlet(
- 		category = "Content & Data",
- 		panel = "Site Administration",
-	  	portlet = "Blogs"
-	);
+	test HelloWorld {
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			panel = "Site Administration",
+			portlet = "Blogs");
 
-	Blogs.addEntry(
-		entryContent = "Blogs Content",
- 	 	entryTitle = "Blogs Title"
-	);
-
-  }
+		Blogs.addEntry(
+			entryContent = "Blogs Content",
+			entryTitle = "Blogs Title");
+	}
 
 }
