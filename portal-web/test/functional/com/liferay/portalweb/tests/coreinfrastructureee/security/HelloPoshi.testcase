@@ -1,0 +1,23 @@
+definition {
+  property testray.main.component.name = "Blogs";
+
+  setUp {
+    User.firstLoginPG();
+  }
+
+  test HelloWorld {
+
+	ProductMenu.gotoPortlet(
+ 		category = "Content & Data",
+ 		panel = "Site Administration",
+	  	portlet = "Blogs"
+	);
+
+	Blogs.addEntry(
+		entryContent = "Blogs Content",
+ 	 	entryTitle = "Blogs Title"
+	);
+
+  }
+
+}
