@@ -1,6 +1,7 @@
 definition {
 
-	property testray.main.component.name = "Blogs";
+	property testray.main.component.name = "Security";
+	property test.marci = "Marci";
 
 	setUp {
 		User.firstLoginPG();
