@@ -8,7 +8,7 @@ definition {
 	setUp {
 		TestCase.setUpPortalInstance();
 
-		User.firstLoginPG();
+		User.firstLoginUI();
 	}
 
 	tearDown {
@@ -699,10 +699,10 @@ definition {
 
 		PortalInstances.viewCP(virtualHost = "www.able.com");
 
-		User.firstLoginPG(
+		User.firstLoginUI(
 			password = "test",
-			userEmailAddress = "test@www.able.com",
-			virtualHostsURL = "http://www.able.com:8080");
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
@@ -1007,10 +1007,10 @@ definition {
 
 		PortalInstances.viewCP(virtualHost = "www.able.com");
 
-		User.firstLoginPG(
+		User.firstLoginUI(
 			password = "test",
-			userEmailAddress = "test@www.able.com",
-			virtualHostsURL = "http://www.able.com:8080");
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
