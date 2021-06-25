@@ -1214,7 +1214,7 @@ definition {
 
 	// TODO leiras es elnevezes megcsinalasa
 
-	@description = "This is a use case for LPS-105170 TC-7: User creation and sync after SAML setup, using screenName field both for User Matching and IdP Identifier "
+	@description = "This is a use case for LPS-105170 TC-7: User creation and sync after SAML setup with 2 IdP portal "
 	@priority = "3"
 	test CreateAndSyncUserAfterSAMLSetupWithMultipleIdPs {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
