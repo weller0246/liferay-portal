@@ -926,28 +926,15 @@ definition {
 	test CreateAndSyncUserAfterSAMLSetupwithMatchingScreenNameAttribute {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.upstream = "true";
-		property test.name.skip.portal.instance = "SAML#ViewSPInitiatedSSOwithSAMLAttributeUUIDUsedForUserMatching";
 		property using.virtualInstances = "true";
-
-		var portalURL = PropsUtil.get("portal.url");
 
 		// Enable SAML debug logs
 
-		// SAMLToolBox.enableSAMLDebugLogs();
+		SAMLToolBox.enableSAMLDebugLogs();
 
 		// Add new virtual instance to be the SP site
 
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
-
-		PortalInstances.addCP(
-			mailDomain = "www.able.com",
-			virtualHost = "www.able.com",
-			webId = "www.able.com");
-
-		PortalInstances.viewCP(virtualHost = "www.able.com");
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.able.com");
 
 		User.logoutPG();
 
@@ -955,18 +942,18 @@ definition {
 
 		SAMLToolBox.setupIDP(
 			idpURL = "http://localhost:8080",
-			samlEntityID = "samlidp123",
+			samlEntityID = "samlidp",
 			userEmailAddress = "test@liferay.com");
 
 		SAMLToolBox.setupSP(
 			encryptionCertificate = "true",
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
 		SAMLToolBox.addIDPConfigurationsToServiceProvider(
 			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,uuid",
-			idpEntityID = "samlidp123",
+			idpEntityID = "samlidp",
 			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
 			idpURL = "http://localhost:8080/",
 			index = "0",
@@ -976,7 +963,7 @@ definition {
 			userResolution = "attribute");
 
 		SAMLToolBox.enableSPRoles(
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
@@ -989,7 +976,7 @@ definition {
 				lastName
 				screenName
 				uuid''',
-			spEntityID = "samlsp123",
+			spEntityID = "samlsp",
 			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@liferay.com");
@@ -1036,10 +1023,7 @@ definition {
 	test CreateAndSyncUserAfterSAMLSetupMatchingemailAddressNameIDWithscreenNameAttribute {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.upstream = "true";
-		property test.name.skip.portal.instance = "SAML#ViewSPInitiatedSSOwithSAMLAttributeUUIDUsedForUserMatching";
 		property using.virtualInstances = "true";
-
-		var portalURL = PropsUtil.get("portal.url");
 
 		// Enable SAML debug logs
 
@@ -1047,17 +1031,7 @@ definition {
 
 		// Add new virtual instance to be the SP site
 
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
-
-		PortalInstances.addCP(
-			mailDomain = "www.able.com",
-			virtualHost = "www.able.com",
-			webId = "www.able.com");
-
-		PortalInstances.viewCP(virtualHost = "www.able.com");
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.able.com");
 
 		User.logoutPG();
 
@@ -1065,18 +1039,18 @@ definition {
 
 		SAMLToolBox.setupIDP(
 			idpURL = "http://localhost:8080",
-			samlEntityID = "samlidp123",
+			samlEntityID = "samlidp",
 			userEmailAddress = "test@liferay.com");
 
 		SAMLToolBox.setupSP(
 			encryptionCertificate = "true",
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
 		SAMLToolBox.addIDPConfigurationsToServiceProvider(
 			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,uuid",
-			idpEntityID = "samlidp123",
+			idpEntityID = "samlidp",
 			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
 			idpURL = "http://localhost:8080/",
 			index = "0",
@@ -1086,7 +1060,7 @@ definition {
 			userResolution = "attribute");
 
 		SAMLToolBox.enableSPRoles(
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
@@ -1099,7 +1073,7 @@ definition {
 				lastName
 				screenName
 				uuid''',
-			spEntityID = "samlsp123",
+			spEntityID = "samlsp",
 			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@liferay.com");
@@ -1146,28 +1120,15 @@ definition {
 	test CreateAndSyncUserAfterSAMLSetupMatchingScreenNameIdentifierWithUUIDAttribute {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
 		property portal.upstream = "true";
-		property test.name.skip.portal.instance = "SAML#ViewSPInitiatedSSOwithSAMLAttributeUUIDUsedForUserMatching";
 		property using.virtualInstances = "true";
-
-		var portalURL = PropsUtil.get("portal.url");
 
 		// Enable SAML debug logs
 
-		// SAMLToolBox.enableSAMLDebugLogs();
+		SAMLToolBox.enableSAMLDebugLogs();
 
 		// Add new virtual instance to be the SP site
 
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
-
-		PortalInstances.addCP(
-			mailDomain = "www.able.com",
-			virtualHost = "www.able.com",
-			webId = "www.able.com");
-
-		PortalInstances.viewCP(virtualHost = "www.able.com");
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.able.com");
 
 		User.logoutPG();
 
@@ -1175,18 +1136,18 @@ definition {
 
 		SAMLToolBox.setupIDP(
 			idpURL = "http://localhost:8080",
-			samlEntityID = "samlidp123",
+			samlEntityID = "samlidp",
 			userEmailAddress = "test@liferay.com");
 
 		SAMLToolBox.setupSP(
 			encryptionCertificate = "true",
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
 		SAMLToolBox.addIDPConfigurationsToServiceProvider(
 			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,UUID",
-			idpEntityID = "samlidp123",
+			idpEntityID = "samlidp",
 			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
 			idpURL = "http://localhost:8080/",
 			index = "4",
@@ -1196,7 +1157,7 @@ definition {
 			userResolution = "attribute");
 
 		SAMLToolBox.enableSPRoles(
-			samlEntityID = "samlsp123",
+			samlEntityID = "samlsp",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@www.able.com");
 
@@ -1209,7 +1170,7 @@ definition {
 				lastName
 				screenName
 				uuid''',
-			spEntityID = "samlsp123",
+			spEntityID = "samlsp",
 			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
 			spURL = "http://www.able.com:8080",
 			userEmailAddress = "test@liferay.com");
@@ -1251,25 +1212,269 @@ definition {
 		User.viewLoggedInPG();
 	}
 
+	// TODO leiras es elnevezes megcsinalasa
+
+	@description = "This is a use case for LPS-105170 TC-7: User creation and sync after SAML setup, using screenName field both for User Matching and IdP Identifier "
+	@priority = "3"
+	test CreateAndSyncUserAfterSAMLSetupWithMultipleIdPs {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.upstream = "true";
+		property using.virtualInstances = "true";
+
+		// Enable SAML debug logs
+
+		//SAMLToolBox.enableSAMLDebugLogs();
+
+		// Add 2 virtual instance
+
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.able.com");
+
+		User.firstLoginUI();
+
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.baker.com");
+
+		SAMLToolBox.setupIDP(
+			idpURL = "http://localhost:8080",
+			samlEntityID = "samlidp1",
+			userEmailAddress = "test@liferay.com");
+
+		SAMLToolBox.setupIDP(
+			idpURL = "www.baker.com:8080",
+			samlEntityID = "samlidp2",
+			userEmailAddress = "test@baker.com");
+
+		SAMLToolBox.setupSP(
+			encryptionCertificate = "true",
+			samlEntityID = "samlsp",
+			spURL = "www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		SAMLToolBox.addIDPConfigurationsToServiceProvider(
+			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,UUID",
+			idpEntityID = "samlidp1",
+			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
+			idpURL = "www.baker.com:8080",
+			index = "0",
+			nameIdentifierFormat = "Unspecified",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com",
+			userResolution = "attribute");
+
+		SAMLToolBox.addIDPConfigurationsToServiceProvider(
+			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,UUID",
+			idpEntityID = "samlidp2",
+			idpKeepAliveURL = "www.baker.com:8080/c/portal/saml/keep_alive",
+			idpURL = "www.baker.com:8080",
+			index = "4",
+			nameIdentifierFormat = "Unspecified",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com",
+			userResolution = "attribute");
+
+		SAMLToolBox.enableSPRoles(
+			samlEntityID = "samlsp",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		SAMLToolBox.addSPConfigurationsToIdentityProvider(
+			idpURL = "http://localhost:8080",
+			nameIdentifierAttributeName = "screenName",
+			nameIdentifierFormat = "Unspecified",
+			spAttributes = '''emailAddress
+				firstName
+				lastName
+				screenName
+				uuid''',
+			spEntityID = "samlsp",
+			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@liferay.com");
+
+		SAMLToolBox.addSPConfigurationsToIdentityProvider(
+			idpURL = "www.baker.com:8080",
+			nameIdentifierAttributeName = "emailAddress",
+			nameIdentifierFormat = "Email Address",
+			spAttributes = '''emailAddress
+				firstName
+				lastName
+				screenName
+				uuid''',
+			spEntityID = "samlsp",
+			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@baker.com");
+
+		// Create 1-1 user for each IdP portal
+
+		JSONUser.addUser(
+			creatorEmailAddress = "test@baker.com",
+			creatorPassword = "test",
+			specificURL = "http://www.baker.com:8080",
+			userEmailAddress = "user1@baker.com",
+			userFirstName = "first",
+			userLastName = "tester",
+			userScreenName = "user1");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			specificURL = "http://www.baker.com:8080",
+			userEmailAddress = "user1@baker.com");
+
+		JSONUser.addUser(
+			creatorEmailAddress = "test@liferay.com",
+			creatorPassword = "test",
+			specificURL = "http://localhost:8080",
+			userEmailAddress = "user2@liferay.com",
+			userFirstName = "second",
+			userLastName = "tester",
+			userScreenName = "user2");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			specificURL = "http://localhost:8080",
+			userEmailAddress = "user2@liferay.com");
+
+		SAML.executeSPInitiatedSSO(
+			password = "test",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "user1@baker.com");
+
+		User.viewLoggedInPG();
+
+		MyAccount.openMyAccountAdmin();
+
+		User.viewUserInfomation(
+			userEmailAddress = "user1@baker.com",
+			userFirstName = "first",
+			userLastName = "tester",
+			userScreenName = "user1");
+
+		// Verify IdP is also logged in
+
+		Navigator.openSpecificURL(url = "http://www.baker.com:8080");
+
+		User.viewLoggedInPG();
+
+		User.logoutPG();
+
+		SAML.executeSPInitiatedSSO(
+			password = "test",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "user2@localhost.com");
+
+		User.viewLoggedInPG();
+
+		MyAccount.openMyAccountAdmin();
+
+		User.viewUserInfomation(
+			userEmailAddress = "user1@liferay.com",
+			userFirstName = "tester",
+			userLastName = "tester",
+			userScreenName = "user1");
+
+		// Verify IdP is also logged in
+
+		Navigator.openURL();
+
+		User.viewLoggedInPG();
+	}
+
 	@description = "This is a use case for LPS-105170 TC-8: Verifying that deleting a User will sync with the SP site"
 	@priority = "3"
 	test deleteUserAfterSAMLSetupAndVerify {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.upstream = "true";
+		property using.virtualInstances = "true";
 
-	SAML.CreateAndSyncUserAfterSAMLSetupwithMatchingScreenNameAttribute();
+		// Enable SAML debug logs
 
-	tearDownSpecificUser(
-    	userFirstName = "first");
+		SAMLToolBox.enableSAMLDebugLogs();
 
-	User.logoutPG();
+		// Add new virtual instance to be the SP site
 
-	User.firstLoginUI(
-		specificURL = "http://www.able.com:8080/",
-		userEmailAddress = "user1@liferay.com",
-		emailPassword = "test");
+		SAMLToolBox.addVirtualInstances(virtualHostName = "www.able.com");
 
-    AssertTextEquals.assertPartialText(
-    	locator1 = "Message#ERROR_DISMISSIBLE",
-    	value1 = "Authentication failed. Please try again.");
+		User.logoutPG();
+
+		// Setup localhost as IDP role
+
+		SAMLToolBox.setupIDP(
+			idpURL = "http://localhost:8080",
+			samlEntityID = "samlidp",
+			userEmailAddress = "test@liferay.com");
+
+		SAMLToolBox.setupSP(
+			encryptionCertificate = "true",
+			samlEntityID = "samlsp",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		SAMLToolBox.addIDPConfigurationsToServiceProvider(
+			idpAttributeMapping = "screenName,emailAddress,firstName,lastName,UUID",
+			idpEntityID = "samlidp",
+			idpKeepAliveURL = "http://localhost:8080/c/portal/saml/keep_alive",
+			idpURL = "http://localhost:8080/",
+			index = "4",
+			nameIdentifierFormat = "Unspecified",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com",
+			userResolution = "attribute");
+
+		SAMLToolBox.enableSPRoles(
+			samlEntityID = "samlsp",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		SAMLToolBox.addSPConfigurationsToIdentityProvider(
+			idpURL = "http://localhost:8080",
+			nameIdentifierAttributeName = "screenName",
+			nameIdentifierFormat = "Unspecified",
+			spAttributes = '''emailAddress
+				firstName
+				lastName
+				screenName
+				uuid''',
+			spEntityID = "samlsp",
+			spKeepAliveURL = "http://www.able.com:8080/c/portal/saml/keep_alive",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "test@liferay.com");
+
+		JSONUser.addUser(
+			creatorEmailAddress = "test@liferay.com",
+			creatorPassword = "test",
+			userEmailAddress = "user1@liferay.com",
+			userFirstName = "first",
+			userLastName = "tester",
+			userScreenName = "user1");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			userEmailAddress = "user1@liferay.com");
+
+		SAML.executeSPInitiatedSSO(
+			password = "test",
+			spURL = "http://www.able.com:8080",
+			userEmailAddress = "user1@liferay.com");
+
+		User.viewLoggedInPG();
+
+		Navigator.openURL();
+
+		User.tearDownSpecificUser(userFirstName = "first");
+
+		User.logoutPG();
+
+		User.firstLoginUI(
+			emailPassword = "test",
+			specificURL = "http://www.able.com:8080/",
+			userEmailAddress = "user1@liferay.com");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR_DISMISSIBLE",
+			value1 = "Authentication failed. Please try again.");
 	}
 
 	@priority = "5"
