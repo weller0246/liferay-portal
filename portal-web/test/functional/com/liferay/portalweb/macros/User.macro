@@ -2672,7 +2672,7 @@ definition {
 		if (IsElementPresent(locator1 = "ContentRow#ENTRY_CONTENT_ROW_1")) {
 			PortletEntry.selectAll();
 
-			ClickNoError(locator1 = "Icon#MOVE_TO_RECYCLE_BIN");
+			MenuItem.clickNoError(menuItem = "Deactivate");
 
 			AssertConfirm(value1 = "Are you sure you want to deactivate the selected users?");
 
@@ -2686,7 +2686,7 @@ definition {
 		if (IsElementPresent(locator1 = "ContentRow#ENTRY_CONTENT_ROW_1")) {
 			PortletEntry.selectAll();
 
-			ClickNoError(locator1 = "Icon#MOVE_TO_RECYCLE_BIN");
+			ClickNoError(locator1 = "Icon#DELETE");
 
 			AssertConfirm(value1 = "Are you sure you want to permanently delete the selected users?");
 
