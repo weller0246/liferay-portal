@@ -1,6 +1,6 @@
 definition {
 
-    @description = "Creating new user on the IdP portal and syncing his data by logging in on the SP portal then verify the user data on the My Account page"
+	@description = "Creating new user on the IdP portal and syncing his data by logging in on the SP portal then verify the user data on the My Account page"
 	macro AddAndSyncNewUser {
 		JSONUser.addUser(
 			creatorEmailAddress = "${creatorEmailAddress}",
@@ -33,32 +33,6 @@ definition {
 			userFirstName = "${userFirstName}",
 			userLastName = "${userLastName}",
 			userScreenName = "${userScreenName}");
-	}
-
-    @description = "Add virtual instances"
-	macro addVirtualInstances {
-
-		// Add new virtual instance to be the SP site
-
-		ApplicationsMenu.gotoPortlet(
-			category = "System",
-			panel = "Control Panel",
-			portlet = "Virtual Instances");
-
-		for (var virtualHostName : list "${virtualHosts}") {
-			PortalInstances.addCP(
-				mailDomain = "${virtualHostName}",
-				virtualHost = "${virtualHostName}",
-				webId = "${virtualHostName}");
-
-			PortalInstances.viewCP(virtualHost = "${virtualHostName}");
-		}
-
-		// Logout from localhost
-
-		User.logoutPG();
-
-		User.viewLoggedOutPG();
 	}
 
 	@description = "Add Identity Provider Configurations to Service Provider"
@@ -143,6 +117,32 @@ definition {
 		User.viewLoggedOutPG();
 	}
 
+	@description = "Add virtual instances"
+	macro addVirtualInstances {
+
+		// Add new virtual instance to be the SP site
+
+		ApplicationsMenu.gotoPortlet(
+			category = "System",
+			panel = "Control Panel",
+			portlet = "Virtual Instances");
+
+		for (var virtualHostName : list "${virtualHosts}") {
+			PortalInstances.addCP(
+				mailDomain = "${virtualHostName}",
+				virtualHost = "${virtualHostName}",
+				webId = "${virtualHostName}");
+
+			PortalInstances.viewCP(virtualHost = "${virtualHostName}");
+		}
+
+		// Logout from localhost
+
+		User.logoutPG();
+
+		User.viewLoggedOutPG();
+	}
+
 	@description = "Configures Liferay SAML as the IdP"
 	macro configureLiferaySAMLAsIdP {
 
@@ -186,7 +186,6 @@ definition {
 
 		SAMLPortlet.configureIdentityProvider();
 	}
-
 
 	@description = "Configures Liferay SAML as the SP."
 	macro configureLiferaySAMLAsSP {
@@ -425,7 +424,6 @@ definition {
 		User.viewLoggedOutPG();
 	}
 
-
 	@description = "7.4-SAML-S2: Configure Portal Instance to act as a SAML Service Provider"
 	macro setupSP {
 		if (isSet(userEmailAddress)) {
@@ -471,8 +469,6 @@ definition {
 
 		User.viewLoggedOutPG();
 	}
-
-}
 
 	macro waitForSLO {
 		var key_title = "Signing Out from Services";
