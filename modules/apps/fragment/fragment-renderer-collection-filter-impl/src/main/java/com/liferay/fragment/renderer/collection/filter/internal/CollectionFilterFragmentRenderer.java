@@ -26,6 +26,7 @@ import com.liferay.fragment.renderer.collection.filter.internal.constants.Collec
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 import javax.servlet.RequestDispatcher;
@@ -78,14 +80,29 @@ public class CollectionFilterFragmentRenderer implements FragmentRenderer {
 			"content.Language", getClass());
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				StringUtil.read(
-					getClass(),
-					"/com/liferay/fragment/renderer/collection/filter" +
-						"/internal/dependencies/configuration.json"));
+			String json = StringUtil.read(
+				getClass(),
+				"/com/liferay/fragment/renderer/collection/filter/internal" +
+					"/dependencies/configuration.json");
+
+			JSONObject configurationJSONObject =
+				JSONFactoryUtil.createJSONObject(json);
+
+			String filterPlaceholder = _getFilterPlaceholder(
+				json, fragmentRendererContext, resourceBundle);
+
+			JSONObject filterTypeOptionsJSONObject =
+				_filterTypeOptionsJSONObject(configurationJSONObject);
+
+			if ((filterPlaceholder != null) &&
+				(filterTypeOptionsJSONObject != null)) {
+
+				filterTypeOptionsJSONObject.put(
+					"placeholder", filterPlaceholder);
+			}
 
 			return _fragmentEntryConfigurationParser.translateConfiguration(
-				jsonObject, resourceBundle);
+				configurationJSONObject, resourceBundle);
 		}
 		catch (JSONException jsonException) {
 			return StringPool.BLANK;
@@ -106,15 +123,6 @@ public class CollectionFilterFragmentRenderer implements FragmentRenderer {
 	}
 
 	@Override
-	public boolean isSelectable(HttpServletRequest httpServletRequest) {
-		if (!_ffFragmentRendererCollectionFilterConfiguration.enabled()) {
-			return false;
-		}
-
-		return true;
-	}
-
-	@Override
 	public void render(
 		FragmentRendererContext fragmentRendererContext,
 		HttpServletRequest httpServletRequest,
@@ -127,15 +135,42 @@ public class CollectionFilterFragmentRenderer implements FragmentRenderer {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		boolean multipleSelection = GetterUtil.getBoolean(
+		String label = GetterUtil.getString(
 			_fragmentEntryConfigurationParser.getFieldValue(
 				fragmentEntryLink.getConfiguration(),
 				fragmentEntryLink.getEditableValues(), themeDisplay.getLocale(),
-				"multipleSelection"));
+				"label"));
 
 		httpServletRequest.setAttribute(
-			CollectionFilterFragmentRendererWebKeys.MULTIPLE_SELECTION,
-			multipleSelection);
+			CollectionFilterFragmentRendererWebKeys.LABEL, label);
+
+		boolean showLabel = GetterUtil.getBoolean(
+			_fragmentEntryConfigurationParser.getFieldValue(
+				fragmentEntryLink.getConfiguration(),
+				fragmentEntryLink.getEditableValues(), themeDisplay.getLocale(),
+				"showLabel"));
+
+		httpServletRequest.setAttribute(
+			CollectionFilterFragmentRendererWebKeys.SHOW_LABEL, showLabel);
+
+		boolean showSearch = GetterUtil.getBoolean(
+			_fragmentEntryConfigurationParser.getFieldValue(
+				fragmentEntryLink.getConfiguration(),
+				fragmentEntryLink.getEditableValues(), themeDisplay.getLocale(),
+				"showSearch"));
+
+		httpServletRequest.setAttribute(
+			CollectionFilterFragmentRendererWebKeys.SHOW_SEARCH, showSearch);
+
+		boolean singleSelection = GetterUtil.getBoolean(
+			_fragmentEntryConfigurationParser.getFieldValue(
+				fragmentEntryLink.getConfiguration(),
+				fragmentEntryLink.getEditableValues(), themeDisplay.getLocale(),
+				"singleSelection"));
+
+		httpServletRequest.setAttribute(
+			CollectionFilterFragmentRendererWebKeys.SINGLE_SELECTION,
+			singleSelection);
 
 		Object sourceObject = _fragmentEntryConfigurationParser.getFieldValue(
 			getConfiguration(fragmentRendererContext),
@@ -245,6 +280,68 @@ public class CollectionFilterFragmentRenderer implements FragmentRenderer {
 			ConfigurableUtil.createConfigurable(
 				FFFragmentRendererCollectionFilterConfiguration.class,
 				properties);
+	}
+
+	private JSONObject _filterTypeOptionsJSONObject(
+		JSONObject configurationJSONObject) {
+
+		JSONArray fieldSetsJSONArray = configurationJSONObject.getJSONArray(
+			"fieldSets");
+
+		if (fieldSetsJSONArray == null) {
+			return null;
+		}
+
+		JSONObject fieldSetsJSONObject = fieldSetsJSONArray.getJSONObject(0);
+
+		JSONArray fieldsJSONArray = fieldSetsJSONObject.getJSONArray("fields");
+
+		if (fieldsJSONArray == null) {
+			return null;
+		}
+
+		for (int j = 0; j < fieldsJSONArray.length(); j++) {
+			JSONObject fieldJSONObject = fieldsJSONArray.getJSONObject(j);
+
+			if (Objects.equals(fieldJSONObject.getString("name"), "label") &&
+				fieldJSONObject.has("typeOptions")) {
+
+				return fieldJSONObject.getJSONObject("typeOptions");
+			}
+		}
+
+		return null;
+	}
+
+	private String _getFilterPlaceholder(
+		String configuration, FragmentRendererContext fragmentRendererContext,
+		ResourceBundle resourceBundle) {
+
+		FragmentEntryLink fragmentEntryLink =
+			fragmentRendererContext.getFragmentEntryLink();
+
+		if (fragmentEntryLink == null) {
+			return null;
+		}
+
+		String source = GetterUtil.getString(
+			_fragmentEntryConfigurationParser.getFieldValue(
+				configuration, fragmentEntryLink.getEditableValues(),
+				resourceBundle.getLocale(), "source"));
+
+		if (Validator.isNull(source) || !JSONUtil.isValid(source)) {
+			return null;
+		}
+
+		try {
+			JSONObject sourceJSONObject = JSONFactoryUtil.createJSONObject(
+				source);
+
+			return sourceJSONObject.getString("title");
+		}
+		catch (JSONException jsonException) {
+			return null;
+		}
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -84,7 +84,8 @@ public class JavaPackagePathCheck extends BaseJavaTermCheck {
 
 			if (array.length == 2) {
 				_checkInternalPackageName(
-					fileName, javaClass, array[0], packageName, array[1]);
+					fileName, absolutePath, javaClass, array[0], packageName,
+					array[1]);
 			}
 		}
 
@@ -97,15 +98,21 @@ public class JavaPackagePathCheck extends BaseJavaTermCheck {
 	}
 
 	private void _checkInternalPackageName(
-			String fileName, JavaClass javaClass, String implementedClassName,
-			String packageName, String expectedPackageName)
+			String fileName, String absolutePath, JavaClass javaClass,
+			String implementedClassName, String packageName,
+			String expectedPackageName)
 		throws IOException {
+
+		if (absolutePath.contains("/test/")) {
+			return;
+		}
 
 		List<String> implementedClassNames =
 			javaClass.getImplementedClassNames();
 
 		if (!packageName.contains(".internal.") &&
-			!packageName.endsWith(".internal")) {
+			!packageName.endsWith(".internal") &&
+			absolutePath.matches(".*/modules(/dxp)?/apps/.*")) {
 
 			String className = javaClass.getName();
 

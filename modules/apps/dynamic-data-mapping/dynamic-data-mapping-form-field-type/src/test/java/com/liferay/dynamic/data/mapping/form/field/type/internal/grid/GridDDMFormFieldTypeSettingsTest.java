@@ -95,11 +95,6 @@ public class GridDDMFormFieldTypeSettingsTest
 		DDMFormField requiredErrorMessage = ddmFormFieldsMap.get(
 			"requiredErrorMessage");
 
-		DDMFormField validationDDMFormField = ddmFormFieldsMap.get(
-			"validation");
-
-		Assert.assertNotNull(validationDDMFormField);
-
 		Assert.assertNotNull(requiredErrorMessage);
 
 		List<DDMFormRule> ddmFormRules = ddmForm.getDDMFormRules();
@@ -112,15 +107,15 @@ public class GridDDMFormFieldTypeSettingsTest
 
 		Assert.assertEquals("TRUE", ddmFormRule.getCondition());
 
-		Assert.assertEquals(actions.toString(), 5, actions.size());
+		Assert.assertEquals(actions.toString(), 4, actions.size());
 
 		Assert.assertEquals("setVisible('indexType', false)", actions.get(0));
 		Assert.assertEquals(
 			"setVisible('predefinedValue', false)", actions.get(1));
 		Assert.assertEquals("setVisible('repeatable', false)", actions.get(2));
 		Assert.assertEquals(
-			"setVisible('requiredErrorMessage', false)", actions.get(3));
-		Assert.assertEquals("setVisible('validation', false)", actions.get(4));
+			"setVisible('requiredErrorMessage', getValue('required'))",
+			actions.get(3));
 	}
 
 	@Override

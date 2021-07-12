@@ -19,14 +19,13 @@ import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.headless.delivery.dto.v1_0.CollectionConfig;
 import com.liferay.headless.delivery.dto.v1_0.PageCollectionDefinition;
 import com.liferay.headless.delivery.dto.v1_0.PageElement;
+import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.info.item.InfoItemServiceTracker;
-import com.liferay.info.list.provider.InfoListProvider;
 import com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType;
 import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
 import com.liferay.layout.util.structure.CollectionStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
-import com.liferay.petra.reflect.GenericUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
@@ -203,20 +202,20 @@ public class CollectionLayoutStructureItemImporter
 
 		String className = (String)collectionReference.get("className");
 
-		InfoListProvider<?> infoListProvider =
+		InfoCollectionProvider<?> infoCollectionProvider =
 			_infoItemServiceTracker.getInfoItemService(
-				InfoListProvider.class, className);
+				InfoCollectionProvider.class, className);
 
-		if (infoListProvider == null) {
+		if (infoCollectionProvider == null) {
 			return null;
 		}
 
 		return JSONUtil.put(
-			"itemType", GenericUtil.getGenericClassName(infoListProvider)
+			"itemType", infoCollectionProvider.getCollectionItemClassName()
 		).put(
 			"key", className
 		).put(
-			"title", infoListProvider.getLabel(LocaleUtil.getDefault())
+			"title", infoCollectionProvider.getLabel(LocaleUtil.getDefault())
 		).put(
 			"type", InfoListProviderItemSelectorReturnType.class.getName()
 		);

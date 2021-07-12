@@ -107,7 +107,22 @@ public class JSONUtilTest {
 
 	@Test
 	public void testGetValue() {
+
+		// Nested JSON array
+
 		JSONObject jsonObject = JSONUtil.put(
+			"alpha",
+			JSONUtil.put("beta", JSONUtil.put(JSONUtil.put("gamma", "delta"))));
+
+		Assert.assertEquals(
+			"delta",
+			JSONUtil.getValue(
+				jsonObject, "JSONObject/alpha", "JSONArray/beta",
+				"JSONObject/0", "Object/gamma"));
+
+		// Nested JSON object
+
+		jsonObject = JSONUtil.put(
 			"alpha", JSONUtil.put("beta", JSONUtil.put("gamma")));
 
 		Assert.assertEquals(

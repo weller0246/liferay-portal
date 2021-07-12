@@ -136,6 +136,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ASSERT_NOTIFICATION_QUEUE</td>
+	<td>//div[contains(@class,'dnd-tr with-bg')]//div[contains(text(), '${key_name}')][${key_order}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>NAME_FIELD</td>
 	<td>//div/input[contains(@id,'name')]</td>
 	<td></td>
@@ -416,6 +421,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DROPDOWN</td>
+	<td>//*[name()='svg'][contains(@class,'icon-ellipsis')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ACCOUNT_GROUPS_RELS_SELECT</td>
 	<td>//button[contains(@id,'selectCommercePriceListCommerceAccountGroupRel')]</td>
 	<td></td>
@@ -458,6 +468,11 @@
 <tr>
 	<td>ENTRY_CONTENT_ROW_NUMBER</td>
 	<td>//table[@class='table table-autofit']/tbody/tr[${key_rowNumber}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ENTRY_CONTENT_ROW_BY_NAME</td>
+	<td>//tr[contains(@data-qa-id,'row')]//a[contains(text(),'${key_entryName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -744,6 +759,21 @@
 <tr>
 	<td>MODAL_BUTTON_CLOSE</td>
 	<td>//div[contains(@class,'side-panel-iframe-header')]//button[contains(@class,'side-panel-iframe-close')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FIRST_CURRENCY_ELEMENT</td>
+	<td>//tr[contains(@data-qa-id,'row')]//a[contains(text(),'${key_entryName}')] | //a[@id='_com_liferay_commerce_currency_web_internal_portlet_CommerceCurrencyPortlet_commerceCurrencies_1_menu']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>LAST_CURRENCY_ELEMENT</td>
+	<td>//tr[contains(@data-qa-id,'row')]//a[contains(text(),'${key_entryName}')] | //a[@id='_com_liferay_commerce_currency_web_internal_portlet_CommerceCurrencyPortlet_commerceCurrencies_10_menu']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ON_ORDER_QUANTITY</td>
+	<td>//div[@class="dnd-tr with-bg"]//div[contains(text(),'${key_orderQuantity}')]</td>
 	<td></td>
 </tr>
 <tr>

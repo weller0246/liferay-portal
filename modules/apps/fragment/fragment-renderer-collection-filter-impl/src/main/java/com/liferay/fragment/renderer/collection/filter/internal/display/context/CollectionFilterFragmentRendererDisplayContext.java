@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HttpUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
@@ -122,6 +123,18 @@ public class CollectionFilterFragmentRendererDisplayContext {
 		return dropdownItemListWrapper.build();
 	}
 
+	public String getLabel() {
+		String label = GetterUtil.getString(
+			_httpServletRequest.getAttribute(
+				CollectionFilterFragmentRendererWebKeys.LABEL));
+
+		if (Validator.isNotNull(label)) {
+			return label;
+		}
+
+		return getAssetCategoryTreeNodeTitle();
+	}
+
 	public Map<String, Object> getProps() {
 		if (_props != null) {
 			return _props;
@@ -171,6 +184,8 @@ public class CollectionFilterFragmentRendererDisplayContext {
 					PortalUtil.getOriginalServletRequest(_httpServletRequest),
 					"categoryId_" + fragmentEntryLinkId);
 			}
+		).put(
+			"showSearch", _isShowSearch()
 		).build();
 
 		return _props;
@@ -200,10 +215,16 @@ public class CollectionFilterFragmentRendererDisplayContext {
 		return LanguageUtil.get(_httpServletRequest, "select");
 	}
 
-	public boolean isMultipleSelection() {
+	public boolean isShowLabel() {
 		return GetterUtil.getBoolean(
 			_httpServletRequest.getAttribute(
-				CollectionFilterFragmentRendererWebKeys.MULTIPLE_SELECTION));
+				CollectionFilterFragmentRendererWebKeys.SHOW_LABEL));
+	}
+
+	public boolean isSingleSelection() {
+		return GetterUtil.getBoolean(
+			_httpServletRequest.getAttribute(
+				CollectionFilterFragmentRendererWebKeys.SINGLE_SELECTION));
 	}
 
 	private String _getParameterName() {
@@ -212,6 +233,12 @@ public class CollectionFilterFragmentRendererDisplayContext {
 
 		return CollectionFilterFragmentRendererWebKeys.CATEGORY_ID + "_" +
 			fragmentEntryLinkId;
+	}
+
+	private boolean _isShowSearch() {
+		return GetterUtil.getBoolean(
+			_httpServletRequest.getAttribute(
+				CollectionFilterFragmentRendererWebKeys.SHOW_SEARCH));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

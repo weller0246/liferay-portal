@@ -117,6 +117,317 @@ definition {
 			userScreenName = "test");
 	}
 
+	@description = "This test add the contact information via appearance in Instance Configuration."
+	@priority = "3"
+	test CanAddContactInformationInInstanceConfiguration {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Contact Information",
+			configurationScope = "Virtual Instance Scope");
+
+		for (var text : list "Street 1,Street 2,Street 3,City") {
+			var value1 = StringUtil.replace("${text}", " ", "");
+
+			Type(
+				key_text = "${text}",
+				locator1 = "TextInput#ANY",
+				value1 = "${value1}");
+		}
+
+		Type(
+			key_text = "Postal Code",
+			locator1 = "TextInput#ANY",
+			value1 = "116023");
+
+		Type(
+			key_text = "Number",
+			locator1 = "TextInput#ANY",
+			value1 = "041188120855");
+
+		Type(
+			key_text = "Extension",
+			locator1 = "TextInput#ANY",
+			value1 = "86");
+
+		Type(
+			key_text = "Email Address",
+			locator1 = "TextInput#ANY",
+			value1 = "testsample@liferay.com");
+
+		Type(
+			key_text = "URL",
+			locator1 = "TextInput#ANY",
+			value1 = "http://liferay.com");
+
+		Select(
+			locator1 = "Select#COUNTRY",
+			value1 = "China");
+
+		Select(
+			locator1 = "Select#REGION",
+			value1 = "Liaoning Sheng");
+
+		Select(
+			locator1 = "Select#ADDRESS_TYPE",
+			value1 = "Shipping");
+
+		PortletEntry.save();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Contact Information",
+			configurationScope = "Virtual Instance Scope");
+
+		for (var text : list "Street 1,Street 2,Street 3,City") {
+			var value1 = StringUtil.replace("${text}", " ", "");
+
+			AssertTextEquals(
+				key_text = "${text}",
+				locator1 = "TextInput#ANY",
+				value1 = "${value1}");
+		}
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Select#COUNTRY",
+			value1 = "China");
+
+		AssertTextEquals(
+			key_text = "Email Address",
+			locator1 = "TextInput#ANY",
+			value1 = "testsample@liferay.com");
+
+		AssertTextEquals(
+			key_text = "URL",
+			locator1 = "TextInput#ANY",
+			value1 = "http://liferay.com");
+	}
+
+	@description = "This test disable the Terms of Use via UI and assert the Terms of Use not required when a new user login."
+	@priority = "3"
+	test CanChangeTheTermsOfUseNotRequired {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Terms of Use",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.viewCheckboxChecked(fieldName = "terms-of-use-required");
+
+		FormFields.disableCheckbox(fieldName = "terms-of-use-required");
+
+		PortletEntry.save();
+
+		JSONUser.addUser(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		JSONUser.setFirstPassword(
+			requireReset = "false",
+			userEmailAddress = "userea1@liferay.com");
+
+		User.logoutPG();
+
+		Navigator.openURL();
+
+		Navigator.gotoLoginPage();
+
+		Type(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "userea@liferay.com");
+
+		Type(
+			locator1 = "TextInput#PASSWORD",
+			value1 = "test");
+
+		AssertClick(
+			locator1 = "Button#SIGN_IN",
+			value1 = "Sign In");
+
+		AssertElementNotPresent(locator1 = "Button#SIGN_IN");
+
+		AssertElementNotPresent(locator1 = "Button#I_AGREE");
+
+		User.answerPasswordReminder();
+
+		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
+	}
+
+	@description = "This test asserts that a user can change the general authentication. Like user can change the authentication way to user ID and so."
+	@priority = "4"
+	test CanChangeUserGeneralAuthentication {
+		var userId = JSONUserSetter.setUserId(userEmailAddress = "test@liferay.com");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "User Authentication",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.editConfigurationAuthenticationGeneral(authenticationMethod = "By User ID");
+
+		Uncheck(
+			checkboxName = "Allow strangers to create accounts with a company email address?",
+			locator1 = "Checkbox#ANY_CHECKBOX");
+
+		Button.clickSave();
+
+		User.logoutPG();
+
+		Navigator.openURL();
+
+		AssertClick(
+			locator1 = "UserBar#USER_SIGN_IN",
+			value1 = "Sign In");
+
+		AssertElementPresent(
+			key_text = "ID",
+			locator1 = "TextInput#ANY");
+
+		SignInNavigator.gotoCreateAccount();
+
+		for (var text : list "Screen Name,First Name,Last Name,Password,Enter Again") {
+			var value1 = StringUtil.replace("${text}", " ", "");
+
+			Type(
+				key_text = "${text}",
+				locator1 = "TextInput#ANY",
+				value1 = "${value1}");
+		}
+
+		Type(
+			key_text = "Enter Again",
+			locator1 = "TextInput#ANY",
+			value1 = "Password");
+
+		Type(
+			key_text = "Email Address",
+			locator1 = "TextInput#ANY",
+			value1 = "userEmailAddress@liferay.com");
+
+		Button.clickSave();
+
+		Alert.viewErrorMessage(errorMessage = "Error:The email address you requested is not valid because its domain is reserved.");
+
+		Navigator.openURL();
+
+		User.firstLoginUI(
+			authenticationMethod = "By User ID",
+			password = "test",
+			userID = "${userId}");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "User Authentication",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.editConfigurationAuthenticationGeneral(authenticationMethod = "By Email Address");
+
+		Uncheck(
+			checkboxName = "Allow users to automatically log in?",
+			locator1 = "Checkbox#ANY_CHECKBOX");
+
+		Uncheck(
+			checkboxName = "Allow users to request password reset links?",
+			locator1 = "Checkbox#ANY_CHECKBOX");
+
+		Uncheck(
+			checkboxName = "Allow strangers to create accounts?",
+			locator1 = "Checkbox#ANY_CHECKBOX");
+
+		Button.clickSave();
+
+		User.logoutPG();
+
+		Navigator.openURL();
+
+		AssertClick(
+			locator1 = "UserBar#USER_SIGN_IN",
+			value1 = "Sign In");
+
+		AssertElementPresent(
+			key_text = "Email Address",
+			locator1 = "TextInput#ANY");
+
+		AssertElementNotPresent(locator1 = "Checkbox#REMEMBER_ME");
+		AssertElementNotPresent(locator1 = "Link#FORGOT_PASSWORD");
+		AssertElementNotPresent(locator1 = "Link#CREATE_ACCOUNT");
+	}
+
+	@description = "This test specify the Terms of Use content by web content posted in a new site and assert the Terms of Use content updated when a new user login."
+	@priority = "3"
+	test CanSpecifyTheTermsofUseWebContent {
+		property custom.properties = "jsonws.web.service.paths.excludes=";
+
+		JSONGroup.addGroup(groupName = "Terms of Use Site");
+
+		JSONWebcontent.addWebContent(
+			content = "This is a new terms of use items posted in Terms of Use Site.",
+			groupName = "Terms of Use Site",
+			title = "Terms of Use WC Title");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Terms of Use",
+			configurationScope = "Virtual Instance Scope");
+
+		var articleId = JSONWebcontentSetter.setArticleId(
+			groupName = "Terms of Use Site",
+			title = "Terms of Use WC Title");
+		var groupId = JSONGroupSetter.setGroupId(groupName = "Terms of Use Site");
+
+		FormFields.viewCheckboxChecked(fieldName = "terms-of-use-required");
+
+		FormFields.editText(
+			fieldName = "group-id",
+			fieldValue = "${groupId}");
+
+		FormFields.editText(
+			fieldName = "article-id",
+			fieldValue = "${articleId}");
+
+		PortletEntry.save();
+
+		JSONUser.addUser(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		JSONUser.setFirstPassword(
+			requireReset = "false",
+			userEmailAddress = "userea@liferay.com");
+
+		User.logoutPG();
+
+		Navigator.openURL();
+
+		Navigator.gotoLoginPage();
+
+		Type(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "userea@liferay.com");
+
+		Type(
+			locator1 = "TextInput#PASSWORD",
+			value1 = "test");
+
+		AssertClick(
+			locator1 = "Button#SIGN_IN",
+			value1 = "Sign In");
+
+		AssertElementNotPresent(locator1 = "Button#SIGN_IN");
+
+		Portlet.viewPortletPresentPG(portletContent = "This is a new terms of use items posted in Terms of Use Site.");
+
+		User.acceptEndUserLicenseAgreement();
+
+		User.answerPasswordReminder();
+
+		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
+	}
+
 	@priority = "5"
 	test EditDefaultUserAssociationsOrganizationSites {
 		ApplicationsMenu.gotoPortlet(
@@ -286,6 +597,8 @@ definition {
 
 	@priority = "4"
 	test FactoryConfigurationAreInTheirProperScope {
+		property test.name.skip.portal.instance = "InstanceSettings#FactoryConfigurationAreInTheirProperScope";
+
 		var openIDConnectClientID = PropsUtil.get("google.client.id.1");
 		var openIDConnectClientSecret = PropsUtil.get("google.client.secret.1");
 
@@ -395,6 +708,57 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "Edit Google");
 	}
 
+	@description = "This test asserts that a user can reset the value of a single configuration."
+	@priority = "4"
+	test SingleConfigurationCanBeDeleted {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Accounts",
+			configurationName = "Email Domains",
+			configurationScope = "Virtual Instance Scope");
+
+		AssertElementNotPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+		PortalSettings.editConfigurationUsersPersonalMenuShowInControlMenu(toggleSwitchLabel = "Enable Email Domain Validation");
+
+		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Reset Default Values");
+
+		PortalSettings.viewToggleSwitchNotChecked(portalSetting = "Enable Email Domain Validation");
+
+		AssertElementPresent(locator1 = "Button#SAVE");
+	}
+
+	@description = "This test asserts that a user can export the configure of the single configuration."
+	@priority = "4"
+	test SingleConfigurationCanBeExported {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Accounts",
+			configurationName = "Email Domains",
+			configurationScope = "Virtual Instance Scope");
+
+		AssertElementNotPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+		PortalSettings.editConfigurationUsersPersonalMenuShowInControlMenu(toggleSwitchLabel = "Enable Email Domain Validation");
+
+		AssertElementPresent(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+		LexiconEntry.gotoEllipsisMenuItem(menuItem = "Export");
+
+		AssertElementPresent(locator1 = "Button#UPDATE");
+
+		var tempFileName = TestCase.getDownloadedTempFileName(fileNamePattern = "com.liferay.account.configuration.AccountEntryEmailDomainsConfiguration.scoped-*.config");
+		var tempFileDirectory = selenium.getOutputDirName();
+		var exportedConfigFile = FileUtil.exists("${tempFileDirectory}/${tempFileName}");
+
+		if ("${exportedConfigFile}" == "true") {
+			echo("The Configuration file for single factory is exported Successfully.");
+		}
+		else {
+			fail("FAIL! Cannot find the exported configuration file for single factory.");
+		}
+	}
+
 	@ignore = "true"
 	@priority = "4"
 	test SingleFactoryConfigurationCanBeExported {
@@ -429,6 +793,67 @@ definition {
 		else {
 			fail("FAIL! Cannot find the exported configuration file for single factory.");
 		}
+	}
+
+	@description = "This test asserts that some of the fields in user creation can be diasabled."
+	@priority = "4"
+	test UserFieldsCanBeDisabled {
+		User.openUsersAdmin();
+
+		LexiconEntry.gotoAdd();
+
+		AssertElementPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD");
+		AssertElementNotPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_GENDER_SELECT");
+		AssertElementPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_BIRTHDAY_FIELD");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Users",
+			configurationName = "Fields",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.enableCheckbox(fieldName = "autogenerate");
+
+		FormFields.disableCheckbox(fieldName = "birthday");
+
+		FormFields.enableCheckbox(fieldName = "male");
+
+		PortletEntry.save();
+
+		User.openUsersAdmin();
+
+		LexiconEntry.gotoAdd();
+
+		AssertElementNotPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD");
+		AssertNotVisible(locator1 = "UsersAndOrganizationsEditUser#DETAILS_BIRTHDAY_FIELD");
+		AssertElementPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_GENDER_SELECT");
+
+		User.openUsersAdmin();
+
+		LexiconEntry.gotoAdd();
+
+		for (var text : list "First Name,Last Name") {
+			var value1 = StringUtil.replace("${text}", " ", "");
+
+			Type(
+				key_text = "${text}",
+				locator1 = "TextInput#ANY",
+				value1 = "${value1}");
+		}
+
+		Type(
+			key_text = "Email Address",
+			locator1 = "TextInput#ANY",
+			value1 = "userEmailAddress@liferay.com");
+
+		PortletEntry.save();
+
+		User.openUsersAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "FirstName LastName");
+
+		AssertNotEditable(locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD");
+		AssertNotVisible(locator1 = "UsersAndOrganizationsEditUser#DETAILS_BIRTHDAY_FIELD");
+		AssertElementPresent(locator1 = "UsersAndOrganizationsEditUser#DETAILS_GENDER_SELECT");
 	}
 
 	@priority = "4"
@@ -639,6 +1064,8 @@ definition {
 	@description = "This is a use case for LPS-97907."
 	@priority = "5"
 	test ViewSystemSettingsSavedByKeyboard {
+		property test.name.skip.portal.instance = "InstanceSettings#ViewSystemSettingsSavedByKeyboard";
+
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",

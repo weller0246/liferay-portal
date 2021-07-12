@@ -27,6 +27,8 @@ import {
 	UPDATE_LAYOUT_DATA,
 	UPDATE_PREVIEW_IMAGE,
 } from '../actions/types';
+import {BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR} from '../config/constants/backgroundImageFragmentEntryProcessor';
+import {EDITABLE_FRAGMENT_ENTRY_PROCESSOR} from '../config/constants/editableFragmentEntryProcessor';
 
 export const INITIAL_STATE = {};
 
@@ -246,6 +248,7 @@ export default function fragmentEntryLinksReducer(
 				...fragmentEntryLinks,
 				[action.fragmentEntryLinkId]: {
 					...fragmentEntryLinks[action.fragmentEntryLinkId],
+					configuration: action.fragmentEntryLink.configuration,
 					content: action.fragmentEntryLink.content,
 					editableValues: action.fragmentEntryLink.editableValues,
 				},
@@ -286,14 +289,52 @@ export default function fragmentEntryLinksReducer(
 		}
 
 		case UPDATE_PREVIEW_IMAGE: {
+			const getUpdatedEditableValues = (editableValues) =>
+				Object.entries(editableValues).map(([key, value]) => [
+					key,
+					Object.fromEntries(
+						Object.entries(value).map(([key, value]) => [
+							key,
+							typeof value === 'object' &&
+							value.url &&
+							value.fileEntryId
+								? {...value, url: action.previewURL}
+								: value,
+						])
+					),
+				]);
+
 			const newFragmentEntryLinks = action.contents.map(
-				({content, fragmentEntryLinkId}) => [
-					fragmentEntryLinkId,
-					{
-						...fragmentEntryLinks[fragmentEntryLinkId],
-						content,
-					},
-				]
+				({content, fragmentEntryLinkId}) => {
+					const {editableValues} = fragmentEntryLinks[
+						fragmentEntryLinkId
+					];
+
+					return [
+						fragmentEntryLinkId,
+						{
+							...fragmentEntryLinks[fragmentEntryLinkId],
+							content,
+							editableValues: {
+								...editableValues,
+								[BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR]: Object.fromEntries(
+									getUpdatedEditableValues(
+										editableValues[
+											BACKGROUND_IMAGE_FRAGMENT_ENTRY_PROCESSOR
+										]
+									)
+								),
+								[EDITABLE_FRAGMENT_ENTRY_PROCESSOR]: Object.fromEntries(
+									getUpdatedEditableValues(
+										editableValues[
+											EDITABLE_FRAGMENT_ENTRY_PROCESSOR
+										]
+									)
+								),
+							},
+						},
+					];
+				}
 			);
 
 			return {
