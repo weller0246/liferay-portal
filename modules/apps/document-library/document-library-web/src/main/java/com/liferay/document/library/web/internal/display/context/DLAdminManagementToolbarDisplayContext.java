@@ -116,12 +116,15 @@ public class DLAdminManagementToolbarDisplayContext
 			return null;
 		}
 
+		DigitalSignatureConfiguration digitalSignatureConfiguration =
+			DigitalSignatureConfigurationUtil.getDigitalSignatureConfiguration(
+				_themeDisplay.getCompanyId(), _themeDisplay.getSiteGroupId());
 		boolean enableOnBulk = _isEnableOnBulk();
 		boolean stagedActions = _isStagedActions();
 		User user = _themeDisplay.getUser();
 
 		return DropdownItemListBuilder.add(
-			() -> isDigitalSignatureEnabled() && stagedActions,
+			() -> digitalSignatureConfiguration.enabled() && stagedActions,
 			dropdownItem -> {
 				dropdownItem.putData("action", "collectDigitalSignature");
 				dropdownItem.setIcon("signature");
@@ -530,14 +533,6 @@ public class DLAdminManagementToolbarDisplayContext
 				}
 			}
 		};
-	}
-
-	public boolean isDigitalSignatureEnabled() {
-		DigitalSignatureConfiguration digitalSignatureConfiguration =
-			DigitalSignatureConfigurationUtil.getDigitalSignatureConfiguration(
-				_themeDisplay.getCompanyId(), _themeDisplay.getSiteGroupId());
-
-		return digitalSignatureConfiguration.enabled();
 	}
 
 	@Override

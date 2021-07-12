@@ -13,9 +13,11 @@
  */
 
 import ClayLayout from '@clayui/layout';
+import ClayLoadingIndicator from '@clayui/loading-indicator';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import {COLUMN_SIZE_MODULE_PER_ROW_SIZES} from '../../config/constants/columnSizes';
+import {config} from '../../config/index';
 import {
 	CollectionItemContext,
 	CollectionItemContextProvider,
@@ -26,6 +28,7 @@ import {useDispatch, useSelector} from '../../contexts/StoreContext';
 import selectLanguageId from '../../selectors/selectLanguageId';
 import CollectionService from '../../services/CollectionService';
 import UnsafeHTML from '../UnsafeHTML';
+import CollectionPagination from './CollectionPagination';
 
 const COLLECTION_ID_DIVIDER = '$';
 
@@ -83,7 +86,10 @@ const Grid = ({
 }) => {
 	const maxNumberOfItems = Math.min(
 		collectionLength,
-		collectionConfig.numberOfItems
+		config.collectionDisplayFragmentPaginationEnabled &&
+			collectionConfig.paginationType
+			? collectionConfig.numberOfItemsPerPage
+			: collectionConfig.numberOfItems
 	);
 	const numberOfRows = Math.ceil(
 		maxNumberOfItems / collectionConfig.numberOfColumns
@@ -176,7 +182,24 @@ const Collection = React.forwardRef(({children, item}, ref) => {
 	const dispatch = useDispatch();
 	const languageId = useSelector(selectLanguageId);
 
+	const [activePage, setActivePage] = useState(1);
 	const [collection, setCollection] = useState(DEFAULT_COLLECTION);
+	const [loading, setLoading] = useState(false);
+
+	const totalPages = Math.ceil(
+		collectionConfig.numberOfItems / collectionConfig.numberOfItemsPerPage
+	);
+
+	useEffect(() => {
+		if (activePage > totalPages) {
+			setActivePage(1);
+		}
+	}, [
+		collectionConfig.numberOfItems,
+		collectionConfig.numberOfItemsPerPage,
+		activePage,
+		totalPages,
+	]);
 
 	const context = useContext(CollectionItemContext);
 	const {classNameId, classPK} = context.collectionItem || {};
@@ -188,16 +211,27 @@ const Collection = React.forwardRef(({children, item}, ref) => {
 	const itemClassPK = classPK || displayPagePreviewItemData.classPK;
 
 	useEffect(() => {
-		if (collectionConfig.collection) {
+		if (
+			config.collectionDisplayFragmentPaginationEnabled
+				? collectionConfig.collection && activePage <= totalPages
+				: collectionConfig.collection
+		) {
+			setLoading(true);
+
 			CollectionService.getCollectionField({
+				activePage,
 				classNameId: itemClassNameId,
 				classPK: itemClassPK,
 				collection: collectionConfig.collection,
 				languageId,
 				listItemStyle: collectionConfig.listItemStyle || null,
 				listStyle: collectionConfig.listStyle,
+				numberOfItems: collectionConfig.numberOfItems,
+				numberOfItemsPerPage: collectionConfig.numberOfItemsPerPage,
 				onNetworkStatus: dispatch,
-				size: collectionConfig.numberOfItems,
+				paginationType: config.collectionDisplayFragmentPaginationEnabled
+					? collectionConfig.paginationType
+					: '',
 				templateKey: collectionConfig.templateKey || null,
 			})
 				.then((response) => {
@@ -211,18 +245,25 @@ const Collection = React.forwardRef(({children, item}, ref) => {
 					if (process.env.NODE_ENV === 'development') {
 						console.error(error);
 					}
+				})
+				.finally(() => {
+					setLoading(false);
 				});
 		}
 	}, [
+		activePage,
 		itemClassNameId,
 		itemClassPK,
 		collectionConfig.collection,
 		collectionConfig.listItemStyle,
 		collectionConfig.listStyle,
 		collectionConfig.numberOfItems,
+		collectionConfig.numberOfItemsPerPage,
+		collectionConfig.paginationType,
 		collectionConfig.templateKey,
 		dispatch,
 		languageId,
+		totalPages,
 	]);
 
 	const showEmptyMessage =
@@ -230,7 +271,9 @@ const Collection = React.forwardRef(({children, item}, ref) => {
 
 	return (
 		<div className="page-editor__collection" ref={ref}>
-			{!collectionIsMapped(collectionConfig) ? (
+			{loading ? (
+				<ClayLoadingIndicator />
+			) : !collectionIsMapped(collectionConfig) ? (
 				<NotCollectionSelectedMessage />
 			) : showEmptyMessage ? (
 				<EmptyCollectionMessage />
@@ -248,6 +291,18 @@ const Collection = React.forwardRef(({children, item}, ref) => {
 					}
 				/>
 			)}
+
+			{config.collectionDisplayFragmentPaginationEnabled &&
+				collectionConfig.paginationType && (
+					<CollectionPagination
+						activePage={activePage}
+						collectionConfig={collectionConfig}
+						collectionId={item.itemId}
+						onPageChange={setActivePage}
+						totalNumberOfItems={collection.totalNumberOfItems || 0}
+						totalPages={totalPages}
+					/>
+				)}
 		</div>
 	);
 });

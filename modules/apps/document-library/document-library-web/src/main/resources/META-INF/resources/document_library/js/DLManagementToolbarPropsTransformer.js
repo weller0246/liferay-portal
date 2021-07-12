@@ -14,22 +14,19 @@
 
 import {
 	addParams,
-	createPortletURL,
 	navigate,
 	openModal,
 	openSelectionModal,
 } from 'frontend-js-web';
 
-import {handleCollectDigitalSignatureVisibility} from './digital-signature/DigitalSignatureUtil';
+import {collectDigitalSignature} from './digital-signature/DigitalSignatureUtil';
 
 export default function propsTransformer({
 	additionalProps: {
 		collectDigitalSignaturePortlet,
-		digitalSignatureAllowedExtensions,
 		downloadEntryURL,
 		editEntryURL,
 		folderConfiguration,
-		isDigitalSignatureEnabled,
 		openViewMoreFileEntryTypesURL,
 		selectFileEntryTypeURL,
 		selectFolderURL,
@@ -109,23 +106,6 @@ export default function propsTransformer({
 				processAction('checkin', editEntryURL);
 			});
 		});
-	};
-
-	const collectDigitalSignature = () => {
-		const fileEntryIds = getAllSelectedElements().get('value');
-
-		navigate(
-			createPortletURL(themeDisplay.getLayoutRelativeControlPanelURL(), {
-				backURL: window.location.href,
-				fileEntryId:
-					fileEntryIds.length > 1
-						? fileEntryIds.join(',')
-						: fileEntryIds[0],
-				mvcRenderCommandName:
-					'/digital_signature/collect_digital_signature',
-				p_p_id: collectDigitalSignaturePortlet,
-			}).toString()
-		);
 	};
 
 	const deleteEntries = () => {
@@ -263,7 +243,10 @@ export default function propsTransformer({
 				processAction('checkout', editEntryURL);
 			}
 			else if (action === 'collectDigitalSignature') {
-				collectDigitalSignature();
+				collectDigitalSignature(
+					getAllSelectedElements().get('value'),
+					collectDigitalSignaturePortlet
+				);
 			}
 			else if (action === 'deleteEntries') {
 				deleteEntries();
@@ -279,16 +262,6 @@ export default function propsTransformer({
 			}
 			else if (action === 'move') {
 				move();
-			}
-		},
-		onCheckboxChange: () => {
-			if (isDigitalSignatureEnabled) {
-				setTimeout(() => {
-					handleCollectDigitalSignatureVisibility(
-						getAllSelectedElements().get('value'),
-						digitalSignatureAllowedExtensions
-					);
-				}, 50);
 			}
 		},
 		onFilterDropdownItemClick(event, {item}) {

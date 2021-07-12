@@ -135,7 +135,12 @@
 </tr>
 <tr>
 	<td>RULE_BUILDER_CALCULATE_NUMBERS_KEYBOARD</td>
-	<td>//div[contains(@class,'calculator-button-area')]//button[contains(., '${key_buttonName}') and contains(@class, 'calculator-button')] | //div[contains(@class,'calculator-button-area')]//button[contains(@title, '${key_titleName}') and contains(@class, 'calculator-button')]</td>
+	<td>//div[contains(@class,'calculator-button-area')]//button[contains(., '${key_buttonName}') and contains(@class, 'calculator-button')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_BUILDER_CALCULATE_BACKSPACE</td>
+	<td>//button[@title='Backspace']</td>
 	<td></td>
 </tr>
 <tr>
@@ -167,6 +172,26 @@
 <tr>
 	<td>RULE_BUILDER_SUMMARY_ACTION_TARGET</td>
 	<td>//li[contains(@class, 'list-group-item')][${key_ruleNumber}]//div[contains(@class,'autofit-col-expand')]//b[contains(@class, 'text-lowercase')]/following-sibling::span[contains(.,'${key_action}')]//div[contains(text(), '${key_actionTarget}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_DELETE_ACTION_FIELD</td>
+	<td>//ul[contains(@class, 'timeline')][2]//li[contains(@class,'timeline-item')]/following-sibling::li[contains(@class, 'timeline-item')][${key_actionRowNumber}]//div[contains(@class,'form-group-item') and not(contains(@class, 'form-group-item-label'))][${key_actionRowNumber}]//div[contains(@class,'select-field-trigger')]//..//..//..//..//..//..//..//..//button[@type="button"]//*[name()='svg'][contains(@class,'lexicon-icon-trash')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_ACTION_FIELD</td>
+	<td>//ul[contains(@class, 'timeline')][2]//li[contains(@class,'timeline-item')]/following-sibling::li[contains(@class, 'timeline-item')][${key_actionRowNumber}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_ACTION_FIELD_VALUE</td>
+	<td>//ul[contains(@class, 'timeline')][2]//li[contains(@class,'timeline-item')]/following-sibling::li[contains(@class, 'timeline-item')][${key_actionRowNumber}]//div[contains(@class,'form-group-item') and not(contains(@class, 'form-group-item-label'))][1]//div[contains(@class,'select-field-trigger')]//div[contains(text(),"${key_selectActionValue}")]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>RULE_ACTION_TARGET_FIELD_VALUE</td>
+	<td>//ul[contains(@class, 'timeline')][2]//li[contains(@class,'timeline-item')]/following-sibling::li[contains(@class, 'timeline-item')][${key_actionRowNumber}]//div[contains(@class,'form-group-item') and not(contains(@class, 'form-group-item-label'))][2]//div[contains(@class,'select-field-trigger')]//div[contains(text(),"${key_selectActionTargetValue}")]</td>
 	<td></td>
 </tr>
 </tbody>

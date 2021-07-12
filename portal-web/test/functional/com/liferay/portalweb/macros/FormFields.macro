@@ -207,6 +207,29 @@ definition {
 			value1 = "${key_value}");
 	}
 
+	macro editDateCalendar {
+		Click(locator1 = "FormFields#DATE_CALENDAR");
+
+		Select(
+			key_valueName = "year",
+			locator1 = "FormFields#DATE_CALENDAR_FIELD",
+			value1 = "${valueYear}");
+
+		Select(
+			key_valueName = "month",
+			locator1 = "FormFields#DATE_CALENDAR_FIELD",
+			value1 = "${valueMonth}");
+
+		Click(
+			key_valueDay = "${valueDay}",
+			locator1 = "FormFields#DATE_CALENDAR_DAY");
+
+		AssertTextEquals(
+			key_fieldName = "${fieldName}",
+			locator1 = "FormFields#DATE_FIELD",
+			value1 = "${fieldValue}");
+	}
+
 	macro editDatePredefinedValue {
 		Type(
 			locator1 = "FormViewBuilder#PREDEFINED_VALUE_DATE_AT_SIDEBAR",
@@ -579,9 +602,11 @@ definition {
 	}
 
 	macro enableMultipleSelectionCheckbox {
-		var key_rowNumber = "${rowNumber}";
-		var key_optionValue = "${optionValue}";
-		var key_fieldName = "${fieldName}";
+		Click(
+			key_fieldName = "${fieldName}",
+			key_optionValue = "${optionValue}",
+			key_rowNumber = "${rowNumber}",
+			locator1 = "FormFields#SELECT_SINGLE_SELECTION_ROW_OPTION");
 
 		Check.checkToggleSwitch(
 			key_fieldName = "${fieldName}",
@@ -1108,6 +1133,12 @@ definition {
 			locator1 = "FormFields#FIELD_LABEL_BY_INDEX");
 	}
 
+	macro viewFieldDisabled {
+		AssertNotEditable(
+			key_fieldName = "${fieldName}",
+			locator1 = "FormFields#TEXT_FIELD");
+	}
+
 	macro viewFieldDropdownItem {
 		WaitForElementPresent(
 			key_itemName = "${itemName}",
@@ -1171,6 +1202,18 @@ definition {
 		else {
 			Form.gotoBasicTab();
 		}
+	}
+
+	macro viewFieldNotRequired {
+		AssertElementNotPresent(
+			key_fieldFieldLabel = "${fieldLabel}",
+			locator1 = "FormFields#FIELD_REQUIRED");
+	}
+
+	macro viewFieldNotVisible {
+		AssertElementPresent(
+			key_fieldName = "${fieldName}",
+			locator1 = "FormFields#FIELD_HIDDEN");
 	}
 
 	macro viewFieldPlaceholderText {
@@ -1241,6 +1284,12 @@ definition {
 		}
 	}
 
+	macro viewFieldRequired {
+		AssertElementPresent(
+			key_fieldFieldLabel = "${fieldLabel}",
+			locator1 = "FormFields#FIELD_REQUIRED");
+	}
+
 	macro viewFieldSize {
 		AssertElementPresent(
 			key_fieldName = "${fieldName}",
@@ -1276,6 +1325,12 @@ definition {
 			value1 = "${fieldValidationErrorMessage}");
 	}
 
+	macro viewFieldVisible {
+		AssertElementPresent(
+			key_fieldName = "${fieldName}",
+			locator1 = "FormFields#FIELD_VISIBLE");
+	}
+
 	macro viewGridOptionNotPresent {
 		FormFields.viewGridOptionsFieldValue(
 			fieldValue = "",
@@ -1304,6 +1359,14 @@ definition {
 			key_fieldValue = "${fieldValue}",
 			locator1 = "FormFields#TEXT_MULTILINE_FIELD",
 			value1 = "${fieldValue}");
+	}
+
+	macro viewNumericFieldValue {
+		AssertElementPresent(
+			key_fieldName = "${fieldName}",
+			key_fieldValue = "${value}",
+			key_rowNumber = "${rowNumber}",
+			locator1 = "FormFields#NUMBER_FIELD_VALUE_ROW");
 	}
 
 	macro viewOptionColumnsName {
@@ -1612,6 +1675,19 @@ definition {
 
 	macro viewRequiredAsteriskNotPresent {
 		AssertElementNotPresent(locator1 = "Icon#ASTERISK");
+	}
+
+	macro viewRichTextPredefinedValue {
+		SelectFrame.selectFrameNoLoading(
+			key_fieldLabel = "Rich Text",
+			locator1 = "CKEditor#BODY_FIELD_IFRAME_WEB_CONTENT_ARTICLE");
+
+		AssertTextEquals(
+			key_fieldName = "Rich Text",
+			locator1 = "CKEditor#BODY",
+			value1 = "${fieldValue}");
+
+		SelectFrame(value1 = "relative=top");
 	}
 
 	macro viewRichTextValue {

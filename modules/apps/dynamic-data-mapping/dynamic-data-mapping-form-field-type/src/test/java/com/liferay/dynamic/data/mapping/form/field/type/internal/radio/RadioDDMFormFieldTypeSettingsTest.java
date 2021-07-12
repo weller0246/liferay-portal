@@ -102,15 +102,15 @@ public class RadioDDMFormFieldTypeSettingsTest
 
 		List<String> actions = ddmFormRule.getActions();
 
-		Assert.assertEquals(actions.toString(), 4, actions.size());
+		Assert.assertEquals(actions.toString(), 3, actions.size());
 
 		Assert.assertEquals(
 			"setOptions('predefinedValue', getValue('options'))",
 			actions.get(0));
 		Assert.assertEquals("setRequired('options', true)", actions.get(1));
 		Assert.assertEquals(
-			"setVisible('requiredErrorMessage', false)", actions.get(2));
-		Assert.assertEquals("setVisible('validation', false)", actions.get(3));
+			"setVisible('requiredErrorMessage', getValue('required'))",
+			actions.get(2));
 	}
 
 	@Override

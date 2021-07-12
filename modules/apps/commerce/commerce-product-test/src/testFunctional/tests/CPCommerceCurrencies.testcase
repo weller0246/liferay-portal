@@ -90,13 +90,42 @@ definition {
 	}
 
 	@description = "This is a test for COMMERCE-5842. As a system administrator I want currencies to be sorted by priority"
-	@ignore = "true"
 	@priority = "3"
 	test SortCurrenciesByPriority {
 		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "CPCommerceCurrencies#SortCurrenciesByPriority";
 
-		// TODO COMMERCE-5842 SortCurrenciesByPriority Pending Implementation
+		// TODO Review
 
+		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
+
+		CommerceNavigator.gotoPortlet(
+			category = "Store Management",
+			portlet = "Currencies");
+
+		ClickNoError(
+			key_entryName = "US Dollar",
+			locator1 = "CommerceNavigation#ENTRY_NAME");
+
+		Type(
+			locator1 = "CommerceEntry#PRIORITY_FIELD",
+			value1 = "1");
+
+		Button.clickSave();
+
+		AssertElementPresent(locator1 = "CommerceEntry#FIRST_CURRENCY_ELEMENT");
+
+		ClickNoError(
+			key_entryName = "US Dollar",
+			locator1 = "CommerceNavigation#ENTRY_NAME");
+
+		Type(
+			locator1 = "CommerceEntry#PRIORITY_FIELD",
+			value1 = "12");
+
+		Button.clickSave();
+
+		AssertElementPresent(locator1 = "CommerceEntry#LAST_CURRENCY_ELEMENT");
 	}
 
 	test ViewInstanceCurrenciesAvailable {
