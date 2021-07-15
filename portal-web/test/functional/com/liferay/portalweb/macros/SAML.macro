@@ -1,39 +1,44 @@
 definition {
 
 	@description = "Creating new user on the IdP portal and syncing his data by logging in on the SP portal then verify the user data on the My Account page"
-	macro AddAndSyncNewUser {
+	macro addAndSyncNewUser {
 		JSONUser.addUser(
 			creatorEmailAddress = "${creatorEmailAddress}",
 			creatorPassword = "${creatorPassword}",
-			specificURL = "${specificURL}",
-			userEmailAddress = "${userEmailAddress}",
-			userFirstName = "${userFirstName}",
-			userLastName = "${userLastName}",
-			userScreenName = "${userScreenName}");
+			specificURL = "${newUserPortalURL}",
+			userEmailAddress = "${newUserEmailAddress}",
+			userFirstName = "${newUserFirstName}",
+			userLastName = "${newUserLastName}",
+			userScreenName = "${newUserScreenName}");
 
 		JSONUser.setFirstPassword(
 			agreeToTermsAndAnswerReminderQuery = "true",
 			requireReset = "false",
-			specificURL = "${specificURL}",
-			userEmailAddress = "${userEmailAddress}");
+			specificURL = "${newUserPortalURL}",
+			userEmailAddress = "${newUserEmailAddress}");
 
-		User.logoutPG();
+		// First login of the user on the SP portal
 
 		SAML.executeSPInitiatedSSO(
-			password = "test",
-			spURL = "${spURL}",
-			userEmailAddress = "${userEmailAddress}");
+			idpName = "${idpName}",
+            password = "test",
+            samlMultiIdPs = "${samlMultiIdPs}",
+            spURL = "${spURL}",
+            userEmailAddress = "${newUserEmailAddress}");
 
 		User.viewLoggedInPG();
 
-		MyAccount.openMyAccountAdmin();
+		MyAccount.openMyAccountAdmin(specificURL = "${spURL}");
+
+		// Verifying that the user information was synced correctly
 
 		User.viewUserInfomation(
-			userEmailAddress = "${userEmailAddress}",
-			userFirstName = "${userFirstName}",
-			userLastName = "${userLastName}",
-			userScreenName = "${userScreenName}");
-	}
+			baseURL = "http://www.able.com:8080/",
+			userEmailAddress = "${newUserEmailAddress}",
+			userFirstName = "${newUserFirstName}",
+			userLastName = "${newUserLastName}",
+			userScreenName = "${newUserScreenName}");
+		}
 
 	@description = "Add Identity Provider Configurations to Service Provider"
 	macro addIDPConfigurationsToServiceProvider {
@@ -148,14 +153,20 @@ definition {
 
 		// Configure IdP (Identity Provider) on specific Portal URL or default to current URL
 
-		if (isSet(idpURL)) {
+		if (isSet(userEmailAddress)) {
+			User.firstLoginUI(
+				password = "test",
+				specificURL = "${idpURL}",
+				userEmailAddress = "${userEmailAddress}");
+		}
+
+		else {
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "${idpURL}",
 				userEmailAddress = "test@liferay.com");
-
-			Navigator.openSpecificURL(url = "${idpURL}");
 		}
+			Navigator.openSpecificURL(url = "${idpURL}");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Security",
@@ -396,9 +407,7 @@ definition {
 
 		else {
 			User.firstLoginUI(
-				idpName = "${idpName}",
 				password = "test",
-				samlMultiIdPs = "${samlMultiIdPs}",
 				specificURL = "${spURL}",
 				userEmailAddress = "test@liferay.com");
 		}

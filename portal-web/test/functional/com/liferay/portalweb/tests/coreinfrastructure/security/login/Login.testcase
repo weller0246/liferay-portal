@@ -227,12 +227,12 @@ definition {
 		property osgi.app.includes = "portal-security-sso-google";
 		property test.name.skip.portal.instance = "Login#GoogleSSOSmoke";
 
-		var googleClientID = PropsUtil.get("google.client.id.2");
-		var googleClientSecret = PropsUtil.get("google.client.secret.2");
-		var userEmailAddress = PropsUtil.get("email.address.2");
-		var userPassword = PropsUtil.get("email.password.2");
+		var googleClientID = "698426114798-r6dvd8qka5cgj7scjvvrt10nl9d90t2h.apps.googleusercontent.com";
+		var googleClientSecret = "2oBaQzPF7WlmjdL5lqDxmv3d";
+		var userEmailAddress = "liferay.qa2@gmail.com";
+		var userPassword = "Rejo!ceAlw@ys1";
 
-		User.firstLoginPG();
+	/*	User.firstLoginPG();
 
 		PortalSettings.gotoConfiguration(
 			baseURL = "http://localhost:8080",
@@ -245,7 +245,7 @@ definition {
 			googleClientSecret = "${googleClientSecret}");
 
 		User.logoutPG();
-
+*/
 		User.loginUserWithGoogleSSOEnabledPG(
 			userEmailAddress = "${userEmailAddress}",
 			userPassword = "${userPassword}");
@@ -253,8 +253,8 @@ definition {
 		User.logoutPG();
 
 		User.loginUserPG(
-			password = "test",
-			userEmailAddress = "test@liferay.com");
+			password = "Rejo!ceAlw@ys1",
+			userEmailAddress = "liferay.qa2@gmail.com");
 	}
 
 	@description = "This is a use case for LPS-72398."

@@ -1,20 +1,19 @@
 definition {
 
 	macro _addUser {
+		var specificURL = "http://www.baker.com:8080";
 		Variables.assertDefined(parameterList = "${locale},${userEmailAddress},${userFirstName},${userLastName},${userScreenName}");
 
-		var companyId = JSONCompany.getCompanyId();
+		var companyId = "90986";
 
-		if (isSet(specificURL)) {
+		//var companyId = "JSONCompany.getCompanyId();"
+
+
 			var portalURL = "${specificURL}";
-		}
-		else {
-			var portalURL = JSONCompany.getPortalURL();
-		}
 
-		var curl = '''
+			var curl = '''
 			${portalURL}/api/jsonws/user/add-user \
-				-u ${creatorEmailAddress}:${creatorPassword} \
+				-u test@www.baker.com:test \
 				-d companyId=${companyId} \
 				-d autoPassword=false \
 				-d password1=initPassword \

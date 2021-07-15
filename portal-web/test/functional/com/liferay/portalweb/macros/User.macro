@@ -1955,6 +1955,7 @@ definition {
 
 	@summary = "Log into Liferay using the UI"
 	macro firstLoginUI {
+
 		if (isSet(specificURL)) {
 			Navigator.openSpecificURL(url = "${specificURL}");
 		}
@@ -1962,7 +1963,10 @@ definition {
 			Navigator.openURL();
 		}
 
-		User._clickSignInLink(localization = "${localization}");
+		User._clickSignInLink(
+			samlMultiIdPs = "${samlMultiIdPs}",
+			idpName = "${idpName}",
+			localization = "${localization}");
 
 		if ("${authenticationMethod}" == "By Screen Name") {
 			Type(

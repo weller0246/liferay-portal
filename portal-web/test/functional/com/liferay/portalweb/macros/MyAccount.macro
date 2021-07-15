@@ -102,7 +102,9 @@ definition {
 	}
 
 	macro openMyAccountAdmin {
-		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_my_account_web_portlet_MyAccountPortlet");
+		Navigator.openWithAppendToBaseURL(
+		specificURL = "${specificURL}",
+		urlAppend = "group/control_panel/manage?p_p_id=com_liferay_my_account_web_portlet_MyAccountPortlet");
 	}
 
 	macro view {
