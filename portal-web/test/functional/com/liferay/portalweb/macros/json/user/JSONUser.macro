@@ -48,6 +48,7 @@ definition {
 			jobTitle = "${jobTitle}",
 			locale = "${locale}",
 			serviceContext = "${serviceContext}",
+			specificURL = "${specificURL}",
 			userEmailAddress = "${userEmailAddress}",
 			userFirstName = "${userFirstName}",
 			userLastName = "${userLastName}",
