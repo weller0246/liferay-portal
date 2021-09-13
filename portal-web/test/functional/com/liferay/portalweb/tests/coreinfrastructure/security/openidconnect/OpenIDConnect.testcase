@@ -1,0 +1,39 @@
+@component-name = "portal-security"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Login";
+
+	setUp {
+		User.firstLoginUI();
+	}
+
+	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
+	test TokenRefreshOffsetCanBeSetAtSystemLevel {
+		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect",
+			configurationScope = "System Scope");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#INFO",
+			value1 = "This configuration is not saved yet. The values shown are the default.");
+
+		Type(
+			locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+			value1 = "60");
+
+		AssertClick(
+			locator1 = "Button#SUBMIT",
+			value1 = "Save");
+	}
+
+}
