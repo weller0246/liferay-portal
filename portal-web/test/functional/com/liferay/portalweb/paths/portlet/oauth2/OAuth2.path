@@ -184,6 +184,10 @@
 	<td></td>
 </tr>
 <tr>
+	<td>OAUTH2_TESTER_REQUEST_URL</td>
+	<td>//input[contains(@id,'url')]</td>
+</tr>
+<tr>
 	<td>OAUTH2_TESTER_REQUEST_RESULTS</td>
 	<td>//div[contains(@id,'result')]</td>
 	<td></td>
