@@ -29,11 +29,8 @@ export interface Config {
 
 	availableLanguages: {
 		[key: string]: {
-			default: boolean;
-			displayName: string;
 			languageIcon: string;
-			languageId: string;
-			w3cLanguageId: string;
+			languageLabel: string;
 		};
 	};
 
@@ -92,7 +89,6 @@ export interface Config {
 	defaultSegmentsEntryId: string;
 	defaultSegmentsExperienceId: string;
 	deleteFragmentEntryLinkCommentURL: string;
-	deleteItemURL: string;
 	deleteSegmentsExperienceURL: string;
 	discardDraftURL: string;
 	draft: boolean;
@@ -114,9 +110,12 @@ export interface Config {
 	getAvailableListRenderersURL: string;
 	getAvailableListItemRenderersURL: string;
 	getAvailableTemplatesURL: string;
+	getCollectionConfigurationURL: string;
 	getCollectionFieldURL: string;
 	getCollectionFiltersURL: string;
+	getCollectionItemCountURL: string;
 	getCollectionMappingFieldsURL: string;
+	getCollectionSupportedFiltersURL: string;
 	getExperienceUsedPortletsURL: string;
 	getIframeContentCssURL: string;
 	getIframeContentURL: string;
@@ -154,6 +153,8 @@ export interface Config {
 	publishURL: string;
 	redirectURL: string;
 	renderFragmentEntryURL: string;
+	restoreCollectionDisplayConfigURL: string;
+	searchContainerPageMaxDelta: number;
 	selectedSegmentsEntryId: string;
 
 	sidebarPanels: {
@@ -187,6 +188,7 @@ export interface Config {
 
 	unmarkItemForDeletionURL: string;
 	updateConfigurationValuesURL: string;
+	updateCollectionDisplayConfigURL: string;
 	updateItemConfigURL: string;
 	updateLayoutPageTemplateDataURL: string;
 	updateRowColumnsURL: string;

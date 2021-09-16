@@ -245,14 +245,15 @@ public class EditAssetListDisplayContext {
 				_unicodeProperties, _httpServletRequest,
 				"queryAndOperator" + queryLogicIndex);
 
-			JSONObject ruleJSONObject = JSONUtil.put(
-				"queryAndOperator", queryAndOperator);
-
 			boolean queryContains = PropertiesParamUtil.getBoolean(
 				_unicodeProperties, _httpServletRequest,
 				"queryContains" + queryLogicIndex, true);
 
-			ruleJSONObject.put("queryContains", queryContains);
+			JSONObject ruleJSONObject = JSONUtil.put(
+				"queryAndOperator", queryAndOperator
+			).put(
+				"queryContains", queryContains
+			);
 
 			String queryValues = _unicodeProperties.getProperty(
 				"queryValues" + queryLogicIndex, StringPool.BLANK);
@@ -433,6 +434,30 @@ public class EditAssetListDisplayContext {
 		);
 
 		return _availableSegmentsEntries;
+	}
+
+	public String getBackURL() {
+		if (Validator.isNotNull(_backURL)) {
+			return _backURL;
+		}
+
+		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
+		String backURL = ParamUtil.getString(_httpServletRequest, "backURL");
+
+		if (Validator.isNotNull(backURL)) {
+			_backURL = backURL;
+		}
+		else if (Validator.isNotNull(redirect)) {
+			_backURL = redirect;
+		}
+		else {
+			LiferayPortletResponse liferayPortletResponse =
+				PortalUtil.getLiferayPortletResponse(_portletResponse);
+
+			_backURL = String.valueOf(liferayPortletResponse.createRenderURL());
+		}
+
+		return _backURL;
 	}
 
 	public String getCategorySelectorURL() {
@@ -751,26 +776,7 @@ public class EditAssetListDisplayContext {
 			"assetListEntryId", getAssetListEntryId()
 		).setParameter(
 			"segmentsEntryId", getSegmentsEntryId()
-		).build();
-	}
-
-	public String getRedirectURL() {
-		if (Validator.isNotNull(_redirect)) {
-			return _redirect;
-		}
-
-		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
-
-		if (Validator.isNull(redirect)) {
-			LiferayPortletResponse liferayPortletResponse =
-				PortalUtil.getLiferayPortletResponse(_portletResponse);
-
-			redirect = String.valueOf(liferayPortletResponse.createRenderURL());
-		}
-
-		_redirect = redirect;
-
-		return _redirect;
+		).buildPortletURL();
 	}
 
 	public long[] getReferencedModelsGroupIds() throws PortalException {
@@ -1238,6 +1244,7 @@ public class EditAssetListDisplayContext {
 		_assetRendererFactoryClassProvider;
 	private List<Long> _availableClassNameIds;
 	private List<SegmentsEntry> _availableSegmentsEntries;
+	private String _backURL;
 	private long[] _classNameIds;
 	private long[] _classTypeIds;
 	private String _ddmStructureDisplayFieldValue;
@@ -1253,7 +1260,6 @@ public class EditAssetListDisplayContext {
 	private String _orderByType2;
 	private final PortletRequest _portletRequest;
 	private final PortletResponse _portletResponse;
-	private String _redirect;
 	private long[] _referencedModelsGroupIds;
 	private SearchContainer<AssetListEntryAssetEntryRel> _searchContainer;
 	private SegmentsEntry _segmentsEntry;

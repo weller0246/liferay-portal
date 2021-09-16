@@ -35,13 +35,8 @@ definition {
 	@priority = "3"
 	test AllowsFiveUploadsWhenRepeatableIsEnabled {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -51,7 +46,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "repeatable");
+		FormFields.enableSwitch(fieldName = "repeatable");
 
 		FormFields.viewRepeatableFieldDuplicateVisible();
 
@@ -124,13 +119,8 @@ definition {
 	@priority = "5"
 	test ByDefaultCannotBeUsedByGuestUser {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -161,13 +151,8 @@ definition {
 	@priority = "5"
 	test CanBeCleared {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -199,13 +184,8 @@ definition {
 	@priority = "5"
 	test CanBeCreated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -228,13 +208,8 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form1");
 
@@ -265,13 +240,8 @@ definition {
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -304,13 +274,8 @@ definition {
 	@priority = "5"
 	test CanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -347,13 +312,8 @@ definition {
 	@priority = "5"
 	test CanBeRequired {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form1");
 
@@ -394,14 +354,9 @@ definition {
 	@priority = "5"
 	test CanBeSetToRepeatable {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 		property test.name.skip.portal.instance = "FormsUploadField#CanBeSetToRepeatable";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -412,7 +367,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Repeatable");
+		FormFields.enableSwitch(fieldName = "Repeatable");
 
 		FormFields.viewFieldRepeatableButton(
 			fieldName = "Upload",
@@ -451,6 +406,237 @@ definition {
 			successPageTitle = "Thank you.");
 	}
 
+	@description = "LPS-84340 - Verify that a Form can be submitted with the Upload Field"
+	@priority = "5"
+	test CanBeSubmitted {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Upload");
+
+		var fieldUploadField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Upload Field");
+
+		Form.closeSidebar();
+
+		Form.save();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewUploadField(
+			fieldLabel = "Upload Field",
+			fieldName = "${fieldUploadField}");
+
+		ItemSelector.gotoItemSelectorViaSelectButton();
+
+		ItemSelector.uploadFile(
+			navTab = "Documents and Media",
+			uploadFileName = "Document_1.jpg");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdminNavigator.gotoView();
+
+		FormsAdmin.viewUploadFile(
+			fieldLabel = "Upload Field",
+			fieldName = "${fieldUploadField}",
+			uploadFileName = "Document_1.jpg");
+	}
+
+	@description = "LPS-125462 - Verify that a new user can submit a Form after uploading a file"
+	@priority = "5"
+	test CanBeSubmittedByANewUser {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+
+		JSONUser.addUser(
+			userEmailAddress = "user1@liferay.com",
+			userFirstName = "user1",
+			userLastName = "user1",
+			userScreenName = "user1");
+
+		JSONUser.setFirstPassword(
+			agreeToTermsAndAnswerReminderQuery = "true",
+			requireReset = "false",
+			userEmailAddress = "user1@liferay.com");
+
+		JSONUser.addUserToSite(
+			groupName = "Guest",
+			userEmailAddress = "user1@liferay.com");
+
+		Navigator.openURL();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Instance Settings");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "User Authentication",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.uncheckStrangersVerifyEmailCheckbox();
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Upload");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishCopyURLLink();
+
+		var publishedFormPublicURL = Form.getPublishedFormPublicURL(
+			publishedFormPublicURL = "${publishedFormPublicURL}"
+		);
+
+		Navigator.openURL();
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "user1@liferay.com",
+			userLoginFullName = "user1 user1");
+
+		Navigator.openSpecificURL(url = "${publishedFormPublicURL}");
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewUploadField(
+			fieldLabel = "Upload",
+			fieldName = "Upload");
+
+		ItemSelector.gotoItemSelectorViaSelectButton();
+
+		ItemSelector.uploadFile(
+			navTab = "Documents and Media",
+			uploadFileName = "Document_1.jpg");
+
+		FormPortlet.submitSuccessfully();
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "test@liferay.com",
+			userLoginFullName = "Test Test");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.deactivateCP(userFirstName = "user1");
+
+		User.deleteCP();
+	}
+
+	@description = "LPS-122760 - Verify that a guest user can upload a file"
+	@priority = "5"
+	test CanBeSubmittedByGuestUser {
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Upload");
+
+		var uploadFieldName = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Upload Field");
+
+		FormFields.enableSwitch(fieldName = "Allow Guest Users to Send Files");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishCopyURLLink();
+
+		var publishedFormPublicURL = Form.getPublishedFormPublicURL(
+			publishedFormPublicURL = "${publishedFormPublicURL}"
+		);
+
+		User.logoutPG();
+
+		Navigator.openSpecificURL(url = "${publishedFormPublicURL}");
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewUploadFieldAsGuest(
+			fieldLabel = "Upload Field",
+			fieldName = "${uploadFieldName}");
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			key_fieldName = "${uploadFieldName}",
+			locator1 = "FormFields#UPLOAD_FIELD",
+			value1 = "Document_1.mp4");
+
+		FormPortlet.viewValidationErrorMessage(validationErrorMessage = "Please enter a file with a valid extension (doc, docx, jpeg, jpg, pdf, png, ppt, pptx, tiff, txt, xls, xlsx).");
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			key_fieldName = "${uploadFieldName}",
+			locator1 = "FormFields#UPLOAD_FIELD",
+			value1 = "Document -_.jpg");
+
+		WaitForElementPresent(locator1 = "FormFields#UPLOAD_FIELD_CLEAR_BUTTON");
+
+		Click(locator1 = "FormFields#UPLOAD_FIELD_CLEAR_BUTTON");
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			key_fieldName = "${uploadFieldName}",
+			locator1 = "FormFields#UPLOAD_FIELD",
+			value1 = "Document -_.jpg");
+
+		FormPortlet.submitSuccessfully();
+
+		User.loginUserPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdminNavigator.gotoView();
+
+		FormsAdmin.viewUploadFile(
+			fieldLabel = "Upload Field",
+			fieldName = "${uploadFieldName}",
+			uploadFileName = "Document -_ (1).jpg");
+	}
+
 	@description = "Verify that changes to the Field can be canceled"
 	@ignore = "Test Stub"
 	@priority = "4"
@@ -462,17 +648,118 @@ definition {
 
 	}
 
+	@description = "This is a use case for LPS-125499."
+	@priority = "2"
+	test GuestUserCannotUploadFileWithInvalidSize {
+		property test.name.skip.portal.instance = "FormsUploadField#GuestUserCannotUploadFileWithInvalidSize";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Upload");
+
+		var uploadFieldName = FormFields.getFieldName();
+
+		FormFields.enableSwitch(fieldName = "Allow Guest Users to Send Files");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishCopyURLLink();
+
+		var publishedFormPublicURL = Form.getPublishedFormPublicURL(
+			publishedFormPublicURL = "${publishedFormPublicURL}"
+		);
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Infrastructure",
+			configurationName = "Upload Servlet Request",
+			configurationScope = "System Scope");
+
+		FormFields.editText(
+			fieldName = "maxSize",
+			fieldValue = "10485760");
+
+		SystemSettings.saveConfiguration();
+
+		SystemSettings.exitEditConfiguration();
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Forms",
+			configurationName = "Forms",
+			configurationScope = "Site Scope");
+
+		FormFields.editText(
+			fieldName = "guestUploadMaximumFileSize",
+			fieldValue = "1");
+
+		SystemSettings.saveConfiguration();
+
+		User.logoutPG();
+
+		Navigator.openSpecificURL(url = "${publishedFormPublicURL}");
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewUploadFieldAsGuest(
+			fieldLabel = "Upload",
+			fieldName = "${uploadFieldName}");
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			key_fieldName = "${uploadFieldName}",
+			locator1 = "FormFields#UPLOAD_FIELD",
+			value1 = "Document_1.mp4");
+
+		FormPortlet.viewValidationErrorMessage(validationErrorMessage = "Please enter a file with a valid file size no larger than 10.0MB.");
+
+		UploadCommonFile.uploadCommonFileHiddenNoMouseOver(
+			key_fieldName = "${uploadFieldName}",
+			locator1 = "FormFields#UPLOAD_FIELD",
+			value1 = "large_file.pdf");
+
+		FormPortlet.viewValidationErrorMessage(validationErrorMessage = "Please enter a file with a valid file size no larger than 1 MB.");
+
+		User.loginUserPG(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Infrastructure",
+			configurationName = "Upload Servlet Request",
+			configurationScope = "System Scope");
+
+		SystemSettings.resetConfiguration();
+
+		SystemSettings.exitEditConfiguration();
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Forms",
+			configurationName = "Forms",
+			configurationScope = "Site Scope");
+
+		SystemSettings.resetConfiguration();
+	}
+
 	@description = "Verify that guest users can only access upload fields that have guest user uploads enabled"
 	@priority = "5"
 	test GuestUserCanOnlyAccessEnabledFields {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -484,7 +771,7 @@ definition {
 
 		Form.editFieldLabelMetal(fieldValue = "Guest Upload");
 
-		FormFields.enableSwitcher(fieldName = "allowGuestUsers");
+		FormFields.enableSwitch(fieldName = "allowGuestUsers");
 
 		FormViewBuilder.closeSidebar();
 
@@ -526,13 +813,8 @@ definition {
 	@priority = "5"
 	test HelpTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -569,13 +851,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -612,13 +889,8 @@ definition {
 	@priority = "5"
 	test ReferenceCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -654,13 +926,8 @@ definition {
 	@priority = "5"
 	test SubmittedFilesCannotBeSeenByGuestUsers {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -668,7 +935,7 @@ definition {
 			fieldPositionNumber = "0",
 			fieldType = "Upload");
 
-		FormFields.enableSwitcher(fieldName = "Allow Guest Users to Send Files");
+		FormFields.enableSwitch(fieldName = "Allow Guest Users to Send Files");
 
 		Form.save();
 

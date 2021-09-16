@@ -17,10 +17,12 @@ package com.liferay.content.dashboard.web.internal.item;
 import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetTag;
 import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
-import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 
 import java.util.Date;
 import java.util.List;
@@ -46,7 +48,7 @@ public interface ContentDashboardItem<T> {
 		HttpServletRequest httpServletRequest,
 		ContentDashboardItemAction.Type... types);
 
-	public ContentDashboardItemType getContentDashboardItemType();
+	public ContentDashboardItemSubtype getContentDashboardItemSubtype();
 
 	public Date getCreateDate();
 
@@ -57,6 +59,8 @@ public interface ContentDashboardItem<T> {
 
 	public Locale getDefaultLocale();
 
+	public String getDescription(Locale locale);
+
 	public Object getDisplayFieldValue(String fieldName, Locale locale);
 
 	public InfoItemReference getInfoItemReference();
@@ -65,7 +69,16 @@ public interface ContentDashboardItem<T> {
 
 	public String getScopeName(Locale locale);
 
+	public default JSONObject getSpecificInformationJSONObject(
+		String backURL, LiferayPortletResponse liferayPortletResponse,
+		Locale locale, ThemeDisplay themeDisplay) {
+
+		return null;
+	}
+
 	public String getTitle(Locale locale);
+
+	public String getTypeLabel(Locale locale);
 
 	public long getUserId();
 
@@ -77,7 +90,7 @@ public interface ContentDashboardItem<T> {
 
 	public static class Version {
 
-		public Version(String label, String style, double version) {
+		public Version(String label, String style, String version) {
 			_label = label;
 			_style = style;
 			_version = version;
@@ -91,7 +104,7 @@ public interface ContentDashboardItem<T> {
 			return _style;
 		}
 
-		public double getVersion() {
+		public String getVersion() {
 			return _version;
 		}
 
@@ -107,7 +120,7 @@ public interface ContentDashboardItem<T> {
 
 		private final String _label;
 		private final String _style;
-		private final double _version;
+		private final String _version;
 
 	}
 

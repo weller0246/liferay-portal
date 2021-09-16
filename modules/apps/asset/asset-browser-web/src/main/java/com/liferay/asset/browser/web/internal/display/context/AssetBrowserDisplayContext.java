@@ -26,6 +26,7 @@ import com.liferay.asset.util.AssetHelper;
 import com.liferay.depot.model.DepotEntry;
 import com.liferay.depot.service.DepotEntryServiceUtil;
 import com.liferay.item.selector.constants.ItemSelectorPortletKeys;
+import com.liferay.item.selector.criteria.constants.ItemSelectorCriteriaConstants;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -247,55 +248,75 @@ public class AssetBrowserDisplayContext {
 	}
 
 	public PortletURL getPortletURL() throws PortletException {
-		PortletURL portletURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			PortletURLUtil.clone(
 				_portletURL,
 				PortalUtil.getLiferayPortletResponse(_renderResponse))
 		).setParameter(
+			"eventName", getEventName()
+		).setParameter(
 			"groupId", getGroupId()
-		).build();
+		).setParameter(
+			"listable",
+			() -> {
+				if (_getListable() != null) {
+					return _getListable();
+				}
 
-		long selectedGroupId = ParamUtil.getLong(
-			_httpServletRequest, "selectedGroupId");
+				return null;
+			}
+		).setParameter(
+			"multipleSelection",
+			() -> {
+				if (isMultipleSelection()) {
+					return Boolean.TRUE.toString();
+				}
 
-		if (selectedGroupId > 0) {
-			portletURL.setParameter(
-				"selectedGroupId", String.valueOf(selectedGroupId));
-		}
+				return null;
+			}
+		).setParameter(
+			"refererAssetEntryId", getRefererAssetEntryId()
+		).setParameter(
+			"selectedGroupId",
+			() -> {
+				long selectedGroupId = ParamUtil.getLong(
+					_httpServletRequest, "selectedGroupId");
 
-		long[] selectedGroupIds = getSelectedGroupIds();
+				if (selectedGroupId > 0) {
+					return selectedGroupId;
+				}
 
-		if (selectedGroupIds.length > 0) {
-			portletURL.setParameter(
-				"selectedGroupIds", StringUtil.merge(selectedGroupIds));
-		}
+				return null;
+			}
+		).setParameter(
+			"selectedGroupIds",
+			() -> {
+				long[] selectedGroupIds = getSelectedGroupIds();
 
-		portletURL.setParameter(
-			"refererAssetEntryId", String.valueOf(getRefererAssetEntryId()));
-		portletURL.setParameter("typeSelection", getTypeSelection());
-		portletURL.setParameter(
-			"subtypeSelectionId", String.valueOf(getSubtypeSelectionId()));
+				if (selectedGroupIds.length > 0) {
+					return StringUtil.merge(selectedGroupIds);
+				}
 
-		if (_getListable() != null) {
-			portletURL.setParameter("listable", String.valueOf(_getListable()));
-		}
+				return null;
+			}
+		).setParameter(
+			"showAddButton",
+			() -> {
+				if (isShowAddButton()) {
+					return Boolean.TRUE.toString();
+				}
 
-		if (isMultipleSelection()) {
-			portletURL.setParameter(
-				"multipleSelection", Boolean.TRUE.toString());
-		}
-
-		if (isShowAddButton()) {
-			portletURL.setParameter("showAddButton", Boolean.TRUE.toString());
-		}
-
-		portletURL.setParameter(
-			"showNonindexable", String.valueOf(_isShowNonindexable()));
-		portletURL.setParameter(
-			"showScheduled", String.valueOf(_isShowScheduled()));
-		portletURL.setParameter("eventName", getEventName());
-
-		return portletURL;
+				return null;
+			}
+		).setParameter(
+			"showNonindexable", _isShowNonindexable()
+		).setParameter(
+			"showScheduled", _isShowScheduled()
+		).setParameter(
+			"subtypeSelectionId", getSubtypeSelectionId()
+		).setParameter(
+			"typeSelection", getTypeSelection()
+		).buildPortletURL();
 	}
 
 	public long getRefererAssetEntryId() {
@@ -402,6 +423,16 @@ public class AssetBrowserDisplayContext {
 	}
 
 	public boolean isShowBreadcrumb() {
+		String scopeGroupType = ParamUtil.getString(
+			_httpServletRequest, "scopeGroupType");
+
+		if (Validator.isNotNull(scopeGroupType) &&
+			scopeGroupType.equals(
+				ItemSelectorCriteriaConstants.SCOPE_GROUP_TYPE_PAGE)) {
+
+			return false;
+		}
+
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)_httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
@@ -558,6 +589,9 @@ public class AssetBrowserDisplayContext {
 					PortalUtil.getLiferayPortletResponse(_renderResponse))
 			).setParameter(
 				"groupType", "site"
+			).setParameter(
+				"scopeGroupType",
+				ParamUtil.getString(_httpServletRequest, "scopeGroupType")
 			).setParameter(
 				"showGroupSelector", true
 			).buildString());

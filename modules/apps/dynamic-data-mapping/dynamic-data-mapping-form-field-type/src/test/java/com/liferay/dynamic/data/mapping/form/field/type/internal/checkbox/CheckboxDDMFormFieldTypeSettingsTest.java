@@ -17,7 +17,11 @@ package com.liferay.dynamic.data.mapping.form.field.type.internal.checkbox;
 import com.liferay.dynamic.data.mapping.form.field.type.BaseDDMFormFieldTypeSettingsTestCase;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
+import com.liferay.dynamic.data.mapping.model.DDMFormRule;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormLayoutTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
+import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.Portal;
@@ -25,6 +29,7 @@ import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -68,12 +73,13 @@ public class CheckboxDDMFormFieldTypeSettingsTest
 			"predefinedValue");
 
 		Assert.assertNotNull(predefinedValueDDMFormField);
+		Assert.assertNotNull(predefinedValueDDMFormField.getLabel());
+		Assert.assertNotNull(predefinedValueDDMFormField.getPredefinedValue());
 		Assert.assertEquals(
-			"string", predefinedValueDDMFormField.getDataType());
-		Assert.assertEquals("checkbox", predefinedValueDDMFormField.getType());
+			"false",
+			predefinedValueDDMFormField.getProperty("showEmptyOption"));
+		Assert.assertEquals("select", predefinedValueDDMFormField.getType());
 		Assert.assertEquals(true, predefinedValueDDMFormField.isLocalizable());
-		Assert.assertEquals(
-			"true", predefinedValueDDMFormField.getProperty("showAsSwitcher"));
 
 		DDMFormField requiredErrorMessage = ddmFormFieldsMap.get(
 			"requiredErrorMessage");
@@ -87,15 +93,54 @@ public class CheckboxDDMFormFieldTypeSettingsTest
 		Assert.assertEquals(
 			"FALSE", repeatableDDMFormField.getVisibilityExpression());
 
+		DDMFormField requiredDDMFormField = ddmFormFieldsMap.get("required");
+
+		Assert.assertNotNull(requiredDDMFormField);
+		Assert.assertNotNull(
+			requiredDDMFormField.getProperty("showAsSwitcher"));
+		Assert.assertNotNull(requiredDDMFormField.getProperty("tooltip"));
+
 		DDMFormField showAsSwitcherDDMFormField = ddmFormFieldsMap.get(
 			"showAsSwitcher");
 
 		Assert.assertNotNull(showAsSwitcherDDMFormField);
-		Assert.assertEquals("checkbox", showAsSwitcherDDMFormField.getType());
 		Assert.assertEquals(
 			"boolean", showAsSwitcherDDMFormField.getDataType());
+		Assert.assertEquals("checkbox", showAsSwitcherDDMFormField.getType());
 		Assert.assertEquals(
 			"true", showAsSwitcherDDMFormField.getProperty("showAsSwitcher"));
+
+		List<DDMFormRule> ddmFormRules = ddmForm.getDDMFormRules();
+
+		Assert.assertEquals(ddmFormRules.toString(), 1, ddmFormRules.size());
+
+		DDMFormRule ddmFormRule = ddmFormRules.get(0);
+
+		Assert.assertEquals("TRUE", ddmFormRule.getCondition());
+
+		List<String> actions = ddmFormRule.getActions();
+
+		Assert.assertEquals(actions.toString(), 2, actions.size());
+		Assert.assertEquals("setVisible('dataType', FALSE)", actions.get(0));
+		Assert.assertEquals(
+			"setVisible('requiredErrorMessage', getValue('required'))",
+			actions.get(1));
+	}
+
+	@Test
+	public void testCreateCheckboxDDMFormFieldTypeSettingsDDMFormLayout() {
+		assertDDMFormLayout(
+			DDMFormLayoutFactory.create(CheckboxDDMFormFieldTypeSettings.class),
+			DDMFormLayoutTestUtil.createDDMFormLayout(
+				DDMFormLayout.TABBED_MODE,
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"label", "tip", "required", "requiredErrorMessage",
+					"showAsSwitcher"),
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"name", "fieldReference", "visibilityExpression",
+					"predefinedValue", "objectFieldName", "fieldNamespace",
+					"indexType", "labelAtStructureLevel", "localizable",
+					"readOnly", "dataType", "type", "repeatable")));
 	}
 
 	@Override

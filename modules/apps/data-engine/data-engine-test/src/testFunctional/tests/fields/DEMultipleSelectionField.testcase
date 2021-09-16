@@ -33,12 +33,12 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Text",
+		DEBuilder.addField(
+			fieldLabel = "Text",
 			fieldName = "Text");
 
 		WebContentStructures.saveCP();
@@ -61,8 +61,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.duplicate(fieldFieldLabel = "Multiple Selection");
@@ -87,16 +87,13 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
-		for (var index : list "1,2,3") {
-			DataEngine.addFieldOption(
-				fieldFieldLabel = "Multiple Selection",
-				index = "${index}",
-				optionValue = "Option ${index}");
-		}
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
 
 		DataEngine.toggleInline(fieldLabel = "Multiple Selection");
 
@@ -119,6 +116,58 @@ definition {
 			optionLabelList = "Option 1,Option 2,Option 3");
 	}
 
+	@description = "This is a test for LRQA-69038. This test verifies that editing chosen options persists."
+	@priority = "5"
+	test CanEditChosenOptions {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 2");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 2");
+
+		DERenderer.assertMultipleSelectionOptionIsUnchecked(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+	}
+
 	@description = "This is a test for LRQA-68572. This test verifies that Label and Help text can be edited."
 	@priority = "5"
 	test CanEditLabelAndHelpText {
@@ -126,8 +175,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.editFieldTip(
@@ -156,6 +205,163 @@ definition {
 			fieldName = "Multiple Selection");
 	}
 
+	@description = "This is a test for LRQA-69038. This test verifies that upon duplicating a repeatable field, inputted data on both fields persists."
+	@priority = "5"
+	test CanInputDataOnDuplicatedField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
+
+		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Multiple Selection");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DataEngine.addRepeatableField(fieldLabel = "Multiple Selection");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldIndex = "1",
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldIndex = "2",
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 2");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldIndex = "2",
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 2");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInMultipleSelectionField(
+			fieldIndex = "1",
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		DERenderer.assertDataInMultipleSelectionField(
+			fieldIndex = "2",
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 2");
+	}
+
+	@description = "This is a test for LRQA-69038. This test verifies that is not possible to publish the Web Content with a blank required field."
+	@priority = "4"
+	test CanNotPublishBlankRequiredField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DataEngine.editFieldRequired(fieldFieldLabel = "Multiple Selection");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		Button.clickPublish();
+
+		FormViewBuilder.validateObjectLabelOptionTextIsShown(text = "This field is required.");
+	}
+
+	@description = "This is a test for LRQA-69038. This test verifies that is possible to remove a duplicated field (repeatable)."
+	@priority = "4"
+	test CanRemoveDuplicatedField {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DataEngine.toggleFieldRepeatable(fieldFieldLabel = "Multiple Selection");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DataEngine.addRepeatableField(fieldLabel = "Multiple Selection");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.removeRepeatableField(fieldLabel = "Multiple Selection");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DEBuilder.assertFieldNotPresent(
+			fieldLabel = "Multiple Selection",
+			index = "2");
+	}
+
+	@description = "This is a test for LRQA-69038. This test verifies that chosen options persists."
+	@priority = "5"
+	test CanSelectOptions {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+	}
+
 	@description = "This is a test for LRQA-68572. This test verifies that Default Searchable property is 'Disable' when System Setting is left unchecked"
 	@priority = "3"
 	test CanSetDefaultSearchablePropertyToDisable {
@@ -181,8 +387,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.viewFieldSearchable(
@@ -215,8 +421,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.viewFieldSearchable(
@@ -231,8 +437,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.editFieldTip(
@@ -256,8 +462,8 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
 		DataEngine.toggleShowLabel(fieldLabel = "Multiple Selection");
@@ -286,16 +492,13 @@ definition {
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
-		for (var index : list "1,2,3") {
-			DataEngine.addFieldOption(
-				fieldFieldLabel = "Multiple Selection",
-				index = "${index}",
-				optionValue = "Option ${index}");
-		}
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
 
 		WebContentStructures.saveCP();
 
@@ -305,40 +508,37 @@ definition {
 			fieldFieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
-		DataEngine.assertFieldOptionLabels(
+		DEBuilder.assertFieldOptionLabels(
 			fieldFieldLabel = "Multiple Selection",
 			optionLabelList = "Option 1,Option 2,Option 3");
 	}
 
 	@description = "This is a test for LRQA-68572. This test verifies that is possible to change inline layout setting."
 	@priority = "3"
-	test CanShowAsSwitcher {
+	test CanShowAsSwitch {
 		NavItem.gotoStructures();
 
 		WebContentStructures.addCP(structureName = "WC Structure Title");
 
-		DataEngine.addField(
-			fieldFieldLabel = "Multiple Selection",
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
 			fieldName = "Multiple Selection");
 
-		for (var index : list "1,2,3") {
-			DataEngine.addFieldOption(
-				fieldFieldLabel = "Multiple Selection",
-				index = "${index}",
-				optionValue = "Option ${index}");
-		}
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
 
-		DataEngine.toggleShowAsSwitcher(fieldLabel = "Multiple Selection");
+		DataEngine.toggleShowAsSwitch(fieldLabel = "Multiple Selection");
 
 		WebContentStructures.saveCP();
 
 		WebContentNavigator.gotoEditStructure(structureName = "WC Structure Title");
 
-		DataEngine.assertSwitcherOptions(
+		DataEngine.assertSwitchOptions(
 			fieldLabel = "Multiple Selection",
 			optionLabelList = "Option 1,Option 2,Option 3");
 
-		DataEngine.toggleShowAsSwitcher(fieldLabel = "Multiple Selection");
+		DataEngine.toggleShowAsSwitch(fieldLabel = "Multiple Selection");
 
 		WebContentStructures.saveCP();
 
@@ -347,6 +547,50 @@ definition {
 		DataEngine.assertCheckboxOptions(
 			fieldLabel = "Multiple Selection",
 			optionLabelList = "Option 1,Option 2,Option 3");
+	}
+
+	@description = "This is a test for LRQA-69038. This test verifies that is possible to uncheck a chosen option and it persists."
+	@priority = "4"
+	test CanUncheckChosenOptions {
+		NavItem.gotoStructures();
+
+		WebContentStructures.addCP(structureName = "WC Structure Title");
+
+		DEBuilder.addField(
+			fieldLabel = "Multiple Selection",
+			fieldName = "Multiple Selection");
+
+		DEBuilder.addFieldOptions(
+			fieldLabel = "Multiple Selection",
+			optionValueList = "Option 1,Option 2,Option 3");
+
+		WebContentStructures.saveCP();
+
+		NavItem.gotoWebContent();
+
+		WebContentNavigator.gotoAddWithStructureCP(structureName = "WC Structure Title");
+
+		PortletEntry.inputTitle(title = "Web Content Title");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.inputDataInMultipleSelectionField(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
+
+		Button.clickPublish();
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "Web Content Title");
+
+		DERenderer.assertMultipleSelectionOptionIsUnchecked(
+			fieldLabel = "Multiple Selection",
+			optionValue = "Option 1");
 	}
 
 }

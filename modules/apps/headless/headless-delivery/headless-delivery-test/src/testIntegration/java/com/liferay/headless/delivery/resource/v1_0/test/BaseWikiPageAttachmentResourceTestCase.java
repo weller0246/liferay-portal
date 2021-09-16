@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -337,16 +336,16 @@ public abstract class BaseWikiPageAttachmentResourceTestCase {
 
 	@Test
 	public void testGetWikiPageWikiPageAttachmentsPage() throws Exception {
-		Page<WikiPageAttachment> page =
-			wikiPageAttachmentResource.getWikiPageWikiPageAttachmentsPage(
-				testGetWikiPageWikiPageAttachmentsPage_getWikiPageId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long wikiPageId =
 			testGetWikiPageWikiPageAttachmentsPage_getWikiPageId();
 		Long irrelevantWikiPageId =
 			testGetWikiPageWikiPageAttachmentsPage_getIrrelevantWikiPageId();
+
+		Page<WikiPageAttachment> page =
+			wikiPageAttachmentResource.getWikiPageWikiPageAttachmentsPage(
+				wikiPageId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantWikiPageId != null) {
 			WikiPageAttachment irrelevantWikiPageAttachment =
@@ -447,6 +446,25 @@ public abstract class BaseWikiPageAttachmentResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		WikiPageAttachment wikiPageAttachment,
+		List<WikiPageAttachment> wikiPageAttachments) {
+
+		boolean contains = false;
+
+		for (WikiPageAttachment item : wikiPageAttachments) {
+			if (equals(wikiPageAttachment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			wikiPageAttachments + " does not contain " + wikiPageAttachment,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1051,8 +1069,8 @@ public abstract class BaseWikiPageAttachmentResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseWikiPageAttachmentResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseWikiPageAttachmentResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

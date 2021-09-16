@@ -12,7 +12,7 @@
 <tbody>
 <tr>
 	<td>DOCUMENT_VIEW_VERSION_NUMBER</td>
-	<td>//section[contains(@id,'DLAdminPortlet')]//span[@class='workflow-version']/span[contains(@class,'workflow-value')]</td>
+	<td>//section[contains(@id,'DLAdminPortlet')]//span[contains(@class,'workflow-version')]/span[contains(@class,'workflow-value')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -85,6 +85,11 @@
 <tr>
 	<td>DOCUMENT_INFO_LOCATION</td>
 	<td>//dd[contains(@class,'sidebar-dd')]//a[contains(.,'${key_dmFolderName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DOCUMENT_INFO_REVIEW_DATE</td>
+	<td>//dt[contains(@class,'sidebar-dt') and contains (.,'Review Date')]/following-sibling::dd[contains(.,'${key_reviewDateField}')]</td>
 	<td></td>
 </tr>
 <tr>

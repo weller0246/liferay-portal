@@ -126,11 +126,17 @@ public class RemoteAppEntryLocalServiceUtil {
 	 *
 	 * @param remoteAppEntry the remote app entry
 	 * @return the remote app entry that was removed
+	 * @throws PortalException
 	 */
 	public static RemoteAppEntry deleteRemoteAppEntry(
-		RemoteAppEntry remoteAppEntry) {
+			RemoteAppEntry remoteAppEntry)
+		throws PortalException {
 
 		return getService().deleteRemoteAppEntry(remoteAppEntry);
+	}
+
+	public static void deployRemoteAppEntry(RemoteAppEntry remoteAppEntry) {
+		getService().deployRemoteAppEntry(remoteAppEntry);
 	}
 
 	public static <T> T dslQuery(DSLQuery dslQuery) {
@@ -328,30 +334,31 @@ public class RemoteAppEntryLocalServiceUtil {
 			uuid, companyId);
 	}
 
-	public static List<RemoteAppEntry> searchRemoteAppEntries(
+	public static List<RemoteAppEntry> search(
 			long companyId, String keywords, int start, int end,
 			com.liferay.portal.kernel.search.Sort sort)
 		throws PortalException {
 
-		return getService().searchRemoteAppEntries(
-			companyId, keywords, start, end, sort);
+		return getService().search(companyId, keywords, start, end, sort);
 	}
 
-	public static int searchRemoteAppEntriesCount(
-			long companyId, String keywords)
+	public static int searchCount(long companyId, String keywords)
 		throws PortalException {
 
-		return getService().searchRemoteAppEntriesCount(companyId, keywords);
+		return getService().searchCount(companyId, keywords);
+	}
+
+	public static void undeployRemoteAppEntry(RemoteAppEntry remoteAppEntry) {
+		getService().undeployRemoteAppEntry(remoteAppEntry);
 	}
 
 	public static RemoteAppEntry updateRemoteAppEntry(
 			long remoteAppEntryId, Map<java.util.Locale, String> nameMap,
-			String url,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			String url)
 		throws PortalException {
 
 		return getService().updateRemoteAppEntry(
-			remoteAppEntryId, nameMap, url, serviceContext);
+			remoteAppEntryId, nameMap, url);
 	}
 
 	/**

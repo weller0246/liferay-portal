@@ -32,18 +32,20 @@ PortletURL permissionsAllURL = PortletURLBuilder.createRenderURL(
 ).setBackURL(
 	backURL
 ).setTabs1(
-	"define-permissions"
+	roleDisplayContext.getEditRolePermissionsTabs1()
 ).setTabs2(
 	"roles"
 ).setParameter(
+	"accountRoleGroupScope", roleDisplayContext.isAccountRoleGroupScope()
+).setParameter(
 	"roleId", role.getRoleId()
-).build();
+).buildPortletURL();
 
 List<String> headerNames = new ArrayList<String>();
 
 headerNames.add("permissions");
 
-if (role.getType() == RoleConstants.TYPE_REGULAR) {
+if (roleDisplayContext.isAllowGroupScope()) {
 	headerNames.add("sites-and-asset-libraries");
 }
 
@@ -57,6 +59,10 @@ List<PermissionDisplay> permissionDisplays = new ArrayList<PermissionDisplay>(pe
 
 for (int i = 0; i < permissions.size(); i++) {
 	Permission permission = permissions.get(i);
+
+	if (!roleDisplayContext.isValidPermission(role, permission)) {
+		continue;
+	}
 
 	Resource resource = new ResourceImpl();
 
@@ -137,7 +143,7 @@ for (int i = 0; i < results.size(); i++) {
 
 	int scope;
 
-	if (role.getType() == RoleConstants.TYPE_REGULAR) {
+	if (roleDisplayContext.isAllowGroupScope()) {
 		RolePermissions rolePermissions = new RolePermissions(curResource, ResourceConstants.SCOPE_GROUP, actionId, role.getRoleId());
 
 		groups = GroupLocalServiceUtil.search(
@@ -172,6 +178,7 @@ for (int i = 0; i < results.size(); i++) {
 	editPermissionsResourceURL.setParameter("roleId", String.valueOf(role.getRoleId()));
 	editPermissionsResourceURL.setParameter("redirect", permissionsAllURL.toString());
 	editPermissionsResourceURL.setParameter("portletResource", curPortletName);
+	editPermissionsResourceURL.setParameter("accountRoleGroupScope", String.valueOf(roleDisplayContext.isAccountRoleGroupScope()));
 
 	PortletURL editPermissionsURL = PortletURLBuilder.createRenderURL(
 		liferayPortletResponse
@@ -184,12 +191,14 @@ for (int i = 0; i < results.size(); i++) {
 	).setPortletResource(
 		curPortletName
 	).setTabs1(
-		"define-permissions"
+		roleDisplayContext.getEditRolePermissionsTabs1()
 	).setTabs2(
 		"roles"
 	).setParameter(
+		"accountRoleGroupScope", roleDisplayContext.isAccountRoleGroupScope()
+	).setParameter(
 		"roleId", role.getRoleId()
-	).build();
+	).buildPortletURL();
 
 	StringBundler sb = new StringBundler(17);
 
@@ -218,7 +227,7 @@ for (int i = 0; i < results.size(); i++) {
 	row.addText(sb.toString());
 
 	if (scope == ResourceConstants.SCOPE_COMPANY) {
-		row.addText(LanguageUtil.get(request, _isShowScope(request, role, curResource, curPortletName) ? "all-sites-and-asset-libraries" : StringPool.BLANK));
+		row.addText(LanguageUtil.get(request, _isShowScope(request, role, curResource, curPortletName, roleDisplayContext) ? "all-sites-and-asset-libraries" : StringPool.BLANK));
 	}
 	else if (scope == ResourceConstants.SCOPE_GROUP_TEMPLATE) {
 	}

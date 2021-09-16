@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -342,14 +341,14 @@ public abstract class BaseShipmentItemResourceTestCase {
 
 	@Test
 	public void testGetShipmentItemsPage() throws Exception {
-		Page<ShipmentItem> page = shipmentItemResource.getShipmentItemsPage(
-			testGetShipmentItemsPage_getShipmentId(), Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long shipmentId = testGetShipmentItemsPage_getShipmentId();
 		Long irrelevantShipmentId =
 			testGetShipmentItemsPage_getIrrelevantShipmentId();
+
+		Page<ShipmentItem> page = shipmentItemResource.getShipmentItemsPage(
+			shipmentId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantShipmentId != null) {
 			ShipmentItem irrelevantShipmentItem =
@@ -374,7 +373,7 @@ public abstract class BaseShipmentItemResourceTestCase {
 			shipmentId, randomShipmentItem());
 
 		page = shipmentItemResource.getShipmentItemsPage(
-			shipmentId, Pagination.of(1, 2));
+			shipmentId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -457,7 +456,7 @@ public abstract class BaseShipmentItemResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("shipmentId", shipmentId);
 				}
@@ -478,7 +477,7 @@ public abstract class BaseShipmentItemResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/shipmentItems");
 
-		Assert.assertEquals(2, shipmentItemsJSONObject.get("totalCount"));
+		Assert.assertEquals(2, shipmentItemsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(shipmentItem1, shipmentItem2),
@@ -511,6 +510,23 @@ public abstract class BaseShipmentItemResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ShipmentItem shipmentItem, List<ShipmentItem> shipmentItems) {
+
+		boolean contains = false;
+
+		for (ShipmentItem item : shipmentItems) {
+			if (equals(shipmentItem, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			shipmentItems + " does not contain " + shipmentItem, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1169,8 +1185,8 @@ public abstract class BaseShipmentItemResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseShipmentItemResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseShipmentItemResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

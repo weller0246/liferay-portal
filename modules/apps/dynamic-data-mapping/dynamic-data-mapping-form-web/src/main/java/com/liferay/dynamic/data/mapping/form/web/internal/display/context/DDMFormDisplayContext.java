@@ -304,6 +304,14 @@ public class DDMFormDisplayContext {
 		try {
 			_ddmFormInstance = _ddmFormInstanceService.fetchFormInstance(
 				getFormInstanceId());
+
+			if ((_ddmFormInstance != null) && !isPreview()) {
+				DDMFormInstanceVersion latestApprovedDDMFormInstanceVersion =
+					_getLatestApprovedDDMFormInstanceVersion();
+
+				_ddmFormInstance.setSettings(
+					latestApprovedDDMFormInstanceVersion.getSettings());
+			}
 		}
 		catch (PortalException portalException) {
 
@@ -607,6 +615,13 @@ public class DDMFormDisplayContext {
 		return false;
 	}
 
+	public boolean isSharedURL() {
+		ThemeDisplay themeDisplay = getThemeDisplay();
+
+		return StringUtil.contains(
+			themeDisplay.getURLCurrent(), "shared", StringPool.BLANK);
+	}
+
 	public boolean isShowConfigurationIcon() throws PortalException {
 		if (_showConfigurationIcon != null) {
 			return _showConfigurationIcon;
@@ -639,7 +654,8 @@ public class DDMFormDisplayContext {
 
 	public boolean isShowSuccessPage() throws PortalException {
 		if (!SessionErrors.isEmpty(_renderRequest) ||
-			SessionMessages.isEmpty(_renderRequest)) {
+			SessionMessages.isEmpty(_renderRequest) ||
+			Validator.isNotNull(getRedirectURL())) {
 
 			return false;
 		}
@@ -747,10 +763,7 @@ public class DDMFormDisplayContext {
 		}
 		else {
 			DDMFormInstanceVersion latestFormInstanceVersion =
-				_ddmFormInstanceVersionLocalService.
-					getLatestFormInstanceVersion(
-						ddmFormInstance.getFormInstanceId(),
-						WorkflowConstants.STATUS_APPROVED);
+				_getLatestApprovedDDMFormInstanceVersion();
 
 			DDMStructureVersion structureVersion =
 				latestFormInstanceVersion.getStructureVersion();
@@ -787,10 +800,7 @@ public class DDMFormDisplayContext {
 		}
 		else {
 			DDMFormInstanceVersion latestFormInstanceVersion =
-				_ddmFormInstanceVersionLocalService.
-					getLatestFormInstanceVersion(
-						ddmFormInstance.getFormInstanceId(),
-						WorkflowConstants.STATUS_APPROVED);
+				_getLatestApprovedDDMFormInstanceVersion();
 
 			DDMStructureVersion structureVersion =
 				latestFormInstanceVersion.getStructureVersion();
@@ -938,16 +948,23 @@ public class DDMFormDisplayContext {
 		return ddmFormInstanceSettings.published();
 	}
 
-	protected boolean isSharedURL() {
-		ThemeDisplay themeDisplay = getThemeDisplay();
-
-		String urlCurrent = themeDisplay.getURLCurrent();
-
-		return urlCurrent.contains("/shared");
-	}
-
 	private HttpServletRequest _getHttpServletRequest() {
 		return PortalUtil.getHttpServletRequest(_renderRequest);
+	}
+
+	private DDMFormInstanceVersion _getLatestApprovedDDMFormInstanceVersion()
+		throws PortalException {
+
+		if (_latestDDMFormInstanceVersion != null) {
+			return _latestDDMFormInstanceVersion;
+		}
+
+		_latestDDMFormInstanceVersion =
+			_ddmFormInstanceVersionLocalService.getLatestFormInstanceVersion(
+				_ddmFormInstance.getFormInstanceId(),
+				WorkflowConstants.STATUS_APPROVED);
+
+		return _latestDDMFormInstanceVersion;
 	}
 
 	private static final String _DDM_FORM_FIELD_NAME_CAPTCHA = "_CAPTCHA_";
@@ -980,6 +997,7 @@ public class DDMFormDisplayContext {
 	private Boolean _hasAddFormInstanceRecordPermission;
 	private Boolean _hasViewPermission;
 	private final JSONFactory _jsonFactory;
+	private DDMFormInstanceVersion _latestDDMFormInstanceVersion;
 	private final Portal _portal;
 	private final RenderRequest _renderRequest;
 	private final RenderResponse _renderResponse;

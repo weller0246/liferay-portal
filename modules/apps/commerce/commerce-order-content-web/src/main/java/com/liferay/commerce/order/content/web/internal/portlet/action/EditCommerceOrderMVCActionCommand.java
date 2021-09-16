@@ -16,6 +16,7 @@ package com.liferay.commerce.order.content.web.internal.portlet.action;
 
 import com.liferay.commerce.account.exception.NoSuchAccountException;
 import com.liferay.commerce.account.model.CommerceAccount;
+import com.liferay.commerce.account.util.CommerceAccountHelper;
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommercePortletKeys;
 import com.liferay.commerce.constants.CommerceWebKeys;
@@ -25,12 +26,15 @@ import com.liferay.commerce.exception.CommerceOrderAccountLimitException;
 import com.liferay.commerce.exception.CommerceOrderValidatorException;
 import com.liferay.commerce.exception.NoSuchOrderException;
 import com.liferay.commerce.model.CommerceOrder;
+import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.order.engine.CommerceOrderEngine;
+import com.liferay.commerce.product.model.CommerceChannel;
 import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.service.CommerceOrderService;
+import com.liferay.commerce.service.CommerceOrderTypeService;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
-import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.PortletProvider;
 import com.liferay.portal.kernel.portlet.PortletProviderUtil;
@@ -47,6 +51,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
+
+import java.util.List;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
@@ -102,10 +108,32 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			_commerceChannelLocalService.getCommerceChannelGroupIdBySiteGroupId(
 				themeDisplay.getScopeGroupId());
 
+		long commerceOrderTypeId = ParamUtil.getLong(
+			actionRequest, "commerceOrderTypeId");
+
+		if (commerceOrderTypeId == 0) {
+			CommerceChannel commerceChannel =
+				_commerceChannelLocalService.getCommerceChannelByGroupId(
+					commerceChannelGroupId);
+
+			List<CommerceOrderType> commerceOrderTypes =
+				_commerceOrderTypeService.getCommerceOrderTypes(
+					CommerceChannel.class.getName(),
+					commerceChannel.getCommerceChannelId(), true,
+					QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+			if (!commerceOrderTypes.isEmpty()) {
+				CommerceOrderType commerceOrderType = commerceOrderTypes.get(0);
+
+				commerceOrderTypeId =
+					commerceOrderType.getCommerceOrderTypeId();
+			}
+		}
+
 		try {
 			return _commerceOrderService.addCommerceOrder(
 				commerceChannelGroupId, commerceAccount.getCommerceAccountId(),
-				commerceCurrencyId, 0, StringPool.BLANK);
+				commerceCurrencyId, commerceOrderTypeId);
 		}
 		catch (Exception exception) {
 			if (exception instanceof CommerceOrderAccountLimitException) {
@@ -124,14 +152,28 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, long commerceOrderId)
 		throws Exception {
 
-		PortletURL portletURL = PortletURLBuilder.create(
-			_commerceOrderHttpHelper.getCommerceCheckoutPortletURL(
-				_portal.getHttpServletRequest(actionRequest))
-		).setParameter(
-			"commerceOrderId", commerceOrderId
-		).build();
+		CommerceContext commerceContext =
+			(CommerceContext)actionRequest.getAttribute(
+				CommerceWebKeys.COMMERCE_CONTEXT);
 
-		actionRequest.setAttribute(WebKeys.REDIRECT, portletURL.toString());
+		CommerceOrder commerceOrder =
+			_commerceOrderService.reorderCommerceOrder(
+				commerceOrderId, commerceContext);
+
+		_commerceAccountHelper.setCurrentCommerceAccount(
+			_portal.getHttpServletRequest(actionRequest),
+			_commerceChannelLocalService.getCommerceChannelGroupIdBySiteGroupId(
+				_portal.getScopeGroupId(actionRequest)),
+			commerceOrder.getCommerceAccountId());
+
+		actionRequest.setAttribute(
+			WebKeys.REDIRECT,
+			PortletURLBuilder.create(
+				_commerceOrderHttpHelper.getCommerceCheckoutPortletURL(
+					_portal.getHttpServletRequest(actionRequest))
+			).setParameter(
+				"commerceOrderId", commerceOrderId
+			).buildString());
 	}
 
 	protected void checkoutOrSubmitCommerceOrder(
@@ -347,6 +389,11 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			_commerceOrderService.reorderCommerceOrder(
 				commerceOrderId, commerceContext);
 
+		_commerceAccountHelper.setCurrentCommerceAccount(
+			_portal.getHttpServletRequest(actionRequest),
+			_commerceChannelLocalService.getCommerceChannelGroupIdBySiteGroupId(
+				_portal.getScopeGroupId(actionRequest)),
+			commerceOrder.getCommerceAccountId());
 		_commerceOrderHttpHelper.setCurrentCommerceOrder(
 			_portal.getHttpServletRequest(actionRequest), commerceOrder);
 
@@ -417,6 +464,9 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	@Reference
+	private CommerceAccountHelper _commerceAccountHelper;
+
+	@Reference
 	private CommerceChannelLocalService _commerceChannelLocalService;
 
 	@Reference
@@ -427,6 +477,9 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 
 	@Reference
 	private CommerceOrderService _commerceOrderService;
+
+	@Reference
+	private CommerceOrderTypeService _commerceOrderTypeService;
 
 	@Reference
 	private Portal _portal;

@@ -19,13 +19,14 @@ export default function PaginationBar({
 	activeDelta,
 	activePage,
 	componentId: _componentId,
-	cssClass: _cssClass,
+	cssClass,
 	deltas,
 	disabledPages,
 	ellipsisBuffer,
 	locale: _locale,
 	portletId: _portletId,
 	portletNamespace: _portletNamespace,
+	showDeltasDropDown,
 	totalItems,
 	...otherProps
 }) {
@@ -40,11 +41,13 @@ export default function PaginationBar({
 		<ClayPaginationBarWithBasicItems
 			activeDelta={initialActiveDelta}
 			activePage={initialActivePage}
+			className={cssClass}
 			deltas={deltas}
 			disabledPages={disabledPages ?? []}
 			ellipsisBuffer={initialEllipsisBuffer}
 			onDeltaChange={setInitialActiveDelta}
 			onPageChange={setInitialActivePage}
+			showDeltasDropDown={showDeltasDropDown}
 			totalItems={totalItems}
 			{...otherProps}
 		/>

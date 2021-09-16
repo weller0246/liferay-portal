@@ -76,13 +76,11 @@ public class ViewUserGroupsManagementToolbarDisplayContext {
 	}
 
 	public String getClearResultsURL() {
-		PortletURL clearResultsURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			getPortletURL()
 		).setKeywords(
 			StringPool.BLANK
-		).build();
-
-		return clearResultsURL.toString();
+		).buildString();
 	}
 
 	public CreationMenu getCreationMenu() throws PortalException {
@@ -147,24 +145,33 @@ public class ViewUserGroupsManagementToolbarDisplayContext {
 			_renderResponse
 		).setMVCPath(
 			"/view.jsp"
-		).build();
+		).setKeywords(
+			() -> {
+				if (Validator.isNotNull(getKeywords())) {
+					return getKeywords();
+				}
 
-		String viewUserGroupsRedirect = ParamUtil.getString(
-			_httpServletRequest, "viewUserGroupsRedirect");
+				return null;
+			}
+		).setParameter(
+			"displayStyle", _displayStyle
+		).setParameter(
+			"orderByCol", getOrderByCol()
+		).setParameter(
+			"orderByType", getOrderByType()
+		).setParameter(
+			"viewUserGroupsRedirect",
+			() -> {
+				String viewUserGroupsRedirect = ParamUtil.getString(
+					_httpServletRequest, "viewUserGroupsRedirect");
 
-		if (Validator.isNotNull(viewUserGroupsRedirect)) {
-			portletURL.setParameter(
-				"viewUserGroupsRedirect", viewUserGroupsRedirect);
-		}
+				if (Validator.isNotNull(viewUserGroupsRedirect)) {
+					return viewUserGroupsRedirect;
+				}
 
-		portletURL.setParameter("displayStyle", _displayStyle);
-
-		if (Validator.isNotNull(getKeywords())) {
-			portletURL.setParameter("keywords", getKeywords());
-		}
-
-		portletURL.setParameter("orderByCol", getOrderByCol());
-		portletURL.setParameter("orderByType", getOrderByType());
+				return null;
+			}
+		).buildPortletURL();
 
 		if (_userGroupSearch != null) {
 			portletURL.setParameter(
@@ -226,14 +233,12 @@ public class ViewUserGroupsManagementToolbarDisplayContext {
 	}
 
 	public String getSortingURL() {
-		PortletURL sortingURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			getPortletURL()
 		).setParameter(
 			"orderByType",
 			Objects.equals(getOrderByType(), "asc") ? "desc" : "asc"
-		).build();
-
-		return sortingURL.toString();
+		).buildString();
 	}
 
 	public List<ViewTypeItem> getViewTypeItems() {

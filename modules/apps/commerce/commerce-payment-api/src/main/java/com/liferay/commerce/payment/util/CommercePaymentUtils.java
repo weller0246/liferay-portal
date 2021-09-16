@@ -33,7 +33,8 @@ import javax.servlet.http.HttpServletRequest;
 @ProviderType
 public interface CommercePaymentUtils {
 
-	public CommercePaymentResult emptyResult(long commerceOrderId);
+	public CommercePaymentResult emptyResult(
+		long commerceOrderId, String transactionId);
 
 	public CommercePaymentMethod getCommercePaymentMethod(long commerceOrderId)
 		throws PortalException;

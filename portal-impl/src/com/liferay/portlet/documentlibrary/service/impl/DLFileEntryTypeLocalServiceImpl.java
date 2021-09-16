@@ -287,8 +287,6 @@ public class DLFileEntryTypeLocalServiceImpl
 		List<DLFileEntryType> dlFileEntryTypes = getFolderFileEntryTypes(
 			groupIds, dlFolder.getFolderId(), true);
 
-		List<Long> fileEntryTypeIds = getFileEntryTypeIds(dlFileEntryTypes);
-
 		long defaultFileEntryTypeId = getDefaultFileEntryTypeId(
 			dlFolder.getFolderId());
 
@@ -300,7 +298,8 @@ public class DLFileEntryTypeLocalServiceImpl
 
 		cascadeFileEntryTypes(
 			userId, dlFolder.getGroupId(), dlFolder.getFolderId(),
-			defaultFileEntryTypeId, fileEntryTypeIds, serviceContext);
+			defaultFileEntryTypeId, getFileEntryTypeIds(dlFileEntryTypes),
+			serviceContext);
 	}
 
 	@Override
@@ -341,9 +340,14 @@ public class DLFileEntryTypeLocalServiceImpl
 			dlFileEntryType.getFileEntryTypeId());
 
 		DDMStructure ddmStructure = DDMStructureManagerUtil.fetchStructure(
-			dlFileEntryType.getGroupId(),
-			classNameLocalService.getClassNameId(DLFileEntryMetadata.class),
-			DLUtil.getDDMStructureKey(dlFileEntryType));
+			dlFileEntryType.getDataDefinitionId());
+
+		if (ddmStructure == null) {
+			ddmStructure = DDMStructureManagerUtil.fetchStructure(
+				dlFileEntryType.getGroupId(),
+				classNameLocalService.getClassNameId(DLFileEntryMetadata.class),
+				DLUtil.getDDMStructureKey(dlFileEntryType));
+		}
 
 		if (ddmStructure == null) {
 			ddmStructure = DDMStructureManagerUtil.fetchStructure(
@@ -593,8 +597,6 @@ public class DLFileEntryTypeLocalServiceImpl
 			return dlFileEntry;
 		}
 
-		long defaultFileEntryTypeId = getDefaultFileEntryTypeId(folderId);
-
 		DLFileVersion dlFileVersion =
 			dlFileVersionLocalService.getLatestFileVersion(
 				dlFileEntry.getFileEntryId(), true);
@@ -609,8 +611,8 @@ public class DLFileEntryTypeLocalServiceImpl
 			serviceContext.getUserId(), dlFileEntry.getFileEntryId(), null,
 			null, null, null, null,
 			DLVersionNumberIncrease.fromMajorVersion(false),
-			defaultFileEntryTypeId, null, null, null, 0, null, null,
-			serviceContext);
+			getDefaultFileEntryTypeId(folderId), null, null, null, 0, null,
+			null, serviceContext);
 	}
 
 	/**

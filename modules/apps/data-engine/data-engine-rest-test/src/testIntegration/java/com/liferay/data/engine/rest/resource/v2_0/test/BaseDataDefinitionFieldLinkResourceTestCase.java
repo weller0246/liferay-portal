@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -197,18 +196,17 @@ public abstract class BaseDataDefinitionFieldLinkResourceTestCase {
 	public void testGetDataDefinitionDataDefinitionFieldLinkPage()
 		throws Exception {
 
-		Page<DataDefinitionFieldLink> page =
-			dataDefinitionFieldLinkResource.
-				getDataDefinitionDataDefinitionFieldLinkPage(
-					testGetDataDefinitionDataDefinitionFieldLinkPage_getDataDefinitionId(),
-					RandomTestUtil.randomString());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long dataDefinitionId =
 			testGetDataDefinitionDataDefinitionFieldLinkPage_getDataDefinitionId();
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataDefinitionFieldLinkPage_getIrrelevantDataDefinitionId();
+
+		Page<DataDefinitionFieldLink> page =
+			dataDefinitionFieldLinkResource.
+				getDataDefinitionDataDefinitionFieldLinkPage(
+					dataDefinitionId, RandomTestUtil.randomString());
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDataDefinitionId != null) {
 			DataDefinitionFieldLink irrelevantDataDefinitionFieldLink =
@@ -273,6 +271,26 @@ public abstract class BaseDataDefinitionFieldLinkResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(
+		DataDefinitionFieldLink dataDefinitionFieldLink,
+		List<DataDefinitionFieldLink> dataDefinitionFieldLinks) {
+
+		boolean contains = false;
+
+		for (DataDefinitionFieldLink item : dataDefinitionFieldLinks) {
+			if (equals(dataDefinitionFieldLink, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataDefinitionFieldLinks + " does not contain " +
+				dataDefinitionFieldLink,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -754,8 +772,9 @@ public abstract class BaseDataDefinitionFieldLinkResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDataDefinitionFieldLinkResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(
+			BaseDataDefinitionFieldLinkResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

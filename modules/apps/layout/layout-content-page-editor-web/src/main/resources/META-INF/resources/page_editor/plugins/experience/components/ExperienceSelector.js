@@ -138,7 +138,6 @@ const ExperienceSelector = ({
 			) {
 				setOpenModal(true);
 				setEditingExperience({
-					languageIds: modalExperienceState.languageIds,
 					name: modalExperienceState.experienceName,
 					segmentsEntryId:
 						config.selectedSegmentsEntryId ||
@@ -181,19 +180,13 @@ const ExperienceSelector = ({
 	]);
 
 	const handleExperienceCreation = ({
-		languageIds,
 		name,
 		segmentsEntryId,
 		segmentsExperienceId,
 	}) => {
 		if (segmentsExperienceId) {
 			return dispatch(
-				updateExperience({
-					languageIds,
-					name,
-					segmentsEntryId,
-					segmentsExperienceId,
-				})
+				updateExperience({name, segmentsEntryId, segmentsExperienceId})
 			)
 				.then(() => {
 					if (isMounted()) {
@@ -212,7 +205,6 @@ const ExperienceSelector = ({
 							error: Liferay.Language.get(
 								'an-unexpected-error-occurred-while-updating-the-experience'
 							),
-							languageIds,
 							name,
 							segmentsEntryId,
 							segmentsExperienceId,
@@ -223,7 +215,6 @@ const ExperienceSelector = ({
 		else {
 			return dispatch(
 				createExperience({
-					languageIds,
 					name,
 					segmentsEntryId,
 				})
@@ -245,7 +236,6 @@ const ExperienceSelector = ({
 							error: Liferay.Language.get(
 								'an-unexpected-error-occurred-while-creating-the-experience'
 							),
-							languageIds,
 							name,
 							segmentsEntryId,
 							segmentsExperienceId,
@@ -258,17 +248,11 @@ const ExperienceSelector = ({
 	const handleOnNewExperiecneClick = () => setOpenModal(true);
 
 	const handleEditExperienceClick = (experienceData) => {
-		const {
-			languageIds,
-			name,
-			segmentsEntryId,
-			segmentsExperienceId,
-		} = experienceData;
+		const {name, segmentsEntryId, segmentsExperienceId} = experienceData;
 
 		setOpenModal(true);
 
 		setEditingExperience({
-			languageIds,
 			name,
 			segmentsEntryId,
 			segmentsExperienceId,
@@ -348,6 +332,7 @@ const ExperienceSelector = ({
 		<>
 			<ClayButton
 				className="form-control-select pr-4 text-left text-truncate"
+				disabled={!canUpdateExperiences}
 				displayType="secondary"
 				id={selectId}
 				onBlur={handleDropdownButtonBlur}
@@ -371,7 +356,7 @@ const ExperienceSelector = ({
 			</ClayButton>
 
 			{open && (
-				<ReactPortal>
+				<ReactPortal className="cadmin">
 					<div
 						className="dropdown-menu p-4 page-editor__toolbar-experience__dropdown-menu toggled"
 						onBlur={handleDropdownBlur}
@@ -417,7 +402,6 @@ const ExperienceSelector = ({
 					errorMessage={editingExperience.error}
 					experienceId={editingExperience.segmentsExperienceId}
 					initialName={editingExperience.name}
-					languageIds={editingExperience.languageIds}
 					observer={modalObserver}
 					onClose={onModalClose}
 					onErrorDismiss={() => setEditingExperience({error: null})}

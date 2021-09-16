@@ -138,20 +138,18 @@ public class SynchronousDestinationTestRule
 				DestinationNames.BACKGROUND_TASK);
 			Filter backgroundTaskStatusFilter = _registerDestinationFilter(
 				DestinationNames.BACKGROUND_TASK_STATUS);
+			Filter commerceBasePriceListFilter = _registerDestinationFilter(
+				DestinationNames.COMMERCE_BASE_PRICE_LIST);
 			Filter commerceOrderFilter = _registerDestinationFilter(
-				"liferay/order_status");
+				DestinationNames.COMMERCE_ORDER_STATUS);
 			Filter commercePaymentFilter = _registerDestinationFilter(
-				"liferay/payment_status");
+				DestinationNames.COMMERCE_PAYMENT_STATUS);
 			Filter commerceShipmentFilter = _registerDestinationFilter(
-				"liferay/shipment_status");
-			Filter commerceStockFilter = _registerDestinationFilter(
-				"liferay/stock_quantity");
+				DestinationNames.COMMERCE_SHIPMENT_STATUS);
 			Filter commerceSubscriptionFilter = _registerDestinationFilter(
-				"liferay/subscription_status");
+				DestinationNames.COMMERCE_SUBSCRIPTION_STATUS);
 			Filter ddmStructureReindexFilter = _registerDestinationFilter(
 				"liferay/ddm_structure_reindex");
-			Filter kaleoGraphWalkerFilter = _registerDestinationFilter(
-				"liferay/kaleo_graph_walker");
 			Filter mailFilter = _registerDestinationFilter(
 				DestinationNames.MAIL);
 			Filter pdfProcessorFilter = _registerDestinationFilter(
@@ -170,13 +168,12 @@ public class SynchronousDestinationTestRule
 			_waitForDependencies(
 				audioProcessorFilter, auditFilter, asyncFilter,
 				backgroundTaskFilter, backgroundTaskStatusFilter,
-				commerceOrderFilter, commercePaymentFilter,
-				commerceShipmentFilter, commerceStockFilter,
+				commerceBasePriceListFilter, commerceOrderFilter,
+				commercePaymentFilter, commerceShipmentFilter,
 				commerceSubscriptionFilter, ddmStructureReindexFilter,
-				kaleoGraphWalkerFilter, mailFilter, pdfProcessorFilter,
-				rawMetaDataProcessorFilter, segmentsEntryReindexFilter,
-				subscrpitionSenderFilter, tensorflowModelDownloadFilter,
-				videoProcessorFilter);
+				mailFilter, pdfProcessorFilter, rawMetaDataProcessorFilter,
+				segmentsEntryReindexFilter, subscrpitionSenderFilter,
+				tensorflowModelDownloadFilter, videoProcessorFilter);
 
 			_destinations = ReflectionTestUtil.getFieldValue(
 				MessageBusUtil.getMessageBus(), "_destinations");
@@ -190,6 +187,11 @@ public class SynchronousDestinationTestRule
 			replaceDestination(DestinationNames.ASYNC_SERVICE);
 			replaceDestination(DestinationNames.BACKGROUND_TASK);
 			replaceDestination(DestinationNames.BACKGROUND_TASK_STATUS);
+			replaceDestination(DestinationNames.COMMERCE_BASE_PRICE_LIST);
+			replaceDestination(DestinationNames.COMMERCE_ORDER_STATUS);
+			replaceDestination(DestinationNames.COMMERCE_PAYMENT_STATUS);
+			replaceDestination(DestinationNames.COMMERCE_SHIPMENT_STATUS);
+			replaceDestination(DestinationNames.COMMERCE_SUBSCRIPTION_STATUS);
 			replaceDestination(
 				DestinationNames.DOCUMENT_LIBRARY_AUDIO_PROCESSOR);
 			replaceDestination(DestinationNames.DOCUMENT_LIBRARY_PDF_PROCESSOR);
@@ -205,15 +207,9 @@ public class SynchronousDestinationTestRule
 			replaceDestination("liferay/adaptive_media_processor");
 			replaceDestination("liferay/asset_auto_tagger");
 			replaceDestination("liferay/ddm_structure_reindex");
-			replaceDestination("liferay/kaleo_graph_walker");
 			replaceDestination("liferay/report_request");
 			replaceDestination("liferay/reports_admin");
 			replaceDestination("liferay/segments_entry_reindex");
-			replaceDestination("liferay/order_status");
-			replaceDestination("liferay/payment_status");
-			replaceDestination("liferay/shipment_status");
-			replaceDestination("liferay/stock_quantity");
-			replaceDestination("liferay/subscription_status");
 			replaceDestination("liferay/tensorflow_model_download");
 
 			if (_sync != null) {

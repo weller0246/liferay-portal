@@ -54,6 +54,8 @@ public interface PanelCategoryKeys {
 	public static final String CONTROL_PANEL_MARKETPLACE =
 		"control_panel.marketplace";
 
+	public static final String CONTROL_PANEL_OBJECT = "control_panel.object";
+
 	public static final String CONTROL_PANEL_SECURITY =
 		"control_panel.security";
 

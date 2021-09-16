@@ -16,6 +16,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ADD_FIELD_POSITION_EMPTY</td>
+	<td>//div[contains(@class, 'empty-drop-zone-dashed')] //*[contains(@class, 'drop-zone-target')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_FIELD_POSITION_EDIT</td>
+	<td>//*[contains(@class, 'edit-container')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ADD_FIELD_TYPE</td>
 	<td>//*[contains(@class, 'criteria-sidebar-item-root') and (text()='${key_propertyOption}')]</td>
 	<td></td>
@@ -71,6 +81,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CRITERION_VIEW_MODE</td>
+	<td>//span[contains(@class, 'criterion-string')] //b[contains(text(), '${propertyValue}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DELETE_SEGMENT</td>
 	<td>//*[contains(@class, 'lexicon-icon-times-circle')]</td>
 	<td></td>
@@ -96,8 +111,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>MESSAGE_NO_SEGMENTS</td>
+	<td>//div[contains(@class, 'taglib-empty-result-message')]/div[contains(.,'There are no segments')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>PROPERTY_FIELD</td>
 	<td>//div[@class='criterion'][1]//*[@data-testid='simple-string']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CONDITIONS_PROPERTY_NAME</td>
+	<td>//div[@class='criterion'] //span[contains(.,'${propertyName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -128,6 +153,26 @@
 <tr>
 	<td>SEGMENT_OPTIONS_MENU</td>
 	<td>//*[@id='qfkd____']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SESSION_PROPERTY_SESSION_LINK_PROPERTY</td>
+	<td>//div[contains(@class, 'form-group-inline')] //label[contains(text(), 'Session Property Name')]/../select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SESSION_PROPERTY_SESSION_LINK_PROPERTY_OPTION</td>
+	<td>//label[contains(text(), 'Session Property Name')]/..//option[contains(text(), '${propertyName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SESSION_PROPERTY_SESSION_LINK_VOCABULARY</td>
+	<td>//div[contains(@class, 'form-group-inline')] //label[contains(text(), 'Vocabulary Name')]/../select</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SESSION_PROPERTY_SESSION_LINK_VOCABULARY_OPTION</td>
+	<td>//label[contains(text(), 'Vocabulary Name')]/..//option[contains(text(), '${vocabularyName}')]</td>
 	<td></td>
 </tr>
 <tr>

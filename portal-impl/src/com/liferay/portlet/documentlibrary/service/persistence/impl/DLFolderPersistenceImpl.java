@@ -22,7 +22,6 @@ import com.liferay.document.library.kernel.service.persistence.DLFolderPersisten
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
-import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -35,7 +34,6 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -54,9 +52,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderImpl;
 import com.liferay.portlet.documentlibrary.model.impl.DLFolderModelImpl;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
@@ -73,7 +68,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The persistence implementation for the document library folder service.
@@ -8007,8 +8001,8 @@ public class DLFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_P_N_NAME_3 =
 		"(dlFolder.name IS NULL OR dlFolder.name = '')";
 
-	private FinderPath _finderPathWithPaginationFindByF_C_P_NotS;
-	private FinderPath _finderPathWithPaginationCountByF_C_P_NotS;
+	private FinderPath _finderPathWithPaginationFindByGtF_C_P_NotS;
+	private FinderPath _finderPathWithPaginationCountByGtF_C_P_NotS;
 
 	/**
 	 * Returns all the document library folders where folderId &gt; &#63; and companyId = &#63; and parentFolderId = &#63; and status &ne; &#63;.
@@ -8020,10 +8014,10 @@ public class DLFolderPersistenceImpl
 	 * @return the matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByF_C_P_NotS(
+	public List<DLFolder> findByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status) {
 
-		return findByF_C_P_NotS(
+		return findByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -8044,11 +8038,11 @@ public class DLFolderPersistenceImpl
 	 * @return the range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByF_C_P_NotS(
+	public List<DLFolder> findByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status,
 		int start, int end) {
 
-		return findByF_C_P_NotS(
+		return findByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status, start, end, null);
 	}
 
@@ -8069,11 +8063,11 @@ public class DLFolderPersistenceImpl
 	 * @return the ordered range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByF_C_P_NotS(
+	public List<DLFolder> findByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator) {
 
-		return findByF_C_P_NotS(
+		return findByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status, start, end,
 			orderByComparator, true);
 	}
@@ -8096,7 +8090,7 @@ public class DLFolderPersistenceImpl
 	 * @return the ordered range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByF_C_P_NotS(
+	public List<DLFolder> findByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator,
 		boolean useFinderCache) {
@@ -8107,7 +8101,7 @@ public class DLFolderPersistenceImpl
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = _finderPathWithPaginationFindByF_C_P_NotS;
+		finderPath = _finderPathWithPaginationFindByGtF_C_P_NotS;
 		finderArgs = new Object[] {
 			folderId, companyId, parentFolderId, status, start, end,
 			orderByComparator
@@ -8147,13 +8141,13 @@ public class DLFolderPersistenceImpl
 
 			sb.append(_SQL_SELECT_DLFOLDER_WHERE);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_FOLDERID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_FOLDERID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_COMPANYID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_PARENTFOLDERID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_PARENTFOLDERID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_STATUS_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_STATUS_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -8214,12 +8208,12 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder findByF_C_P_NotS_First(
+	public DLFolder findByGtF_C_P_NotS_First(
 			long folderId, long companyId, long parentFolderId, int status,
 			OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
 
-		DLFolder dlFolder = fetchByF_C_P_NotS_First(
+		DLFolder dlFolder = fetchByGtF_C_P_NotS_First(
 			folderId, companyId, parentFolderId, status, orderByComparator);
 
 		if (dlFolder != null) {
@@ -8258,11 +8252,11 @@ public class DLFolderPersistenceImpl
 	 * @return the first matching document library folder, or <code>null</code> if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder fetchByF_C_P_NotS_First(
+	public DLFolder fetchByGtF_C_P_NotS_First(
 		long folderId, long companyId, long parentFolderId, int status,
 		OrderByComparator<DLFolder> orderByComparator) {
 
-		List<DLFolder> list = findByF_C_P_NotS(
+		List<DLFolder> list = findByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status, 0, 1,
 			orderByComparator);
 
@@ -8285,12 +8279,12 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder findByF_C_P_NotS_Last(
+	public DLFolder findByGtF_C_P_NotS_Last(
 			long folderId, long companyId, long parentFolderId, int status,
 			OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
 
-		DLFolder dlFolder = fetchByF_C_P_NotS_Last(
+		DLFolder dlFolder = fetchByGtF_C_P_NotS_Last(
 			folderId, companyId, parentFolderId, status, orderByComparator);
 
 		if (dlFolder != null) {
@@ -8329,18 +8323,18 @@ public class DLFolderPersistenceImpl
 	 * @return the last matching document library folder, or <code>null</code> if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder fetchByF_C_P_NotS_Last(
+	public DLFolder fetchByGtF_C_P_NotS_Last(
 		long folderId, long companyId, long parentFolderId, int status,
 		OrderByComparator<DLFolder> orderByComparator) {
 
-		int count = countByF_C_P_NotS(
+		int count = countByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DLFolder> list = findByF_C_P_NotS(
+		List<DLFolder> list = findByGtF_C_P_NotS(
 			folderId, companyId, parentFolderId, status, count - 1, count,
 			orderByComparator);
 
@@ -8360,11 +8354,11 @@ public class DLFolderPersistenceImpl
 	 * @param status the status
 	 */
 	@Override
-	public void removeByF_C_P_NotS(
+	public void removeByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status) {
 
 		for (DLFolder dlFolder :
-				findByF_C_P_NotS(
+				findByGtF_C_P_NotS(
 					folderId, companyId, parentFolderId, status,
 					QueryUtil.ALL_POS, QueryUtil.ALL_POS, null)) {
 
@@ -8382,7 +8376,7 @@ public class DLFolderPersistenceImpl
 	 * @return the number of matching document library folders
 	 */
 	@Override
-	public int countByF_C_P_NotS(
+	public int countByGtF_C_P_NotS(
 		long folderId, long companyId, long parentFolderId, int status) {
 
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
@@ -8394,7 +8388,7 @@ public class DLFolderPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathWithPaginationCountByF_C_P_NotS;
+			finderPath = _finderPathWithPaginationCountByGtF_C_P_NotS;
 
 			finderArgs = new Object[] {
 				folderId, companyId, parentFolderId, status
@@ -8408,13 +8402,13 @@ public class DLFolderPersistenceImpl
 
 			sb.append(_SQL_COUNT_DLFOLDER_WHERE);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_FOLDERID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_FOLDERID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_COMPANYID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_PARENTFOLDERID_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_PARENTFOLDERID_2);
 
-			sb.append(_FINDER_COLUMN_F_C_P_NOTS_STATUS_2);
+			sb.append(_FINDER_COLUMN_GTF_C_P_NOTS_STATUS_2);
 
 			String sql = sb.toString();
 
@@ -8452,16 +8446,16 @@ public class DLFolderPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_F_C_P_NOTS_FOLDERID_2 =
+	private static final String _FINDER_COLUMN_GTF_C_P_NOTS_FOLDERID_2 =
 		"dlFolder.folderId > ? AND ";
 
-	private static final String _FINDER_COLUMN_F_C_P_NOTS_COMPANYID_2 =
+	private static final String _FINDER_COLUMN_GTF_C_P_NOTS_COMPANYID_2 =
 		"dlFolder.companyId = ? AND ";
 
-	private static final String _FINDER_COLUMN_F_C_P_NOTS_PARENTFOLDERID_2 =
+	private static final String _FINDER_COLUMN_GTF_C_P_NOTS_PARENTFOLDERID_2 =
 		"dlFolder.parentFolderId = ? AND ";
 
-	private static final String _FINDER_COLUMN_F_C_P_NOTS_STATUS_2 =
+	private static final String _FINDER_COLUMN_GTF_C_P_NOTS_STATUS_2 =
 		"dlFolder.status != ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_M_P_H;
@@ -9542,8 +9536,8 @@ public class DLFolderPersistenceImpl
 	private static final String _FINDER_COLUMN_G_M_P_H_HIDDEN_2_SQL =
 		"dlFolder.hidden_ = ?";
 
-	private FinderPath _finderPathWithPaginationFindByG_M_T_H;
-	private FinderPath _finderPathWithPaginationCountByG_M_T_H;
+	private FinderPath _finderPathWithPaginationFindByG_M_LikeT_H;
+	private FinderPath _finderPathWithPaginationCountByG_M_LikeT_H;
 
 	/**
 	 * Returns all the document library folders where groupId = &#63; and mountPoint = &#63; and treePath LIKE &#63; and hidden = &#63;.
@@ -9555,10 +9549,10 @@ public class DLFolderPersistenceImpl
 	 * @return the matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByG_M_T_H(
+	public List<DLFolder> findByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden) {
 
-		return findByG_M_T_H(
+		return findByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -9579,11 +9573,11 @@ public class DLFolderPersistenceImpl
 	 * @return the range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByG_M_T_H(
+	public List<DLFolder> findByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int start, int end) {
 
-		return findByG_M_T_H(
+		return findByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, start, end, null);
 	}
 
@@ -9604,11 +9598,11 @@ public class DLFolderPersistenceImpl
 	 * @return the ordered range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByG_M_T_H(
+	public List<DLFolder> findByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator) {
 
-		return findByG_M_T_H(
+		return findByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, start, end,
 			orderByComparator, true);
 	}
@@ -9631,7 +9625,7 @@ public class DLFolderPersistenceImpl
 	 * @return the ordered range of matching document library folders
 	 */
 	@Override
-	public List<DLFolder> findByG_M_T_H(
+	public List<DLFolder> findByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator,
 		boolean useFinderCache) {
@@ -9644,7 +9638,7 @@ public class DLFolderPersistenceImpl
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = _finderPathWithPaginationFindByG_M_T_H;
+		finderPath = _finderPathWithPaginationFindByG_M_LikeT_H;
 		finderArgs = new Object[] {
 			groupId, mountPoint, treePath, hidden, start, end, orderByComparator
 		};
@@ -9685,22 +9679,22 @@ public class DLFolderPersistenceImpl
 
 			sb.append(_SQL_SELECT_DLFOLDER_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 			boolean bindTreePath = false;
 
 			if (treePath.isEmpty()) {
-				sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+				sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 			}
 			else {
 				bindTreePath = true;
 
-				sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+				sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 			}
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -9763,12 +9757,12 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder findByG_M_T_H_First(
+	public DLFolder findByG_M_LikeT_H_First(
 			long groupId, boolean mountPoint, String treePath, boolean hidden,
 			OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
 
-		DLFolder dlFolder = fetchByG_M_T_H_First(
+		DLFolder dlFolder = fetchByG_M_LikeT_H_First(
 			groupId, mountPoint, treePath, hidden, orderByComparator);
 
 		if (dlFolder != null) {
@@ -9807,11 +9801,11 @@ public class DLFolderPersistenceImpl
 	 * @return the first matching document library folder, or <code>null</code> if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder fetchByG_M_T_H_First(
+	public DLFolder fetchByG_M_LikeT_H_First(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator) {
 
-		List<DLFolder> list = findByG_M_T_H(
+		List<DLFolder> list = findByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -9833,12 +9827,12 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder findByG_M_T_H_Last(
+	public DLFolder findByG_M_LikeT_H_Last(
 			long groupId, boolean mountPoint, String treePath, boolean hidden,
 			OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
 
-		DLFolder dlFolder = fetchByG_M_T_H_Last(
+		DLFolder dlFolder = fetchByG_M_LikeT_H_Last(
 			groupId, mountPoint, treePath, hidden, orderByComparator);
 
 		if (dlFolder != null) {
@@ -9877,17 +9871,17 @@ public class DLFolderPersistenceImpl
 	 * @return the last matching document library folder, or <code>null</code> if a matching document library folder could not be found
 	 */
 	@Override
-	public DLFolder fetchByG_M_T_H_Last(
+	public DLFolder fetchByG_M_LikeT_H_Last(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator) {
 
-		int count = countByG_M_T_H(groupId, mountPoint, treePath, hidden);
+		int count = countByG_M_LikeT_H(groupId, mountPoint, treePath, hidden);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<DLFolder> list = findByG_M_T_H(
+		List<DLFolder> list = findByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, count - 1, count,
 			orderByComparator);
 
@@ -9911,7 +9905,7 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
-	public DLFolder[] findByG_M_T_H_PrevAndNext(
+	public DLFolder[] findByG_M_LikeT_H_PrevAndNext(
 			long folderId, long groupId, boolean mountPoint, String treePath,
 			boolean hidden, OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
@@ -9927,13 +9921,13 @@ public class DLFolderPersistenceImpl
 
 			DLFolder[] array = new DLFolderImpl[3];
 
-			array[0] = getByG_M_T_H_PrevAndNext(
+			array[0] = getByG_M_LikeT_H_PrevAndNext(
 				session, dlFolder, groupId, mountPoint, treePath, hidden,
 				orderByComparator, true);
 
 			array[1] = dlFolder;
 
-			array[2] = getByG_M_T_H_PrevAndNext(
+			array[2] = getByG_M_LikeT_H_PrevAndNext(
 				session, dlFolder, groupId, mountPoint, treePath, hidden,
 				orderByComparator, false);
 
@@ -9947,7 +9941,7 @@ public class DLFolderPersistenceImpl
 		}
 	}
 
-	protected DLFolder getByG_M_T_H_PrevAndNext(
+	protected DLFolder getByG_M_LikeT_H_PrevAndNext(
 		Session session, DLFolder dlFolder, long groupId, boolean mountPoint,
 		String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator, boolean previous) {
@@ -9965,22 +9959,22 @@ public class DLFolderPersistenceImpl
 
 		sb.append(_SQL_SELECT_DLFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 		boolean bindTreePath = false;
 
 		if (treePath.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 		}
 		else {
 			bindTreePath = true;
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
@@ -10089,10 +10083,10 @@ public class DLFolderPersistenceImpl
 	 * @return the matching document library folders that the user has permission to view
 	 */
 	@Override
-	public List<DLFolder> filterFindByG_M_T_H(
+	public List<DLFolder> filterFindByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden) {
 
-		return filterFindByG_M_T_H(
+		return filterFindByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, QueryUtil.ALL_POS,
 			QueryUtil.ALL_POS, null);
 	}
@@ -10113,11 +10107,11 @@ public class DLFolderPersistenceImpl
 	 * @return the range of matching document library folders that the user has permission to view
 	 */
 	@Override
-	public List<DLFolder> filterFindByG_M_T_H(
+	public List<DLFolder> filterFindByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int start, int end) {
 
-		return filterFindByG_M_T_H(
+		return filterFindByG_M_LikeT_H(
 			groupId, mountPoint, treePath, hidden, start, end, null);
 	}
 
@@ -10138,12 +10132,12 @@ public class DLFolderPersistenceImpl
 	 * @return the ordered range of matching document library folders that the user has permission to view
 	 */
 	@Override
-	public List<DLFolder> filterFindByG_M_T_H(
+	public List<DLFolder> filterFindByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden,
 		int start, int end, OrderByComparator<DLFolder> orderByComparator) {
 
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_M_T_H(
+			return findByG_M_LikeT_H(
 				groupId, mountPoint, treePath, hidden, start, end,
 				orderByComparator);
 		}
@@ -10167,22 +10161,22 @@ public class DLFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_DLFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 		boolean bindTreePath = false;
 
 		if (treePath.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 		}
 		else {
 			bindTreePath = true;
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2_SQL);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_DLFOLDER_NO_INLINE_DISTINCT_WHERE_2);
@@ -10261,13 +10255,13 @@ public class DLFolderPersistenceImpl
 	 * @throws NoSuchFolderException if a document library folder with the primary key could not be found
 	 */
 	@Override
-	public DLFolder[] filterFindByG_M_T_H_PrevAndNext(
+	public DLFolder[] filterFindByG_M_LikeT_H_PrevAndNext(
 			long folderId, long groupId, boolean mountPoint, String treePath,
 			boolean hidden, OrderByComparator<DLFolder> orderByComparator)
 		throws NoSuchFolderException {
 
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return findByG_M_T_H_PrevAndNext(
+			return findByG_M_LikeT_H_PrevAndNext(
 				folderId, groupId, mountPoint, treePath, hidden,
 				orderByComparator);
 		}
@@ -10283,13 +10277,13 @@ public class DLFolderPersistenceImpl
 
 			DLFolder[] array = new DLFolderImpl[3];
 
-			array[0] = filterGetByG_M_T_H_PrevAndNext(
+			array[0] = filterGetByG_M_LikeT_H_PrevAndNext(
 				session, dlFolder, groupId, mountPoint, treePath, hidden,
 				orderByComparator, true);
 
 			array[1] = dlFolder;
 
-			array[2] = filterGetByG_M_T_H_PrevAndNext(
+			array[2] = filterGetByG_M_LikeT_H_PrevAndNext(
 				session, dlFolder, groupId, mountPoint, treePath, hidden,
 				orderByComparator, false);
 
@@ -10303,7 +10297,7 @@ public class DLFolderPersistenceImpl
 		}
 	}
 
-	protected DLFolder filterGetByG_M_T_H_PrevAndNext(
+	protected DLFolder filterGetByG_M_LikeT_H_PrevAndNext(
 		Session session, DLFolder dlFolder, long groupId, boolean mountPoint,
 		String treePath, boolean hidden,
 		OrderByComparator<DLFolder> orderByComparator, boolean previous) {
@@ -10326,22 +10320,22 @@ public class DLFolderPersistenceImpl
 			sb.append(_FILTER_SQL_SELECT_DLFOLDER_NO_INLINE_DISTINCT_WHERE_1);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 		boolean bindTreePath = false;
 
 		if (treePath.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 		}
 		else {
 			bindTreePath = true;
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2_SQL);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2_SQL);
 
 		if (!getDB().isSupportsInlineDistinct()) {
 			sb.append(_FILTER_SQL_SELECT_DLFOLDER_NO_INLINE_DISTINCT_WHERE_2);
@@ -10485,11 +10479,11 @@ public class DLFolderPersistenceImpl
 	 * @param hidden the hidden
 	 */
 	@Override
-	public void removeByG_M_T_H(
+	public void removeByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden) {
 
 		for (DLFolder dlFolder :
-				findByG_M_T_H(
+				findByG_M_LikeT_H(
 					groupId, mountPoint, treePath, hidden, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS, null)) {
 
@@ -10507,7 +10501,7 @@ public class DLFolderPersistenceImpl
 	 * @return the number of matching document library folders
 	 */
 	@Override
-	public int countByG_M_T_H(
+	public int countByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden) {
 
 		treePath = Objects.toString(treePath, "");
@@ -10521,7 +10515,7 @@ public class DLFolderPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathWithPaginationCountByG_M_T_H;
+			finderPath = _finderPathWithPaginationCountByG_M_LikeT_H;
 
 			finderArgs = new Object[] {groupId, mountPoint, treePath, hidden};
 
@@ -10533,22 +10527,22 @@ public class DLFolderPersistenceImpl
 
 			sb.append(_SQL_COUNT_DLFOLDER_WHERE);
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 			boolean bindTreePath = false;
 
 			if (treePath.isEmpty()) {
-				sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+				sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 			}
 			else {
 				bindTreePath = true;
 
-				sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+				sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 			}
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2);
 
 			String sql = sb.toString();
 
@@ -10598,11 +10592,11 @@ public class DLFolderPersistenceImpl
 	 * @return the number of matching document library folders that the user has permission to view
 	 */
 	@Override
-	public int filterCountByG_M_T_H(
+	public int filterCountByG_M_LikeT_H(
 		long groupId, boolean mountPoint, String treePath, boolean hidden) {
 
 		if (!InlineSQLHelperUtil.isEnabled(groupId)) {
-			return countByG_M_T_H(groupId, mountPoint, treePath, hidden);
+			return countByG_M_LikeT_H(groupId, mountPoint, treePath, hidden);
 		}
 
 		treePath = Objects.toString(treePath, "");
@@ -10611,22 +10605,22 @@ public class DLFolderPersistenceImpl
 
 		sb.append(_FILTER_SQL_COUNT_DLFOLDER_WHERE);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_GROUPID_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_GROUPID_2);
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2);
 
 		boolean bindTreePath = false;
 
 		if (treePath.isEmpty()) {
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_3);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3);
 		}
 		else {
 			bindTreePath = true;
 
-			sb.append(_FINDER_COLUMN_G_M_T_H_TREEPATH_2);
+			sb.append(_FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2);
 		}
 
-		sb.append(_FINDER_COLUMN_G_M_T_H_HIDDEN_2_SQL);
+		sb.append(_FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2_SQL);
 
 		String sql = InlineSQLHelperUtil.replacePermissionCheck(
 			sb.toString(), DLFolder.class.getName(),
@@ -10666,22 +10660,22 @@ public class DLFolderPersistenceImpl
 		}
 	}
 
-	private static final String _FINDER_COLUMN_G_M_T_H_GROUPID_2 =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_GROUPID_2 =
 		"dlFolder.groupId = ? AND ";
 
-	private static final String _FINDER_COLUMN_G_M_T_H_MOUNTPOINT_2 =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_MOUNTPOINT_2 =
 		"dlFolder.mountPoint = ? AND ";
 
-	private static final String _FINDER_COLUMN_G_M_T_H_TREEPATH_2 =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_TREEPATH_2 =
 		"dlFolder.treePath LIKE ? AND ";
 
-	private static final String _FINDER_COLUMN_G_M_T_H_TREEPATH_3 =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_TREEPATH_3 =
 		"(dlFolder.treePath IS NULL OR dlFolder.treePath LIKE '') AND ";
 
-	private static final String _FINDER_COLUMN_G_M_T_H_HIDDEN_2 =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2 =
 		"dlFolder.hidden = ?";
 
-	private static final String _FINDER_COLUMN_G_M_T_H_HIDDEN_2_SQL =
+	private static final String _FINDER_COLUMN_G_M_LIKET_H_HIDDEN_2_SQL =
 		"dlFolder.hidden_ = ?";
 
 	private FinderPath _finderPathWithPaginationFindByG_P_H_S;
@@ -14571,6 +14565,26 @@ public class DLFolderPersistenceImpl
 			return map;
 		}
 
+		if ((databaseInMaxParameters > 0) &&
+			(primaryKeys.size() > databaseInMaxParameters)) {
+
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			while (iterator.hasNext()) {
+				Set<Serializable> page = new HashSet<>();
+
+				for (int i = 0;
+					 (i < databaseInMaxParameters) && iterator.hasNext(); i++) {
+
+					page.add(iterator.next());
+				}
+
+				map.putAll(fetchByPrimaryKeys(page));
+			}
+
+			return map;
+		}
+
 		StringBundler sb = new StringBundler((primaryKeys.size() * 2) + 1);
 
 		sb.append(getSelectSQL());
@@ -15256,11 +15270,6 @@ public class DLFolderPersistenceImpl
 	 * Initializes the document library folder persistence.
 	 */
 	public void afterPropertiesSet() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_argumentsResolverServiceRegistration = registry.registerService(
-			ArgumentsResolver.class, new DLFolderModelArgumentsResolver());
-
 		dlFolderToDLFileEntryTypeTableMapper =
 			TableMapperFactory.getTableMapper(
 				"DLFileEntryTypes_DLFolders", "companyId", "folderId",
@@ -15517,8 +15526,8 @@ public class DLFolderPersistenceImpl
 			},
 			new String[] {"groupId", "parentFolderId", "name"}, false);
 
-		_finderPathWithPaginationFindByF_C_P_NotS = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByF_C_P_NotS",
+		_finderPathWithPaginationFindByGtF_C_P_NotS = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGtF_C_P_NotS",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName(),
@@ -15528,8 +15537,8 @@ public class DLFolderPersistenceImpl
 			new String[] {"folderId", "companyId", "parentFolderId", "status"},
 			true);
 
-		_finderPathWithPaginationCountByF_C_P_NotS = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByF_C_P_NotS",
+		_finderPathWithPaginationCountByGtF_C_P_NotS = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByGtF_C_P_NotS",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Long.class.getName(), Integer.class.getName()
@@ -15566,8 +15575,8 @@ public class DLFolderPersistenceImpl
 			new String[] {"groupId", "mountPoint", "parentFolderId", "hidden_"},
 			false);
 
-		_finderPathWithPaginationFindByG_M_T_H = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_M_T_H",
+		_finderPathWithPaginationFindByG_M_LikeT_H = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByG_M_LikeT_H",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Boolean.class.getName(),
@@ -15577,8 +15586,8 @@ public class DLFolderPersistenceImpl
 			new String[] {"groupId", "mountPoint", "treePath", "hidden_"},
 			true);
 
-		_finderPathWithPaginationCountByG_M_T_H = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_M_T_H",
+		_finderPathWithPaginationCountByG_M_LikeT_H = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByG_M_LikeT_H",
 			new String[] {
 				Long.class.getName(), Boolean.class.getName(),
 				String.class.getName(), Boolean.class.getName()
@@ -15681,8 +15690,6 @@ public class DLFolderPersistenceImpl
 	public void destroy() {
 		EntityCacheUtil.removeCache(DLFolderImpl.class.getName());
 
-		_argumentsResolverServiceRegistration.unregister();
-
 		TableMapperFactory.removeTableMapper("DLFileEntryTypes_DLFolders");
 	}
 
@@ -15745,112 +15752,6 @@ public class DLFolderPersistenceImpl
 	@Override
 	protected FinderCache getFinderCache() {
 		return FinderCacheUtil.getFinderCache();
-	}
-
-	private ServiceRegistration<ArgumentsResolver>
-		_argumentsResolverServiceRegistration;
-
-	private static class DLFolderModelArgumentsResolver
-		implements ArgumentsResolver {
-
-		@Override
-		public Object[] getArguments(
-			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-			boolean original) {
-
-			String[] columnNames = finderPath.getColumnNames();
-
-			if ((columnNames == null) || (columnNames.length == 0)) {
-				if (baseModel.isNew()) {
-					return FINDER_ARGS_EMPTY;
-				}
-
-				return null;
-			}
-
-			DLFolderModelImpl dlFolderModelImpl = (DLFolderModelImpl)baseModel;
-
-			long columnBitmask = dlFolderModelImpl.getColumnBitmask();
-
-			if (!checkColumn || (columnBitmask == 0)) {
-				return _getValue(dlFolderModelImpl, columnNames, original);
-			}
-
-			Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
-				finderPath);
-
-			if (finderPathColumnBitmask == null) {
-				finderPathColumnBitmask = 0L;
-
-				for (String columnName : columnNames) {
-					finderPathColumnBitmask |=
-						dlFolderModelImpl.getColumnBitmask(columnName);
-				}
-
-				if (finderPath.isBaseModelResult() &&
-					(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION ==
-						finderPath.getCacheName())) {
-
-					finderPathColumnBitmask |= _ORDER_BY_COLUMNS_BITMASK;
-				}
-
-				_finderPathColumnBitmasksCache.put(
-					finderPath, finderPathColumnBitmask);
-			}
-
-			if ((columnBitmask & finderPathColumnBitmask) != 0) {
-				return _getValue(dlFolderModelImpl, columnNames, original);
-			}
-
-			return null;
-		}
-
-		@Override
-		public String getClassName() {
-			return DLFolderImpl.class.getName();
-		}
-
-		@Override
-		public String getTableName() {
-			return DLFolderTable.INSTANCE.getTableName();
-		}
-
-		private static Object[] _getValue(
-			DLFolderModelImpl dlFolderModelImpl, String[] columnNames,
-			boolean original) {
-
-			Object[] arguments = new Object[columnNames.length];
-
-			for (int i = 0; i < arguments.length; i++) {
-				String columnName = columnNames[i];
-
-				if (original) {
-					arguments[i] = dlFolderModelImpl.getColumnOriginalValue(
-						columnName);
-				}
-				else {
-					arguments[i] = dlFolderModelImpl.getColumnValue(columnName);
-				}
-			}
-
-			return arguments;
-		}
-
-		private static final Map<FinderPath, Long>
-			_finderPathColumnBitmasksCache = new ConcurrentHashMap<>();
-
-		private static final long _ORDER_BY_COLUMNS_BITMASK;
-
-		static {
-			long orderByColumnsBitmask = 0;
-
-			orderByColumnsBitmask |= DLFolderModelImpl.getColumnBitmask(
-				"parentFolderId");
-			orderByColumnsBitmask |= DLFolderModelImpl.getColumnBitmask("name");
-
-			_ORDER_BY_COLUMNS_BITMASK = orderByColumnsBitmask;
-		}
-
 	}
 
 }

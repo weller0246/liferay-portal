@@ -31,8 +31,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>PANEL_TITLE</td>
-	<td>//div[contains(@class, 'panel-title')]</td>
+	<td>ERROR_WARNING_TITLE</td>
+	<td>//div[contains(@class, 'alert')] //strong[contains(., '${errorTitle}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ERROR_WARNING_MESSAGE</td>
+	<td>//dd[text()='${errorMessage}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ERROR_WARNING_BOX</td>
+	<td>//div[contains(@class, 'alert')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -48,6 +58,11 @@
 <tr>
 	<td>FAILING_ELEMENT_NAME</td>
 	<td>//*[contains(@class, 'font-weight-semi-bold') and contains(@class, 'list-group-text')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FAILING_ELEMENT_TEXT</td>
+	<td>//*[contains(text(), '${failingText}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -73,6 +88,11 @@
 <tr>
 	<td>PANEL_PAGE_TITLE</td>
 	<td>//*[contains(@class, 'text-truncate') and contains(@title, '${pageName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PANEL_TITLE</td>
+	<td>//div[contains(@class, 'panel-title')]</td>
 	<td></td>
 </tr>
 <tr>

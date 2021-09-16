@@ -134,6 +134,14 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().deleteObjectEntry(objectEntry);
 	}
 
+	public static ObjectEntry deleteObjectEntry(
+			String externalReferenceCode, long companyId, long groupId)
+		throws PortalException {
+
+		return getService().deleteObjectEntry(
+			externalReferenceCode, companyId, groupId);
+	}
+
 	/**
 	 * @throws PortalException
 	 */
@@ -267,6 +275,15 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().getIndexableActionableDynamicQuery();
 	}
 
+	public static List<ObjectEntry> getManyToManyRelatedObjectEntries(
+			long groupId, long objectRelationshipId, long primaryKey, int start,
+			int end)
+		throws PortalException {
+
+		return getService().getManyToManyRelatedObjectEntries(
+			groupId, objectRelationshipId, primaryKey, start, end);
+	}
+
 	/**
 	 * Returns a range of all the object entries.
 	 *
@@ -283,10 +300,11 @@ public class ObjectEntryLocalServiceUtil {
 	}
 
 	public static List<ObjectEntry> getObjectEntries(
-			long objectDefinitionId, int start, int end)
+			long groupId, long objectDefinitionId, int start, int end)
 		throws PortalException {
 
-		return getService().getObjectEntries(objectDefinitionId, start, end);
+		return getService().getObjectEntries(
+			groupId, objectDefinitionId, start, end);
 	}
 
 	/**
@@ -329,8 +347,10 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().getObjectEntriesCount();
 	}
 
-	public static int getObjectEntriesCount(long objectDefinitionId) {
-		return getService().getObjectEntriesCount(objectDefinitionId);
+	public static int getObjectEntriesCount(
+		long groupId, long objectDefinitionId) {
+
+		return getService().getObjectEntriesCount(groupId, objectDefinitionId);
 	}
 
 	/**
@@ -346,6 +366,14 @@ public class ObjectEntryLocalServiceUtil {
 		return getService().getObjectEntry(objectEntryId);
 	}
 
+	public static ObjectEntry getObjectEntry(
+			String externalReferenceCode, long companyId, long groupId)
+		throws PortalException {
+
+		return getService().getObjectEntry(
+			externalReferenceCode, companyId, groupId);
+	}
+
 	/**
 	 * Returns the object entry matching the UUID and group.
 	 *
@@ -359,6 +387,15 @@ public class ObjectEntryLocalServiceUtil {
 		throws PortalException {
 
 		return getService().getObjectEntryByUuidAndGroupId(uuid, groupId);
+	}
+
+	public static List<ObjectEntry> getOneToManyRelatedObjectEntries(
+			long groupId, long objectRelationshipId, long primaryKey, int start,
+			int end)
+		throws PortalException {
+
+		return getService().getOneToManyRelatedObjectEntries(
+			groupId, objectRelationshipId, primaryKey, start, end);
 	}
 
 	/**
@@ -401,11 +438,12 @@ public class ObjectEntryLocalServiceUtil {
 
 	public static com.liferay.portal.kernel.search.BaseModelSearchResult
 		<ObjectEntry> searchObjectEntries(
-				long objectDefinitionId, String keywords, int cur, int delta)
+				long groupId, long objectDefinitionId, String keywords, int cur,
+				int delta)
 			throws PortalException {
 
 		return getService().searchObjectEntries(
-			objectDefinitionId, keywords, cur, delta);
+			groupId, objectDefinitionId, keywords, cur, delta);
 	}
 
 	public static void updateAsset(

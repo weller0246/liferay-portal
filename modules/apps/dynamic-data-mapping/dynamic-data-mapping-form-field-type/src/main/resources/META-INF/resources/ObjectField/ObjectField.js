@@ -24,14 +24,18 @@ import Select from '../Select/Select.es';
 
 const dataTypes = {
 	double: ['double', 'bigdecimal'],
+	image: ['blob'],
 	integer: ['integer', 'long'],
-	string: ['string', 'blob'],
 };
 
 const normalizeDataType = (type) => {
 	const formattedType = type.toLowerCase();
 
 	return dataTypes[formattedType] ?? formattedType;
+};
+
+const formatLanguageId = (languageId) => {
+	return languageId.replace('_', '-');
 };
 
 const ObjectField = ({
@@ -71,9 +75,12 @@ const ObjectField = ({
 				})
 				.filter(Boolean);
 
-			return filteredObjectFields.map(({name}) => ({
+			return filteredObjectFields.map(({label, name}) => ({
 				disabled: !!mappedFields.includes(name),
-				label: name,
+				label:
+					label[
+						formatLanguageId(themeDisplay.getDefaultLanguageId())
+					] ?? name,
 				value: name,
 			}));
 		}

@@ -38,7 +38,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="C" return-type="Collection">
+		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
 		<finder name="C_C" return-type="OAuth2Application">
@@ -71,7 +71,7 @@
 
 		<!-- Finder methods -->
 
-		<finder name="C" return-type="Collection">
+		<finder name="CompanyId" return-type="Collection">
 			<finder-column name="companyId" />
 		</finder>
 		<finder name="OAuth2ApplicationId" return-type="Collection">
@@ -120,11 +120,11 @@
 		<finder name="OAuth2ApplicationId" return-type="Collection">
 			<finder-column name="oAuth2ApplicationId" />
 		</finder>
-		<finder name="AccessTokenContentHash" return-type="Collection">
+		<finder name="C_ATCH" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="accessTokenContentHash" />
 		</finder>
-		<finder name="RefreshTokenContentHash" return-type="Collection">
+		<finder name="C_RTCH" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="refreshTokenContentHash" />
 		</finder>

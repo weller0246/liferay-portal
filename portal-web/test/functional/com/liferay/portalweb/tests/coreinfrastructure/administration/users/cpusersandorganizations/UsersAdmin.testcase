@@ -811,6 +811,110 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for can add comment for user."
+	@priority = "2"
+	test CanAddComment {
+		User.openUsersAdmin();
+
+		User.addCP(
+			userComment = "test",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Alert.viewSuccessMessage();
+
+		User.openUsersAdmin();
+
+		UserNavigator.gotoUser(userScreenName = "usersn");
+
+		AssertElementPresent(
+			locator1 = "TextArea#COMMENTS",
+			userComment = "test");
+
+		AssertConsoleTextNotPresent(value1 = "java.lang.NullPointerException");
+	}
+
+	@priority = "3"
+	test CanBulkActivateUsers {
+		for (var userNum : list "1,2,3,4,5") {
+			JSONUser.addUser(
+				userEmailAddress = "userea${userNum}@liferay.com",
+				userFirstName = "userfn${userNum}",
+				userLastName = "userln${userNum}",
+				userScreenName = "usersn${userNum}");
+		}
+
+		User.openUsersAdmin();
+
+		User.deactivateCP(
+			deactivateType = "Management Toolbar",
+			userFirstNameList = "userfn1,userfn3,userfn5");
+
+		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+		for (var rowEntry : list "userfn1 userln1,userfn3 userln3,userfn5 userln5") {
+			LexiconEntry.viewEntryName(rowEntry = "${rowEntry}");
+		}
+
+		User.bulkActivateCP(
+			activateType = "Management Toolbar",
+			userFirstNameList = "userfn1,userfn3,userfn5");
+
+		for (var rowEntry : list "userfn1 userln1,userfn3 userln3,userfn5 userln5") {
+			LexiconEntry.viewNoEntry(rowEntry = "${rowEntry}");
+		}
+
+		User.openUsersAdmin();
+
+		for (var rowEntry : list "userfn1 userln1,userfn2 userln2,userfn3 userln3,userfn4 userln4,userfn5 userln5") {
+			AssertElementPresent(
+				key_rowEntry = "${rowEntry}",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_NAME");
+		}
+	}
+
+	@description = "This test changes to cards view for users."
+	@priority = "2"
+	test CanChangeToCardsView {
+		JSONUser.addUser(
+			userEmailAddress = "userea1@liferay.com",
+			userFirstName = "userfn1",
+			userLastName = "userln1",
+			userScreenName = "usersn1");
+
+		User.openUsersAdmin();
+
+		ManagementBar.changeDisplayStyle(displayStyle = "Cards");
+
+		LexiconCard.viewCardTitle(card = "userfn1 userln1");
+
+		LexiconCard.viewCardSubtitle(
+			card = "userfn1 userln1",
+			cardSubtitle = "usersn1");
+	}
+
+	@description = "This test changes to list view for users."
+	@priority = "2"
+	test CanChangeToListView {
+		JSONUser.addUser(
+			userEmailAddress = "userea1@liferay.com",
+			userFirstName = "userfn1",
+			userLastName = "userln1",
+			userScreenName = "usersn1");
+
+		User.openUsersAdmin();
+
+		ManagementBar.changeDisplayStyle(displayStyle = "List");
+
+		LexiconList.viewListEntryTitle(listEntry = "userfn1 userln1");
+
+		LexiconList.viewListEntrySubtitle(
+			listEntry = "userfn1 userln1",
+			listEntrySubtitle = "usersn1");
+	}
+
 	@priority = "4"
 	test CannotViewSiteSettingsInUserPersonalSite {
 		Navigator.gotoPersonalSite();

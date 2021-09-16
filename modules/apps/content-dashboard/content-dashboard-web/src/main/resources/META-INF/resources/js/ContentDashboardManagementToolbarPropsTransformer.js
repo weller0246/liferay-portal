@@ -42,6 +42,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const selectAssetCategory = (itemData) => {
 		openSelectionModal({
 			buttonAddLabel: Liferay.Language.get('select'),
+			iframeBodyCssClass: '',
 			multiple: true,
 			onSelect: (selectedItem) => {
 				if (selectedItem) {
@@ -93,39 +94,53 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 		});
 	};
 
-	const selectContentDashboardItemType = (itemData) => {
+	const selectContentDashboardItemSubtype = (itemData) => {
 		openSelectionModal({
 			buttonAddLabel: Liferay.Language.get('select'),
+			height: '70vh',
 			multiple: true,
 			onSelect: (selectedItems) => {
-				if (selectedItems.length) {
-					const values = selectedItems.map((item) => {
-						const payload = JSON.parse(
-							Liferay.Util.unescape(item.value)
-						);
+				let redirectURL = itemData?.redirectURL;
 
-						return {
-							className: payload.className,
-							classPK: payload.classPK,
-						};
-					});
+				selectedItems.forEach((item) => {
+					redirectURL = addParams(
+						`${portletNamespace}contentDashboardItemSubtypePayload=${JSON.stringify(
+							item
+						)}`,
+						redirectURL
+					);
+				});
 
-					let redirectURL = itemData?.redirectURL;
-
-					values.forEach((item) => {
-						redirectURL = addParams(
-							`${portletNamespace}contentDashboardItemTypePayload=${JSON.stringify(
-								item
-							)}`,
-							redirectURL
-						);
-					});
-
-					navigate(redirectURL);
-				}
+				navigate(redirectURL);
 			},
+			selectEventName: `${portletNamespace}selectedContentDashboardItemSubtype`,
+			size: 'md',
 			title: itemData?.dialogTitle,
-			url: itemData?.selectContentDashboardItemTypeURL,
+			url: itemData?.selectContentDashboardItemSubtypeURL,
+		});
+	};
+
+	const selectFileExtension = (itemData) => {
+		openSelectionModal({
+			buttonAddLabel: Liferay.Language.get('select'),
+			height: '70vh',
+			multiple: true,
+			onSelect: (selectedItems) => {
+				let redirectURL = itemData?.redirectURL;
+
+				selectedItems.forEach((item) => {
+					redirectURL = addParams(
+						`${portletNamespace}fileExtension=${item}`,
+						redirectURL
+					);
+				});
+
+				navigate(redirectURL);
+			},
+			selectEventName: `${portletNamespace}selectedFileExtension`,
+			size: 'md',
+			title: itemData?.dialogTitle,
+			url: itemData?.selectFileExtensionURL,
 		});
 	};
 
@@ -162,11 +177,14 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			else if (action === 'selectAuthor') {
 				selectAuthor(data);
 			}
-			else if (action === 'selectContentDashboardItemType') {
-				selectContentDashboardItemType(data);
+			else if (action === 'selectContentDashboardItemSubtype') {
+				selectContentDashboardItemSubtype(data);
 			}
 			else if (action === 'selectScope') {
 				selectScope(data);
+			}
+			else if (action === 'selectFileExtension') {
+				selectFileExtension(data);
 			}
 		},
 	};

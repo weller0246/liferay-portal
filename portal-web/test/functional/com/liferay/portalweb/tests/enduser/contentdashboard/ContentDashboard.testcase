@@ -73,6 +73,85 @@ definition {
 		}
 	}
 
+	@description = "LPS-122873 When all the web content is unassigned from a Vocab1's category, the relative ordering of the rest of the categories remain the same"
+	@priority = "3"
+	test AssigningSomeAudienceCategoriesAndCheckingTheOrder {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a list of Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Select of categories 1 and 3 of Audience, and all categories of Stage") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			for (var count : list "1,2,3") {
+				WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title ${count}");
+
+				for (var count : list "1,3") {
+					WebContent.selectCategory(
+						categoryName = "S ${count}",
+						vocabularyName = "Audience");
+				}
+
+				for (var count : list "1,2,3") {
+					WebContent.selectCategory(
+						categoryName = "test ${count}",
+						vocabularyName = "Stage");
+				}
+
+				PortletEntry.publish();
+			}
+		}
+		task ("Navigate to content Dashboard and View the order of categories") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			task ("blue - first position") {
+				AssertElementPresent(
+					fillColor = "4B9FFF",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("orange - second position") {
+				AssertElementPresent(
+					fillColor = "FFB46E",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("red - third position") {
+				AssertElementPresent(
+					fillColor = "FF5F5F",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+		}
+	}
+
 	@description = "LPS-114911 When the user selects vocabularies from the selection panel, vocabularies selected show in the table as headers and categories assigned to contents will show "
 	@priority = "5"
 	test CategorieShowInTable {
@@ -110,6 +189,50 @@ definition {
 			AssertTextPresent(
 				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
 				value1 = "Test");
+		}
+	}
+
+	@description = "LPS-122873 When there are some categories created for vocabulary1 (X axis), they will always have the same order during the user session"
+	@priority = "3"
+	test CategoriesWithSameOrderDuringASession {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Select list of categories") {
+			ContentDashboard.selectListofCategoriesForAudienceAndStage();
+		}
+
+		task ("Navigate to content Dashboard and View the order of categories") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
 		}
 	}
 
@@ -278,6 +401,103 @@ definition {
 		}
 	}
 
+	@description = "LPS-122873 When any web content is unassigned to a Vocab1's category, the relative ordering of categories remain the same"
+	@priority = "3"
+	test CheckOrderEvenWithSomeUnassignedCategories {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Selecting the categories, one of the contents will not have category 2 of vocabulary 1") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title 1");
+
+			for (var count : list "1,3") {
+				WebContent.selectCategory(
+					categoryName = "S ${count}",
+					vocabularyName = "Audience");
+			}
+
+			for (var count : list "1,2,3") {
+				WebContent.selectCategory(
+					categoryName = "test ${count}",
+					vocabularyName = "Stage");
+			}
+
+			PortletEntry.publish();
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			for (var count : list "2,3") {
+				WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title ${count}");
+
+				for (var count : list "1,2,3") {
+					WebContent.selectCategory(
+						categoryName = "S ${count}",
+						vocabularyName = "Audience");
+				}
+
+				for (var count : list "1,2,3") {
+					WebContent.selectCategory(
+						categoryName = "test ${count}",
+						vocabularyName = "Stage");
+				}
+
+				PortletEntry.publish();
+			}
+		}
+		task ("Navigate to content Dashboard and View the order of categories") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			task ("blue - first position") {
+				AssertElementPresent(
+					fillColor = "4B9FFF",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("orange - second position") {
+				AssertElementPresent(
+					fillColor = "FFB46E",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("red - third position") {
+				AssertElementPresent(
+					fillColor = "FF5F5F",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+		}
+	}
+
 	@description = "LPS-133716 When in Content Dashboard, a column with the Site / assetLibraty header is shown."
 	@priority = "2"
 	test CheckSiteAssertLibraryColumn {
@@ -336,6 +556,121 @@ definition {
 
 		task ("Drop second group") {
 			JSONGroup.deleteGroupByName(groupName = "Second Test Site Name");
+		}
+	}
+
+	@description = "LPS-122873 When a new category is created and assigned to a web content, the relative ordering of categories remain the same and the new category gets a new color, positionated in the last position"
+	@priority = "3"
+	test CheckTheOrderWithANewCategory {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a list of Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Select list of categories") {
+			ContentDashboard.selectListofCategoriesForAudienceAndStage();
+		}
+
+		task ("Navigate to content Dashboard and View the order of categories") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			task ("blue - first position") {
+				AssertElementPresent(
+					fillColor = "4B9FFF",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("orange - second position") {
+				AssertElementPresent(
+					fillColor = "FFB46E",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("red - third position") {
+				AssertElementPresent(
+					fillColor = "FF5F5F",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("green - last position") {
+				AssertElementNotPresent(
+					fillColor = "50D2A0",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+		}
+
+		task ("Create a new category and assign one of the contents") {
+			JSONCategory.addCategory(
+				groupName = "Global",
+				title = "test 4",
+				vocabularyName = "Stage");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title 1");
+
+			WebContent.selectCategory(
+				categoryName = "test 4",
+				vocabularyName = "Stage");
+
+			PortletEntry.publish();
+		}
+		task ("Navigate to the content panel and see if, in the new category order, the new category receives a new color, placed in the last position") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			task ("blue - first position") {
+				AssertElementPresent(
+					fillColor = "4B9FFF",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("orange - second position") {
+				AssertElementPresent(
+					fillColor = "FFB46E",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("red - third position") {
+				AssertElementPresent(
+					fillColor = "FF5F5F",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("green - last position") {
+				AssertElementPresent(
+					fillColor = "50D2A0",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
 		}
 	}
 
@@ -684,6 +1019,168 @@ definition {
 		}
 	}
 
+	@priority = "4"
+	@uitest
+	test ClickTitleDocumentDPTWithNoPermissions {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add Display Page and mark it as default") {
+			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
+				contentType = "Document",
+				displayPageTemplateEntryName = "Display Page Name",
+				groupName = "Test Site Name",
+				subType = "Basic Document");
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
+
+			PageEditor.addWidget(portletName = "Documents and Media");
+
+			PageEditor.clickPublish();
+
+			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
+		}
+
+		task ("Add a document") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Title");
+		}
+
+		task ("Add a role and user with NO permissions") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Users and Organizations");
+
+			User.addCP(
+				userEmailAddress = "userea@liferay.com",
+				userFirstName = "userfn",
+				userLastName = "userln",
+				userScreenName = "usersn");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Users and Organizations");
+
+			User.editPasswordCP(
+				requirePasswordReset = "true",
+				userEmailAddress = "userea@liferay.com",
+				userScreenName = "usersn");
+
+			JSONRole.addRegularRole(
+				roleKey = "WC Creator Edit Permissions",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW_SITE_ADMINISTRATION",
+				resourceName = "com.liferay.portal.kernel.model.Group",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "ACCESS_IN_CONTROL_PANEL",
+				resourceName = "com_liferay_content_dashboard_web_portlet_ContentDashboardAdminPortlet",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW_CONTROL_PANEL",
+				resourceName = "90",
+				roleTitle = "WC Creator Edit Permissions");
+
+			JSONRole.assignRoleToUser(
+				roleTitle = "WC Creator Edit Permissions",
+				userEmailAddress = "userea@liferay.com");
+
+			User.logoutPG();
+
+			User.loginUserPG(
+				password = "test",
+				userEmailAddress = "userea@liferay.com");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Click on the title") {
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "DM Document Title");
+		}
+
+		task ("Login again with the Test user") {
+			User.logoutPG();
+
+			User.loginUserPG(
+				password = "test",
+				userEmailAddress = "test@liferay.com");
+		}
+	}
+
+	@priority = "4"
+	@uitest
+	test ClickTitleDocumentDPTWithPermissions {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add Display Page and mark it as default") {
+			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
+				contentType = "Document",
+				displayPageTemplateEntryName = "Display Page Name",
+				groupName = "Test Site Name",
+				subType = "Basic Document");
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
+
+			PageEditor.addWidget(portletName = "Documents and Media");
+
+			PageEditor.clickPublish();
+
+			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
+		}
+
+		task ("Add a document") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Title");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Click on the title") {
+			LexiconTable.clickTableEntryColumnLink(
+				columnName = "title",
+				tableEntry = "");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#DISPLAY_PAGE_TITLE",
+				value1 = "Display Page Name");
+		}
+	}
+
 	@description = "LPS-121658 When a user with edit permissions(owner) clicks on the title of a content in status Draft, associated DPT or not, the user is led to web content editor"
 	@priority = "3"
 	@uitest
@@ -816,6 +1313,204 @@ definition {
 		}
 	}
 
+	@priority = "5"
+	test DocumentFromAssetLibraryIsListed {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add an Asset Library") {
+			JSONDepot.addDepot(
+				depotDescription = "This is the description",
+				depotName = "Test Depot Name");
+		}
+
+		task ("Add a document to the previous Asset Library created") {
+			JSONDocument.addFileWithUploadedFile(
+				dmDocumentDescription = "DM Document Description",
+				dmDocumentTitle = "DM Document Asset Library 1",
+				groupName = "Test Depot Name",
+				mimeType = "image/jpeg",
+				sourceFileName = "Document_2.jpg");
+		}
+
+		task ("Go to the Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Assert that both documents appear in the table") {
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "DM Document Asset Library 1");
+		}
+
+		task ("Delete the Asset Library") {
+			JSONDepot.deleteDepot(depotName = "Test Depot Name");
+		}
+	}
+
+	@priority = "4"
+	test DocumentIconView {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add Display Page and mark it as default") {
+			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
+				contentType = "Document",
+				displayPageTemplateEntryName = "Display Page Name",
+				groupName = "Test Site Name",
+				subType = "Basic Document");
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
+
+			PageEditor.addWidget(portletName = "Documents and Media");
+
+			PageEditor.clickPublish();
+
+			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
+		}
+
+		task ("Add a document") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Title");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Click on the View icon and check the user is lead to the Display Page") {
+			Click.clickNoMouseOver(locator1 = "ContentDashboard#ROW_PANEL_WC");
+
+			Click(locator1 = "ContentDashboard#ICON_VIEW_LISTED_MODIFIED_DATE");
+		}
+	}
+
+	@priority = "5"
+	test DocumentsFromDifferentSitesAreListed {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add two different sites") {
+			JSONGroup.addGroup(groupName = "Site Name 1");
+
+			JSONGroup.addGroup(groupName = "Site Name 2");
+		}
+
+		task ("Add a document for each site") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name-1");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Site 1");
+
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name-2");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_2.txt",
+				dmDocumentTitle = "DM Document Site 2");
+		}
+
+		task ("Go to the Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Assert that both documents appear in the table") {
+			ContentDashboard.searchValue(webContentTitle = "DM Document Site 1");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "DM Document Site 1");
+
+			ContentDashboard.searchValue(webContentTitle = "DM Document Site 2");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "DM Document Site 2");
+		}
+	}
+
+	@description = "LPS-119966 Given a document with and associated Display Page Template
+	When the user with permissions clicks on the info panel button
+	Then the user is lead to the info panel"
+
+	@priority = "4"
+	test DocumentViewInfoPanel {
+		property portal.acceptance = "true";
+
+		task ("Create a new Document") {
+			JSONDocument.addFile(
+				dmDocumentDescription = "DM Document Description",
+				dmDocumentTitle = "DM Document Title",
+				groupName = "Test Site Name");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Open the Info panel") {
+			ContentDashboard.openInfoPanelByDropdownMenu();
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#INFO_PANEL_TITLE",
+				value1 = "DM Document Title");
+
+			Click(locator1 = "ContentDashboard#CLOSE_INFO_PANEL_BUTTON");
+		}
+	}
+
+	@priority = "4"
+	test EditDocument {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
+		property portal.acceptance = "true";
+
+		task ("Add a document") {
+			DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "test-site-name");
+
+			DMDocument.addCP(
+				dmDocumentFile = "Document_1.txt",
+				dmDocumentTitle = "DM Document Title");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Edit the document") {
+			ContentDashboard.editAsset(assetTitle = "DM Document Title Edited");
+		}
+
+		task ("Assert the document has been edited") {
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "DM Document Title Edited");
+		}
+	}
+
 	@description = "Validate if the user can edit a web content through the Edit option"
 	@priority = "5"
 	test EditWebContent {
@@ -833,7 +1528,7 @@ definition {
 
 		Pause(locator1 = "3000");
 
-		ContentDashboard.editWebContent(webContentTitle = "WC Title Edited");
+		ContentDashboard.editAsset(assetTitle = "WC Title Edited");
 
 		AssertTextPresent(
 			locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
@@ -982,126 +1677,6 @@ definition {
 		Category.deleteCategoryByMenuCP(
 			categoryName = "Category Name",
 			vocabularyName = "Vocabulary Name");
-	}
-
-	@description = "Validate if the user can filter by category and subtype"
-	@priority = "5"
-	test FilterByCategoryAndSubtype {
-		property portal.acceptance = "true";
-
-		JSONCategory.addVocabulary(
-			groupName = "Test Site Name",
-			title = "Vocabulary Name");
-
-		var categoryId1 = JSONCategory.addCategory(
-			groupName = "Test Site Name",
-			title = "Category 1",
-			vocabularyName = "Vocabulary Name");
-
-		var categoryId2 = JSONCategory.addCategory(
-			groupName = "Test Site Name",
-			title = "Category 2",
-			vocabularyName = "Vocabulary Name");
-
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
-
-		WebContentStructures.addCP(
-			structureDescription = "WC Structure Description",
-			structureName = "Subtype1");
-
-		DataEngine.addFields(fieldNameList = "Text");
-
-		WebContentStructures.saveCP(structureName = "Subtype1");
-
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		NavItem.gotoStructures();
-
-		WebContentStructures.addCP(
-			structureDescription = "WC Structure Description",
-			structureName = "Subtype2");
-
-		DataEngine.addFields(fieldNameList = "Text");
-
-		WebContentStructures.saveCP(structureName = "Subtype2");
-
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		WebContentNavigator.gotoAddWithStructureCP(structureName = "Subtype1");
-
-		WebContent.addWithStructureCP(
-			structureName = "Subtype1",
-			webContentTitle = "WC Title 1");
-
-		PortletEntry.publish();
-
-		WebContentNavigator.gotoAddWithStructureCP(structureName = "Subtype2");
-
-		WebContent.addWithStructureCP(
-			structureName = "Subtype2",
-			webContentTitle = "WC Title 2");
-
-		PortletEntry.publish();
-
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
-
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC Title 1");
-
-		WebContent.selectCategory(
-			categoryName = "Category 1",
-			userSegmentDetailTitle = "${userSegmentDetailTitle}",
-			vocabularyName = "Vocabulary Name");
-
-		WebContent.selectCategory(
-			categoryName = "Category 2",
-			userSegmentDetailTitle = "${userSegmentDetailTitle}",
-			vocabularyName = "Vocabulary Name");
-
-		PortletEntry.publish();
-
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC Title 2");
-
-		WebContent.selectCategory(
-			categoryName = "Category 1",
-			userSegmentDetailTitle = "${userSegmentDetailTitle}",
-			vocabularyName = "Vocabulary Name");
-
-		PortletEntry.publish();
-
-		ApplicationsMenu.gotoPortlet(
-			category = "Content",
-			panel = "Applications",
-			portlet = "Content Dashboard");
-
-		Pause(locator1 = "5000");
-
-		ContentDashboard.filterByCategory(
-			categoryName = "Category 1",
-			filterOption = "Categories");
-
-		ContentDashboard.filterBySubtype(
-			filterOption = "Subtype",
-			subtypeName = "Subtype1");
-
-		Pause(locator1 = "3000");
-
-		AssertTextPresent(
-			locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
-			value1 = "WC Title 1");
-
-		JSONWebcontent.deleteWebContent(
-			groupName = "Test Site Name",
-			title = "WC Title 1");
-
-		JSONWebcontent.deleteWebContent(
-			groupName = "Test Site Name",
-			title = "WC Title 2");
-
-		Category.openCategoriesAdmin(siteURLKey = "test-site-name");
-
-		Vocabulary.deleteByMenuCP(vocabularyName = "Vocabulary Name");
 	}
 
 	@description = "Validate if the user can filter by multiple tags"
@@ -1355,6 +1930,44 @@ definition {
 			webContentTitle = "WC Title Scheduled");
 	}
 
+	@description = "LPS-132411 Given The Type filter modal
+	When the user selects one or more subtypes
+	Then the subtypes selected appear as filter boxes above the Content table in the Content Dashboard, with the format Subtype: [subtypen_name]"
+	@priority = "5"
+	test FilterBySubtype {
+		property portal.acceptance = "true";
+
+		task ("Create a Web Content") {
+			JSONWebcontent.addWebContent(
+				content = "Webcontent Content",
+				groupName = "Test Site Name",
+				title = "Webcontent Title");
+		}
+
+		task ("Navigate to the content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Filter by Type") {
+			ContentDashboard.filterByType(
+				filterOption = "Type",
+				subtypeName = "Basic Web Content");
+		}
+
+		task ("Assert that the web content and filter label are present") {
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FIRST_ELEMENT_LISTED",
+				value1 = "Webcontent Title");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#FILTER_TEXT",
+				value1 = "Subtype: Basic Web Content");
+		}
+	}
+
 	@description = "Validate if the user can filter by tag"
 	@priority = "5"
 	test FilterByTag {
@@ -1512,43 +2125,73 @@ definition {
 		}
 	}
 
-	@description = "LPS-116840 When the user clicks on the view icon of a content with an associated display page, the user is led to the view mode of the page"
-	@priority = "5"
-	test IconView {
+	@description = "LPS-122873 When the user add filters need to have only one vocabulary, the relative ordering of the categories remain the same"
+	@priority = "3"
+	test JustAddingAVocabularyThroughTheFilters {
 		property portal.acceptance = "true";
 
-		task ("Add Display Page and mark it as default") {
-			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
-				contentType = "Web Content Article",
-				displayPageTemplateEntryName = "Display Page Name",
-				groupName = "Test Site Name",
-				subType = "Basic Web Content");
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
-
-			Button.clickPublish();
-
-			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
-
-			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
 		}
 
-		task ("Add Web Content and check it in its display page and access the view") {
-			JSONWebcontent.addWebContent(
-				content = "WC Content",
-				groupName = "Test Site Name",
-				title = "WC");
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
 
+		task ("Create a Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Selecting only the Stage vocabulary") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			for (var count : list "1,2,3") {
+				WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title ${count}");
+
+				for (var count : list "1,2,3") {
+					WebContent.selectCategory(
+						categoryName = "test ${count}",
+						vocabularyName = "Stage");
+				}
+
+				PortletEntry.publish();
+			}
+		}
+		task ("Go to content Dashboard and View the relative ordering of the categories remain the same") {
 			ApplicationsMenu.gotoPortlet(
 				category = "Content",
 				panel = "Applications",
 				portlet = "Content Dashboard");
 
-			Click.clickNoMouseOver(locator1 = "ContentDashboard#ROW_PANEL_WC");
+			AssertTextPresent(
+				locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+				value1 = "test 1",
+				xAxisCategoryName = "stage");
 
-			Click(locator1 = "ContentDashboard#ICON_VIEW_LISTED_MODIFIED_DATE");
+			AssertTextPresent(
+				locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+				value1 = "test 2",
+				xAxisCategoryName = "stage");
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+				value1 = "test 3",
+				xAxisCategoryName = "stage");
 		}
 	}
 
@@ -1599,6 +2242,69 @@ definition {
 				portlet = "Content Dashboard");
 
 			WebContent.checkLanguage();
+		}
+	}
+
+	@description = "LPS-122873 When the user configure the audit graph to have just one vocabulary, the relative ordering of the categories remain the same"
+	@priority = "3"
+	test NumberOfVcabulariesAccordingToTheAuditGraph {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Select list of categories") {
+			ContentDashboard.selectListofCategoriesForAudienceAndStage();
+		}
+
+		task ("Go to content Dashboard > Audit Graph configuration > and see the order when only one of the categories is selected in the audit Grafich") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			task ("removing the stage and leaving only the audience") {
+				ContentDashboard.moveVocabularyDisplayConfiguration(vocabularyName = "Stage");
+
+				AssertTextNotPresent(
+					locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+					value1 = "test 1",
+					xAxisCategoryName = "stage");
+
+				AssertTextNotPresent(
+					locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+					value1 = "test 2",
+					xAxisCategoryName = "stage");
+
+				AssertTextNotPresent(
+					locator1 = "ContentDashboard#X_AXIS_VOCABULARY_NAME",
+					value1 = "test 3",
+					xAxisCategoryName = "stage");
+			}
 		}
 	}
 
@@ -1782,6 +2488,88 @@ definition {
 		}
 	}
 
+	@description = "LPS-113832 So access to content dashboard will be a combination of permissions for accessing the Global App Menu and to view or edit web content."
+	@priority = "5"
+	test PermissionsForContentDashboard {
+		property portal.acceptance = "true";
+
+		task ("Adding vocabulary and category") {
+			JSONCategory.addVocabulary(
+				groupName = "Test Site Name",
+				title = "Vocabulary Name");
+
+			var categoryId = JSONCategory.addCategory(
+				groupName = "Test Site Name",
+				title = "Test",
+				vocabularyName = "Vocabulary Name");
+		}
+
+		task ("Adding Web Content") {
+			JSONWebcontent.addWebContent(
+				assetCategoryIds = "${categoryId}",
+				content = "WC WebContent Content",
+				groupName = "Test Site Name",
+				title = "WC WebContent Title");
+		}
+
+		task ("Create a new user and add access permission to content Dasboard") {
+			JSONUser.addUser(
+				userEmailAddress = "userea@liferay.com",
+				userFirstName = "userfn",
+				userLastName = "userln",
+				userScreenName = "usersn");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Users",
+				panel = "Control Panel",
+				portlet = "Users and Organizations");
+
+			User.editPasswordCP(
+				requirePasswordReset = "true",
+				userEmailAddress = "userea@liferay.com",
+				userScreenName = "usersn");
+
+			JSONRole.addRegularRole(
+				roleKey = "WC Creator Edit Permissions",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW_SITE_ADMINISTRATION",
+				resourceName = "com.liferay.portal.kernel.model.Group",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "ACCESS_IN_CONTROL_PANEL",
+				resourceName = "com_liferay_journal_web_portlet_JournalPortlet",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "ACCESS_IN_CONTROL_PANEL",
+				resourceName = "com_liferay_content_dashboard_web_portlet_ContentDashboardAdminPortlet",
+				roleTitle = "WC Creator Edit Permissions");
+
+			Permissions.definePermissionViaJSONAPI(
+				resourceAction = "VIEW_CONTROL_PANEL",
+				resourceName = "90",
+				roleTitle = "WC Creator Edit Permissions");
+
+			JSONRole.assignRoleToUser(
+				roleTitle = "WC Creator Edit Permissions",
+				userEmailAddress = "userea@liferay.com");
+		}
+
+		task ("login with the new user and access the content panel") {
+			User.logoutAndLoginPG(
+				userLoginEmailAddress = "userea@liferay.com",
+				userLoginFullName = "userfn userln");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+	}
+
 	@description = "Validate if the user can open de Info side panel of a web content"
 	@priority = "5"
 	test SaveFiltersAfterEditing {
@@ -1801,7 +2589,7 @@ definition {
 
 		ContentDashboard.filterByAuthorTable(filterOption = "Author");
 
-		ContentDashboard.editWebContent(webContentTitle = "WC Title Edited");
+		ContentDashboard.editAsset(assetTitle = "WC Title Edited");
 
 		AssertTextPresent(
 			locator1 = "ContentDashboard#FILTER_TEXT",
@@ -1834,7 +2622,7 @@ definition {
 				panel = "Applications",
 				portlet = "Content Dashboard");
 
-			ContentDashboard.editWebContent(webContentTitle = "WC WebContent New Title");
+			ContentDashboard.editAsset(assetTitle = "WC WebContent New Title");
 		}
 
 		task ("Check if content is correct") {
@@ -2033,34 +2821,198 @@ definition {
 		}
 	}
 
-	@description = "Validate if the user can open de Info side panel of a web content"
-	@priority = "5"
-	test ViewInfoPanel {
+	@description = "LPS-131187 Given the Content Dashboard table
+	When a document is added
+	Then its type will be shown in the Type column"
+	@priority = "3"
+	test TypeColumnForDocument {
+		property osgi.module.configuration.file.names = "com.liferay.content.dashboard.web.internal.configuration.FFContentDashboardDocumentConfiguration.config";
+		property osgi.module.configurations = "enabled=B&quot;true&quot;";
 		property portal.acceptance = "true";
 
-		JSONWebcontent.addWebContent(
-			content = "WC Content",
-			groupName = "Test Site Name",
-			title = "WC Title");
+		task ("Create document via JSON") {
+			task ("Create a new Document") {
+				JSONDocument.addFile(
+					dmDocumentDescription = "DM Document Description",
+					dmDocumentTitle = "DM Document Title",
+					groupName = "Test Site Name");
+			}
+		}
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Content",
-			panel = "Applications",
-			portlet = "Content Dashboard");
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
 
-		Pause(locator1 = "3000");
+		task ("Assert the type of the web content is shown in the Type column") {
+			AssertTextPresent(
+				locator1 = "ContentDashboard#TYPE_COLUMN_VALUE",
+				value1 = "Document");
+		}
+	}
 
-		ContentDashboard.openInfoPanelByDropdownMenu();
+	@description = "LPS-131187 Given the Content Dashboard table
+	When a web content is added
+	Then its type will be shown in the Type column"
+	@priority = "3"
+	test TypeColumnForWebContent {
+		task ("Create WC via JSON") {
+			JSONWebcontent.addWebContent(
+				content = "WC WebContent Content",
+				groupName = "Test Site Name",
+				title = "WC WebContent Title");
+		}
 
-		AssertTextPresent(
-			locator1 = "ContentDashboard#INFO_PANEL_TITLE",
-			value1 = "Content Info");
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
 
-		Click(locator1 = "ContentDashboard#CLOSE_INFO_PANEL_BUTTON");
+		task ("Assert the type of the web content is shown in the Type column") {
+			AssertTextPresent(
+				locator1 = "ContentDashboard#TYPE_COLUMN_VALUE",
+				value1 = "Web Content Article");
+		}
+	}
 
-		JSONWebcontent.deleteWebContent(
-			groupName = "Test Site Name",
-			title = "WC Title");
+	@description = "LPS-122873 When the user uncheck any checkbox from the vocab2, the relative ordering of the categories remain the same"
+	@priority = "3"
+	test UncheckACategoryInTheContentPanel {
+		property portal.acceptance = "true";
+
+		task ("Create a list of Audiences") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "S ${count}",
+					vocabularyName = "Audience");
+			}
+		}
+
+		task ("Create a list of Stages") {
+			for (var count : list "1,2,3") {
+				JSONCategory.addCategory(
+					groupName = "Global",
+					title = "test ${count}",
+					vocabularyName = "Stage");
+			}
+		}
+
+		task ("Create a Web Content") {
+			for (var count : list "1,2,3") {
+				JSONWebcontent.addWebContent(
+					content = "Webcontent Content",
+					groupName = "Test Site Name",
+					title = "Webcontent Title ${count}");
+			}
+		}
+
+		task ("Select list of categories") {
+			ContentDashboard.selectListofCategoriesForAudienceAndStage();
+		}
+
+		task ("Navigate to content Dashboard, uncheck a vocabulary category 2 and see the order of categories") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			Click.javaScriptClick(
+				checkboxName = "test 2",
+				locator1 = "Checkbox#ANY_CHECKBOX");
+
+			task ("blue - first position") {
+				AssertElementPresent(
+					fillColor = "4B9FFF",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("orange - second position") {
+				AssertElementNotPresent(
+					fillColor = "FFB46E",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+
+			task ("red - third position") {
+				AssertElementPresent(
+					fillColor = "FF5F5F",
+					locator1 = "ContentDashboard#BAR_FROM_NO_VOCABULARY_SPECIFIED");
+			}
+		}
+	}
+
+	@description = "LPS-116840 When the user clicks on the view icon of a content with an associated display page, the user is led to the view mode of the page"
+	@priority = "5"
+	test WebContentIconView {
+		property portal.acceptance = "true";
+
+		task ("Add Display Page and mark it as default") {
+			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
+				contentType = "Web Content Article",
+				displayPageTemplateEntryName = "Display Page Name",
+				groupName = "Test Site Name",
+				subType = "Basic Web Content");
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
+
+			Button.clickPublish();
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.markDisplayPageAsDefault(displayPageName = "Display Page Name");
+		}
+
+		task ("Add Web Content and check it in its display page and access the view") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content",
+				groupName = "Test Site Name",
+				title = "WC");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+
+			Click.clickNoMouseOver(locator1 = "ContentDashboard#ROW_PANEL_WC");
+
+			Click(locator1 = "ContentDashboard#ICON_VIEW_LISTED_MODIFIED_DATE");
+		}
+	}
+
+	@description = "LPS-114912: Validate if the user can open de Info side panel of a web content"
+	@priority = "5"
+	test WebContentViewInfoPanel {
+		property portal.acceptance = "true";
+
+		task ("Create a web content") {
+			JSONWebcontent.addWebContent(
+				content = "WC Content",
+				groupName = "Test Site Name",
+				title = "WC Title");
+		}
+
+		task ("Go to Content Dashboard") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Content",
+				panel = "Applications",
+				portlet = "Content Dashboard");
+		}
+
+		task ("Open the Info panel") {
+			ContentDashboard.openInfoPanelByDropdownMenu();
+
+			AssertTextPresent(
+				locator1 = "ContentDashboard#INFO_PANEL_TITLE",
+				value1 = "WC Title");
+
+			Click(locator1 = "ContentDashboard#CLOSE_INFO_PANEL_BUTTON");
+		}
 	}
 
 }

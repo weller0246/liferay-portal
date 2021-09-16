@@ -16,6 +16,7 @@ package com.liferay.remote.app.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
+import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.ExportActionableDynamicQuery;
@@ -132,9 +133,14 @@ public interface RemoteAppEntryLocalService
 	 *
 	 * @param remoteAppEntry the remote app entry
 	 * @return the remote app entry that was removed
+	 * @throws PortalException
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public RemoteAppEntry deleteRemoteAppEntry(RemoteAppEntry remoteAppEntry);
+	public RemoteAppEntry deleteRemoteAppEntry(RemoteAppEntry remoteAppEntry)
+		throws PortalException;
+
+	@Clusterable
+	public void deployRemoteAppEntry(RemoteAppEntry remoteAppEntry);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);
@@ -294,18 +300,20 @@ public interface RemoteAppEntryLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<RemoteAppEntry> searchRemoteAppEntries(
+	public List<RemoteAppEntry> search(
 			long companyId, String keywords, int start, int end, Sort sort)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int searchRemoteAppEntriesCount(long companyId, String keywords)
+	public int searchCount(long companyId, String keywords)
 		throws PortalException;
+
+	@Clusterable
+	public void undeployRemoteAppEntry(RemoteAppEntry remoteAppEntry);
 
 	@Indexable(type = IndexableType.REINDEX)
 	public RemoteAppEntry updateRemoteAppEntry(
-			long remoteAppEntryId, Map<Locale, String> nameMap, String url,
-			ServiceContext serviceContext)
+			long remoteAppEntryId, Map<Locale, String> nameMap, String url)
 		throws PortalException;
 
 	/**

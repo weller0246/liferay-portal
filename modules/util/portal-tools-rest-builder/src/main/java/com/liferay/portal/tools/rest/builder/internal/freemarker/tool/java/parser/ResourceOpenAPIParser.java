@@ -103,7 +103,8 @@ public class ResourceOpenAPIParser {
 									javaDataTypeMap, operation,
 									requestBodyMediaTypes);
 							String methodName = _getMethodName(
-								operation, path, returnType, schemaName);
+								operation, path, returnType, schemaName,
+								configYAML.isForcePredictableOperationId());
 
 							JavaMethodSignature javaMethodSignature =
 								new JavaMethodSignature(
@@ -637,6 +638,10 @@ public class ResourceOpenAPIParser {
 		Set<String> mediaTypes = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
 
 		for (Response response : responses.values()) {
+			if (response == null) {
+				continue;
+			}
+
 			Map<String, Content> contents = response.getContent();
 
 			if ((contents == null) || contents.isEmpty()) {
@@ -668,10 +673,12 @@ public class ResourceOpenAPIParser {
 	}
 
 	private static String _getMethodName(
-		Operation operation, String path, String returnType,
-		String schemaName) {
+		Operation operation, String path, String returnType, String schemaName,
+		boolean forcePredictableOperationId) {
 
-		if (operation.getOperationId() != null) {
+		if (!forcePredictableOperationId &&
+			(operation.getOperationId() != null)) {
+
 			return operation.getOperationId();
 		}
 
@@ -756,7 +763,23 @@ public class ResourceOpenAPIParser {
 			else if ((i != (pathSegments.length - 1)) ||
 					 !Objects.equals(returnType, String.class.getName())) {
 
-				methodNameSegments.add(OpenAPIUtil.formatSingular(pathName));
+				String segment = OpenAPIUtil.formatSingular(pathName);
+
+				String s = StringUtil.toLowerCase(segment);
+
+				if (s.endsWith(StringUtil.toLowerCase(schemaName))) {
+					char c = segment.charAt(
+						segment.length() - schemaName.length());
+
+					if (Character.isUpperCase(c)) {
+						String substring = segment.substring(
+							0, segment.length() - schemaName.length());
+
+						segment = substring + schemaName;
+					}
+				}
+
+				methodNameSegments.add(segment);
 			}
 			else {
 				methodNameSegments.add(pathName);
@@ -767,14 +790,9 @@ public class ResourceOpenAPIParser {
 	}
 
 	private static String _getPageClassName(String returnType) {
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(Page.class.getName());
-		sb.append("<");
-		sb.append(OpenAPIParserUtil.getElementClassName(returnType));
-		sb.append(">");
-
-		return sb.toString();
+		return StringBundler.concat(
+			Page.class.getName(), "<",
+			OpenAPIParserUtil.getElementClassName(returnType), ">");
 	}
 
 	private static String _getParameterAnnotation(

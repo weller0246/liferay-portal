@@ -201,10 +201,10 @@ public class QuestionsConfigurationModelListener
 		SAPEntry sapEntry = _sapEntryService.fetchSAPEntry(
 			CompanyThreadLocal.getCompanyId(), name);
 
-		if (!enableAnonymousRead && (_sapEntryService != null)) {
+		if (!enableAnonymousRead && (sapEntry != null)) {
 			_sapEntryService.deleteSAPEntry(sapEntry);
 		}
-		else if (enableAnonymousRead && (_sapEntryService == null)) {
+		else if (enableAnonymousRead && (sapEntry == null)) {
 			String mbPackage = "com.liferay.message.boards.service.";
 
 			_sapEntryService.addSAPEntry(
@@ -215,6 +215,7 @@ public class QuestionsConfigurationModelListener
 					"MBCategoryService#getCategoriesCount\n", mbPackage,
 					"MBMessageService#fetchMBMessageByUrlSubject\n", mbPackage,
 					"MBMessageService#getChildMessages\n", mbPackage,
+					"MBMessageService#getChildMessagesCount\n", mbPackage,
 					"MBMessageService#getMessage\n", mbPackage,
 					"MBThreadService#getThreads\n", mbPackage,
 					"MBThreadService#getThreadsCount\n"),

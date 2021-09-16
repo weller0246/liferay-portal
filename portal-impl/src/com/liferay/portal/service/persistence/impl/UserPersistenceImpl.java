@@ -17,7 +17,6 @@ package com.liferay.portal.service.persistence.impl;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
-import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.EntityCacheUtil;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
@@ -30,7 +29,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.exception.NoSuchUserException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserTable;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -56,9 +54,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUIDUtil;
 import com.liferay.portal.model.impl.UserImpl;
 import com.liferay.portal.model.impl.UserModelImpl;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.ServiceRegistration;
 
 import java.io.Serializable;
 
@@ -77,7 +72,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * The persistence implementation for the user service.
@@ -2724,8 +2718,8 @@ public class UserPersistenceImpl
 	private static final String _FINDER_COLUMN_PORTRAITID_PORTRAITID_2 =
 		"user.portraitId = ?";
 
-	private FinderPath _finderPathWithPaginationFindByU_C;
-	private FinderPath _finderPathWithPaginationCountByU_C;
+	private FinderPath _finderPathWithPaginationFindByGtU_C;
+	private FinderPath _finderPathWithPaginationCountByGtU_C;
 
 	/**
 	 * Returns all the users where userId &gt; &#63; and companyId = &#63;.
@@ -2735,8 +2729,8 @@ public class UserPersistenceImpl
 	 * @return the matching users
 	 */
 	@Override
-	public List<User> findByU_C(long userId, long companyId) {
-		return findByU_C(
+	public List<User> findByGtU_C(long userId, long companyId) {
+		return findByGtU_C(
 			userId, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
 	}
 
@@ -2754,10 +2748,10 @@ public class UserPersistenceImpl
 	 * @return the range of matching users
 	 */
 	@Override
-	public List<User> findByU_C(
+	public List<User> findByGtU_C(
 		long userId, long companyId, int start, int end) {
 
-		return findByU_C(userId, companyId, start, end, null);
+		return findByGtU_C(userId, companyId, start, end, null);
 	}
 
 	/**
@@ -2775,11 +2769,11 @@ public class UserPersistenceImpl
 	 * @return the ordered range of matching users
 	 */
 	@Override
-	public List<User> findByU_C(
+	public List<User> findByGtU_C(
 		long userId, long companyId, int start, int end,
 		OrderByComparator<User> orderByComparator) {
 
-		return findByU_C(
+		return findByGtU_C(
 			userId, companyId, start, end, orderByComparator, true);
 	}
 
@@ -2799,7 +2793,7 @@ public class UserPersistenceImpl
 	 * @return the ordered range of matching users
 	 */
 	@Override
-	public List<User> findByU_C(
+	public List<User> findByGtU_C(
 		long userId, long companyId, int start, int end,
 		OrderByComparator<User> orderByComparator, boolean useFinderCache) {
 
@@ -2809,7 +2803,7 @@ public class UserPersistenceImpl
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = _finderPathWithPaginationFindByU_C;
+		finderPath = _finderPathWithPaginationFindByGtU_C;
 		finderArgs = new Object[] {
 			userId, companyId, start, end, orderByComparator
 		};
@@ -2846,9 +2840,9 @@ public class UserPersistenceImpl
 
 			sb.append(_SQL_SELECT_USER_WHERE);
 
-			sb.append(_FINDER_COLUMN_U_C_USERID_2);
+			sb.append(_FINDER_COLUMN_GTU_C_USERID_2);
 
-			sb.append(_FINDER_COLUMN_U_C_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_GTU_C_COMPANYID_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -2903,12 +2897,12 @@ public class UserPersistenceImpl
 	 * @throws NoSuchUserException if a matching user could not be found
 	 */
 	@Override
-	public User findByU_C_First(
+	public User findByGtU_C_First(
 			long userId, long companyId,
 			OrderByComparator<User> orderByComparator)
 		throws NoSuchUserException {
 
-		User user = fetchByU_C_First(userId, companyId, orderByComparator);
+		User user = fetchByGtU_C_First(userId, companyId, orderByComparator);
 
 		if (user != null) {
 			return user;
@@ -2938,11 +2932,12 @@ public class UserPersistenceImpl
 	 * @return the first matching user, or <code>null</code> if a matching user could not be found
 	 */
 	@Override
-	public User fetchByU_C_First(
+	public User fetchByGtU_C_First(
 		long userId, long companyId,
 		OrderByComparator<User> orderByComparator) {
 
-		List<User> list = findByU_C(userId, companyId, 0, 1, orderByComparator);
+		List<User> list = findByGtU_C(
+			userId, companyId, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
 			return list.get(0);
@@ -2961,12 +2956,12 @@ public class UserPersistenceImpl
 	 * @throws NoSuchUserException if a matching user could not be found
 	 */
 	@Override
-	public User findByU_C_Last(
+	public User findByGtU_C_Last(
 			long userId, long companyId,
 			OrderByComparator<User> orderByComparator)
 		throws NoSuchUserException {
 
-		User user = fetchByU_C_Last(userId, companyId, orderByComparator);
+		User user = fetchByGtU_C_Last(userId, companyId, orderByComparator);
 
 		if (user != null) {
 			return user;
@@ -2996,17 +2991,17 @@ public class UserPersistenceImpl
 	 * @return the last matching user, or <code>null</code> if a matching user could not be found
 	 */
 	@Override
-	public User fetchByU_C_Last(
+	public User fetchByGtU_C_Last(
 		long userId, long companyId,
 		OrderByComparator<User> orderByComparator) {
 
-		int count = countByU_C(userId, companyId);
+		int count = countByGtU_C(userId, companyId);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<User> list = findByU_C(
+		List<User> list = findByGtU_C(
 			userId, companyId, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -3023,9 +3018,9 @@ public class UserPersistenceImpl
 	 * @param companyId the company ID
 	 */
 	@Override
-	public void removeByU_C(long userId, long companyId) {
+	public void removeByGtU_C(long userId, long companyId) {
 		for (User user :
-				findByU_C(
+				findByGtU_C(
 					userId, companyId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 					null)) {
 
@@ -3041,7 +3036,7 @@ public class UserPersistenceImpl
 	 * @return the number of matching users
 	 */
 	@Override
-	public int countByU_C(long userId, long companyId) {
+	public int countByGtU_C(long userId, long companyId) {
 		boolean productionMode = CTPersistenceHelperUtil.isProductionMode(
 			User.class);
 
@@ -3051,7 +3046,7 @@ public class UserPersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathWithPaginationCountByU_C;
+			finderPath = _finderPathWithPaginationCountByGtU_C;
 
 			finderArgs = new Object[] {userId, companyId};
 
@@ -3063,9 +3058,9 @@ public class UserPersistenceImpl
 
 			sb.append(_SQL_COUNT_USER_WHERE);
 
-			sb.append(_FINDER_COLUMN_U_C_USERID_2);
+			sb.append(_FINDER_COLUMN_GTU_C_USERID_2);
 
-			sb.append(_FINDER_COLUMN_U_C_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_GTU_C_COMPANYID_2);
 
 			String sql = sb.toString();
 
@@ -3099,10 +3094,10 @@ public class UserPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_U_C_USERID_2 =
+	private static final String _FINDER_COLUMN_GTU_C_USERID_2 =
 		"user.userId > ? AND ";
 
-	private static final String _FINDER_COLUMN_U_C_COMPANYID_2 =
+	private static final String _FINDER_COLUMN_GTU_C_COMPANYID_2 =
 		"user.companyId = ? AND user.defaultUser = [$FALSE$]";
 
 	private FinderPath _finderPathFetchByC_U;
@@ -8728,6 +8723,26 @@ public class UserPersistenceImpl
 			return map;
 		}
 
+		if ((databaseInMaxParameters > 0) &&
+			(primaryKeys.size() > databaseInMaxParameters)) {
+
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			while (iterator.hasNext()) {
+				Set<Serializable> page = new HashSet<>();
+
+				for (int i = 0;
+					 (i < databaseInMaxParameters) && iterator.hasNext(); i++) {
+
+					page.add(iterator.next());
+				}
+
+				map.putAll(fetchByPrimaryKeys(page));
+			}
+
+			return map;
+		}
+
 		StringBundler sb = new StringBundler((primaryKeys.size() * 2) + 1);
 
 		sb.append(getSelectSQL());
@@ -10666,11 +10681,6 @@ public class UserPersistenceImpl
 	 * Initializes the user persistence.
 	 */
 	public void afterPropertiesSet() {
-		Registry registry = RegistryUtil.getRegistry();
-
-		_argumentsResolverServiceRegistration = registry.registerService(
-			ArgumentsResolver.class, new UserModelArgumentsResolver());
-
 		userToGroupTableMapper = TableMapperFactory.getTableMapper(
 			"Users_Groups", "companyId", "userId", "groupId", this,
 			groupPersistence);
@@ -10796,8 +10806,8 @@ public class UserPersistenceImpl
 			new String[] {Long.class.getName()}, new String[] {"portraitId"},
 			false);
 
-		_finderPathWithPaginationFindByU_C = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByU_C",
+		_finderPathWithPaginationFindByGtU_C = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByGtU_C",
 			new String[] {
 				Long.class.getName(), Long.class.getName(),
 				Integer.class.getName(), Integer.class.getName(),
@@ -10805,8 +10815,8 @@ public class UserPersistenceImpl
 			},
 			new String[] {"userId", "companyId"}, true);
 
-		_finderPathWithPaginationCountByU_C = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByU_C",
+		_finderPathWithPaginationCountByGtU_C = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByGtU_C",
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"userId", "companyId"}, false);
 
@@ -10999,8 +11009,6 @@ public class UserPersistenceImpl
 	public void destroy() {
 		EntityCacheUtil.removeCache(UserImpl.class.getName());
 
-		_argumentsResolverServiceRegistration.unregister();
-
 		TableMapperFactory.removeTableMapper("Users_Groups");
 		TableMapperFactory.removeTableMapper("Users_Orgs");
 		TableMapperFactory.removeTableMapper("Users_Roles");
@@ -11074,93 +11082,6 @@ public class UserPersistenceImpl
 	@Override
 	protected FinderCache getFinderCache() {
 		return FinderCacheUtil.getFinderCache();
-	}
-
-	private ServiceRegistration<ArgumentsResolver>
-		_argumentsResolverServiceRegistration;
-
-	private static class UserModelArgumentsResolver
-		implements ArgumentsResolver {
-
-		@Override
-		public Object[] getArguments(
-			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-			boolean original) {
-
-			String[] columnNames = finderPath.getColumnNames();
-
-			if ((columnNames == null) || (columnNames.length == 0)) {
-				if (baseModel.isNew()) {
-					return FINDER_ARGS_EMPTY;
-				}
-
-				return null;
-			}
-
-			UserModelImpl userModelImpl = (UserModelImpl)baseModel;
-
-			long columnBitmask = userModelImpl.getColumnBitmask();
-
-			if (!checkColumn || (columnBitmask == 0)) {
-				return _getValue(userModelImpl, columnNames, original);
-			}
-
-			Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
-				finderPath);
-
-			if (finderPathColumnBitmask == null) {
-				finderPathColumnBitmask = 0L;
-
-				for (String columnName : columnNames) {
-					finderPathColumnBitmask |= userModelImpl.getColumnBitmask(
-						columnName);
-				}
-
-				_finderPathColumnBitmasksCache.put(
-					finderPath, finderPathColumnBitmask);
-			}
-
-			if ((columnBitmask & finderPathColumnBitmask) != 0) {
-				return _getValue(userModelImpl, columnNames, original);
-			}
-
-			return null;
-		}
-
-		@Override
-		public String getClassName() {
-			return UserImpl.class.getName();
-		}
-
-		@Override
-		public String getTableName() {
-			return UserTable.INSTANCE.getTableName();
-		}
-
-		private static Object[] _getValue(
-			UserModelImpl userModelImpl, String[] columnNames,
-			boolean original) {
-
-			Object[] arguments = new Object[columnNames.length];
-
-			for (int i = 0; i < arguments.length; i++) {
-				String columnName = columnNames[i];
-
-				if (original) {
-					arguments[i] = userModelImpl.getColumnOriginalValue(
-						columnName);
-				}
-				else {
-					arguments[i] = userModelImpl.getColumnValue(columnName);
-				}
-			}
-
-			return arguments;
-		}
-
-		private static final Map<FinderPath, Long>
-			_finderPathColumnBitmasksCache = new ConcurrentHashMap<>();
-
 	}
 
 }

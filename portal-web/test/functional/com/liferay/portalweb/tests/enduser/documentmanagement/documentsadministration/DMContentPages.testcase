@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Documents Management";
+	property testray.main.component.name = "Document Management";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -44,6 +44,10 @@ definition {
 		DMDocument.enableActionsMenuOnPortlet();
 
 		PageEditor.clickPublish();
+
+		ContentPagesNavigator.openViewContentPage(
+			pageName = "Test Content Page Name",
+			siteName = "Guest");
 
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
@@ -100,7 +104,7 @@ definition {
 
 		SelectFrame(value1 = "relative=top");
 
-		Alert.viewSuccessMessageText(successMessage = "Changes saved.");
+		Alert.viewSuccessMessageText(successMessage = "Changes Saved");
 
 		DMNavigator.gotoDocumentPG(dmDocumentTitle = "Document_2");
 
@@ -125,6 +129,10 @@ definition {
 		DMDocument.enableActionsMenuOnPortlet();
 
 		PageEditor.clickPublish();
+
+		ContentPagesNavigator.openViewContentPage(
+			pageName = "Test Content Page Name",
+			siteName = "Guest");
 
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
@@ -178,6 +186,10 @@ definition {
 
 		PageEditor.clickPublish();
 
+		ContentPagesNavigator.openViewContentPage(
+			pageName = "Test Content Page Name",
+			siteName = "Guest");
+
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
 		JSONDocument.addFileWithUploadedFile(
@@ -203,13 +215,13 @@ definition {
 
 		DMDocument.deleteCP(dmDocumentTitle = "Document_1.jpg");
 
-		DMDocument.viewDefaultCP();
+		DMDocument.viewDefault();
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
 
 		DMDocument.deleteCP(dmDocumentTitle = "Document_1.jpg");
 
-		DMDocument.viewDefaultCP();
+		DMDocument.viewDefault();
 
 		RecycleBin.openRecycleBinAdmin(siteURLKey = "guest");
 

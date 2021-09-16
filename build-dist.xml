@@ -3,6 +3,8 @@
 <project basedir="." default="dist" name="portal-dist" xmlns:antelope="antlib:ise.antelope.tasks">
 	<import file="build.xml" />
 
+	<property name="elasticsearch.sidecar.version" value="7.14.1" />
+
 	<macrodef name="build-dist-tomcat-bare">
 		<sequential>
 			<if>
@@ -131,18 +133,6 @@
 					token="-Xquickstart -Dfile.encoding=UTF-8 -Duser.timezone=GMT"
 					value="${app.server.websphere.jvm.args} -Xquickstart ${app.server.websphere.jvm.mem}"
 				/>
-			</replace>
-		</sequential>
-	</macrodef>
-
-	<macrodef name="update-websphere-lcs-property">
-		<sequential>
-			<replace
-				file="${app.server.websphere.instance.dir}/config/cells/liferay-cell/nodes/liferay-node/servers/server1/server.xml"
-			>
-				<replacetoken><![CDATA[<systemProperties xmi:id="Property_2" name="com.ibm.security.krb5.Krb5Debug" value="off" required="false"/>]]></replacetoken>
-				<replacevalue><![CDATA[<systemProperties name="com.ibm.security.krb5.Krb5Debug" required="false" value="off" xmi:id="Property_2" />
-      <systemProperties name="com.ibm.crypto.provider.DoRSATypeChecking" required="false" value="false" xmi:id="Property_1234" />]]></replacevalue>
 			</replace>
 		</sequential>
 	</macrodef>
@@ -2259,8 +2249,6 @@ and put it in ${app.server.parent.dir}. Then rerun this task.
 		</replace>
 
 		<update-websphere-java-opts />
-
-		<update-websphere-lcs-property />
 	</target>
 
 	<target name="unzip-websphere-custom">
@@ -2346,8 +2334,6 @@ this task.
 		</if>
 
 		<update-websphere-java-opts />
-
-		<update-websphere-lcs-property />
 	</target>
 
 	<target name="unzip-wildfly">
@@ -2635,14 +2621,14 @@ plugins.includes=</echo>
 				</if>
 
 				<if>
-					<available file="${zip.executable.dir}/../elasticsearch7" />
+					<available file="${zip.executable.dir}/../elasticsearch-sidecar/${elasticsearch.sidecar.version}" />
 					<then>
 						<copy
 							preservelastmodified="true"
-							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/elasticsearch7"
+							todir="dist/${tstamp.value}/liferay-portal-${lp.version}/elasticsearch-sidecar/${elasticsearch.sidecar.version}"
 						>
 							<fileset
-								dir="${zip.executable.dir}/../elasticsearch7"
+								dir="${zip.executable.dir}/../elasticsearch-sidecar/${elasticsearch.sidecar.version}"
 							/>
 						</copy>
 					</then>
@@ -2902,7 +2888,7 @@ plugins.includes=</echo>
 			todir="${tstamp.value}"
 		>
 			<fileset
-				dir="${liferay.home}/elasticsearch7"
+				dir="${liferay.home}/elasticsearch-sidecar/${elasticsearch.sidecar.version}"
 			/>
 		</copy>
 
@@ -2911,7 +2897,7 @@ plugins.includes=</echo>
 		>
 			<zipfileset
 				dir="${tstamp.value}"
-				prefix="liferay-portal-elasticsearch-${lp.version}/elasticsearch7"
+				prefix="liferay-portal-elasticsearch-${lp.version}/elasticsearch-sidecar/${elasticsearch.sidecar.version}"
 			/>
 		</zip>
 

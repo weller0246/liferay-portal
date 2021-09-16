@@ -24,6 +24,7 @@ import com.liferay.portal.kernel.util.OrderByComparator;
 import java.io.Serializable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the local service utility for ObjectRelationship. This utility wraps
@@ -44,6 +45,15 @@ public class ObjectRelationshipLocalServiceUtil {
 	 *
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.object.service.impl.ObjectRelationshipLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
+	public static ObjectRelationship addObjectRelationship(
+			long userId, long objectDefinitionId1, long objectDefinitionId2,
+			Map<java.util.Locale, String> labelMap, String name, String type)
+		throws PortalException {
+
+		return getService().addObjectRelationship(
+			userId, objectDefinitionId1, objectDefinitionId2, labelMap, name,
+			type);
+	}
 
 	/**
 	 * Adds the object relationship to the database. Also notifies the appropriate model listeners.
@@ -59,6 +69,14 @@ public class ObjectRelationshipLocalServiceUtil {
 		ObjectRelationship objectRelationship) {
 
 		return getService().addObjectRelationship(objectRelationship);
+	}
+
+	public static void addObjectRelationshipMappingTableValues(
+			long objectRelationshipId, long primaryKey1, long primaryKey2)
+		throws PortalException {
+
+		getService().addObjectRelationshipMappingTableValues(
+			objectRelationshipId, primaryKey1, primaryKey2);
 	}
 
 	/**
@@ -110,9 +128,11 @@ public class ObjectRelationshipLocalServiceUtil {
 	 *
 	 * @param objectRelationship the object relationship
 	 * @return the object relationship that was removed
+	 * @throws PortalException
 	 */
 	public static ObjectRelationship deleteObjectRelationship(
-		ObjectRelationship objectRelationship) {
+			ObjectRelationship objectRelationship)
+		throws PortalException {
 
 		return getService().deleteObjectRelationship(objectRelationship);
 	}
@@ -218,6 +238,13 @@ public class ObjectRelationshipLocalServiceUtil {
 		return getService().fetchObjectRelationship(objectRelationshipId);
 	}
 
+	public static ObjectRelationship fetchObjectRelationshipByObjectFieldId2(
+		long objectFieldId2) {
+
+		return getService().fetchObjectRelationshipByObjectFieldId2(
+			objectFieldId2);
+	}
+
 	/**
 	 * Returns the object relationship with the matching UUID and company.
 	 *
@@ -298,6 +325,13 @@ public class ObjectRelationshipLocalServiceUtil {
 		int start, int end) {
 
 		return getService().getObjectRelationships(start, end);
+	}
+
+	public static List<ObjectRelationship> getObjectRelationships(
+		long objectDefinitionId1, int start, int end) {
+
+		return getService().getObjectRelationships(
+			objectDefinitionId1, start, end);
 	}
 
 	/**

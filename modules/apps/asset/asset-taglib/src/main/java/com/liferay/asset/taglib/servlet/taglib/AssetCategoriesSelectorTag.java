@@ -36,11 +36,13 @@ import com.liferay.portal.kernel.portlet.PortletProviderUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.vulcan.util.TransformUtil;
 import com.liferay.portlet.asset.util.comparator.AssetVocabularyGroupLocalizedTitleComparator;
 import com.liferay.taglib.aui.AUIUtil;
 import com.liferay.taglib.util.IncludeTag;
@@ -197,24 +199,6 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 			categoryIds = _categoryIds;
 		}
 
-		if (Validator.isNull(_className)) {
-			if (!_ignoreRequestValue) {
-				String categoryIdsParam = httpServletRequest.getParameter(
-					_hiddenInput);
-
-				if (categoryIdsParam != null) {
-					categoryIds = categoryIdsParam;
-				}
-			}
-
-			String[] categoryIdsTitle = AssetCategoryUtil.getCategoryIdsTitles(
-				categoryIds, StringPool.BLANK, 0, themeDisplay);
-
-			categoryIdsTitles.add(categoryIdsTitle);
-
-			return categoryIdsTitles;
-		}
-
 		try {
 			for (AssetVocabulary vocabulary : _getVocabularies()) {
 				String categoryNames = StringPool.BLANK;
@@ -231,14 +215,24 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 				}
 
 				if (!_ignoreRequestValue) {
-					String[] categoryIdsParam =
-						httpServletRequest.getParameterValues(
-							_hiddenInput + StringPool.UNDERLINE +
-								vocabulary.getVocabularyId());
+					if (Validator.isNotNull(_className)) {
+						String[] categoryIdsParam =
+							httpServletRequest.getParameterValues(
+								_hiddenInput + StringPool.UNDERLINE +
+									vocabulary.getVocabularyId());
 
-					if (categoryIdsParam != null) {
-						categoryIds = StringUtil.merge(
-							categoryIdsParam, StringPool.COMMA);
+						if (categoryIdsParam != null) {
+							categoryIds = StringUtil.merge(
+								categoryIdsParam, StringPool.COMMA);
+						}
+					}
+					else {
+						String categoryIdsParam =
+							httpServletRequest.getParameter(_hiddenInput);
+
+						if (categoryIdsParam != null) {
+							categoryIds = categoryIdsParam;
+						}
 					}
 				}
 
@@ -335,31 +329,25 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		List<Map<String, Object>> vocabulariesList = new ArrayList<>();
-
+		List<String[]> categoryIdsTitles = getCategoryIdsTitles();
+		IntegerWrapper index = new IntegerWrapper(-1);
 		List<AssetVocabulary> vocabularies = _getVocabularies();
 
-		List<String[]> categoryIdsTitles = getCategoryIdsTitles();
+		return TransformUtil.transform(
+			vocabularies,
+			vocabulary -> {
+				index.increment();
 
-		for (int i = 0; i < vocabularies.size(); i++) {
-			AssetVocabulary vocabulary = vocabularies.get(i);
+				if (!ArrayUtil.contains(
+						getVisibilityTypes(), vocabulary.getVisibilityType())) {
 
-			if (!ArrayUtil.contains(
-					getVisibilityTypes(), vocabulary.getVisibilityType())) {
+					return null;
+				}
 
-				continue;
-			}
+				String selectedCategoryIds =
+					categoryIdsTitles.get(index.getValue())[0];
 
-			int index = i;
-
-			if (Validator.isNull(_className)) {
-				index = 0;
-			}
-
-			String selectedCategoryIds = categoryIdsTitles.get(index)[0];
-
-			Map<String, Object> vocabularyMap =
-				HashMapBuilder.<String, Object>put(
+				return HashMapBuilder.<String, Object>put(
 					"id", vocabulary.getVocabularyId()
 				).put(
 					"required",
@@ -369,6 +357,38 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 				).put(
 					"selectedCategories", selectedCategoryIds
 				).put(
+					"selectedItems",
+					() -> {
+						if (Validator.isNull(selectedCategoryIds)) {
+							return null;
+						}
+
+						List<Map<String, Object>> selectedItems =
+							new ArrayList<>();
+
+						String[] categoryIds = selectedCategoryIds.split(",");
+
+						String selectedCategoryIdTitles =
+							categoryIdsTitles.get(index.getValue())[1];
+
+						String[] categoryTitles =
+							selectedCategoryIdTitles.split(
+								AssetCategoryUtil.CATEGORY_SEPARATOR);
+
+						for (int j = 0; j < categoryIds.length; j++) {
+							selectedItems.add(
+								HashMapBuilder.<String, Object>put(
+									"label", categoryTitles[j]
+								).put(
+									"value", categoryIds[j]
+								).build());
+						}
+
+						return selectedItems;
+					}
+				).put(
+					"singleSelect", !vocabulary.isMultiValued()
+				).put(
 					"title",
 					vocabulary.getUnambiguousTitle(
 						vocabularies, themeDisplay.getScopeGroupId(),
@@ -376,36 +396,7 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 				).put(
 					"visibilityType", vocabulary.getVisibilityType()
 				).build();
-
-			if (Validator.isNotNull(selectedCategoryIds)) {
-				List<Map<String, Object>> selectedItems = new ArrayList<>();
-
-				String[] categoryIds = selectedCategoryIds.split(",");
-
-				String selectedCategoryIdTitles =
-					categoryIdsTitles.get(index)[1];
-
-				String[] categoryTitles = selectedCategoryIdTitles.split(
-					AssetCategoryUtil.CATEGORY_SEPARATOR);
-
-				for (int j = 0; j < categoryIds.length; j++) {
-					selectedItems.add(
-						HashMapBuilder.<String, Object>put(
-							"label", categoryTitles[j]
-						).put(
-							"value", categoryIds[j]
-						).build());
-				}
-
-				vocabularyMap.put("selectedItems", selectedItems);
-			}
-
-			vocabularyMap.put("singleSelect", !vocabulary.isMultiValued());
-
-			vocabulariesList.add(vocabularyMap);
-		}
-
-		return vocabulariesList;
+			});
 	}
 
 	@Override
@@ -440,7 +431,7 @@ public class AssetCategoriesSelectorTag extends IncludeTag {
 							linkToDocumentationURL();
 					}
 				).put(
-					"portletURL", getPortletURL().toString()
+					"portletURL", String.valueOf(getPortletURL())
 				).put(
 					"vocabularies", getVocabularies()
 				).build());

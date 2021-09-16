@@ -173,7 +173,7 @@ public class CPAttachmentFileEntriesDisplayContext
 		CPAttachmentFileEntry cpAttachmentFileEntry =
 			getCPAttachmentFileEntry();
 
-		FileEntry fileEntry = cpAttachmentFileEntry.getFileEntry();
+		FileEntry fileEntry = cpAttachmentFileEntry.fetchFileEntry();
 
 		if (fileEntry == null) {
 			return StringPool.BLANK;
@@ -217,7 +217,7 @@ public class CPAttachmentFileEntriesDisplayContext
 			"/cp_definitions/edit_cp_definition"
 		).setParameter(
 			"screenNavigationCategoryKey", getScreenNavigationCategoryKey()
-		).build();
+		).buildPortletURL();
 	}
 
 	@Override

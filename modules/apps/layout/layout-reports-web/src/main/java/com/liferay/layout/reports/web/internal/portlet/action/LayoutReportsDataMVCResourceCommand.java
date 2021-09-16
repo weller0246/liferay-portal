@@ -50,6 +50,7 @@ import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
@@ -183,38 +184,19 @@ public class LayoutReportsDataMVCResourceCommand
 		}
 	}
 
-	private String _getConfigurationAdminPortletId(ThemeDisplay themeDisplay) {
-		if (_isOmniAdmin()) {
-			return ConfigurationAdminPortletKeys.SYSTEM_SETTINGS;
-		}
-
-		if (_isCompanyAdmin()) {
-			return ConfigurationAdminPortletKeys.INSTANCE_SETTINGS;
-		}
-
-		if (_isSiteAdmin(themeDisplay.getScopeGroupId())) {
-			return ConfigurationAdminPortletKeys.SITE_SETTINGS;
-		}
-
-		return null;
-	}
-
 	private String _getConfigureGooglePageSpeedURL(
 		PortletRequest portletRequest) {
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		String configurationAdminPortletId = _getConfigurationAdminPortletId(
-			themeDisplay);
-
-		if (Validator.isNull(configurationAdminPortletId)) {
+		if (!_isGroupAdmin(themeDisplay.getScopeGroupId())) {
 			return null;
 		}
 
 		return PortletURLBuilder.create(
 			_portal.getControlPanelPortletURL(
-				portletRequest, configurationAdminPortletId,
+				portletRequest, ConfigurationAdminPortletKeys.SITE_SETTINGS,
 				PortletRequest.RENDER_PHASE)
 		).setMVCRenderCommandName(
 			"/configuration_admin/edit_configuration"
@@ -287,10 +269,20 @@ public class LayoutReportsDataMVCResourceCommand
 						return 1;
 					}
 
-					String languageId1 = LocaleUtil.toW3cLanguageId(locale1);
-					String languageId2 = LocaleUtil.toW3cLanguageId(locale2);
+					Locale locale = themeDisplay.getLocale();
 
-					return languageId1.compareToIgnoreCase(languageId2);
+					String displayLanguage1 = locale1.getDisplayLanguage(
+						locale);
+					String displayLanguage2 = locale2.getDisplayLanguage(
+						locale);
+
+					if (StringUtil.equalsIgnoreCase(
+							displayLanguage1, displayLanguage2)) {
+
+						return -1;
+					}
+
+					return 1;
 				}
 			).map(
 				locale -> {
@@ -349,7 +341,7 @@ public class LayoutReportsDataMVCResourceCommand
 						infoItemDetails.getClassName())
 			).map(
 				infoItemFieldValuesProvider ->
-					infoItemFieldValuesProvider.getInfoItemFieldValue(
+					infoItemFieldValuesProvider.getInfoFieldValue(
 						portletRequest.getAttribute(
 							InfoDisplayWebKeys.INFO_ITEM),
 						"title")
@@ -372,21 +364,7 @@ public class LayoutReportsDataMVCResourceCommand
 		return StringPool.BLANK;
 	}
 
-	private boolean _isCompanyAdmin() {
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		return permissionChecker.isCompanyAdmin();
-	}
-
-	private boolean _isOmniAdmin() {
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
-
-		return permissionChecker.isOmniadmin();
-	}
-
-	private boolean _isSiteAdmin(long groupId) {
+	private boolean _isGroupAdmin(long groupId) {
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 

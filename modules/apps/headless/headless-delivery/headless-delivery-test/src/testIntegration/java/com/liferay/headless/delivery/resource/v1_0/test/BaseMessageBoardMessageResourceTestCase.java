@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -569,19 +568,19 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 	public void testGetMessageBoardMessageMessageBoardMessagesPage()
 		throws Exception {
 
-		Page<MessageBoardMessage> page =
-			messageBoardMessageResource.
-				getMessageBoardMessageMessageBoardMessagesPage(
-					testGetMessageBoardMessageMessageBoardMessagesPage_getParentMessageBoardMessageId(),
-					null, RandomTestUtil.randomString(), null, null,
-					Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long parentMessageBoardMessageId =
 			testGetMessageBoardMessageMessageBoardMessagesPage_getParentMessageBoardMessageId();
 		Long irrelevantParentMessageBoardMessageId =
 			testGetMessageBoardMessageMessageBoardMessagesPage_getIrrelevantParentMessageBoardMessageId();
+
+		Page<MessageBoardMessage> page =
+			messageBoardMessageResource.
+				getMessageBoardMessageMessageBoardMessagesPage(
+					parentMessageBoardMessageId, null,
+					RandomTestUtil.randomString(), null, null,
+					Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantParentMessageBoardMessageId != null) {
 			MessageBoardMessage irrelevantMessageBoardMessage =
@@ -615,7 +614,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			messageBoardMessageResource.
 				getMessageBoardMessageMessageBoardMessagesPage(
 					parentMessageBoardMessageId, null, null, null, null,
-					Pagination.of(1, 2), null);
+					Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -953,19 +952,18 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 	public void testGetMessageBoardThreadMessageBoardMessagesPage()
 		throws Exception {
 
-		Page<MessageBoardMessage> page =
-			messageBoardMessageResource.
-				getMessageBoardThreadMessageBoardMessagesPage(
-					testGetMessageBoardThreadMessageBoardMessagesPage_getMessageBoardThreadId(),
-					RandomTestUtil.randomString(), null, null,
-					Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long messageBoardThreadId =
 			testGetMessageBoardThreadMessageBoardMessagesPage_getMessageBoardThreadId();
 		Long irrelevantMessageBoardThreadId =
 			testGetMessageBoardThreadMessageBoardMessagesPage_getIrrelevantMessageBoardThreadId();
+
+		Page<MessageBoardMessage> page =
+			messageBoardMessageResource.
+				getMessageBoardThreadMessageBoardMessagesPage(
+					messageBoardThreadId, RandomTestUtil.randomString(), null,
+					null, Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantMessageBoardThreadId != null) {
 			MessageBoardMessage irrelevantMessageBoardMessage =
@@ -998,8 +996,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 		page =
 			messageBoardMessageResource.
 				getMessageBoardThreadMessageBoardMessagesPage(
-					messageBoardThreadId, null, null, null, Pagination.of(1, 2),
-					null);
+					messageBoardThreadId, null, null, null,
+					Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1335,17 +1333,16 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 
 	@Test
 	public void testGetSiteMessageBoardMessagesPage() throws Exception {
-		Page<MessageBoardMessage> page =
-			messageBoardMessageResource.getSiteMessageBoardMessagesPage(
-				testGetSiteMessageBoardMessagesPage_getSiteId(), null,
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteMessageBoardMessagesPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteMessageBoardMessagesPage_getIrrelevantSiteId();
+
+		Page<MessageBoardMessage> page =
+			messageBoardMessageResource.getSiteMessageBoardMessagesPage(
+				siteId, null, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			MessageBoardMessage irrelevantMessageBoardMessage =
@@ -1373,7 +1370,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 				siteId, randomMessageBoardMessage());
 
 		page = messageBoardMessageResource.getSiteMessageBoardMessagesPage(
-			siteId, null, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1670,7 +1667,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -1696,7 +1693,7 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 			"JSONObject/messageBoardMessages");
 
 		Assert.assertEquals(
-			2, messageBoardMessagesJSONObject.get("totalCount"));
+			2, messageBoardMessagesJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(messageBoardMessage1, messageBoardMessage2),
@@ -1859,6 +1856,38 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 
 		assertEquals(randomMessageBoardMessage, getMessageBoardMessage);
 		assertValid(getMessageBoardMessage);
+
+		MessageBoardMessage newMessageBoardMessage =
+			testPutSiteMessageBoardMessageByExternalReferenceCode_createMessageBoardMessage();
+
+		putMessageBoardMessage =
+			messageBoardMessageResource.
+				putSiteMessageBoardMessageByExternalReferenceCode(
+					newMessageBoardMessage.getSiteId(),
+					newMessageBoardMessage.getExternalReferenceCode(),
+					newMessageBoardMessage);
+
+		assertEquals(newMessageBoardMessage, putMessageBoardMessage);
+		assertValid(putMessageBoardMessage);
+
+		getMessageBoardMessage =
+			messageBoardMessageResource.
+				getSiteMessageBoardMessageByExternalReferenceCode(
+					putMessageBoardMessage.getSiteId(),
+					putMessageBoardMessage.getExternalReferenceCode());
+
+		assertEquals(newMessageBoardMessage, getMessageBoardMessage);
+
+		Assert.assertEquals(
+			newMessageBoardMessage.getExternalReferenceCode(),
+			putMessageBoardMessage.getExternalReferenceCode());
+	}
+
+	protected MessageBoardMessage
+			testPutSiteMessageBoardMessageByExternalReferenceCode_createMessageBoardMessage()
+		throws Exception {
+
+		return randomMessageBoardMessage();
 	}
 
 	protected MessageBoardMessage
@@ -2087,6 +2116,25 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		MessageBoardMessage messageBoardMessage,
+		List<MessageBoardMessage> messageBoardMessages) {
+
+		boolean contains = false;
+
+		for (MessageBoardMessage item : messageBoardMessages) {
+			if (equals(messageBoardMessage, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			messageBoardMessages + " does not contain " + messageBoardMessage,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -3422,8 +3470,8 @@ public abstract class BaseMessageBoardMessageResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseMessageBoardMessageResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseMessageBoardMessageResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

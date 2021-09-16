@@ -17,7 +17,6 @@ import ClayLoadingIndicator from '@clayui/loading-indicator';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
 import {COLUMN_SIZE_MODULE_PER_ROW_SIZES} from '../../config/constants/columnSizes';
-import {config} from '../../config/index';
 import {
 	CollectionItemContext,
 	CollectionItemContextProvider,
@@ -27,6 +26,7 @@ import {useDisplayPagePreviewItem} from '../../contexts/DisplayPagePreviewItemCo
 import {useDispatch, useSelector} from '../../contexts/StoreContext';
 import selectLanguageId from '../../selectors/selectLanguageId';
 import CollectionService from '../../services/CollectionService';
+import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
 import UnsafeHTML from '../UnsafeHTML';
 import CollectionPagination from './CollectionPagination';
 
@@ -76,6 +76,14 @@ const EmptyCollectionMessage = () => (
 	</div>
 );
 
+const EmptyCollectionGridMessage = () => (
+	<div className="alert alert-info">
+		{Liferay.Language.get(
+			'the-collection-is-empty-to-display-your-items-add-them-to-the-collection-or-choose-a-different-collection'
+		)}
+	</div>
+);
+
 const Grid = ({
 	child,
 	collection,
@@ -84,13 +92,16 @@ const Grid = ({
 	collectionLength,
 	customCollectionSelectorURL,
 }) => {
-	const maxNumberOfItems = Math.min(
-		collectionLength,
-		config.collectionDisplayFragmentPaginationEnabled &&
+	const maxNumberOfItems =
+		Math.min(
+			collectionLength,
 			collectionConfig.paginationType
-			? collectionConfig.numberOfItemsPerPage
-			: collectionConfig.numberOfItems
-	);
+				? Math.min(
+						collectionConfig.numberOfItems,
+						collectionConfig.numberOfItemsPerPage
+				  )
+				: collectionConfig.numberOfItems
+		) || 1;
 	const numberOfRows = Math.ceil(
 		maxNumberOfItems / collectionConfig.numberOfColumns
 	);
@@ -121,7 +132,7 @@ const Grid = ({
 									}
 									index={index}
 								>
-									{React.cloneElement(child)}
+									{child}
 								</ColumnContext>
 							)}
 						</ClayLayout.Col>
@@ -169,147 +180,175 @@ const ColumnContext = ({
 	);
 };
 
-const DEFAULT_COLLECTION = {
-	fakeCollection: true,
-	items: [{}],
-	length: 1,
-	totalNumberOfItems: 1,
-};
+const Collection = React.memo(
+	React.forwardRef(({children, item, withinTopper = false}, ref) => {
+		const child = React.Children.toArray(children)[0];
+		const collectionConfig = item.config;
+		const emptyCollection = useMemo(
+			() => ({
+				fakeCollection: true,
+				items: Array.from(
+					Array(collectionConfig.numberOfItems || 1),
+					() => ({})
+				),
+				length: collectionConfig.numberOfItems || 1,
+				totalNumberOfItems: collectionConfig.numberOfItems || 1,
+			}),
+			[collectionConfig.numberOfItems]
+		);
 
-const Collection = React.forwardRef(({children, item}, ref) => {
-	const child = React.Children.toArray(children)[0];
-	const collectionConfig = item.config;
+		const dispatch = useDispatch();
+		const languageId = useSelector(selectLanguageId);
 
-	const dispatch = useDispatch();
-	const languageId = useSelector(selectLanguageId);
+		const [activePage, setActivePage] = useState(1);
+		const [collection, setCollection] = useState(emptyCollection);
+		const [loading, setLoading] = useState(false);
 
-	const [activePage, setActivePage] = useState(1);
-	const [collection, setCollection] = useState(DEFAULT_COLLECTION);
-	const [loading, setLoading] = useState(false);
+		const totalPages = Math.ceil(
+			Math.min(
+				collectionConfig.numberOfItems,
+				collection.totalNumberOfItems
+			) / collectionConfig.numberOfItemsPerPage
+		);
 
-	const totalPages = Math.ceil(
-		Math.min(
+		useEffect(() => {
+			if (activePage > totalPages) {
+				setActivePage(1);
+			}
+		}, [
 			collectionConfig.numberOfItems,
-			collection.totalNumberOfItems
-		) / collectionConfig.numberOfItemsPerPage
-	);
+			collectionConfig.numberOfItemsPerPage,
+			activePage,
+			totalPages,
+		]);
 
-	useEffect(() => {
-		if (activePage > totalPages) {
-			setActivePage(1);
-		}
-	}, [
-		collectionConfig.numberOfItems,
-		collectionConfig.numberOfItemsPerPage,
-		activePage,
-		totalPages,
-	]);
+		const context = useContext(CollectionItemContext);
+		const {classNameId, classPK} = context.collectionItem || {};
 
-	const context = useContext(CollectionItemContext);
-	const {classNameId, classPK} = context.collectionItem || {};
+		const displayPagePreviewItemData =
+			useDisplayPagePreviewItem()?.data ?? {};
 
-	const displayPagePreviewItemData = useDisplayPagePreviewItem()?.data ?? {};
+		const itemClassNameId =
+			classNameId || displayPagePreviewItemData.classNameId;
+		const itemClassPK = classPK || displayPagePreviewItemData.classPK;
 
-	const itemClassNameId =
-		classNameId || displayPagePreviewItemData.classNameId;
-	const itemClassPK = classPK || displayPagePreviewItemData.classPK;
+		useEffect(() => {
+			if (collectionConfig.collection && activePage <= totalPages) {
+				setLoading(true);
 
-	useEffect(() => {
-		if (
-			config.collectionDisplayFragmentPaginationEnabled
-				? collectionConfig.collection && activePage <= totalPages
-				: collectionConfig.collection
-		) {
-			setLoading(true);
-
-			CollectionService.getCollectionField({
-				activePage,
-				classNameId: itemClassNameId,
-				classPK: itemClassPK,
-				collection: collectionConfig.collection,
-				languageId,
-				listItemStyle: collectionConfig.listItemStyle || null,
-				listStyle: collectionConfig.listStyle,
-				numberOfItems: collectionConfig.numberOfItems,
-				numberOfItemsPerPage: collectionConfig.numberOfItemsPerPage,
-				onNetworkStatus: dispatch,
-				paginationType: config.collectionDisplayFragmentPaginationEnabled
-					? collectionConfig.paginationType
-					: '',
-				templateKey: collectionConfig.templateKey || null,
-			})
-				.then((response) => {
-					setCollection(
-						response.length > 0 && response.items?.length > 0
-							? response
-							: {...response, ...DEFAULT_COLLECTION}
-					);
+				CollectionService.getCollectionField({
+					activePage,
+					classNameId: itemClassNameId,
+					classPK: itemClassPK,
+					collection: collectionConfig.collection,
+					languageId,
+					listItemStyle: collectionConfig.listItemStyle || null,
+					listStyle: collectionConfig.listStyle,
+					numberOfItems: collectionConfig.numberOfItems,
+					numberOfItemsPerPage: collectionConfig.numberOfItemsPerPage,
+					onNetworkStatus: dispatch,
+					paginationType: collectionConfig.paginationType,
+					templateKey: collectionConfig.templateKey || null,
 				})
-				.catch((error) => {
-					if (process.env.NODE_ENV === 'development') {
-						console.error(error);
-					}
-				})
-				.finally(() => {
-					setLoading(false);
-				});
+					.then((response) => {
+						setCollection(
+							response.length > 0 && response.items?.length > 0
+								? response
+								: {...response, ...emptyCollection}
+						);
+					})
+					.catch((error) => {
+						if (process.env.NODE_ENV === 'development') {
+							console.error(error);
+						}
+					})
+					.finally(() => {
+						setLoading(false);
+					});
+			}
+		}, [
+			activePage,
+			collectionConfig.collection,
+			collectionConfig.listItemStyle,
+			collectionConfig.listStyle,
+			collectionConfig.numberOfItems,
+			collectionConfig.numberOfItemsPerPage,
+			collectionConfig.paginationType,
+			collectionConfig.templateKey,
+			dispatch,
+			emptyCollection,
+			itemClassNameId,
+			itemClassPK,
+			languageId,
+			totalPages,
+		]);
+
+		const selectedViewportSize = useSelector(
+			(state) => state.selectedViewportSize
+		);
+
+		const responsiveConfig = getResponsiveConfig(
+			item.config,
+			selectedViewportSize
+		);
+
+		const {display} = responsiveConfig.styles;
+
+		const style = {};
+
+		if (!withinTopper) {
+			style.display = display;
 		}
-	}, [
-		activePage,
-		itemClassNameId,
-		itemClassPK,
-		collectionConfig.collection,
-		collectionConfig.listItemStyle,
-		collectionConfig.listStyle,
-		collectionConfig.numberOfItems,
-		collectionConfig.numberOfItemsPerPage,
-		collectionConfig.paginationType,
-		collectionConfig.templateKey,
-		dispatch,
-		languageId,
-		totalPages,
-	]);
 
-	const showEmptyMessage =
-		collectionConfig.listStyle !== '' && collection.fakeCollection;
+		const showEmptyMessage =
+			collectionConfig.listStyle !== '' && collection.fakeCollection;
 
-	return (
-		<div className="page-editor__collection" ref={ref}>
-			{loading ? (
-				<ClayLoadingIndicator />
-			) : !collectionIsMapped(collectionConfig) ? (
-				<NotCollectionSelectedMessage />
-			) : showEmptyMessage ? (
-				<EmptyCollectionMessage />
-			) : collection.content ? (
-				<UnsafeHTML markup={collection.content} />
-			) : (
-				<Grid
-					child={child}
-					collection={collection.items}
-					collectionConfig={collectionConfig}
-					collectionId={item.itemId}
-					collectionLength={collection.items.length}
-					customCollectionSelectorURL={
-						collection.customCollectionSelectorURL
-					}
-				/>
-			)}
+		return (
+			<div className="page-editor__collection" ref={ref} style={style}>
+				{loading ? (
+					<ClayLoadingIndicator />
+				) : !collectionIsMapped(collectionConfig) ? (
+					<NotCollectionSelectedMessage />
+				) : showEmptyMessage ? (
+					<EmptyCollectionMessage />
+				) : collection.content ? (
+					<UnsafeHTML markup={collection.content} />
+				) : (
+					<>
+						{collection.fakeCollection && (
+							<EmptyCollectionGridMessage />
+						)}
+						<Grid
+							child={child}
+							collection={collection.items}
+							collectionConfig={collectionConfig}
+							collectionId={item.itemId}
+							collectionLength={collection.items.length}
+							customCollectionSelectorURL={
+								collection.customCollectionSelectorURL
+							}
+						/>
+					</>
+				)}
 
-			{config.collectionDisplayFragmentPaginationEnabled &&
-				collectionConfig.paginationType && (
+				{collectionConfig.paginationType && (
 					<CollectionPagination
 						activePage={activePage}
 						collectionConfig={collectionConfig}
 						collectionId={item.itemId}
 						onPageChange={setActivePage}
-						totalNumberOfItems={collection.totalNumberOfItems || 0}
+						totalNumberOfItems={
+							collection.fakeCollection
+								? 0
+								: collection.totalNumberOfItems
+						}
 						totalPages={totalPages}
 					/>
 				)}
-		</div>
-	);
-});
+			</div>
+		);
+	})
+);
 
 Collection.displayName = 'Collection';
 

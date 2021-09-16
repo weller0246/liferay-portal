@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services, specifically {@link com.liferay.object.service.http.ObjectLayoutTabServiceSoap}.
+ * This class is used by SOAP remote services.
  *
  * @author Marco Leo
  * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -41,6 +41,10 @@ public class ObjectLayoutTabSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setObjectLayoutId(model.getObjectLayoutId());
+		soapModel.setObjectRelationshipId(model.getObjectRelationshipId());
+		soapModel.setName(model.getName());
+		soapModel.setPriority(model.getPriority());
 
 		return soapModel;
 	}
@@ -164,6 +168,38 @@ public class ObjectLayoutTabSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public long getObjectLayoutId() {
+		return _objectLayoutId;
+	}
+
+	public void setObjectLayoutId(long objectLayoutId) {
+		_objectLayoutId = objectLayoutId;
+	}
+
+	public long getObjectRelationshipId() {
+		return _objectRelationshipId;
+	}
+
+	public void setObjectRelationshipId(long objectRelationshipId) {
+		_objectRelationshipId = objectRelationshipId;
+	}
+
+	public String getName() {
+		return _name;
+	}
+
+	public void setName(String name) {
+		_name = name;
+	}
+
+	public int getPriority() {
+		return _priority;
+	}
+
+	public void setPriority(int priority) {
+		_priority = priority;
+	}
+
 	private long _mvccVersion;
 	private String _uuid;
 	private long _objectLayoutTabId;
@@ -172,5 +208,9 @@ public class ObjectLayoutTabSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private long _objectLayoutId;
+	private long _objectRelationshipId;
+	private String _name;
+	private int _priority;
 
 }

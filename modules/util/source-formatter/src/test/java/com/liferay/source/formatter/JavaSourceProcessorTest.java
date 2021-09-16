@@ -282,6 +282,13 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 	}
 
 	@Test
+	public void testListUtilUsages() throws Exception {
+		test(
+				"ListUtilUsages.testjava",
+				"Use 'ListUtil.isEmpty(list)' to simplify code", 25);
+	}
+
+	@Test
 	public void testLogLevels() throws Exception {
 		test(
 			"Levels.testjava",
@@ -351,6 +358,18 @@ public class JavaSourceProcessorTest extends BaseSourceProcessorTestCase {
 		test(
 			"MissingSerialVersionUID.testjava",
 			"Assign ProcessCallable implementation a serialVersionUID");
+	}
+
+	@Test
+	public void testNullAssertionInIfStatement() throws Exception {
+		test(
+			"NullAssertionInIfStatement.testjava",
+			new String[] {
+					"Null check for variable 'list' should always be first in if-statement",
+					"Null check for variable 'list' should always be first in if-statement",
+					"Null check for variable 'nameList1' should always be first in if-statement"
+				},
+				new Integer[] {25, 33, 46});
 	}
 
 	@Test

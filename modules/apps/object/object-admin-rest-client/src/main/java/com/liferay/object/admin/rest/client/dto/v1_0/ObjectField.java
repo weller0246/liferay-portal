@@ -139,6 +139,48 @@ public class ObjectField implements Cloneable, Serializable {
 
 	protected String indexedLanguageId;
 
+	public Map<String, String> getLabel() {
+		return label;
+	}
+
+	public void setLabel(Map<String, String> label) {
+		this.label = label;
+	}
+
+	public void setLabel(
+		UnsafeSupplier<Map<String, String>, Exception> labelUnsafeSupplier) {
+
+		try {
+			label = labelUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Map<String, String> label;
+
+	public Long getListTypeDefinitionId() {
+		return listTypeDefinitionId;
+	}
+
+	public void setListTypeDefinitionId(Long listTypeDefinitionId) {
+		this.listTypeDefinitionId = listTypeDefinitionId;
+	}
+
+	public void setListTypeDefinitionId(
+		UnsafeSupplier<Long, Exception> listTypeDefinitionIdUnsafeSupplier) {
+
+		try {
+			listTypeDefinitionId = listTypeDefinitionIdUnsafeSupplier.get();
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	protected Long listTypeDefinitionId;
+
 	public String getName() {
 		return name;
 	}
@@ -179,15 +221,23 @@ public class ObjectField implements Cloneable, Serializable {
 
 	protected Boolean required;
 
-	public String getType() {
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public String getTypeAsString() {
+		if (type == null) {
+			return null;
+		}
+
+		return type.toString();
+	}
+
+	public void setType(Type type) {
 		this.type = type;
 	}
 
-	public void setType(UnsafeSupplier<String, Exception> typeUnsafeSupplier) {
+	public void setType(UnsafeSupplier<Type, Exception> typeUnsafeSupplier) {
 		try {
 			type = typeUnsafeSupplier.get();
 		}
@@ -196,7 +246,7 @@ public class ObjectField implements Cloneable, Serializable {
 		}
 	}
 
-	protected String type;
+	protected Type type;
 
 	@Override
 	public ObjectField clone() throws CloneNotSupportedException {
@@ -227,6 +277,40 @@ public class ObjectField implements Cloneable, Serializable {
 
 	public String toString() {
 		return ObjectFieldSerDes.toJSON(this);
+	}
+
+	public static enum Type {
+
+		BIG_DECIMAL("BigDecimal"), BOOLEAN("Boolean"), DATE("Date"),
+		DOUBLE("Double"), INTEGER("Integer"), LONG("Long"), STRING("String");
+
+		public static Type create(String value) {
+			for (Type type : values()) {
+				if (Objects.equals(type.getValue(), value) ||
+					Objects.equals(type.name(), value)) {
+
+					return type;
+				}
+			}
+
+			return null;
+		}
+
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Type(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
 	}
 
 }

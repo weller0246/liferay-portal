@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -342,17 +341,16 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 
 	@Test
 	public void testGetSiteBlogPostingImagesPage() throws Exception {
-		Page<BlogPostingImage> page =
-			blogPostingImageResource.getSiteBlogPostingImagesPage(
-				testGetSiteBlogPostingImagesPage_getSiteId(),
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteBlogPostingImagesPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteBlogPostingImagesPage_getIrrelevantSiteId();
+
+		Page<BlogPostingImage> page =
+			blogPostingImageResource.getSiteBlogPostingImagesPage(
+				siteId, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			BlogPostingImage irrelevantBlogPostingImage =
@@ -379,7 +377,7 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 				siteId, randomBlogPostingImage());
 
 		page = blogPostingImageResource.getSiteBlogPostingImagesPage(
-			siteId, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -674,7 +672,7 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -697,7 +695,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/blogPostingImages");
 
-		Assert.assertEquals(2, blogPostingImagesJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			2, blogPostingImagesJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(blogPostingImage1, blogPostingImage2),
@@ -832,6 +831,25 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 						graphQLFields)),
 				"JSONObject/data", "JSONObject/createSiteBlogPostingImage"),
 			BlogPostingImage.class);
+	}
+
+	protected void assertContains(
+		BlogPostingImage blogPostingImage,
+		List<BlogPostingImage> blogPostingImages) {
+
+		boolean contains = false;
+
+		for (BlogPostingImage item : blogPostingImages) {
+			if (equals(blogPostingImage, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			blogPostingImages + " does not contain " + blogPostingImage,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1451,8 +1469,8 @@ public abstract class BaseBlogPostingImageResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseBlogPostingImageResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseBlogPostingImageResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

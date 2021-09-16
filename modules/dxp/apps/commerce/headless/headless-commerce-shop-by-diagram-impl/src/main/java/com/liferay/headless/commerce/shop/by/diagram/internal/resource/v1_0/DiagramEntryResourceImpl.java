@@ -22,15 +22,11 @@ import com.liferay.commerce.shop.by.diagram.service.CPDefinitionDiagramEntryServ
 import com.liferay.headless.commerce.shop.by.diagram.dto.v1_0.DiagramEntry;
 import com.liferay.headless.commerce.shop.by.diagram.internal.dto.v1_0.converter.DiagramEntryDTOConverter;
 import com.liferay.headless.commerce.shop.by.diagram.resource.v1_0.DiagramEntryResource;
-import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.portal.vulcan.util.TransformUtil;
-
-import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -55,8 +51,7 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 	@Override
 	public Page<DiagramEntry>
 			getProductByExternalReferenceCodeDiagramEntriesPage(
-				String externalReferenceCode, String search,
-				Pagination pagination, Sort[] sorts)
+				String externalReferenceCode, Pagination pagination)
 		throws Exception {
 
 		CPDefinition cpDefinition =
@@ -70,20 +65,13 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 					externalReferenceCode);
 		}
 
-		return Page.of(
-			_toDiagramEntries(
-				_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntries(
-					cpDefinition.getCPDefinitionId(),
-					pagination.getStartPosition(),
-					pagination.getEndPosition())),
-			pagination,
-			_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntriesCount(
-				cpDefinition.getCPDefinitionId()));
+		return _getDiagramEntriesPage(
+			cpDefinition.getCPDefinitionId(), pagination);
 	}
 
 	@Override
 	public Page<DiagramEntry> getProductIdDiagramEntriesPage(
-			Long productId, String search, Pagination pagination, Sort[] sorts)
+			Long productId, Pagination pagination)
 		throws Exception {
 
 		CPDefinition cpDefinition =
@@ -94,15 +82,8 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 				"Unable to find product with ID " + productId);
 		}
 
-		return Page.of(
-			_toDiagramEntries(
-				_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntries(
-					cpDefinition.getCPDefinitionId(),
-					pagination.getStartPosition(),
-					pagination.getEndPosition())),
-			pagination,
-			_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntriesCount(
-				cpDefinition.getCPDefinitionId()));
+		return _getDiagramEntriesPage(
+			cpDefinition.getCPDefinitionId(), pagination);
 	}
 
 	@Override
@@ -126,12 +107,13 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 				diagramEntry.getDiagram(),
 				cpDefinitionDiagramEntry.isDiagram()),
 			GetterUtil.get(
-				diagramEntry.getNumber(), cpDefinitionDiagramEntry.getNumber()),
-			GetterUtil.get(
 				diagramEntry.getQuantity(),
 				cpDefinitionDiagramEntry.getQuantity()),
 			GetterUtil.get(
 				diagramEntry.getSku(), cpDefinitionDiagramEntry.getSku()),
+			GetterUtil.get(
+				diagramEntry.getSequence(),
+				cpDefinitionDiagramEntry.getSequence()),
 			new ServiceContext());
 
 		return _toDiagramEntry(
@@ -179,12 +161,11 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 
 		CPDefinitionDiagramEntry cpDefinitionDiagramEntry =
 			_cpDefinitionDiagramEntryService.addCPDefinitionDiagramEntry(
-				contextUser.getUserId(), cpDefinitionId,
-				GetterUtil.getString(diagramEntry.getSkuUuid()),
+				cpDefinitionId, GetterUtil.getString(diagramEntry.getSkuUuid()),
 				GetterUtil.getLong(diagramEntry.getProductId()),
 				GetterUtil.getBoolean(diagramEntry.getDiagram()),
-				GetterUtil.getInteger(diagramEntry.getNumber()),
 				GetterUtil.getInteger(diagramEntry.getQuantity()),
+				GetterUtil.getString(diagramEntry.getSequence()),
 				GetterUtil.getString(diagramEntry.getSku()),
 				new ServiceContext());
 
@@ -192,13 +173,20 @@ public class DiagramEntryResourceImpl extends BaseDiagramEntryResourceImpl {
 			cpDefinitionDiagramEntry.getCPDefinitionDiagramEntryId());
 	}
 
-	private List<DiagramEntry> _toDiagramEntries(
-		List<CPDefinitionDiagramEntry> cpDefinitionDiagramEntries) {
+	private Page<DiagramEntry> _getDiagramEntriesPage(
+			long cpDefintionId, Pagination pagination)
+		throws Exception {
 
-		return TransformUtil.transform(
-			cpDefinitionDiagramEntries,
-			cpDefinitionDiagramEntry -> _toDiagramEntry(
-				cpDefinitionDiagramEntry.getCPDefinitionDiagramEntryId()));
+		return Page.of(
+			transform(
+				_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntries(
+					cpDefintionId, pagination.getStartPosition(),
+					pagination.getEndPosition()),
+				cpDefinitionDiagramEntry -> _toDiagramEntry(
+					cpDefinitionDiagramEntry.getCPDefinitionDiagramEntryId())),
+			pagination,
+			_cpDefinitionDiagramEntryService.getCPDefinitionDiagramEntriesCount(
+				cpDefintionId));
 	}
 
 	private DiagramEntry _toDiagramEntry(long cpDefinitionDiagramEntryId)

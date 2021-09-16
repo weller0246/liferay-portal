@@ -31,6 +31,7 @@ const Text = ({
 	id,
 	localizable,
 	localizedValue,
+	maxLength,
 	name,
 	onBlur,
 	onChange,
@@ -94,6 +95,7 @@ const Text = ({
 			disabled={disabled}
 			id={id}
 			lang={editingLanguageId}
+			maxLength={maxLength}
 			name={name}
 			onBlur={(event) => {
 				if (fieldName == 'fieldReference') {
@@ -342,11 +344,12 @@ const Main = ({
 	autocompleteEnabled,
 	defaultLanguageId,
 	displayStyle = 'singleline',
-	editingLanguageId,
 	fieldName,
 	id,
+	locale,
 	localizable,
 	localizedValue = {},
+	maxLength,
 	name,
 	onBlur,
 	onChange,
@@ -367,9 +370,7 @@ const Main = ({
 		DISPLAY_STYLE[
 			autocomplete || autocompleteEnabled
 				? 'autocomplete'
-				: displayStyle
-				? displayStyle
-				: `singleline`
+				: displayStyle ?? `singleline`
 		];
 
 	const fieldDetailsId = id ? id + '_fieldDetails' : name + '_fieldDetails';
@@ -386,11 +387,12 @@ const Main = ({
 			<Component
 				defaultLanguageId={defaultLanguageId}
 				disabled={readOnly}
-				editingLanguageId={editingLanguageId}
+				editingLanguageId={locale}
 				fieldName={fieldName}
 				id={fieldDetailsId}
 				localizable={localizable}
 				localizedValue={localizedValue}
+				maxLength={maxLength}
 				name={name}
 				onBlur={onBlur}
 				onChange={onChange}
@@ -399,7 +401,7 @@ const Main = ({
 				placeholder={placeholder}
 				shouldUpdateValue={shouldUpdateValue}
 				syncDelay={syncDelay}
-				value={value ? value : predefinedValue}
+				value={value ?? predefinedValue}
 			/>
 		</FieldBase>
 	);

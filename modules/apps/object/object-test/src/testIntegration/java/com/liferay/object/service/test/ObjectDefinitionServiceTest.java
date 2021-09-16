@@ -15,11 +15,14 @@
 package com.liferay.object.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.service.ObjectDefinitionLocalServiceUtil;
-import com.liferay.object.service.ObjectDefinitionServiceUtil;
+import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.object.service.ObjectDefinitionService;
+import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.security.auth.PrincipalException;
+import com.liferay.portal.kernel.security.auth.PrincipalThreadLocal;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.security.permission.PermissionCheckerFactoryUtil;
 import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
@@ -29,6 +32,9 @@ import com.liferay.portal.kernel.test.rule.DataGuard;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
+
+import java.util.Locale;
+import java.util.Map;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -54,15 +60,17 @@ public class ObjectDefinitionServiceTest {
 	public void setUp() throws Exception {
 		_defaultUser = _userLocalService.getDefaultUser(
 			TestPropsValues.getCompanyId());
-		_user = TestPropsValues.getUser();
-
+		_originalName = PrincipalThreadLocal.getName();
 		_originalPermissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
+		_user = TestPropsValues.getUser();
 	}
 
 	@After
 	public void tearDown() {
 		PermissionThreadLocal.setPermissionChecker(_originalPermissionChecker);
+
+		PrincipalThreadLocal.setName(_originalName);
 	}
 
 	@Test
@@ -78,7 +86,7 @@ public class ObjectDefinitionServiceTest {
 			Assert.assertTrue(
 				message.contains(
 					"User " + _defaultUser.getUserId() +
-						" must have ADD_ENTRY permission for"));
+						" must have ADD_OBJECT_DEFINITION permission for"));
 		}
 
 		_testAddCustomObjectDefinition(_user);
@@ -120,35 +128,87 @@ public class ObjectDefinitionServiceTest {
 		_testGetObjectDefinition(_user);
 	}
 
+	@Test
+	public void testPublishCustomObjectDefinition() throws Exception {
+		try {
+			_testPublishCustomObjectDefinition(_defaultUser);
+
+			Assert.fail();
+		}
+		catch (PrincipalException.MustHavePermission principalException) {
+			String message = principalException.getMessage();
+
+			Assert.assertTrue(
+				message.contains(
+					"User " + _defaultUser.getUserId() +
+						" must have PUBLISH_OBJECT_DEFINITION permission for"));
+		}
+
+		_testPublishCustomObjectDefinition(_user);
+	}
+
+	@Test
+	public void testUpdateCustomObjectDefinition() throws Exception {
+		try {
+			_testUpdateCustomObjectDefinition(_defaultUser);
+
+			Assert.fail();
+		}
+		catch (PrincipalException.MustHavePermission principalException) {
+			String message = principalException.getMessage();
+
+			Assert.assertTrue(
+				message.contains(
+					"User " + _defaultUser.getUserId() +
+						" must have UPDATE permission for"));
+		}
+
+		_testUpdateCustomObjectDefinition(_user);
+	}
+
 	private ObjectDefinition _addCustomObjectDefinition(User user)
 		throws Exception {
 
-		ObjectDefinition objectDefinition =
-			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
+		// Do not publish the custom object definition to ensure we test that
+		// permission resources are added before publishing
+
+		/*ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.addCustomObjectDefinition(
 				user.getUserId(), "Test", null);
 
-		return ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
-			user.getUserId(), objectDefinition.getObjectDefinitionId());
+		return _objectDefinitionLocalService.publishCustomObjectDefinition(
+			user.getUserId(), objectDefinition.getObjectDefinitionId());*/
+
+		return _objectDefinitionLocalService.addCustomObjectDefinition(
+			user.getUserId(), _labelMap, "Test", null, null, _pluralLabelMap,
+			ObjectDefinitionConstants.SCOPE_COMPANY, null);
+	}
+
+	private void _setUser(User user) {
+		PermissionThreadLocal.setPermissionChecker(
+			PermissionCheckerFactoryUtil.create(user));
+
+		PrincipalThreadLocal.setName(user.getUserId());
 	}
 
 	private void _testAddCustomObjectDefinition(User user) throws Exception {
 		ObjectDefinition objectDefinition = null;
 
 		try {
-			PermissionThreadLocal.setPermissionChecker(
-				PermissionCheckerFactoryUtil.create(user));
+			_setUser(user);
 
 			objectDefinition =
-				ObjectDefinitionServiceUtil.addCustomObjectDefinition(
-					user.getUserId(), "Test");
+				_objectDefinitionService.addCustomObjectDefinition(
+					_labelMap, "Test", null, null, _pluralLabelMap,
+					ObjectDefinitionConstants.SCOPE_COMPANY, null);
 
 			objectDefinition =
-				ObjectDefinitionLocalServiceUtil.publishCustomObjectDefinition(
+				_objectDefinitionLocalService.publishCustomObjectDefinition(
 					user.getUserId(), objectDefinition.getObjectDefinitionId());
 		}
 		finally {
 			if (objectDefinition != null) {
-				ObjectDefinitionLocalServiceUtil.deleteObjectDefinition(
+				_objectDefinitionLocalService.deleteObjectDefinition(
 					objectDefinition);
 			}
 		}
@@ -159,18 +219,17 @@ public class ObjectDefinitionServiceTest {
 		ObjectDefinition objectDefinition = null;
 
 		try {
-			PermissionThreadLocal.setPermissionChecker(
-				PermissionCheckerFactoryUtil.create(user));
+			_setUser(user);
 
 			objectDefinition = _addCustomObjectDefinition(user);
 
 			deleteObjectDefinition =
-				ObjectDefinitionServiceUtil.deleteObjectDefinition(
+				_objectDefinitionService.deleteObjectDefinition(
 					objectDefinition.getObjectDefinitionId());
 		}
 		finally {
 			if (deleteObjectDefinition == null) {
-				ObjectDefinitionLocalServiceUtil.deleteObjectDefinition(
+				_objectDefinitionLocalService.deleteObjectDefinition(
 					objectDefinition);
 			}
 		}
@@ -180,24 +239,89 @@ public class ObjectDefinitionServiceTest {
 		ObjectDefinition objectDefinition = null;
 
 		try {
-			PermissionThreadLocal.setPermissionChecker(
-				PermissionCheckerFactoryUtil.create(user));
+			_setUser(user);
 
 			objectDefinition = _addCustomObjectDefinition(user);
 
-			ObjectDefinitionServiceUtil.getObjectDefinition(
+			_objectDefinitionService.getObjectDefinition(
 				objectDefinition.getObjectDefinitionId());
 		}
 		finally {
 			if (objectDefinition != null) {
-				ObjectDefinitionLocalServiceUtil.deleteObjectDefinition(
+				_objectDefinitionLocalService.deleteObjectDefinition(
+					objectDefinition);
+			}
+		}
+	}
+
+	private void _testPublishCustomObjectDefinition(User user)
+		throws Exception {
+
+		ObjectDefinition objectDefinition = null;
+
+		try {
+			_setUser(user);
+
+			objectDefinition =
+				_objectDefinitionLocalService.addCustomObjectDefinition(
+					user.getUserId(), _labelMap, "Test", null, null,
+					_pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
+					null);
+
+			objectDefinition =
+				_objectDefinitionService.publishCustomObjectDefinition(
+					objectDefinition.getObjectDefinitionId());
+		}
+		finally {
+			if (objectDefinition != null) {
+				_objectDefinitionLocalService.deleteObjectDefinition(
+					objectDefinition);
+			}
+		}
+	}
+
+	private void _testUpdateCustomObjectDefinition(User user) throws Exception {
+		ObjectDefinition objectDefinition = null;
+
+		try {
+			_setUser(user);
+
+			objectDefinition =
+				_objectDefinitionLocalService.addCustomObjectDefinition(
+					user.getUserId(), _labelMap, "Test", null, null,
+					_pluralLabelMap, ObjectDefinitionConstants.SCOPE_COMPANY,
+					null);
+
+			objectDefinition =
+				_objectDefinitionService.updateCustomObjectDefinition(
+					objectDefinition.getObjectDefinitionId(),
+					objectDefinition.isActive(),
+					LocalizedMapUtil.getLocalizedMap("Able"), "Able", null,
+					null, LocalizedMapUtil.getLocalizedMap("Ables"),
+					objectDefinition.getScope());
+		}
+		finally {
+			if (objectDefinition != null) {
+				_objectDefinitionLocalService.deleteObjectDefinition(
 					objectDefinition);
 			}
 		}
 	}
 
 	private User _defaultUser;
+	private final Map<Locale, String> _labelMap =
+		LocalizedMapUtil.getLocalizedMap("Test");
+
+	@Inject
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+
+	@Inject
+	private ObjectDefinitionService _objectDefinitionService;
+
+	private String _originalName;
 	private PermissionChecker _originalPermissionChecker;
+	private final Map<Locale, String> _pluralLabelMap =
+		LocalizedMapUtil.getLocalizedMap("Tests");
 	private User _user;
 
 	@Inject(type = UserLocalService.class)

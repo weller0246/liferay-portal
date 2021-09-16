@@ -17,13 +17,12 @@ package com.liferay.asset.list.item.selector.web.internal.layout.list.retriever;
 import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.list.asset.entry.provider.AssetListAssetEntryProvider;
-import com.liferay.asset.list.info.filter.AssetEntryListInfoFilter;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalService;
+import com.liferay.info.filter.CategoriesInfoFilter;
 import com.liferay.info.filter.InfoFilter;
-import com.liferay.info.filter.InfoRequestItemProvider;
+import com.liferay.info.filter.KeywordsInfoFilter;
 import com.liferay.info.item.InfoItemServiceTracker;
-import com.liferay.info.item.provider.filter.PropertyInfoItemServiceFilter;
 import com.liferay.info.pagination.Pagination;
 import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
 import com.liferay.layout.list.retriever.ClassedModelListObjectReference;
@@ -33,12 +32,11 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -70,9 +68,6 @@ public class AssetEntryListLayoutListRetriever
 		long[] segmentsEntryIds = segmentsEntryIdsOptional.orElse(
 			new long[] {0});
 
-		AssetEntryListInfoFilter assetEntryListInfoFilter =
-			_getAssetEntryListInfoFilter(layoutListRetrieverContext);
-
 		Optional<Pagination> paginationOptional =
 			layoutListRetrieverContext.getPaginationOptional();
 
@@ -82,8 +77,9 @@ public class AssetEntryListLayoutListRetriever
 		List<AssetEntry> assetEntries =
 			_assetListAssetEntryProvider.getAssetEntries(
 				assetListEntry, segmentsEntryIds,
-				assetEntryListInfoFilter.getAssetCategoryIds(),
-				StringPool.BLANK, pagination.getStart(), pagination.getEnd());
+				_getAssetCategoryIds(layoutListRetrieverContext),
+				_getKeywords(layoutListRetrieverContext), StringPool.BLANK,
+				pagination.getStart(), pagination.getEnd());
 
 		if (Objects.equals(
 				AssetEntry.class.getName(),
@@ -114,41 +110,50 @@ public class AssetEntryListLayoutListRetriever
 		long[] segmentsEntryIds = segmentsEntryIdsOptional.orElse(
 			new long[] {0});
 
-		AssetEntryListInfoFilter assetEntryListInfoFilter =
-			_getAssetEntryListInfoFilter(layoutListRetrieverContext);
-
 		return _assetListAssetEntryProvider.getAssetEntriesCount(
 			assetListEntry, segmentsEntryIds,
-			assetEntryListInfoFilter.getAssetCategoryIds(), StringPool.BLANK);
+			_getAssetCategoryIds(layoutListRetrieverContext),
+			_getKeywords(layoutListRetrieverContext), StringPool.BLANK);
 	}
 
-	private AssetEntryListInfoFilter _getAssetEntryListInfoFilter(
+	@Override
+	public List<InfoFilter> getSupportedInfoFilters(
+		ClassedModelListObjectReference classedModelListObjectReference) {
+
+		return _supportedInfoFilters;
+	}
+
+	private long[][] _getAssetCategoryIds(
 		LayoutListRetrieverContext layoutListRetrieverContext) {
 
-		Optional<HttpServletRequest> httpServletRequestOptional =
-			layoutListRetrieverContext.getHttpServletRequestOptional();
+		Optional<CategoriesInfoFilter> infoFilterOptional =
+			layoutListRetrieverContext.getInfoFilterOptional(
+				CategoriesInfoFilter.class);
 
-		HttpServletRequest httpServletRequest =
-			httpServletRequestOptional.orElse(null);
+		CategoriesInfoFilter categoriesInfoFilter = infoFilterOptional.orElse(
+			null);
 
-		if (!httpServletRequestOptional.isPresent()) {
-			return new AssetEntryListInfoFilter();
+		if (categoriesInfoFilter == null) {
+			return new long[0][];
 		}
 
-		InfoRequestItemProvider<InfoFilter> infoRequestItemProvider =
-			_infoItemServiceTracker.getFirstInfoItemService(
-				InfoRequestItemProvider.class, InfoFilter.class.getName(),
-				new PropertyInfoItemServiceFilter(
-					"infoFilterKey", AssetEntryListInfoFilter.KEY));
+		return categoriesInfoFilter.getCategoryIds();
+	}
 
-		InfoFilter infoFilter = infoRequestItemProvider.create(
-			httpServletRequest);
+	private String _getKeywords(
+		LayoutListRetrieverContext layoutListRetrieverContext) {
 
-		if (!(infoFilter instanceof AssetEntryListInfoFilter)) {
-			throw new UnsupportedOperationException();
+		Optional<KeywordsInfoFilter> infoFilterOptional =
+			layoutListRetrieverContext.getInfoFilterOptional(
+				KeywordsInfoFilter.class);
+
+		KeywordsInfoFilter keywordsInfoFilter = infoFilterOptional.orElse(null);
+
+		if (keywordsInfoFilter == null) {
+			return StringPool.BLANK;
 		}
 
-		return (AssetEntryListInfoFilter)infoFilter;
+		return keywordsInfoFilter.getKeywords();
 	}
 
 	private List<Object> _toAssetObjects(List<AssetEntry> assetEntries) {
@@ -162,6 +167,9 @@ public class AssetEntryListLayoutListRetriever
 
 		return assetObjects;
 	}
+
+	private static final List<InfoFilter> _supportedInfoFilters = Arrays.asList(
+		new CategoriesInfoFilter(), new KeywordsInfoFilter());
 
 	@Reference
 	private AssetListAssetEntryProvider _assetListAssetEntryProvider;

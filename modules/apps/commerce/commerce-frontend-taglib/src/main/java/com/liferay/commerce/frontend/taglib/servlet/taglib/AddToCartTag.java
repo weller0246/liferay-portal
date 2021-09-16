@@ -24,6 +24,7 @@ import com.liferay.commerce.frontend.util.ProductHelper;
 import com.liferay.commerce.inventory.engine.CommerceInventoryEngine;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderItem;
+import com.liferay.commerce.order.CommerceOrderHttpHelper;
 import com.liferay.commerce.product.catalog.CPCatalogEntry;
 import com.liferay.commerce.product.catalog.CPSku;
 import com.liferay.commerce.product.content.util.CPContentHelper;
@@ -65,6 +66,8 @@ public class AddToCartTag extends IncludeTag {
 				_commerceAccountId = commerceAccount.getCommerceAccountId();
 			}
 
+			_commerceChannelGroupId =
+				commerceContext.getCommerceChannelGroupId();
 			_commerceChannelId = commerceContext.getCommerceChannelId();
 
 			CommerceCurrency commerceCurrency =
@@ -91,7 +94,11 @@ public class AddToCartTag extends IncludeTag {
 
 			if ((cpSku != null) && !hasChildCPDefinitions) {
 				_cpInstanceId = cpSku.getCPInstanceId();
-				_disabled = !cpSku.isPurchasable();
+				_disabled =
+					!cpSku.isPurchasable() ||
+					((_commerceAccountId == 0) &&
+					 !_commerceOrderHttpHelper.isGuestCheckoutEnabled(
+						 httpServletRequest));
 				sku = cpSku.getSku();
 
 				if (commerceOrder != null) {
@@ -175,6 +182,9 @@ public class AddToCartTag extends IncludeTag {
 		setNamespacedAttribute(
 			httpServletRequest, "commerceAccountId", _commerceAccountId);
 		setNamespacedAttribute(
+			httpServletRequest, "commerceChannelGroupId",
+			_commerceChannelGroupId);
+		setNamespacedAttribute(
 			httpServletRequest, "commerceChannelId", _commerceChannelId);
 		setNamespacedAttribute(
 			httpServletRequest, "commerceCurrencyCode", _commerceCurrencyCode);
@@ -229,6 +239,8 @@ public class AddToCartTag extends IncludeTag {
 
 		setServletContext(ServletContextUtil.getServletContext());
 
+		_commerceOrderHttpHelper =
+			ServletContextUtil.getCommerceOrderHttpHelper();
 		_commerceInventoryEngine =
 			ServletContextUtil.getCommerceInventoryEngine();
 		_commerceOrderItemLocalService =
@@ -247,9 +259,11 @@ public class AddToCartTag extends IncludeTag {
 
 		_block = false;
 		_commerceAccountId = 0;
+		_commerceChannelGroupId = 0;
 		_commerceChannelId = 0;
 		_commerceCurrencyCode = null;
 		_commerceInventoryEngine = null;
+		_commerceOrderHttpHelper = null;
 		_commerceOrderId = 0;
 		_commerceOrderItemLocalService = null;
 		_cpCatalogEntry = null;
@@ -279,9 +293,11 @@ public class AddToCartTag extends IncludeTag {
 
 	private boolean _block;
 	private long _commerceAccountId;
+	private long _commerceChannelGroupId;
 	private long _commerceChannelId;
 	private String _commerceCurrencyCode;
 	private CommerceInventoryEngine _commerceInventoryEngine;
+	private CommerceOrderHttpHelper _commerceOrderHttpHelper;
 	private long _commerceOrderId;
 	private CommerceOrderItemLocalService _commerceOrderItemLocalService;
 	private CPCatalogEntry _cpCatalogEntry;

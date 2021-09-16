@@ -178,14 +178,14 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 				String normalizedKeyPath = normalizedValuePath;
 
-				List<String> values = documentContext.read(
+				List<?> values = documentContext.read(
 					normalizedValuePath, List.class);
 
 				if (values == null) {
 					continue;
 				}
 
-				List<String> keys = new ArrayList<>(values);
+				List<?> keys = new ArrayList<>(values);
 
 				if (paths.length >= 2) {
 					normalizedKeyPath = normalizePath(paths[1]);
@@ -197,7 +197,9 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 				for (int i = 0; i < values.size(); i++) {
 					keyValuePairs.add(
-						new KeyValuePair(keys.get(i), values.get(i)));
+						new KeyValuePair(
+							String.valueOf(keys.get(i)),
+							String.valueOf(values.get(i))));
 				}
 
 				if (ddmRESTDataProviderSettings.pagination()) {
@@ -253,7 +255,7 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 				ddmDataProviderInstance.get(),
 				DDMRESTDataProviderSettings.class);
 
-		HttpRequest httpRequest = HttpRequest.get(
+		HttpRequest httpRequest = getHttpRequest(
 			buildURL(ddmDataProviderRequest, ddmRESTDataProviderSettings));
 
 		if (StringUtil.startsWith(
@@ -345,6 +347,10 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 	protected String getCacheKey(HttpRequest httpRequest) {
 		return httpRequest.url();
+	}
+
+	protected HttpRequest getHttpRequest(String url) {
+		return HttpRequest.get(url);
 	}
 
 	protected Map<String, Object> getParameters(

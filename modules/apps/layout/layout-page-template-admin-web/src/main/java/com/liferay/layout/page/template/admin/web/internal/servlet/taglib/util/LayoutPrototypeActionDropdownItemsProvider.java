@@ -17,6 +17,8 @@ package com.liferay.layout.page.template.admin.web.internal.servlet.taglib.util;
 import com.liferay.exportimport.constants.ExportImportPortletKeys;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalServiceUtil;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringPool;
@@ -68,29 +70,54 @@ public class LayoutPrototypeActionDropdownItemsProvider {
 			_themeDisplay.getPermissionChecker(),
 			_layoutPrototype.getLayoutPrototypeId(), ActionKeys.UPDATE);
 
-		return DropdownItemListBuilder.add(
-			() -> hasUpdatePermission,
-			_getEditLayoutPrototypeActionUnsafeConsumer()
-		).add(
-			() -> hasUpdatePermission,
-			_getConfigureLayoutPrototypeActionUnsafeConsumer()
-		).add(
-			() -> LayoutPrototypePermissionUtil.contains(
-				_themeDisplay.getPermissionChecker(),
-				_layoutPrototype.getLayoutPrototypeId(),
-				ActionKeys.PERMISSIONS),
-			_getPermissionsLayoutPrototypeActionUnsafeConsumer()
-		).add(
-			() -> hasExportImportLayoutsPermission,
-			_getExportLayoutPrototypeActionUnsafeConsumer()
-		).add(
-			() -> hasExportImportLayoutsPermission,
-			_getImportLayoutPrototypeActionUnsafeConsumer()
-		).add(
-			() -> LayoutPrototypePermissionUtil.contains(
-				_themeDisplay.getPermissionChecker(),
-				_layoutPrototype.getLayoutPrototypeId(), ActionKeys.DELETE),
-			_getDeleteLayoutPrototypeActionUnsafeConsumer()
+		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> hasUpdatePermission,
+						_getEditLayoutPrototypeActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> hasExportImportLayoutsPermission,
+						_getExportLayoutPrototypeActionUnsafeConsumer()
+					).add(
+						() -> hasExportImportLayoutsPermission,
+						_getImportLayoutPrototypeActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> hasUpdatePermission,
+						_getConfigureLayoutPrototypeActionUnsafeConsumer()
+					).add(
+						() -> LayoutPrototypePermissionUtil.contains(
+							_themeDisplay.getPermissionChecker(),
+							_layoutPrototype.getLayoutPrototypeId(),
+							ActionKeys.PERMISSIONS),
+						_getPermissionsLayoutPrototypeActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> LayoutPrototypePermissionUtil.contains(
+							_themeDisplay.getPermissionChecker(),
+							_layoutPrototype.getLayoutPrototypeId(),
+							ActionKeys.DELETE),
+						_getDeleteLayoutPrototypeActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
 		).build();
 	}
 
@@ -220,10 +247,16 @@ public class LayoutPrototypeActionDropdownItemsProvider {
 			_getPermissionsLayoutPrototypeActionUnsafeConsumer()
 		throws Exception {
 
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			LayoutPageTemplateEntryLocalServiceUtil.
+				fetchFirstLayoutPageTemplateEntry(
+					_layoutPrototype.getLayoutPrototypeId());
+
 		String permissionsLayoutPrototypeURL = PermissionsURLTag.doTag(
-			StringPool.BLANK, LayoutPrototype.class.getName(),
+			StringPool.BLANK, LayoutPageTemplateEntry.class.getName(),
 			_layoutPrototype.getName(_themeDisplay.getLocale()), null,
-			String.valueOf(_layoutPrototype.getLayoutPrototypeId()),
+			String.valueOf(
+				layoutPageTemplateEntry.getLayoutPageTemplateEntryId()),
 			LiferayWindowState.POP_UP.toString(), null, _httpServletRequest);
 
 		return dropdownItem -> {

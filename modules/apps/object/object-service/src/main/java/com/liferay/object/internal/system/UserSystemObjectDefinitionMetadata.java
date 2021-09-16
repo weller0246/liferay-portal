@@ -14,12 +14,19 @@
 
 package com.liferay.object.internal.system;
 
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.model.UserTable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -32,22 +39,47 @@ public class UserSystemObjectDefinitionMetadata
 	extends BaseSystemObjectDefinitionMetadata {
 
 	@Override
-	public String getDBTableName() {
-		return "User_";
+	public String getClassName() {
+		return User.class.getName();
 	}
 
 	@Override
-	public String getName() {
-		return "User";
+	public Map<Locale, String> getLabelMap() {
+		return createLabelMap("user");
 	}
 
 	@Override
 	public List<ObjectField> getObjectFields() {
 		return Arrays.asList(
-			createObjectField("emailAddress", true, "String"),
-			createObjectField("firstName", true, "String"),
-			createObjectField("middleName", false, "String"),
-			createObjectField("uuid_", "uuid", false, "String"));
+			createObjectField("email-address", "emailAddress", true, "String"),
+			createObjectField("first-name", "firstName", true, "String"),
+			createObjectField("middle-name", "middleName", false, "String"),
+			createObjectField("uuid_", "uuid", "uuid", false, "String"));
+	}
+
+	@Override
+	public Map<Locale, String> getPluralLabelMap() {
+		return createLabelMap("users");
+	}
+
+	@Override
+	public Column<?, Long> getPrimaryKeyColumn() {
+		return UserTable.INSTANCE.userId;
+	}
+
+	@Override
+	public String getRESTContextPath() {
+		return "headless-admin-user/v1.0/user-accounts";
+	}
+
+	@Override
+	public String getScope() {
+		return ObjectDefinitionConstants.SCOPE_COMPANY;
+	}
+
+	@Override
+	public Table getTable() {
+		return UserTable.INSTANCE;
 	}
 
 	@Override

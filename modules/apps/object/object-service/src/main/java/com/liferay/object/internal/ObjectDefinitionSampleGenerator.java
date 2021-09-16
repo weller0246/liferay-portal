@@ -14,11 +14,13 @@
 
 package com.liferay.object.internal;
 
+import com.liferay.application.list.constants.PanelCategoryKeys;
+import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
-import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
@@ -83,18 +85,36 @@ public class ObjectDefinitionSampleGenerator {
 
 		objectDefinition =
 			_objectDefinitionLocalService.addCustomObjectDefinition(
-				user.getUserId(), "SampleObjectDefinition",
+				user.getUserId(),
+				LocalizedMapUtil.getLocalizedMap("Sample Object Definition"),
+				"SampleObjectDefinition", "100",
+				PanelCategoryKeys.CONTROL_PANEL_SITES,
+				LocalizedMapUtil.getLocalizedMap("Sample Object Definitions"),
+				ObjectDefinitionConstants.SCOPE_COMPANY,
 				Arrays.asList(
-					_createObjectField("able", "Long"),
-					_createObjectField("baker", "Boolean"),
-					_createObjectField("charlie", "Date"),
-					_createObjectField("dog", "String"),
-					_createObjectField(true, true, null, "easy", "String"),
-					_createObjectField(true, false, "en_US", "fox", "String"),
-					_createObjectField(false, false, null, "george", "String"),
-					_createObjectField("how", "Double"),
-					_createObjectField("item", "Integer"),
-					_createObjectField("jig", "BigDecimal")));
+					ObjectFieldUtil.createObjectField(
+						true, false, "Able", "able", false, "Long"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Baker", "baker", false, "Boolean"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Charlie", "charlie", false, "Date"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Dog", "dog", false, "String"),
+					ObjectFieldUtil.createObjectField(
+						0, null, true, true, null, "Easy", "easy", false,
+						"String"),
+					ObjectFieldUtil.createObjectField(
+						0, null, true, false, "en_US", "Fox", "fox", false,
+						"String"),
+					ObjectFieldUtil.createObjectField(
+						0, null, false, false, null, "George", "george", false,
+						"String"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "How", "how", false, "Double"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Item", "item", false, "Integer"),
+					ObjectFieldUtil.createObjectField(
+						true, false, "Jig", "jig", false, "BigDecimal")));
 
 		objectDefinition =
 			_objectDefinitionLocalService.publishCustomObjectDefinition(
@@ -131,25 +151,6 @@ public class ObjectDefinitionSampleGenerator {
 		}
 	}
 
-	private ObjectField _createObjectField(
-		boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-		String name, String type) {
-
-		ObjectField objectField = _objectFieldLocalService.createObjectField(0);
-
-		objectField.setIndexed(indexed);
-		objectField.setIndexedAsKeyword(indexedAsKeyword);
-		objectField.setIndexedLanguageId(indexedLanguageId);
-		objectField.setName(name);
-		objectField.setType(type);
-
-		return objectField;
-	}
-
-	private ObjectField _createObjectField(String name, String type) {
-		return _createObjectField(true, false, null, name, type);
-	}
-
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
@@ -161,9 +162,6 @@ public class ObjectDefinitionSampleGenerator {
 
 	@Reference
 	private ObjectEntryLocalService _objectEntryLocalService;
-
-	@Reference
-	private ObjectFieldLocalService _objectFieldLocalService;
 
 	@Reference
 	private UserLocalService _userLocalService;

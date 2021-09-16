@@ -73,7 +73,7 @@ ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (Conte
 			</h2>
 
 			<div class="audit-graph">
-				<div class="c-my-5 c-p-5 inline-item w-100">
+				<div class="audit-graph-loading c-my-5 c-p-5 inline-item w-100">
 					<span aria-hidden="true" class="loading-animation"></span>
 				</div>
 
@@ -167,14 +167,20 @@ ContentDashboardAdminDisplayContext contentDashboardAdminDisplayContext = (Conte
 						</span>
 					</liferay-ui:search-container-column-text>
 
+					<liferay-ui:search-container-column-text
+						cssClass="table-cell-expand-smaller text-truncate"
+						name="type"
+						value="<%= HtmlUtil.escape(contentDashboardItem.getTypeLabel(locale)) %>"
+					/>
+
 					<%
-					ContentDashboardItemType contentDashboardItemType = contentDashboardItem.getContentDashboardItemType();
+					ContentDashboardItemSubtype contentDashboardItemSubtype = contentDashboardItem.getContentDashboardItemSubtype();
 					%>
 
 					<liferay-ui:search-container-column-text
-						cssClass="table-cell-expand-smaller"
+						cssClass="table-cell-expand-smaller text-truncate"
 						name="subtype"
-						value="<%= HtmlUtil.escape(contentDashboardItemType.getLabel(locale)) %>"
+						value="<%= HtmlUtil.escape(contentDashboardItemSubtype.getLabel(locale)) %>"
 					/>
 
 					<liferay-ui:search-container-column-text

@@ -63,35 +63,60 @@ public class StyleBookEntryActionDropdownItemsProvider {
 	}
 
 	public List<DropdownItem> getActionDropdownItems() {
-		return DropdownItemListBuilder.add(
-			_getEditStyleBookEntryActionUnsafeConsumer()
-		).add(
-			_getRenameStyleBookEntrytActionUnsafeConsumer()
-		).add(
-			_getCopyStyleBookEntryActionUnsafeConsumer()
-		).add(
-			_getUpdateStyleBookEntryPreviewActionUnsafeConsumer()
-		).add(
-			() -> _styleBookEntry.getPreviewFileEntryId() > 0,
-			_getDeleteStyleBookEntryPreviewActionUnsafeConsumer()
-		).add(
-			_getExportStyleBookEntryActionUnsafeConsumer()
-		).add(
-			_getMarkAsDefaultStyleBookEntryActionUnsafeConsumer()
-		).add(
-			() -> {
-				StyleBookEntry draftStyleBookEntry =
-					StyleBookEntryLocalServiceUtil.fetchDraft(_styleBookEntry);
+		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						_getEditStyleBookEntryActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						_getUpdateStyleBookEntryPreviewActionUnsafeConsumer()
+					).add(
+						() -> _styleBookEntry.getPreviewFileEntryId() > 0,
+						_getDeleteStyleBookEntryPreviewActionUnsafeConsumer()
+					).add(
+						() -> {
+							StyleBookEntry draftStyleBookEntry =
+								StyleBookEntryLocalServiceUtil.fetchDraft(
+									_styleBookEntry);
 
-				if (draftStyleBookEntry != null) {
-					return true;
-				}
+							if (draftStyleBookEntry != null) {
+								return true;
+							}
 
-				return false;
-			},
-			_getDiscardDraftStyleBookEntryActionUnsafeConsumer()
-		).add(
-			_getDeleteStyleBookEntryActionUnsafeConsumer()
+							return false;
+						},
+						_getDiscardDraftStyleBookEntryActionUnsafeConsumer()
+					).add(
+						_getMarkAsDefaultStyleBookEntryActionUnsafeConsumer()
+					).add(
+						_getRenameStyleBookEntrytActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						_getExportStyleBookEntryActionUnsafeConsumer()
+					).add(
+						_getCopyStyleBookEntryActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						_getDeleteStyleBookEntryActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
 		).build();
 	}
 

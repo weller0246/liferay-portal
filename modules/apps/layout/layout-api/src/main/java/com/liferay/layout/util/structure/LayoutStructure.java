@@ -15,6 +15,7 @@
 package com.liferay.layout.util.structure;
 
 import com.liferay.layout.responsive.ViewportSize;
+import com.liferay.layout.util.constants.LayoutStructureConstants;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -383,8 +384,12 @@ public class LayoutStructure {
 		return false;
 	}
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
+	 */
+	@Deprecated
 	public int getColumnSize(int size, int column) {
-		return _COLUMN_SIZES[size][column];
+		return LayoutStructureConstants.COLUMN_SIZES[size][column];
 	}
 
 	public List<DeletedLayoutStructureItem> getDeletedLayoutStructureItems() {
@@ -540,7 +545,7 @@ public class LayoutStructure {
 				"main", _mainItemId
 			)
 		).put(
-			"version", 1
+			"version", LayoutStructureConstants.LATEST_PAGE_DEFINITION_VERSION
 		);
 	}
 
@@ -663,12 +668,15 @@ public class LayoutStructure {
 						childrenItemId);
 
 				columnLayoutStructureItem.setSize(
-					getColumnSize(numberOfColumns - 1, i));
+					LayoutStructureConstants.COLUMN_SIZES[numberOfColumns - 1]
+						[i]);
 			}
 
 			for (int i = oldNumberOfColumns; i < numberOfColumns; i++) {
 				_addColumnLayoutStructureItem(
-					itemId, i, getColumnSize(numberOfColumns - 1, i));
+					itemId, i,
+					LayoutStructureConstants.COLUMN_SIZES[numberOfColumns - 1]
+						[i]);
 			}
 
 			return Collections.emptyList();
@@ -682,7 +690,7 @@ public class LayoutStructure {
 					childrenItemId);
 
 			columnLayoutStructureItem.setSize(
-				getColumnSize(numberOfColumns - 1, i));
+				LayoutStructureConstants.COLUMN_SIZES[numberOfColumns - 1][i]);
 		}
 
 		List<LayoutStructureItem> deletedLayoutStructureItems =
@@ -770,9 +778,8 @@ public class LayoutStructure {
 		RowStyledLayoutStructureItem rowStyledLayoutStructureItem,
 		String viewportSizeId, int modulesPerRow, boolean updateEmpty) {
 
-		int[] defaultSizes =
-			_COLUMN_SIZES
-				[rowStyledLayoutStructureItem.getNumberOfColumns() - 1];
+		int[] defaultSizes = LayoutStructureConstants.COLUMN_SIZES
+			[rowStyledLayoutStructureItem.getNumberOfColumns() - 1];
 
 		if (rowStyledLayoutStructureItem.getNumberOfColumns() !=
 				modulesPerRow) {
@@ -877,13 +884,6 @@ public class LayoutStructure {
 			rowStyledLayoutStructureItem, viewportSizeId, numberOfColumns,
 			false);
 	}
-
-	private static final int[][] _COLUMN_SIZES = {
-		{12}, {6, 6}, {4, 4, 4}, {3, 3, 3, 3}, {2, 2, 4, 2, 2},
-		{2, 2, 2, 2, 2, 2}, {1, 1, 1, 6, 1, 1, 1}, {1, 1, 1, 3, 3, 1, 1, 1},
-		{1, 1, 1, 1, 4, 1, 1, 1, 1}, {1, 1, 1, 1, 2, 2, 1, 1, 1, 1},
-		{1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1}, {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-	};
 
 	private static final int _MAX_COLUMNS = 12;
 

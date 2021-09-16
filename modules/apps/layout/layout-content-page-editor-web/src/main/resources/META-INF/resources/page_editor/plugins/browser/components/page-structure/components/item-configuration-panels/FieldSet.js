@@ -20,8 +20,9 @@ import {FRAGMENT_CONFIGURATION_FIELDS} from '../../../../../../app/components/fr
 import {CONTAINER_WIDTH_TYPES} from '../../../../../../app/config/constants/containerWidthTypes';
 import {LAYOUT_DATA_ITEM_TYPES} from '../../../../../../app/config/constants/layoutDataItemTypes';
 import {VIEWPORT_SIZES} from '../../../../../../app/config/constants/viewportSizes';
-import {config} from '../../../../../../app/config/index';
 import {useSelector} from '../../../../../../app/contexts/StoreContext';
+import {getEditableLocalizedValue} from '../../../../../../app/utils/getEditableLocalizedValue';
+import isNullOrUndefined from '../../../../../../app/utils/isNullOrUndefined';
 import CurrentLanguageFlag from '../../../../../../common/components/CurrentLanguageFlag';
 import {ConfigurationFieldPropTypes} from '../../../../../../prop-types/index';
 
@@ -63,73 +64,46 @@ export const FieldSet = ({
 					</div>
 				)}
 
-				<div className="page-editor__sidebar__fieldset">
+				<div
+					className={classNames('page-editor__sidebar__fieldset', {
+						'page-editor__sidebar__fieldset--no-label': !label,
+					})}
+				>
 					{availableFields.map((field, index) => {
 						const FieldComponent =
 							field.type &&
 							FRAGMENT_CONFIGURATION_FIELDS[field.type];
 
-						const fieldValueObject = values[field.name];
-						let fieldValue = field.defaultValue;
-
-						if (field.localizable) {
-							fieldValue = Object.keys(fieldValueObject).includes(
-								languageId
-							)
-								? fieldValueObject[languageId]
-								: Object.keys(fieldValueObject).includes(
-										config.defaultLanguageId
-								  )
-								? values[field.name][config.defaultLanguageId]
-								: field.defaultValue;
-						}
-						else {
-							fieldValue = Object.keys(values).includes(
-								field.name
-							)
-								? values[field.name]
-								: field.defaultValue;
-						}
-
-						const visible =
-							!field.dependencies ||
-							field.dependencies.every(
-								(dependency) =>
-									values[dependency.styleName] ===
-									dependency.value
-							);
-
 						return (
-							visible && (
-								<div
-									className={classNames(
-										'autofit-row',
-										'page-editor__sidebar__fieldset__field align-items-end',
-										{
-											'page-editor__sidebar__fieldset__field-small':
-												field.displaySize ===
-												DISPLAY_SIZES.small,
-										}
-									)}
-									key={index}
-								>
-									<div className="autofit-col autofit-col-expand">
-										<FieldComponent
-											disabled={fieldIsDisabled(
-												item,
-												field
-											)}
-											field={field}
-											onValueSelect={onValueSelect}
-											value={fieldValue}
-										/>
-									</div>
-
-									{field.localizable && (
-										<CurrentLanguageFlag className="ml-2" />
-									)}
+							<div
+								className={classNames(
+									'autofit-row',
+									'page-editor__sidebar__fieldset__field align-items-end',
+									{
+										'page-editor__sidebar__fieldset__field-small':
+											field.displaySize ===
+											DISPLAY_SIZES.small,
+									}
+								)}
+								key={index}
+							>
+								<div className="autofit-col autofit-col-expand">
+									<FieldComponent
+										disabled={fieldIsDisabled(item, field)}
+										field={field}
+										onValueSelect={onValueSelect}
+										value={getFieldValue({
+											field,
+											languageId,
+											values,
+										})}
+									/>
 								</div>
-							)
+
+								{field.localizable && (
+									<CurrentLanguageFlag className="ml-2" />
+								)}
+							</div>
 						);
 					})}
 				</div>
@@ -137,6 +111,20 @@ export const FieldSet = ({
 		)
 	);
 };
+
+function getFieldValue({field, languageId, values}) {
+	const value = values[field.name];
+
+	if (isNullOrUndefined(value)) {
+		return field.defaultValue;
+	}
+
+	if (!field.localizable || typeof value !== 'object') {
+		return value;
+	}
+
+	return getEditableLocalizedValue(value, languageId, field.defaultValue);
+}
 
 FieldSet.propTypes = {
 	fields: PropTypes.arrayOf(PropTypes.shape(ConfigurationFieldPropTypes)),

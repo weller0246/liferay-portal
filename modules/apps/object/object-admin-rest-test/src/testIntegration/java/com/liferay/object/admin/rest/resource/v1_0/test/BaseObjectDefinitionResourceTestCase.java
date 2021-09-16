@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.util.ISO8601DateFormat;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.client.http.HttpInvoker;
 import com.liferay.object.admin.rest.client.pagination.Page;
+import com.liferay.object.admin.rest.client.pagination.Pagination;
 import com.liferay.object.admin.rest.client.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.client.serdes.v1_0.ObjectDefinitionSerDes;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -33,7 +34,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -42,6 +42,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -183,6 +184,9 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 		ObjectDefinition objectDefinition = randomObjectDefinition();
 
 		objectDefinition.setName(regex);
+		objectDefinition.setPanelAppOrder(regex);
+		objectDefinition.setPanelCategoryKey(regex);
+		objectDefinition.setScope(regex);
 
 		String json = ObjectDefinitionSerDes.toJSON(objectDefinition);
 
@@ -191,11 +195,105 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 		objectDefinition = ObjectDefinitionSerDes.toDTO(json);
 
 		Assert.assertEquals(regex, objectDefinition.getName());
+		Assert.assertEquals(regex, objectDefinition.getPanelAppOrder());
+		Assert.assertEquals(regex, objectDefinition.getPanelCategoryKey());
+		Assert.assertEquals(regex, objectDefinition.getScope());
 	}
 
 	@Test
 	public void testGetObjectDefinitionsPage() throws Exception {
-		Assert.assertTrue(false);
+		Page<ObjectDefinition> page =
+			objectDefinitionResource.getObjectDefinitionsPage(
+				RandomTestUtil.randomString(), Pagination.of(1, 10));
+
+		long totalCount = page.getTotalCount();
+
+		ObjectDefinition objectDefinition1 =
+			testGetObjectDefinitionsPage_addObjectDefinition(
+				randomObjectDefinition());
+
+		ObjectDefinition objectDefinition2 =
+			testGetObjectDefinitionsPage_addObjectDefinition(
+				randomObjectDefinition());
+
+		page = objectDefinitionResource.getObjectDefinitionsPage(
+			null, Pagination.of(1, 10));
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertContains(
+			objectDefinition1, (List<ObjectDefinition>)page.getItems());
+		assertContains(
+			objectDefinition2, (List<ObjectDefinition>)page.getItems());
+		assertValid(page);
+
+		objectDefinitionResource.deleteObjectDefinition(
+			objectDefinition1.getId());
+
+		objectDefinitionResource.deleteObjectDefinition(
+			objectDefinition2.getId());
+	}
+
+	@Test
+	public void testGetObjectDefinitionsPageWithPagination() throws Exception {
+		Page<ObjectDefinition> totalPage =
+			objectDefinitionResource.getObjectDefinitionsPage(null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
+		ObjectDefinition objectDefinition1 =
+			testGetObjectDefinitionsPage_addObjectDefinition(
+				randomObjectDefinition());
+
+		ObjectDefinition objectDefinition2 =
+			testGetObjectDefinitionsPage_addObjectDefinition(
+				randomObjectDefinition());
+
+		ObjectDefinition objectDefinition3 =
+			testGetObjectDefinitionsPage_addObjectDefinition(
+				randomObjectDefinition());
+
+		Page<ObjectDefinition> page1 =
+			objectDefinitionResource.getObjectDefinitionsPage(
+				null, Pagination.of(1, totalCount + 2));
+
+		List<ObjectDefinition> objectDefinitions1 =
+			(List<ObjectDefinition>)page1.getItems();
+
+		Assert.assertEquals(
+			objectDefinitions1.toString(), totalCount + 2,
+			objectDefinitions1.size());
+
+		Page<ObjectDefinition> page2 =
+			objectDefinitionResource.getObjectDefinitionsPage(
+				null, Pagination.of(2, totalCount + 2));
+
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
+
+		List<ObjectDefinition> objectDefinitions2 =
+			(List<ObjectDefinition>)page2.getItems();
+
+		Assert.assertEquals(
+			objectDefinitions2.toString(), 1, objectDefinitions2.size());
+
+		Page<ObjectDefinition> page3 =
+			objectDefinitionResource.getObjectDefinitionsPage(
+				null, Pagination.of(1, totalCount + 3));
+
+		assertContains(
+			objectDefinition1, (List<ObjectDefinition>)page3.getItems());
+		assertContains(
+			objectDefinition2, (List<ObjectDefinition>)page3.getItems());
+		assertContains(
+			objectDefinition3, (List<ObjectDefinition>)page3.getItems());
+	}
+
+	protected ObjectDefinition testGetObjectDefinitionsPage_addObjectDefinition(
+			ObjectDefinition objectDefinition)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
@@ -205,7 +303,7 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
@@ -215,7 +313,7 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/objectDefinitions");
 
-		Assert.assertEquals(0, objectDefinitionsJSONObject.get("totalCount"));
+		long totalCount = objectDefinitionsJSONObject.getLong("totalCount");
 
 		ObjectDefinition objectDefinition1 =
 			testGraphQLObjectDefinition_addObjectDefinition();
@@ -226,10 +324,16 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/objectDefinitions");
 
-		Assert.assertEquals(2, objectDefinitionsJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			totalCount + 2, objectDefinitionsJSONObject.getLong("totalCount"));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(objectDefinition1, objectDefinition2),
+		assertContains(
+			objectDefinition1,
+			Arrays.asList(
+				ObjectDefinitionSerDes.toDTOs(
+					objectDefinitionsJSONObject.getString("items"))));
+		assertContains(
+			objectDefinition2,
 			Arrays.asList(
 				ObjectDefinitionSerDes.toDTOs(
 					objectDefinitionsJSONObject.getString("items"))));
@@ -382,11 +486,118 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				"Object/code"));
 	}
 
+	@Test
+	public void testPatchObjectDefinition() throws Exception {
+		ObjectDefinition postObjectDefinition =
+			testPatchObjectDefinition_addObjectDefinition();
+
+		ObjectDefinition randomPatchObjectDefinition =
+			randomPatchObjectDefinition();
+
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ObjectDefinition patchObjectDefinition =
+			objectDefinitionResource.patchObjectDefinition(
+				postObjectDefinition.getId(), randomPatchObjectDefinition);
+
+		ObjectDefinition expectedPatchObjectDefinition =
+			postObjectDefinition.clone();
+
+		_beanUtilsBean.copyProperties(
+			expectedPatchObjectDefinition, randomPatchObjectDefinition);
+
+		ObjectDefinition getObjectDefinition =
+			objectDefinitionResource.getObjectDefinition(
+				patchObjectDefinition.getId());
+
+		assertEquals(expectedPatchObjectDefinition, getObjectDefinition);
+		assertValid(getObjectDefinition);
+	}
+
+	protected ObjectDefinition testPatchObjectDefinition_addObjectDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPutObjectDefinition() throws Exception {
+		ObjectDefinition postObjectDefinition =
+			testPutObjectDefinition_addObjectDefinition();
+
+		ObjectDefinition randomObjectDefinition = randomObjectDefinition();
+
+		ObjectDefinition putObjectDefinition =
+			objectDefinitionResource.putObjectDefinition(
+				postObjectDefinition.getId(), randomObjectDefinition);
+
+		assertEquals(randomObjectDefinition, putObjectDefinition);
+		assertValid(putObjectDefinition);
+
+		ObjectDefinition getObjectDefinition =
+			objectDefinitionResource.getObjectDefinition(
+				putObjectDefinition.getId());
+
+		assertEquals(randomObjectDefinition, getObjectDefinition);
+		assertValid(getObjectDefinition);
+	}
+
+	protected ObjectDefinition testPutObjectDefinition_addObjectDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testPostObjectDefinitionPublish() throws Exception {
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		ObjectDefinition objectDefinition =
+			testPostObjectDefinitionPublish_addObjectDefinition();
+
+		assertHttpResponseStatusCode(
+			204,
+			objectDefinitionResource.postObjectDefinitionPublishHttpResponse(
+				objectDefinition.getId()));
+
+		assertHttpResponseStatusCode(
+			404,
+			objectDefinitionResource.postObjectDefinitionPublishHttpResponse(
+				0L));
+	}
+
+	protected ObjectDefinition
+			testPostObjectDefinitionPublish_addObjectDefinition()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
 	protected ObjectDefinition testGraphQLObjectDefinition_addObjectDefinition()
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ObjectDefinition objectDefinition,
+		List<ObjectDefinition> objectDefinitions) {
+
+		boolean contains = false;
+
+		for (ObjectDefinition item : objectDefinitions) {
+			if (equals(objectDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			objectDefinitions + " does not contain " + objectDefinition,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -473,6 +684,22 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("active", additionalAssertFieldName)) {
+				if (objectDefinition.getActive() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("label", additionalAssertFieldName)) {
+				if (objectDefinition.getLabel() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("name", additionalAssertFieldName)) {
 				if (objectDefinition.getName() == null) {
 					valid = false;
@@ -483,6 +710,48 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 			if (Objects.equals("objectFields", additionalAssertFieldName)) {
 				if (objectDefinition.getObjectFields() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"objectRelationships", additionalAssertFieldName)) {
+
+				if (objectDefinition.getObjectRelationships() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("panelAppOrder", additionalAssertFieldName)) {
+				if (objectDefinition.getPanelAppOrder() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("panelCategoryKey", additionalAssertFieldName)) {
+				if (objectDefinition.getPanelCategoryKey() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("pluralLabel", additionalAssertFieldName)) {
+				if (objectDefinition.getPluralLabel() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("scope", additionalAssertFieldName)) {
+				if (objectDefinition.getScope() == null) {
 					valid = false;
 				}
 
@@ -610,6 +879,17 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("active", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectDefinition1.getActive(),
+						objectDefinition2.getActive())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("dateCreated", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						objectDefinition1.getDateCreated(),
@@ -642,6 +922,17 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("label", additionalAssertFieldName)) {
+				if (!equals(
+						(Map)objectDefinition1.getLabel(),
+						(Map)objectDefinition2.getLabel())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			if (Objects.equals("name", additionalAssertFieldName)) {
 				if (!Objects.deepEquals(
 						objectDefinition1.getName(),
@@ -657,6 +948,63 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				if (!Objects.deepEquals(
 						objectDefinition1.getObjectFields(),
 						objectDefinition2.getObjectFields())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"objectRelationships", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						objectDefinition1.getObjectRelationships(),
+						objectDefinition2.getObjectRelationships())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("panelAppOrder", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectDefinition1.getPanelAppOrder(),
+						objectDefinition2.getPanelAppOrder())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("panelCategoryKey", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectDefinition1.getPanelCategoryKey(),
+						objectDefinition2.getPanelCategoryKey())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("pluralLabel", additionalAssertFieldName)) {
+				if (!equals(
+						(Map)objectDefinition1.getPluralLabel(),
+						(Map)objectDefinition2.getPluralLabel())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("scope", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						objectDefinition1.getScope(),
+						objectDefinition2.getScope())) {
 
 					return false;
 				}
@@ -787,6 +1135,11 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("active")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("dateCreated")) {
 			if (operator.equals("between")) {
 				sb = new StringBundler();
@@ -860,6 +1213,11 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("label")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("name")) {
 			sb.append("'");
 			sb.append(String.valueOf(objectDefinition.getName()));
@@ -871,6 +1229,40 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 		if (entityFieldName.equals("objectFields")) {
 			throw new IllegalArgumentException(
 				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("objectRelationships")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("panelAppOrder")) {
+			sb.append("'");
+			sb.append(String.valueOf(objectDefinition.getPanelAppOrder()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("panelCategoryKey")) {
+			sb.append("'");
+			sb.append(String.valueOf(objectDefinition.getPanelCategoryKey()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
+		if (entityFieldName.equals("pluralLabel")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
+		if (entityFieldName.equals("scope")) {
+			sb.append("'");
+			sb.append(String.valueOf(objectDefinition.getScope()));
+			sb.append("'");
+
+			return sb.toString();
 		}
 
 		if (entityFieldName.equals("status")) {
@@ -927,10 +1319,16 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 	protected ObjectDefinition randomObjectDefinition() throws Exception {
 		return new ObjectDefinition() {
 			{
+				active = RandomTestUtil.randomBoolean();
 				dateCreated = RandomTestUtil.nextDate();
 				dateModified = RandomTestUtil.nextDate();
 				id = RandomTestUtil.randomLong();
 				name = StringUtil.toLowerCase(RandomTestUtil.randomString());
+				panelAppOrder = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				panelCategoryKey = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
+				scope = StringUtil.toLowerCase(RandomTestUtil.randomString());
 				system = RandomTestUtil.randomBoolean();
 			}
 		};
@@ -1025,8 +1423,8 @@ public abstract class BaseObjectDefinitionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseObjectDefinitionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseObjectDefinitionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -20,7 +20,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.NaturalOrderStringComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.tools.ToolsUtil;
-import com.liferay.source.formatter.checks.util.JSPSourceUtil;
 import com.liferay.source.formatter.checks.util.JavaSourceUtil;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class MethodCallsOrderCheck extends BaseFileCheck {
 	protected String doProcess(
 		String fileName, String absolutePath, String content) {
 
-		return _sortMethodCalls(fileName, content);
+		return _sortMethodCalls(content);
 	}
 
 	private String _getMethodCall(String content, int start) {
@@ -357,10 +356,11 @@ public class MethodCallsOrderCheck extends BaseFileCheck {
 		return content;
 	}
 
-	private String _sortMethodCalls(String fileName, String content) {
+	private String _sortMethodCalls(String content) {
 		content = _sortChainedMethodCalls(
 			content, "put", 2, "ConcurrentHashMapBuilder", "HashMapBuilder",
-			"JSONObject", "JSONUtil", "SoyContext", "TreeMapBuilder");
+			"HashMapDictionaryBuilder", "JSONObject", "JSONUtil", "SoyContext",
+			"TreeMapBuilder");
 		content = _sortChainedMethodCalls(
 			content, "setParameter", 2, "PortletURLBuilder");
 
@@ -369,13 +369,11 @@ public class MethodCallsOrderCheck extends BaseFileCheck {
 			"SearchContext", "ServiceContext");
 
 		content = _sortMethodCallsByParameter(
-			fileName, content, "add", "ConcurrentSkipListSet", "HashSet",
-			"TreeSet");
+			content, "add", "ConcurrentSkipListSet", "HashSet", "TreeSet");
 		content = _sortMethodCallsByParameter(
-			fileName, content, "put", "ConcurrentHashMap", "HashMap",
-			"JSONObject", "SortedMap", "TreeMap");
-		content = _sortMethodCallsByParameter(
-			fileName, content, "setAttribute");
+			content, "put", "ConcurrentHashMap", "HashMap", "JSONObject",
+			"SortedMap", "TreeMap");
+		content = _sortMethodCallsByParameter(content, "setAttribute");
 
 		return content;
 	}
@@ -426,8 +424,7 @@ public class MethodCallsOrderCheck extends BaseFileCheck {
 	}
 
 	private String _sortMethodCallsByParameter(
-		String fileName, String content, String methodName,
-		String... variableTypeNames) {
+		String content, String methodName, String... variableTypeNames) {
 
 		content = _sortAnonymousClassMethodCalls(
 			content, methodName, variableTypeNames);
@@ -444,8 +441,7 @@ public class MethodCallsOrderCheck extends BaseFileCheck {
 		while (matcher.find()) {
 			if (!_isAllowedVariableType(
 					content, matcher.group(2), variableTypeNames) ||
-				((fileName.endsWith(".jsp") || fileName.endsWith(".jspf")) &&
-				 !JSPSourceUtil.isJavaSource(content, matcher.start()))) {
+				!isJavaSource(content, matcher.start())) {
 
 				continue;
 			}

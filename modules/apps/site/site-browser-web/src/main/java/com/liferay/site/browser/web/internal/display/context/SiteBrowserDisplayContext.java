@@ -473,11 +473,16 @@ public class SiteBrowserDisplayContext {
 
 		_groupParams = LinkedHashMapBuilder.<String, Object>put(
 			"active", Boolean.TRUE
-		).build();
+		).put(
+			"manualMembership",
+			() -> {
+				if (_isManualMembership()) {
+					return Boolean.TRUE;
+				}
 
-		if (_isManualMembership()) {
-			_groupParams.put("manualMembership", Boolean.TRUE);
-		}
+				return null;
+			}
+		).build();
 
 		if (Objects.equals(type, "child-sites")) {
 			Group parentGroup = GroupLocalServiceUtil.getGroup(groupId);
@@ -485,19 +490,20 @@ public class SiteBrowserDisplayContext {
 			_groupParams.put("groupsTree", ListUtil.fromArray(parentGroup));
 		}
 		else if (filterManageableGroups) {
-			User user = themeDisplay.getUser();
-
 			if (Objects.equals(type, "sites-that-i-administer")) {
 				_groupParams.put("actionId", ActionKeys.UPDATE);
+				_groupParams.put("userId", themeDisplay.getUserId());
 			}
 			else {
 				_groupParams.put("actionId", ActionKeys.ASSIGN_MEMBERS);
+				_groupParams.put("userId", themeDisplay.getUserId());
 			}
 
-			_groupParams.put("usersGroups", user.getUserId());
+			_groupParams.put("usersGroups", themeDisplay.getUserId());
 		}
 		else {
 			_groupParams.put("actionId", ActionKeys.ASSIGN_MEMBERS);
+			_groupParams.put("userId", themeDisplay.getUserId());
 		}
 
 		_groupParams.put("site", Boolean.TRUE);

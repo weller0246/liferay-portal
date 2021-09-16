@@ -331,16 +331,12 @@ public class UIItemsBuilder {
 
 		String jsNamespace = getNamespace() + _fileVersion.getFileVersionId();
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append(jsNamespace);
-		sb.append("compareVersionDialog('");
-		sb.append(HtmlUtil.escapeJS(selectFileVersionURL.toString()));
-		sb.append("');");
-
 		JavaScriptMenuItem javaScriptMenuItem = _addJavaScriptUIItem(
 			new JavaScriptMenuItem(), menuItems, DLUIItemKeys.COMPARE_TO,
-			"compare-to", sb.toString());
+			"compare-to",
+			StringBundler.concat(
+				jsNamespace, "compareVersionDialog('",
+				HtmlUtil.escapeJS(selectFileVersionURL.toString()), "');"));
 
 		javaScriptMenuItem.setData(data);
 
@@ -518,7 +514,7 @@ public class UIItemsBuilder {
 		label = StringBundler.concat(
 			_themeDisplay.translate("download"), " (", label, ")");
 
-		final boolean appendVersion;
+		boolean appendVersion;
 
 		if (StringUtil.equalsIgnoreCase(
 				_fileEntry.getVersion(), _fileVersion.getVersion())) {
@@ -767,17 +763,13 @@ public class UIItemsBuilder {
 				"Unable to create permissions URL", exception);
 		}
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("Liferay.Util.openModal({title: '");
-		sb.append(UnicodeLanguageUtil.get(_resourceBundle, "permissions"));
-		sb.append("', url: '");
-		sb.append(HtmlUtil.escapeJS(permissionsURL));
-		sb.append("'});");
-
 		_addJavaScriptUIItem(
 			new JavaScriptToolbarItem(), toolbarItems, DLUIItemKeys.PERMISSIONS,
-			LanguageUtil.get(_resourceBundle, "permissions"), sb.toString());
+			LanguageUtil.get(_resourceBundle, "permissions"),
+			StringBundler.concat(
+				"Liferay.Util.openModal({title: '",
+				UnicodeLanguageUtil.get(_resourceBundle, "permissions"),
+				"', url: '", HtmlUtil.escapeJS(permissionsURL), "'});"));
 	}
 
 	public void addPublishMenuItem(
@@ -832,14 +824,14 @@ public class UIItemsBuilder {
 				_getActionURL("/document_library/publish_file_entry")
 			).setParameter(
 				"fileEntryId", _fileEntry.getFileEntryId()
-			).build();
+			).buildPortletURL();
 		}
 		else {
 			portletURL = PortletURLBuilder.create(
 				_getActionURL("/document_library/publish_file_shortcut")
 			).setParameter(
 				"fileShortcutId", _fileShortcut.getFileShortcutId()
-			).build();
+			).buildPortletURL();
 		}
 
 		portletURL.setParameter("redirect", StringPool.BLANK);
@@ -924,7 +916,7 @@ public class UIItemsBuilder {
 				"/document_library/edit_file_entry", Constants.CHECKIN)
 		).setParameter(
 			"fileEntryId", _fileEntry.getFileEntryId()
-		).build();
+		).buildPortletURL();
 
 		if (!_versioningStrategy.isOverridable()) {
 			URLMenuItem urlMenuItem = new URLMenuItem();
@@ -1112,19 +1104,21 @@ public class UIItemsBuilder {
 	private PortletURL _getActionURL(
 		String mvcActionCommandName, String cmd, String redirect) {
 
-		PortletURL portletURL = PortletURLBuilder.createActionURL(
+		return PortletURLBuilder.createActionURL(
 			_getLiferayPortletResponse()
 		).setActionName(
 			mvcActionCommandName
-		).build();
+		).setCMD(
+			() -> {
+				if (Validator.isNotNull(cmd)) {
+					return cmd;
+				}
 
-		if (Validator.isNotNull(cmd)) {
-			portletURL.setParameter(Constants.CMD, cmd);
-		}
-
-		portletURL.setParameter("redirect", redirect);
-
-		return portletURL;
+				return null;
+			}
+		).setRedirect(
+			redirect
+		).buildPortletURL();
 	}
 
 	private PortletURL _getControlPanelRenderURL(String mvcRenderCommandName) {
@@ -1142,11 +1136,15 @@ public class UIItemsBuilder {
 				PortletRequest.RENDER_PHASE)
 		).setMVCRenderCommandName(
 			mvcRenderCommandName
-		).build();
+		).setRedirect(
+			() -> {
+				if (Validator.isNotNull(redirect)) {
+					return redirect;
+				}
 
-		if (Validator.isNotNull(redirect)) {
-			portletURL.setParameter("redirect", redirect);
-		}
+				return null;
+			}
+		).buildPortletURL();
 
 		if (_fileShortcut != null) {
 			portletURL.setParameter(
@@ -1209,20 +1207,13 @@ public class UIItemsBuilder {
 	}
 
 	private String _getEditImageOnClickJavaScript() {
-		StringBundler sb = new StringBundler(6);
-
-		sb.append(getNamespace());
-		sb.append("editWithImageEditor({fileEntryId: '");
-		sb.append(_fileEntry.getFileEntryId());
-		sb.append("', imageURL: '");
-		sb.append(
+		return StringBundler.concat(
+			getNamespace(), "editWithImageEditor({fileEntryId: '",
+			_fileEntry.getFileEntryId(), "', imageURL: '",
 			HtmlUtil.escapeJS(
 				_dlURLHelper.getPreviewURL(
-					_fileEntry, _fileVersion, _themeDisplay,
-					StringPool.BLANK)));
-		sb.append("'});");
-
-		return sb.toString();
+					_fileEntry, _fileVersion, _themeDisplay, StringPool.BLANK)),
+			"'});");
 	}
 
 	private LiferayPortletRequest _getLiferayPortletRequest() {
@@ -1280,11 +1271,15 @@ public class UIItemsBuilder {
 			_getLiferayPortletResponse()
 		).setMVCRenderCommandName(
 			mvcRenderCommandName
-		).build();
+		).setRedirect(
+			() -> {
+				if (Validator.isNotNull(redirect)) {
+					return redirect;
+				}
 
-		if (Validator.isNotNull(redirect)) {
-			portletURL.setParameter("redirect", redirect);
-		}
+				return null;
+			}
+		).buildPortletURL();
 
 		if (_fileShortcut != null) {
 			portletURL.setParameter(

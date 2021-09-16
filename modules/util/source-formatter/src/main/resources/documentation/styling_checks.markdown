@@ -29,6 +29,7 @@ DockerfileInstructionCheck | Dockerfile | Performs styling rules on instructions
 EmptyCollectionCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that there are no calls to `Collections.EMPTY_LIST`, `Collections.EMPTY_MAP` or `Collections.EMPTY_SET`. |
 EnumConstantDividerCheck | .java | Find unnecessary empty lines between enum constants. |
 EnumConstantOrderCheck | .java | Checks the order of enum constants. |
+EqualClauseIfStatementsCheck | .java | Finds consecutive if-statements with identical clauses. |
 [ExceptionMessageCheck](checks/message_check.markdown#messagecheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates messages that are passed to exceptions. |
 FTLEmptyLinesCheck | .ftl | Finds missing and unnecessary empty lines. |
 [FTLIfStatementCheck](checks/if_statement_check.markdown#ifstatementcheck) | .ftl | Finds incorrect use of parentheses in statement. |
@@ -48,6 +49,7 @@ GradleStylingCheck | .gradle | Applies rules to enforce consisteny in code style
 [GradleTaskCreationCheck](checks/gradle_task_creation_check.markdown#gradletaskcreationcheck) | .gradle | Checks that a task is declared on a separate line before the closure. |
 HTMLEmptyLinesCheck | .html or .path | Finds missing and unnecessary empty lines. |
 HTMLWhitespaceCheck | .html or .path | Finds missing and unnecessary whitespace in `.html` files. |
+[IfStatementCheck](checks/if_statement_check.markdown#ifstatementcheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds empty if-statements and consecutive if-statements with identical bodies |
 InstanceofOrderCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Check the order of `instanceof` calls. |
 JSONStylingCheck | .ipynb, .json or .npmbridgerc | Applies rules to enforce consisteny in code style. |
 [JSONUtilCheck](checks/json_util_check.markdown#jsonutilcheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for utilization of class `JSONUtil`. |
@@ -70,6 +72,7 @@ JavaAssertEqualsCheck | .java | Validates `Assert.assertEquals` calls. |
 [JavaConstructorParametersCheck](checks/java_constructor_parameters_check.markdown#javaconstructorparameterscheck) | .java | Checks that the order of variable assignments matches the order of the parameters in the constructor signature. |
 JavaConstructorSuperCallCheck | .java | Finds unnecessary call to no-argument constructor of the superclass. |
 JavaEmptyLinesCheck | .java | Finds missing and unnecessary empty lines. |
+JavaFinalVariableCheck | .java | Finds cases of unneeded `final` modifiers for variables and parameters. |
 [JavaForLoopCheck](checks/java_for_loop_check.markdown#javaforloopcheck) | .java | Checks if a Enhanced For Loop can be used instead of a Simple For Loop. |
 JavaIOExceptionCheck | .java | Validates use of `IOException`. |
 JavaImportsCheck | .java | Sorts and groups imports in `.java` files. |
@@ -171,6 +174,7 @@ XMLTestIgnorableErrorLinesFileCheck | .action, .function, .jrxml, .macro, .pom, 
 XMLTilesDefsFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the order of elements in `tiles-defs.xml` file. |
 XMLToggleFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the order of elements in `.toggle` file. |
 XMLWhitespaceCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Finds missing and unnecessary whitespace in `.xml` files. |
+XMLWorkflowDefinitionFileNameCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the file name of workflow definition files. |
 YMLDefinitionOrderCheck | .yaml or .yml | Sorts definitions alphabetically in `.yml` files. |
 YMLEmptyLinesCheck | .yaml or .yml | Finds missing and unnecessary empty lines. |
 YMLLongLinesCheck | .yaml or .yml | Finds lines that are longer than the specified maximum line length. |

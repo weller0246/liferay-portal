@@ -133,16 +133,14 @@ public class CPInstanceCommercePriceEntryDisplayContext
 				Collections.<ItemSelectorReturnType>singletonList(
 					new UUIDItemSelectorReturnType()));
 
-		PortletURL itemSelectorURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			_itemSelector.getItemSelectorURL(
 				requestBackedPortletURLFactory, "priceListsSelectItem",
 				commercePriceListItemSelectorCriterion)
 		).setParameter(
 			"checkedCommercePriceListIds",
 			StringUtil.merge(getCheckedCommercePriceListIds())
-		).build();
-
-		return itemSelectorURL.toString();
+		).buildString();
 	}
 
 	@Override
@@ -157,7 +155,7 @@ public class CPInstanceCommercePriceEntryDisplayContext
 			"screenNavigationCategoryKey", getScreenNavigationCategoryKey()
 		).setParameter(
 			"screenNavigationEntryKey", "price-lists"
-		).build();
+		).buildPortletURL();
 	}
 
 	@Override

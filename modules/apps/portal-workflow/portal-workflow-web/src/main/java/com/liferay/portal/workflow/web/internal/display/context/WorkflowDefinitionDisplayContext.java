@@ -317,13 +317,13 @@ public class WorkflowDefinitionDisplayContext {
 			return StringPool.BLANK;
 		}
 		else if (workflowDefinitionLinks.size() == 1) {
-			return "workflow-in-use-remove-assignement-to-x-x";
+			return "workflow-is-in-use.-remove-its-assignment-to-x-x";
 		}
 		else if (workflowDefinitionLinks.size() == 2) {
-			return "workflow-in-use-remove-assignements-to-x-and-x-x";
+			return "workflow-is-in-use.-remove-its-assignments-to-x-and-x-x";
 		}
 
-		return "workflow-in-use-remove-assignements-to-x-x-and-x-more-x";
+		return "workflow-is-in-use.-remove-its-assignment-to-x-x-and-x-more-x";
 	}
 
 	public Date getModifiedDate(WorkflowDefinition workflowDefinition) {
@@ -418,8 +418,20 @@ public class WorkflowDefinitionDisplayContext {
 	public String getSortingURL(HttpServletRequest httpServletRequest)
 		throws PortletException {
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_workflowDefinitionRequestHelper.getLiferayPortletResponse()
+		).setParameter(
+			"definitionsNavigation",
+			() -> {
+				String definitionsNavigation = ParamUtil.getString(
+					httpServletRequest, "definitionsNavigation");
+
+				if (Validator.isNotNull(definitionsNavigation)) {
+					return definitionsNavigation;
+				}
+
+				return null;
+			}
 		).setParameter(
 			"orderByType",
 			() -> {
@@ -432,17 +444,7 @@ public class WorkflowDefinitionDisplayContext {
 
 				return "asc";
 			}
-		).build();
-
-		String definitionsNavigation = ParamUtil.getString(
-			httpServletRequest, "definitionsNavigation");
-
-		if (Validator.isNotNull(definitionsNavigation)) {
-			portletURL.setParameter(
-				"definitionsNavigation", definitionsNavigation);
-		}
-
-		return portletURL.toString();
+		).buildString();
 	}
 
 	public String getTitle(WorkflowDefinition workflowDefinition) {
@@ -597,7 +599,7 @@ public class WorkflowDefinitionDisplayContext {
 			"/view.jsp"
 		).setParameter(
 			"tab", WorkflowWebKeys.WORKFLOW_TAB_DEFINITION_LINK
-		).build();
+		).buildPortletURL();
 	}
 
 	protected OrderByComparator<WorkflowDefinition>
@@ -620,7 +622,7 @@ public class WorkflowDefinitionDisplayContext {
 			PortletRequest.RENDER_PHASE
 		).setMVCPath(
 			"/view.jsp"
-		).build();
+		).buildPortletURL();
 	}
 
 	private String _buildErrorLink(String messageKey, PortletURL portletURL) {

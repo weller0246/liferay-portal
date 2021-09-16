@@ -17,13 +17,21 @@ import ClaySlider from '@clayui/slider';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
+import {
+	updateDiagramColor,
+	updateDiagramRadius,
+} from './edit_cp_definition_diagram_setting';
+
 const DiagramHeader = ({
 	addNewPinState,
+	diagramId,
+	importPinSchema,
 	isAdmin,
 	namespace,
 	newPinSettings,
 	setAddNewPinState,
 	setAddPinHandler,
+	type,
 }) => {
 	const RADIUS_CHOICE = [
 		{
@@ -48,10 +56,6 @@ const DiagramHeader = ({
 		<div className="d-flex diagram diagram-header justify-content-between">
 			{isAdmin && (
 				<div className="d-flex text-align-center">
-					<label className="align-middle my-auto">
-						{Liferay.Language.get('diagram-pin')}
-					</label>
-
 					<ClayDropDown
 						active={active}
 						className="my-auto"
@@ -83,6 +87,10 @@ const DiagramHeader = ({
 											fill: item.replace('#', ''),
 											radius: addNewPinState.radius,
 										});
+										updateDiagramColor(
+											diagramId,
+											addNewPinState.fill
+										);
 									}}
 									showHex={true}
 									step={1}
@@ -109,6 +117,10 @@ const DiagramHeader = ({
 												fill: addNewPinState.fill,
 												radius: item.value,
 											});
+											updateDiagramRadius(
+												diagramId,
+												addNewPinState.radius
+											);
 										}}
 									>
 										{item.label}
@@ -121,19 +133,23 @@ const DiagramHeader = ({
 
 						<ClayDropDown.Caption>
 							<ClayForm>
-								<ClayForm.Group className="form-group-sm">
+								<ClayForm.Group small>
 									<label htmlFor="slider">
 										{Liferay.Language.get('custom-radius')}
 									</label>
 
 									<ClaySlider
 										id={`${namespace}custom-radius`}
-										onValueChange={(item) =>
+										onValueChange={(item) => {
 											setAddNewPinState({
 												fill: addNewPinState.fill,
 												radius: item,
-											})
-										}
+											});
+											updateDiagramRadius(
+												diagramId,
+												item
+											);
+										}}
 										value={addNewPinState.radius}
 									/>
 
@@ -147,16 +163,17 @@ const DiagramHeader = ({
 							</ClayForm>
 						</ClayDropDown.Caption>
 					</ClayDropDown>
+					<ClayButton
+						aria-label={Liferay.Language.get('auto-mapping')}
+						className="ml-3 select-diameter"
+						disabled={type === 'diagram.type.svg' ? false : true}
+						displayType="secondary"
+						onClick={() => importPinSchema()}
+					>
+						{Liferay.Language.get('auto-mapping')}
+					</ClayButton>
 				</div>
 			)}
-
-			<ClayButton
-				aria-label={Liferay.Language.get('auto-mapping')}
-				className="auto-mapping my-auto pull-right"
-				displayType="secondary"
-			>
-				{Liferay.Language.get('auto-mapping')}
-			</ClayButton>
 		</div>
 	);
 };
@@ -183,6 +200,7 @@ DiagramHeader.propTypes = {
 		fill: PropTypes.string,
 		radius: PropTypes.number,
 	}),
+	diagramId: PropTypes.number,
 	newPinSettings: PropTypes.shape({
 		colorPicker: PropTypes.shape({
 			defaultColors: PropTypes.array,

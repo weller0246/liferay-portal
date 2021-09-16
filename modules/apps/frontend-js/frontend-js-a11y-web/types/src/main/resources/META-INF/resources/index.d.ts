@@ -22,6 +22,12 @@ declare global {
 			sub(...value: string[]): string;
 		};
 	};
+	interface ThemeDisplay {
+		isStatePopUp(): boolean;
+	}
+	interface Window {
+		themeDisplay: ThemeDisplay;
+	}
 }
 declare const _default: (
 	props: Omit<A11yCheckerOptions, 'callback' | 'targets'>

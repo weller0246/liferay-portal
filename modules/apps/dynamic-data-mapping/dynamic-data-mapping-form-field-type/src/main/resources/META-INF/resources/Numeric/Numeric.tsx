@@ -13,6 +13,7 @@
  */
 
 import {ClayInput} from '@clayui/form';
+import classNames from 'classnames';
 
 // @ts-ignore
 
@@ -32,6 +33,10 @@ import {ISymbols} from '../NumericInputMask/NumericInputMask';
 // @ts-ignore
 
 import withConfirmationField from '../util/withConfirmationField.es';
+
+import './Numeric.scss';
+
+const NON_NUMERIC_REGEX = /[\D]/g;
 
 const adaptiveMask = (rawValue: string, inputMaskFormat: string) => {
 	const generateMask = (mask: string): string => {
@@ -54,73 +59,34 @@ const adaptiveMask = (rawValue: string, inputMaskFormat: string) => {
 };
 
 const getMaskedValue = ({
-	append,
-	appendType,
 	dataType,
-	inputMask,
+	includeThousandsSeparator = false,
 	inputMaskFormat,
 	symbols,
 	value,
 }: {
-	append: string;
-	appendType?: 'prefix' | 'suffix';
 	dataType: NumericDataType;
-	inputMask?: boolean;
-	inputMaskFormat?: string;
+	includeThousandsSeparator?: boolean;
+	inputMaskFormat: string;
 	symbols: ISymbols;
 	value: string;
 }): IMaskedNumber => {
 	let mask;
-
-	if (inputMask) {
-		if (dataType === 'double') {
-			const config: INumberMaskConfig = {
-				allowDecimal: true,
-				allowLeadingZeroes: true,
-				allowNegative: true,
-				decimalSymbol: symbols.decimalSymbol,
-				includeThousandsSeparator: Boolean(symbols.thousandsSeparator),
-				prefix: appendType === 'prefix' ? append : '',
-				suffix: appendType === 'suffix' ? append : '',
-				thousandsSeparatorSymbol: symbols.thousandsSeparator,
-			};
-
-			mask = createNumberMask(config);
-
-			value = value.replace(
-				new RegExp('[.,]', 'g'),
-				symbols.decimalSymbol
-			);
-		}
-		else {
-			mask = adaptiveMask(value, inputMaskFormat as string);
-		}
-	}
-	else {
+	if (dataType === 'double') {
 		const config: INumberMaskConfig = {
+			allowDecimal: true,
 			allowLeadingZeroes: true,
 			allowNegative: true,
-			includeThousandsSeparator: false,
+			decimalSymbol: symbols.decimalSymbol,
+			includeThousandsSeparator,
 			prefix: '',
+			thousandsSeparatorSymbol: symbols.thousandsSeparator ?? '',
 		};
 
-		if (dataType === 'double') {
-			config.allowDecimal = true;
-			config.decimalLimit = null;
-			config.decimalSymbol = symbols.decimalSymbol;
-		}
 		mask = createNumberMask(config);
-
-		if (typeof value === 'string') {
-			if (!value) {
-				return {masked: '', raw: ''};
-			}
-			value = value.replace(symbols.decimalSymbol, '.');
-			if (dataType == 'integer' && value.includes('.')) {
-				value = value.replace(symbols.decimalSymbol, '');
-			}
-		}
-		value = value.replace('.', symbols.decimalSymbol);
+	}
+	else {
+		mask = adaptiveMask(value, inputMaskFormat);
 	}
 
 	const {conformedValue: masked} = conformToMask(value, mask, {
@@ -128,9 +94,63 @@ const getMaskedValue = ({
 		keepCharPositions: false,
 		placeholderChar: '\u2000',
 	});
-	const regex = new RegExp(`[^${symbols.decimalSymbol}|\\d]`, 'g');
 
-	return {masked, raw: inputMask ? masked.replace(regex, '') : masked};
+	const regex = new RegExp(
+		dataType === 'double' ? `[^${symbols.decimalSymbol}|\\d]` : '[^\\d]',
+		'g'
+	);
+
+	return {
+		masked,
+		placeholder:
+			dataType === 'double'
+				? `0${symbols.decimalSymbol}00`
+				: inputMaskFormat.replace(/\d/g, '_'),
+		raw: masked.replace(regex, ''),
+	};
+};
+
+const getFormattedValue = ({
+	dataType,
+	symbols,
+	value,
+}: {
+	dataType: NumericDataType;
+	symbols: ISymbols;
+	value: string;
+}) => {
+	if (!value) {
+		return {masked: '', raw: ''};
+	}
+
+	const config: INumberMaskConfig = {
+		allowLeadingZeroes: true,
+		allowNegative: true,
+		includeThousandsSeparator: false,
+		prefix: '',
+	};
+
+	if (dataType === 'double') {
+		config.allowDecimal = true;
+		config.decimalLimit = null;
+		config.decimalSymbol = symbols.decimalSymbol;
+	}
+	const mask = createNumberMask(config);
+
+	const {conformedValue: masked}: {conformedValue: string} = conformToMask(
+		value,
+		mask,
+		{
+			guide: false,
+			keepCharPositions: false,
+			placeholderChar: '\u2000',
+		}
+	);
+
+	return {
+		masked: dataType === 'double' ? value : masked,
+		raw: masked,
+	};
 };
 
 const Numeric: React.FC<IProps> = ({
@@ -153,7 +173,8 @@ const Numeric: React.FC<IProps> = ({
 	value,
 	...otherProps
 }) => {
-	const {editingLanguageId} = useFormState();
+	const {editingLanguageId}: {editingLanguageId: Locale} = useFormState();
+
 	const symbols = useMemo<ISymbols>(() => {
 		return inputMask
 			? {
@@ -174,18 +195,21 @@ const Numeric: React.FC<IProps> = ({
 			predefinedValue ??
 			'';
 
-		return getMaskedValue({
-			append,
-			appendType,
-			dataType,
-			inputMask,
-			inputMaskFormat,
-			symbols,
-			value: newValue,
-		});
+		return inputMask
+			? getMaskedValue({
+					dataType,
+					includeThousandsSeparator: Boolean(
+						symbols.thousandsSeparator
+					),
+					inputMaskFormat: inputMaskFormat as string,
+					symbols,
+					value: newValue,
+			  })
+			: {
+					...getFormattedValue({dataType, symbols, value: newValue}),
+					placeholder,
+			  };
 	}, [
-		append,
-		appendType,
 		dataType,
 		symbols,
 		defaultLanguageId,
@@ -193,6 +217,7 @@ const Numeric: React.FC<IProps> = ({
 		inputMask,
 		inputMaskFormat,
 		localizedValue,
+		placeholder,
 		predefinedValue,
 		value,
 	]);
@@ -200,55 +225,50 @@ const Numeric: React.FC<IProps> = ({
 	const handleChange: ChangeEventHandler<HTMLInputElement> = ({
 		target: {value},
 	}) => {
-		const rawValue = value.replace(/\D/g, '');
+
+		// allows user to delete characters from the mask
+
+		const inputValueRaw = inputValue.raw.replace(NON_NUMERIC_REGEX, '');
+		const rawValue = value.replace(NON_NUMERIC_REGEX, '');
+
 		if (
-			(inputValue.masked?.length ?? 0) - value.length === 1 &&
-			(inputValue.raw?.length ?? 0) === rawValue.length
+			inputValue.masked?.length > value.length &&
+			(inputValueRaw?.length ?? 0) === rawValue.length
 		) {
-			value = inputValue.raw.slice(0, -1);
+			value = inputValueRaw.slice(0, -1);
 		}
 
-		if (inputMask && dataType === 'double') {
-			value = value.replace(
-				new RegExp(`[${symbols.thousandsSeparator}]`, 'g'),
-				''
-			);
-		}
+		const {masked, raw} = inputMask
+			? getMaskedValue({
+					dataType,
+					inputMaskFormat: inputMaskFormat as string,
+					symbols,
+					value,
+			  })
+			: getFormattedValue({dataType, symbols, value});
 
-		const newValue = getMaskedValue({
-			append,
-			appendType,
-			dataType,
-			inputMask,
-			inputMaskFormat,
-			symbols,
-			value,
-		});
-		if (newValue.masked !== inputValue.masked) {
-			onChange({target: {value: newValue.raw}});
+		if (masked !== inputValue.masked) {
+			onChange({target: {value: raw}});
 		}
 	};
 
-	const maskedPlaceholder = useMemo<string | undefined>(() => {
-		if (!inputMask) {
-			return undefined;
-		}
-
-		if (dataType === 'double') {
-			return getMaskedValue({
-				append,
-				appendType,
-				dataType,
-				inputMask,
-				inputMaskFormat,
-				symbols,
-				value: '0.00'.replace('.', symbols.decimalSymbol),
-			}).masked;
-		}
-		else {
-			return inputMaskFormat?.replace(/\d/g, '_');
-		}
-	}, [append, appendType, dataType, inputMask, inputMaskFormat, symbols]);
+	const input = (
+		<ClayInput
+			className={classNames({
+				'ddm-form-field-type__numeric--rtl':
+					Liferay.Language.direction[editingLanguageId] === 'rtl',
+			})}
+			disabled={readOnly}
+			id={id}
+			name={`${name}${inputMask ? '_masked' : ''}`}
+			onBlur={onBlur}
+			onChange={handleChange}
+			onFocus={onFocus}
+			placeholder={inputValue.placeholder}
+			type="text"
+			value={inputValue.masked}
+		/>
+	);
 
 	return (
 		<FieldBase
@@ -258,22 +278,23 @@ const Numeric: React.FC<IProps> = ({
 			name={name}
 			readOnly={readOnly}
 		>
-			<ClayInput
-
-				// @ts-ignore
-
-				dir={Liferay.Language.direction[editingLanguageId]}
-				disabled={readOnly}
-				id={id}
-				lang={editingLanguageId}
-				name={`${name}${inputMask ? '_masked' : ''}`}
-				onBlur={onBlur}
-				onChange={handleChange}
-				onFocus={onFocus}
-				placeholder={placeholder || maskedPlaceholder}
-				type="text"
-				value={inputValue.masked}
-			/>
+			{inputMask && append && dataType === 'double' ? (
+				<ClayInput.Group>
+					{appendType === 'prefix' && (
+						<ClayInput.GroupItem prepend shrink>
+							<ClayInput.GroupText>{append}</ClayInput.GroupText>
+						</ClayInput.GroupItem>
+					)}
+					<ClayInput.GroupItem prepend>{input}</ClayInput.GroupItem>
+					{appendType === 'suffix' && (
+						<ClayInput.GroupItem append shrink>
+							<ClayInput.GroupText>{append}</ClayInput.GroupText>
+						</ClayInput.GroupItem>
+					)}
+				</ClayInput.Group>
+			) : (
+				input
+			)}
 			{inputMask && (
 				<input name={name} type="hidden" value={inputValue.raw} />
 			)}
@@ -286,6 +307,7 @@ export default withConfirmationField(Numeric);
 
 interface IMaskedNumber {
 	masked: string;
+	placeholder?: string;
 	raw: string;
 }
 
@@ -296,19 +318,20 @@ interface INumberMaskConfig {
 	decimalLimit?: number | null;
 	decimalSymbol?: string;
 	includeThousandsSeparator: boolean;
-	prefix: string;
+	prefix?: string;
 	suffix?: string;
 	thousandsSeparatorSymbol?: string | null;
 }
+
 interface IProps {
 	append: string;
 	appendType: 'prefix' | 'suffix';
 	dataType: NumericDataType;
-	defaultLanguageId: string;
+	defaultLanguageId: Locale;
 	id: string;
 	inputMask?: boolean;
 	inputMaskFormat?: string;
-	localizedValue?: {[key: string]: string};
+	localizedValue?: LocalizedValue<string>;
 	name: string;
 	onBlur: FocusEventHandler<HTMLInputElement>;
 	onChange: (event: {target: {value: string}}) => void;
@@ -317,7 +340,6 @@ interface IProps {
 	predefinedValue?: string;
 	readOnly: boolean;
 	symbols: ISymbols;
-	thousandsSeparator?: [',' | '.' | ' ' | "'" | 'none'];
 	value?: string;
 }
 

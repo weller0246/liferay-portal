@@ -60,7 +60,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
-import com.liferay.portal.kernel.model.Account;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.model.Contact;
@@ -70,6 +69,7 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.model.PasswordPolicy;
+import com.liferay.portal.kernel.model.PortalPreferences;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.Team;
@@ -79,6 +79,8 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.model.UserGroupRole;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.util.ServiceLatch;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.search.BaseModelSearchResult;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.search.Hits;
@@ -128,6 +130,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PwdGenerator;
 import com.liferay.portal.kernel.util.ServiceProxyFactory;
@@ -153,10 +156,6 @@ import com.liferay.portal.security.pwd.RegExpToolkit;
 import com.liferay.portal.service.base.UserLocalServiceBaseImpl;
 import com.liferay.portal.util.PrefsPropsUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.registry.Registry;
-import com.liferay.registry.RegistryUtil;
-import com.liferay.registry.dependency.ServiceDependencyListener;
-import com.liferay.registry.dependency.ServiceDependencyManager;
 import com.liferay.social.kernel.model.SocialRelation;
 import com.liferay.users.admin.kernel.file.uploads.UserFileUploadsSettings;
 import com.liferay.users.admin.kernel.util.UsersAdminUtil;
@@ -313,10 +312,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			Company company = companyPersistence.findByPrimaryKey(
 				user.getCompanyId());
 
-			Account account = company.getAccount();
-
 			if (StringUtil.equalsIgnoreCase(
-					defaultGroupName, account.getName())) {
+					defaultGroupName, company.getName())) {
 
 				defaultGroupName = GroupConstants.GUEST;
 			}
@@ -601,6 +598,59 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		organizationPersistence.addUsers(organizationId, userIds);
 
 		reindex(userIds);
+	}
+
+	@Override
+	public User addOrUpdateUser(
+			String externalReferenceCode, long creatorUserId, long companyId,
+			boolean autoPassword, String password1, String password2,
+			boolean autoScreenName, String screenName, String emailAddress,
+			Locale locale, String firstName, String middleName, String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, String jobTitle,
+			boolean sendEmail, ServiceContext serviceContext)
+		throws PortalException {
+
+		User user = userPersistence.fetchByC_ERC(
+			companyId, externalReferenceCode);
+
+		if (user == null) {
+			user = addUserWithWorkflow(
+				creatorUserId, companyId, autoPassword, password1, password2,
+				autoScreenName, screenName, emailAddress, locale, firstName,
+				middleName, lastName, prefixId, suffixId, male, birthdayMonth,
+				birthdayDay, birthdayYear, jobTitle, new long[0], new long[0],
+				new long[0], new long[0], sendEmail, serviceContext);
+
+			user.setExternalReferenceCode(externalReferenceCode);
+
+			user = userPersistence.update(user);
+		}
+		else {
+			Contact contact = user.getContact();
+
+			boolean hasPortrait = false;
+
+			if (user.getPortraitId() > 0) {
+				hasPortrait = true;
+			}
+
+			user = updateUser(
+				user.getUserId(), null, password1, password2, false,
+				user.getReminderQueryQuestion(), user.getReminderQueryAnswer(),
+				screenName, emailAddress, hasPortrait, null,
+				user.getLanguageId(), user.getTimeZoneId(), user.getGreeting(),
+				user.getComments(), firstName, middleName, lastName, prefixId,
+				suffixId, male, birthdayMonth, birthdayDay, birthdayYear,
+				contact.getSmsSn(), contact.getFacebookSn(),
+				contact.getJabberSn(), contact.getSkypeSn(),
+				contact.getTwitterSn(), jobTitle, user.getGroupIds(),
+				user.getOrganizationIds(), user.getRoleIds(),
+				userGroupRoleLocalService.getUserGroupRoles(user.getUserId()),
+				user.getUserGroupIds(), serviceContext);
+		}
+
+		return user;
 	}
 
 	/**
@@ -1058,7 +1108,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// User
 
-		Company company = companyPersistence.findByPrimaryKey(companyId);
 		screenName = getLogin(screenName);
 
 		if (PrefsPropsUtil.getBoolean(
@@ -1208,8 +1257,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			creatorUserName = creatorUser.getFullName();
 		}
 
-		Date birthday = getBirthday(birthdayMonth, birthdayDay, birthdayYear);
-
 		Contact contact = contactPersistence.create(user.getContactId());
 
 		contact.setCompanyId(user.getCompanyId());
@@ -1217,7 +1264,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		contact.setUserName(creatorUserName);
 		contact.setClassName(User.class.getName());
 		contact.setClassPK(user.getUserId());
-		contact.setAccountId(company.getAccountId());
 		contact.setParentContactId(ContactConstants.DEFAULT_PARENT_CONTACT_ID);
 		contact.setEmailAddress(user.getEmailAddress());
 		contact.setFirstName(firstName);
@@ -1226,7 +1272,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		contact.setPrefixId(prefixId);
 		contact.setSuffixId(suffixId);
 		contact.setMale(male);
-		contact.setBirthday(birthday);
+		contact.setBirthday(
+			getBirthday(birthdayMonth, birthdayDay, birthdayYear));
 		contact.setJobTitle(jobTitle);
 
 		contactPersistence.update(contact, serviceContext);
@@ -1436,13 +1483,17 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	public void afterPropertiesSet() {
 		super.afterPropertiesSet();
 
-		ServiceDependencyManager serviceDependencyManager =
-			new ServiceDependencyManager();
+		ServiceLatch serviceLatch = SystemBundleUtil.newServiceLatch();
 
-		serviceDependencyManager.addServiceDependencyListener(
-			_serviceDependencyListener);
+		serviceLatch.waitFor(
+			EntityCache.class,
+			entityCache -> PortalCacheMapSynchronizeUtil.synchronize(
+				entityCache.getPortalCache(UserImpl.class), _defaultUsers,
+				_synchronizer));
 
-		serviceDependencyManager.registerDependencies(EntityCache.class);
+		serviceLatch.openOn(
+			() -> {
+			});
 	}
 
 	/**
@@ -1633,6 +1684,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * authentication, without using the AuthPipeline. Primarily used for
 	 * authenticating users of <code>tunnel-web</code>.
 	 *
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
 	 * @param  companyId the primary key of the user's company
 	 * @param  realm unused
 	 * @param  nonce the number used once
@@ -1642,6 +1694,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @return the user's primary key if authentication is successful;
 	 *         <code>0</code> otherwise
 	 */
+	@Deprecated
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public long authenticateForDigest(
@@ -1713,7 +1766,9 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 	 * @param  encPassword the encrypted password
 	 * @return <code>true</code> if authentication is successful;
 	 *         <code>false</code> otherwise
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
 	 */
+	@Deprecated
 	@Override
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean authenticateForJAAS(long userId, String encPassword) {
@@ -1899,14 +1954,12 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		if (autoPassword) {
 			if (LDAPSettingsUtil.isPasswordPolicyEnabled(user.getCompanyId())) {
 				if (_log.isWarnEnabled()) {
-					StringBundler sb = new StringBundler(4);
-
-					sb.append("When LDAP password policy is enabled, it is ");
-					sb.append("possible that portal generated passwords will ");
-					sb.append("not match the LDAP policy. Using ");
-					sb.append("RegExpToolkit to generate new password.");
-
-					_log.warn(sb.toString());
+					_log.warn(
+						StringBundler.concat(
+							"When LDAP password policy is enabled, it is ",
+							"possible that portal generated passwords will ",
+							"not match the LDAP policy. Using RegExpToolkit ",
+							"to generate new password."));
 				}
 
 				RegExpToolkit regExpToolkit = new RegExpToolkit();
@@ -2124,6 +2177,22 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		membershipRequestLocalService.deleteMembershipRequestsByUserId(
 			user.getUserId());
 
+		// Portal preferences
+
+		PortalPreferences portalPreferences =
+			portalPreferencesLocalService.fetchPortalPreferences(
+				user.getUserId(), PortletKeys.PREFS_OWNER_TYPE_USER);
+
+		if (portalPreferences != null) {
+			portalPreferencesLocalService.deletePortalPreferences(
+				portalPreferences);
+		}
+
+		// Portlet preferences
+
+		portletPreferencesLocalService.deletePortletPreferencesByOwnerId(
+			user.getUserId());
+
 		// Ratings
 
 		ratingsStatsLocalService.deleteStats(
@@ -2134,6 +2203,11 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		socialActivityLocalService.deleteUserActivities(user.getUserId());
 		socialRequestLocalService.deleteReceiverUserRequests(user.getUserId());
 		socialRequestLocalService.deleteUserRequests(user.getUserId());
+
+		// Ticket
+
+		ticketLocalService.deleteTickets(
+			user.getCompanyId(), User.class.getName(), user.getUserId());
 
 		// Mail
 
@@ -3926,16 +4000,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			TicketConstants.TYPE_PASSWORD, null, expirationDate,
 			serviceContext);
 
-		StringBundler sb = new StringBundler(6);
-
-		sb.append(serviceContext.getPortalURL());
-		sb.append(serviceContext.getPathMain());
-		sb.append("/portal/update_password?p_l_id=");
-		sb.append(serviceContext.getPlid());
-		sb.append("&ticketKey=");
-		sb.append(ticket.getKey());
-
-		String passwordResetURL = sb.toString();
+		String passwordResetURL = StringBundler.concat(
+			serviceContext.getPortalURL(), serviceContext.getPathMain(),
+			"/portal/update_password?p_l_id=", serviceContext.getPlid(),
+			"&ticketKey=", ticket.getKey());
 
 		sendPasswordNotification(
 			user, companyId, null, passwordResetURL, fromName, fromAddress,
@@ -5050,18 +5118,17 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			mailService.updatePassword(user.getCompanyId(), userId, password1);
 		}
 
-		user.setPassword(newEncPwd);
-		user.setPasswordUnencrypted(password1);
-		user.setPasswordEncrypted(true);
-		user.setPasswordReset(passwordReset);
-
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
 		if (!silentUpdate || (user.getPasswordModifiedDate() == null) ||
 			!_isPasswordUnchanged(user, password1, newEncPwd)) {
 
-			Date modifiedDate = serviceContext.getModifiedDate();
+			Date modifiedDate = null;
+
+			if (serviceContext != null) {
+				modifiedDate = serviceContext.getModifiedDate();
+			}
 
 			if (modifiedDate != null) {
 				user.setPasswordModifiedDate(modifiedDate);
@@ -5071,6 +5138,10 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			}
 		}
 
+		user.setPassword(newEncPwd);
+		user.setPasswordUnencrypted(password1);
+		user.setPasswordEncrypted(true);
+		user.setPasswordReset(passwordReset);
 		user.setDigest(user.getDigest(password1));
 		user.setGraceLoginCount(0);
 
@@ -5495,8 +5566,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 
 		// Contact
 
-		Date birthday = getBirthday(birthdayMonth, birthdayDay, birthdayYear);
-
 		long contactId = user.getContactId();
 
 		Contact contact = contactPersistence.fetchByPrimaryKey(contactId);
@@ -5508,7 +5577,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			contact.setUserName(StringPool.BLANK);
 			contact.setClassName(User.class.getName());
 			contact.setClassPK(user.getUserId());
-			contact.setAccountId(company.getAccountId());
 			contact.setParentContactId(
 				ContactConstants.DEFAULT_PARENT_CONTACT_ID);
 		}
@@ -5520,7 +5588,8 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		contact.setPrefixId(prefixId);
 		contact.setSuffixId(suffixId);
 		contact.setMale(male);
-		contact.setBirthday(birthday);
+		contact.setBirthday(
+			getBirthday(birthdayMonth, birthdayDay, birthdayYear));
 		contact.setSmsSn(smsSn);
 		contact.setFacebookSn(facebookSn);
 		contact.setJabberSn(jabberSn);
@@ -5528,7 +5597,7 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 		contact.setTwitterSn(twitterSn);
 		contact.setJobTitle(jobTitle);
 
-		contactPersistence.update(contact, serviceContext);
+		user.setContact(contactPersistence.update(contact, serviceContext));
 
 		// Group
 
@@ -7394,30 +7463,6 @@ public class UserLocalServiceImpl extends UserLocalServiceBaseImpl {
 			"_userFileUploadsSettings", false);
 
 	private final Map<Long, User> _defaultUsers = new ConcurrentHashMap<>();
-
-	private final ServiceDependencyListener _serviceDependencyListener =
-		new ServiceDependencyListener() {
-
-			@Override
-			public void dependenciesFulfilled() {
-				Registry registry = RegistryUtil.getRegistry();
-
-				registry.callService(
-					EntityCache.class,
-					entityCache -> {
-						PortalCacheMapSynchronizeUtil.synchronize(
-							entityCache.getPortalCache(UserImpl.class),
-							_defaultUsers, _synchronizer);
-
-						return null;
-					});
-			}
-
-			@Override
-			public void destroy() {
-			}
-
-		};
 
 	private final PortalCacheMapSynchronizeUtil.Synchronizer
 		<Serializable, Serializable> _synchronizer =

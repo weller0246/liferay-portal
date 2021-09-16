@@ -638,18 +638,23 @@ public class WorkflowLog implements Serializable {
 	@GraphQLName("Type")
 	public static enum Type {
 
-		TASK_ASSIGN("TaskAssign"), TASK_COMPLETION("TaskCompletion"),
-		TASK_UPDATE("TaskUpdate"), TRANSITION("Transition");
+		NODE_ENTRY("NodeEntry"), TASK_ASSIGN("TaskAssign"),
+		TASK_COMPLETION("TaskCompletion"), TASK_UPDATE("TaskUpdate"),
+		TRANSITION("Transition");
 
 		@JsonCreator
 		public static Type create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
 			for (Type type : values()) {
 				if (Objects.equals(type.getValue(), value)) {
 					return type;
 				}
 			}
 
-			return null;
+			throw new IllegalArgumentException("Invalid enum value: " + value);
 		}
 
 		@JsonValue

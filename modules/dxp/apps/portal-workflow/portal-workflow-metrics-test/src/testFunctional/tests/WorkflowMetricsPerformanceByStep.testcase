@@ -29,11 +29,36 @@ definition {
 		}
 	}
 
+	@description = "LPS-130215 - Verify that the filter offers an option for each existing version"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test CanChooseEspecifcVersionOnPage {
+
+		// TODO LRQA-68933 CanChooseEspecifcVersionOnPage pending implementation
+
+	}
+
+	@description = "LPS-101075 - Verify that the filter offers an option for each existing version"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test CanFilterByEachExistingVersion {
+
+		// TODO LRQA-68927 CanFilterByEachExistingVersion pending implementation
+
+	}
+
+	@description = "LPS-101075 - Verify that the filter is available on the card in the Performance tab"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test CanFilterTopStepsByWorkflowVersion {
+
+		// TODO LRQA-68922 CanFilterTopStepsByWorkflowVersion pending implementation
+
+	}
+
 	@description = "LPS-100674 - Verify that the user can not insert a future date"
 	@priority = "2"
 	test CannotInsertFutureDate {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Navigator.gotoNavItem(navItem = "Performance");
@@ -51,6 +76,42 @@ definition {
 		WorkflowMetrics.viewDateRangeErrorMessage(errorMessage = "Please enter a valid date.");
 	}
 
+	@description = "LPS-130215 - Verify that the user is not able so select more than one version"
+	@ignore = "Test Stub"
+	@priority = "3"
+	test CanNotSelectMoreThanOneVersion {
+
+		// TODO LRQA-68934 CanNotSelectMoreThanOneVersion pending implementation
+
+	}
+
+	@description = "LPS-101075 - Verify that the filter offers an option to see all version together"
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CanSeeAllVersionsTogether {
+
+		// TODO LRQA-68924 CanSeeAllVersionsTogether pending implementation
+
+	}
+
+	@description = "LPS-130215 - Verify that the filter allows to see all version together"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test CanSeeAllVersionsTogetherOnPage {
+
+		// TODO LRQA-68932 CanSeeAllVersionsTogetherOnPage pending implementation
+
+	}
+
+	@description = "LPS-101075 - Verify that when a specific version is chosen, the card only considers closed instances that are in the version chosen"
+	@ignore = "Test Stub"
+	@priority = "4"
+	test CardConsidersClosedInstancesInChosenVersion {
+
+		// TODO LRQA-68929 CardConsidersClosedInstancesInChosenVersion pending implementation
+
+	}
+
 	@description = "LPS-100674 - Verify that the card Performance by Step has no more than 10 entries displayed"
 	@priority = "3"
 	test CardDoesNotDisplayMoreThan10Entries {
@@ -62,7 +123,7 @@ definition {
 			portlet = "Process Builder");
 
 		Workflow.uploadDefinition(
-			workflowDefinitionFile = "11_transitions_definition.xml",
+			workflowDefinitionFile = "11-transitions-workflow-definition.xml",
 			workflowDefinitionTitle = "11 Transitions Definition");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "11 Transitions Definition");
@@ -122,16 +183,24 @@ definition {
 			locator1 = "WorkflowAllItems#WORKFLOW_HEADER_TITLE");
 	}
 
+	@description = "LPS-101075 - Verify that the default value for the filter is All Versions"
+	@ignore = "Test Stub"
+	@priority = "4"
+	test DefalutFilterValueIsAllVersions {
+
+		// TODO LRQA-68923 DefalutFilterValueIsAllVersions pending implementation
+
+	}
+
 	@description = "LPS-100674 - Verify that the default date format for en-US in Custom Range filter is MM/DD/YYYY"
 	@priority = "3"
 	test DefaultDateFormatIsMMDDYYYY {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Navigator.gotoNavItem(navItem = "Performance");
 
 		Click(
+			key_dateRange = "Last 30 Days",
 			key_title = "Performance by Step",
 			locator1 = "WorkflowMetrics#METRICS_DATE_RANGE_DROPDOWN_BY_TITLE");
 
@@ -142,6 +211,33 @@ definition {
 		AssertElementPresent(
 			key_dateFormat = "Default date format is MM/DD/YYYY.",
 			locator1 = "WorkflowMetricsCompletionVelocity#DEFAULT_DATE_FORMAT_MESSAGE");
+	}
+
+	@description = "LPS-101075 - Verify that the All Versions filter considers only the steps touched by the task"
+	@ignore = "Test Stub"
+	@priority = "4"
+	test FilterConsidersStepsTouchedByTaks {
+
+		// TODO LRQA-68925 FilterConsidersStepsTouchedByTaks pending implementation
+
+	}
+
+	@description = "LPS-130215 - Verify that, selecting all versions, the filter considers only the steps touched by the task"
+	@ignore = "Test Stub"
+	@priority = "4"
+	test FilterConsidersStepsTouchedByTaksOnPage {
+
+		// TODO LRQA-68935 FilterConsidersStepsTouchedByTaksOnPage pending implementation
+
+	}
+
+	@description = "LPS-130215 - Verify that the Process Version filter is available on the Performance by Step page"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test FilterIsAvailableOnPage {
+
+		// TODO LRQA-68931 FilterIsAvailableOnPage pending implementation
+
 	}
 
 	@description = "LPS-100674 - Verify that when the user selects Last 7 Days time period, the result and filter options displayed in accordance with reference"
@@ -217,8 +313,6 @@ definition {
 	@description = "LPS-100679 - Verify that users are able to filter the Performance by Step page by period: Today, Yesterday, Last 7 Days, Last 30 Days, Last 90 Days, Last 180 Days, Last Year, Custom Range"
 	@priority = "3"
 	test FilterPerformanceByStepPagePerTimeRange {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Click(locator1 = "WorkflowMetrics#METRICS_PERFORMANCE_TAB");
@@ -295,8 +389,6 @@ definition {
 	@description = "LPS-100674 - Verify that hovering the info icon next to Performance by Step card will display a tooltip"
 	@priority = "2"
 	test InfoIconDisplaysMessageOnHover {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Navigator.gotoNavItem(navItem = "Performance");
@@ -309,8 +401,6 @@ definition {
 	@description = "LPS-100674 - Verify that at the custom range modal, the oldest date accepted is 1970"
 	@priority = "2"
 	test OldestDataAcceptedIs1970 {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Navigator.gotoNavItem(navItem = "Performance");
@@ -338,21 +428,21 @@ definition {
 			locator1 = "WorkflowMetrics#METRICS_COMPLETION_VELOCITY_DATE_RANGE_DROPDOWN_OPTION");
 	}
 
-	@description = "LPS-100678 - Verify that the Performance by Step page displays the specific error state when there is an unexpected error"
+	@description = "LPS-130215 - Verify that when a specific version is chosen, the page only considers closed instances that are in the version chosen"
 	@ignore = "Test Stub"
-	@priority = "3"
-	test PageDisplaysSpecificErrorStateOnUnexpectedError {
+	@priority = "4"
+	test PageConsidersClosedInstancesInChosenVersion {
 
-		// TODO LRQA-67669 PageDisplaysSpecificErrorStateOnUnexpectedError pending implementation
+		// TODO LRQA-68936 PageConsidersClosedInstancesInChosenVersion pending implementation
 
 	}
 
-	@description = "LPS-100677 - Verify the page is providing loading feedback when the table is being updated according to the search queries"
+	@description = "LPS-101075 - Verify that when the user clicks on View All Steps the Performance by Step page displays the same steps displayed in the card"
 	@ignore = "Test Stub"
-	@priority = "2"
-	test PageProvidesLoadingFeedbackOnTableUpdate {
+	@priority = "4"
+	test PageDisplaysSameStepsAsCard {
 
-		// TODO LRQA-67670 PageProvidesLoadingFeedbackOnTableUpdate pending implementation
+		// TODO LRQA-68930 PageDisplaysSameStepsAsCard pending implementation
 
 	}
 
@@ -382,6 +472,15 @@ definition {
 			isNotPresent = "Review",
 			slaBreachedValue = "0 (0%)",
 			stepName = "Update");
+	}
+
+	@description = "LPS-101075 - Verify that, when a task do not touch the workflow task, the step is not displayed for the specific version"
+	@ignore = "Test Stub"
+	@priority = "5"
+	test StepIsNotDisplayedForSpecificVersion {
+
+		// TODO LRQA-68928 StepIsNotDisplayedForSpecificVersion pending implementation
+
 	}
 
 	@description = "LPS-97667 - Verify that when there are tasks with average time smaller than 1 minute the average completion time is displayed"
@@ -469,8 +568,6 @@ definition {
 	@description = "LPS-100674 - Verify that the To date is greater than the From date"
 	@priority = "3"
 	test ToDateMustBeGreaterThanFromDate {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
 
 		Navigator.gotoNavItem(navItem = "Performance");
@@ -499,7 +596,7 @@ definition {
 			portlet = "Process Builder");
 
 		Workflow.uploadDefinition(
-			workflowDefinitionFile = "11-transitions-update.xml",
+			workflowDefinitionFile = "11-transitions-update-workflow-definition.xml",
 			workflowDefinitionTitle = "11 Transitions Update");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "11 Transitions Update");
@@ -515,24 +612,6 @@ definition {
 		AssertElementPresent(
 			key_stepName = "更新",
 			locator1 = "WorkflowMetricsPerformanceByStep#METRICS_PERFORMANCE_BY_STEP_PAGE_TABLE_STEP_NAME");
-	}
-
-	@description = "LPS-100674 - Verify that the card Performance by Step, when it has 6 or more entries, the table should provide a vertical scroll"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test WhenCard6OrMoreEntriesTableProvideVerticalScroll {
-
-		// TODO LRQA-67679 WhenCard6OrMoreEntriesTableProvideVerticalScroll pending implementation
-
-	}
-
-	@description = "LPS-100674 - Verify that the card Performance by Step, when it has 5 or fewer entries, the table should not scroll"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test WhenCardHasUpTo5EntriesTableDoNotScroll {
-
-		// TODO LRQA-67677 WhenCardHasUpTo5EntriesTableDoNotScroll pending implementation
-
 	}
 
 	@description = "LPS-100674 - Verify that when an SLA is deleted, the data in Performance by Step is still part of the average calculation"

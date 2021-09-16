@@ -14,9 +14,11 @@
 
 package com.liferay.object.admin.rest.dto.v1_0;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
@@ -194,6 +196,63 @@ public class ObjectField implements Serializable {
 	protected String indexedLanguageId;
 
 	@Schema
+	@Valid
+	public Map<String, String> getLabel() {
+		return label;
+	}
+
+	public void setLabel(Map<String, String> label) {
+		this.label = label;
+	}
+
+	@JsonIgnore
+	public void setLabel(
+		UnsafeSupplier<Map<String, String>, Exception> labelUnsafeSupplier) {
+
+		try {
+			label = labelUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Map<String, String> label;
+
+	@Schema
+	public Long getListTypeDefinitionId() {
+		return listTypeDefinitionId;
+	}
+
+	public void setListTypeDefinitionId(Long listTypeDefinitionId) {
+		this.listTypeDefinitionId = listTypeDefinitionId;
+	}
+
+	@JsonIgnore
+	public void setListTypeDefinitionId(
+		UnsafeSupplier<Long, Exception> listTypeDefinitionIdUnsafeSupplier) {
+
+		try {
+			listTypeDefinitionId = listTypeDefinitionIdUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Long listTypeDefinitionId;
+
+	@Schema
 	public String getName() {
 		return name;
 	}
@@ -247,19 +306,27 @@ public class ObjectField implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected Boolean required;
 
-	@Schema(
-		description = "The available default types are: BigDecimal, Boolean, Date, Double, Integer, Long and String."
-	)
-	public String getType() {
+	@Schema
+	@Valid
+	public Type getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	@JsonIgnore
+	public String getTypeAsString() {
+		if (type == null) {
+			return null;
+		}
+
+		return type.toString();
+	}
+
+	public void setType(Type type) {
 		this.type = type;
 	}
 
 	@JsonIgnore
-	public void setType(UnsafeSupplier<String, Exception> typeUnsafeSupplier) {
+	public void setType(UnsafeSupplier<Type, Exception> typeUnsafeSupplier) {
 		try {
 			type = typeUnsafeSupplier.get();
 		}
@@ -271,11 +338,9 @@ public class ObjectField implements Serializable {
 		}
 	}
 
-	@GraphQLField(
-		description = "The available default types are: BigDecimal, Boolean, Date, Double, Integer, Long and String."
-	)
+	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
-	protected String type;
+	protected Type type;
 
 	@Override
 	public boolean equals(Object object) {
@@ -358,6 +423,26 @@ public class ObjectField implements Serializable {
 			sb.append("\"");
 		}
 
+		if (label != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"label\": ");
+
+			sb.append(_toJSON(label));
+		}
+
+		if (listTypeDefinitionId != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"listTypeDefinitionId\": ");
+
+			sb.append(listTypeDefinitionId);
+		}
+
 		if (name != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -391,7 +476,7 @@ public class ObjectField implements Serializable {
 
 			sb.append("\"");
 
-			sb.append(_escape(type));
+			sb.append(type);
 
 			sb.append("\"");
 		}
@@ -407,6 +492,45 @@ public class ObjectField implements Serializable {
 		name = "x-class-name"
 	)
 	public String xClassName;
+
+	@GraphQLName("Type")
+	public static enum Type {
+
+		BIG_DECIMAL("BigDecimal"), BOOLEAN("Boolean"), DATE("Date"),
+		DOUBLE("Double"), INTEGER("Integer"), LONG("Long"), STRING("String");
+
+		@JsonCreator
+		public static Type create(String value) {
+			if ((value == null) || value.equals("")) {
+				return null;
+			}
+
+			for (Type type : values()) {
+				if (Objects.equals(type.getValue(), value)) {
+					return type;
+				}
+			}
+
+			throw new IllegalArgumentException("Invalid enum value: " + value);
+		}
+
+		@JsonValue
+		public String getValue() {
+			return _value;
+		}
+
+		@Override
+		public String toString() {
+			return _value;
+		}
+
+		private Type(String value) {
+			_value = value;
+		}
+
+		private final String _value;
+
+	}
 
 	private static String _escape(Object object) {
 		String string = String.valueOf(object);

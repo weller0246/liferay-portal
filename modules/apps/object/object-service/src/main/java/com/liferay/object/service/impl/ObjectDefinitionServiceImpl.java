@@ -14,8 +14,10 @@
 
 package com.liferay.object.service.impl;
 
-import com.liferay.object.constants.ObjectsConstants;
+import com.liferay.object.constants.ObjectActionKeys;
+import com.liferay.object.constants.ObjectConstants;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.base.ObjectDefinitionServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
@@ -25,6 +27,8 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -44,14 +48,19 @@ public class ObjectDefinitionServiceImpl
 	extends ObjectDefinitionServiceBaseImpl {
 
 	@Override
-	public ObjectDefinition addCustomObjectDefinition(long userId, String name)
+	public ObjectDefinition addCustomObjectDefinition(
+			Map<Locale, String> labelMap, String name, String panelAppOrder,
+			String panelCategoryKey, Map<Locale, String> pluralLabelMap,
+			String scope, List<ObjectField> objectFields)
 		throws PortalException {
 
 		_portletResourcePermission.check(
-			getPermissionChecker(), null, ActionKeys.ADD_ENTRY);
+			getPermissionChecker(), null,
+			ObjectActionKeys.ADD_OBJECT_DEFINITION);
 
 		return _objectDefinitionLocalService.addCustomObjectDefinition(
-			userId, name, null);
+			getUserId(), labelMap, name, panelAppOrder, panelCategoryKey,
+			pluralLabelMap, scope, objectFields);
 	}
 
 	@Override
@@ -82,11 +91,53 @@ public class ObjectDefinitionServiceImpl
 	}
 
 	@Override
+	public List<ObjectDefinition> getObjectDefinitions(
+		long companyId, int start, int end) {
+
+		return objectDefinitionPersistence.findByCompanyId(
+			companyId, start, end);
+	}
+
+	@Override
+	public int getObjectDefinitionsCount() throws PortalException {
+		return _objectDefinitionLocalService.getObjectDefinitionsCount();
+	}
+
+	@Override
 	public int getObjectDefinitionsCount(long companyId)
 		throws PortalException {
 
 		return _objectDefinitionLocalService.getObjectDefinitionsCount(
 			companyId);
+	}
+
+	@Override
+	public ObjectDefinition publishCustomObjectDefinition(
+			long objectDefinitionId)
+		throws PortalException {
+
+		_portletResourcePermission.check(
+			getPermissionChecker(), null,
+			ObjectActionKeys.PUBLISH_OBJECT_DEFINITION);
+
+		return _objectDefinitionLocalService.publishCustomObjectDefinition(
+			getUserId(), objectDefinitionId);
+	}
+
+	@Override
+	public ObjectDefinition updateCustomObjectDefinition(
+			Long objectDefinitionId, boolean active,
+			Map<Locale, String> labelMap, String name, String panelAppOrder,
+			String panelCategoryKey, Map<Locale, String> pluralLabelMap,
+			String scope)
+		throws PortalException {
+
+		_objectDefinitionModelResourcePermission.check(
+			getPermissionChecker(), objectDefinitionId, ActionKeys.UPDATE);
+
+		return _objectDefinitionLocalService.updateCustomObjectDefinition(
+			objectDefinitionId, active, labelMap, name, panelAppOrder,
+			panelCategoryKey, pluralLabelMap, scope);
 	}
 
 	@Reference
@@ -98,9 +149,7 @@ public class ObjectDefinitionServiceImpl
 	private ModelResourcePermission<ObjectDefinition>
 		_objectDefinitionModelResourcePermission;
 
-	@Reference(
-		target = "(resource.name=" + ObjectsConstants.RESOURCE_NAME + ")"
-	)
+	@Reference(target = "(resource.name=" + ObjectConstants.RESOURCE_NAME + ")")
 	private PortletResourcePermission _portletResourcePermission;
 
 }

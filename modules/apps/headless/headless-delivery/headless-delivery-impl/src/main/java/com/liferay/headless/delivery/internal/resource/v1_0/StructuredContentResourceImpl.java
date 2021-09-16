@@ -55,6 +55,7 @@ import com.liferay.headless.delivery.search.sort.SortUtil;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.journal.constants.JournalConstants;
 import com.liferay.journal.constants.JournalFolderConstants;
+import com.liferay.journal.exception.NoSuchFolderException;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.model.JournalFolder;
 import com.liferay.journal.service.JournalArticleLocalService;
@@ -67,8 +68,11 @@ import com.liferay.layout.page.template.service.LayoutPageTemplateEntryService;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
 import com.liferay.portal.kernel.search.BooleanQuery;
+import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.BooleanFilter;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -489,8 +493,8 @@ public class StructuredContentResourceImpl
 		throws Exception {
 
 		return _addStructuredContent(
-			siteId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-			structuredContent);
+			structuredContent.getExternalReferenceCode(), siteId,
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, structuredContent);
 	}
 
 	@Override
@@ -502,6 +506,7 @@ public class StructuredContentResourceImpl
 			structuredContentFolderId);
 
 		return _addStructuredContent(
+			structuredContent.getExternalReferenceCode(),
 			journalFolder.getGroupId(), structuredContentFolderId,
 			structuredContent);
 	}
@@ -528,13 +533,13 @@ public class StructuredContentResourceImpl
 				fetchLatestArticleByExternalReferenceCode(
 					siteId, externalReferenceCode);
 
-		if (journalArticle == null) {
-			return _addStructuredContent(
-				siteId, JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID,
-				structuredContent);
+		if (journalArticle != null) {
+			return _updateStructuredContent(journalArticle, structuredContent);
 		}
 
-		return _updateStructuredContent(journalArticle, structuredContent);
+		return _addStructuredContent(
+			externalReferenceCode, siteId,
+			JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID, structuredContent);
 	}
 
 	@Override
@@ -600,7 +605,8 @@ public class StructuredContentResourceImpl
 	}
 
 	private StructuredContent _addStructuredContent(
-			Long siteId, Long parentStructuredContentFolderId,
+			String externalReferenceCode, Long groupId,
+			Long parentStructuredContentFolderId,
 			StructuredContent structuredContent)
 		throws Exception {
 
@@ -637,14 +643,13 @@ public class StructuredContentResourceImpl
 
 		return _toStructuredContent(
 			_journalArticleService.addArticle(
-				structuredContent.getExternalReferenceCode(), siteId,
-				parentStructuredContentFolderId, 0, 0, null, true, titleMap,
-				descriptionMap, friendlyUrlMap,
+				externalReferenceCode, groupId, parentStructuredContentFolderId,
+				0, 0, null, true, titleMap, descriptionMap, friendlyUrlMap,
 				StructuredContentUtil.getJournalArticleContent(
 					_ddm,
 					DDMFormValuesUtil.toDDMFormValues(
 						structuredContent.getContentFields(),
-						ddmStructure.getDDMForm(), _dlAppService, siteId,
+						ddmStructure.getDDMForm(), _dlAppService, groupId,
 						_journalArticleService, _layoutLocalService,
 						contextAcceptLanguage.getPreferredLocale(),
 						_getRootDDMFormFields(ddmStructure)),
@@ -660,7 +665,7 @@ public class StructuredContentResourceImpl
 				ServiceContextRequestUtil.createServiceContext(
 					structuredContent.getTaxonomyCategoryIds(),
 					structuredContent.getKeywords(),
-					_getExpandoBridgeAttributes(structuredContent), siteId,
+					_getExpandoBridgeAttributes(structuredContent), groupId,
 					contextHttpServletRequest,
 					structuredContent.getViewableByAsString())));
 	}
@@ -786,8 +791,8 @@ public class StructuredContentResourceImpl
 
 		return SearchUtil.search(
 			actions, booleanQueryUnsafeConsumer,
-			FilterUtil.processFilter(_ddmIndexer, filter), JournalArticle.class,
-			keywords, pagination,
+			FilterUtil.processFilter(_ddmIndexer, filter),
+			JournalArticle.class.getName(), keywords, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				com.liferay.portal.kernel.search.Field.ARTICLE_ID,
 				com.liferay.portal.kernel.search.Field.SCOPE_GROUP_ID),
@@ -814,16 +819,7 @@ public class StructuredContentResourceImpl
 					_ddmIndexer, searchRequestBuilder, searchContext.getSorts(),
 					_queries, _sorts);
 			},
-			sorts,
-			document -> _toStructuredContent(
-				_journalArticleService.getLatestArticle(
-					GetterUtil.getLong(
-						document.get(
-							com.liferay.portal.kernel.search.Field.
-								SCOPE_GROUP_ID)),
-					document.get(
-						com.liferay.portal.kernel.search.Field.ARTICLE_ID),
-					WorkflowConstants.STATUS_APPROVED)));
+			sorts, this::_toStructuredContent);
 	}
 
 	private Fields _toFields(
@@ -899,6 +895,29 @@ public class StructuredContentResourceImpl
 		_ddmFormValuesValidator.validate(ddmFormValues);
 
 		return fields;
+	}
+
+	private StructuredContent _toStructuredContent(Document document)
+		throws Exception {
+
+		try {
+			return _toStructuredContent(
+				_journalArticleService.getLatestArticle(
+					GetterUtil.getLong(
+						document.get(
+							com.liferay.portal.kernel.search.Field.
+								SCOPE_GROUP_ID)),
+					document.get(
+						com.liferay.portal.kernel.search.Field.ARTICLE_ID),
+					WorkflowConstants.STATUS_APPROVED));
+		}
+		catch (NoSuchFolderException noSuchFolderException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(noSuchFolderException, noSuchFolderException);
+			}
+
+			return null;
+		}
 	}
 
 	private StructuredContent _toStructuredContent(
@@ -1066,6 +1085,9 @@ public class StructuredContentResourceImpl
 				contentField.getNestedContentFields(), ddmStructure);
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		StructuredContentResourceImpl.class);
 
 	@Reference
 	private Aggregations _aggregations;

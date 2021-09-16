@@ -23,6 +23,8 @@ import {useSelector} from '../../contexts/StoreContext';
 import selectCanUpdateItemConfiguration from '../../selectors/selectCanUpdateItemConfiguration';
 import {getResponsiveColumnSize} from '../../utils/getResponsiveColumnSize';
 import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
+import isItemEmpty from '../../utils/isItemEmpty';
+import {isValidSpacingOption} from '../../utils/isValidSpacingOption';
 import Topper from '../Topper';
 import Row from './Row';
 
@@ -50,13 +52,30 @@ const RowWithControls = React.forwardRef(({children, item}, ref) => {
 	const [setRef, itemElement] = useSetRef(ref);
 	const {verticalAlignment} = rowResponsiveConfig;
 
-	const {height, maxWidth, minWidth, width} = item.config.styles;
+	const {
+		display,
+		height,
+		marginBottom,
+		marginLeft,
+		marginRight,
+		marginTop,
+		maxWidth,
+		minWidth,
+		width,
+	} = rowResponsiveConfig.styles;
 
 	return (
 		<Topper
+			className={classNames({
+				[`mb-${marginBottom}`]: isValidSpacingOption(marginBottom),
+				[`ml-${marginLeft}`]: isValidSpacingOption(marginLeft),
+				[`mr-${marginRight}`]: isValidSpacingOption(marginRight),
+				[`mt-${marginTop}`]: isValidSpacingOption(marginTop),
+			})}
 			item={item}
 			itemElement={itemElement}
 			style={{
+				display,
 				maxWidth,
 				minWidth,
 				width,
@@ -66,7 +85,6 @@ const RowWithControls = React.forwardRef(({children, item}, ref) => {
 				className={classNames({
 					'align-bottom': verticalAlignment === 'bottom',
 					'align-middle': verticalAlignment === 'middle',
-					'align-top': verticalAlignment === 'top',
 					empty:
 						isSomeRowEmpty(
 							item,
@@ -100,7 +118,11 @@ const RowWithControls = React.forwardRef(({children, item}, ref) => {
 function isSomeRowEmpty(item, layoutData, selectedViewportSize) {
 	const rows = groupItemsByRow(item, layoutData, selectedViewportSize);
 
-	return rows.some((row) => row.every((item) => item.children.length === 0));
+	return rows.some((row) =>
+		row.every((column) =>
+			isItemEmpty(column, layoutData, selectedViewportSize)
+		)
+	);
 }
 
 function groupItemsByRow(item, layoutData, selectedViewportSize) {

@@ -1,44 +1,6 @@
 definition {
 
-	macro addAccountWithDomain {
-		LexiconEntry.gotoAdd();
-
-		AssertTextEquals(
-			locator1 = "Portlet#HEADER",
-			value1 = "Add Account");
-
-		PortletEntry.inputName(name = "${accountName}");
-
-		AssertClick(
-			locator1 = "Account#ACCOUNT_DOMAIN_ADD_LINK",
-			value1 = "Add");
-
-		SelectFrame(locator1 = "IFrame#ADD_DOMAIN");
-
-		PortletEntry.inputText(
-			fieldLabel = "Domain",
-			text = "${domainNames}");
-
-		Button.clickSave();
-
-		for (var domainName : list "${domainNames}") {
-			AssertElementPresent(
-				key_domainName = "${domainName}",
-				locator1 = "Account#DOMAIN_TABLE_NAME");
-		}
-
-		Button.clickSave();
-
-		Alert.viewSuccessMessage();
-	}
-
-	macro addAddress {
-		LexiconEntry.gotoAdd();
-
-		AssertTextEquals(
-			locator1 = "Portlet#HEADER",
-			value1 = "Add Address");
-
+	macro _inputAddressDetails {
 		PortletEntry.inputName(name = "${addressName}");
 
 		if (isSet(addressDescription)) {
@@ -98,12 +60,59 @@ definition {
 				locator1 = "TextInput#NUMBER",
 				value1 = "${phoneNumber}");
 		}
+	}
 
-		if (isSet(customFieldText)) {
-			Type(
-				locator1 = "TextInput#CUSTOM_FIELD",
-				value1 = "${customFieldText}");
+	macro addAccountWithDomain {
+		LexiconEntry.gotoAdd();
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Add Account");
+
+		PortletEntry.inputName(name = "${accountName}");
+
+		AssertClick(
+			locator1 = "Account#VALID_DOMAINS_ADD_BUTTON",
+			value1 = "Add");
+
+		SelectFrame(locator1 = "IFrame#ADD_DOMAIN");
+
+		PortletEntry.inputText(
+			fieldLabel = "Domain",
+			text = "${domainNames}");
+
+		Button.clickSave();
+
+		for (var domainName : list "${domainNames}") {
+			AssertElementPresent(
+				key_domainName = "${domainName}",
+				locator1 = "Account#VALID_DOMAINS_DOMAIN_NAME");
 		}
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro addAddress {
+		LexiconEntry.gotoAdd();
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Add Address");
+
+		Accounts._inputAddressDetails(
+			addressCity = "${addressCity}",
+			addressCountry = "${addressCountry}",
+			addressDescription = "${addressDescription}",
+			addressName = "${addressName}",
+			addressPostalCode = "${addressPostalCode}",
+			addressRegion = "${addressRegion}",
+			addressStreet1 = "${addressStreet1}",
+			addressStreet2 = "${addressStreet2}",
+			addressStreet3 = "${addressStreet3}",
+			addressType = "${addressType}",
+			phoneNumber = "${phoneNumber}");
 
 		Button.clickSave();
 
@@ -112,6 +121,113 @@ definition {
 		AssertElementPresent(
 			key_tab = "Addresses",
 			locator1 = "NavTab#ACTIVE_TAB_LINK");
+	}
+
+	macro addAddressViaSetDefaultAddress {
+		LexiconEntry.gotoAdd();
+
+		/* AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Add Address"); */
+
+		Accounts._inputAddressDetails(
+			addressCity = "${addressCity}",
+			addressCountry = "${addressCountry}",
+			addressDescription = "${addressDescription}",
+			addressName = "${addressName}",
+			addressPostalCode = "${addressPostalCode}",
+			addressRegion = "${addressRegion}",
+			addressStreet1 = "${addressStreet1}",
+			addressStreet2 = "${addressStreet2}",
+			addressStreet3 = "${addressStreet3}",
+			addressType = "${addressType}",
+			phoneNumber = "${phoneNumber}");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro addAssigneeToRole {
+		Navigator.gotoNavTab(navTab = "Assignees");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no users associated with this role.");
+
+		LexiconEntry.gotoAdd();
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "${accountRoleTitle}");
+
+		SelectFrame(
+			key_title = "Assign Users to ${accountRoleTitle}",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Search.searchCP(searchTerm = "${assigneeName}");
+
+		Check(
+			key_tableEntry = "${assigneeName}",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Assign");
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro addAssigneeToRoleViaRolesTab {
+		Navigator.gotoNavTab(navTab = "Roles");
+
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Assign Users",
+			rowEntry = "${accountRoleTitle}");
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "${accountRoleTitle}");
+
+		LexiconEntry.gotoAdd();
+
+		SelectFrame(
+			key_title = "Assign Users to ${accountRoleTitle}",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Search.searchCP(searchTerm = "${assigneeName}");
+
+		Check(
+			key_tableEntry = "${assigneeName}",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Assign");
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro addAssigneeToRoleViaUsersTab {
+		Navigator.gotoNavTab(navTab = "Users");
+
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Assign Roles",
+			rowEntry = "${accountUserName}");
+
+		SelectFrame(
+			key_title = "Assign Roles",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Check(
+			key_tableEntry = "${accountRoleTitle}",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Done");
+
+		Alert.viewSuccessMessage();
 	}
 
 	macro addBusinessAccount {
@@ -133,9 +249,34 @@ definition {
 				text = "${accountTaxID}");
 		}
 
+		if (isSet(externalReferenceCode)) {
+			PortletEntry.inputText(
+				fieldLabel = "External Reference Code",
+				text = "${externalReferenceCode}");
+		}
+
 		Button.clickSave();
 
 		Alert.viewSuccessMessage();
+	}
+
+	macro addBusinessAccountWithCategory {
+		LexiconEntry.gotoAdd();
+
+		PortletEntry.inputName(name = "${accountName}");
+
+		AssertClick(
+			key_vocabularyName = "${vocabularyName}",
+			locator1 = "UsersAndOrganizationsEditUser#DETAILS_CATEGORY_SELECT",
+			value1 = "Select");
+
+		AssertTextEquals(
+			locator1 = "Modal#HEADER",
+			value1 = "Select ${vocabularyName}");
+
+		AssetCategorization.selectCategory(categoryName = "${categoryName}");
+
+		PortletEntry.save();
 	}
 
 	macro addInactiveBusinessAccount {
@@ -191,14 +332,14 @@ definition {
 	}
 
 	macro addNewUserToPersonAccount {
-		AssertElementPresent(locator1 = "Account#USER_SELECT");
+		AssertElementPresent(locator1 = "Account#USER_SELECT_BUTTON");
 
 		if (!(IsElementPresent(locator1 = "Message#EMPTY_INFO_DEPOT_HIDE"))) {
 			Alert.viewMutedMessage(muteMessage = "Assign a user to this person account.");
 		}
 
 		AssertClick(
-			locator1 = "Account#USER_SELECT",
+			locator1 = "Account#USER_SELECT_BUTTON",
 			value1 = "Select");
 
 		SelectFrame(locator1 = "IFrame#ASSIGN_USER");
@@ -228,7 +369,7 @@ definition {
 		SelectFrame(value1 = "relative=top");
 
 		AssertElementPresent(
-			key_userName = "${accountUserName}",
+			key_userName = "${userFirstName}",
 			locator1 = "Account#USER_TABLE_NAME");
 
 		Button.clickSave();
@@ -236,7 +377,7 @@ definition {
 		Alert.viewSuccessMessage();
 
 		AssertElementPresent(
-			key_userName = "${accountUserName}",
+			key_userName = "${userFirstName}",
 			locator1 = "Account#USER_TABLE_NAME");
 	}
 
@@ -364,6 +505,22 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro addOwnedAccountRole {
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.gotoAdd();
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Add New Role");
+
+		PortletEntry.inputTitle(title = "${accountRoleTitle}");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro addPersonAccount {
 		LexiconEntry.gotoAdd();
 
@@ -393,14 +550,14 @@ definition {
 	}
 
 	macro assignExistingUserToPersonAccount {
-		AssertElementPresent(locator1 = "Account#USER_SELECT");
+		AssertElementPresent(locator1 = "Account#USER_SELECT_BUTTON");
 
 		if (!(IsElementPresent(locator1 = "Message#EMPTY_INFO_DEPOT_HIDE"))) {
 			Alert.viewMutedMessage(muteMessage = "Assign a user to this person account.");
 		}
 
 		AssertClick(
-			locator1 = "Account#USER_SELECT",
+			locator1 = "Account#USER_SELECT_BUTTON",
 			value1 = "Select");
 
 		SelectFrame(locator1 = "IFrame#ASSIGN_USER");
@@ -409,7 +566,7 @@ definition {
 
 		AssertClick(
 			key_accountUserName = "${accountUserName}",
-			locator1 = "Account#CHOOSE_ACCOUNT_USER",
+			locator1 = "Account#ASSIGN_USER_CHOOSE_BUTTON",
 			value1 = "Choose");
 
 		SelectFrame(value1 = "relative=top");
@@ -499,8 +656,59 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro changeDefaultBillingAddress {
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_CHANGE_DEFAULT_BILLING",
+			value1 = "Change");
+
+		SelectFrame(
+			key_title = "Set Default Billing Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Click(
+			key_addressName = "${addressName}",
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SELECT_ADDRESS_RADIO");
+
+		SelectFrameTop();
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SAVE_BUTTON",
+			value1 = "Save");
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro changeDefaultShippingAddress {
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_CHANGE_DEFAULT_SHIPPING",
+			value1 = "Change");
+
+		SelectFrame(
+			key_title = "Set Default Shipping Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Click(
+			key_addressName = "${addressName}",
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SELECT_ADDRESS_RADIO");
+
+		SelectFrameTop();
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SAVE_BUTTON",
+			value1 = "Save");
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro deactivateAccount {
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		if ("${deactivateType}" == "Hide Icon") {
 			LexiconEntry.selectEntry(key_rowEntry = "${accountName}");
@@ -536,7 +744,14 @@ definition {
 	}
 
 	macro deleteAccount {
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		if ("${deleteType}" == "Delete Icon") {
 			LexiconEntry.selectEntry(key_rowEntry = "${accountName}");
@@ -682,16 +897,53 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro editPG {
+		Search.searchPG(
+			portletName = "Account Management",
+			searchTerm = "${accountName}");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "${accountName}");
+
+		AssertTextEquals(
+			key_portletName = "Account",
+			locator1 = "Portlet#TITLE",
+			value1 = "Edit ${accountName}");
+
+		PortletEntry.inputName(name = "${accountNameEdit}");
+
+		if (isSet(accountDescriptionEdit)) {
+			PortletEntry.inputDescription(description = "${accountDescriptionEdit}");
+		}
+
+		if (isSet(accountLogoEdit)) {
+			User.changeProfileImage(imageName = "${accountLogoEdit}");
+		}
+
+		if ("${accountStatusEdit}" == "Inactive") {
+			Uncheck.uncheckToggleSwitch(locator1 = "ToggleSwitch#ACCOUNT_STATUS");
+		}
+		else if ("${accountStatusEdit}" == "Active") {
+			Check.checkToggleSwitch(locator1 = "ToggleSwitch#ACCOUNT_STATUS");
+		}
+
+		if (isSet(customFieldText)) {
+			Type(
+				locator1 = "TextInput#CUSTOM_FIELD",
+				value1 = "${customFieldText}");
+		}
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro gotoAssigneeTab {
 		Navigator.gotoNavTab(navTab = "${assigneeTab}");
 	}
 
 	macro gotoEdit {
-		ApplicationsMenu.gotoPortlet(
-			category = "Accounts",
-			panel = "Applications",
-			portlet = "Accounts");
-
 		Search.searchCP(searchTerm = "${accountName}");
 
 		LexiconEntry.gotoEntryMenuItem(
@@ -707,20 +959,41 @@ definition {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_account_admin_web_internal_portlet_AccountEntriesAdminPortlet");
 	}
 
-	macro removeAddress {
-		Click(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#REMOVE_ACCOUNT_DEFAULT_ADDRESS");
+	macro removeDefaultBillingAddress {
+		Click(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_REMOVE_DEFAULT_BILLING");
 
 		PortletEntry.save();
 
 		AssertTextEquals(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
 			value1 = "Not Set");
 	}
 
-	macro removeAssignee {
+	macro removeDefaultShippingAddress {
+		Click(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_REMOVE_DEFAULT_SHIPPING");
+
+		PortletEntry.save();
+
+		AssertTextEquals(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "Not Set");
+	}
+
+	macro removeDomain {
+		LexiconEntry.gotoEntry(rowEntry = "${accountName}");
+
+		Click(
+			key_domainName = "${domainName}",
+			locator1 = "Account#VALID_DOMAINS_REMOVE_TOOLTIP");
+
+		PortletEntry.save();
+
+		AssertElementNotPresent(
+			key_domainName = "${domainName}",
+			locator1 = "Account#VALID_DOMAINS_REMOVE_TOOLTIP");
+	}
+
+	macro removeOrganizationAsAssignee {
 		var key_assigneeName = "${assigneeName}";
 
 		Search.searchCP(searchTerm = "${assigneeName}");
@@ -729,69 +1002,76 @@ definition {
 			locator1 = "Icon#REMOVE_ASSIGNEE",
 			value1 = "${assigneeName}");
 
-		if ("${assigneeType}" == "Users") {
-			var assigneeType = "user";
-		}
-		else if ("${assigneeType}" == "Organizations") {
-			var assigneeType = "organization";
-		}
-
-		AssertConfirm(value1 = "Are you sure you want to remove this ${assigneeType}?");
+		AssertConfirm(value1 = "Are you sure you want to remove this organization?");
 
 		Alert.viewSuccessMessage();
 	}
 
-	macro removeDomain {
-		LexiconEntry.gotoEntry(rowEntry = "${accountName}");
+	macro removeUserAsAssignee {
+		var key_assigneeName = "${assigneeName}";
 
-		Click(
-			key_domainName = "${domainName}",
-			locator1 = "Account#DOMAIN_REMOVE_DOMAIN");
+		Search.searchCP(searchTerm = "${assigneeName}");
 
-		PortletEntry.save();
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Remove",
+			rowEntry = "${assigneeName}");
 
-		AssertElementNotPresent(
-			key_domainName = "${domainName}",
-			locator1 = "Account#DOMAIN_REMOVE_DOMAIN");
+		AssertConfirm(value1 = "Are you sure you want to remove this user?");
+
+		Alert.viewSuccessMessage();
 	}
 
-	macro setDefaultAddress {
-		AssertElementPresent(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SECTION");
+	macro setDefaultBillingAddress {
+		AssertElementPresent(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_HEADING");
 
-		if (IsElementPresent(key_addressDataType = "${addressDataType}",key_text = "Set Default Address", locator1 = "Account#SET_ACCOUNT_DEFAULT_ADDRESS")) {
-			AssertClick(
-				key_addressDataType = "${addressDataType}",
-				key_text = "Set Default Address",
-				locator1 = "Account#SET_ACCOUNT_DEFAULT_ADDRESS",
-				value1 = "Set Default Address");
-		}
-		else {
-			AssertClick(
-				key_addressDataType = "${addressDataType}",
-				key_text = "Change",
-				locator1 = "Account#SET_ACCOUNT_DEFAULT_ADDRESS",
-				value1 = "Change");
-		}
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_BILLING",
+			value1 = "Set Default Address");
 
 		Pause(locator1 = "3000");
 
 		SelectFrame(
-			key_title = StringUtil.upperCaseFirstLetter("${addressDataType}"),
+			key_title = "Set Default Billing Address",
 			locator1 = "IFrame#MODAL_ANY");
 
-		AssertElementPresent(
-			key_addressDataType = StringUtil.upperCaseFirstLetter("${addressDataType}"),
-			key_filterScope = "Type: ${key_addressDataType}",
-			locator1 = "ManagementBar#FILTER_RESULTS_SCOPE");
+		Search.searchCP(searchTerm = "${addressName}");
 
 		Click(
 			key_addressName = "${addressName}",
-			locator1 = "Account#SELECT_ADDRESS_RADIO");
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SELECT_ADDRESS_RADIO");
 
 		SelectFrameTop();
 
 		AssertClick(
-			locator1 = "Account#SAVE_BUTTON",
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SAVE_BUTTON",
+			value1 = "Save");
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro setDefaultShippingAddress {
+		AssertElementPresent(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_HEADING");
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_SHIPPING",
+			value1 = "Set Default Address");
+
+		Pause(locator1 = "3000");
+
+		SelectFrame(
+			key_title = "Set Default Shipping Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Search.searchCP(searchTerm = "${addressName}");
+
+		Click(
+			key_addressName = "${addressName}",
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SELECT_ADDRESS_RADIO");
+
+		SelectFrameTop();
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SAVE_BUTTON",
 			value1 = "Save");
 
 		Alert.viewSuccessMessage();
@@ -863,72 +1143,6 @@ definition {
 		}
 	}
 
-	macro viewAddress {
-		if ("${addressDataType}" == "billing") {
-			AssertElementPresent(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESS_BILLING");
-		}
-		else {
-			AssertElementPresent(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESS_SHIPPING");
-		}
-
-		AssertTextEquals.assertPartialText(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
-			value1 = "${addressName}");
-
-		AssertTextEquals.assertPartialText(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
-			value1 = "${addressStreet1}");
-
-		AssertTextEquals.assertPartialText(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
-			value1 = "${addressCountry}");
-
-		AssertTextEquals.assertPartialText(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
-			value1 = "${addressCity}");
-
-		AssertTextEquals.assertPartialText(
-			key_addressDataType = "${addressDataType}",
-			locator1 = "Account#ACCOUNT_ADDRESSES",
-			value1 = "${addressPostalCode}");
-
-		if (isSet(addressRegion)) {
-			AssertTextEquals.assertPartialText(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESSES",
-				value1 = "${addressRegion}");
-		}
-
-		if (isSet(addressStreet2)) {
-			AssertTextEquals.assertPartialText(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESSES",
-				value1 = "${addressStreet2}");
-		}
-
-		if (isSet(addressStreet3)) {
-			AssertTextEquals.assertPartialText(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESSES",
-				value1 = "${addressStreet3}");
-		}
-
-		if (isSet(phoneNumber)) {
-			AssertTextEquals.assertPartialText(
-				key_addressDataType = "${addressDataType}",
-				locator1 = "Account#ACCOUNT_ADDRESSES",
-				value1 = "${phoneNumber}");
-		}
-	}
-
 	macro viewAssignee {
 		AssertTextEquals.assertPartialText(
 			key_tableEntry = "${assigneeName}",
@@ -942,10 +1156,113 @@ definition {
 			locator1 = "NavTab#TAB_LINK");
 	}
 
+	macro viewDefaultBillingAddress {
+		AssertElementPresent(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_BILLING_TEXT");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+			value1 = "${addressName}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+			value1 = "${addressStreet1}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+			value1 = "${addressCountry}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+			value1 = "${addressCity}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+			value1 = "${addressPostalCode}");
+
+		if (isSet(addressRegion)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+				value1 = "${addressRegion}");
+		}
+
+		if (isSet(addressStreet2)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+				value1 = "${addressStreet2}");
+		}
+
+		if (isSet(addressStreet3)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+				value1 = "${addressStreet3}");
+		}
+
+		if (isSet(phoneNumber)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_BILLING_ADDRESS",
+				value1 = "${phoneNumber}");
+		}
+	}
+
+	macro viewDefaultShippingAddress {
+		AssertElementPresent(locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SHIPPING_TEXT");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "${addressName}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "${addressStreet1}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "${addressCountry}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "${addressCity}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+			value1 = "${addressPostalCode}");
+
+		if (isSet(addressRegion)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+				value1 = "${addressRegion}");
+		}
+
+		if (isSet(addressStreet2)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+				value1 = "${addressStreet2}");
+		}
+
+		if (isSet(addressStreet3)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+				value1 = "${addressStreet3}");
+		}
+
+		if (isSet(phoneNumber)) {
+			AssertTextEquals.assertPartialText(
+				locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_DEFAULT_SHIPPING_ADDRESS",
+				value1 = "${phoneNumber}");
+		}
+	}
+
 	macro viewInactiveAccount {
 		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
 
-		Search.searchCP(searchTerm = "${accountName}");
+		if (IsElementPresent(locator1 = "Account#2B_ACCOUNT_MANAGEMENT_HEADING")) {
+			Search.searchPG(
+				portletName = "Account Management",
+				searchTerm = "${accountName}");
+		}
+		else {
+			Search.searchCP(searchTerm = "${accountName}");
+		}
 
 		LexiconEntry.viewEntryStatus(
 			rowEntry = "${accountName}",

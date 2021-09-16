@@ -45,7 +45,8 @@ public class BaseModelListener<T extends BaseModel<T>>
 	}
 
 	@Override
-	public void onAfterUpdate(T model) throws ModelListenerException {
+	public void onAfterUpdate(T originalModel, T model)
+		throws ModelListenerException {
 	}
 
 	@Override
@@ -71,7 +72,8 @@ public class BaseModelListener<T extends BaseModel<T>>
 	}
 
 	@Override
-	public void onBeforeUpdate(T model) throws ModelListenerException {
+	public void onBeforeUpdate(T originalModel, T model)
+		throws ModelListenerException {
 	}
 
 }

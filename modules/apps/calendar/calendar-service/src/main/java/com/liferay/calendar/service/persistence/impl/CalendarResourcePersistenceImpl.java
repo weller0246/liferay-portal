@@ -24,7 +24,6 @@ import com.liferay.calendar.service.persistence.impl.constants.CalendarPersisten
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.change.tracking.CTColumnResolutionType;
 import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -36,7 +35,6 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
@@ -45,7 +43,6 @@ import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.change.tracking.helper.CTPersistenceHelper;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -68,12 +65,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -5730,8 +5724,8 @@ public class CalendarResourcePersistenceImpl
 	private static final String _FINDER_COLUMN_C_C_CLASSPK_2 =
 		"calendarResource.classPK = ?";
 
-	private FinderPath _finderPathWithPaginationFindByC_C_A;
-	private FinderPath _finderPathWithPaginationCountByC_C_A;
+	private FinderPath _finderPathWithPaginationFindByC_LikeC_A;
+	private FinderPath _finderPathWithPaginationCountByC_LikeC_A;
 
 	/**
 	 * Returns all the calendar resources where companyId = &#63; and code LIKE &#63; and active = &#63;.
@@ -5742,10 +5736,10 @@ public class CalendarResourcePersistenceImpl
 	 * @return the matching calendar resources
 	 */
 	@Override
-	public List<CalendarResource> findByC_C_A(
+	public List<CalendarResource> findByC_LikeC_A(
 		long companyId, String code, boolean active) {
 
-		return findByC_C_A(
+		return findByC_LikeC_A(
 			companyId, code, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			null);
 	}
@@ -5765,10 +5759,10 @@ public class CalendarResourcePersistenceImpl
 	 * @return the range of matching calendar resources
 	 */
 	@Override
-	public List<CalendarResource> findByC_C_A(
+	public List<CalendarResource> findByC_LikeC_A(
 		long companyId, String code, boolean active, int start, int end) {
 
-		return findByC_C_A(companyId, code, active, start, end, null);
+		return findByC_LikeC_A(companyId, code, active, start, end, null);
 	}
 
 	/**
@@ -5787,11 +5781,11 @@ public class CalendarResourcePersistenceImpl
 	 * @return the ordered range of matching calendar resources
 	 */
 	@Override
-	public List<CalendarResource> findByC_C_A(
+	public List<CalendarResource> findByC_LikeC_A(
 		long companyId, String code, boolean active, int start, int end,
 		OrderByComparator<CalendarResource> orderByComparator) {
 
-		return findByC_C_A(
+		return findByC_LikeC_A(
 			companyId, code, active, start, end, orderByComparator, true);
 	}
 
@@ -5812,7 +5806,7 @@ public class CalendarResourcePersistenceImpl
 	 * @return the ordered range of matching calendar resources
 	 */
 	@Override
-	public List<CalendarResource> findByC_C_A(
+	public List<CalendarResource> findByC_LikeC_A(
 		long companyId, String code, boolean active, int start, int end,
 		OrderByComparator<CalendarResource> orderByComparator,
 		boolean useFinderCache) {
@@ -5825,7 +5819,7 @@ public class CalendarResourcePersistenceImpl
 		FinderPath finderPath = null;
 		Object[] finderArgs = null;
 
-		finderPath = _finderPathWithPaginationFindByC_C_A;
+		finderPath = _finderPathWithPaginationFindByC_LikeC_A;
 		finderArgs = new Object[] {
 			companyId, code, active, start, end, orderByComparator
 		};
@@ -5865,20 +5859,20 @@ public class CalendarResourcePersistenceImpl
 
 			sb.append(_SQL_SELECT_CALENDARRESOURCE_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_A_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_COMPANYID_2);
 
 			boolean bindCode = false;
 
 			if (code.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_C_A_CODE_3);
+				sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_3);
 			}
 			else {
 				bindCode = true;
 
-				sb.append(_FINDER_COLUMN_C_C_A_CODE_2);
+				sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_2);
 			}
 
-			sb.append(_FINDER_COLUMN_C_C_A_ACTIVE_2);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_ACTIVE_2);
 
 			if (orderByComparator != null) {
 				appendOrderByComparator(
@@ -5938,12 +5932,12 @@ public class CalendarResourcePersistenceImpl
 	 * @throws NoSuchResourceException if a matching calendar resource could not be found
 	 */
 	@Override
-	public CalendarResource findByC_C_A_First(
+	public CalendarResource findByC_LikeC_A_First(
 			long companyId, String code, boolean active,
 			OrderByComparator<CalendarResource> orderByComparator)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = fetchByC_C_A_First(
+		CalendarResource calendarResource = fetchByC_LikeC_A_First(
 			companyId, code, active, orderByComparator);
 
 		if (calendarResource != null) {
@@ -5978,11 +5972,11 @@ public class CalendarResourcePersistenceImpl
 	 * @return the first matching calendar resource, or <code>null</code> if a matching calendar resource could not be found
 	 */
 	@Override
-	public CalendarResource fetchByC_C_A_First(
+	public CalendarResource fetchByC_LikeC_A_First(
 		long companyId, String code, boolean active,
 		OrderByComparator<CalendarResource> orderByComparator) {
 
-		List<CalendarResource> list = findByC_C_A(
+		List<CalendarResource> list = findByC_LikeC_A(
 			companyId, code, active, 0, 1, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -6003,12 +5997,12 @@ public class CalendarResourcePersistenceImpl
 	 * @throws NoSuchResourceException if a matching calendar resource could not be found
 	 */
 	@Override
-	public CalendarResource findByC_C_A_Last(
+	public CalendarResource findByC_LikeC_A_Last(
 			long companyId, String code, boolean active,
 			OrderByComparator<CalendarResource> orderByComparator)
 		throws NoSuchResourceException {
 
-		CalendarResource calendarResource = fetchByC_C_A_Last(
+		CalendarResource calendarResource = fetchByC_LikeC_A_Last(
 			companyId, code, active, orderByComparator);
 
 		if (calendarResource != null) {
@@ -6043,17 +6037,17 @@ public class CalendarResourcePersistenceImpl
 	 * @return the last matching calendar resource, or <code>null</code> if a matching calendar resource could not be found
 	 */
 	@Override
-	public CalendarResource fetchByC_C_A_Last(
+	public CalendarResource fetchByC_LikeC_A_Last(
 		long companyId, String code, boolean active,
 		OrderByComparator<CalendarResource> orderByComparator) {
 
-		int count = countByC_C_A(companyId, code, active);
+		int count = countByC_LikeC_A(companyId, code, active);
 
 		if (count == 0) {
 			return null;
 		}
 
-		List<CalendarResource> list = findByC_C_A(
+		List<CalendarResource> list = findByC_LikeC_A(
 			companyId, code, active, count - 1, count, orderByComparator);
 
 		if (!list.isEmpty()) {
@@ -6075,7 +6069,7 @@ public class CalendarResourcePersistenceImpl
 	 * @throws NoSuchResourceException if a calendar resource with the primary key could not be found
 	 */
 	@Override
-	public CalendarResource[] findByC_C_A_PrevAndNext(
+	public CalendarResource[] findByC_LikeC_A_PrevAndNext(
 			long calendarResourceId, long companyId, String code,
 			boolean active,
 			OrderByComparator<CalendarResource> orderByComparator)
@@ -6093,13 +6087,13 @@ public class CalendarResourcePersistenceImpl
 
 			CalendarResource[] array = new CalendarResourceImpl[3];
 
-			array[0] = getByC_C_A_PrevAndNext(
+			array[0] = getByC_LikeC_A_PrevAndNext(
 				session, calendarResource, companyId, code, active,
 				orderByComparator, true);
 
 			array[1] = calendarResource;
 
-			array[2] = getByC_C_A_PrevAndNext(
+			array[2] = getByC_LikeC_A_PrevAndNext(
 				session, calendarResource, companyId, code, active,
 				orderByComparator, false);
 
@@ -6113,7 +6107,7 @@ public class CalendarResourcePersistenceImpl
 		}
 	}
 
-	protected CalendarResource getByC_C_A_PrevAndNext(
+	protected CalendarResource getByC_LikeC_A_PrevAndNext(
 		Session session, CalendarResource calendarResource, long companyId,
 		String code, boolean active,
 		OrderByComparator<CalendarResource> orderByComparator,
@@ -6132,20 +6126,20 @@ public class CalendarResourcePersistenceImpl
 
 		sb.append(_SQL_SELECT_CALENDARRESOURCE_WHERE);
 
-		sb.append(_FINDER_COLUMN_C_C_A_COMPANYID_2);
+		sb.append(_FINDER_COLUMN_C_LIKEC_A_COMPANYID_2);
 
 		boolean bindCode = false;
 
 		if (code.isEmpty()) {
-			sb.append(_FINDER_COLUMN_C_C_A_CODE_3);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_3);
 		}
 		else {
 			bindCode = true;
 
-			sb.append(_FINDER_COLUMN_C_C_A_CODE_2);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_2);
 		}
 
-		sb.append(_FINDER_COLUMN_C_C_A_ACTIVE_2);
+		sb.append(_FINDER_COLUMN_C_LIKEC_A_ACTIVE_2);
 
 		if (orderByComparator != null) {
 			String[] orderByConditionFields =
@@ -6251,9 +6245,9 @@ public class CalendarResourcePersistenceImpl
 	 * @param active the active
 	 */
 	@Override
-	public void removeByC_C_A(long companyId, String code, boolean active) {
+	public void removeByC_LikeC_A(long companyId, String code, boolean active) {
 		for (CalendarResource calendarResource :
-				findByC_C_A(
+				findByC_LikeC_A(
 					companyId, code, active, QueryUtil.ALL_POS,
 					QueryUtil.ALL_POS, null)) {
 
@@ -6270,7 +6264,7 @@ public class CalendarResourcePersistenceImpl
 	 * @return the number of matching calendar resources
 	 */
 	@Override
-	public int countByC_C_A(long companyId, String code, boolean active) {
+	public int countByC_LikeC_A(long companyId, String code, boolean active) {
 		code = Objects.toString(code, "");
 
 		boolean productionMode = ctPersistenceHelper.isProductionMode(
@@ -6282,7 +6276,7 @@ public class CalendarResourcePersistenceImpl
 		Long count = null;
 
 		if (productionMode) {
-			finderPath = _finderPathWithPaginationCountByC_C_A;
+			finderPath = _finderPathWithPaginationCountByC_LikeC_A;
 
 			finderArgs = new Object[] {companyId, code, active};
 
@@ -6294,20 +6288,20 @@ public class CalendarResourcePersistenceImpl
 
 			sb.append(_SQL_COUNT_CALENDARRESOURCE_WHERE);
 
-			sb.append(_FINDER_COLUMN_C_C_A_COMPANYID_2);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_COMPANYID_2);
 
 			boolean bindCode = false;
 
 			if (code.isEmpty()) {
-				sb.append(_FINDER_COLUMN_C_C_A_CODE_3);
+				sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_3);
 			}
 			else {
 				bindCode = true;
 
-				sb.append(_FINDER_COLUMN_C_C_A_CODE_2);
+				sb.append(_FINDER_COLUMN_C_LIKEC_A_CODE_2);
 			}
 
-			sb.append(_FINDER_COLUMN_C_C_A_ACTIVE_2);
+			sb.append(_FINDER_COLUMN_C_LIKEC_A_ACTIVE_2);
 
 			String sql = sb.toString();
 
@@ -6345,16 +6339,16 @@ public class CalendarResourcePersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_C_C_A_COMPANYID_2 =
+	private static final String _FINDER_COLUMN_C_LIKEC_A_COMPANYID_2 =
 		"calendarResource.companyId = ? AND ";
 
-	private static final String _FINDER_COLUMN_C_C_A_CODE_2 =
+	private static final String _FINDER_COLUMN_C_LIKEC_A_CODE_2 =
 		"calendarResource.code LIKE ? AND ";
 
-	private static final String _FINDER_COLUMN_C_C_A_CODE_3 =
+	private static final String _FINDER_COLUMN_C_LIKEC_A_CODE_3 =
 		"(calendarResource.code IS NULL OR calendarResource.code LIKE '') AND ";
 
-	private static final String _FINDER_COLUMN_C_C_A_ACTIVE_2 =
+	private static final String _FINDER_COLUMN_C_LIKEC_A_ACTIVE_2 =
 		"calendarResource.active = ?";
 
 	public CalendarResourcePersistenceImpl() {
@@ -6820,6 +6814,26 @@ public class CalendarResourcePersistenceImpl
 			return map;
 		}
 
+		if ((databaseInMaxParameters > 0) &&
+			(primaryKeys.size() > databaseInMaxParameters)) {
+
+			Iterator<Serializable> iterator = primaryKeys.iterator();
+
+			while (iterator.hasNext()) {
+				Set<Serializable> page = new HashSet<>();
+
+				for (int i = 0;
+					 (i < databaseInMaxParameters) && iterator.hasNext(); i++) {
+
+					page.add(iterator.next());
+				}
+
+				map.putAll(fetchByPrimaryKeys(page));
+			}
+
+			return map;
+		}
+
 		StringBundler sb = new StringBundler((primaryKeys.size() * 2) + 1);
 
 		sb.append(getSelectSQL());
@@ -7155,14 +7169,7 @@ public class CalendarResourcePersistenceImpl
 	 * Initializes the calendar resource persistence.
 	 */
 	@Activate
-	public void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-
-		_argumentsResolverServiceRegistration = _bundleContext.registerService(
-			ArgumentsResolver.class,
-			new CalendarResourceModelArgumentsResolver(),
-			new HashMapDictionary<>());
-
+	public void activate() {
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
 			new String[0], true);
@@ -7311,8 +7318,8 @@ public class CalendarResourcePersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"classNameId", "classPK"}, false);
 
-		_finderPathWithPaginationFindByC_C_A = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_C_A",
+		_finderPathWithPaginationFindByC_LikeC_A = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByC_LikeC_A",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName(), Integer.class.getName(),
@@ -7320,8 +7327,8 @@ public class CalendarResourcePersistenceImpl
 			},
 			new String[] {"companyId", "code_", "active_"}, true);
 
-		_finderPathWithPaginationCountByC_C_A = new FinderPath(
-			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_C_A",
+		_finderPathWithPaginationCountByC_LikeC_A = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "countByC_LikeC_A",
 			new String[] {
 				Long.class.getName(), String.class.getName(),
 				Boolean.class.getName()
@@ -7332,8 +7339,6 @@ public class CalendarResourcePersistenceImpl
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(CalendarResourceImpl.class.getName());
-
-		_argumentsResolverServiceRegistration.unregister();
 	}
 
 	@Override
@@ -7361,8 +7366,6 @@ public class CalendarResourcePersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
-
-	private BundleContext _bundleContext;
 
 	@Reference
 	protected CTPersistenceHelper ctPersistenceHelper;
@@ -7427,114 +7430,8 @@ public class CalendarResourcePersistenceImpl
 		return finderCache;
 	}
 
-	private ServiceRegistration<ArgumentsResolver>
-		_argumentsResolverServiceRegistration;
-
-	private static class CalendarResourceModelArgumentsResolver
-		implements ArgumentsResolver {
-
-		@Override
-		public Object[] getArguments(
-			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-			boolean original) {
-
-			String[] columnNames = finderPath.getColumnNames();
-
-			if ((columnNames == null) || (columnNames.length == 0)) {
-				if (baseModel.isNew()) {
-					return FINDER_ARGS_EMPTY;
-				}
-
-				return null;
-			}
-
-			CalendarResourceModelImpl calendarResourceModelImpl =
-				(CalendarResourceModelImpl)baseModel;
-
-			long columnBitmask = calendarResourceModelImpl.getColumnBitmask();
-
-			if (!checkColumn || (columnBitmask == 0)) {
-				return _getValue(
-					calendarResourceModelImpl, columnNames, original);
-			}
-
-			Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
-				finderPath);
-
-			if (finderPathColumnBitmask == null) {
-				finderPathColumnBitmask = 0L;
-
-				for (String columnName : columnNames) {
-					finderPathColumnBitmask |=
-						calendarResourceModelImpl.getColumnBitmask(columnName);
-				}
-
-				if (finderPath.isBaseModelResult() &&
-					(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION ==
-						finderPath.getCacheName())) {
-
-					finderPathColumnBitmask |= _ORDER_BY_COLUMNS_BITMASK;
-				}
-
-				_finderPathColumnBitmasksCache.put(
-					finderPath, finderPathColumnBitmask);
-			}
-
-			if ((columnBitmask & finderPathColumnBitmask) != 0) {
-				return _getValue(
-					calendarResourceModelImpl, columnNames, original);
-			}
-
-			return null;
-		}
-
-		@Override
-		public String getClassName() {
-			return CalendarResourceImpl.class.getName();
-		}
-
-		@Override
-		public String getTableName() {
-			return CalendarResourceTable.INSTANCE.getTableName();
-		}
-
-		private static Object[] _getValue(
-			CalendarResourceModelImpl calendarResourceModelImpl,
-			String[] columnNames, boolean original) {
-
-			Object[] arguments = new Object[columnNames.length];
-
-			for (int i = 0; i < arguments.length; i++) {
-				String columnName = columnNames[i];
-
-				if (original) {
-					arguments[i] =
-						calendarResourceModelImpl.getColumnOriginalValue(
-							columnName);
-				}
-				else {
-					arguments[i] = calendarResourceModelImpl.getColumnValue(
-						columnName);
-				}
-			}
-
-			return arguments;
-		}
-
-		private static final Map<FinderPath, Long>
-			_finderPathColumnBitmasksCache = new ConcurrentHashMap<>();
-
-		private static final long _ORDER_BY_COLUMNS_BITMASK;
-
-		static {
-			long orderByColumnsBitmask = 0;
-
-			orderByColumnsBitmask |= CalendarResourceModelImpl.getColumnBitmask(
-				"code_");
-
-			_ORDER_BY_COLUMNS_BITMASK = orderByColumnsBitmask;
-		}
-
-	}
+	@Reference
+	private CalendarResourceModelArgumentsResolver
+		_calendarResourceModelArgumentsResolver;
 
 }

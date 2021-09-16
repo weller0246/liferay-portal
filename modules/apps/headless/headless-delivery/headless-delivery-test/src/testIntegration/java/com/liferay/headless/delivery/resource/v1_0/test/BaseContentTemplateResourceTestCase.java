@@ -36,7 +36,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -226,18 +225,17 @@ public abstract class BaseContentTemplateResourceTestCase {
 
 	@Test
 	public void testGetAssetLibraryContentTemplatesPage() throws Exception {
-		Page<ContentTemplate> page =
-			contentTemplateResource.getAssetLibraryContentTemplatesPage(
-				testGetAssetLibraryContentTemplatesPage_getAssetLibraryId(),
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryContentTemplatesPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
 			testGetAssetLibraryContentTemplatesPage_getIrrelevantAssetLibraryId();
+
+		Page<ContentTemplate> page =
+			contentTemplateResource.getAssetLibraryContentTemplatesPage(
+				assetLibraryId, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAssetLibraryId != null) {
 			ContentTemplate irrelevantContentTemplate =
@@ -266,7 +264,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 				assetLibraryId, randomContentTemplate());
 
 		page = contentTemplateResource.getAssetLibraryContentTemplatesPage(
-			assetLibraryId, null, null, null, Pagination.of(1, 2), null);
+			assetLibraryId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -552,17 +550,16 @@ public abstract class BaseContentTemplateResourceTestCase {
 
 	@Test
 	public void testGetSiteContentTemplatesPage() throws Exception {
-		Page<ContentTemplate> page =
-			contentTemplateResource.getSiteContentTemplatesPage(
-				testGetSiteContentTemplatesPage_getSiteId(),
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteContentTemplatesPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteContentTemplatesPage_getIrrelevantSiteId();
+
+		Page<ContentTemplate> page =
+			contentTemplateResource.getSiteContentTemplatesPage(
+				siteId, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			ContentTemplate irrelevantContentTemplate =
@@ -589,7 +586,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 				siteId, randomContentTemplate());
 
 		page = contentTemplateResource.getSiteContentTemplatesPage(
-			siteId, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -874,7 +871,7 @@ public abstract class BaseContentTemplateResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -897,7 +894,8 @@ public abstract class BaseContentTemplateResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/contentTemplates");
 
-		Assert.assertEquals(2, contentTemplatesJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			2, contentTemplatesJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(contentTemplate1, contentTemplate2),
@@ -989,6 +987,25 @@ public abstract class BaseContentTemplateResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ContentTemplate contentTemplate,
+		List<ContentTemplate> contentTemplates) {
+
+		boolean contains = false;
+
+		for (ContentTemplate item : contentTemplates) {
+			if (equals(contentTemplate, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			contentTemplates + " does not contain " + contentTemplate,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1811,8 +1828,8 @@ public abstract class BaseContentTemplateResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseContentTemplateResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseContentTemplateResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

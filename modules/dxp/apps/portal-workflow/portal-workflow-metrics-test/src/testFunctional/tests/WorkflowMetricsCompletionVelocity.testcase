@@ -49,15 +49,6 @@ definition {
 			locator1 = "WorkflowMetricsCompletionVelocity#DEFAULT_DATE_FORMAT_MESSAGE");
 	}
 
-	@description = "LPS-98001 - Verify that when there is an unexpected error, the card should display the specific error state"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test DisplaysErrorStateForUnexpectedError {
-
-		// TODO LRQA-67662 DisplaysErrorStateForUnexpectedError pending implementation
-
-	}
-
 	@description = "LPS-98233 - Verify that the fields From and To are required"
 	@priority = "3"
 	test FromAndToAreRequiredFields {
@@ -177,7 +168,7 @@ definition {
 		Navigator.gotoNavItem(navItem = "Performance");
 
 		Click(
-			key_dateRange = "Last 30 days",
+			key_dateRange = "Last 30 Days",
 			key_title = "Completion Velocity",
 			locator1 = "WorkflowMetrics#METRICS_DATE_RANGE_DROPDOWN_BY_TITLE");
 
@@ -229,15 +220,6 @@ definition {
 		WorkflowMetrics.assertChartTotalValue(
 			velocityUnitTotal = "inst / hour",
 			velocityValueTotal = "0");
-	}
-
-	@description = "LPS-98233 - Verify that the page provides loading feedback when the table is being updated according to filter options"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test PageProvidesLoadingFeedbackWhenTableIsBeingUpdated {
-
-		// TODO LRQA-67656 PageProvidesLoadingFeedbackWhenTableIsBeingUpdated pending implementation
-
 	}
 
 	@description = "LPS-98233 - Verify that the To date is greater than the From date"

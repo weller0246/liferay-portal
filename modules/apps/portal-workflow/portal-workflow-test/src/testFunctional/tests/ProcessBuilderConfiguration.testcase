@@ -44,7 +44,6 @@ definition {
 	}
 
 	@description = "Verify that the user is able to assign a Workflow to a Content Page"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanAssignWorkflowToContentPage {
 		ApplicationsMenu.gotoPortlet(
@@ -79,7 +78,6 @@ definition {
 	}
 
 	@description = "Verify that the user is able to assign a Workflow to Page Revision"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanAssignWorkflowToPageRevision {
 		ApplicationsMenu.gotoPortlet(
@@ -199,12 +197,12 @@ definition {
 			value1 = "Blogs Entry");
 
 		AssertTextEquals(
-			key_rowNumber = "13",
+			key_rowNumber = "14",
 			locator1 = "ProcessBuilderListView#PROCESS_NAME_TABLE_ROW",
 			value1 = "Knowledge Base Article");
 
 		AssertTextEquals(
-			key_rowNumber = "19",
+			key_rowNumber = "20",
 			locator1 = "ProcessBuilderListView#PROCESS_NAME_TABLE_ROW",
 			value1 = "Wiki Page");
 	}
@@ -265,12 +263,11 @@ definition {
 
 		AssertElementPresent(
 			key_fieldName = "Blogs Entry",
-			key_order = "19",
+			key_order = "20",
 			locator1 = "WorkflowConfiguration#PROCESS_BUILDER_TABLE_FIELD_NAME");
 	}
 
 	@description = "Verify that the user is able to search by Asset Type"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test CanSearchByAssetType {
 		ApplicationsMenu.gotoPortlet(
@@ -338,6 +335,7 @@ definition {
 	@priority = "4"
 	test CanSearchNonAsciiChar {
 		property test.name.skip.portal.instance = "ProcessBuilderConfiguration#CanSearchNonAsciiChar";
+		property test.run.environment = "EE";
 
 		Workflow.duplicateSingleApproverWorkflow(workflowName = "単一承認者");
 
@@ -361,7 +359,6 @@ definition {
 	}
 
 	@description = "Verify that the user is able to unassign a Workflow from an Asset Type"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanUnassignWorkflow {
 		ApplicationsMenu.gotoPortlet(

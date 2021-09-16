@@ -247,7 +247,7 @@
 		</check>
 		<check name="GradleDependenciesCheck">
 			<category name="Performance" />
-			<description name="Checks that `petra` modules are not depending on other modules." />
+			<description name="Checks that modules are not depending on other modules." />
 			<property name="checkPetraDependencies" value="true" />
 		</check>
 		<check name="GradleDependencyArtifactsCheck">
@@ -349,6 +349,11 @@
 			<category name="Styling" />
 			<description name="Finds cases where the default value is passed to `GetterUtil.get*` or `ParamUtil.get*`." />
 		</check>
+		<check name="IfStatementCheck">
+			<category name="Styling" />
+			<description name="Finds empty if-statements and consecutive if-statements with identical bodies" />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="Java2HTMLCheck">
 			<category name="Miscellaneous" />
 			<description name="Finds incorrect use of `.java.html` in `.jsp` files." />
@@ -434,6 +439,11 @@
 			<description name="Checks that variable names of exceptions in `catch` statements follow naming conventions." />
 			<property name="enabled" value="false" />
 		</check>
+		<check name="JavaFinalVariableCheck">
+			<category name="Styling" />
+			<description name="Finds cases of unneeded `final` modifiers for variables and parameters." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="JavaForLoopCheck">
 			<category name="Styling" />
 			<description name="Checks if a Enhanced For Loop can be used instead of a Simple For Loop." />
@@ -487,6 +497,7 @@
 		<check name="JavaPackagePathCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that the package name matches the file location." />
+			<property name="checkServicePath" value="false" />
 		</check>
 		<check name="JavaParameterAnnotationsCheck">
 			<category name="Bug Prevention" />
@@ -668,10 +679,6 @@
 			<category name="Bug Prevention" />
 			<description name="Checks that the correct log messages are printed." />
 		</check>
-		<check name="JavaLogParametersCheck">
-			<category name="Bug Prevention" />
-			<description name="Validates the values of parameters passed to `_log.*` calls." />
-		</check>
 		<check name="JavaMissingXMLPublicIdsCheck">
 			<category name="Bug Prevention" />
 			<description name="Finds missing public IDs for check XML files." />
@@ -791,6 +798,10 @@
 			<category name="Bug Prevention" />
 			<description name="Finds cases where `com.liferay.portal.kernel.util.LocaleUtil` should be used (instead of `java.util.Locale`)." />
 		</check>
+		<check name="LogParametersCheck">
+			<category name="Bug Prevention" />
+			<description name="Validates the values of parameters passed to `_log.*` calls." />
+		</check>
 		<check name="ResourceBundleCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that there are no calls to `java.util.ResourceBundle.getBundle`." />
@@ -908,6 +919,11 @@
 		<check name="GetterUtilCheck">
 			<category name="Styling" />
 			<description name="Finds cases where the default value is passed to `GetterUtil.get*` or `ParamUtil.get*`." />
+		</check>
+		<check name="IfStatementCheck">
+			<category name="Styling" />
+			<description name="Finds empty if-statements and consecutive if-statements with identical bodies" />
+			<property name="enabled" value="false" />
 		</check>
 		<check name="JSPArrowFunctionCheck">
 			<category name="Bug Prevention" />
@@ -1040,10 +1056,6 @@
 			<category name="Bug Prevention" />
 			<description name="Finds missing language keys in `Language.properties`." />
 		</check>
-		<check name="JSPLogParametersCheck">
-			<category name="Bug Prevention" />
-			<description name="Validates the values of parameters passed to `_log.*` calls." />
-		</check>
 		<check name="JSPMissingTaglibsCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks for missing taglibs." />
@@ -1051,10 +1063,6 @@
 		<check name="JSPSendRedirectCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that there are no calls to `HttpServletResponse.sendRedirect` from `jsp` files." />
-		</check>
-		<check name="JSPStringMethodsCheck">
-			<category name="Performance" />
-			<description name="Finds cases of inefficient String operations." />
 		</check>
 		<check name="JSPUnusedJSPFCheck">
 			<category name="Performance" />
@@ -1068,9 +1076,17 @@
 			<category name="Bug Prevention" />
 			<description name="Finds cases where `com.liferay.portal.kernel.util.LocaleUtil` should be used (instead of `java.util.Locale`)." />
 		</check>
+		<check name="LogParametersCheck">
+			<category name="Bug Prevention" />
+			<description name="Validates the values of parameters passed to `_log.*` calls." />
+		</check>
 		<check name="ResourceBundleCheck">
 			<category name="Bug Prevention" />
 			<description name="Checks that there are no calls to `java.util.ResourceBundle.getBundle`." />
+		</check>
+		<check name="StringMethodsCheck">
+			<category name="Performance" />
+			<description name="Finds cases of inefficient String operations." />
 		</check>
 		<check name="SubstringCheck">
 			<category name="Performance" />
@@ -1478,6 +1494,11 @@
 			<property name="allowedIncorrectLastPublishDateEntities" value="CommerceCountry,CPDefinition,CPInstance,PollsQuestion,PollsVote" />
 			<property name="checkMVCCEnabled" value="false" />
 		</check>
+		<check name="XMLServiceFinderNameCheck">
+			<category name="Bug Prevention" />
+			<description name="Checks that the `finder name` in `service.xml`." />
+			<property name="enabled" value="false" />
+		</check>
 		<check name="XMLStylingCheck">
 			<category name="Styling" />
 			<description name="Applies rules to enforce consisteny in code style." />
@@ -1497,6 +1518,11 @@
 		<check name="XMLWhitespaceCheck">
 			<category name="Styling" />
 			<description name="Finds missing and unnecessary whitespace in `.xml` files." />
+		</check>
+		<check name="XMLWorkflowDefinitionFileNameCheck">
+			<category name="Styling" />
+			<description name="Checks the file name of workflow definition files." />
+			<property name="enabled" value="false" />
 		</check>
 
 		<!-- Liferay Source Checks -->

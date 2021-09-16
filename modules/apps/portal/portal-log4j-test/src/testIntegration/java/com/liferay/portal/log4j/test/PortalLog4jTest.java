@@ -187,21 +187,9 @@ public class PortalLog4jTest {
 				},
 				new HashMapDictionary());
 
-		StringBundler sb = new StringBundler(11);
-
-		sb.append(StringPool.OPEN_CURLY_BRACE);
-		sb.append(logContextName);
-		sb.append("{\"");
-		sb.append(key1);
-		sb.append("\":\"");
-		sb.append(value1);
-		sb.append("\",\"");
-		sb.append(key2);
-		sb.append("\":\"");
-		sb.append(value2);
-		sb.append("\"}}");
-
-		String logContextMessage = sb.toString();
+		String logContextMessage = StringBundler.concat(
+			StringPool.OPEN_CURLY_BRACE, logContextName, "{\"", key1, "\":\"",
+			value1, "\",\"", key2, "\":\"", value2, "\"}}");
 
 		_testLogOutput("DEBUG", logContextMessage);
 		_testLogOutput("ERROR", logContextMessage);
@@ -400,13 +388,11 @@ public class PortalLog4jTest {
 
 		// <log4j:message>...</log4j:message>
 
-		if (expectedThrowable != null) {
-			Assert.assertEquals(
-				StringBundler.concat(
-					"<log4j:message><![CDATA[", expectedMessage,
-					"]]></log4j:message>"),
-				outputLines[1]);
-		}
+		Assert.assertEquals(
+			StringBundler.concat(
+				"<log4j:message><![CDATA[", expectedMessage,
+				"]]></log4j:message>"),
+			outputLines[1]);
 
 		// <log4j:throwable>...</log4j:throwable>
 

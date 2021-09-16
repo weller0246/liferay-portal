@@ -15,9 +15,12 @@
 package com.liferay.dynamic.data.mapping.form.evaluator.internal.function;
 
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
+import com.liferay.portal.util.DateFormatFactoryImpl;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -39,15 +42,17 @@ public class DateRangeFunctionTest {
 
 	@Before
 	public void setUp() throws Exception {
+		_dateRangeFunction.setDDMExpressionParameterAccessor(
+			new DefaultDDMExpressionParameterAccessor());
+
+		_setUpDateFormatFactoryUtil();
 		_setUpFutureDatesFunction();
 		_setUpPastDatesFunction();
 	}
 
 	@Test
 	public void testApplyFalse1() {
-		LocalDate todayLocalDate = LocalDate.now();
-
-		LocalDate yesterdayLocalDate = todayLocalDate.minusDays(1);
+		LocalDate yesterdayLocalDate = _todayLocalDate.minusDays(1);
 
 		Assert.assertFalse(
 			_dateRangeFunction.apply(
@@ -61,9 +66,7 @@ public class DateRangeFunctionTest {
 
 	@Test
 	public void testApplyFalse2() {
-		LocalDate todayLocalDate = LocalDate.now();
-
-		LocalDate tomorrowLocalDate = todayLocalDate.plusDays(1);
+		LocalDate tomorrowLocalDate = _todayLocalDate.plusDays(1);
 
 		Assert.assertFalse(
 			_dateRangeFunction.apply(
@@ -76,10 +79,75 @@ public class DateRangeFunctionTest {
 	}
 
 	@Test
+	public void testApplyFalse3() {
+		Assert.assertFalse(
+			_dateRangeFunction.apply(
+				null,
+				JSONUtil.put(
+					"endsOn",
+					JSONUtil.put(
+						"date", "responseDate"
+					).put(
+						"quantity", -12
+					).put(
+						"type", "customDate"
+					).put(
+						"unit", "days"
+					)
+				).put(
+					"startsFrom",
+					JSONUtil.put(
+						"date", "responseDate"
+					).put(
+						"quantity", -24
+					).put(
+						"type", "customDate"
+					).put(
+						"unit", "days"
+					)
+				)));
+	}
+
+	@Test
+	public void testApplyFalseCustomDays() {
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusDays(6), "days", -24, -12));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusDays(30), "days", -24, -12));
+		Assert.assertFalse(_apply(_todayLocalDate.plusDays(6), "days", 12, 24));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.plusDays(30), "days", 12, 24));
+	}
+
+	@Test
+	public void testApplyFalseCustomMonths() {
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusMonths(6), "months", -24, -12));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusMonths(30), "months", -24, -12));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.plusMonths(6), "months", 12, 24));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.plusMonths(30), "months", 12, 24));
+	}
+
+	@Test
+	public void testApplyFalseCustomYears() {
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusYears(6), "years", -24, -12));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.minusYears(30), "years", -24, -12));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.plusYears(6), "years", 12, 24));
+		Assert.assertFalse(
+			_apply(_todayLocalDate.plusYears(30), "years", 12, 24));
+	}
+
+	@Test
 	public void testApplyTrue() {
 		Assert.assertTrue(
 			_dateRangeFunction.apply(
-				LocalDate.now(),
+				LocalDate.now(ZoneId.of("UTC")),
 				JSONUtil.put(
 					"endsOn", JSONUtil.put("type", "responseDate")
 				).put(
@@ -87,33 +155,84 @@ public class DateRangeFunctionTest {
 				).toString()));
 	}
 
+	@Test
+	public void testApplyTrueCustomDays() {
+		Assert.assertTrue(
+			_apply(_todayLocalDate.minusDays(20), "days", -24, -12));
+		Assert.assertTrue(_apply(_todayLocalDate.plusDays(20), "days", 12, 24));
+	}
+
+	@Test
+	public void testApplyTrueCustomMonths() {
+		Assert.assertTrue(
+			_apply(_todayLocalDate.minusMonths(20), "months", -24, -12));
+		Assert.assertTrue(
+			_apply(_todayLocalDate.plusMonths(20), "months", 12, 24));
+	}
+
+	@Test
+	public void testApplyTrueCustomYears() {
+		Assert.assertTrue(
+			_apply(_todayLocalDate.minusYears(20), "years", -24, -12));
+		Assert.assertTrue(
+			_apply(_todayLocalDate.plusYears(20), "years", 12, 24));
+	}
+
+	private Boolean _apply(
+		LocalDate localDate, String unit, int startQuantity, int endQuantity) {
+
+		return _dateRangeFunction.apply(
+			localDate.toString(),
+			JSONUtil.put(
+				"endsOn",
+				JSONUtil.put(
+					"date", "responseDate"
+				).put(
+					"quantity", endQuantity
+				).put(
+					"type", "customDate"
+				).put(
+					"unit", unit
+				)
+			).put(
+				"startsFrom",
+				JSONUtil.put(
+					"date", "responseDate"
+				).put(
+					"quantity", startQuantity
+				).put(
+					"type", "customDate"
+				).put(
+					"unit", unit
+				)
+			).toString());
+	}
+
+	private void _setUpDateFormatFactoryUtil() {
+		DateFormatFactoryUtil dateFormatFactoryUtil =
+			new DateFormatFactoryUtil();
+
+		dateFormatFactoryUtil.setDateFormatFactory(new DateFormatFactoryImpl());
+	}
+
 	private void _setUpFutureDatesFunction() throws Exception {
-		FutureDatesFunction futureDatesFunction = new FutureDatesFunction();
-
-		futureDatesFunction.setDDMExpressionParameterAccessor(
-			new DefaultDDMExpressionParameterAccessor());
-
 		PowerMockito.field(
 			DateRangeFunction.class, "_futureDatesFunction"
 		).set(
-			_dateRangeFunction, futureDatesFunction
+			_dateRangeFunction, new FutureDatesFunction()
 		);
 	}
 
 	private void _setUpPastDatesFunction() throws Exception {
-		PastDatesFunction pastDatesFunction = new PastDatesFunction();
-
-		pastDatesFunction.setDDMExpressionParameterAccessor(
-			new DefaultDDMExpressionParameterAccessor());
-
 		PowerMockito.field(
 			DateRangeFunction.class, "_pastDatesFunction"
 		).set(
-			_dateRangeFunction, pastDatesFunction
+			_dateRangeFunction, new PastDatesFunction()
 		);
 	}
 
 	private final DateRangeFunction _dateRangeFunction =
 		new DateRangeFunction();
+	private final LocalDate _todayLocalDate = LocalDate.now(ZoneId.of("UTC"));
 
 }

@@ -21,6 +21,7 @@ import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFacto
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
 import com.liferay.content.dashboard.web.internal.search.request.ContentDashboardSearchContextBuilder;
 import com.liferay.content.dashboard.web.internal.searcher.ContentDashboardSearchRequestBuilderFactory;
+import com.liferay.content.dashboard.web.internal.util.ContentDashboardSearchClassNameUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -87,7 +88,6 @@ public class ContentDashboardItemSearchContainerFactory {
 
 		searchContainer.setResults(
 			_getContentDashboardItems(searchResponse.getDocuments71()));
-
 		searchContainer.setTotal(searchResponse.getTotalHits());
 
 		return searchContainer;
@@ -215,7 +215,8 @@ public class ContentDashboardItemSearchContainerFactory {
 			contentDashboardItemFactoryOptional =
 				_contentDashboardItemFactoryTracker.
 					getContentDashboardItemFactoryOptional(
-						document.get(Field.ENTRY_CLASS_NAME));
+						ContentDashboardSearchClassNameUtil.getClassName(
+							document.get(Field.ENTRY_CLASS_NAME)));
 
 		return contentDashboardItemFactoryOptional.flatMap(
 			contentDashboardItemFactory -> _toContentDashboardItemOptional(

@@ -1,6 +1,7 @@
 @component-name = "portal-database-partitioning"
 definition {
 
+	property database.partition.enabled = "true";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Database Partitioning";
@@ -17,7 +18,7 @@ definition {
 
 	@priority = "4"
 	test AddMultipleCompanies {
-		property custom.properties = "database.partition.enabled=true${line.separator}database.partition.schema.name.prefix=testPartition";
+		property custom.properties = "database.partition.schema.name.prefix=testPartition";
 		property database.types = "mysql";
 		property test.name.skip.portal.instance = "DatabasePartitioning#AddMultipleCompanies";
 
@@ -52,11 +53,9 @@ definition {
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Title");
 
-		// Workaround for LPS-135684
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
 
-		/*DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
-
-		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");*/
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 
 		User.firstLoginUI(
 			password = "test",
@@ -75,11 +74,9 @@ definition {
 			dmDocumentFile = "Document_1.doc",
 			dmDocumentTitle = "DM Document Title");
 
-		// Workaround for LPS-135684
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
 
-		/*DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
-
-		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");*/
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 
 		SQL.assertDatabaseCount(
 			databaseFilter = "testPartition%",
@@ -91,10 +88,9 @@ definition {
 
 	@priority = "5"
 	test AddNewCompany {
-		property custom.properties = "database.partition.enabled=true${line.separator}database.partition.schema.name.prefix=testPartition";
+		property custom.properties = "database.partition.schema.name.prefix=testPartition";
 		property database.types = "mysql";
 		property portal.acceptance = "true";
-		property test.assert.warning.exceptions = "true";
 		property test.name.skip.portal.instance = "DatabasePartitioning#AddNewCompany";
 
 		PortalInstances.openVirtualInstancesAdmin();
@@ -135,8 +131,9 @@ definition {
 	test AddNewCompanyWithCluster {
 		property app.server.bundles.size = "1";
 		property cluster.enabled = "true";
-		property custom.properties = "cluster.link.enabled=true${line.separator}database.partition.enabled=true${line.separator}database.partition.schema.name.prefix=testPartition";
+		property custom.properties = "database.partition.schema.name.prefix=testPartition";
 		property database.types = "mysql";
+		property minimum.slave.ram = "24";
 		property test.name.skip.portal.instance = "DatabasePartitioning#AddNewCompanyWithCluster";
 
 		Clustering.viewClusterStatusInConsole();
@@ -217,6 +214,53 @@ definition {
 			databaseFilter = "testPartition%",
 			databaseSubstring = "testPartition",
 			expectedCount = "1");
+	}
+
+	@priority = "5"
+	test RestartPortal {
+		property custom.properties = "database.partition.schema.name.prefix=testPartition";
+		property database.types = "mysql";
+		property test.assert.warning.exceptions = "true";
+		property test.name.skip.portal.instance = "DatabasePartitioning#RestartPortal";
+
+		HeadlessPortalInstanceAPI.addPortalInstance(
+			domain = "www.able.com",
+			portalInstanceId = "www.able.com",
+			virtualHost = "www.able.com");
+
+		User.firstLoginUI(
+			password = "test",
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Documents and Media");
+
+		DMDocument.addCP(
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_1.doc",
+			dmDocumentTitle = "DM Document Title");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
+
+		Portlet.shutdownServer();
+
+		Portlet.startServer(keepOSGiState = "true");
+
+		Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			panel = "Site Administration",
+			portlet = "Documents and Media");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document Title");
 	}
 
 }

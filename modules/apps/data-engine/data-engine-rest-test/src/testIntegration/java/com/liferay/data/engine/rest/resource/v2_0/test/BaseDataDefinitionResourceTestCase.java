@@ -36,7 +36,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -212,18 +211,18 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	public void testGetDataDefinitionByContentTypeContentTypePage()
 		throws Exception {
 
-		Page<DataDefinition> page =
-			dataDefinitionResource.
-				getDataDefinitionByContentTypeContentTypePage(
-					testGetDataDefinitionByContentTypeContentTypePage_getContentType(),
-					RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String contentType =
 			testGetDataDefinitionByContentTypeContentTypePage_getContentType();
 		String irrelevantContentType =
 			testGetDataDefinitionByContentTypeContentTypePage_getIrrelevantContentType();
+
+		Page<DataDefinition> page =
+			dataDefinitionResource.
+				getDataDefinitionByContentTypeContentTypePage(
+					contentType, RandomTestUtil.randomString(),
+					Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantContentType != null) {
 			DataDefinition irrelevantDataDefinition =
@@ -254,7 +253,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		page =
 			dataDefinitionResource.
 				getDataDefinitionByContentTypeContentTypePage(
-					contentType, null, Pagination.of(1, 2), null);
+					contentType, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -760,15 +759,6 @@ public abstract class BaseDataDefinitionResourceTestCase {
 	public void testGetSiteDataDefinitionByContentTypeContentTypePage()
 		throws Exception {
 
-		Page<DataDefinition> page =
-			dataDefinitionResource.
-				getSiteDataDefinitionByContentTypeContentTypePage(
-					testGetSiteDataDefinitionByContentTypeContentTypePage_getSiteId(),
-					testGetSiteDataDefinitionByContentTypeContentTypePage_getContentType(),
-					RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId =
 			testGetSiteDataDefinitionByContentTypeContentTypePage_getSiteId();
 		Long irrelevantSiteId =
@@ -777,6 +767,14 @@ public abstract class BaseDataDefinitionResourceTestCase {
 			testGetSiteDataDefinitionByContentTypeContentTypePage_getContentType();
 		String irrelevantContentType =
 			testGetSiteDataDefinitionByContentTypeContentTypePage_getIrrelevantContentType();
+
+		Page<DataDefinition> page =
+			dataDefinitionResource.
+				getSiteDataDefinitionByContentTypeContentTypePage(
+					siteId, contentType, RandomTestUtil.randomString(),
+					Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantSiteId != null) && (irrelevantContentType != null)) {
 			DataDefinition irrelevantDataDefinition =
@@ -809,7 +807,7 @@ public abstract class BaseDataDefinitionResourceTestCase {
 		page =
 			dataDefinitionResource.
 				getSiteDataDefinitionByContentTypeContentTypePage(
-					siteId, contentType, null, Pagination.of(1, 2), null);
+					siteId, contentType, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1176,6 +1174,23 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		DataDefinition dataDefinition, List<DataDefinition> dataDefinitions) {
+
+		boolean contains = false;
+
+		for (DataDefinition item : dataDefinitions) {
+			if (equals(dataDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataDefinitions + " does not contain " + dataDefinition, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -2004,8 +2019,8 @@ public abstract class BaseDataDefinitionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDataDefinitionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDataDefinitionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

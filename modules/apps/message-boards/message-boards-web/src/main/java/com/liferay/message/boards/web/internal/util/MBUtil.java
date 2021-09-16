@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import javax.portlet.PortletRequest;
-import javax.portlet.PortletURL;
 import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,34 +54,23 @@ public class MBUtil {
 		String parentAuthor = _getParentAuthor(
 			parentMessage, httpServletRequest);
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("[quote=");
-		sb.append(
+		return StringBundler.concat(
+			"[quote=",
 			StringUtil.replace(
 				parentAuthor, new String[] {"[", "]", "(", ")"},
-				new String[] {"&#91;", "&#93;", "&#40;", "&#41;"}));
-		sb.append("]\n");
-		sb.append(parentMessage.getBody(false));
-		sb.append("[/quote]\n\n\n");
-
-		return sb.toString();
+				new String[] {"&#91;", "&#93;", "&#40;", "&#41;"}),
+			"]\n", parentMessage.getBody(false), "[/quote]\n\n\n");
 	}
 
 	public static String getBBCodeSplitThreadBody(
 		HttpServletRequest httpServletRequest) {
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("[url=");
-		sb.append(MBThreadConstants.NEW_THREAD_URL);
-		sb.append("]");
-		sb.append(MBThreadConstants.NEW_THREAD_URL);
-		sb.append("[/url]");
-
 		return LanguageUtil.format(
 			httpServletRequest, "the-new-thread-can-be-found-at-x",
-			sb.toString(), false);
+			StringBundler.concat(
+				"[url=", MBThreadConstants.NEW_THREAD_URL, "]",
+				MBThreadConstants.NEW_THREAD_URL, "[/url]"),
+			false);
 	}
 
 	public static long getCategoryId(
@@ -137,31 +125,22 @@ public class MBUtil {
 		String parentAuthor = _getParentAuthor(
 			parentMessage, httpServletRequest);
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("<blockquote><div class=\"quote-title\">");
-		sb.append(parentAuthor);
-		sb.append(": </div><div class=\"quote\"><div class=\"quote-content\">");
-		sb.append(parentMessage.getBody(false));
-		sb.append("</div></blockquote><br /><br /><br />");
-
-		return sb.toString();
+		return StringBundler.concat(
+			"<blockquote><div class=\"quote-title\">", parentAuthor,
+			": </div><div class=\"quote\"><div class=\"quote-content\">",
+			parentMessage.getBody(false),
+			"</div></blockquote><br /><br /><br />");
 	}
 
 	public static String getHtmlSplitThreadBody(
 		HttpServletRequest httpServletRequest) {
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("<a href=");
-		sb.append(MBThreadConstants.NEW_THREAD_URL);
-		sb.append(">");
-		sb.append(MBThreadConstants.NEW_THREAD_URL);
-		sb.append("</a>");
-
 		return LanguageUtil.format(
 			httpServletRequest, "the-new-thread-can-be-found-at-x",
-			sb.toString(), false);
+			StringBundler.concat(
+				"<a href=", MBThreadConstants.NEW_THREAD_URL, ">",
+				MBThreadConstants.NEW_THREAD_URL, "</a>"),
+			false);
 	}
 
 	public static String getMBMessageURL(
@@ -173,35 +152,33 @@ public class MBUtil {
 
 		PortletDisplay portletDisplay = themeDisplay.getPortletDisplay();
 
-		PortletURL portletURL = PortletURLBuilder.create(
-			PortletURLFactoryUtil.create(
-				httpServletRequest, portletDisplay.getId(),
-				PortletRequest.RENDER_PHASE)
-		).setMVCRenderCommandName(
-			"/message_boards/view_message"
-		).setParameter(
-			"messageId", messageId
-		).build();
-
 		return StringBundler.concat(
-			portletURL.toString(), StringPool.POUND,
-			portletDisplay.getNamespace(), "message_", messageId);
+			PortletURLBuilder.create(
+				PortletURLFactoryUtil.create(
+					httpServletRequest, portletDisplay.getId(),
+					PortletRequest.RENDER_PHASE)
+			).setMVCRenderCommandName(
+				"/message_boards/view_message"
+			).setParameter(
+				"messageId", messageId
+			).buildString(),
+			StringPool.POUND, portletDisplay.getNamespace(), "message_",
+			messageId);
 	}
 
 	public static String getMBMessageURL(
 		long messageId, RenderResponse renderResponse) {
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
-			renderResponse
-		).setMVCRenderCommandName(
-			"/message_boards/view_message"
-		).setParameter(
-			"messageId", messageId
-		).build();
-
 		return StringBundler.concat(
-			portletURL.toString(), StringPool.POUND,
-			renderResponse.getNamespace(), "message_", messageId);
+			PortletURLBuilder.createRenderURL(
+				renderResponse
+			).setMVCRenderCommandName(
+				"/message_boards/view_message"
+			).setParameter(
+				"messageId", messageId
+			).buildString(),
+			StringPool.POUND, renderResponse.getNamespace(), "message_",
+			messageId);
 	}
 
 	public static String getMBMessageURL(

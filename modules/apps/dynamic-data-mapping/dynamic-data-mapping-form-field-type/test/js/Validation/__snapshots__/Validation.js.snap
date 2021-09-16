@@ -18,7 +18,6 @@ exports[`Validation renders checkbox to enable Validation 1`] = `
           class="toggle-switch-check"
           name="enableValidation"
           type="checkbox"
-          value="true"
         />
         <span
           aria-hidden="true"
@@ -34,6 +33,12 @@ exports[`Validation renders checkbox to enable Validation 1`] = `
           </span>
         </span>
       </label>
+      <input
+        class="form-control"
+        name="enableValidation"
+        type="hidden"
+        value="false"
+      />
       <input
         name="enableValidation_edited"
         type="hidden"

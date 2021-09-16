@@ -209,6 +209,19 @@ public class OrganizationServiceImpl extends OrganizationServiceBaseImpl {
 		return organization;
 	}
 
+	@Override
+	public User addOrganizationUserByEmailAddress(
+			String emailAddress, long organizationId,
+			ServiceContext serviceContext)
+		throws PortalException {
+
+		OrganizationPermissionUtil.check(
+			getPermissionChecker(), organizationId, ActionKeys.ASSIGN_MEMBERS);
+
+		return organizationLocalService.addOrganizationUserByEmailAddress(
+			emailAddress, organizationId, serviceContext);
+	}
+
 	/**
 	 * Assigns the password policy to the organizations, removing any other
 	 * currently assigned password policies.
@@ -307,7 +320,7 @@ public class OrganizationServiceImpl extends OrganizationServiceBaseImpl {
 		long gtOrganizationId, long companyId, long parentOrganizationId,
 		int size) {
 
-		return organizationPersistence.filterFindByO_C_P(
+		return organizationPersistence.filterFindByGtO_C_P(
 			gtOrganizationId, companyId, parentOrganizationId, 0, size,
 			new OrganizationIdComparator(true));
 	}

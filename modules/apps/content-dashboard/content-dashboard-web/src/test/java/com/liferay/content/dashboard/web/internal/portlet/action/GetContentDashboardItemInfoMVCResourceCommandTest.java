@@ -20,20 +20,25 @@ import com.liferay.content.dashboard.item.action.ContentDashboardItemAction;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItem;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactory;
 import com.liferay.content.dashboard.web.internal.item.ContentDashboardItemFactoryTracker;
-import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemType;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtype;
+import com.liferay.content.dashboard.web.internal.item.type.ContentDashboardItemSubtypeFactory;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.type.WebImage;
+import com.liferay.portal.json.JSONObjectImpl;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.servlet.BrowserSnifferUtil;
 import com.liferay.portal.kernel.test.ReflectionTestUtil;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceRequest;
 import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
+import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.servlet.BrowserSnifferImpl;
@@ -101,6 +106,9 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 		mockLiferayResourceRequest.addParameter(
 			"classPK", String.valueOf(infoItemReference.getClassPK()));
 
+		mockLiferayResourceRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, new ThemeDisplay());
+
 		MockLiferayResourceResponse mockLiferayResourceResponse =
 			new MockLiferayResourceResponse();
 
@@ -140,12 +148,28 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			contentDashboardItem.getTitle(LocaleUtil.US),
 			jsonObject.getString("title"));
 
-		ContentDashboardItemType contentDashboardItemType =
-			contentDashboardItem.getContentDashboardItemType();
+		ContentDashboardItemSubtype contentDashboardItemSubtype =
+			contentDashboardItem.getContentDashboardItemSubtype();
 
 		Assert.assertEquals(
-			contentDashboardItemType.getLabel(LocaleUtil.US),
+			contentDashboardItemSubtype.getLabel(LocaleUtil.US),
 			jsonObject.getString("subType"));
+
+		Portal portal = PortalUtil.getPortal();
+
+		JSONObject getSpecificInformationJSONObject =
+			contentDashboardItem.getSpecificInformationJSONObject(
+				"backURL",
+				portal.getLiferayPortletResponse(mockLiferayResourceResponse),
+				LocaleUtil.US,
+				(ThemeDisplay)mockLiferayResourceRequest.getAttribute(
+					WebKeys.THEME_DISPLAY));
+
+		Assert.assertEquals(
+			getSpecificInformationJSONObject.toString(),
+			jsonObject.getJSONObject(
+				"specificFields"
+			).toString());
 
 		List<ContentDashboardItem.Version> versions =
 			contentDashboardItem.getVersions(LocaleUtil.US);
@@ -215,17 +239,20 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			}
 
 			@Override
-			public ContentDashboardItemType getContentDashboardItemType() {
-				ContentDashboardItemType contentDashboardItemType =
-					Mockito.mock(ContentDashboardItemType.class);
+			public ContentDashboardItemSubtype
+				getContentDashboardItemSubtype() {
+
+				ContentDashboardItemSubtype contentDashboardItemSubtype =
+					Mockito.mock(ContentDashboardItemSubtype.class);
 
 				Mockito.when(
-					contentDashboardItemType.getLabel(Mockito.any(Locale.class))
+					contentDashboardItemSubtype.getLabel(
+						Mockito.any(Locale.class))
 				).thenReturn(
 					"subType"
 				);
 
-				return contentDashboardItemType;
+				return contentDashboardItemSubtype;
 			}
 
 			@Override
@@ -249,6 +276,11 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			@Override
 			public Locale getDefaultLocale() {
 				return LocaleUtil.US;
+			}
+
+			@Override
+			public String getDescription(Locale locale) {
+				return "Web Content description";
 			}
 
 			@Override
@@ -278,8 +310,41 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			}
 
 			@Override
+			public JSONObject getSpecificInformationJSONObject(
+				String backURL, LiferayPortletResponse liferayPortletResponse,
+				Locale locale, ThemeDisplay themeDisplay) {
+
+				JSONObject jsonObject = new JSONObjectImpl();
+
+				jsonObject.put(
+					"description", "My very important description"
+				).put(
+					"downloadURL", "www.download.url.com/download"
+				).put(
+					"extension", ".pdf"
+				).put(
+					"fileName", "MyDocument"
+				).put(
+					"previewImageURL", "www.previewImage.url.com/previewImage"
+				).put(
+					"previewURL", "www.previewURL.url.com/previewURL"
+				).put(
+					"size", "5"
+				).put(
+					"viewURL", "www.viewURL.url.com/viewURL"
+				);
+
+				return jsonObject;
+			}
+
+			@Override
 			public String getTitle(Locale locale) {
 				return "title";
+			}
+
+			@Override
+			public String getTypeLabel(Locale locale) {
+				return "Web Content";
 			}
 
 			@Override
@@ -295,7 +360,7 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			@Override
 			public List<Version> getVersions(Locale locale) {
 				return Collections.singletonList(
-					new Version("version", "style", 0.1));
+					new Version("version", "style", "0.1"));
 			}
 
 			@Override
@@ -321,20 +386,33 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 					getContentDashboardItemFactoryOptional(String className) {
 
 					return Optional.ofNullable(
-						classPK -> {
-							InfoItemReference infoItemReference =
-								contentDashboardItem.getInfoItemReference();
+						new ContentDashboardItemFactory() {
 
-							if (Objects.equals(
-									className,
-									infoItemReference.getClassName()) &&
-								Objects.equals(
-									classPK, infoItemReference.getClassPK())) {
+							@Override
+							public ContentDashboardItem create(long classPK) {
+								InfoItemReference infoItemReference =
+									contentDashboardItem.getInfoItemReference();
 
-								return contentDashboardItem;
+								if (Objects.equals(
+										className,
+										infoItemReference.getClassName()) &&
+									Objects.equals(
+										classPK,
+										infoItemReference.getClassPK())) {
+
+									return contentDashboardItem;
+								}
+
+								return null;
 							}
 
-							return null;
+							@Override
+							public Optional<ContentDashboardItemSubtypeFactory>
+								getContentDashboardItemSubtypeFactoryOptional() {
+
+								return Optional.empty();
+							}
+
 						});
 				}
 

@@ -27,6 +27,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.cluster.ClusterExecutor;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -426,6 +427,12 @@ public class Sidecar {
 			return new Elasticsearch790Distribution();
 		}
 
+		if (ArrayUtil.contains(
+				_SUPPORTED_ELASTICSEARCH_SIDECAR_VERSIONS, versionNumber)) {
+
+			return new ElasticsearchDistribution(versionNumber);
+		}
+
 		throw new IllegalArgumentException(
 			"Unsupported Elasticsearch version: " + versionNumber);
 	}
@@ -535,6 +542,16 @@ public class Sidecar {
 						methodVisitor.visitInsn(Opcodes.RETURN);
 					},
 					classLoader));
+
+			modifiedClasses.put(
+				"org.elasticsearch.bootstrap.Security",
+				ClassModificationUtil.getModifiedClassBytes(
+					"org.elasticsearch.bootstrap.Security", "configure",
+					methodVisitor -> {
+						methodVisitor.visitCode();
+						methodVisitor.visitInsn(Opcodes.RETURN);
+					},
+					classLoader));
 		}
 		catch (Exception exception) {
 			_log.error("Unable to modify classes", exception);
@@ -589,6 +606,10 @@ public class Sidecar {
 		).build(
 		).install();
 	}
+
+	private static final String[] _SUPPORTED_ELASTICSEARCH_SIDECAR_VERSIONS = {
+		"7.14.0", "7.14.1"
+	};
 
 	private static final Log _log = LogFactoryUtil.getLog(Sidecar.class);
 

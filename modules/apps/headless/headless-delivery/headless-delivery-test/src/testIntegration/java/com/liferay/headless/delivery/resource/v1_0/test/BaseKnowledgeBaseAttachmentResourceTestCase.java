@@ -33,7 +33,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -213,17 +212,17 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 	public void testGetKnowledgeBaseArticleKnowledgeBaseAttachmentsPage()
 		throws Exception {
 
-		Page<KnowledgeBaseAttachment> page =
-			knowledgeBaseAttachmentResource.
-				getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage(
-					testGetKnowledgeBaseArticleKnowledgeBaseAttachmentsPage_getKnowledgeBaseArticleId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long knowledgeBaseArticleId =
 			testGetKnowledgeBaseArticleKnowledgeBaseAttachmentsPage_getKnowledgeBaseArticleId();
 		Long irrelevantKnowledgeBaseArticleId =
 			testGetKnowledgeBaseArticleKnowledgeBaseAttachmentsPage_getIrrelevantKnowledgeBaseArticleId();
+
+		Page<KnowledgeBaseAttachment> page =
+			knowledgeBaseAttachmentResource.
+				getKnowledgeBaseArticleKnowledgeBaseAttachmentsPage(
+					knowledgeBaseArticleId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantKnowledgeBaseArticleId != null) {
 			KnowledgeBaseAttachment irrelevantKnowledgeBaseAttachment =
@@ -473,6 +472,26 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		KnowledgeBaseAttachment knowledgeBaseAttachment,
+		List<KnowledgeBaseAttachment> knowledgeBaseAttachments) {
+
+		boolean contains = false;
+
+		for (KnowledgeBaseAttachment item : knowledgeBaseAttachments) {
+			if (equals(knowledgeBaseAttachment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			knowledgeBaseAttachments + " does not contain " +
+				knowledgeBaseAttachment,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1089,8 +1108,9 @@ public abstract class BaseKnowledgeBaseAttachmentResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseKnowledgeBaseAttachmentResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(
+			BaseKnowledgeBaseAttachmentResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

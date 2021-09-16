@@ -69,7 +69,9 @@ public class ResourcePermissionModelListener
 	}
 
 	@Override
-	public void onBeforeUpdate(ResourcePermission resourcePermission)
+	public void onBeforeUpdate(
+			ResourcePermission originalResourcePermission,
+			ResourcePermission resourcePermission)
 		throws ModelListenerException {
 
 		SyncDLObject syncDLObject = getSyncDLObject(resourcePermission);
@@ -77,10 +79,6 @@ public class ResourcePermissionModelListener
 		if (syncDLObject == null) {
 			return;
 		}
-
-		ResourcePermission originalResourcePermission =
-			resourcePermissionLocalService.fetchResourcePermission(
-				resourcePermission.getResourcePermissionId());
 
 		if (originalResourcePermission.hasActionId(ActionKeys.VIEW) &&
 			!resourcePermission.hasActionId(ActionKeys.VIEW)) {

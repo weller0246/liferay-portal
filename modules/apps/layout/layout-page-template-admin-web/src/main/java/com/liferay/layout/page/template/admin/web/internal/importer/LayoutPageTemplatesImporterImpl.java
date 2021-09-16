@@ -28,9 +28,13 @@ import com.liferay.headless.delivery.dto.v1_0.PageTemplate;
 import com.liferay.headless.delivery.dto.v1_0.PageTemplateCollection;
 import com.liferay.headless.delivery.dto.v1_0.Settings;
 import com.liferay.headless.delivery.dto.v1_0.StyleBook;
+import com.liferay.info.item.InfoItemFormVariation;
+import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.provider.InfoItemFormVariationsProvider;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
 import com.liferay.layout.page.template.admin.web.internal.exception.DropzoneLayoutStructureItemException;
 import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporter;
+import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporterContext;
 import com.liferay.layout.page.template.admin.web.internal.headless.delivery.dto.v1_0.structure.importer.LayoutStructureItemImporterTracker;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateEntryTypeConstants;
 import com.liferay.layout.page.template.constants.LayoutPageTemplateExportImportConstants;
@@ -51,6 +55,7 @@ import com.liferay.layout.page.template.validator.MasterPageValidator;
 import com.liferay.layout.page.template.validator.PageDefinitionValidator;
 import com.liferay.layout.page.template.validator.PageTemplateValidator;
 import com.liferay.layout.util.LayoutCopyHelper;
+import com.liferay.layout.util.constants.LayoutStructureConstants;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
@@ -76,6 +81,7 @@ import com.liferay.portal.kernel.transaction.Propagation;
 import com.liferay.portal.kernel.transaction.TransactionConfig;
 import com.liferay.portal.kernel.transaction.TransactionInvokerUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.MimeTypesUtil;
@@ -166,8 +172,9 @@ public class LayoutPageTemplatesImporterImpl
 		Set<String> warningMessages = new HashSet<>();
 
 		_processPageElement(
-			layout, layoutStructure, pageElement, parentItemId, position,
-			warningMessages);
+			layout, layoutStructure,
+			LayoutStructureConstants.LATEST_PAGE_DEFINITION_VERSION,
+			pageElement, parentItemId, position, warningMessages);
 
 		List<FragmentEntryLink> fragmentEntryLinks = new ArrayList<>();
 
@@ -1059,13 +1066,16 @@ public class LayoutPageTemplatesImporterImpl
 			if ((pageElement.getType() == PageElement.Type.ROOT) &&
 				(pageElement.getPageElements() != null)) {
 
+				double pageDefinitionVersion = GetterUtil.getDouble(
+					pageDefinition.getVersion(), 1);
 				int position = 0;
 
 				for (PageElement childPageElement :
 						pageElement.getPageElements()) {
 
 					if (_processPageElement(
-							layout, layoutStructure, childPageElement,
+							layout, layoutStructure, pageDefinitionVersion,
+							childPageElement,
 							rootLayoutStructureItem.getItemId(), position,
 							warningMessages)) {
 
@@ -1088,8 +1098,8 @@ public class LayoutPageTemplatesImporterImpl
 
 	private boolean _processPageElement(
 			Layout layout, LayoutStructure layoutStructure,
-			PageElement pageElement, String parentItemId, int position,
-			Set<String> warningMessages)
+			double pageDefinitionVersion, PageElement pageElement,
+			String parentItemId, int position, Set<String> warningMessages)
 		throws Exception {
 
 		LayoutStructureItemImporter layoutStructureItemImporter =
@@ -1101,8 +1111,10 @@ public class LayoutPageTemplatesImporterImpl
 		if (layoutStructureItemImporter != null) {
 			layoutStructureItem =
 				layoutStructureItemImporter.addLayoutStructureItem(
-					layout, layoutStructure, pageElement, parentItemId,
-					position, warningMessages);
+					layoutStructure,
+					new LayoutStructureItemImporterContext(
+						layout, pageDefinitionVersion, parentItemId, position),
+					pageElement, warningMessages);
 		}
 		else if (pageElement.getType() == PageElement.Type.ROOT) {
 			layoutStructureItem = layoutStructure.getMainLayoutStructureItem();
@@ -1123,9 +1135,9 @@ public class LayoutPageTemplatesImporterImpl
 
 		for (PageElement childPageElement : pageElement.getPageElements()) {
 			if (_processPageElement(
-					layout, layoutStructure, childPageElement,
-					layoutStructureItem.getItemId(), childPosition,
-					warningMessages)) {
+					layout, layoutStructure, pageDefinitionVersion,
+					childPageElement, layoutStructureItem.getItemId(),
+					childPosition, warningMessages)) {
 
 				childPosition++;
 			}
@@ -1356,6 +1368,9 @@ public class LayoutPageTemplatesImporterImpl
 	private FragmentEntryLinkLocalService _fragmentEntryLinkLocalService;
 
 	@Reference
+	private InfoItemServiceTracker _infoItemServiceTracker;
+
+	@Reference
 	private Language _language;
 
 	@Reference
@@ -1540,14 +1555,8 @@ public class LayoutPageTemplatesImporterImpl
 			long classNameId = _portal.getClassNameId(
 				contentType.getClassName());
 
-			long classTypeId = 0L;
-
-			ContentSubtype contentSubtype =
-				displayPageTemplate.getContentSubtype();
-
-			if (contentSubtype != null) {
-				classTypeId = contentSubtype.getSubtypeId();
-			}
+			long classTypeId = _getClassTypeId(
+				displayPageTemplate, classNameId);
 
 			LayoutPageTemplateEntry layoutPageTemplateEntry =
 				_layoutPageTemplateEntryLocalService.
@@ -1573,6 +1582,48 @@ public class LayoutPageTemplatesImporterImpl
 			_displayPageTemplateEntry = displayPageTemplateEntry;
 			_overwrite = overwrite;
 			_zipFile = zipFile;
+		}
+
+		private long _getClassTypeId(
+			DisplayPageTemplate displayPageTemplate, long classNameId) {
+
+			ContentSubtype contentSubtype =
+				displayPageTemplate.getContentSubtype();
+
+			if (contentSubtype == null) {
+				return 0;
+			}
+
+			Long subtypeId = contentSubtype.getSubtypeId();
+
+			if (subtypeId != null) {
+				return subtypeId;
+			}
+
+			String subtypeKey = contentSubtype.getSubtypeKey();
+
+			if (Validator.isNull(subtypeKey)) {
+				return 0;
+			}
+
+			InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
+				_infoItemServiceTracker.getFirstInfoItemService(
+					InfoItemFormVariationsProvider.class,
+					_portal.getClassName(classNameId));
+
+			if (infoItemFormVariationsProvider == null) {
+				return 0;
+			}
+
+			InfoItemFormVariation infoItemFormVariation =
+				infoItemFormVariationsProvider.getInfoItemFormVariation(
+					_groupId, subtypeKey);
+
+			if (infoItemFormVariation == null) {
+				return 0;
+			}
+
+			return GetterUtil.getLong(infoItemFormVariation.getKey());
 		}
 
 		private final DisplayPageTemplateEntry _displayPageTemplateEntry;

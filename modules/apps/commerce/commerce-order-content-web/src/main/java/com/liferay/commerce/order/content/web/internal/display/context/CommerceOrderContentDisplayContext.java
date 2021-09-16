@@ -30,9 +30,10 @@ import com.liferay.commerce.frontend.model.HeaderActionModel;
 import com.liferay.commerce.model.CommerceAddress;
 import com.liferay.commerce.model.CommerceOrder;
 import com.liferay.commerce.model.CommerceOrderNote;
+import com.liferay.commerce.model.CommerceOrderType;
 import com.liferay.commerce.model.CommerceShipmentItem;
-import com.liferay.commerce.order.content.web.internal.portlet.configuration.CommerceOpenOrderContentPortletInstanceConfiguration;
 import com.liferay.commerce.order.content.web.internal.portlet.configuration.CommerceOrderContentPortletInstanceConfiguration;
+import com.liferay.commerce.order.content.web.internal.portlet.configuration.OpenCommerceOrderContentPortletInstanceConfiguration;
 import com.liferay.commerce.payment.model.CommercePaymentMethodGroupRel;
 import com.liferay.commerce.payment.service.CommercePaymentMethodGroupRelService;
 import com.liferay.commerce.percentage.PercentageFormatter;
@@ -44,8 +45,10 @@ import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderNoteService;
 import com.liferay.commerce.service.CommerceOrderService;
+import com.liferay.commerce.service.CommerceOrderTypeService;
 import com.liferay.commerce.service.CommerceShipmentItemService;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -66,6 +69,7 @@ import com.liferay.portal.kernel.settings.GroupServiceSettingsLocator;
 import com.liferay.portal.kernel.theme.PortletDisplay;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Validator;
 
@@ -74,7 +78,6 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.Format;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -95,6 +98,7 @@ public class CommerceOrderContentDisplayContext {
 			CommerceOrderNoteService commerceOrderNoteService,
 			CommerceOrderPriceCalculation commerceOrderPriceCalculation,
 			CommerceOrderService commerceOrderService,
+			CommerceOrderTypeService commerceOrderTypeService,
 			CommercePaymentMethodGroupRelService
 				commercePaymentMethodGroupRelService,
 			CommerceShipmentItemService commerceShipmentItemService,
@@ -109,6 +113,7 @@ public class CommerceOrderContentDisplayContext {
 		_commerceOrderNoteService = commerceOrderNoteService;
 		_commerceOrderPriceCalculation = commerceOrderPriceCalculation;
 		_commerceOrderService = commerceOrderService;
+		_commerceOrderTypeService = commerceOrderTypeService;
 		_commercePaymentMethodGroupRelService =
 			commercePaymentMethodGroupRelService;
 		_commerceShipmentItemService = commerceShipmentItemService;
@@ -178,7 +183,7 @@ public class CommerceOrderContentDisplayContext {
 			_httpServletRequest, "commerceOrderUuid");
 
 		return _commerceOrderService.fetchCommerceOrder(
-			commerceOrderUuid, _cpRequestHelper.getChannelGroupId());
+			commerceOrderUuid, _cpRequestHelper.getCommerceChannelGroupId());
 	}
 
 	public String getCommerceOrderDate(CommerceOrder commerceOrder) {
@@ -269,15 +274,10 @@ public class CommerceOrderContentDisplayContext {
 			_cpRequestHelper.getLocale());
 
 		if (!commercePaymentMethod.isActive()) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(name);
-			sb.append(" (");
-			sb.append(
-				LanguageUtil.get(_cpRequestHelper.getRequest(), "inactive"));
-			sb.append(CharPool.CLOSE_PARENTHESIS);
-
-			name = sb.toString();
+			name = StringBundler.concat(
+				name, " (",
+				LanguageUtil.get(_cpRequestHelper.getRequest(), "inactive"),
+				CharPool.CLOSE_PARENTHESIS);
 		}
 
 		return name;
@@ -319,6 +319,49 @@ public class CommerceOrderContentDisplayContext {
 		return totalCommerceMoney.format(_cpRequestHelper.getLocale());
 	}
 
+	public String getCommerceOrderTypeName(String languageId)
+		throws PortalException {
+
+		CommerceOrder commerceOrder = getCommerceOrder();
+
+		CommerceOrderType commerceOrderType =
+			_commerceOrderTypeService.fetchCommerceOrderType(
+				commerceOrder.getCommerceOrderTypeId());
+
+		if (commerceOrderType == null) {
+			return StringPool.BLANK;
+		}
+
+		return commerceOrderType.getName(languageId);
+	}
+
+	public List<CommerceOrderType> getCommerceOrderTypes()
+		throws PortalException {
+
+		CommerceChannel commerceChannel = fetchCommerceChannel();
+
+		if (commerceChannel == null) {
+			return Collections.emptyList();
+		}
+
+		return _commerceOrderTypeService.getCommerceOrderTypes(
+			CommerceChannel.class.getName(),
+			commerceChannel.getCommerceChannelId(), true, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS);
+	}
+
+	public int getCommerceOrderTypesCount() throws PortalException {
+		CommerceChannel commerceChannel = fetchCommerceChannel();
+
+		if (commerceChannel == null) {
+			return 0;
+		}
+
+		return _commerceOrderTypeService.getCommerceOrderTypesCount(
+			CommerceChannel.class.getName(),
+			commerceChannel.getCommerceChannelId(), true);
+	}
+
 	public String getCommercePriceDisplayType() {
 		CommerceChannel commerceChannel = fetchCommerceChannel();
 
@@ -348,13 +391,13 @@ public class CommerceOrderContentDisplayContext {
 		else if (portletId.equals(
 					CommercePortletKeys.COMMERCE_OPEN_ORDER_CONTENT)) {
 
-			CommerceOpenOrderContentPortletInstanceConfiguration
-				commerceOpenOrderContentPortletInstanceConfiguration =
+			OpenCommerceOrderContentPortletInstanceConfiguration
+				openCommerceOrderContentPortletInstanceConfiguration =
 					_portletDisplay.getPortletInstanceConfiguration(
-						CommerceOpenOrderContentPortletInstanceConfiguration.
+						OpenCommerceOrderContentPortletInstanceConfiguration.
 							class);
 
-			return commerceOpenOrderContentPortletInstanceConfiguration.
+			return openCommerceOrderContentPortletInstanceConfiguration.
 				displayStyle();
 		}
 		else if (portletId.equals(CommercePortletKeys.COMMERCE_ORDER_CONTENT)) {
@@ -379,13 +422,13 @@ public class CommerceOrderContentDisplayContext {
 		else if (portletId.equals(
 					CommercePortletKeys.COMMERCE_OPEN_ORDER_CONTENT)) {
 
-			CommerceOpenOrderContentPortletInstanceConfiguration
-				commerceOpenOrderContentPortletInstanceConfiguration =
+			OpenCommerceOrderContentPortletInstanceConfiguration
+				openCommerceOrderContentPortletInstanceConfiguration =
 					_portletDisplay.getPortletInstanceConfiguration(
-						CommerceOpenOrderContentPortletInstanceConfiguration.
+						OpenCommerceOrderContentPortletInstanceConfiguration.
 							class);
 
-			return commerceOpenOrderContentPortletInstanceConfiguration.
+			return openCommerceOrderContentPortletInstanceConfiguration.
 				displayStyleGroupId();
 		}
 		else if (portletId.equals(CommercePortletKeys.COMMERCE_ORDER_CONTENT)) {
@@ -402,26 +445,23 @@ public class CommerceOrderContentDisplayContext {
 	}
 
 	public List<DropdownItem> getDropdownItems() {
-		List<DropdownItem> headerDropdownItems = new ArrayList<>();
-
-		DropdownItem headerDropdownItem1 = new DropdownItem();
-
-		headerDropdownItem1.setHref("/first-link");
-		headerDropdownItem1.setIcon("home");
-		headerDropdownItem1.setLabel("First link");
-
-		headerDropdownItems.add(headerDropdownItem1);
-
-		DropdownItem headerDropdownItem2 = new DropdownItem();
-
-		headerDropdownItem2.setActive(true);
-		headerDropdownItem2.setIcon("blogs");
-		headerDropdownItem2.setHref("/second-link");
-		headerDropdownItem2.setLabel("Second link");
-
-		headerDropdownItems.add(headerDropdownItem2);
-
-		return headerDropdownItems;
+		return ListUtil.fromArray(
+			DropdownItemBuilder.setHref(
+				"/first-link"
+			).setIcon(
+				"home"
+			).setLabel(
+				"First link"
+			).build(),
+			DropdownItemBuilder.setActive(
+				true
+			).setHref(
+				"/second-link"
+			).setIcon(
+				"blogs"
+			).setLabel(
+				"Second link"
+			).build());
 	}
 
 	public List<HeaderActionModel> getHeaderActionModels()
@@ -483,24 +523,24 @@ public class CommerceOrderContentDisplayContext {
 		if (isOpenOrderContentPortlet()) {
 			commerceOrders = _commerceOrderService.getUserPendingCommerceOrders(
 				_cpRequestHelper.getCompanyId(),
-				_cpRequestHelper.getChannelGroupId(), keywords,
+				_cpRequestHelper.getCommerceChannelGroupId(), keywords,
 				_searchContainer.getStart(), _searchContainer.getEnd());
 
 			commerceOrdersTotal =
 				_commerceOrderService.getUserPendingCommerceOrdersCount(
 					_cpRequestHelper.getCompanyId(),
-					_cpRequestHelper.getChannelGroupId(), keywords);
+					_cpRequestHelper.getCommerceChannelGroupId(), keywords);
 		}
 		else {
 			commerceOrders = _commerceOrderService.getUserPlacedCommerceOrders(
 				_cpRequestHelper.getCompanyId(),
-				_cpRequestHelper.getChannelGroupId(), keywords,
+				_cpRequestHelper.getCommerceChannelGroupId(), keywords,
 				_searchContainer.getStart(), _searchContainer.getEnd());
 
 			commerceOrdersTotal =
 				_commerceOrderService.getUserPlacedCommerceOrdersCount(
 					_cpRequestHelper.getCompanyId(),
-					_cpRequestHelper.getChannelGroupId(), keywords);
+					_cpRequestHelper.getCommerceChannelGroupId(), keywords);
 		}
 
 		_searchContainer.setResults(commerceOrders);
@@ -561,8 +601,8 @@ public class CommerceOrderContentDisplayContext {
 				ConfigurationProviderUtil.getConfiguration(
 					CommerceOrderFieldsConfiguration.class,
 					new GroupServiceSettingsLocator(
-						_cpRequestHelper.getChannelGroupId(),
-						CommerceConstants.SERVICE_NAME_ORDER));
+						_cpRequestHelper.getCommerceChannelGroupId(),
+						CommerceConstants.SERVICE_NAME_COMMERCE_ORDER));
 
 			return commerceOrderFieldsConfiguration.showPurchaseOrderNumber();
 		}
@@ -587,6 +627,7 @@ public class CommerceOrderContentDisplayContext {
 	private final CommerceOrderNoteService _commerceOrderNoteService;
 	private final CommerceOrderPriceCalculation _commerceOrderPriceCalculation;
 	private final CommerceOrderService _commerceOrderService;
+	private final CommerceOrderTypeService _commerceOrderTypeService;
 	private final CommercePaymentMethodGroupRelService
 		_commercePaymentMethodGroupRelService;
 	private final CommerceShipmentItemService _commerceShipmentItemService;

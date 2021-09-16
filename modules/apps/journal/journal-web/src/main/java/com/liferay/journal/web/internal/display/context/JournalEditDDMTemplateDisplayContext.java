@@ -33,8 +33,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.template.TemplateConstants;
 import com.liferay.portal.kernel.template.TemplateHandler;
 import com.liferay.portal.kernel.template.TemplateHandlerRegistryUtil;
@@ -45,6 +43,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -59,9 +58,6 @@ import java.util.ResourceBundle;
 import javax.portlet.RenderResponse;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.FrameworkUtil;
 
 /**
  * @author Eudaldo Alonso
@@ -153,11 +149,13 @@ public class JournalEditDDMTemplateDisplayContext {
 			() -> PortletURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCPath(
-				"/ddm_template/properties.jsp"
+				"/ddm_template/edit_properties.jsp"
 			).setParameter(
 				"classPK", getClassPK()
 			).setParameter(
 				"ddmTemplateId", getDDMTemplateId()
+			).setParameter(
+				"language", getLanguage()
 			).setWindowState(
 				LiferayWindowState.EXCLUSIVE
 			).buildString()
@@ -348,30 +346,15 @@ public class JournalEditDDMTemplateDisplayContext {
 			clazz = templateHandler.getClass();
 		}
 
-		Bundle bundle = FrameworkUtil.getBundle(clazz);
-
-		ResourceBundleLoader resourceBundleLoader =
-			ResourceBundleLoaderUtil.
-				getResourceBundleLoaderByBundleSymbolicName(
-					bundle.getSymbolicName());
-
-		return resourceBundleLoader.loadResourceBundle(
-			themeDisplay.getLocale());
+		return ResourceBundleUtil.getBundle(themeDisplay.getLocale(), clazz);
 	}
 
 	public String getTemplateLanguageTypeLabel(String templateLanguageType) {
-		StringBundler sb = new StringBundler(6);
-
-		sb.append(
+		return StringBundler.concat(
 			LanguageUtil.get(
-				_httpServletRequest, templateLanguageType + "[stands-for]"));
-		sb.append(StringPool.SPACE);
-		sb.append(StringPool.OPEN_PARENTHESIS);
-		sb.append(StringPool.PERIOD);
-		sb.append(templateLanguageType);
-		sb.append(StringPool.CLOSE_PARENTHESIS);
-
-		return sb.toString();
+				_httpServletRequest, templateLanguageType + "[stands-for]"),
+			StringPool.SPACE, StringPool.OPEN_PARENTHESIS, StringPool.PERIOD,
+			templateLanguageType, StringPool.CLOSE_PARENTHESIS);
 	}
 
 	public String[] getTemplateLanguageTypes() {

@@ -13,36 +13,17 @@
  */
 
 import PropTypes from 'prop-types';
-import React, {useState} from 'react';
+import React from 'react';
 
 import {Editor} from './Editor';
+import DEFAULT_BALLOON_EDITOR_CONFIG from './config/DefaultBalloonEditorConfiguration';
 
 import '../css/main.scss';
 
 const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
-	const defaultExtraPlugins = 'ballooneditor,videoembed';
-
-	const [cssClass, setCssClass] = useState('');
-
-	const extraPlugins = config.extraPlugins ? `${config.extraPlugins},` : '';
-
-	const basicToolbars = {
-		toolbarImage:
-			'ImageAlignLeft,ImageAlignCenter,ImageAlignRight,LinkToolbar,AltImg',
-		toolbarLink: 'LinkAddOrEdit,LinkRemove',
-		toolbarTable: 'TableHeaders,TableRow,TableColumn,TableCell,TableDelete',
-		toolbarText:
-			'Styles,Bold,Italic,Underline,BulletedList,NumberedList,TextLink' +
-			'JustifyLeft,JustifyCenter,JustifyRight,LineHeight,RemoveFormat',
-		toolbarVideo: 'VideoAlignLeft,VideoAlignCenter,VideoAlignRight',
-	};
-
 	const editorConfig = {
-		...basicToolbars,
+		...DEFAULT_BALLOON_EDITOR_CONFIG,
 		...config,
-		extraAllowedContent: '*',
-		extraPlugins: `${extraPlugins}${defaultExtraPlugins}`,
-		title: false,
 	};
 
 	return (
@@ -57,70 +38,61 @@ const BalloonEditor = ({config = {}, contents, name, ...otherProps}) => {
 
 				CKEDITOR.disableAutoInline = true;
 
-				setCssClass(CKEDITOR.env.cssClass);
-
-				CKEDITOR.env.cssClass = `${CKEDITOR.env.cssClass} lfr-balloon-editor lfr-tooltip-scope`;
-
 				CKEDITOR.getNextZIndex = function () {
 					return CKEDITOR.dialog._.currentZIndex
 						? CKEDITOR.dialog._.currentZIndex + 10
 						: Liferay.zIndex.WINDOW + 10;
 				};
 			}}
-			onDestroy={() => {
-				CKEDITOR.env.cssClass = cssClass;
-			}}
 			onInstanceReady={(event) => {
 				const editor = event.editor;
 
-				// Workaround to make the "CKEDITOR.ui.richCombo"
-				// plugin work with the CKEditor (React) component
-				// the "id" needs to be "cke_" + "editor.name"
+				const editable = editor.editable();
 
-				editor.element.setAttribute('id', `cke_${editor.name}`);
+				// `floatPanel` plugin requires `id` to be `cke_${editor.name}`
+
+				editable.setAttribute('id', `cke_${editor.name}`);
+
+				editable.attachClass('liferay-editable');
 
 				const balloonToolbars = editor.balloonToolbars;
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarText,
-					cssSelector: '*',
-				});
+				if (editorConfig.toolbarText) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarText,
+						cssSelector: '*',
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarImage,
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-					widgets: 'image,image2',
-				});
+				if (editorConfig.toolbarImage) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarImage,
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+						widgets: 'image,image2',
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarLink,
-					cssSelector: 'a',
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-				});
+				if (editorConfig.toolbarTable) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarTable,
+						cssSelector: 'td',
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+					});
+				}
 
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarTable,
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-					refresh(editor, path) {
-						return (
-							!!path.contains('table') ||
-							!!path.contains('tbody') ||
-							!!path.contains('tr') ||
-							!!path.contains('td') ||
-							path.lastElement.getName() === 'td'
-						);
-					},
-				});
-
-				balloonToolbars.create({
-					buttons: editorConfig.toolbarVideo,
-					priority:
-						window.CKEDITOR.plugins.balloontoolbar.PRIORITY.HIGH,
-					widgets: 'videoembed',
-				});
+				if (editorConfig.toolbarVideo) {
+					balloonToolbars.create({
+						buttons: editorConfig.toolbarVideo,
+						priority:
+							window.CKEDITOR.plugins.balloontoolbar.PRIORITY
+								.HIGH,
+						widgets: 'videoembed',
+					});
+				}
 			}}
 			type="inline"
 			{...otherProps}

@@ -37,7 +37,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -223,18 +222,17 @@ public abstract class BaseContentStructureResourceTestCase {
 
 	@Test
 	public void testGetAssetLibraryContentStructuresPage() throws Exception {
-		Page<ContentStructure> page =
-			contentStructureResource.getAssetLibraryContentStructuresPage(
-				testGetAssetLibraryContentStructuresPage_getAssetLibraryId(),
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryContentStructuresPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
 			testGetAssetLibraryContentStructuresPage_getIrrelevantAssetLibraryId();
+
+		Page<ContentStructure> page =
+			contentStructureResource.getAssetLibraryContentStructuresPage(
+				assetLibraryId, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAssetLibraryId != null) {
 			ContentStructure irrelevantContentStructure =
@@ -264,7 +262,7 @@ public abstract class BaseContentStructureResourceTestCase {
 				assetLibraryId, randomContentStructure());
 
 		page = contentStructureResource.getAssetLibraryContentStructuresPage(
-			assetLibraryId, null, null, null, Pagination.of(1, 2), null);
+			assetLibraryId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -749,17 +747,16 @@ public abstract class BaseContentStructureResourceTestCase {
 
 	@Test
 	public void testGetSiteContentStructuresPage() throws Exception {
-		Page<ContentStructure> page =
-			contentStructureResource.getSiteContentStructuresPage(
-				testGetSiteContentStructuresPage_getSiteId(),
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteContentStructuresPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteContentStructuresPage_getIrrelevantSiteId();
+
+		Page<ContentStructure> page =
+			contentStructureResource.getSiteContentStructuresPage(
+				siteId, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			ContentStructure irrelevantContentStructure =
@@ -786,7 +783,7 @@ public abstract class BaseContentStructureResourceTestCase {
 				siteId, randomContentStructure());
 
 		page = contentStructureResource.getSiteContentStructuresPage(
-			siteId, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1075,7 +1072,7 @@ public abstract class BaseContentStructureResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -1098,7 +1095,8 @@ public abstract class BaseContentStructureResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/contentStructures");
 
-		Assert.assertEquals(2, contentStructuresJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			2, contentStructuresJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(contentStructure1, contentStructure2),
@@ -1178,6 +1176,25 @@ public abstract class BaseContentStructureResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ContentStructure contentStructure,
+		List<ContentStructure> contentStructures) {
+
+		boolean contains = false;
+
+		for (ContentStructure item : contentStructures) {
+			if (equals(contentStructure, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			contentStructures + " does not contain " + contentStructure,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1916,8 +1933,8 @@ public abstract class BaseContentStructureResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseContentStructureResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseContentStructureResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

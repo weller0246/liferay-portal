@@ -48,6 +48,7 @@ page import="com.liferay.petra.string.StringPool" %><%@
 page import="com.liferay.portal.kernel.bean.BeanParamUtil" %><%@
 page import="com.liferay.portal.kernel.dao.orm.QueryUtil" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
+page import="com.liferay.portal.kernel.exception.DataLimitExceededException" %><%@
 page import="com.liferay.portal.kernel.exception.DuplicateRoleException" %><%@
 page import="com.liferay.portal.kernel.exception.NoSuchRoleException" %><%@
 page import="com.liferay.portal.kernel.exception.RequiredRoleException" %><%@
@@ -137,6 +138,7 @@ page import="com.liferay.roles.admin.web.internal.role.type.contributor.util.Rol
 page import="com.liferay.roles.admin.web.internal.util.PortletDisplayTemplateUtil" %><%@
 page import="com.liferay.segments.service.SegmentsEntryRoleLocalServiceUtil" %><%@
 page import="com.liferay.taglib.search.ResultRow" %><%@
+page import="com.liferay.template.constants.TemplatePortletKeys" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdmin" %><%@
 page import="com.liferay.users.admin.kernel.util.UsersAdminUtil" %>
 
@@ -198,6 +200,10 @@ private String _getActionLabel(HttpServletRequest request, ThemeDisplay themeDis
 		}
 	}
 
+	if (actionId.equals("ADD_STRUCTURE") && resourceName.equals("com.liferay.document.library")) {
+		actionLabel = LanguageUtil.get(request, "add-metadata-set");
+	}
+
 	if (actionLabel == null) {
 		actionLabel = ResourceActionsUtil.getAction(request, actionId);
 	}
@@ -232,13 +238,13 @@ private StringBundler _getResourceHtmlId(String resource) {
 	return sb;
 }
 
-private boolean _isShowScope(HttpServletRequest request, Role role, String curModelResource, String curPortletResource) throws SystemException {
+private boolean _isShowScope(HttpServletRequest request, Role role, String curModelResource, String curPortletResource, RoleDisplayContext roleDisplayContext) throws SystemException {
 	boolean showScope = true;
 
 	if (curPortletResource.equals(PortletKeys.PORTAL)) {
 		showScope = false;
 	}
-	else if (role.getType() != RoleConstants.TYPE_REGULAR) {
+	else if (!roleDisplayContext.isAllowGroupScope()) {
 		showScope = false;
 	}
 	else if (Validator.isNotNull(curPortletResource)) {

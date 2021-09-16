@@ -277,7 +277,7 @@ public class JournalDisplayContext {
 				_liferayPortletResponse)
 		).setMVCPath(
 			"/select_article_translations.jsp"
-		).build();
+		).buildPortletURL();
 
 		SearchContainer<JournalArticleTranslation>
 			articleTranslationsSearchContainer = new SearchContainer<>(
@@ -1420,6 +1420,19 @@ public class JournalDisplayContext {
 		return searchContainer;
 	}
 
+	private String _getDisplayName(Locale currentLocale, Locale locale) {
+		String key = "language." + locale.getLanguage();
+
+		String displayName = LanguageUtil.get(currentLocale, key);
+
+		if (displayName.equals(key)) {
+			return locale.getDisplayName(currentLocale);
+		}
+
+		return StringBundler.concat(
+			displayName, " (", locale.getDisplayCountry(currentLocale), ")");
+	}
+
 	private EntriesChecker _getEntriesChecker() {
 		EntriesChecker entriesChecker = new EntriesChecker(
 			_liferayPortletRequest, _liferayPortletResponse);
@@ -1537,7 +1550,7 @@ public class JournalDisplayContext {
 		locales.forEach(
 			locale -> jsonArray.put(
 				JSONUtil.put(
-					"displayName", locale.getDisplayName(currentLocale)
+					"displayName", _getDisplayName(currentLocale, locale)
 				).put(
 					"languageId", LocaleUtil.toLanguageId(locale)
 				)));

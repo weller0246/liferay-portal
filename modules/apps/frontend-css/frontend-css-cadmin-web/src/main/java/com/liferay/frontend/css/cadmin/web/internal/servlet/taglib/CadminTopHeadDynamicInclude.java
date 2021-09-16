@@ -61,8 +61,8 @@ public class CadminTopHeadDynamicInclude extends BaseDynamicInclude {
 				httpServletRequest);
 
 		printWriter.print(
-			absolutePortalURLBuilder.forModule(
-				_bundleContext.getBundle(), "main.css"
+			absolutePortalURLBuilder.forModuleStylesheet(
+				_bundleContext.getBundle(), "clay_admin.css"
 			).build());
 
 		printWriter.println("\" id=\"liferayCadminCSS\" rel=\"stylesheet\"");

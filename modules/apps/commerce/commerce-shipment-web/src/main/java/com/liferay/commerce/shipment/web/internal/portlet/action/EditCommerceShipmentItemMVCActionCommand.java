@@ -130,32 +130,43 @@ public class EditCommerceShipmentItemMVCActionCommand
 				CommerceShipment.class.getName(), PortletProvider.Action.EDIT)
 		).setMVCRenderCommandName(
 			"/commerce_shipment/edit_commerce_shipment_item"
-		).build();
+		).setParameter(
+			"commerceOrderItemId",
+			() -> {
+				long commerceOrderItemId = ParamUtil.getLong(
+					actionRequest, "commerceOrderItemId");
 
-		long commerceShipmentId = ParamUtil.getLong(
-			actionRequest, "commerceShipmentId");
+				if (commerceOrderItemId > 0) {
+					return commerceOrderItemId;
+				}
 
-		if (commerceShipmentId > 0) {
-			portletURL.setParameter(
-				"commerceShipmentId", String.valueOf(commerceShipmentId));
-		}
+				return null;
+			}
+		).setParameter(
+			"commerceShipmentId",
+			() -> {
+				long commerceShipmentId = ParamUtil.getLong(
+					actionRequest, "commerceShipmentId");
 
-		long commerceShipmentItemId = ParamUtil.getLong(
-			actionRequest, "commerceShipmentItemId");
+				if (commerceShipmentId > 0) {
+					return commerceShipmentId;
+				}
 
-		if (commerceShipmentItemId > 0) {
-			portletURL.setParameter(
-				"commerceShipmentItemId",
-				String.valueOf(commerceShipmentItemId));
-		}
+				return null;
+			}
+		).setParameter(
+			"commerceShipmentItemId",
+			() -> {
+				long commerceShipmentItemId = ParamUtil.getLong(
+					actionRequest, "commerceShipmentItemId");
 
-		long commerceOrderItemId = ParamUtil.getLong(
-			actionRequest, "commerceOrderItemId");
+				if (commerceShipmentItemId > 0) {
+					return commerceShipmentItemId;
+				}
 
-		if (commerceOrderItemId > 0) {
-			portletURL.setParameter(
-				"commerceOrderItemId", String.valueOf(commerceOrderItemId));
-		}
+				return null;
+			}
+		).buildPortletURL();
 
 		try {
 			portletURL.setWindowState(LiferayWindowState.POP_UP);

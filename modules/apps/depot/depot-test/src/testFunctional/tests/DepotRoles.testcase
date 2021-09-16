@@ -196,11 +196,14 @@ definition {
 			site = "false",
 			title = "WC WebContent Title");
 
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Test Page Name",
+			widgetName = "Web Content Display");
+
 		Navigator.openSitePage(
 			pageName = "Test Page Name",
 			siteName = "Site Name");
-
-		Portlet.addPG(portletName = "Web Content Display");
 
 		WebContentDisplayPortlet.selectWebContent(
 			depotName = "Test Depot Name",
@@ -360,14 +363,19 @@ definition {
 
 		PortletEntry.publish();
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title");
+		DepotNavigator.openToEditWCEntry(
+			depotName = "Test Depot Name",
+			webContentTitle = "WC WebContent Title");
 
 		WebContent.editCP(
 			webContentContentEdit = "WC WebContent Content Edit",
 			webContentTitle = "WC WebContent Title",
 			webContentTitleEdit = "WC WebContent Title Edit");
 
-		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent Title Edit");
+		DepotNavigator.openToEditWCEntry(
+			depotName = "Test Depot Name",
+			version = "1.1",
+			webContentTitle = "WC WebContent Title");
 
 		WebContent.viewCP(
 			webContentContent = "WC WebContent Content Edit",

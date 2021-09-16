@@ -277,7 +277,7 @@ info:
         name: Commerce Team
     description:
         "Liferay Commerce Admin Admin Shipment API. A Java client JAR is available for use with the group ID
-        'com.liferay', artifact ID 'com.liferay.headless.commerce.admin.shipment.client', and version '1.0.4'."
+        'com.liferay', artifact ID 'com.liferay.headless.commerce.admin.shipment.client', and version '1.0.7'."
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -306,8 +306,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
                 401:
                     content:
                         application/json:
@@ -646,8 +644,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
                 401:
                     content:
                         application/json:
@@ -1140,8 +1136,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Shipment"
-                    description:
-                        ""
             tags:
                 - Shipment
     /shipments/{shipmentId}/status-finish-processing:
@@ -1169,8 +1163,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Shipment"
-                    description:
-                        ""
             tags:
                 - Shipment
     /shipments/{shipmentId}/status-shipped:
@@ -1198,8 +1190,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Shipment"
-                    description:
-                        ""
             tags:
                 - Shipment
 servers:

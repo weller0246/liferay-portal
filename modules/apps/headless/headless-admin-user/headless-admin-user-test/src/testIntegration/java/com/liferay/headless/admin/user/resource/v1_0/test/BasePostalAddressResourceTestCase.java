@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -206,16 +205,16 @@ public abstract class BasePostalAddressResourceTestCase {
 
 	@Test
 	public void testGetOrganizationPostalAddressesPage() throws Exception {
-		Page<PostalAddress> page =
-			postalAddressResource.getOrganizationPostalAddressesPage(
-				testGetOrganizationPostalAddressesPage_getOrganizationId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String organizationId =
 			testGetOrganizationPostalAddressesPage_getOrganizationId();
 		String irrelevantOrganizationId =
 			testGetOrganizationPostalAddressesPage_getIrrelevantOrganizationId();
+
+		Page<PostalAddress> page =
+			postalAddressResource.getOrganizationPostalAddressesPage(
+				organizationId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantOrganizationId != null) {
 			PostalAddress irrelevantPostalAddress =
@@ -342,16 +341,16 @@ public abstract class BasePostalAddressResourceTestCase {
 
 	@Test
 	public void testGetUserAccountPostalAddressesPage() throws Exception {
-		Page<PostalAddress> page =
-			postalAddressResource.getUserAccountPostalAddressesPage(
-				testGetUserAccountPostalAddressesPage_getUserAccountId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long userAccountId =
 			testGetUserAccountPostalAddressesPage_getUserAccountId();
 		Long irrelevantUserAccountId =
 			testGetUserAccountPostalAddressesPage_getIrrelevantUserAccountId();
+
+		Page<PostalAddress> page =
+			postalAddressResource.getUserAccountPostalAddressesPage(
+				userAccountId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantUserAccountId != null) {
 			PostalAddress irrelevantPostalAddress =
@@ -416,6 +415,23 @@ public abstract class BasePostalAddressResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		PostalAddress postalAddress, List<PostalAddress> postalAddresses) {
+
+		boolean contains = false;
+
+		for (PostalAddress item : postalAddresses) {
+			if (equals(postalAddress, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			postalAddresses + " does not contain " + postalAddress, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1115,8 +1131,8 @@ public abstract class BasePostalAddressResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BasePostalAddressResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BasePostalAddressResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

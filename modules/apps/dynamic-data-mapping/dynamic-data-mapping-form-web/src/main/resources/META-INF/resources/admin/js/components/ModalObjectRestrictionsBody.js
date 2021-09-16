@@ -39,19 +39,13 @@ const UnmappedRequiredObjectFields = ({fields}) => {
 		Liferay.Language.get('text-field-type-label'),
 	];
 
-	const fieldTypeDecimalNumeric = Liferay.Util.sub(
-		Liferay.Language.get('decimal-x'),
-		Liferay.Language.get('numeric-field-type-label')
-	);
-
-	const fieldTypeIntegerNumeric = Liferay.Util.sub(
-		Liferay.Language.get('integer-x'),
-		Liferay.Language.get('numeric-field-type-label')
-	);
+	const fieldTypeDecimalNumeric = Liferay.Language.get('decimal-number');
+	const fieldTypeImage = Liferay.Language.get('image-field-type-label');
+	const fieldTypeIntegerNumeric = Liferay.Language.get('integer-number');
 
 	const fieldTypes = {
 		bigdecimal: fieldTypeDecimalNumeric,
-		blob: fieldsTypeString,
+		blob: fieldTypeImage,
 		double: fieldTypeDecimalNumeric,
 		integer: fieldTypeIntegerNumeric,
 		long: fieldTypeIntegerNumeric,

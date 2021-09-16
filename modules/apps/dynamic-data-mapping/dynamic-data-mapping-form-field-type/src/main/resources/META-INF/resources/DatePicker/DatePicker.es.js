@@ -23,8 +23,15 @@ import {useSyncValue} from '../hooks/useSyncValue.es';
 
 const DIGIT_REGEX = /\d/i;
 const LETTER_REGEX = /[a-z]/i;
+const LETTER_DIGIT_REGEX = /[A-Z0-9]/gi;
+const NOT_LETTER_REGEX = /[^a-z]/gi;
+const YEARS_INDEX = 6;
 
 const getDateMask = (dateDelimiter, dateFormat) => {
+	const lastSymbol = dateFormat.slice(-1).match(NOT_LETTER_REGEX);
+
+	dateFormat = lastSymbol ? dateFormat.slice(0, -1) : dateFormat;
+
 	return dateFormat
 		.split(dateDelimiter)
 		.map((item) => {
@@ -136,6 +143,31 @@ const getValueForHidden = (value, locale) => {
 	return '';
 };
 
+const Months = [
+	Liferay.Language.get('january'),
+	Liferay.Language.get('february'),
+	Liferay.Language.get('march'),
+	Liferay.Language.get('april'),
+	Liferay.Language.get('may'),
+	Liferay.Language.get('june'),
+	Liferay.Language.get('july'),
+	Liferay.Language.get('august'),
+	Liferay.Language.get('september'),
+	Liferay.Language.get('october'),
+	Liferay.Language.get('november'),
+	Liferay.Language.get('december'),
+];
+
+const WeekdayShort = [
+	Liferay.Language.get('weekday-short-sunday'),
+	Liferay.Language.get('weekday-short-monday'),
+	Liferay.Language.get('weekday-short-tuesday'),
+	Liferay.Language.get('weekday-short-wednesday'),
+	Liferay.Language.get('weekday-short-thursday'),
+	Liferay.Language.get('weekday-short-friday'),
+	Liferay.Language.get('weekday-short-saturday'),
+];
+
 const DatePicker = ({
 	defaultLanguageId,
 	disabled,
@@ -188,30 +220,43 @@ const DatePicker = ({
 				showMask: true,
 			});
 
-			if (localizedValue[locale]) {
-				if (
-					typeof localizedValue[locale] === 'string' &&
-					(localizedValue[locale].includes('/') ||
-						localizedValue[locale].includes('.'))
-				) {
-					inputRef.current.value = localizedValue[locale];
-				}
-				else {
-					inputRef.current.value = moment(
-						localizedValue[locale]
-					).format(dateMask.toUpperCase());
-				}
+			const currentValue = localizedValue[locale];
+
+			if (currentValue) {
+				inputRef.current.value =
+					currentValue.includes('/') ||
+					currentValue.includes('.') ||
+					(currentValue.includes('-') && currentValue.includes('_'))
+						? currentValue
+						: moment(currentValue).format(dateMask.toUpperCase());
 			}
 			else if (initialValueMemoized) {
-				inputRef.current.value = moment(initialValueMemoized).format(
-					dateMask.toUpperCase()
+				var year = parseInt(
+					initialValueMemoized.substr(YEARS_INDEX),
+					10
 				);
+
+				const date = moment(initialValueMemoized);
+
+				if (year <= 50) {
+					date.subtract(2000, 'years');
+				}
+				else if (year > 50 && year < 100) {
+					date.subtract(1900, 'years');
+				}
+
+				inputRef.current.value = date.format(dateMask.toUpperCase());
 			}
 			else {
 				inputRef.current.value = '';
 			}
 
-			maskInstance.current.update(inputRef.current.value);
+			if (
+				inputRef.current.value.match(LETTER_DIGIT_REGEX) ||
+				inputRef.current.value === ''
+			) {
+				maskInstance.current.update(inputRef.current.value);
+			}
 		}
 	}, [
 		dateMask,
@@ -246,6 +291,7 @@ const DatePicker = ({
 				disabled={disabled}
 				expanded={expanded}
 				initialMonth={getInitialMonth(value)}
+				months={Months}
 				onExpandedChange={(expand) => {
 					setExpand(expand);
 				}}
@@ -290,6 +336,7 @@ const DatePicker = ({
 				ref={inputRef}
 				spritemap={spritemap}
 				value={value}
+				weekdaysShort={WeekdayShort}
 				years={years}
 			/>
 		</>

@@ -146,7 +146,7 @@ public class CommerceChannelClayTable
 					"/commerce_channels/edit_commerce_channel"
 				).setCMD(
 					Constants.DELETE
-				).build();
+				).buildPortletURL();
 
 				String redirect = ParamUtil.getString(
 					httpServletRequest, "currentUrl",
@@ -173,11 +173,9 @@ public class CommerceChannelClayTable
 
 		List<Channel> channels = new ArrayList<>();
 
-		List<CommerceChannel> commerceChannels =
-			_commerceChannelService.searchCommerceChannels(
-				_portal.getCompanyId(httpServletRequest), filter.getKeywords(),
-				pagination.getStartPosition(), pagination.getEndPosition(),
-				sort);
+		List<CommerceChannel> commerceChannels = _commerceChannelService.search(
+			_portal.getCompanyId(httpServletRequest), filter.getKeywords(),
+			pagination.getStartPosition(), pagination.getEndPosition(), sort);
 
 		for (CommerceChannel commerceChannel : commerceChannels) {
 			channels.add(
@@ -224,7 +222,7 @@ public class CommerceChannelClayTable
 			"modelResourceDescription", channel.getName()
 		).setParameter(
 			"resourcePrimKey", channel.getChannelId()
-		).build();
+		).buildPortletURL();
 
 		try {
 			portletURL.setWindowState(LiferayWindowState.POP_UP);

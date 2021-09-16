@@ -86,23 +86,25 @@ public class ContentDashboardSearchContextBuilder {
 						_httpServletRequest, "assetCategoryId"),
 					_assetCategoryLocalService, _assetVocabularyLocalService),
 				ParamUtil.getStringValues(_httpServletRequest, "assetTagId"),
-				ParamUtil.getLongValues(_httpServletRequest, "authorIds")));
+				ParamUtil.getLongValues(_httpServletRequest, "authorIds"),
+				ParamUtil.getStringValues(
+					_httpServletRequest, "fileExtension")));
 
-		String[] contentDashboardItemTypePayloads =
+		String[] contentDashboardItemSubtypePayloads =
 			ParamUtil.getParameterValues(
-				_httpServletRequest, "contentDashboardItemTypePayload",
+				_httpServletRequest, "contentDashboardItemSubtypePayload",
 				new String[0], false);
 
-		if (!ArrayUtil.isEmpty(contentDashboardItemTypePayloads)) {
+		if (!ArrayUtil.isEmpty(contentDashboardItemSubtypePayloads)) {
 			searchContext.setClassTypeIds(
 				Stream.of(
-					contentDashboardItemTypePayloads
+					contentDashboardItemSubtypePayloads
 				).map(
-					contentDashboardItemTypePayload -> {
+					contentDashboardItemSubtypePayload -> {
 						try {
 							return Optional.of(
 								JSONFactoryUtil.createJSONObject(
-									contentDashboardItemTypePayload));
+									contentDashboardItemSubtypePayload));
 						}
 						catch (JSONException jsonException) {
 							_log.error(jsonException, jsonException);
@@ -234,7 +236,7 @@ public class ContentDashboardSearchContextBuilder {
 
 	private BooleanClause[] _getBooleanClauses(
 		AssetCategoryIds assetCategoryIds, String[] assetTagNames,
-		long[] authorIds) {
+		long[] authorIds, String[] fileExtensions) {
 
 		BooleanQueryImpl booleanQueryImpl = new BooleanQueryImpl();
 
@@ -264,12 +266,35 @@ public class ContentDashboardSearchContextBuilder {
 				authorIdsFilterOptional.get(), BooleanClauseOccur.MUST);
 		}
 
+		Optional<Filter> fileExtensionsFilterOptional =
+			_getFileExtensionsFilterOptional(fileExtensions);
+
+		fileExtensionsFilterOptional.map(
+			fileExtensionsFilter -> booleanFilter.add(
+				fileExtensionsFilterOptional.get(), BooleanClauseOccur.MUST));
+
 		booleanQueryImpl.setPreBooleanFilter(booleanFilter);
 
 		return new BooleanClause[] {
 			BooleanClauseFactoryUtil.create(
 				booleanQueryImpl, BooleanClauseOccur.MUST.getName())
 		};
+	}
+
+	private Optional<Filter> _getFileExtensionsFilterOptional(
+		String[] fileExtensions) {
+
+		if (ArrayUtil.isEmpty(fileExtensions)) {
+			return Optional.empty();
+		}
+
+		TermsFilter termsFilter = new TermsFilter("fileExtension");
+
+		for (String fileExtension : fileExtensions) {
+			termsFilter.addValue(fileExtension);
+		}
+
+		return Optional.of(termsFilter);
 	}
 
 	private BooleanFilter _getTermsFilter(String field, long[] values) {

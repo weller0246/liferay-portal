@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -226,6 +225,20 @@ public abstract class BaseUserResourceTestCase {
 	protected User testGraphQLUser_addUser() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(User user, List<User> users) {
+		boolean contains = false;
+
+		for (User item : users) {
+			if (equals(user, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(users + " does not contain " + user, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -830,8 +843,8 @@ public abstract class BaseUserResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseUserResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseUserResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

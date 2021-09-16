@@ -55,7 +55,7 @@ PortletURL portletURL = PortletURLBuilder.create(
 	commerceCartContentMiniDisplayContext.getPortletURL()
 ).setParameter(
 	"searchContainerId", "commerceOrderItems"
-).build();
+).buildPortletURL();
 
 request.setAttribute("view.jsp-portletURL", portletURL);
 %>
@@ -107,10 +107,18 @@ request.setAttribute("view.jsp-portletURL", portletURL);
 				CPDefinition cpDefinition = commerceOrderItem.getCPDefinition();
 				%>
 
-				<liferay-ui:search-container-column-image
-					cssClass="thumbnail-section"
-					src="<%= commerceCartContentMiniDisplayContext.getCommerceOrderItemThumbnailSrc(commerceOrderItem) %>"
-				/>
+				<liferay-ui:search-container-column-text
+					cssClass="col-1 thumbnail-section"
+				>
+					<span class="sticker sticker-xl">
+						<span class="sticker-overlay">
+							<liferay-adaptive-media:img
+								class="sticker-img"
+								fileVersion="<%= commerceCartContentMiniDisplayContext.getCPInstanceImageFileVersion(commerceOrderItem) %>"
+							/>
+						</span>
+					</span>
+				</liferay-ui:search-container-column-text>
 
 				<liferay-ui:search-container-column-text
 					cssClass="autofit-col-expand"

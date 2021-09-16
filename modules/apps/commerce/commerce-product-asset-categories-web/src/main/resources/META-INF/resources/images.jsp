@@ -25,7 +25,7 @@ PortletURL portletURL = PortletURLBuilder.create(
 	currentURLObj
 ).setParameter(
 	"historyKey", liferayPortletResponse.getNamespace() + "images"
-).build();
+).buildPortletURL();
 
 SearchContainer<CPAttachmentFileEntry> cpAttachmentFileEntrySearchContainer = new SearchContainer<>(liferayPortletRequest, portletURL, null, null);
 
@@ -52,9 +52,16 @@ cpAttachmentFileEntrySearchContainer.setResults(cpAttachmentFileEntries);
 		>
 
 			<%
-			FileEntry fileEntry = cpAttachmentFileEntry.getFileEntry();
+			String thumbnailSrc = StringPool.BLANK;
 
-			String thumbnailSrc = CommerceMediaResolverUtil.getThumbnailURL(CommerceAccountConstants.ACCOUNT_ID_GUEST, cpAttachmentFileEntry.getCPAttachmentFileEntryId());
+			FileEntry fileEntry = cpAttachmentFileEntry.fetchFileEntry();
+
+			if (fileEntry == null) {
+				thumbnailSrc = cpAttachmentFileEntry.getCDNURL();
+			}
+			else {
+				thumbnailSrc = CommerceMediaResolverUtil.getThumbnailURL(CommerceAccountConstants.ACCOUNT_ID_GUEST, cpAttachmentFileEntry.getCPAttachmentFileEntryId());
+			}
 			%>
 
 			<c:choose>

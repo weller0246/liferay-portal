@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -201,16 +200,15 @@ public abstract class BaseCommentResourceTestCase {
 
 	@Test
 	public void testGetBlogPostingCommentsPage() throws Exception {
-		Page<Comment> page = commentResource.getBlogPostingCommentsPage(
-			testGetBlogPostingCommentsPage_getBlogPostingId(),
-			RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-			null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long blogPostingId = testGetBlogPostingCommentsPage_getBlogPostingId();
 		Long irrelevantBlogPostingId =
 			testGetBlogPostingCommentsPage_getIrrelevantBlogPostingId();
+
+		Page<Comment> page = commentResource.getBlogPostingCommentsPage(
+			blogPostingId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantBlogPostingId != null) {
 			Comment irrelevantComment =
@@ -236,7 +234,7 @@ public abstract class BaseCommentResourceTestCase {
 			blogPostingId, randomComment());
 
 		page = commentResource.getBlogPostingCommentsPage(
-			blogPostingId, null, null, null, Pagination.of(1, 2), null);
+			blogPostingId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -644,16 +642,15 @@ public abstract class BaseCommentResourceTestCase {
 
 	@Test
 	public void testGetCommentCommentsPage() throws Exception {
-		Page<Comment> page = commentResource.getCommentCommentsPage(
-			testGetCommentCommentsPage_getParentCommentId(),
-			RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-			null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long parentCommentId = testGetCommentCommentsPage_getParentCommentId();
 		Long irrelevantParentCommentId =
 			testGetCommentCommentsPage_getIrrelevantParentCommentId();
+
+		Page<Comment> page = commentResource.getCommentCommentsPage(
+			parentCommentId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantParentCommentId != null) {
 			Comment irrelevantComment = testGetCommentCommentsPage_addComment(
@@ -678,7 +675,7 @@ public abstract class BaseCommentResourceTestCase {
 			parentCommentId, randomComment());
 
 		page = commentResource.getCommentCommentsPage(
-			parentCommentId, null, null, null, Pagination.of(1, 2), null);
+			parentCommentId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -947,16 +944,15 @@ public abstract class BaseCommentResourceTestCase {
 
 	@Test
 	public void testGetDocumentCommentsPage() throws Exception {
-		Page<Comment> page = commentResource.getDocumentCommentsPage(
-			testGetDocumentCommentsPage_getDocumentId(),
-			RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-			null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long documentId = testGetDocumentCommentsPage_getDocumentId();
 		Long irrelevantDocumentId =
 			testGetDocumentCommentsPage_getIrrelevantDocumentId();
+
+		Page<Comment> page = commentResource.getDocumentCommentsPage(
+			documentId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDocumentId != null) {
 			Comment irrelevantComment = testGetDocumentCommentsPage_addComment(
@@ -981,7 +977,7 @@ public abstract class BaseCommentResourceTestCase {
 			documentId, randomComment());
 
 		page = commentResource.getDocumentCommentsPage(
-			documentId, null, null, null, Pagination.of(1, 2), null);
+			documentId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1247,17 +1243,16 @@ public abstract class BaseCommentResourceTestCase {
 
 	@Test
 	public void testGetStructuredContentCommentsPage() throws Exception {
-		Page<Comment> page = commentResource.getStructuredContentCommentsPage(
-			testGetStructuredContentCommentsPage_getStructuredContentId(),
-			RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-			null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long structuredContentId =
 			testGetStructuredContentCommentsPage_getStructuredContentId();
 		Long irrelevantStructuredContentId =
 			testGetStructuredContentCommentsPage_getIrrelevantStructuredContentId();
+
+		Page<Comment> page = commentResource.getStructuredContentCommentsPage(
+			structuredContentId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantStructuredContentId != null) {
 			Comment irrelevantComment =
@@ -1283,7 +1278,7 @@ public abstract class BaseCommentResourceTestCase {
 			structuredContentId, randomComment());
 
 		page = commentResource.getStructuredContentCommentsPage(
-			structuredContentId, null, null, null, Pagination.of(1, 2), null);
+			structuredContentId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1577,6 +1572,20 @@ public abstract class BaseCommentResourceTestCase {
 	protected Comment testGraphQLComment_addComment() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Comment comment, List<Comment> comments) {
+		boolean contains = false;
+
+		for (Comment item : comments) {
+			if (equals(comment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(comments + " does not contain " + comment, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -2186,8 +2195,8 @@ public abstract class BaseCommentResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseCommentResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseCommentResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

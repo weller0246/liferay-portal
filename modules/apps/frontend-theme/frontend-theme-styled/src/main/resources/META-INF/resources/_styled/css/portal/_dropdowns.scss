@@ -1,3 +1,10 @@
+html#{$cadmin-selector} {
+	.overlay-content .open > .cadmin.dropdown-menu {
+		display: block;
+		position: static;
+	}
+}
+
 .dropdown.open > .dropdown-menu,
 .overlay-content .open > .dropdown-menu {
 	display: block;
@@ -5,6 +12,10 @@
 
 .dropdown-menu {
 	border: 1px solid $dropdown-border-color;
+
+	.dropdown-item.active {
+		pointer-events: initial;
+	}
 }
 
 .dropdown-toggle:after {

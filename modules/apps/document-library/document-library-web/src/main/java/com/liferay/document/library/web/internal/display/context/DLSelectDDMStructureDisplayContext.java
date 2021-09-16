@@ -201,38 +201,54 @@ public class DLSelectDDMStructureDisplayContext {
 	}
 
 	private PortletURL _getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCPath(
 			"/document_library/ddm/select_ddm_structure.jsp"
-		).build();
+		).setKeywords(
+			() -> {
+				String keywords = _getKeywords();
 
-		long ddmStructureId = getDDMStructureId();
+				if (Validator.isNotNull(keywords)) {
+					return keywords;
+				}
 
-		if (ddmStructureId != 0) {
-			portletURL.setParameter(
-				"ddmStructureId", String.valueOf(ddmStructureId));
-		}
+				return null;
+			}
+		).setParameter(
+			"ddmStructureId",
+			() -> {
+				long ddmStructureId = getDDMStructureId();
 
-		String keywords = _getKeywords();
+				if (ddmStructureId != 0) {
+					return ddmStructureId;
+				}
 
-		if (Validator.isNotNull(keywords)) {
-			portletURL.setParameter("keywords", keywords);
-		}
+				return null;
+			}
+		).setParameter(
+			"orderByCol",
+			() -> {
+				String orderByCol = getOrderByCol();
 
-		String orderByCol = getOrderByCol();
+				if (Validator.isNotNull(orderByCol)) {
+					return orderByCol;
+				}
 
-		if (Validator.isNotNull(orderByCol)) {
-			portletURL.setParameter("orderByCol", orderByCol);
-		}
+				return null;
+			}
+		).setParameter(
+			"orderByType",
+			() -> {
+				String orderByType = getOrderByType();
 
-		String orderByType = getOrderByType();
+				if (Validator.isNotNull(orderByType)) {
+					return orderByType;
+				}
 
-		if (Validator.isNotNull(orderByType)) {
-			portletURL.setParameter("orderByType", orderByType);
-		}
-
-		return portletURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	private long _getSearchRestrictionClassNameId() {

@@ -28,7 +28,6 @@ import com.liferay.registry.ServiceTrackerCustomizer;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Preston Crary
@@ -91,26 +90,20 @@ public class ModelResourcePermissionDefinitionTracker {
 			ModelResourcePermission<?> modelResourcePermission = _create(
 				modelResourcePermissionDefinition);
 
-			Map<String, Object> properties = HashMapBuilder.<String, Object>put(
-				"model.class.name",
-				() -> {
-					Class<?> modelClass =
-						modelResourcePermissionDefinition.getModelClass();
-
-					return modelClass.getName();
-				}
-			).build();
-
-			Object serviceRanking = serviceReference.getProperty(
-				"service.ranking");
-
-			if (serviceRanking != null) {
-				properties.put("service.ranking", serviceRanking);
-			}
-
 			return registry.registerService(
 				ModelResourcePermission.class, modelResourcePermission,
-				properties);
+				HashMapBuilder.<String, Object>put(
+					"model.class.name",
+					() -> {
+						Class<?> modelClass =
+							modelResourcePermissionDefinition.getModelClass();
+
+						return modelClass.getName();
+					}
+				).put(
+					"service.ranking",
+					() -> serviceReference.getProperty("service.ranking")
+				).build());
 		}
 
 		@Override

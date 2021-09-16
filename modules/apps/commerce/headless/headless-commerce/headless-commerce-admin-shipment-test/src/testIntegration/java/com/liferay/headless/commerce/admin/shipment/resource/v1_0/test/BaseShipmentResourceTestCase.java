@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -44,6 +43,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -208,22 +208,21 @@ public abstract class BaseShipmentResourceTestCase {
 	@Test
 	public void testGetShipmentsPage() throws Exception {
 		Page<Shipment> page = shipmentResource.getShipmentsPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		Shipment shipment1 = testGetShipmentsPage_addShipment(randomShipment());
 
 		Shipment shipment2 = testGetShipmentsPage_addShipment(randomShipment());
 
 		page = shipmentResource.getShipmentsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(shipment1, shipment2),
-			(List<Shipment>)page.getItems());
+		assertContains(shipment1, (List<Shipment>)page.getItems());
+		assertContains(shipment2, (List<Shipment>)page.getItems());
 		assertValid(page);
 
 		shipmentResource.deleteShipment(shipment1.getId());
@@ -284,6 +283,11 @@ public abstract class BaseShipmentResourceTestCase {
 
 	@Test
 	public void testGetShipmentsPageWithPagination() throws Exception {
+		Page<Shipment> totalPage = shipmentResource.getShipmentsPage(
+			null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		Shipment shipment1 = testGetShipmentsPage_addShipment(randomShipment());
 
 		Shipment shipment2 = testGetShipmentsPage_addShipment(randomShipment());
@@ -291,27 +295,28 @@ public abstract class BaseShipmentResourceTestCase {
 		Shipment shipment3 = testGetShipmentsPage_addShipment(randomShipment());
 
 		Page<Shipment> page1 = shipmentResource.getShipmentsPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<Shipment> shipments1 = (List<Shipment>)page1.getItems();
 
-		Assert.assertEquals(shipments1.toString(), 2, shipments1.size());
+		Assert.assertEquals(
+			shipments1.toString(), totalCount + 2, shipments1.size());
 
 		Page<Shipment> page2 = shipmentResource.getShipmentsPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<Shipment> shipments2 = (List<Shipment>)page2.getItems();
 
 		Assert.assertEquals(shipments2.toString(), 1, shipments2.size());
 
 		Page<Shipment> page3 = shipmentResource.getShipmentsPage(
-			null, null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(shipment1, shipment2, shipment3),
-			(List<Shipment>)page3.getItems());
+		assertContains(shipment1, (List<Shipment>)page3.getItems());
+		assertContains(shipment2, (List<Shipment>)page3.getItems());
+		assertContains(shipment3, (List<Shipment>)page3.getItems());
 	}
 
 	@Test
@@ -442,7 +447,7 @@ public abstract class BaseShipmentResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
@@ -452,7 +457,7 @@ public abstract class BaseShipmentResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/shipments");
 
-		Assert.assertEquals(0, shipmentsJSONObject.get("totalCount"));
+		long totalCount = shipmentsJSONObject.getLong("totalCount");
 
 		Shipment shipment1 = testGraphQLShipment_addShipment();
 		Shipment shipment2 = testGraphQLShipment_addShipment();
@@ -461,10 +466,15 @@ public abstract class BaseShipmentResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/shipments");
 
-		Assert.assertEquals(2, shipmentsJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			totalCount + 2, shipmentsJSONObject.getLong("totalCount"));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(shipment1, shipment2),
+		assertContains(
+			shipment1,
+			Arrays.asList(
+				ShipmentSerDes.toDTOs(shipmentsJSONObject.getString("items"))));
+		assertContains(
+			shipment2,
 			Arrays.asList(
 				ShipmentSerDes.toDTOs(shipmentsJSONObject.getString("items"))));
 	}
@@ -684,6 +694,21 @@ public abstract class BaseShipmentResourceTestCase {
 	protected Shipment testGraphQLShipment_addShipment() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Shipment shipment, List<Shipment> shipments) {
+		boolean contains = false;
+
+		for (Shipment item : shipments) {
+			if (equals(shipment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			shipments + " does not contain " + shipment, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1594,8 +1619,8 @@ public abstract class BaseShipmentResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseShipmentResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseShipmentResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

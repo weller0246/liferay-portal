@@ -19,6 +19,9 @@ package com.liferay.portal.kernel.util;
  */
 public interface PropsKeys {
 
+	public static final String ACCESS_CONTROL_SANITIZE_SECURITY_EXCEPTION =
+		"access.control.sanitize.security.exception";
+
 	public static final String ADMIN_ANALYTICS_TYPES = "admin.analytics.types";
 
 	public static final String ADMIN_DEFAULT_GROUP_NAMES =
@@ -465,26 +468,6 @@ public interface PropsKeys {
 
 	public static final String CALENDAR_PUBLISH_TO_LIVE_BY_DEFAULT =
 		"calendar.publish.to.live.by.default";
-
-	public static final String CAS_AUTH_ENABLED = "cas.auth.enabled";
-
-	public static final String CAS_IMPORT_FROM_LDAP = "cas.import.from.ldap";
-
-	public static final String CAS_LOGIN_URL = "cas.login.url";
-
-	public static final String CAS_LOGOUT_ON_SESSION_EXPIRATION =
-		"cas.logout.on.session.expiration";
-
-	public static final String CAS_LOGOUT_URL = "cas.logout.url";
-
-	public static final String CAS_NO_SUCH_USER_REDIRECT_URL =
-		"cas.no.such.user.redirect.url";
-
-	public static final String CAS_SERVER_NAME = "cas.server.name";
-
-	public static final String CAS_SERVER_URL = "cas.server.url";
-
-	public static final String CAS_SERVICE_URL = "cas.service.url";
 
 	public static final String CDN_DYNAMIC_RESOURCES_ENABLED =
 		"cdn.dynamic.resources.enabled";
@@ -2231,25 +2214,6 @@ public interface PropsKeys {
 	public static final String NOTIFICATIONS_MAX_EVENTS =
 		"notifications.max.events";
 
-	public static final String NTLM_AUTH_ENABLED = "ntlm.auth.enabled";
-
-	public static final String NTLM_AUTH_NEGOTIATE_FLAGS =
-		"ntlm.auth.negotiate.flags";
-
-	public static final String NTLM_DOMAIN = "ntlm.auth.domain";
-
-	public static final String NTLM_DOMAIN_CONTROLLER =
-		"ntlm.auth.domain.controller";
-
-	public static final String NTLM_DOMAIN_CONTROLLER_NAME =
-		"ntlm.auth.domain.controller.name";
-
-	public static final String NTLM_SERVICE_ACCOUNT =
-		"ntlm.auth.service.account";
-
-	public static final String NTLM_SERVICE_PASSWORD =
-		"ntlm.auth.service.password";
-
 	public static final String OMNIADMIN_USERS = "omniadmin.users";
 
 	public static final String OPEN_ID_AUTH_ENABLED = "open.id.auth.enabled";
@@ -2625,15 +2589,35 @@ public interface PropsKeys {
 	public static final String PORTAL_INSTANCE_PROTOCOL =
 		"portal.instance.protocol";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_AUTH_TYPE = "portal.jaas.auth.type";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_ENABLE = "portal.jaas.enable";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_IMPL = "portal.jaas.impl";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_PLAIN_PASSWORD =
 		"portal.jaas.plain.password";
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_STRICT_PASSWORD =
 		"portal.jaas.strict.password";
 
@@ -3206,12 +3190,12 @@ public interface PropsKeys {
 			"sql.data.com.liferay.portal.kernel.model.Country.country.id";
 
 	public static final String
-		SQL_DATA_COM_LIFERAY_PORTAL_MODEL_LISTTYPE_ACCOUNT_ADDRESS =
-			"sql.data.com.liferay.portal.kernel.model.ListType.account.address";
+		SQL_DATA_COM_LIFERAY_PORTAL_MODEL_LISTTYPE_COMPANY_ADDRESS =
+			"sql.data.com.liferay.portal.kernel.model.ListType.company.address";
 
 	public static final String
-		SQL_DATA_COM_LIFERAY_PORTAL_MODEL_LISTTYPE_ACCOUNT_EMAIL_ADDRESS =
-			"sql.data.com.liferay.portal.kernel.model.ListType.account.email.address";
+		SQL_DATA_COM_LIFERAY_PORTAL_MODEL_LISTTYPE_COMPANY_EMAIL_ADDRESS =
+			"sql.data.com.liferay.portal.kernel.model.ListType.company.email.address";
 
 	public static final String
 		SQL_DATA_COM_LIFERAY_PORTAL_MODEL_LISTTYPE_CONTACT_EMAIL_ADDRESS =
@@ -3286,6 +3270,9 @@ public interface PropsKeys {
 
 	public static final String TABLE_MAPPER_CACHELESS_MAPPING_TABLE_NAMES =
 		"table.mapper.cacheless.mapping.table.names";
+
+	public static final String TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT =
+		"template.engine.service.locator.restrict";
 
 	public static final String TERMS_OF_USE_REQUIRED = "terms.of.use.required";
 

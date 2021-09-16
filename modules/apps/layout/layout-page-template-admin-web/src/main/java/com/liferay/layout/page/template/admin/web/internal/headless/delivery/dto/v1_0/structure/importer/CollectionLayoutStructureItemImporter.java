@@ -20,6 +20,7 @@ import com.liferay.headless.delivery.dto.v1_0.CollectionConfig;
 import com.liferay.headless.delivery.dto.v1_0.PageCollectionDefinition;
 import com.liferay.headless.delivery.dto.v1_0.PageElement;
 import com.liferay.info.collection.provider.InfoCollectionProvider;
+import com.liferay.info.collection.provider.SingleFormVariationInfoCollectionProvider;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType;
 import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
@@ -30,7 +31,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -53,16 +53,18 @@ public class CollectionLayoutStructureItemImporter
 
 	@Override
 	public LayoutStructureItem addLayoutStructureItem(
-			Layout layout, LayoutStructure layoutStructure,
-			PageElement pageElement, String parentItemId, int position,
-			Set<String> warningMessages)
+			LayoutStructure layoutStructure,
+			LayoutStructureItemImporterContext
+				layoutStructureItemImporterContext,
+			PageElement pageElement, Set<String> warningMessages)
 		throws Exception {
 
 		CollectionStyledLayoutStructureItem
 			collectionStyledLayoutStructureItem =
 				(CollectionStyledLayoutStructureItem)
 					layoutStructure.addCollectionStyledLayoutStructureItem(
-						parentItemId, position);
+						layoutStructureItemImporterContext.getParentItemId(),
+						layoutStructureItemImporterContext.getPosition());
 
 		Map<String, Object> definitionMap = getDefinitionMap(
 			pageElement.getDefinition());
@@ -210,7 +212,7 @@ public class CollectionLayoutStructureItemImporter
 			return null;
 		}
 
-		return JSONUtil.put(
+		JSONObject jsonObject = JSONUtil.put(
 			"itemType", infoCollectionProvider.getCollectionItemClassName()
 		).put(
 			"key", className
@@ -219,6 +221,22 @@ public class CollectionLayoutStructureItemImporter
 		).put(
 			"type", InfoListProviderItemSelectorReturnType.class.getName()
 		);
+
+		if (infoCollectionProvider instanceof
+				SingleFormVariationInfoCollectionProvider) {
+
+			SingleFormVariationInfoCollectionProvider<?>
+				singleFormVariationInfoCollectionProvider =
+					(SingleFormVariationInfoCollectionProvider<?>)
+						infoCollectionProvider;
+
+			jsonObject.put(
+				"itemSubtype",
+				singleFormVariationInfoCollectionProvider.
+					getFormVariationKey());
+		}
+
+		return jsonObject;
 	}
 
 	private Long _toClassPK(String classPKString) {

@@ -35,11 +35,91 @@ definition {
 		}
 	}
 
+	@description = "LPS-59331 - Verify that a user can navigate to the correct Form when multiple Forms exist"
+	@priority = "5"
+	test CanNavigateToCorrectForm {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsInterface#CanNavigateToCorrectForm";
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Text");
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		Form.editFieldLabelMetal(fieldValue = "Text");
+
+		Form.closeSidebar();
+
+		Form.save();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Text");
+
+		Form.viewFormName(formName = "Text");
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Checkbox");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Multiple Selection");
+
+		Form.editFieldLabelMetal(fieldValue = "Checkbox");
+
+		FormFields.editOptionsRow(
+			optionName = "Checkbox1",
+			optionValue = "Checkbox 1",
+			rowNumber = "1");
+
+		Form.closeSidebar();
+
+		Form.save();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Checkbox");
+
+		Form.viewFormName(formName = "Checkbox");
+
+		FormsAdminNavigator.gotoBack();
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Text");
+
+		Form.viewFormName(formName = "Text");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Checkbox");
+
+		Form.viewFormName(formName = "Checkbox");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Text");
+
+		Form.viewFormName(formName = "Text");
+	}
+
 	@description = "Verify if individual fields can be moved to different positions after being added via element set"
 	@priority = "5"
 	test FieldsAddedViaElementSetCanBeReordered {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
@@ -61,11 +141,7 @@ definition {
 
 		Form.saveElementSet();
 
-		FormsAdminNavigator.gotoBack();
-
-		Navigator.gotoNavItem(navItem = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -96,13 +172,8 @@ definition {
 	@priority = "5"
 	test FieldsCanBeMovedBetweenPages {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -135,13 +206,8 @@ definition {
 	@priority = "5"
 	test FieldsCanBeReorderedViaDND {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -183,13 +249,8 @@ definition {
 	@priority = "5"
 	test FieldsCanBeResized {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -216,13 +277,8 @@ definition {
 	@priority = "5"
 	test FieldsDoNotLoseFunctionalityAfterResizing {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -273,13 +329,8 @@ definition {
 	@priority = "5"
 	test FieldsDoNotLosePropertiesAfterResizing {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -332,13 +383,8 @@ definition {
 	@priority = "5"
 	test FieldsGroupsCanBeReorderedViaDND {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -383,13 +429,8 @@ definition {
 	@priority = "5"
 	test FieldsGroupsCanBeResized {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -434,13 +475,8 @@ definition {
 	@priority = "5"
 	test MultipleFieldsCanBeAddedToARow {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -483,13 +519,8 @@ definition {
 	@priority = "5"
 	test MultipleFieldsGroupsCanBeAddedToARow {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -544,13 +575,8 @@ definition {
 	@priority = "5"
 	test MultipleFieldsGroupsInARowCanBeResized {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -621,13 +647,8 @@ definition {
 	@priority = "5"
 	test MultipleFieldsInARowCanBeResized {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 

@@ -36,7 +36,8 @@ public interface ModelListener<T> {
 			Object associationClassPK)
 		throws ModelListenerException;
 
-	public void onAfterUpdate(T model) throws ModelListenerException;
+	public void onAfterUpdate(T originalModel, T model)
+		throws ModelListenerException;
 
 	public void onBeforeAddAssociation(
 			Object classPK, String associationClassName,
@@ -52,6 +53,7 @@ public interface ModelListener<T> {
 			Object associationClassPK)
 		throws ModelListenerException;
 
-	public void onBeforeUpdate(T model) throws ModelListenerException;
+	public void onBeforeUpdate(T originalModel, T model)
+		throws ModelListenerException;
 
 }

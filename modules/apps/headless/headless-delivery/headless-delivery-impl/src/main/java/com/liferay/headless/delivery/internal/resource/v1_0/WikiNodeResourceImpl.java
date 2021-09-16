@@ -109,7 +109,8 @@ public class WikiNodeResourceImpl
 					new TermFilter(Field.GROUP_ID, String.valueOf(siteId)),
 					BooleanClauseOccur.MUST);
 			},
-			filter, com.liferay.wiki.model.WikiNode.class, search, pagination,
+			filter, com.liferay.wiki.model.WikiNode.class.getName(), search,
+			pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
@@ -131,11 +132,8 @@ public class WikiNodeResourceImpl
 	public WikiNode postSiteWikiNode(Long siteId, WikiNode wikiNode)
 		throws Exception {
 
-		return _toWikiNode(
-			_wikiNodeService.addNode(
-				wikiNode.getName(), wikiNode.getDescription(),
-				ServiceContextRequestUtil.createServiceContext(
-					siteId, contextHttpServletRequest, null)));
+		return _addWikiNode(
+			wikiNode.getExternalReferenceCode(), siteId, wikiNode);
 	}
 
 	@Override
@@ -147,17 +145,11 @@ public class WikiNodeResourceImpl
 			_wikiNodeLocalService.fetchWikiNodeByExternalReferenceCode(
 				siteId, externalReferenceCode);
 
-		if (serviceBuilderWikiNode == null) {
-			return _toWikiNode(
-				_wikiNodeService.addNode(
-					externalReferenceCode, wikiNode.getName(),
-					wikiNode.getDescription(),
-					ServiceContextRequestUtil.createServiceContext(
-						siteId, contextHttpServletRequest,
-						wikiNode.getViewableByAsString())));
+		if (serviceBuilderWikiNode != null) {
+			return _updateWikiNode(serviceBuilderWikiNode, wikiNode);
 		}
 
-		return _updateWikiNode(serviceBuilderWikiNode, wikiNode);
+		return _addWikiNode(externalReferenceCode, siteId, wikiNode);
 	}
 
 	@Override
@@ -196,6 +188,19 @@ public class WikiNodeResourceImpl
 	@Override
 	protected String getPermissionCheckerResourceName(Object id) {
 		return com.liferay.wiki.model.WikiNode.class.getName();
+	}
+
+	private WikiNode _addWikiNode(
+			String externalReferenceCode, Long groupId, WikiNode wikiNode)
+		throws Exception {
+
+		return _toWikiNode(
+			_wikiNodeService.addNode(
+				externalReferenceCode, wikiNode.getName(),
+				wikiNode.getDescription(),
+				ServiceContextRequestUtil.createServiceContext(
+					groupId, contextHttpServletRequest,
+					wikiNode.getViewableByAsString())));
 	}
 
 	private WikiNode _toWikiNode(com.liferay.wiki.model.WikiNode wikiNode)

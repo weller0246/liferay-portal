@@ -69,6 +69,12 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 		if (!_hasPrecedingAssignStatement(parentDetailAST, variableName) &&
 			!_isUsedInFinallyStatement(detailAST, variableName)) {
 
+			if (!isExcludedPath(RUN_OUTSIDE_PORTAL_EXCLUDES)) {
+				checkUnnecessaryListVariableBeforeReturn(
+					detailAST, semiDetailAST, variableName,
+					_MSG_UNNECESSARY_LIST_ASSIGN_BEFORE_RETURN);
+			}
+
 			checkUnnecessaryStatementBeforeReturn(
 				detailAST, semiDetailAST, variableName,
 				_MSG_UNNECESSARY_ASSIGN_BEFORE_RETURN);
@@ -217,6 +223,9 @@ public class UnnecessaryAssignCheck extends BaseUnnecessaryStatementCheck {
 
 	private static final String _MSG_UNNECESSARY_ASSIGN_UNUSED =
 		"assign.unnecessary.unused";
+
+	private static final String _MSG_UNNECESSARY_LIST_ASSIGN_BEFORE_RETURN =
+		"list.assign.unnecessary.before.return";
 
 	private static final String _MSG_UNNECESSARY_TO_STRING =
 		"assign.unnecessary.to.string";

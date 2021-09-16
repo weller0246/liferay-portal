@@ -16,6 +16,7 @@ package com.liferay.object.admin.rest.client.serdes.v1_0;
 
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectField;
+import com.liferay.object.admin.rest.client.dto.v1_0.ObjectRelationship;
 import com.liferay.object.admin.rest.client.json.BaseJSONParser;
 
 import java.text.DateFormat;
@@ -73,6 +74,16 @@ public class ObjectDefinitionSerDes {
 			sb.append(_toJSON(objectDefinition.getActions()));
 		}
 
+		if (objectDefinition.getActive() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"active\": ");
+
+			sb.append(objectDefinition.getActive());
+		}
+
 		if (objectDefinition.getDateCreated() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -115,6 +126,16 @@ public class ObjectDefinitionSerDes {
 			sb.append(objectDefinition.getId());
 		}
 
+		if (objectDefinition.getLabel() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"label\": ");
+
+			sb.append(_toJSON(objectDefinition.getLabel()));
+		}
+
 		if (objectDefinition.getName() != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -150,6 +171,84 @@ public class ObjectDefinitionSerDes {
 			}
 
 			sb.append("]");
+		}
+
+		if (objectDefinition.getObjectRelationships() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"objectRelationships\": ");
+
+			sb.append("[");
+
+			for (int i = 0;
+				 i < objectDefinition.getObjectRelationships().length; i++) {
+
+				sb.append(
+					String.valueOf(
+						objectDefinition.getObjectRelationships()[i]));
+
+				if ((i + 1) <
+						objectDefinition.getObjectRelationships().length) {
+
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		if (objectDefinition.getPanelAppOrder() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"panelAppOrder\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(objectDefinition.getPanelAppOrder()));
+
+			sb.append("\"");
+		}
+
+		if (objectDefinition.getPanelCategoryKey() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"panelCategoryKey\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(objectDefinition.getPanelCategoryKey()));
+
+			sb.append("\"");
+		}
+
+		if (objectDefinition.getPluralLabel() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"pluralLabel\": ");
+
+			sb.append(_toJSON(objectDefinition.getPluralLabel()));
+		}
+
+		if (objectDefinition.getScope() != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"scope\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(objectDefinition.getScope()));
+
+			sb.append("\"");
 		}
 
 		if (objectDefinition.getStatus() != null) {
@@ -201,6 +300,13 @@ public class ObjectDefinitionSerDes {
 			map.put("actions", String.valueOf(objectDefinition.getActions()));
 		}
 
+		if (objectDefinition.getActive() == null) {
+			map.put("active", null);
+		}
+		else {
+			map.put("active", String.valueOf(objectDefinition.getActive()));
+		}
+
 		if (objectDefinition.getDateCreated() == null) {
 			map.put("dateCreated", null);
 		}
@@ -228,6 +334,13 @@ public class ObjectDefinitionSerDes {
 			map.put("id", String.valueOf(objectDefinition.getId()));
 		}
 
+		if (objectDefinition.getLabel() == null) {
+			map.put("label", null);
+		}
+		else {
+			map.put("label", String.valueOf(objectDefinition.getLabel()));
+		}
+
 		if (objectDefinition.getName() == null) {
 			map.put("name", null);
 		}
@@ -242,6 +355,49 @@ public class ObjectDefinitionSerDes {
 			map.put(
 				"objectFields",
 				String.valueOf(objectDefinition.getObjectFields()));
+		}
+
+		if (objectDefinition.getObjectRelationships() == null) {
+			map.put("objectRelationships", null);
+		}
+		else {
+			map.put(
+				"objectRelationships",
+				String.valueOf(objectDefinition.getObjectRelationships()));
+		}
+
+		if (objectDefinition.getPanelAppOrder() == null) {
+			map.put("panelAppOrder", null);
+		}
+		else {
+			map.put(
+				"panelAppOrder",
+				String.valueOf(objectDefinition.getPanelAppOrder()));
+		}
+
+		if (objectDefinition.getPanelCategoryKey() == null) {
+			map.put("panelCategoryKey", null);
+		}
+		else {
+			map.put(
+				"panelCategoryKey",
+				String.valueOf(objectDefinition.getPanelCategoryKey()));
+		}
+
+		if (objectDefinition.getPluralLabel() == null) {
+			map.put("pluralLabel", null);
+		}
+		else {
+			map.put(
+				"pluralLabel",
+				String.valueOf(objectDefinition.getPluralLabel()));
+		}
+
+		if (objectDefinition.getScope() == null) {
+			map.put("scope", null);
+		}
+		else {
+			map.put("scope", String.valueOf(objectDefinition.getScope()));
 		}
 
 		if (objectDefinition.getStatus() == null) {
@@ -286,6 +442,11 @@ public class ObjectDefinitionSerDes {
 							(String)jsonParserFieldValue));
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "active")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setActive((Boolean)jsonParserFieldValue);
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "dateCreated")) {
 				if (jsonParserFieldValue != null) {
 					objectDefinition.setDateCreated(
@@ -304,6 +465,13 @@ public class ObjectDefinitionSerDes {
 						Long.valueOf((String)jsonParserFieldValue));
 				}
 			}
+			else if (Objects.equals(jsonParserFieldName, "label")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setLabel(
+						(Map)ObjectDefinitionSerDes.toMap(
+							(String)jsonParserFieldValue));
+				}
+			}
 			else if (Objects.equals(jsonParserFieldName, "name")) {
 				if (jsonParserFieldValue != null) {
 					objectDefinition.setName((String)jsonParserFieldValue);
@@ -319,6 +487,45 @@ public class ObjectDefinitionSerDes {
 						).toArray(
 							size -> new ObjectField[size]
 						));
+				}
+			}
+			else if (Objects.equals(
+						jsonParserFieldName, "objectRelationships")) {
+
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setObjectRelationships(
+						Stream.of(
+							toStrings((Object[])jsonParserFieldValue)
+						).map(
+							object -> ObjectRelationshipSerDes.toDTO(
+								(String)object)
+						).toArray(
+							size -> new ObjectRelationship[size]
+						));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "panelAppOrder")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setPanelAppOrder(
+						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "panelCategoryKey")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setPanelCategoryKey(
+						(String)jsonParserFieldValue);
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "pluralLabel")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setPluralLabel(
+						(Map)ObjectDefinitionSerDes.toMap(
+							(String)jsonParserFieldValue));
+				}
+			}
+			else if (Objects.equals(jsonParserFieldName, "scope")) {
+				if (jsonParserFieldValue != null) {
+					objectDefinition.setScope((String)jsonParserFieldValue);
 				}
 			}
 			else if (Objects.equals(jsonParserFieldName, "status")) {

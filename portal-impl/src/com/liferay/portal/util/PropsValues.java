@@ -28,6 +28,11 @@ import com.liferay.portal.kernel.util.Time;
  */
 public class PropsValues {
 
+	public static final boolean ACCESS_CONTROL_SANITIZE_SECURITY_EXCEPTION =
+		GetterUtil.getBoolean(
+			PropsUtil.get(
+				PropsKeys.ACCESS_CONTROL_SANITIZE_SECURITY_EXCEPTION));
+
 	public static String[] ADMIN_ANALYTICS_TYPES = StringUtil.splitLines(
 		PropsUtil.get(PropsKeys.ADMIN_ANALYTICS_TYPES));
 
@@ -454,34 +459,6 @@ public class PropsValues {
 	public static final boolean CALENDAR_PUBLISH_TO_LIVE_BY_DEFAULT =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.CALENDAR_PUBLISH_TO_LIVE_BY_DEFAULT));
-
-	public static final boolean CAS_AUTH_ENABLED = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.CAS_AUTH_ENABLED));
-
-	public static final boolean CAS_IMPORT_FROM_LDAP = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.CAS_IMPORT_FROM_LDAP));
-
-	public static final String CAS_LOGIN_URL = PropsUtil.get(
-		PropsKeys.CAS_LOGIN_URL);
-
-	public static final boolean CAS_LOGOUT_ON_SESSION_EXPIRATION =
-		GetterUtil.getBoolean(
-			PropsUtil.get(PropsKeys.CAS_LOGOUT_ON_SESSION_EXPIRATION));
-
-	public static final String CAS_LOGOUT_URL = PropsUtil.get(
-		PropsKeys.CAS_LOGOUT_URL);
-
-	public static final String CAS_NO_SUCH_USER_REDIRECT_URL = PropsUtil.get(
-		PropsKeys.CAS_NO_SUCH_USER_REDIRECT_URL);
-
-	public static final String CAS_SERVER_NAME = PropsUtil.get(
-		PropsKeys.CAS_SERVER_NAME);
-
-	public static final String CAS_SERVER_URL = PropsUtil.get(
-		PropsKeys.CAS_SERVER_URL);
-
-	public static final String CAS_SERVICE_URL = PropsUtil.get(
-		PropsKeys.CAS_SERVICE_URL);
 
 	public static final boolean CDN_DYNAMIC_RESOURCES_ENABLED =
 		GetterUtil.getBoolean(
@@ -1901,27 +1878,6 @@ public class PropsValues {
 	public static final int NOTIFICATIONS_MAX_EVENTS = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.NOTIFICATIONS_MAX_EVENTS));
 
-	public static final boolean NTLM_AUTH_ENABLED = GetterUtil.getBoolean(
-		PropsUtil.get(PropsKeys.NTLM_AUTH_ENABLED));
-
-	public static final String NTLM_AUTH_NEGOTIATE_FLAGS = GetterUtil.getString(
-		PropsUtil.get(PropsKeys.NTLM_AUTH_NEGOTIATE_FLAGS));
-
-	public static final String NTLM_DOMAIN = PropsUtil.get(
-		PropsKeys.NTLM_DOMAIN);
-
-	public static final String NTLM_DOMAIN_CONTROLLER = PropsUtil.get(
-		PropsKeys.NTLM_DOMAIN_CONTROLLER);
-
-	public static final String NTLM_DOMAIN_CONTROLLER_NAME = PropsUtil.get(
-		PropsKeys.NTLM_DOMAIN_CONTROLLER_NAME);
-
-	public static final String NTLM_SERVICE_ACCOUNT = PropsUtil.get(
-		PropsKeys.NTLM_SERVICE_ACCOUNT);
-
-	public static final String NTLM_SERVICE_PASSWORD = PropsUtil.get(
-		PropsKeys.NTLM_SERVICE_PASSWORD);
-
 	public static final long[] OMNIADMIN_USERS = StringUtil.split(
 		PropsUtil.get(PropsKeys.OMNIADMIN_USERS), 0L);
 
@@ -2305,19 +2261,39 @@ public class PropsValues {
 	public static final String PORTAL_INSTANCE_PROTOCOL = PropsUtil.get(
 		PropsKeys.PORTAL_INSTANCE_PROTOCOL);
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_AUTH_TYPE = GetterUtil.getString(
 		PropsUtil.get(PropsKeys.PORTAL_JAAS_AUTH_TYPE));
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static boolean PORTAL_JAAS_ENABLE = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.PORTAL_JAAS_ENABLE));
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final String PORTAL_JAAS_IMPL = PropsUtil.get(
 		PropsKeys.PORTAL_JAAS_IMPL);
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final boolean PORTAL_JAAS_PLAIN_PASSWORD =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PORTAL_JAAS_PLAIN_PASSWORD));
 
+	/**
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
+	 */
+	@Deprecated
 	public static final boolean PORTAL_JAAS_STRICT_PASSWORD =
 		GetterUtil.getBoolean(
 			PropsUtil.get(PropsKeys.PORTAL_JAAS_STRICT_PASSWORD));
@@ -2909,6 +2885,10 @@ public class PropsValues {
 
 	public static String[] STRIP_MIME_TYPES = PropsUtil.getArray(
 		PropsKeys.STRIP_MIME_TYPES);
+
+	public static final boolean TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT =
+		GetterUtil.getBoolean(
+			PropsUtil.get(PropsKeys.TEMPLATE_ENGINE_SERVICE_LOCATOR_RESTRICT));
 
 	public static boolean TERMS_OF_USE_REQUIRED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.TERMS_OF_USE_REQUIRED));

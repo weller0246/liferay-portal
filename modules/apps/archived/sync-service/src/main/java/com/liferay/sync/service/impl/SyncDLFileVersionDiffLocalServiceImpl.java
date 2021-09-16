@@ -99,7 +99,7 @@ public class SyncDLFileVersionDiffLocalServiceImpl
 	@Override
 	public void deleteExpiredSyncDLFileVersionDiffs() throws PortalException {
 		List<SyncDLFileVersionDiff> syncDLFileVersionDiffs =
-			syncDLFileVersionDiffPersistence.findByExpirationDate(new Date());
+			syncDLFileVersionDiffPersistence.findByLtExpirationDate(new Date());
 
 		for (SyncDLFileVersionDiff syncDLFileVersionDiff :
 				syncDLFileVersionDiffs) {
@@ -175,15 +175,9 @@ public class SyncDLFileVersionDiffLocalServiceImpl
 	protected String getDataFileName(
 		long fileEntryId, long sourceFileVersionId, long targetFileVersionId) {
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(fileEntryId);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(sourceFileVersionId);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(targetFileVersionId);
-
-		return sb.toString();
+		return StringBundler.concat(
+			fileEntryId, StringPool.UNDERLINE, sourceFileVersionId,
+			StringPool.UNDERLINE, targetFileVersionId);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

@@ -86,6 +86,7 @@ public class RedirectNotFoundEntriesManagementToolbarDisplayContext
 		).build();
 	}
 
+	@Override
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"editRedirectNotFoundEntriesURL",
@@ -289,7 +290,7 @@ public class RedirectNotFoundEntriesManagementToolbarDisplayContext
 					getPortletURL()
 				).setParameter(
 					"filterDate", days
-				).build());
+				).buildPortletURL());
 
 			dropdownItem.setLabel(_getFilterDateLabel(days));
 		};

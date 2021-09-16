@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Translations Management";
+	property testray.main.component.name = "Translation Management";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -79,9 +79,7 @@ definition {
 			webContentDescription = "WC WebContent Descripción",
 			webContentTitle = "WC WebContent Título");
 
-		AssertClick(
-			locator1 = "Button#SUBMIT_FOR_PUBLICATION",
-			value1 = "Submit for Publication");
+		Button.clickSubmitForPublication();
 
 		Alert.viewSuccessMessage();
 

@@ -27,7 +27,12 @@ import navigate from '../util/navigate.es';
 const Modal = ({
 	bodyHTML,
 	buttons,
+	containerProps = {
+		className: 'cadmin',
+	},
 	customEvents,
+	footerCssClass,
+	headerCssClass,
 	headerHTML,
 	height,
 	id,
@@ -171,13 +176,14 @@ const Modal = ({
 			{visible && (
 				<ClayModal
 					className="liferay-modal"
+					containerProps={{...containerProps}}
 					id={id}
 					observer={observer}
 					size={url && !size ? 'full-screen' : size}
 					status={status}
 					zIndex={zIndex}
 				>
-					<ClayModal.Header>
+					<ClayModal.Header className={headerCssClass}>
 						{headerHTML ? (
 							<div
 								dangerouslySetInnerHTML={{
@@ -220,6 +226,7 @@ const Modal = ({
 					</div>
 					{buttons && (
 						<ClayModal.Footer
+							className={footerCssClass}
 							last={
 								<ClayButton.Group spaced>
 									{buttons.map((button, index) => (
@@ -268,6 +275,9 @@ const openModal = (props) => {
 };
 
 const openPortletModal = ({
+	containerProps,
+	footerCssClass,
+	headerCssClass,
 	iframeBodyCssClass,
 	onClose,
 	portletSelector,
@@ -304,6 +314,9 @@ const openPortletModal = ({
 		}
 
 		openModal({
+			containerProps,
+			footerCssClass,
+			headerCssClass,
 			headerHTML,
 			iframeBodyCssClass,
 			onClose,
@@ -330,9 +343,11 @@ const openPortletWindow = ({bodyCssClass, portlet, uri, ...otherProps}) => {
 const openSelectionModal = ({
 	buttonAddLabel = Liferay.Language.get('add'),
 	buttonCancelLabel = Liferay.Language.get('cancel'),
+	containerProps,
 	customSelectEvent = false,
 	height,
 	id,
+	iframeBodyCssClass,
 	multiple = false,
 	onClose,
 	onSelect,
@@ -405,8 +420,10 @@ const openSelectionModal = ({
 					},
 			  ]
 			: null,
+		containerProps,
 		height,
 		id: id || selectEventName,
+		iframeBodyCssClass,
 		onClose: () => {
 			eventHandlers.forEach((eventHandler) => {
 				eventHandler.detach();
@@ -496,11 +513,10 @@ class Iframe extends React.Component {
 
 		const namespace = iframeURL.searchParams.get('p_p_id');
 
-		let bodyCssClass = CSS_CLASS_IFRAME_BODY;
-
-		if (props.iframeBodyCssClass) {
-			bodyCssClass = `${bodyCssClass} ${props.iframeBodyCssClass}`;
-		}
+		const bodyCssClass =
+			props.iframeBodyCssClass || props.iframeBodyCssClass === ''
+				? `${CSS_CLASS_IFRAME_BODY} ${props.iframeBodyCssClass}`
+				: `cadmin ${CSS_CLASS_IFRAME_BODY}`;
 
 		iframeURL.searchParams.set(`_${namespace}_bodyCssClass`, bodyCssClass);
 
@@ -586,6 +602,7 @@ Modal.propTypes = {
 			type: PropTypes.oneOf(['cancel', 'submit']),
 		})
 	),
+	containerProps: PropTypes.object,
 	customEvents: PropTypes.arrayOf(
 		PropTypes.shape({
 			name: PropTypes.string,

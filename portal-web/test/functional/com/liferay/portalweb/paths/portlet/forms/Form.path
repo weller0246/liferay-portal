@@ -22,12 +22,22 @@
 </tr>
 <tr>
 	<td>COLLAPSE_BUTTON</td>
-	<td>//button[contains(concat(' ',normalize-space(@class),' '),'collapse-icon')][@aria-expanded='${key_trueOrFalse}']</td>
+	<td>//button[contains(concat(' ',normalize-space(@class),' '),'collapse-icon')]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>FIELDS_GROUP_FIELD_COLLAPSIBLE_IS_VISIBLE</td>
-	<td>//div[contains(concat(' ',normalize-space(@class),' '),'show')]//label[contains(text(),'${key_fieldLabel}')]/..//input[@type!="hidden"]</td>
+	<td>FIELDS_GROUP_COLLAPSED</td>
+	<td>//button[contains(@class,'collapsed')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FIELDS_GROUP_COLLAPSED_FIELD</td>
+	<td>//button[contains(@class,'collapsed')]//..//label[contains(text(),'${key_fieldLabel}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FIELDS_GROUP_EXPANDED</td>
+	<td>//button[contains(@class,'collapse-icon')]//following-sibling::div[contains(@class,'collapse show')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -373,6 +383,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FIELD_HIDDEN_LABEL</td>
+	<td>//div[contains(@class,'ddm-field')]//label[contains(@class,'ddm-label')]/span[contains(@class,'text-secondary') and contains(text(),'${key_fieldLabel}')]//..//span[contains(@class,'label-item') and contains(text(),'Hidden')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FIELD_LABEL</td>
 	<td>//div[@data-field-name='${key_fieldName}' and contains(@class,'ddm-field')]//label[contains(@class,'ddm-label')] | //div[contains(@class,'ddm-field-container')]//label[text()='${key_fieldName}'] | //div[@data-field-name='${key_fieldName}' and contains(@class,'ddm-field')]//legend[contains(@class,'lfr-ddm-legend')] | //div[contains(@class,'ddm-field-container')]//legend[text()='${key_fieldName}']</td>
 	<td></td>
@@ -494,6 +509,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SIDEBAR_NOT_VISIBLE_FIELD</td>
+	<td>//div[contains(@data-field-name,'${key_dataFieldName}')]//div[contains(@class,'form-group hide')]//label[contains(text(),'${key_fieldName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SIDEBAR_NOT_VISIBLE_TAB</td>
+	<td>//li[contains(@class,'nav-item hide')]//span[contains(text(),'${key_switchOption}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SIDEBAR_DELETE_FIELD_MODAL_DELETE_BUTTON</td>
 	<td>//button[contains(@class,'btn btn-danger')]</td>
 	<td></td>
@@ -587,13 +612,18 @@
 </tr>
 <!--PAGE-->
 <tr>
-	<td>PAGE_MOVE_ACTIVATED</td>
-	<td>//input[contains(@class,'page-header-title') and @value='${key_fieldName}']/../../../../..//button[contains(@class,'page-button') and @title='${key_movePage}']</td>
+	<td>PAGE_MOVE_DISABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[@disabled and @title='${key_movePage}']</td>
 	<td></td>
 </tr>
 <tr>
-	<td>PAGE_MOVE_DISABLED</td>
-	<td>//input[contains(@class,'page-header-title') and @value='${key_fieldName}']/../../../../..//button[@disabled and @title='${key_movePage}']</td>
+	<td>PAGE_MOVE_DOWN_ENABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[*[name()='svg'][contains(@class,'lexicon-icon-angle-down')]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PAGE_MOVE_UP_ENABLED</td>
+	<td>//input[contains(@class,'page-header-title') and @value='${key_formPageName}']/../../../../..//button[*[name()='svg'][contains(@class,'lexicon-icon-angle-up')]]</td>
 	<td></td>
 </tr>
 <tr>

@@ -32,7 +32,7 @@
 </tr>
 <tr>
 	<td>ANY</td>
-	<td>//div[label[contains(.,'${key_text}')]]//input</td>
+	<td>//div[label[contains(.,'${key_text}')]]//input[not(contains(@type,'checkbox'))]</td>
 	<td></td>
 </tr>
 <tr>
@@ -236,8 +236,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>EXPIRATION_DATE_DISABLED</td>
+	<td>//input[contains(@class,'disabled') and contains(@id,'expirationDate')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>EXPIRATION_DATE_TIME</td>
 	<td>//input[contains(@id,'expirationDateTime')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>EXPIRATION_DATE_TIME_DISABLED</td>
+	<td>//input[contains(@class,'disabled') and contains(@id,'expirationDateTime')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -262,7 +272,7 @@
 </tr>
 <tr>
 	<td>FILE_PRESENT</td>
-	<td>//input[contains(@class,'success-field')][@type='file']</td>
+	<td>//small[contains(@class, 'inline-item-after')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -391,6 +401,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>NO_PROPERTIES_AVAILABLE_TEXT</td>
+	<td>//span[contains(@class,'text-truncate') and text()='No Properties Available']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>NUMBER</td>
 	<td>//div[label[contains(.,'Number')]]/input</td>
 	<td></td>
@@ -486,11 +501,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>PRIVATE_VIRTUAL_HOST_URL</td>
-	<td>//input[contains(@id,'privateVirtualHost')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>REDIRECT_DESTINATION_URL</td>
 	<td>//input[contains(@id,'destinationURL')]</td>
 	<td></td>
@@ -508,6 +518,26 @@
 <tr>
 	<td>REMINDER_QUERY</td>
 	<td>//input[contains(@id,'reminderQueryAnswer')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REVIEW_DATE</td>
+	<td>//span[contains(@id,'displayDate')]//input[contains(@id,'reviewDate')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REVIEW_DATE_DISABLED</td>
+	<td>//span[contains(@id,'displayDate')]//input[contains(@class,'disabled') and contains(@id,'reviewDate')][1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REVIEW_DATE_TIME</td>
+	<td>//input[contains(@id,'reviewDateTime')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>REVIEW_DATE_TIME_DISABLED</td>
+	<td>//input[contains(@class,'disabled') and contains(@id,'reviewDateTime')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -533,11 +563,6 @@
 <tr>
 	<td>STRUCTURE_KEY_FIELD</td>
 	<td>//input[contains(@id,'structureKey')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>PUBLIC_VIRTUAL_HOST_URL</td>
-	<td>//input[contains(@id,'publicVirtualHost')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -572,7 +597,7 @@
 </tr>
 <tr>
 	<td>SEO_MAPPED_FIELD</td>
-	<td>//div[contains(@class,'form-group') and contains(.,'${key_mappedField}')]//input[contains(@id,'mapped')]</td>
+	<td>//div[contains(@class,'form-group')]//*[contains(@id,'${key_mappedField}')]</td>
 	<td></td>
 </tr>
 <tr>

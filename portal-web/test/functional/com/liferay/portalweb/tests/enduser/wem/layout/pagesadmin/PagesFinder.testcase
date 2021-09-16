@@ -73,7 +73,7 @@ definition {
 		}
 
 		task ("Add a Collection Page based on Dynamic Collection via Pages Tree Panel") {
-			SitePages.openPagesAdmin(siteURLKey = "test-site-name");
+			ApplicationsMenu.gotoSite(site = "Test Site Name");
 
 			PagesFinder.goToFindAPage();
 
@@ -210,6 +210,10 @@ definition {
 
 		PageEditor.clickPublish();
 
+		Click(locator1 = "ProductMenu#GO_TO_SITES_LINK");
+
+		PagesFinder.goToFindAPage();
+
 		PagesFinder.addPrivatePage(
 			pageName = "Private Widget Page",
 			sitePageType = "Widget Page");
@@ -259,6 +263,8 @@ definition {
 		}
 
 		task ("Configure page via Page Tree panel") {
+			Click(locator1 = "ProductMenu#GO_TO_SITES_LINK");
+
 			PagesFinder.goToFindAPage();
 
 			PagesFinder.gotoPageEllipsisItem(
@@ -273,9 +279,7 @@ definition {
 		task ("View the renamed page is shown in Pages admin") {
 			Click(locator1 = "Icon#ANGLE_LEFT_BACK");
 
-			AssertVisible(
-				key_itemName = "New Test Page Name",
-				locator1 = "SitePages#LIST_GROUP_ITEM");
+			ControlMenu.viewHeaderTitle(headerTitle = "New Test Page Name");
 		}
 
 		task ("View the renamed page is shown in Page Tree panel") {
@@ -569,7 +573,7 @@ definition {
 			DragAndDrop.dragAndDropReorganizeObjects(
 				locator1 = "//ul[contains(@class,'tree-container')]/li[contains(@class,'tree-node')][2][contains(.,'Test Content Page')]",
 				locator2 = "//ul[contains(@class,'tree-container')]/li[contains(@class,'tree-node')][1][contains(.,'Test Portlet Page')]",
-				position = "0,-3");
+				position = "0,-4");
 		}
 
 		task ("Assert the order of Pages in Page Tree panel") {

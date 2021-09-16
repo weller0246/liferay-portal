@@ -273,11 +273,7 @@ definition {
 	@priority = "3"
 	@uitest
 	test CreateWidgetTemplateWhenNotStagedADT {
-		Navigator.openSiteURL(siteName = "Site Name");
-
-		ProductMenu.gotoPortlet(
-			category = "Design",
-			portlet = "Widget Templates");
+		ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "site-name");
 
 		AssertVisible(locator1 = "Button#PLUS");
 
@@ -285,15 +281,13 @@ definition {
 
 		Staging.activateStagingCP(
 			siteName = "Site Name",
-			uncheckContent = "Widget Templates");
+			uncheckContent = "Templates");
 
 		Navigator.gotoStagedSitePage(
 			pageName = "Staging Test Page",
 			siteName = "Site Name");
 
-		ProductMenu.gotoPortlet(
-			category = "Design",
-			portlet = "Widget Templates");
+		ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "site-name-staging");
 
 		ApplicationDisplayTemplates.addADTWithFieldEntryCP(
 			fieldName = "Asset Entry",
@@ -303,11 +297,7 @@ definition {
 			locator1 = "ApplicationDisplayTemplates#ADT_TABLE_NAME_1",
 			value1 = "Asset Publisher Test ADT");
 
-		Navigator.openSiteURL(siteName = "Site Name");
-
-		ProductMenu.gotoPortlet(
-			category = "Design",
-			portlet = "Widget Templates");
+		ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "site-name");
 
 		ApplicationDisplayTemplates.addADTWithFieldEntryCP(
 			fieldName = "Blog Entries",
@@ -429,6 +419,8 @@ definition {
 
 	@priority = "4"
 	test EnableStagingWithWebContentReferencedFromDeletedSite {
+		property portal.upstream = "quarantine";
+
 		JSONWebcontent.addWebContent(
 			content = "WC Content",
 			groupName = "Site Name",
@@ -496,7 +488,7 @@ definition {
 		Staging.viewAddButtonExists();
 	}
 
-	@description = "This is a use case for LPS-124180."
+	@description = "This is a use case for LPS-124180 and LPS-136025."
 	@priority = "4"
 	test PublishChildPageWithoutItsParentPage {
 		property test.name.skip.portal.instance = "Staging#PublishChildPageWithoutItsParentPage";
@@ -540,7 +532,14 @@ definition {
 
 		Staging.configurePublishToLive(checkPageName = "Child Page");
 
-		Staging.publishToLive();
+		Staging.publishToLive(publicationName = "summCheck");
+
+		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
+
+		Staging.viewPublicationSummary(
+			pagesNotToPublish = '''<div>Staging Test Page</div>''',
+			pagesToPublish = '''/Child Page''',
+			publicationTitle = "summCheck");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",

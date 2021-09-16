@@ -37,12 +37,13 @@ import com.liferay.portal.kernel.service.UserGroupRoleLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.workflow.kaleo.internal.util.RoleUtil;
 import com.liferay.portal.workflow.kaleo.model.KaleoTaskInstanceToken;
 import com.liferay.portal.workflow.kaleo.model.impl.KaleoTaskInstanceTokenModelImpl;
-import com.liferay.portal.workflow.kaleo.runtime.util.RoleUtil;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskInstanceTokenFinder;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskInstanceTokenQuery;
 import com.liferay.portal.workflow.kaleo.service.persistence.KaleoTaskInstanceTokenUtil;
@@ -546,7 +547,7 @@ public class KaleoTaskInstanceTokenFinderImpl
 
 		List<Long> roleIds = kaleoTaskInstanceTokenQuery.getRoleIds();
 
-		if ((roleIds == null) || roleIds.isEmpty()) {
+		if (ListUtil.isEmpty(roleIds)) {
 			return StringPool.BLANK;
 		}
 
@@ -715,16 +716,11 @@ public class KaleoTaskInstanceTokenFinderImpl
 			return sb.toString();
 		}
 
-		StringBundler sb = new StringBundler(6);
-
-		sb.append("AND ((KaleoTaskAssignmentInstance.assigneeClassName = '");
-		sb.append(User.class.getName());
-		sb.append("') ");
-		sb.append("AND (KaleoTaskAssignmentInstance.assigneeClassPK = ");
-		sb.append(kaleoTaskInstanceTokenQuery.getUserId());
-		sb.append("))");
-
-		return sb.toString();
+		return StringBundler.concat(
+			"AND ((KaleoTaskAssignmentInstance.assigneeClassName = '",
+			User.class.getName(),
+			"') AND (KaleoTaskAssignmentInstance.assigneeClassPK = ",
+			kaleoTaskInstanceTokenQuery.getUserId(), "))");
 	}
 
 	@Override

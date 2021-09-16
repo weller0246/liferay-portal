@@ -18,6 +18,9 @@
 @import 'Toolbar';
 @import 'Topper';
 @import 'Translation';
+@import 'ViewportSizeSelector';
+
+@import 'fragment-configuration-fields/TargetCollectionsField';
 
 @import 'fragment-content/FragmentContent';
 
@@ -35,6 +38,7 @@
 @import '../../common/components/Editor';
 @import '../../common/components/InlineConfirm';
 @import '../../common/components/ItemSelector';
+@import '../../common/components/SearchForm';
 @import '../../common/components/SidebarPanelHeader';
 @import '../../common/components/Textarea';
 

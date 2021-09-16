@@ -21,7 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * This class is used by SOAP remote services.
+ * This class is used by SOAP remote services, specifically {@link com.liferay.object.service.http.ObjectFieldServiceSoap}.
  *
  * @author Marco Leo
  * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -41,12 +41,16 @@ public class ObjectFieldSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setListTypeDefinitionId(model.getListTypeDefinitionId());
 		soapModel.setObjectDefinitionId(model.getObjectDefinitionId());
 		soapModel.setDBColumnName(model.getDBColumnName());
+		soapModel.setDBTableName(model.getDBTableName());
 		soapModel.setIndexed(model.isIndexed());
 		soapModel.setIndexedAsKeyword(model.isIndexedAsKeyword());
 		soapModel.setIndexedLanguageId(model.getIndexedLanguageId());
+		soapModel.setLabel(model.getLabel());
 		soapModel.setName(model.getName());
+		soapModel.setRelationshipType(model.getRelationshipType());
 		soapModel.setRequired(model.isRequired());
 		soapModel.setType(model.getType());
 
@@ -166,6 +170,14 @@ public class ObjectFieldSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public long getListTypeDefinitionId() {
+		return _listTypeDefinitionId;
+	}
+
+	public void setListTypeDefinitionId(long listTypeDefinitionId) {
+		_listTypeDefinitionId = listTypeDefinitionId;
+	}
+
 	public long getObjectDefinitionId() {
 		return _objectDefinitionId;
 	}
@@ -180,6 +192,14 @@ public class ObjectFieldSoap implements Serializable {
 
 	public void setDBColumnName(String dbColumnName) {
 		_dbColumnName = dbColumnName;
+	}
+
+	public String getDBTableName() {
+		return _dbTableName;
+	}
+
+	public void setDBTableName(String dbTableName) {
+		_dbTableName = dbTableName;
 	}
 
 	public boolean getIndexed() {
@@ -214,12 +234,28 @@ public class ObjectFieldSoap implements Serializable {
 		_indexedLanguageId = indexedLanguageId;
 	}
 
+	public String getLabel() {
+		return _label;
+	}
+
+	public void setLabel(String label) {
+		_label = label;
+	}
+
 	public String getName() {
 		return _name;
 	}
 
 	public void setName(String name) {
 		_name = name;
+	}
+
+	public String getRelationshipType() {
+		return _relationshipType;
+	}
+
+	public void setRelationshipType(String relationshipType) {
+		_relationshipType = relationshipType;
 	}
 
 	public boolean getRequired() {
@@ -250,12 +286,16 @@ public class ObjectFieldSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private long _listTypeDefinitionId;
 	private long _objectDefinitionId;
 	private String _dbColumnName;
+	private String _dbTableName;
 	private boolean _indexed;
 	private boolean _indexedAsKeyword;
 	private String _indexedLanguageId;
+	private String _label;
 	private String _name;
+	private String _relationshipType;
 	private boolean _required;
 	private String _type;
 

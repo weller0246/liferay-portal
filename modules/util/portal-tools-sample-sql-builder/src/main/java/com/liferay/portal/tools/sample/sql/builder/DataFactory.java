@@ -213,7 +213,6 @@ import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.metadata.RawMetadataProcessor;
-import com.liferay.portal.kernel.model.AccountModel;
 import com.liferay.portal.kernel.model.Address;
 import com.liferay.portal.kernel.model.AddressModel;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -235,6 +234,7 @@ import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutSetModel;
 import com.liferay.portal.kernel.model.LayoutTypePortletConstants;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
+import com.liferay.portal.kernel.model.PortalPreferencesModel;
 import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.PortletPreferenceValue;
 import com.liferay.portal.kernel.model.PortletPreferenceValueModel;
@@ -263,6 +263,7 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortletKeys;
@@ -274,7 +275,6 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.version.Version;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.model.impl.AccountModelImpl;
 import com.liferay.portal.model.impl.AddressModelImpl;
 import com.liferay.portal.model.impl.ClassNameModelImpl;
 import com.liferay.portal.model.impl.CompanyModelImpl;
@@ -284,6 +284,7 @@ import com.liferay.portal.model.impl.GroupModelImpl;
 import com.liferay.portal.model.impl.LayoutFriendlyURLModelImpl;
 import com.liferay.portal.model.impl.LayoutModelImpl;
 import com.liferay.portal.model.impl.LayoutSetModelImpl;
+import com.liferay.portal.model.impl.PortalPreferencesModelImpl;
 import com.liferay.portal.model.impl.PortletPreferenceValueImpl;
 import com.liferay.portal.model.impl.PortletPreferenceValueModelImpl;
 import com.liferay.portal.model.impl.PortletPreferencesModelImpl;
@@ -419,7 +420,6 @@ public class DataFactory {
 			getClassNameId(JournalArticle.class), getClassNameId(WikiPage.class)
 		};
 
-		_accountId = _counter.get();
 		_companyId = _counter.get();
 
 		_dlDDMStructureContent = _readFile("ddm_structure_basic_document.json");
@@ -458,7 +458,7 @@ public class DataFactory {
 		List<AssetCategoryModel> assetCategoryModels =
 			assetCategoryModelsMap.get(assetEntryModel.getClassNameId());
 
-		if ((assetCategoryModels == null) || assetCategoryModels.isEmpty()) {
+		if (ListUtil.isEmpty(assetCategoryModels)) {
 			return Collections.emptyList();
 		}
 
@@ -501,7 +501,7 @@ public class DataFactory {
 		List<AssetTagModel> assetTagModels = assetTagModelsMap.get(
 			assetEntryModel.getClassNameId());
 
-		if ((assetTagModels == null) || assetTagModels.isEmpty()) {
+		if (ListUtil.isEmpty(assetTagModels)) {
 			return Collections.emptyList();
 		}
 
@@ -841,27 +841,6 @@ public class DataFactory {
 		return accountEntryUserRelModel;
 	}
 
-	public AccountModel newAccountModel() {
-		AccountModel accountModel = new AccountModelImpl();
-
-		// PK fields
-
-		accountModel.setAccountId(_accountId);
-
-		// Audit fields
-
-		accountModel.setCompanyId(_companyId);
-		accountModel.setCreateDate(new Date());
-		accountModel.setModifiedDate(new Date());
-
-		// Other fields
-
-		accountModel.setName("Liferay");
-		accountModel.setLegalName("Liferay, Inc.");
-
-		return accountModel;
-	}
-
 	public AddressModel newAddressModel(long accountEntryId, long countryId) {
 		AddressModel addressModel = new AddressModelImpl();
 
@@ -1036,17 +1015,10 @@ public class DataFactory {
 	public List<PortletPreferencesModel>
 		newAssetPublisherPortletPreferencesModels(long plid) {
 
-		List<PortletPreferencesModel> portletPreferencesModels =
-			new ArrayList<>(3);
-
-		portletPreferencesModels.add(
-			newPortletPreferencesModel(plid, BlogsPortletKeys.BLOGS));
-		portletPreferencesModels.add(
-			newPortletPreferencesModel(plid, JournalPortletKeys.JOURNAL));
-		portletPreferencesModels.add(
+		return ListUtil.fromArray(
+			newPortletPreferencesModel(plid, BlogsPortletKeys.BLOGS),
+			newPortletPreferencesModel(plid, JournalPortletKeys.JOURNAL),
 			newPortletPreferencesModel(plid, WikiPortletKeys.WIKI));
-
-		return portletPreferencesModels;
 	}
 
 	public List<PortletPreferenceValueModel>
@@ -1080,9 +1052,7 @@ public class DataFactory {
 			List<AssetCategoryModel> assetCategoryModels =
 				assetCategoryModelsMap.get(getNextAssetClassNameId(groupId));
 
-			if ((assetCategoryModels == null) ||
-				assetCategoryModels.isEmpty()) {
-
+			if (ListUtil.isEmpty(assetCategoryModels)) {
 				return Collections.emptyList();
 			}
 
@@ -1096,7 +1066,7 @@ public class DataFactory {
 			List<AssetTagModel> assetTagModels = assetTagModelsMap.get(
 				getNextAssetClassNameId(groupId));
 
-			if ((assetTagModels == null) || assetTagModels.isEmpty()) {
+			if (ListUtil.isEmpty(assetTagModels)) {
 				return Collections.emptyList();
 			}
 
@@ -2183,12 +2153,18 @@ public class DataFactory {
 
 		companyModel.setCompanyId(_companyId);
 
+		// Audit fields
+
+		companyModel.setCreateDate(new Date());
+		companyModel.setModifiedDate(new Date());
+
 		// Other fields
 
-		companyModel.setAccountId(_accountId);
 		companyModel.setWebId("liferay.com");
 		companyModel.setMx("liferay.com");
 		companyModel.setActive(true);
+		companyModel.setName("Liferay");
+		companyModel.setLegalName("Liferay, Inc.");
 
 		return companyModel;
 	}
@@ -2220,7 +2196,6 @@ public class DataFactory {
 
 		contactModel.setClassNameId(getClassNameId(User.class));
 		contactModel.setClassPK(userModel.getUserId());
-		contactModel.setAccountId(_accountId);
 		contactModel.setParentContactId(
 			ContactConstants.DEFAULT_PARENT_CONTACT_ID);
 		contactModel.setEmailAddress(userModel.getEmailAddress());
@@ -2814,7 +2789,7 @@ public class DataFactory {
 
 		// PK fields
 
-		cpOptionValueModel.setCPOptionId(_counter.get());
+		cpOptionValueModel.setCPOptionValueId(_counter.get());
 
 		// Audit fields
 
@@ -3044,20 +3019,12 @@ public class DataFactory {
 	public List<PortletPreferencesModel> newDDLPortletPreferencesModels(
 		long plid) {
 
-		List<PortletPreferencesModel> portletPreferencesModels =
-			new ArrayList<>(3);
-
-		portletPreferencesModels.add(
+		return ListUtil.fromArray(
 			newPortletPreferencesModel(
-				plid, DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY));
-		portletPreferencesModels.add(
-			newPortletPreferencesModel(
-				plid, DDLPortletKeys.DYNAMIC_DATA_LISTS));
-		portletPreferencesModels.add(
+				plid, DDLPortletKeys.DYNAMIC_DATA_LISTS_DISPLAY),
+			newPortletPreferencesModel(plid, DDLPortletKeys.DYNAMIC_DATA_LISTS),
 			newPortletPreferencesModel(
 				plid, DDMPortletKeys.DYNAMIC_DATA_MAPPING));
-
-		return portletPreferencesModels;
 	}
 
 	public List<PortletPreferenceValueModel> newDDLPortletPreferenceValueModels(
@@ -3143,15 +3110,11 @@ public class DataFactory {
 		ddlRecordSetModel.setDDMStructureId(ddmStructureModel.getStructureId());
 		ddlRecordSetModel.setRecordSetKey(String.valueOf(_counter.get()));
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><Name language-id=\"en_US\">");
-		sb.append("Test DDL Record Set ");
-		sb.append(currentIndex);
-		sb.append("</Name></root>");
-
-		ddlRecordSetModel.setName(sb.toString());
+		ddlRecordSetModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><Name language-id=\"en_US\">",
+				"Test DDL Record Set ", currentIndex, "</Name></root>"));
 
 		ddlRecordSetModel.setMinDisplayRows(
 			DDLRecordSetConstants.MIN_DISPLAY_ROWS_DEFAULT);
@@ -3427,14 +3390,11 @@ public class DataFactory {
 		ddmStructureVersionModel.setVersion(
 			DDMStructureConstants.VERSION_DEFAULT);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(ddmStructureModel.getStructureKey());
-		sb.append("</name></root>");
-
-		ddmStructureVersionModel.setName(sb.toString());
+		ddmStructureVersionModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><name language-id=\"en_US\">",
+				ddmStructureModel.getStructureKey(), "</name></root>"));
 
 		ddmStructureVersionModel.setDefinition(
 			ddmStructureModel.getDefinition());
@@ -3562,14 +3522,11 @@ public class DataFactory {
 		ddmTemplateVersionModelImpl.setVersion(
 			DDMTemplateConstants.VERSION_DEFAULT);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(_JOURNAL_STRUCTURE_KEY);
-		sb.append("</name></root>");
-
-		ddmTemplateVersionModelImpl.setName(sb.toString());
+		ddmTemplateVersionModelImpl.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><name language-id=\"en_US\">",
+				_JOURNAL_STRUCTURE_KEY, "</name></root>"));
 
 		ddmTemplateVersionModelImpl.setStatusByUserId(_defaultUserId);
 		ddmTemplateVersionModelImpl.setStatusDate(nextFutureDate());
@@ -3703,14 +3660,12 @@ public class DataFactory {
 			StringUtil.toUpperCase(
 				DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT));
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT);
-		sb.append("</name></root>");
-
-		defaultDLFileEntryTypeModel.setName(sb.toString());
+		defaultDLFileEntryTypeModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><name language-id=\"en_US\">",
+				DLFileEntryTypeConstants.NAME_BASIC_DOCUMENT,
+				"</name></root>"));
 
 		defaultDLFileEntryTypeModel.setLastPublishDate(nextFutureDate());
 
@@ -4190,14 +4145,10 @@ public class DataFactory {
 			journalArticleResourceModel.getArticleId());
 		journalArticleModel.setVersion(versionIndex);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("TestJournalArticle_");
-		sb.append(articleIndex);
-		sb.append(StringPool.UNDERLINE);
-		sb.append(versionIndex);
-
-		journalArticleModel.setUrlTitle(sb.toString());
+		journalArticleModel.setUrlTitle(
+			StringBundler.concat(
+				"TestJournalArticle_", articleIndex, StringPool.UNDERLINE,
+				versionIndex));
 
 		journalArticleModel.setDDMStructureKey(_JOURNAL_STRUCTURE_KEY);
 		journalArticleModel.setDDMTemplateKey(_JOURNAL_STRUCTURE_KEY);
@@ -4504,12 +4455,9 @@ public class DataFactory {
 	public List<LayoutSetModel> newLayoutSetModels(
 		long groupId, String themeId) {
 
-		List<LayoutSetModel> layoutSetModels = new ArrayList<>(2);
-
-		layoutSetModels.add(newLayoutSetModel(groupId, true, themeId));
-		layoutSetModels.add(newLayoutSetModel(groupId, false, themeId));
-
-		return layoutSetModels;
+		return ListUtil.fromArray(
+			newLayoutSetModel(groupId, true, themeId),
+			newLayoutSetModel(groupId, false, themeId));
 	}
 
 	public List<MBCategoryModel> newMBCategoryModels(long groupId) {
@@ -4755,6 +4703,12 @@ public class DataFactory {
 		return new ObjectValuePair<>(key, value);
 	}
 
+	public List<PortalPreferencesModel> newPortalPreferencesModels() {
+		return ListUtil.fromArray(
+			newPortalPreferencesModel(_companyId),
+			newPortalPreferencesModel(0));
+	}
+
 	public PortletPreferencesModel newPortletPreferencesModel(
 		long ownerId, int ownerType, long plid, String portletId) {
 
@@ -4807,9 +4761,7 @@ public class DataFactory {
 			List<AssetCategoryModel> assetCategoryModels =
 				assetCategoryModelsMap.get(getNextAssetClassNameId(groupId));
 
-			if ((assetCategoryModels == null) ||
-				assetCategoryModels.isEmpty()) {
-
+			if (ListUtil.isEmpty(assetCategoryModels)) {
 				return newPortletPreferencesModel(plid, portletId);
 			}
 
@@ -4823,7 +4775,7 @@ public class DataFactory {
 			List<AssetTagModel> assetTagModels = assetTagModelsMap.get(
 				getNextAssetClassNameId(groupId));
 
-			if ((assetTagModels == null) || assetTagModels.isEmpty()) {
+			if (ListUtil.isEmpty(assetTagModels)) {
 				return newPortletPreferencesModel(plid, portletId);
 			}
 
@@ -5313,15 +5265,11 @@ public class DataFactory {
 
 		segmentsEntry.setSegmentsEntryKey(_counter.getString());
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><Name language-id=\"en_US\">");
-		sb.append("SampleSegment");
-		sb.append(index);
-		sb.append("</Name></root>");
-
-		segmentsEntry.setName(sb.toString());
+		segmentsEntry.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><Name language-id=\"en_US\">",
+				"SampleSegment", index, "</Name></root>"));
 
 		segmentsEntry.setActive(true);
 
@@ -5404,15 +5352,9 @@ public class DataFactory {
 			classPK = mbMessageModel.getMessageId();
 		}
 		else {
-			StringBundler sb = new StringBundler(5);
-
-			sb.append("{\"messageId\": \"");
-			sb.append(mbMessageModel.getMessageId());
-			sb.append("\", \"title\": ");
-			sb.append(mbMessageModel.getSubject());
-			sb.append("}");
-
-			extraData = sb.toString();
+			extraData = StringBundler.concat(
+				"{\"messageId\": \"", mbMessageModel.getMessageId(),
+				"\", \"title\": ", mbMessageModel.getSubject(), "}");
 
 			type = SocialActivityConstants.TYPE_ADD_COMMENT;
 		}
@@ -5574,19 +5516,9 @@ public class DataFactory {
 		String mappingTableName, long companyId, long leftPrimaryKey,
 		long rightPrimaryKey) {
 
-		StringBundler sb = new StringBundler(9);
-
-		sb.append("insert into ");
-		sb.append(mappingTableName);
-		sb.append(" values (");
-		sb.append(companyId);
-		sb.append(", ");
-		sb.append(leftPrimaryKey);
-		sb.append(", ");
-		sb.append(rightPrimaryKey);
-		sb.append(", 0, null);");
-
-		return sb.toString();
+		return StringBundler.concat(
+			"insert into ", mappingTableName, " values (", companyId, ", ",
+			leftPrimaryKey, ", ", rightPrimaryKey, ", 0, null);");
 	}
 
 	protected ObjectValuePair<String[], Integer>
@@ -5736,14 +5668,11 @@ public class DataFactory {
 			"/" + assetCategoryModel.getCategoryId() + "/");
 		assetCategoryModel.setName(name);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><Title language-id=\"en_US\">");
-		sb.append(name);
-		sb.append("</Title></root>");
-
-		assetCategoryModel.setTitle(sb.toString());
+		assetCategoryModel.setTitle(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><Title language-id=\"en_US\">", name,
+				"</Title></root>"));
 
 		assetCategoryModel.setVocabularyId(vocabularyId);
 		assetCategoryModel.setLastPublishDate(new Date());
@@ -5822,14 +5751,11 @@ public class DataFactory {
 
 		assetVocabularyModel.setName(name);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><Title language-id=\"en_US\">");
-		sb.append(name);
-		sb.append("</Title></root>");
-
-		assetVocabularyModel.setTitle(sb.toString());
+		assetVocabularyModel.setTitle(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><Title language-id=\"en_US\">", name,
+				"</Title></root>"));
 
 		assetVocabularyModel.setSettings(
 			"multiValued=true\\nselectedClassNameIds=0");
@@ -6129,14 +6055,11 @@ public class DataFactory {
 		ddmStructureModel.setStructureKey(structureKey);
 		ddmStructureModel.setVersion(DDMStructureConstants.VERSION_DEFAULT);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(structureKey);
-		sb.append("</name></root>");
-
-		ddmStructureModel.setName(sb.toString());
+		ddmStructureModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><name language-id=\"en_US\">",
+				structureKey, "</name></root>"));
 
 		ddmStructureModel.setDefinition(definition);
 		ddmStructureModel.setStorageType(StorageType.DEFAULT.toString());
@@ -6192,14 +6115,11 @@ public class DataFactory {
 		ddmTemplateModel.setTemplateKey(templateKey);
 		ddmTemplateModel.setVersion(DDMTemplateConstants.VERSION_DEFAULT);
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("<?xml version=\"1.0\"?><root available-locales=\"en_US\" ");
-		sb.append("default-locale=\"en_US\"><name language-id=\"en_US\">");
-		sb.append(name);
-		sb.append("</name></root>");
-
-		ddmTemplateModel.setName(sb.toString());
+		ddmTemplateModel.setName(
+			StringBundler.concat(
+				"<?xml version=\"1.0\"?><root available-locales=\"en_US\" ",
+				"default-locale=\"en_US\"><name language-id=\"en_US\">", name,
+				"</name></root>"));
 
 		ddmTemplateModel.setType(DDMTemplateConstants.TEMPLATE_TYPE_DISPLAY);
 		ddmTemplateModel.setMode(mode);
@@ -6507,6 +6427,27 @@ public class DataFactory {
 		return mbThreadModel;
 	}
 
+	protected PortalPreferencesModel newPortalPreferencesModel(long ownerId) {
+		PortalPreferencesModel portalPreferencesModel =
+			new PortalPreferencesModelImpl();
+
+		// PK fields
+
+		portalPreferencesModel.setPortalPreferencesId(_counter.get());
+
+		// Audit fields
+
+		portalPreferencesModel.setCompanyId(_companyId);
+
+		// Other fields
+
+		portalPreferencesModel.setOwnerId(ownerId);
+		portalPreferencesModel.setOwnerType(
+			PortletKeys.PREFS_OWNER_TYPE_COMPANY);
+
+		return portalPreferencesModel;
+	}
+
 	protected ReleaseModelImpl newReleaseModel(
 			long releaseId, String servletContextName, String schemaVersion,
 			int buildNumber, boolean verified, String testString)
@@ -6567,20 +6508,13 @@ public class DataFactory {
 	protected List<ResourcePermissionModel> newResourcePermissionModels(
 		String name, String primKey, long ownerId) {
 
-		List<ResourcePermissionModel> resourcePermissionModels =
-			new ArrayList<>(3);
-
-		resourcePermissionModels.add(
+		return ListUtil.fromArray(
 			newResourcePermissionModel(
-				name, primKey, _guestRoleModel.getRoleId(), 0));
-		resourcePermissionModels.add(
+				name, primKey, _guestRoleModel.getRoleId(), 0),
 			newResourcePermissionModel(
-				name, primKey, _ownerRoleModel.getRoleId(), ownerId));
-		resourcePermissionModels.add(
+				name, primKey, _ownerRoleModel.getRoleId(), ownerId),
 			newResourcePermissionModel(
 				name, primKey, _siteMemberRoleModel.getRoleId(), 0));
-
-		return resourcePermissionModels;
 	}
 
 	protected RoleModel newRoleModel(String name, int type) {
@@ -6797,14 +6731,8 @@ public class DataFactory {
 	protected String nextDDLCustomFieldName(
 		long groupId, int customFieldIndex) {
 
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("custom_field_text_");
-		sb.append(groupId);
-		sb.append("_");
-		sb.append(customFieldIndex);
-
-		return sb.toString();
+		return StringBundler.concat(
+			"custom_field_text_", groupId, "_", customFieldIndex);
 	}
 
 	protected Date nextFutureDate() {
@@ -6835,6 +6763,24 @@ public class DataFactory {
 				if (name.endsWith(StringPool.UNDERLINE)) {
 					name = name.substring(0, name.length() - 1);
 				}
+				else if (name.equals("CIWarehouseId")) {
+					name = "CommerceInventoryWarehouseId";
+				}
+				else if (name.equals("CIWarehouseItemId")) {
+					name = "CommerceInventoryWarehouseItemId";
+				}
+				else if (name.equals("CPDSpecificationOptionValueId")) {
+					name = "CPDefinitionSpecificationOptionValueId";
+				}
+				else if (name.equals("CdnEnabled")) {
+					name = "CDNEnabled";
+				}
+				else if (name.equals("CdnURL")) {
+					name = "CDNURL";
+				}
+				else if (name.equals("DeliverySubTypeSettings")) {
+					name = "DeliverySubscriptionTypeSettings";
+				}
 				else if (name.equals("DiscountPctLevel1WithTaxAmount")) {
 					name = "DiscountPercentageLevel1WithTaxAmount";
 				}
@@ -6846,18 +6792,6 @@ public class DataFactory {
 				}
 				else if (name.equals("DiscountPctLevel4WithTaxAmount")) {
 					name = "DiscountPercentageLevel4WithTaxAmount";
-				}
-				else if (name.equals("CIWarehouseId")) {
-					name = "CommerceInventoryWarehouseId";
-				}
-				else if (name.equals("CIWarehouseItemId")) {
-					name = "CommerceInventoryWarehouseItemId";
-				}
-				else if (name.equals("CPDSpecificationOptionValueId")) {
-					name = "CPDefinitionSpecificationOptionValueId";
-				}
-				else if (name.equals("DeliverySubTypeSettings")) {
-					name = "DeliverySubscriptionTypeSettings";
 				}
 				else if (name.equals("LPageTemplateStructureRelId")) {
 					name = "LayoutPageTemplateStructureRelId";
@@ -7031,7 +6965,6 @@ public class DataFactory {
 	private static final PortletPreferencesFactory _portletPreferencesFactory =
 		new PortletPreferencesFactoryImpl();
 
-	private final long _accountId;
 	private RoleModel _administratorRoleModel;
 	private Map<Long, SimpleCounter>[] _assetCategoryCounters;
 	private final Map<Long, List<AssetCategoryModel>>[]

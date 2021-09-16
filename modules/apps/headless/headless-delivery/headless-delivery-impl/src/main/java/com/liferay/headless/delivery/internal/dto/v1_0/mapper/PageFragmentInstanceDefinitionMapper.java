@@ -42,6 +42,7 @@ import com.liferay.headless.delivery.dto.v1_0.Mapping;
 import com.liferay.headless.delivery.dto.v1_0.PageFragmentInstanceDefinition;
 import com.liferay.headless.delivery.dto.v1_0.WidgetInstance;
 import com.liferay.headless.delivery.internal.dto.v1_0.mapper.util.FragmentMappedValueUtil;
+import com.liferay.headless.delivery.internal.dto.v1_0.mapper.util.LocalizedValueUtil;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemServiceTracker;
@@ -49,12 +50,12 @@ import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
@@ -70,13 +71,10 @@ import com.liferay.portal.kernel.util.Validator;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -126,18 +124,6 @@ public class PageFragmentInstanceDefinitionMapper {
 		};
 	}
 
-	private List<String> _getAvailableLanguageIds() {
-		Set<Locale> availableLocales = LanguageUtil.getAvailableLocales();
-
-		Stream<Locale> stream = availableLocales.stream();
-
-		return stream.map(
-			LanguageUtil::getLanguageId
-		).collect(
-			Collectors.toList()
-		);
-	}
-
 	private List<FragmentField> _getBackgroundImageFragmentFields(
 		JSONObject jsonObject, boolean saveMapping) {
 
@@ -149,8 +135,8 @@ public class PageFragmentInstanceDefinitionMapper {
 			JSONObject imageJSONObject = jsonObject.getJSONObject(
 				backgroundImageId);
 
-			Map<String, String> localizedValues = _toLocalizedValues(
-				imageJSONObject);
+			Map<String, String> localizedValues =
+				LocalizedValueUtil.toLocalizedValues(imageJSONObject);
 
 			fragmentFields.add(
 				new FragmentField() {
@@ -189,15 +175,17 @@ public class PageFragmentInstanceDefinitionMapper {
 							if (valueJSONObject.has("color")) {
 								value = valueJSONObject.getString("color");
 							}
-							else {
-								JSONDeserializer<Map<String, Object>>
-									jsonDeserializer =
-										JSONFactoryUtil.
-											createJSONDeserializer();
+						}
 
-								value = jsonDeserializer.deserialize(
-									value.toString());
-							}
+						if (value instanceof JSONArray ||
+							value instanceof JSONObject) {
+
+							JSONDeserializer<Map<String, Object>>
+								jsonDeserializer =
+									JSONFactoryUtil.createJSONDeserializer();
+
+							value = jsonDeserializer.deserialize(
+								value.toString());
 						}
 
 						put(key, value);
@@ -403,7 +391,7 @@ public class PageFragmentInstanceDefinitionMapper {
 			}
 
 			InfoFieldValue<Object> infoFieldValue =
-				infoItemFieldValuesProvider.getInfoItemFieldValue(
+				infoItemFieldValuesProvider.getInfoFieldValue(
 					infoItem, jsonObject.getString("fieldId"));
 
 			if (infoFieldValue == null) {
@@ -563,7 +551,9 @@ public class PageFragmentInstanceDefinitionMapper {
 
 						return new FragmentInlineValue() {
 							{
-								value_i18n = _toLocalizedValues(jsonObject);
+								value_i18n =
+									LocalizedValueUtil.toLocalizedValues(
+										jsonObject);
 							}
 						};
 					});
@@ -576,7 +566,8 @@ public class PageFragmentInstanceDefinitionMapper {
 
 		Map<String, JSONObject> localizedJSONObjects =
 			_toLocalizedValueJSONObjects(jsonObject);
-		Map<String, String> localizedValues = _toLocalizedValues(jsonObject);
+		Map<String, String> localizedValues =
+			LocalizedValueUtil.toLocalizedValues(jsonObject);
 
 		return new FragmentFieldImage() {
 			{
@@ -645,7 +636,7 @@ public class PageFragmentInstanceDefinitionMapper {
 						}
 
 						Map<String, String> localizedValues =
-							_toLocalizedValues(jsonObject);
+							LocalizedValueUtil.toLocalizedValues(jsonObject);
 
 						if (MapUtil.isEmpty(localizedValues)) {
 							return null;
@@ -779,7 +770,8 @@ public class PageFragmentInstanceDefinitionMapper {
 
 		Map<String, FragmentLinkValue> fragmentLinkValues = new HashMap<>();
 
-		List<String> availableLanguageIds = _getAvailableLanguageIds();
+		List<String> availableLanguageIds =
+			LocalizedValueUtil.getAvailableLanguageIds();
 
 		for (String languageId : availableLanguageIds) {
 			JSONObject localizedJSONObject = configJSONObject.getJSONObject(
@@ -803,7 +795,8 @@ public class PageFragmentInstanceDefinitionMapper {
 
 		return new HashMap<String, JSONObject>() {
 			{
-				List<String> availableLanguageIds = _getAvailableLanguageIds();
+				List<String> availableLanguageIds =
+					LocalizedValueUtil.getAvailableLanguageIds();
 
 				Set<String> keys = jsonObject.keySet();
 
@@ -814,22 +807,6 @@ public class PageFragmentInstanceDefinitionMapper {
 						(valueJSONObject != null)) {
 
 						put(key, valueJSONObject);
-					}
-				}
-			}
-		};
-	}
-
-	private Map<String, String> _toLocalizedValues(JSONObject jsonObject) {
-		return new HashMap<String, String>() {
-			{
-				List<String> availableLanguageIds = _getAvailableLanguageIds();
-
-				Set<String> keys = jsonObject.keySet();
-
-				for (String key : keys) {
-					if (availableLanguageIds.contains(key)) {
-						put(key, jsonObject.getString(key));
 					}
 				}
 			}

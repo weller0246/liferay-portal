@@ -162,11 +162,13 @@ const Popover = ({tooltip}) => {
 };
 
 function FieldBase({
+	accessible = true,
 	children,
 	displayErrors,
 	errorMessage,
 	fieldName,
 	hideField,
+	hideEditedFlag,
 	id,
 	label,
 	localizedValue = {},
@@ -372,7 +374,7 @@ function FieldBase({
 					/>
 				))}
 
-			{type !== 'captcha' && (
+			{!hideEditedFlag && (
 				<input
 					key={inputEditedName}
 					name={inputEditedName}
@@ -395,7 +397,7 @@ function FieldBase({
 				</span>
 			)}
 
-			{fieldDetails && (
+			{accessible && fieldDetails && (
 				<span
 					className="sr-only"
 					dangerouslySetInnerHTML={{

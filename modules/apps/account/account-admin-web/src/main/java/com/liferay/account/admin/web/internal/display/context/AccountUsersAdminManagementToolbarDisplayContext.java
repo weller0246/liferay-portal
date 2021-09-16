@@ -21,6 +21,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchCon
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenuBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
@@ -83,11 +84,9 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deactivateAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "deactivateAccountUsers"
+				).putData(
 					"deactivateAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -104,25 +103,23 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("hidden");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "deactivate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"hidden"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "deactivate")
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "activateAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "activateAccountUsers"
+				).putData(
 					"activateAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -139,25 +136,23 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("undo");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "activate"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"undo"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "activate")
+				).setQuickAction(
+					true
+				).build();
 			},
 			() -> {
 				if (Objects.equals(getNavigation(), "active")) {
 					return null;
 				}
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.putData("action", "deleteAccountUsers");
-
-				dropdownItem.putData(
+				return DropdownItemBuilder.putData(
+					"action", "deleteAccountUsers"
+				).putData(
 					"deleteAccountUsersURL",
 					PortletURLBuilder.createActionURL(
 						liferayPortletResponse
@@ -174,14 +169,14 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 						"accountEntryIds",
 						ParamUtil.getString(
 							httpServletRequest, "accountEntryIds")
-					).buildString());
-
-				dropdownItem.setIcon("times-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
-				dropdownItem.setQuickAction(true);
-
-				return dropdownItem;
+					).buildString()
+				).setIcon(
+					"times-circle"
+				).setLabel(
+					LanguageUtil.get(httpServletRequest, "delete")
+				).setQuickAction(
+					true
+				).build();
 			});
 	}
 
@@ -230,38 +225,34 @@ public class AccountUsersAdminManagementToolbarDisplayContext
 	@Override
 	public CreationMenu getCreationMenu() {
 		return CreationMenuBuilder.addPrimaryDropdownItem(
-			dropdownItem -> {
-				dropdownItem.putData("action", "addAccountUser");
-
-				dropdownItem.putData(
-					"accountEntrySelectorURL",
-					PortletURLBuilder.createRenderURL(
-						liferayPortletResponse
-					).setMVCPath(
-						"/account_users_admin/select_account_entry.jsp"
-					).setParameter(
-						"singleSelect", "true"
-					).setWindowState(
-						LiferayWindowState.POP_UP
-					).buildString());
-
-				dropdownItem.putData(
-					"addAccountUserURL",
-					PortletURLBuilder.createRenderURL(
-						liferayPortletResponse
-					).setMVCRenderCommandName(
-						"/account_admin/add_account_user"
-					).setBackURL(
-						String.valueOf(liferayPortletResponse.createRenderURL())
-					).buildString());
-
-				dropdownItem.putData(
-					"dialogTitle",
-					LanguageUtil.get(httpServletRequest, "select-an-account"));
-
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "add-user"));
-			}
+			DropdownItemBuilder.putData(
+				"action", "addAccountUser"
+			).putData(
+				"accountEntrySelectorURL",
+				PortletURLBuilder.createRenderURL(
+					liferayPortletResponse
+				).setMVCPath(
+					"/account_users_admin/select_account_entry.jsp"
+				).setParameter(
+					"singleSelect", "true"
+				).setWindowState(
+					LiferayWindowState.POP_UP
+				).buildString()
+			).putData(
+				"addAccountUserURL",
+				PortletURLBuilder.createRenderURL(
+					liferayPortletResponse
+				).setMVCRenderCommandName(
+					"/account_admin/add_account_user"
+				).setBackURL(
+					String.valueOf(liferayPortletResponse.createRenderURL())
+				).buildString()
+			).putData(
+				"dialogTitle",
+				LanguageUtil.get(httpServletRequest, "select-an-account")
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "add-user")
+			).build()
 		).build();
 	}
 

@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -194,15 +193,15 @@ public abstract class BaseWebUrlResourceTestCase {
 
 	@Test
 	public void testGetOrganizationWebUrlsPage() throws Exception {
-		Page<WebUrl> page = webUrlResource.getOrganizationWebUrlsPage(
-			testGetOrganizationWebUrlsPage_getOrganizationId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String organizationId =
 			testGetOrganizationWebUrlsPage_getOrganizationId();
 		String irrelevantOrganizationId =
 			testGetOrganizationWebUrlsPage_getIrrelevantOrganizationId();
+
+		Page<WebUrl> page = webUrlResource.getOrganizationWebUrlsPage(
+			organizationId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantOrganizationId != null) {
 			WebUrl irrelevantWebUrl = testGetOrganizationWebUrlsPage_addWebUrl(
@@ -257,14 +256,14 @@ public abstract class BaseWebUrlResourceTestCase {
 
 	@Test
 	public void testGetUserAccountWebUrlsPage() throws Exception {
-		Page<WebUrl> page = webUrlResource.getUserAccountWebUrlsPage(
-			testGetUserAccountWebUrlsPage_getUserAccountId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long userAccountId = testGetUserAccountWebUrlsPage_getUserAccountId();
 		Long irrelevantUserAccountId =
 			testGetUserAccountWebUrlsPage_getIrrelevantUserAccountId();
+
+		Page<WebUrl> page = webUrlResource.getUserAccountWebUrlsPage(
+			userAccountId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantUserAccountId != null) {
 			WebUrl irrelevantWebUrl = testGetUserAccountWebUrlsPage_addWebUrl(
@@ -375,6 +374,20 @@ public abstract class BaseWebUrlResourceTestCase {
 	protected WebUrl testGraphQLWebUrl_addWebUrl() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(WebUrl webUrl, List<WebUrl> webUrls) {
+		boolean contains = false;
+
+		for (WebUrl item : webUrls) {
+			if (equals(webUrl, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(webUrls + " does not contain " + webUrl, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -840,8 +853,8 @@ public abstract class BaseWebUrlResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseWebUrlResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseWebUrlResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

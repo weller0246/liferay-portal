@@ -322,10 +322,8 @@ public class JenkinsResultsParserUtil {
 		return jsonObject;
 	}
 
-	public static URL createURL(String urlString) throws Exception {
-		URL url = new URL(urlString);
-
-		return encode(url);
+	public static URL createURL(String url) throws Exception {
+		return encode(new URL(url));
 	}
 
 	public static String decode(String url)
@@ -381,6 +379,20 @@ public class JenkinsResultsParserUtil {
 		String uriASCIIString = uri.toASCIIString();
 
 		return new URL(uriASCIIString.replace("#", "%23"));
+	}
+
+	public static String escapeForBash(String string) {
+		string = string.replaceAll(" ", "\\\\ ");
+		string = string.replaceAll("'", "\\\\\\\'");
+		string = string.replaceAll("<", "\\\\\\<");
+		string = string.replaceAll(">", "\\\\\\>");
+		string = string.replaceAll("\"", "\\\\\\\"");
+		string = string.replaceAll("\\$", "\\\\\\$");
+		string = string.replaceAll("\\(", "\\\\\\(");
+		string = string.replaceAll("\\)", "\\\\\\)");
+		string = string.replaceAll("\\n", "\\\\n");
+
+		return string;
 	}
 
 	public static Process executeBashCommands(
@@ -540,8 +552,10 @@ public class JenkinsResultsParserUtil {
 		String jenkinsMasterName, String script) {
 
 		try {
-			URL urlObject = new URL(
-				fixURL(getLocalURL("http://" + jenkinsMasterName + "/script")));
+			String url = fixURL(
+				getLocalURL("http://" + jenkinsMasterName + "/script"));
+
+			URL urlObject = new URL(url);
 
 			HttpURLConnection httpURLConnection =
 				(HttpURLConnection)urlObject.openConnection();
@@ -549,11 +563,25 @@ public class JenkinsResultsParserUtil {
 			httpURLConnection.setDoOutput(true);
 			httpURLConnection.setRequestMethod("POST");
 
-			Properties buildProperties = getBuildProperties(false);
+			HTTPAuthorization httpAuthorization = null;
 
-			HTTPAuthorization httpAuthorization = new BasicHTTPAuthorization(
-				buildProperties.getProperty("jenkins.admin.user.token"),
-				buildProperties.getProperty("jenkins.admin.user.name"));
+			String jenkinsAdminUserName = getBuildProperty(
+				"jenkins.admin.user.name");
+
+			if (jenkinsMasterName.contains("test-1-0")) {
+				String jenkinsAdminUserPassword = getBuildProperty(
+					"jenkins.admin.user.password");
+
+				httpAuthorization = new BasicHTTPAuthorization(
+					jenkinsAdminUserPassword, jenkinsAdminUserName);
+			}
+			else {
+				String jenkinsAdminUserToken = getBuildProperty(
+					"jenkins.admin.user.token");
+
+				httpAuthorization = new BasicHTTPAuthorization(
+					jenkinsAdminUserToken, jenkinsAdminUserName);
+			}
 
 			httpURLConnection.setRequestProperty(
 				"Authorization", httpAuthorization.toString());
@@ -561,20 +589,26 @@ public class JenkinsResultsParserUtil {
 			try (OutputStream outputStream =
 					httpURLConnection.getOutputStream()) {
 
-				script = "script=" + URLEncoder.encode(script, "UTF-8");
+				String post = "script=" + URLEncoder.encode(script, "UTF-8");
 
-				outputStream.write(script.getBytes("UTF-8"));
+				outputStream.write(post.getBytes("UTF-8"));
 
 				outputStream.flush();
 			}
 
 			httpURLConnection.connect();
 
+			int responseCode = httpURLConnection.getResponseCode();
+
 			System.out.println(
 				combine(
 					"Response from ", urlObject.toString(), ": ",
-					String.valueOf(httpURLConnection.getResponseCode()), " ",
+					String.valueOf(responseCode), " ",
 					httpURLConnection.getResponseMessage()));
+
+			if (responseCode >= 400) {
+				System.out.println(script);
+			}
 		}
 		catch (IOException ioException) {
 			System.out.println("Unable to execute Jenkins script");
@@ -873,16 +907,10 @@ public class JenkinsResultsParserUtil {
 			throw new RuntimeException("Unable to encode " + axisBuildURL);
 		}
 
-		String label = "AXIS_VARIABLE=";
+		Matcher matcher = _axisVariablePattern.matcher(url);
 
-		int x = url.indexOf(label);
-
-		if (x != -1) {
-			url = url.substring(x + label.length());
-
-			int y = url.indexOf(",");
-
-			return url.substring(0, y);
+		if (matcher.find()) {
+			return matcher.group("axisVariable");
 		}
 
 		return "";
@@ -920,6 +948,34 @@ public class JenkinsResultsParserUtil {
 		sb.append(matcher.group("buildNumber"));
 		sb.append("/");
 		sb.append(artifactName);
+
+		return sb.toString();
+	}
+
+	public static String getBuildDirPath() {
+		String buildNumber = System.getenv("BUILD_NUMBER");
+		String jobName = System.getenv("JOB_NAME");
+		String masterHostname = System.getenv("MASTER_HOSTNAME");
+
+		if (isNullOrEmpty(buildNumber) || isNullOrEmpty(jobName) ||
+			isNullOrEmpty(masterHostname)) {
+
+			return null;
+		}
+
+		StringBuilder sb = new StringBuilder();
+
+		if (isWindows()) {
+			sb.append("C:");
+		}
+
+		sb.append("/tmp/jenkins/");
+		sb.append(masterHostname);
+		sb.append("/");
+		sb.append(
+			jobName.replaceAll("([^/]+)/AXIS_VARIABLE=([^,]+),.*", "$1/$2"));
+		sb.append("/");
+		sb.append(buildNumber);
 
 		return sb.toString();
 	}
@@ -1241,6 +1297,25 @@ public class JenkinsResultsParserUtil {
 	public static String getCIProperty(
 		String branchName, String key, String repositoryName) {
 
+		List<String> ciPropertyURLs = new ArrayList<>();
+
+		if (repositoryName.startsWith("com-liferay-")) {
+			StringBuilder sb = new StringBuilder();
+
+			sb.append("https://raw.githubusercontent.com/liferay");
+			sb.append("/liferay-portal");
+
+			if (!branchName.equals("master")) {
+				sb.append("-ee");
+			}
+
+			sb.append("/");
+			sb.append(branchName);
+			sb.append("/ci.properties");
+
+			ciPropertyURLs.add(sb.toString());
+		}
+
 		StringBuilder sb = new StringBuilder();
 
 		sb.append("https://raw.githubusercontent.com/liferay/");
@@ -1249,18 +1324,20 @@ public class JenkinsResultsParserUtil {
 		sb.append(branchName);
 		sb.append("/ci.properties");
 
+		ciPropertyURLs.add(sb.toString());
+
 		Properties ciProperties = new Properties();
 
-		try {
-			String ciPropertiesString = toString(sb.toString(), true);
+		for (String ciPropertyURL : ciPropertyURLs) {
+			try {
+				String ciPropertiesString = toString(ciPropertyURL, true);
 
-			ciProperties.load(new StringReader(ciPropertiesString));
-		}
-		catch (IOException ioException) {
-			System.out.println(
-				"Unable to load ci.properties from " + sb.toString());
-
-			return null;
+				ciProperties.load(new StringReader(ciPropertiesString));
+			}
+			catch (IOException ioException) {
+				System.out.println(
+					"Unable to load ci.properties from " + ciPropertyURL);
+			}
 		}
 
 		return ciProperties.getProperty(key);
@@ -1355,11 +1432,13 @@ public class JenkinsResultsParserUtil {
 		while (true) {
 			String timeStamp = String.valueOf(getCurrentTimeMillis());
 
-			if (_timeStamps.contains(timeStamp)) {
-				continue;
-			}
+			synchronized (_timeStamps) {
+				if (_timeStamps.contains(timeStamp)) {
+					continue;
+				}
 
-			_timeStamps.add(timeStamp);
+				_timeStamps.add(timeStamp);
+			}
 
 			return timeStamp;
 		}
@@ -1406,6 +1485,34 @@ public class JenkinsResultsParserUtil {
 		}
 
 		return null;
+	}
+
+	public static String getDockerImageName(File dockerFile) {
+		if ((dockerFile == null) || !dockerFile.exists()) {
+			return null;
+		}
+
+		String dockerFileContent;
+
+		try {
+			dockerFileContent = read(dockerFile);
+		}
+		catch (IOException ioException) {
+			return null;
+		}
+
+		if (isNullOrEmpty(dockerFileContent)) {
+			return null;
+		}
+
+		Matcher dockerFileMatcher = _dockerFilePattern.matcher(
+			dockerFileContent);
+
+		if (!dockerFileMatcher.find()) {
+			return null;
+		}
+
+		return dockerFileMatcher.group("dockerImageName");
 	}
 
 	public static String getEnvironmentVariable(
@@ -1963,6 +2070,8 @@ public class JenkinsResultsParserUtil {
 			_remoteURLAuthorityPattern1.matcher(localURL);
 		Matcher remoteURLAuthorityMatcher2 =
 			_remoteURLAuthorityPattern2.matcher(localURL);
+		Matcher remoteURLAuthorityMatcher3 =
+			_remoteURLAuthorityPattern3.matcher(localURL);
 
 		if (remoteURLAuthorityMatcher1.find()) {
 			String localURLAuthority = combine(
@@ -1978,6 +2087,15 @@ public class JenkinsResultsParserUtil {
 			String localURLAuthority = combine(
 				"http://", remoteURLAuthorityMatcher2.group(1), "/");
 			String remoteURLAuthority = remoteURLAuthorityMatcher2.group(0);
+
+			localURL = localURL.replaceAll(
+				remoteURLAuthority, localURLAuthority);
+		}
+		else if (remoteURLAuthorityMatcher3.find()) {
+			String localURLAuthority = combine(
+				"http://mirrors.lax.liferay.com/",
+				remoteURLAuthorityMatcher3.group(2));
+			String remoteURLAuthority = remoteURLAuthorityMatcher3.group(0);
 
 			localURL = localURL.replaceAll(
 				remoteURLAuthority, localURLAuthority);
@@ -2407,6 +2525,8 @@ public class JenkinsResultsParserUtil {
 			remoteURL);
 		Matcher localURLAuthorityMatcher2 = _localURLAuthorityPattern2.matcher(
 			remoteURL);
+		Matcher localURLAuthorityMatcher3 = _localURLAuthorityPattern3.matcher(
+			remoteURL);
 
 		if (localURLAuthorityMatcher1.find()) {
 			String localURLAuthority = localURLAuthorityMatcher1.group(0);
@@ -2422,6 +2542,14 @@ public class JenkinsResultsParserUtil {
 			String remoteURLAuthority = combine(
 				"https://", localURLAuthorityMatcher2.group(1),
 				".liferay.com/");
+
+			remoteURL = remoteURL.replaceAll(
+				localURLAuthority, remoteURLAuthority);
+		}
+		else if (localURLAuthorityMatcher3.find()) {
+			String localURLAuthority = localURLAuthorityMatcher3.group(0);
+			String remoteURLAuthority = combine(
+				"https://", localURLAuthorityMatcher3.group(2));
 
 			remoteURL = remoteURL.replaceAll(
 				localURLAuthority, remoteURLAuthority);
@@ -2893,6 +3021,68 @@ public class JenkinsResultsParserUtil {
 		System.out.println(tableStringBuilder.toString());
 	}
 
+	public static void pullDockerImageDependencies(
+		File baseDir, String[] excludedDockerImageNames) {
+
+		String dockerEnabled = System.getenv("DOCKER_ENABLED");
+
+		if (isNullOrEmpty(dockerEnabled) || !dockerEnabled.equals("true")) {
+			return;
+		}
+
+		List<String> pulledDockerImageNames = new ArrayList<>();
+
+		for (File dockerFile : findFiles(baseDir, "Dockerfile")) {
+			String dockerImageName = getDockerImageName(dockerFile);
+
+			if (isNullOrEmpty(dockerImageName) ||
+				pulledDockerImageNames.contains(dockerImageName)) {
+
+				continue;
+			}
+
+			boolean excludeDockerImageName = false;
+
+			if (excludedDockerImageNames != null) {
+				for (String excludedImageName : excludedDockerImageNames) {
+					if (isNullOrEmpty(excludedImageName)) {
+						continue;
+					}
+
+					if (dockerImageName.matches(excludedImageName)) {
+						excludeDockerImageName = true;
+
+						break;
+					}
+				}
+			}
+
+			if (excludeDockerImageName) {
+				continue;
+			}
+
+			try {
+				Process process = executeBashCommands(
+					"docker pull " + dockerImageName);
+
+				if (process.exitValue() != 0) {
+					System.out.println(
+						"Failed to pull Docker image " + dockerImageName);
+
+					return;
+				}
+
+				pulledDockerImageNames.add(dockerImageName);
+			}
+			catch (IOException | TimeoutException exception) {
+				System.out.println(
+					"Failed to pull Docker image " + dockerImageName);
+
+				exception.printStackTrace();
+			}
+		}
+	}
+
 	public static String read(File file) throws IOException {
 		return new String(Files.readAllBytes(Paths.get(file.toURI())));
 	}
@@ -3110,14 +3300,24 @@ public class JenkinsResultsParserUtil {
 						buildProperties.getProperty("spira.admin.user.name"));
 				}
 
-				if ((httpAuthorizationHeader == null) &&
-					url.matches("https://test-\\d+-\\d+.liferay.com/.+")) {
+				if (url.matches("https://test-\\d+-\\d+.liferay.com/.+")) {
+					if (isCINode()) {
+						url = getLocalURL(url);
 
-					Properties buildProperties = getBuildProperties();
+						httpAuthorizationHeader = null;
+					}
+					else {
+						if (httpAuthorizationHeader == null) {
+							Properties buildProperties = getBuildProperties();
 
-					httpAuthorizationHeader = new BasicHTTPAuthorization(
-						buildProperties.getProperty("jenkins.admin.user.token"),
-						buildProperties.getProperty("jenkins.admin.user.name"));
+							httpAuthorizationHeader =
+								new BasicHTTPAuthorization(
+									buildProperties.getProperty(
+										"jenkins.admin.user.password"),
+									buildProperties.getProperty(
+										"jenkins.admin.user.name"));
+						}
+					}
 				}
 
 				boolean testrayRequest = false;
@@ -3799,6 +3999,9 @@ public class JenkinsResultsParserUtil {
 		buildDescription = buildDescription.replaceAll("\"", "\\\\\"");
 		buildDescription = buildDescription.replaceAll("\'", "\\\\\'");
 
+		jobName = jobName.replace("%28", "(");
+		jobName = jobName.replace("%29", ")");
+
 		String jenkinsScript = combine(
 			"def job = Jenkins.instance.getItemByFullName(\"", jobName,
 			"\"); def build = job.getBuildByNumber(",
@@ -3848,6 +4051,12 @@ public class JenkinsResultsParserUtil {
 
 		if (propertiesFile.exists()) {
 			propertiesFile.delete();
+		}
+
+		File parentFile = propertiesFile.getParentFile();
+
+		if (!parentFile.exists()) {
+			parentFile.mkdirs();
 		}
 
 		if (properties.isEmpty()) {
@@ -4644,6 +4853,8 @@ public class JenkinsResultsParserUtil {
 	private static final Log _log = LogFactory.getLog(
 		JenkinsResultsParserUtil.class);
 
+	private static final Pattern _axisVariablePattern = Pattern.compile(
+		".*AXIS_VARIABLE=(?<axisVariable>\\d+).*");
 	private static final Pattern _buildIDPattern = Pattern.compile(
 		"(?<cohortNumber>[\\d]{1})(?<masterNumber>[\\d]{2})" +
 			"(?<jobID>[\\d]+)_(?<buildNumber>[\\d]+)");
@@ -4654,6 +4865,8 @@ public class JenkinsResultsParserUtil {
 	private static final Pattern _curlyBraceExpansionPattern = Pattern.compile(
 		"\\{.*?\\}");
 	private static Long _currentTimeMillisDelta;
+	private static final Pattern _dockerFilePattern = Pattern.compile(
+		".*FROM (?<dockerImageName>[^\\s]+)( AS builder)?\\n[\\s\\S]*");
 	private static final DateFormat _gitHubDateFormat = new SimpleDateFormat(
 		"yyyy-MM-dd'T'HH:mm:ss");
 	private static final Pattern _javaVersionPattern = Pattern.compile(
@@ -4671,6 +4884,9 @@ public class JenkinsResultsParserUtil {
 		"http://((release|test)-[0-9]+)/([0-9]+)/");
 	private static final Pattern _localURLAuthorityPattern2 = Pattern.compile(
 		"http://(test-[0-9]+-[0-9]+)/");
+	private static final Pattern _localURLAuthorityPattern3 = Pattern.compile(
+		"https?://(mirrors/|mirrors.dlc.liferay.com/|mirrors.lax.liferay.com/" +
+			")?((files|releases).liferay.com)");
 	private static final Pattern _nestedPropertyPattern = Pattern.compile(
 		"\\$\\{([^\\}]+)\\}");
 	private static final Set<String> _redactTokens = new HashSet<>();
@@ -4678,6 +4894,9 @@ public class JenkinsResultsParserUtil {
 		"https://(release|test).liferay.com/([0-9]+)/");
 	private static final Pattern _remoteURLAuthorityPattern2 = Pattern.compile(
 		"https://(test-[0-9]+-[0-9]+).liferay.com/");
+	private static final Pattern _remoteURLAuthorityPattern3 = Pattern.compile(
+		"https?://(mirrors/|mirrors.dlc.liferay.com/|mirrors.lax.liferay.com/" +
+			")?((files|releases).liferay.com)");
 
 	private static final File _sshDir = new File(
 		JenkinsResultsParserUtil._userHomeDir, ".ssh") {

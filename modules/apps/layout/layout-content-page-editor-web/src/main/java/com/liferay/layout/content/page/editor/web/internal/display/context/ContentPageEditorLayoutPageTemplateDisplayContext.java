@@ -55,7 +55,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -100,8 +99,6 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 			httpServletRequest, infoItemServiceTracker, itemSelector,
 			pageEditorConfiguration, portletRequest, renderResponse);
 
-		_ffLayoutContentPageEditorConfiguration =
-			ffLayoutContentPageEditorConfiguration;
 		_itemSelector = itemSelector;
 		_pageIsDisplayPage = pageIsDisplayPage;
 		_renderResponse = renderResponse;
@@ -289,29 +286,22 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 		LayoutPageTemplateEntry layoutPageTemplateEntry =
 			_getLayoutPageTemplateEntry();
 
-		InfoItemFormVariationsProvider infoItemFormVariationsProvider =
+		InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 			infoItemServiceTracker.getFirstInfoItemService(
 				InfoItemFormVariationsProvider.class,
 				layoutPageTemplateEntry.getClassName());
 
-		if (infoItemFormVariationsProvider != null) {
-			Collection<InfoItemFormVariation> infoItemFormVariations =
-				infoItemFormVariationsProvider.getInfoItemFormVariations(
-					layoutPageTemplateEntry.getGroupId());
+		if (infoItemFormVariationsProvider == null) {
+			return null;
+		}
 
-			for (InfoItemFormVariation infoItemFormVariation :
-					infoItemFormVariations) {
+		InfoItemFormVariation infoItemFormVariation =
+			infoItemFormVariationsProvider.getInfoItemFormVariation(
+				layoutPageTemplateEntry.getGroupId(),
+				String.valueOf(layoutPageTemplateEntry.getClassTypeId()));
 
-				String key = infoItemFormVariation.getKey();
-
-				if (key.equals(
-						String.valueOf(
-							layoutPageTemplateEntry.getClassTypeId()))) {
-
-					return infoItemFormVariation.getLabel(
-						themeDisplay.getLocale());
-				}
-			}
+		if (infoItemFormVariation != null) {
+			return infoItemFormVariation.getLabel(themeDisplay.getLocale());
 		}
 
 		return null;
@@ -391,8 +381,6 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 		).build();
 	}
 
-	private final FFLayoutContentPageEditorConfiguration
-		_ffLayoutContentPageEditorConfiguration;
 	private final ItemSelector _itemSelector;
 	private LayoutPageTemplateEntry _layoutPageTemplateEntry;
 	private final boolean _pageIsDisplayPage;

@@ -14,8 +14,11 @@
 
 package com.liferay.account.admin.web.internal.display;
 
+import com.liferay.account.constants.AccountConstants;
 import com.liferay.account.model.AccountRole;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.util.ResourceBundleUtil;
 
 import java.util.Locale;
 
@@ -52,6 +55,18 @@ public class AccountRoleDisplay {
 
 	public long getRoleId() {
 		return _role.getRoleId();
+	}
+
+	public String getTypeLabel(Locale locale) {
+		if (_accountRole.getAccountEntryId() ==
+				AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT) {
+
+			return LanguageUtil.get(locale, "shared");
+		}
+
+		return LanguageUtil.get(
+			ResourceBundleUtil.getBundle(locale, AccountRoleDisplay.class),
+			"owned");
 	}
 
 	private AccountRoleDisplay(AccountRole accountRole) throws Exception {

@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -196,6 +195,20 @@ public abstract class BaseStatusResourceTestCase {
 	@Test
 	public void testPostExperimentStatus() throws Exception {
 		Assert.assertTrue(true);
+	}
+
+	protected void assertContains(Status status, List<Status> statuses) {
+		boolean contains = false;
+
+		for (Status item : statuses) {
+			if (equals(status, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(statuses + " does not contain " + status, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -814,8 +827,8 @@ public abstract class BaseStatusResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseStatusResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseStatusResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

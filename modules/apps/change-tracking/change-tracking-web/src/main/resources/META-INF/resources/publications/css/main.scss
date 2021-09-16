@@ -169,6 +169,19 @@
 	.table-responsive {
 		margin-bottom: 0;
 
+		.role-read-only {
+			color: #6b6c7e;
+			font-weight: 600;
+			margin-right: 3px;
+			text-align: right;
+			white-space: nowrap;
+
+			.lexicon-icon {
+				margin-left: 5px;
+				margin-top: -2px;
+			}
+		}
+
 		.table-add,
 		.table-list .table-add td {
 			background-color: #edf9f0;
@@ -245,6 +258,16 @@ table.publications-render-view {
 
 	.publications-render-view-divider.table-divider {
 		text-align: center;
+
+		.dropdown .btn {
+			font-size: 0.75rem;
+			padding: 0;
+			text-transform: uppercase;
+		}
+
+		.inline-item-before {
+			font-size: 1rem;
+		}
 
 		td.publications-render-view-divider {
 			border: 1px solid #e7e7ed;
@@ -358,26 +381,23 @@ table.publications-render-view {
 }
 
 .publications-view-changes-wrapper {
-	.alert-warning {
-		margin-top: 20px;
-	}
-
 	.breadcrumb {
-		margin-top: 20px;
 		padding-bottom: 0;
 		padding-top: 0;
 	}
 
 	.management-bar {
-		margin-bottom: 0;
-
-		.navbar-nav {
+		.nav-item-expand {
 			flex-grow: 1;
-
-			.nav-item-expand {
-				flex-grow: 1;
-			}
 		}
+
+		.toggle-switch-label {
+			margin-left: 8px;
+		}
+	}
+
+	.nav-item-expand .navbar-nav {
+		flex-grow: 1;
 	}
 
 	.publications-changes-content {
@@ -396,10 +416,16 @@ table.publications-render-view {
 		.sheet {
 			margin-bottom: 16px;
 
-			.sheet-title .entry-description {
-				color: #6b6c7e;
-				font-size: 14px;
-				font-weight: normal;
+			.sheet-title {
+				.entry-description {
+					color: #6b6c7e;
+					font-size: 14px;
+					font-weight: normal;
+				}
+
+				.publications-localization {
+					margin-right: 16px;
+				}
 			}
 		}
 
@@ -476,9 +502,5 @@ table.publications-render-view {
 
 	.sidenav-content {
 		padding-top: 20px;
-	}
-
-	.taglib-empty-result-message {
-		margin-top: 20px;
 	}
 }

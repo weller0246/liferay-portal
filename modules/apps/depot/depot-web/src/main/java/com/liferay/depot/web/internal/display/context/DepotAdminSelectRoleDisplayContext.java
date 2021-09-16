@@ -31,6 +31,7 @@ import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.security.membershippolicy.SiteMembershipPolicyUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.PermissionChecker;
+import com.liferay.portal.kernel.service.ClassNameLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -203,7 +204,7 @@ public class DepotAdminSelectRoleDisplayContext {
 				"resetCur", true
 			).setParameter(
 				"step", Step2.TYPE
-			).build();
+			).buildPortletURL();
 		}
 
 		public int getType() {
@@ -232,7 +233,12 @@ public class DepotAdminSelectRoleDisplayContext {
 			}
 
 			return GroupLocalServiceUtil.search(
-				_user.getCompanyId(), groupSearchTerms.getKeywords(),
+				_user.getCompanyId(),
+				new long[] {
+					ClassNameLocalServiceUtil.getClassNameId(DepotEntry.class)
+				},
+				GroupConstants.ANY_PARENT_GROUP_ID,
+				groupSearchTerms.getKeywords(),
 				LinkedHashMapBuilder.<String, Object>put(
 					"inherit", Boolean.FALSE
 				).put(

@@ -88,6 +88,34 @@ public class ObjectDefinition implements Serializable {
 	protected Map<String, Map<String, String>> actions;
 
 	@Schema
+	public Boolean getActive() {
+		return active;
+	}
+
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
+
+	@JsonIgnore
+	public void setActive(
+		UnsafeSupplier<Boolean, Exception> activeUnsafeSupplier) {
+
+		try {
+			active = activeUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Boolean active;
+
+	@Schema
 	public Date getDateCreated() {
 		return dateCreated;
 	}
@@ -170,6 +198,35 @@ public class ObjectDefinition implements Serializable {
 	protected Long id;
 
 	@Schema
+	@Valid
+	public Map<String, String> getLabel() {
+		return label;
+	}
+
+	public void setLabel(Map<String, String> label) {
+		this.label = label;
+	}
+
+	@JsonIgnore
+	public void setLabel(
+		UnsafeSupplier<Map<String, String>, Exception> labelUnsafeSupplier) {
+
+		try {
+			label = labelUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Map<String, String> label;
+
+	@Schema
 	public String getName() {
 		return name;
 	}
@@ -223,6 +280,152 @@ public class ObjectDefinition implements Serializable {
 	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected ObjectField[] objectFields;
+
+	@Schema
+	@Valid
+	public ObjectRelationship[] getObjectRelationships() {
+		return objectRelationships;
+	}
+
+	public void setObjectRelationships(
+		ObjectRelationship[] objectRelationships) {
+
+		this.objectRelationships = objectRelationships;
+	}
+
+	@JsonIgnore
+	public void setObjectRelationships(
+		UnsafeSupplier<ObjectRelationship[], Exception>
+			objectRelationshipsUnsafeSupplier) {
+
+		try {
+			objectRelationships = objectRelationshipsUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected ObjectRelationship[] objectRelationships;
+
+	@Schema
+	public String getPanelAppOrder() {
+		return panelAppOrder;
+	}
+
+	public void setPanelAppOrder(String panelAppOrder) {
+		this.panelAppOrder = panelAppOrder;
+	}
+
+	@JsonIgnore
+	public void setPanelAppOrder(
+		UnsafeSupplier<String, Exception> panelAppOrderUnsafeSupplier) {
+
+		try {
+			panelAppOrder = panelAppOrderUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String panelAppOrder;
+
+	@Schema
+	public String getPanelCategoryKey() {
+		return panelCategoryKey;
+	}
+
+	public void setPanelCategoryKey(String panelCategoryKey) {
+		this.panelCategoryKey = panelCategoryKey;
+	}
+
+	@JsonIgnore
+	public void setPanelCategoryKey(
+		UnsafeSupplier<String, Exception> panelCategoryKeyUnsafeSupplier) {
+
+		try {
+			panelCategoryKey = panelCategoryKeyUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String panelCategoryKey;
+
+	@Schema
+	@Valid
+	public Map<String, String> getPluralLabel() {
+		return pluralLabel;
+	}
+
+	public void setPluralLabel(Map<String, String> pluralLabel) {
+		this.pluralLabel = pluralLabel;
+	}
+
+	@JsonIgnore
+	public void setPluralLabel(
+		UnsafeSupplier<Map<String, String>, Exception>
+			pluralLabelUnsafeSupplier) {
+
+		try {
+			pluralLabel = pluralLabelUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected Map<String, String> pluralLabel;
+
+	@Schema
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
+
+	@JsonIgnore
+	public void setScope(
+		UnsafeSupplier<String, Exception> scopeUnsafeSupplier) {
+
+		try {
+			scope = scopeUnsafeSupplier.get();
+		}
+		catch (RuntimeException re) {
+			throw re;
+		}
+		catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@GraphQLField
+	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
+	protected String scope;
 
 	@Schema
 	@Valid
@@ -321,6 +524,16 @@ public class ObjectDefinition implements Serializable {
 			sb.append(_toJSON(actions));
 		}
 
+		if (active != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"active\": ");
+
+			sb.append(active);
+		}
+
 		if (dateCreated != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -359,6 +572,16 @@ public class ObjectDefinition implements Serializable {
 			sb.append(id);
 		}
 
+		if (label != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"label\": ");
+
+			sb.append(_toJSON(label));
+		}
+
 		if (name != null) {
 			if (sb.length() > 1) {
 				sb.append(", ");
@@ -391,6 +614,78 @@ public class ObjectDefinition implements Serializable {
 			}
 
 			sb.append("]");
+		}
+
+		if (objectRelationships != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"objectRelationships\": ");
+
+			sb.append("[");
+
+			for (int i = 0; i < objectRelationships.length; i++) {
+				sb.append(String.valueOf(objectRelationships[i]));
+
+				if ((i + 1) < objectRelationships.length) {
+					sb.append(", ");
+				}
+			}
+
+			sb.append("]");
+		}
+
+		if (panelAppOrder != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"panelAppOrder\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(panelAppOrder));
+
+			sb.append("\"");
+		}
+
+		if (panelCategoryKey != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"panelCategoryKey\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(panelCategoryKey));
+
+			sb.append("\"");
+		}
+
+		if (pluralLabel != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"pluralLabel\": ");
+
+			sb.append(_toJSON(pluralLabel));
+		}
+
+		if (scope != null) {
+			if (sb.length() > 1) {
+				sb.append(", ");
+			}
+
+			sb.append("\"scope\": ");
+
+			sb.append("\"");
+
+			sb.append(_escape(scope));
+
+			sb.append("\"");
 		}
 
 		if (status != null) {

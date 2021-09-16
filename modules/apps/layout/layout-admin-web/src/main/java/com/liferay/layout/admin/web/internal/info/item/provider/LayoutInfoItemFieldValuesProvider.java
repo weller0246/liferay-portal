@@ -14,6 +14,7 @@
 
 package com.liferay.layout.admin.web.internal.info.item.provider;
 
+import com.liferay.fragment.renderer.FragmentRendererController;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemReference;
@@ -35,6 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Adolfo Pérez
@@ -48,21 +50,12 @@ public class LayoutInfoItemFieldValuesProvider
 		return InfoItemFieldValues.builder(
 		).infoFieldValue(
 			new InfoFieldValue<>(
-				LayoutInfoItemFields.titleInfoField,
+				LayoutInfoItemFields.nameInfoField,
 				InfoLocalizedValue.<String>builder(
 				).defaultLocale(
 					LocaleUtil.fromLanguageId(layout.getDefaultLanguageId())
 				).values(
 					layout.getNameMap()
-				).build())
-		).infoFieldValue(
-			new InfoFieldValue<>(
-				LayoutInfoItemFields.descriptionInfoField,
-				InfoLocalizedValue.<String>builder(
-				).defaultLocale(
-					LocaleUtil.fromLanguageId(layout.getDefaultLanguageId())
-				).values(
-					layout.getDescriptionMap()
 				).build())
 		).infoFieldValues(
 			_getLayoutInfoFieldValues(layout)
@@ -117,7 +110,7 @@ public class LayoutInfoItemFieldValuesProvider
 			List<InfoFieldValue<Object>> infoFieldValues = new ArrayList<>();
 
 			InfoFieldUtil.forEachInfoField(
-				layout,
+				_fragmentRendererController, layout,
 				(name, infoField, unsafeSupplier) -> infoFieldValues.add(
 					new InfoFieldValue<>(
 						infoField,
@@ -131,5 +124,8 @@ public class LayoutInfoItemFieldValuesProvider
 			return ReflectionUtil.throwException(jsonException);
 		}
 	}
+
+	@Reference
+	private FragmentRendererController _fragmentRendererController;
 
 }

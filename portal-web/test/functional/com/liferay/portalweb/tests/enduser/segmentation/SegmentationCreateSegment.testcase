@@ -25,9 +25,7 @@ definition {
 			PortalInstances.tearDownCP();
 		}
 		else {
-			ProductMenu.gotoPortlet(
-				category = "People",
-				portlet = "Segments");
+			Category.openCategoriesAdmin(siteURLKey = "guest");
 
 			if (IsElementPresent(locator1 = "Segmentation#SEGMENT_LIST")) {
 				Segmentation.tearDown();
@@ -85,7 +83,7 @@ definition {
 			PortletEntry.save();
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
 
 			LexiconEntry.gotoAdd();
@@ -141,7 +139,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -193,7 +191,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -245,7 +243,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -296,7 +294,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -355,7 +353,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -428,7 +426,7 @@ definition {
 			PortletEntry.save();
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
 
 			LexiconEntry.gotoAdd();
@@ -497,7 +495,7 @@ definition {
 			PortletEntry.save();
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
 
 			LexiconEntry.gotoAdd();
@@ -553,7 +551,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.gotoSidebar(fieldType = "Organization");
@@ -1223,7 +1221,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Date Modified");
@@ -1265,7 +1263,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Date of Birth");
@@ -1309,7 +1307,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Email Address");
@@ -1422,7 +1420,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "First Name");
@@ -1465,7 +1463,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Job Title");
@@ -1507,7 +1505,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Last Name");
@@ -1549,7 +1547,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Name");
@@ -1596,7 +1594,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Regular Role");
@@ -1640,7 +1638,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Screen Name");
@@ -1685,7 +1683,7 @@ definition {
 				userEmailAddress = "userea@liferay.com");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Site");
@@ -1751,7 +1749,7 @@ definition {
 			SearchAdministration.executeSearchActions(actionsDescription = "Reindex all search indexes.");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
 
 			LexiconEntry.gotoAdd();
@@ -1793,7 +1791,7 @@ definition {
 				userScreenName = "usersn");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Tag");
@@ -1852,7 +1850,7 @@ definition {
 				userScreenName = "usersn");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "test-site-name");
 
 			LexiconEntry.gotoAdd();
@@ -1893,7 +1891,7 @@ definition {
 				userScreenName = "usersn");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "User");
@@ -1950,7 +1948,7 @@ definition {
 			SearchAdministration.executeSearchActions(actionsDescription = "Reindex all search indexes.");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
 
 			LexiconEntry.gotoAdd();
@@ -2075,6 +2073,63 @@ definition {
 		}
 	}
 
+	@description = "LPS-132249 If vocabulary or value is deleted, in the segment editor the condition will keep working if the user go out without saving changes"
+	@priority = "4"
+	test KeepInfomationOfDeleteVocabularyInSegment {
+		property test.name.skip.portal.instance = "SegmentationCreateSegment#KeepInfomationOfDeleteVocabularyInSegment";
+
+		task ("Set Session Property Vocabulary") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "Segments",
+				configurationName = "Session Property Vocabularies",
+				configurationScope = "System Scope");
+
+			Button.click(button = "Add");
+
+			Segmentation.setVocabularySessionPropertyDropdown(
+				propertyName = "Browser",
+				vocabularyName = "Audience");
+		}
+
+		task ("Create categories for Audience Vocabulary") {
+			JSONCategory.addCategory(
+				groupName = "Global",
+				title = "Audience Category 1",
+				vocabularyName = "Audience");
+		}
+
+		task ("Create Segment with Vocabulary") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "Browser",
+				groupName = "Guest",
+				operator = "equals",
+				segmentName = "KeepInfomationOfDeleteVocabularyInSegment Test",
+				text = "Audience Category 1");
+		}
+
+		task ("Delete category of vocabulary") {
+			JSONCategory.deleteCategory(
+				categoryName = "Audience Category 1",
+				groupName = "Global",
+				vocabularyName = "Audience");
+		}
+
+		task ("Assert if segment kept category") {
+			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
+
+			Segmentation.editSegment(entry = "KeepInfomationOfDeleteVocabularyInSegment Test");
+
+			AssertValue(
+				locator1 = "Segmentation#PROPERTY_FIELD",
+				value1 = "Audience Category 1");
+		}
+	}
+
 	@description = "Validate if the members are assigned correctly depending on the criteria selected"
 	@priority = "5"
 	@uitest
@@ -2089,7 +2144,7 @@ definition {
 				userScreenName = "u1");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.addProperties(propertyOption = "Email Address");
@@ -2105,7 +2160,7 @@ definition {
 				value1 = "1 Member");
 		}
 
-		task ("Modify the criteria and check the user belongs to the segment") {
+		task ("Modify the criteria and check the user Belongs To the segment") {
 			Segmentation.viewMembers(memberName = "Test");
 
 			Segmentation.fillProperty(propertyField = "liferay");
@@ -2138,7 +2193,7 @@ definition {
 				userScreenName = "u1");
 		}
 
-		task ("Add segment and check the user belongs to the segment") {
+		task ("Add segment and check the user Belongs To the segment") {
 			LexiconEntry.gotoAdd();
 
 			Segmentation.fillTitle(titleField = "Segment With Special Characters");
@@ -2161,6 +2216,367 @@ definition {
 		}
 	}
 
+	@description = "LPS-136086 Validate if, in the segments page, the default segment doesn't appear, with the page without records."
+	@priority = "4"
+	test ValidateDefaultSegmentNotDisplayed {
+		task ("Assert 'default' segment is not present") {
+			Segmentation.viewEntryNotPresent(segmentName = "Anyone");
+
+			AssertElementPresent(locator1 = "Segmentation#MESSAGE_NO_SEGMENTS");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: Organization."
+	@priority = "4"
+	test ValidateOrganizationFieldInputInViewMode {
+		task ("Add and get organization ID") {
+			JSONOrganization.addOrganization(
+				organizationName = "Organization Name",
+				organizationSite = "true");
+
+			var organizationId = JSONOrganization.getOrganizationIdByName(organizationName = "Organization Name");
+		}
+
+		task ("Create a segment using the property") {
+			LexiconEntry.gotoAdd();
+
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			Segmentation.addProperties(propertyOption = "Organization");
+
+			Segmentation.fillProperty(selectCheckbox = "Organization Name");
+
+			Segmentation.fillTitle(titleField = "Validade Organization Segment");
+
+			Button.clickSave();
+
+			Alert.viewSuccessMessage();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade Organization Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Organization Name");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: Parent Organization."
+	@priority = "4"
+	test ValidateParentOrganizationFieldInputInViewMode {
+		task ("Add organization and parent, and get parent's organization ID") {
+			JSONOrganization.addOrganization(organizationName = "Parent Organization Name");
+
+			JSONOrganization.addOrganization(
+				organizationName = "Organization Name",
+				parentOrganizationName = "Parent Organization Name");
+
+			var organizationId = JSONOrganization.getOrganizationIdByName(organizationName = "Parent Organization Name");
+		}
+
+		task ("Create a segment using the property") {
+			LexiconEntry.gotoAdd();
+
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			Segmentation.addProperties(propertyOption = "Parent Organization");
+
+			Segmentation.fillProperty(selectCheckbox = "Parent Organization Name");
+
+			Segmentation.fillTitle(titleField = "Validade Parent Organization Segment");
+
+			Button.clickSave();
+
+			Alert.viewSuccessMessage();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade Parent Organization Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Parent Organization Name");
+		}
+	}
+
+	@description = "LPS-135969 Validate if, on Segmentation, when the user clicks in a different Property section the contributor area of this section will be displayed."
+	@priority = "3"
+	test ValidatePropertyDisplayedInSection {
+		task ("Click on USER field type and asser if its properties are displayed.") {
+			LexiconEntry.gotoAdd();
+
+			AssertElementPresent(
+				key_propertyOption = "Date of Birth",
+				locator1 = "Segmentation#ADD_FIELD_TYPE");
+		}
+
+		task ("Click on ORGANIZATION field type and asser if its properties are displayed.") {
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			AssertElementPresent(
+				key_propertyOption = "Country",
+				locator1 = "Segmentation#ADD_FIELD_TYPE");
+		}
+
+		task ("Click on SESSION field type and asser if its properties are displayed.") {
+			Segmentation.gotoSidebar(fieldType = "Session");
+
+			AssertElementPresent(
+				key_propertyOption = "Browser",
+				locator1 = "Segmentation#ADD_FIELD_TYPE");
+		}
+
+		task ("Click on SEGMENTS field type and asser if its properties are displayed.") {
+			Segmentation.gotoSidebar(fieldType = "Segments");
+
+			AssertElementPresent(
+				key_propertyOption = "Segment",
+				locator1 = "Segmentation#ADD_FIELD_TYPE");
+		}
+	}
+
+	@description = "LPS-135969 Validate if, on Segmentation, the user can't drag and drop fields into different Property section."
+	@priority = "3"
+	test ValidatePropertyDragAndDropToSections {
+		task ("Create a segment") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "Screen Name",
+				groupName = "Guest",
+				operator = "contains",
+				segmentName = "Segment With Multiple Conditions",
+				text = "Test");
+
+			Refresh();
+		}
+
+		task ("Try to drag property to wrong section") {
+			Segmentation.editSegment(entry = "Segment With Multiple Conditions");
+
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			DragAndDrop.javaScriptDragAndDropToObject(
+				key_propertyOption = "Country",
+				locator1 = "Segmentation#ADD_FIELD_TYPE",
+				locator2 = "Segmentation#ADD_FIELD_POSITION_EDIT",
+				value1 = "Country");
+		}
+
+		task ("Assert that property was not added") {
+			AssertElementNotPresent(
+				locator1 = "Segmentation#CONDITIONS_PROPERTY_NAME",
+				propertyName = "Country");
+
+			Refresh();
+		}
+
+		task ("Try to drag property to right section") {
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			DragAndDrop.javaScriptDragAndDropToObject(
+				key_propertyOption = "Country",
+				locator1 = "Segmentation#ADD_FIELD_TYPE",
+				locator2 = "Segmentation#ADD_FIELD_POSITION_EMPTY",
+				value1 = "Country");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CONDITIONS_PROPERTY_NAME",
+				propertyName = "Country");
+		}
+	}
+
+	@description = "LPS-135969 Validate if, on Segmentation, when the user clicks in a different Property section the contributor area of the others sections will be disabled."
+	@priority = "3"
+	test ValidatePropertyNotDisplayedDifferentSection {
+		task ("Click on USER field type and assert if other properties are not displayed") {
+			LexiconEntry.gotoAdd();
+
+			for (var option : list "Country, Browser, Segment") {
+				AssertElementNotPresent(
+					key_propertyOption = "${option}",
+					locator1 = "Segmentation#ADD_FIELD_TYPE");
+			}
+		}
+
+		task ("Click on ORGANIZATION field type and assert if other properties are not displayed") {
+			Segmentation.gotoSidebar(fieldType = "Organization");
+
+			for (var option : list "Date of Birth, Browser, Segment") {
+				AssertElementNotPresent(
+					key_propertyOption = "${option}",
+					locator1 = "Segmentation#ADD_FIELD_TYPE");
+			}
+		}
+
+		task ("Click on SESSION field type and assert if other properties are not displayed") {
+			Segmentation.gotoSidebar(fieldType = "Session");
+
+			for (var option : list "Date of Birth, Country, Segment") {
+				AssertElementNotPresent(
+					key_propertyOption = "${option}",
+					locator1 = "Segmentation#ADD_FIELD_TYPE");
+			}
+		}
+
+		task ("Click on SEGMENTS field type and assert if other properties are not displayed") {
+			Segmentation.gotoSidebar(fieldType = "Segments");
+
+			for (var option : list "Date of Birth, Country, Browser") {
+				AssertElementNotPresent(
+					key_propertyOption = "${option}",
+					locator1 = "Segmentation#ADD_FIELD_TYPE");
+			}
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: Role."
+	@priority = "4"
+	test ValidateRoleFieldInputInViewMode {
+		task ("Get role id") {
+			var roleId = JSONPermissionSetter.setRoleId(roleTitle = "Administrator");
+		}
+
+		task ("Create a segment using the property") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "Regular Role",
+				groupName = "Guest",
+				operator = "equals",
+				segmentName = "Validade Role Segment",
+				text = "${roleId}");
+
+			Refresh();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade Role Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Administrator");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: Site."
+	@priority = "4"
+	test ValidateSiteFieldInputInViewMode {
+		task ("Create a site") {
+			JSONGroup.addGroup(groupName = "Test Site Name");
+
+			var siteID = JSONGroupSetter.setGroupId(groupName = "Test Site Name");
+		}
+
+		task ("Create a segment using the property") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "Site",
+				groupName = "Guest",
+				operator = "equals",
+				segmentName = "Validade Site Segment",
+				text = "${siteID}");
+
+			Refresh();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade Site Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Test Site Name");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: Team."
+	@priority = "4"
+	test ValidateTeamFieldInputInViewMode {
+		task ("Add team") {
+			Site.openSiteTeamsAdmin(siteURLKey = "guest");
+
+			Team.addCP(
+				teamDescription = "Site Team Description",
+				teamName = "Site Team Name");
+		}
+
+		task ("Create segment using the property") {
+			Segmentation.openSegmentsAdmin(siteURLKey = "guest");
+
+			LexiconEntry.gotoAdd();
+
+			Segmentation.addProperties(propertyOption = "Team");
+
+			Segmentation.fillProperty(selectLink = "Site Team Name");
+
+			Segmentation.fillTitle(titleField = "Validade Team Segment");
+
+			Button.clickSave();
+
+			Alert.viewSuccessMessage();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade Team Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Site Team Name");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: User."
+	@priority = "4"
+	test ValidateUserFieldInputInViewMode {
+		task ("Get user ID") {
+			var userId = JSONUserSetter.setUserId(userEmailAddress = "test@liferay.com");
+		}
+
+		task ("Create a segment using the property") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "User",
+				groupName = "Guest",
+				operator = "equals",
+				segmentName = "Validade User Segment",
+				text = "${userId}");
+
+			Refresh();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade User Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Test Test");
+		}
+	}
+
+	@description = "LPS-135880 Validate in Segmentation, if on view mode, the value on the criteria field input, is correct for property: User Group."
+	@priority = "4"
+	test ValidateUserGroupFieldInputInViewMode {
+		task ("Create and get user group ID") {
+			JSONUserGroup.addUserGroup(userGroupName = "Test Group Name");
+
+			var userGroupId = JSONUserGroupSetter.setUserGroupId(userGroupName = "Test Group Name");
+		}
+
+		task ("Create a segment using the property") {
+			JSONSegmentsentry.addSegment(
+				fieldName = "User Group",
+				groupName = "Guest",
+				operator = "equals",
+				segmentName = "Validade User Group Segment",
+				text = "${userGroupId}");
+
+			Refresh();
+		}
+
+		task ("Validade input") {
+			LexiconEntry.gotoEntry(rowEntry = "Validade User Group Segment");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#CRITERION_VIEW_MODE",
+				propertyValue = "Test Group Name");
+		}
+	}
+
 	@description = "This is a use case for LPS-103516."
 	@priority = "3"
 	@uitest
@@ -2175,6 +2591,46 @@ definition {
 					key_typeName = "${fieldType}",
 					locator1 = "Segmentation#SEGMENT_FIELDS_TYPE");
 			}
+		}
+	}
+
+	@description = "LPS-132249 In System Settings>Segments, all vocabularies created will be listed in the Vocabulary dropdown"
+	@priority = "4"
+	test VocabulariesListedInSystemSettingsSegments {
+		property test.name.skip.portal.instance = "SegmentationCreateSegment#VocabulariesListedInSystemSettingsSegments";
+
+		task ("Add two vocabularies to global site") {
+			for (var n : list "1,2") {
+				JSONCategory.addVocabulary(
+					groupName = "Global",
+					title = "Vocabulary Name ${n}");
+			}
+		}
+
+		task ("Go to Session Property Vocabularies > Add") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "Segments",
+				configurationName = "Session Property Vocabularies",
+				configurationScope = "System Scope");
+
+			Button.click(button = "Add");
+		}
+
+		task ("Check if Vocabularies Created are being displayed") {
+			Click(locator1 = "Segmentation#SESSION_PROPERTY_SESSION_LINK_VOCABULARY");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#SESSION_PROPERTY_SESSION_LINK_VOCABULARY_OPTION",
+				vocabularyName = "Vocabulary Name 1");
+
+			AssertElementPresent(
+				locator1 = "Segmentation#SESSION_PROPERTY_SESSION_LINK_VOCABULARY_OPTION",
+				vocabularyName = "Vocabulary Name 2");
 		}
 	}
 

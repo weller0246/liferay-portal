@@ -235,6 +235,8 @@ definition {
 	@description = "This is a use case for LPS-26982."
 	@priority = "4"
 	test AssertFieldValuesNotLostDuringReviewTask {
+		property portal.upstream = "quarantine";
+
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Kaleo Forms Admin");
@@ -815,8 +817,6 @@ definition {
 
 	@priority = "4"
 	test AssignRolePermissionsCompleteFormPG {
-		property portal.upstream = "quarantine";
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Users",
 			panel = "Control Panel",
@@ -951,7 +951,7 @@ definition {
 			workflowAssetType = "${workflowAssetType}",
 			workflowTask = "Review");
 
-		Workflow.assignByDetails(user = "userfn userln");
+		Workflow.assignByDetails(user = "usersn (userfn userln)");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea@liferay.com",
@@ -1597,6 +1597,8 @@ definition {
 
 	@priority = "3"
 	test CompleteProcessAndAssertFieldOrder {
+		property portal.upstream = "quarantine";
+
 		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
@@ -3355,6 +3357,7 @@ definition {
 			fieldValue = "4/1/17");
 	}
 
+	@ignore = "true"
 	@priority = "3"
 	test ProcessUsesCreateFormWhenEditFormIsMissing {
 		Navigator.openURL();
@@ -3629,6 +3632,7 @@ definition {
 			fieldValue = "Kaleo Text Field");
 	}
 
+	@ignore = "true"
 	@priority = "4"
 	test ProcessUsesEditForm {
 		Navigator.openURL();

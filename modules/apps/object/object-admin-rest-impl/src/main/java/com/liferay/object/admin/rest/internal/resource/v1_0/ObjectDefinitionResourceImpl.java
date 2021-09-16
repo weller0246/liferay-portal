@@ -16,12 +16,24 @@ package com.liferay.object.admin.rest.internal.resource.v1_0;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectField;
+import com.liferay.object.admin.rest.dto.v1_0.Status;
+import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
-import com.liferay.object.service.ObjectDefinitionLocalService;
+import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.search.Field;
+import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.LocalizedMapUtil;
+import com.liferay.portal.vulcan.util.SearchUtil;
+
+import java.util.Collections;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -41,8 +53,7 @@ public class ObjectDefinitionResourceImpl
 	public void deleteObjectDefinition(Long objectDefinitionId)
 		throws Exception {
 
-		_objectDefinitionLocalService.deleteObjectDefinition(
-			objectDefinitionId);
+		_objectDefinitionService.deleteObjectDefinition(objectDefinitionId);
 	}
 
 	@Override
@@ -50,21 +61,30 @@ public class ObjectDefinitionResourceImpl
 		throws Exception {
 
 		return _toObjectDefinition(
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectDefinitionId));
+			_objectDefinitionService.getObjectDefinition(objectDefinitionId));
 	}
 
 	@Override
 	public Page<ObjectDefinition> getObjectDefinitionsPage(
-		Pagination pagination) {
+			String search, Pagination pagination)
+		throws Exception {
 
-		return Page.of(
-			transform(
-				_objectDefinitionLocalService.getObjectDefinitions(
-					pagination.getStartPosition(), pagination.getEndPosition()),
-				this::_toObjectDefinition),
-			pagination,
-			_objectDefinitionLocalService.getObjectDefinitionsCount());
+		return SearchUtil.search(
+			Collections.emptyMap(),
+			booleanQuery -> {
+			},
+			null, com.liferay.object.model.ObjectDefinition.class.getName(),
+			search, pagination,
+			queryConfig -> queryConfig.setSelectedFieldNames(
+				Field.ENTRY_CLASS_PK),
+			searchContext -> {
+				searchContext.setAttribute(Field.NAME, search);
+				searchContext.setCompanyId(contextCompany.getCompanyId());
+			},
+			null,
+			document -> _toObjectDefinition(
+				_objectDefinitionService.getObjectDefinition(
+					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
 	}
 
 	@Override
@@ -72,41 +92,79 @@ public class ObjectDefinitionResourceImpl
 			ObjectDefinition objectDefinition)
 		throws Exception {
 
-		com.liferay.object.model.ObjectDefinition
-			serviceBuilderObjectDefinition =
-				_objectDefinitionLocalService.addCustomObjectDefinition(
-					contextUser.getUserId(), objectDefinition.getName(),
-					transformToList(
-						objectDefinition.getObjectFields(),
-						this::_toObjectField));
-
 		return _toObjectDefinition(
-			_objectDefinitionLocalService.publishCustomObjectDefinition(
-				serviceBuilderObjectDefinition.getUserId(),
-				serviceBuilderObjectDefinition.getObjectDefinitionId()));
+			_objectDefinitionService.addCustomObjectDefinition(
+				LocalizedMapUtil.getLocalizedMap(objectDefinition.getLabel()),
+				objectDefinition.getName(), objectDefinition.getPanelAppOrder(),
+				objectDefinition.getPanelCategoryKey(),
+				LocalizedMapUtil.getLocalizedMap(
+					objectDefinition.getPluralLabel()),
+				objectDefinition.getScope(),
+				transformToList(
+					objectDefinition.getObjectFields(),
+					objectField -> ObjectFieldUtil.toObjectField(
+						objectField, _objectFieldLocalService))));
 	}
 
-	private static ObjectField _toObjectField(
-		com.liferay.object.model.ObjectField objectField) {
+	@Override
+	public void postObjectDefinitionPublish(Long objectDefinitionId)
+		throws Exception {
 
-		return new ObjectField() {
-			{
-				id = objectField.getObjectFieldId();
-				indexed = objectField.getIndexed();
-				indexedAsKeyword = objectField.getIndexedAsKeyword();
-				indexedLanguageId = objectField.getIndexedLanguageId();
-				name = objectField.getName();
-				required = objectField.isRequired();
-				type = objectField.getType();
-			}
-		};
+		_objectDefinitionService.publishCustomObjectDefinition(
+			objectDefinitionId);
+	}
+
+	@Override
+	public ObjectDefinition putObjectDefinition(
+			Long objectDefinitionId, ObjectDefinition objectDefinition)
+		throws Exception {
+
+		return _toObjectDefinition(
+			_objectDefinitionService.updateCustomObjectDefinition(
+				objectDefinitionId,
+				GetterUtil.getBoolean(objectDefinition.getActive(), true),
+				LocalizedMapUtil.getLocalizedMap(objectDefinition.getLabel()),
+				objectDefinition.getName(), objectDefinition.getPanelAppOrder(),
+				objectDefinition.getPanelCategoryKey(),
+				LocalizedMapUtil.getLocalizedMap(
+					objectDefinition.getPluralLabel()),
+				objectDefinition.getScope()));
 	}
 
 	private ObjectDefinition _toObjectDefinition(
 		com.liferay.object.model.ObjectDefinition objectDefinition) {
 
+		String permissionName =
+			com.liferay.object.model.ObjectDefinition.class.getName();
+
 		return new ObjectDefinition() {
 			{
+				actions = HashMapBuilder.put(
+					"delete",
+					() -> {
+						if (objectDefinition.isApproved() ||
+							objectDefinition.isSystem()) {
+
+							return null;
+						}
+
+						return addAction(
+							ActionKeys.DELETE, "deleteObjectDefinition",
+							permissionName,
+							objectDefinition.getObjectDefinitionId());
+					}
+				).put(
+					"get",
+					addAction(
+						ActionKeys.VIEW, "getObjectDefinition", permissionName,
+						objectDefinition.getObjectDefinitionId())
+				).put(
+					"update",
+					addAction(
+						ActionKeys.UPDATE, "postObjectDefinition",
+						permissionName,
+						objectDefinition.getObjectDefinitionId())
+				).build();
 				dateCreated = objectDefinition.getCreateDate();
 				dateModified = objectDefinition.getModifiedDate();
 				id = objectDefinition.getObjectDefinitionId();
@@ -114,34 +172,29 @@ public class ObjectDefinitionResourceImpl
 				objectFields = transformToArray(
 					_objectFieldLocalService.getObjectFields(
 						objectDefinition.getObjectDefinitionId()),
-					ObjectDefinitionResourceImpl::_toObjectField,
+					objectField -> ObjectFieldUtil.toObjectField(
+						null, objectField),
 					ObjectField.class);
+				scope = objectDefinition.getScope();
+				status = new Status() {
+					{
+						code = objectDefinition.getStatus();
+						label = WorkflowConstants.getStatusLabel(
+							objectDefinition.getStatus());
+						label_i18n = LanguageUtil.get(
+							LanguageResources.getResourceBundle(
+								contextAcceptLanguage.getPreferredLocale()),
+							WorkflowConstants.getStatusLabel(
+								objectDefinition.getStatus()));
+					}
+				};
+				system = objectDefinition.isSystem();
 			}
 		};
 	}
 
-	private com.liferay.object.model.ObjectField _toObjectField(
-		ObjectField objectField) {
-
-		com.liferay.object.model.ObjectField serviceBuilderObjectField =
-			_objectFieldLocalService.createObjectField(0L);
-
-		serviceBuilderObjectField.setIndexed(
-			GetterUtil.getBoolean(objectField.getIndexed()));
-		serviceBuilderObjectField.setIndexedAsKeyword(
-			GetterUtil.getBoolean(objectField.getIndexedAsKeyword()));
-		serviceBuilderObjectField.setIndexedLanguageId(
-			objectField.getIndexedLanguageId());
-		serviceBuilderObjectField.setName(objectField.getName());
-		serviceBuilderObjectField.setRequired(
-			GetterUtil.getBoolean(objectField.getRequired()));
-		serviceBuilderObjectField.setType(objectField.getType());
-
-		return serviceBuilderObjectField;
-	}
-
 	@Reference
-	private ObjectDefinitionLocalService _objectDefinitionLocalService;
+	private ObjectDefinitionService _objectDefinitionService;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

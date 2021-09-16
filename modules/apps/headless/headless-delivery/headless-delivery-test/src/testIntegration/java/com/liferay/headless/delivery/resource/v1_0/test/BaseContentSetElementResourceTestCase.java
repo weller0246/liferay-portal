@@ -35,7 +35,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -215,15 +214,6 @@ public abstract class BaseContentSetElementResourceTestCase {
 	public void testGetAssetLibraryContentSetByKeyContentSetElementsPage()
 		throws Exception {
 
-		Page<ContentSetElement> page =
-			contentSetElementResource.
-				getAssetLibraryContentSetByKeyContentSetElementsPage(
-					testGetAssetLibraryContentSetByKeyContentSetElementsPage_getAssetLibraryId(),
-					testGetAssetLibraryContentSetByKeyContentSetElementsPage_getKey(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryContentSetByKeyContentSetElementsPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
@@ -232,6 +222,13 @@ public abstract class BaseContentSetElementResourceTestCase {
 			testGetAssetLibraryContentSetByKeyContentSetElementsPage_getKey();
 		String irrelevantKey =
 			testGetAssetLibraryContentSetByKeyContentSetElementsPage_getIrrelevantKey();
+
+		Page<ContentSetElement> page =
+			contentSetElementResource.
+				getAssetLibraryContentSetByKeyContentSetElementsPage(
+					assetLibraryId, key, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantAssetLibraryId != null) && (irrelevantKey != null)) {
 			ContentSetElement irrelevantContentSetElement =
@@ -264,7 +261,7 @@ public abstract class BaseContentSetElementResourceTestCase {
 		page =
 			contentSetElementResource.
 				getAssetLibraryContentSetByKeyContentSetElementsPage(
-					assetLibraryId, key, Pagination.of(1, 2));
+					assetLibraryId, key, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -373,15 +370,6 @@ public abstract class BaseContentSetElementResourceTestCase {
 	public void testGetAssetLibraryContentSetByUuidContentSetElementsPage()
 		throws Exception {
 
-		Page<ContentSetElement> page =
-			contentSetElementResource.
-				getAssetLibraryContentSetByUuidContentSetElementsPage(
-					testGetAssetLibraryContentSetByUuidContentSetElementsPage_getAssetLibraryId(),
-					testGetAssetLibraryContentSetByUuidContentSetElementsPage_getUuid(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryContentSetByUuidContentSetElementsPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
@@ -390,6 +378,13 @@ public abstract class BaseContentSetElementResourceTestCase {
 			testGetAssetLibraryContentSetByUuidContentSetElementsPage_getUuid();
 		String irrelevantUuid =
 			testGetAssetLibraryContentSetByUuidContentSetElementsPage_getIrrelevantUuid();
+
+		Page<ContentSetElement> page =
+			contentSetElementResource.
+				getAssetLibraryContentSetByUuidContentSetElementsPage(
+					assetLibraryId, uuid, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantAssetLibraryId != null) && (irrelevantUuid != null)) {
 			ContentSetElement irrelevantContentSetElement =
@@ -422,7 +417,7 @@ public abstract class BaseContentSetElementResourceTestCase {
 		page =
 			contentSetElementResource.
 				getAssetLibraryContentSetByUuidContentSetElementsPage(
-					assetLibraryId, uuid, Pagination.of(1, 2));
+					assetLibraryId, uuid, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -529,17 +524,16 @@ public abstract class BaseContentSetElementResourceTestCase {
 
 	@Test
 	public void testGetContentSetContentSetElementsPage() throws Exception {
-		Page<ContentSetElement> page =
-			contentSetElementResource.getContentSetContentSetElementsPage(
-				testGetContentSetContentSetElementsPage_getContentSetId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long contentSetId =
 			testGetContentSetContentSetElementsPage_getContentSetId();
 		Long irrelevantContentSetId =
 			testGetContentSetContentSetElementsPage_getIrrelevantContentSetId();
+
+		Page<ContentSetElement> page =
+			contentSetElementResource.getContentSetContentSetElementsPage(
+				contentSetId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantContentSetId != null) {
 			ContentSetElement irrelevantContentSetElement =
@@ -568,7 +562,7 @@ public abstract class BaseContentSetElementResourceTestCase {
 				contentSetId, randomContentSetElement());
 
 		page = contentSetElementResource.getContentSetContentSetElementsPage(
-			contentSetId, Pagination.of(1, 2));
+			contentSetId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -656,15 +650,6 @@ public abstract class BaseContentSetElementResourceTestCase {
 	public void testGetSiteContentSetByKeyContentSetElementsPage()
 		throws Exception {
 
-		Page<ContentSetElement> page =
-			contentSetElementResource.
-				getSiteContentSetByKeyContentSetElementsPage(
-					testGetSiteContentSetByKeyContentSetElementsPage_getSiteId(),
-					testGetSiteContentSetByKeyContentSetElementsPage_getKey(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId =
 			testGetSiteContentSetByKeyContentSetElementsPage_getSiteId();
 		Long irrelevantSiteId =
@@ -672,6 +657,13 @@ public abstract class BaseContentSetElementResourceTestCase {
 		String key = testGetSiteContentSetByKeyContentSetElementsPage_getKey();
 		String irrelevantKey =
 			testGetSiteContentSetByKeyContentSetElementsPage_getIrrelevantKey();
+
+		Page<ContentSetElement> page =
+			contentSetElementResource.
+				getSiteContentSetByKeyContentSetElementsPage(
+					siteId, key, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantSiteId != null) && (irrelevantKey != null)) {
 			ContentSetElement irrelevantContentSetElement =
@@ -703,7 +695,7 @@ public abstract class BaseContentSetElementResourceTestCase {
 		page =
 			contentSetElementResource.
 				getSiteContentSetByKeyContentSetElementsPage(
-					siteId, key, Pagination.of(1, 2));
+					siteId, key, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -808,15 +800,6 @@ public abstract class BaseContentSetElementResourceTestCase {
 	public void testGetSiteContentSetByUuidContentSetElementsPage()
 		throws Exception {
 
-		Page<ContentSetElement> page =
-			contentSetElementResource.
-				getSiteContentSetByUuidContentSetElementsPage(
-					testGetSiteContentSetByUuidContentSetElementsPage_getSiteId(),
-					testGetSiteContentSetByUuidContentSetElementsPage_getUuid(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId =
 			testGetSiteContentSetByUuidContentSetElementsPage_getSiteId();
 		Long irrelevantSiteId =
@@ -825,6 +808,13 @@ public abstract class BaseContentSetElementResourceTestCase {
 			testGetSiteContentSetByUuidContentSetElementsPage_getUuid();
 		String irrelevantUuid =
 			testGetSiteContentSetByUuidContentSetElementsPage_getIrrelevantUuid();
+
+		Page<ContentSetElement> page =
+			contentSetElementResource.
+				getSiteContentSetByUuidContentSetElementsPage(
+					siteId, uuid, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantSiteId != null) && (irrelevantUuid != null)) {
 			ContentSetElement irrelevantContentSetElement =
@@ -856,7 +846,7 @@ public abstract class BaseContentSetElementResourceTestCase {
 		page =
 			contentSetElementResource.
 				getSiteContentSetByUuidContentSetElementsPage(
-					siteId, uuid, Pagination.of(1, 2));
+					siteId, uuid, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -964,6 +954,25 @@ public abstract class BaseContentSetElementResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ContentSetElement contentSetElement,
+		List<ContentSetElement> contentSetElements) {
+
+		boolean contains = false;
+
+		for (ContentSetElement item : contentSetElements) {
+			if (equals(contentSetElement, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			contentSetElements + " does not contain " + contentSetElement,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1486,8 +1495,8 @@ public abstract class BaseContentSetElementResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseContentSetElementResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseContentSetElementResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

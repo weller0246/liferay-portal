@@ -54,6 +54,7 @@ import com.liferay.dynamic.data.mapping.validator.DDMFormLayoutValidator;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValidationException;
 import com.liferay.portal.events.ServicePreAction;
 import com.liferay.portal.events.ThemeServicePreAction;
+import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -81,6 +82,7 @@ import com.liferay.portal.vulcan.resource.EntityModelResource;
 import com.liferay.portal.vulcan.util.SearchUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -103,6 +105,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/liferay/rest/v2_0/data-layout.properties",
 	scope = ServiceScope.PROTOTYPE, service = DataLayoutResource.class
 )
+@CTAware
 public class DataLayoutResourceImpl
 	extends BaseDataLayoutResourceImpl implements EntityModelResource {
 
@@ -459,9 +462,10 @@ public class DataLayoutResourceImpl
 		}
 
 		return SearchUtil.search(
+			Collections.emptyMap(),
 			booleanQuery -> {
 			},
-			null, DDMStructureLayout.class, keywords, pagination,
+			null, DDMStructureLayout.class.getName(), keywords, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
@@ -476,12 +480,12 @@ public class DataLayoutResourceImpl
 				searchContext.setGroupIds(
 					new long[] {ddmStructure.getGroupId()});
 			},
+			sorts,
 			document -> DataLayoutUtil.toDataLayout(
 				_ddmFormFieldTypeServicesTracker,
 				_ddmStructureLayoutLocalService.getStructureLayout(
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK))),
-				_spiDDMFormRuleConverter),
-			sorts);
+				_spiDDMFormRuleConverter));
 	}
 
 	private long _getDDMStructureVersionId(long deDataDefinitionId)

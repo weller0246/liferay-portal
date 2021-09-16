@@ -388,7 +388,7 @@ public class CommerceSubscriptionEntryDisplayContext {
 		).setParameter(
 			"commerceSubscriptionEntryId",
 			_commerceSubscriptionEntry.getCommerceSubscriptionEntryId()
-		).build();
+		).buildPortletURL();
 	}
 
 	public boolean hasManageCommerceSubscriptionEntryPermission() {
@@ -402,7 +402,8 @@ public class CommerceSubscriptionEntryDisplayContext {
 			CommercePaymentMethodGroupRel commercePaymentMethodGroupRel =
 				_commercePaymentMethodGroupRelLocalService.
 					fetchCommercePaymentMethodGroupRel(
-						_cpRequestHelper.getChannelGroupId(), engineKey);
+						_cpRequestHelper.getCommerceChannelGroupId(),
+						engineKey);
 
 			if (commercePaymentMethodGroupRel == null) {
 				return false;

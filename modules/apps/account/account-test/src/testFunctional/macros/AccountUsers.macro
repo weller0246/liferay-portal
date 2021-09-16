@@ -9,14 +9,14 @@ definition {
 
 		AssertClick(
 			key_accountName = "${accountName}",
-			locator1 = "Account#CHOOSE_ACCOUNT",
+			locator1 = "AccountUsers#SELECT_AN_ACCOUNT_CHOOSE_BUTTON",
 			value1 = "Choose");
 
 		SelectFrame(value1 = "relative=top");
 
 		WaitForElementPresent(
 			key_accountName = "${accountName}",
-			locator1 = "Account#ADD_USER_HEADER");
+			locator1 = "AccountUsers#ADD_NEW_USER_HEADER");
 
 		Type(
 			locator1 = "UsersAndOrganizationsEditUser#DETAILS_SCREEN_NAME_FIELD",
@@ -125,11 +125,36 @@ definition {
 		AssertElementPresent(locator1 = "Search#SEARCH_INFO");
 	}
 
+	macro setUserPassword {
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "${accountUser}");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Portlet#HEADER",
+			value1 = "Edit User");
+
+		UserNavigator.gotoPassword();
+
+		Type(
+			locator1 = "TextInput#NEW_PASSWORD",
+			value1 = "${accountUserPassword}");
+
+		Type(
+			locator1 = "TextInput#ENTER_AGAIN",
+			value1 = "${accountUserPassword}");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro viewEntryAccounts {
 		AssertElementPresent(
+			key_columnName = "lfr-accounts-column",
 			key_rowEntry = "${accountUserName}",
-			key_rowEntryAccount = "${accountName}",
-			locator1 = "Account#ENTRY_CONTENT_ENTRY_ACCOUNTS");
+			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+			value1 = "${accountName}");
 	}
 
 	macro viewValidDomains {

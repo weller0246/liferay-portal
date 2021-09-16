@@ -72,7 +72,9 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 	}
 
 	@Override
-	public void onAfterUpdate(Layout layout) throws ModelListenerException {
+	public void onAfterUpdate(Layout originalLayout, Layout layout)
+		throws ModelListenerException {
+
 		if (!layout.isTypeContent()) {
 			return;
 		}
@@ -101,6 +103,21 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 		}
 	}
 
+	private void _copySiteNavigationMenuId(
+		Layout layout, UnicodeProperties unicodeProperties) {
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			layout.getTypeSettingsProperties();
+
+		if (typeSettingsUnicodeProperties.containsKey("siteNavigationMenuId")) {
+			String siteNavigationMenuId =
+				typeSettingsUnicodeProperties.getProperty(
+					"siteNavigationMenuId");
+
+			unicodeProperties.put("siteNavigationMenuId", siteNavigationMenuId);
+		}
+	}
+
 	private Void _copyStructure(
 			LayoutPageTemplateEntry layoutPageTemplateEntry, Layout layout)
 		throws Exception {
@@ -124,6 +141,8 @@ public class LayoutModelListener extends BaseModelListener<Layout> {
 			draftLayout.getTypeSettingsProperties();
 
 		unicodeProperties.put("published", Boolean.FALSE.toString());
+
+		_copySiteNavigationMenuId(layout, unicodeProperties);
 
 		_layoutLocalService.updateLayout(draftLayout);
 

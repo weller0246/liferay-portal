@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -203,14 +202,13 @@ public abstract class BaseTaskResourceTestCase {
 
 	@Test
 	public void testGetProcessTasksPage() throws Exception {
-		Page<Task> page = taskResource.getProcessTasksPage(
-			testGetProcessTasksPage_getProcessId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessTasksPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessTasksPage_getIrrelevantProcessId();
+
+		Page<Task> page = taskResource.getProcessTasksPage(processId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Task irrelevantTask = testGetProcessTasksPage_addTask(
@@ -398,13 +396,27 @@ public abstract class BaseTaskResourceTestCase {
 	}
 
 	@Test
-	public void testPostProcessTasksPage() throws Exception {
+	public void testPostTasksPage() throws Exception {
 		Assert.assertTrue(false);
 	}
 
 	protected Task testGraphQLTask_addTask() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Task task, List<Task> tasks) {
+		boolean contains = false;
+
+		for (Task item : tasks) {
+			if (equals(task, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(tasks + " does not contain " + task, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1336,8 +1348,8 @@ public abstract class BaseTaskResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseTaskResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseTaskResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseDestination;
 import com.liferay.portal.kernel.messaging.Destination;
+import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationEventListener;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBus;
@@ -41,6 +42,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -61,6 +63,7 @@ import org.osgi.util.tracker.ServiceTrackerCustomizer;
 
 /**
  * @author Michael C. Han
+ * @author Brian Wing Shun Chan
  */
 @Component(
 	immediate = true,
@@ -116,6 +119,21 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 	@Override
 	public String getName() {
 		return "Default Message Bus";
+	}
+
+	@Override
+	public Collection<Destination> getWebhookCapableDestinations(
+		long companyId) {
+
+		Collection<Destination> destinations = new ArrayList<>();
+
+		for (Destination destination : _destinations.values()) {
+			if (destination.isWebhookCapable(companyId)) {
+				destinations.add(destination);
+			}
+		}
+
+		return destinations;
 	}
 
 	@Override
@@ -431,6 +449,8 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 			BaseDestination baseDestination = (BaseDestination)destination;
 
 			baseDestination.setName(destinationName);
+			baseDestination.setProperties(properties);
+
 			baseDestination.afterPropertiesSet();
 		}
 
@@ -529,9 +549,15 @@ public class DefaultMessageBus implements ManagedServiceFactory, MessageBus {
 
 			baseAsyncDestination.setMaximumQueueSize(
 				destinationWorkerConfiguration.maxQueueSize());
-			baseAsyncDestination.setWorkersSize(
-				destinationWorkerConfiguration.workerCoreSize(),
-				destinationWorkerConfiguration.workerMaxSize());
+
+			if (!Objects.equals(
+					baseAsyncDestination.getDestinationType(),
+					DestinationConfiguration.DESTINATION_TYPE_SERIAL)) {
+
+				baseAsyncDestination.setWorkersSize(
+					destinationWorkerConfiguration.workerCoreSize(),
+					destinationWorkerConfiguration.workerMaxSize());
+			}
 		}
 	}
 

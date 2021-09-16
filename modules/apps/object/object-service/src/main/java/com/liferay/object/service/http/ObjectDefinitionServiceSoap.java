@@ -17,8 +17,12 @@ package com.liferay.object.service.http;
 import com.liferay.object.service.ObjectDefinitionServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 
 import java.rmi.RemoteException;
+
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * Provides the SOAP utility for the
@@ -64,13 +68,27 @@ import java.rmi.RemoteException;
 public class ObjectDefinitionServiceSoap {
 
 	public static com.liferay.object.model.ObjectDefinitionSoap
-			addCustomObjectDefinition(long userId, String name)
+			addCustomObjectDefinition(
+				String[] labelMapLanguageIds, String[] labelMapValues,
+				String name, String panelAppOrder, String panelCategoryKey,
+				String[] pluralLabelMapLanguageIds,
+				String[] pluralLabelMapValues, String scope,
+				com.liferay.object.model.ObjectFieldSoap[] objectFields)
 		throws RemoteException {
 
 		try {
+			Map<Locale, String> labelMap = LocalizationUtil.getLocalizationMap(
+				labelMapLanguageIds, labelMapValues);
+			Map<Locale, String> pluralLabelMap =
+				LocalizationUtil.getLocalizationMap(
+					pluralLabelMapLanguageIds, pluralLabelMapValues);
+
 			com.liferay.object.model.ObjectDefinition returnValue =
 				ObjectDefinitionServiceUtil.addCustomObjectDefinition(
-					userId, name);
+					labelMap, name, panelAppOrder, panelCategoryKey,
+					pluralLabelMap, scope,
+					com.liferay.object.model.impl.ObjectFieldModelImpl.toModels(
+						objectFields));
 
 			return com.liferay.object.model.ObjectDefinitionSoap.toSoapModel(
 				returnValue);
@@ -139,6 +157,39 @@ public class ObjectDefinitionServiceSoap {
 		}
 	}
 
+	public static com.liferay.object.model.ObjectDefinitionSoap[]
+			getObjectDefinitions(long companyId, int start, int end)
+		throws RemoteException {
+
+		try {
+			java.util.List<com.liferay.object.model.ObjectDefinition>
+				returnValue = ObjectDefinitionServiceUtil.getObjectDefinitions(
+					companyId, start, end);
+
+			return com.liferay.object.model.ObjectDefinitionSoap.toSoapModels(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static int getObjectDefinitionsCount() throws RemoteException {
+		try {
+			int returnValue =
+				ObjectDefinitionServiceUtil.getObjectDefinitionsCount();
+
+			return returnValue;
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
 	public static int getObjectDefinitionsCount(long companyId)
 		throws RemoteException {
 
@@ -148,6 +199,56 @@ public class ObjectDefinitionServiceSoap {
 					companyId);
 
 			return returnValue;
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.object.model.ObjectDefinitionSoap
+			publishCustomObjectDefinition(long objectDefinitionId)
+		throws RemoteException {
+
+		try {
+			com.liferay.object.model.ObjectDefinition returnValue =
+				ObjectDefinitionServiceUtil.publishCustomObjectDefinition(
+					objectDefinitionId);
+
+			return com.liferay.object.model.ObjectDefinitionSoap.toSoapModel(
+				returnValue);
+		}
+		catch (Exception exception) {
+			_log.error(exception, exception);
+
+			throw new RemoteException(exception.getMessage());
+		}
+	}
+
+	public static com.liferay.object.model.ObjectDefinitionSoap
+			updateCustomObjectDefinition(
+				Long objectDefinitionId, boolean active,
+				String[] labelMapLanguageIds, String[] labelMapValues,
+				String name, String panelAppOrder, String panelCategoryKey,
+				String[] pluralLabelMapLanguageIds,
+				String[] pluralLabelMapValues, String scope)
+		throws RemoteException {
+
+		try {
+			Map<Locale, String> labelMap = LocalizationUtil.getLocalizationMap(
+				labelMapLanguageIds, labelMapValues);
+			Map<Locale, String> pluralLabelMap =
+				LocalizationUtil.getLocalizationMap(
+					pluralLabelMapLanguageIds, pluralLabelMapValues);
+
+			com.liferay.object.model.ObjectDefinition returnValue =
+				ObjectDefinitionServiceUtil.updateCustomObjectDefinition(
+					objectDefinitionId, active, labelMap, name, panelAppOrder,
+					panelCategoryKey, pluralLabelMap, scope);
+
+			return com.liferay.object.model.ObjectDefinitionSoap.toSoapModel(
+				returnValue);
 		}
 		catch (Exception exception) {
 			_log.error(exception, exception);

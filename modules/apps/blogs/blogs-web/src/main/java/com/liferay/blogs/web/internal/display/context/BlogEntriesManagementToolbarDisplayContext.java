@@ -100,6 +100,7 @@ public class BlogEntriesManagementToolbarDisplayContext
 		).build();
 	}
 
+	@Override
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"deleteEntriesCmd",
@@ -221,7 +222,7 @@ public class BlogEntriesManagementToolbarDisplayContext
 			liferayPortletResponse
 		).setMVCRenderCommandName(
 			"/blogs/view"
-		).build();
+		).buildPortletURL();
 
 		if (searchContainer.getDelta() > 0) {
 			portletURL.setParameter(
@@ -294,19 +295,21 @@ public class BlogEntriesManagementToolbarDisplayContext
 	}
 
 	private PortletURL _getCurrentSortingURL() {
-		PortletURL sortingURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			getPortletURL()
 		).setMVCRenderCommandName(
 			"/blogs/view"
+		).setKeywords(
+			() -> {
+				if (_isSearch()) {
+					return _getKeywords();
+				}
+
+				return null;
+			}
 		).setParameter(
 			SearchContainer.DEFAULT_CUR_PARAM, "0"
-		).build();
-
-		if (_isSearch()) {
-			sortingURL.setParameter("keywords", _getKeywords());
-		}
-
-		return sortingURL;
+		).buildPortletURL();
 	}
 
 	private String _getKeywords() {

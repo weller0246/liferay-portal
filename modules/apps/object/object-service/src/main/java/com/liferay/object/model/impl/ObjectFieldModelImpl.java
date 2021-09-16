@@ -19,9 +19,12 @@ import com.liferay.expando.kernel.util.ExpandoBridgeFactoryUtil;
 import com.liferay.exportimport.kernel.lar.StagedModelType;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectFieldModel;
+import com.liferay.object.model.ObjectFieldSoap;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
 import com.liferay.portal.kernel.model.ModelWrapper;
 import com.liferay.portal.kernel.model.User;
@@ -29,22 +32,32 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
+import java.sql.Blob;
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -59,6 +72,7 @@ import java.util.function.Function;
  * @see ObjectFieldImpl
  * @generated
  */
+@JSON(strict = true)
 public class ObjectFieldModelImpl
 	extends BaseModelImpl<ObjectField> implements ObjectFieldModel {
 
@@ -74,9 +88,12 @@ public class ObjectFieldModelImpl
 		{"objectFieldId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
+		{"listTypeDefinitionId", Types.BIGINT},
 		{"objectDefinitionId", Types.BIGINT}, {"dbColumnName", Types.VARCHAR},
-		{"indexed", Types.BOOLEAN}, {"indexedAsKeyword", Types.BOOLEAN},
-		{"indexedLanguageId", Types.VARCHAR}, {"name", Types.VARCHAR},
+		{"dbTableName", Types.VARCHAR}, {"indexed", Types.BOOLEAN},
+		{"indexedAsKeyword", Types.BOOLEAN},
+		{"indexedLanguageId", Types.VARCHAR}, {"label", Types.VARCHAR},
+		{"name", Types.VARCHAR}, {"relationshipType", Types.VARCHAR},
 		{"required", Types.BOOLEAN}, {"type_", Types.VARCHAR}
 	};
 
@@ -92,18 +109,22 @@ public class ObjectFieldModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("listTypeDefinitionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("objectDefinitionId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("dbColumnName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("dbTableName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("indexed", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("indexedAsKeyword", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("indexedLanguageId", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("label", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("relationshipType", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("required", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,objectDefinitionId LONG,dbColumnName VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,name VARCHAR(75) null,required BOOLEAN,type_ VARCHAR(75) null)";
+		"create table ObjectField (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectFieldId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,listTypeDefinitionId LONG,objectDefinitionId LONG,dbColumnName VARCHAR(75) null,dbTableName VARCHAR(75) null,indexed BOOLEAN,indexedAsKeyword BOOLEAN,indexedLanguageId VARCHAR(75) null,label STRING null,name VARCHAR(75) null,relationshipType VARCHAR(75) null,required BOOLEAN,type_ VARCHAR(75) null)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectField";
 
@@ -127,19 +148,31 @@ public class ObjectFieldModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long DBTABLENAME_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long OBJECTDEFINITIONID_COLUMN_BITMASK = 4L;
+	public static final long LISTTYPEDEFINITIONID_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 8L;
+	public static final long NAME_COLUMN_BITMASK = 8L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long OBJECTDEFINITIONID_COLUMN_BITMASK = 16L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -153,6 +186,68 @@ public class ObjectFieldModelImpl
 	 */
 	@Deprecated
 	public static void setFinderCacheEnabled(boolean finderCacheEnabled) {
+	}
+
+	/**
+	 * Converts the soap model instance into a normal model instance.
+	 *
+	 * @param soapModel the soap model instance to convert
+	 * @return the normal model instance
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
+	public static ObjectField toModel(ObjectFieldSoap soapModel) {
+		if (soapModel == null) {
+			return null;
+		}
+
+		ObjectField model = new ObjectFieldImpl();
+
+		model.setMvccVersion(soapModel.getMvccVersion());
+		model.setUuid(soapModel.getUuid());
+		model.setObjectFieldId(soapModel.getObjectFieldId());
+		model.setCompanyId(soapModel.getCompanyId());
+		model.setUserId(soapModel.getUserId());
+		model.setUserName(soapModel.getUserName());
+		model.setCreateDate(soapModel.getCreateDate());
+		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setListTypeDefinitionId(soapModel.getListTypeDefinitionId());
+		model.setObjectDefinitionId(soapModel.getObjectDefinitionId());
+		model.setDBColumnName(soapModel.getDBColumnName());
+		model.setDBTableName(soapModel.getDBTableName());
+		model.setIndexed(soapModel.isIndexed());
+		model.setIndexedAsKeyword(soapModel.isIndexedAsKeyword());
+		model.setIndexedLanguageId(soapModel.getIndexedLanguageId());
+		model.setLabel(soapModel.getLabel());
+		model.setName(soapModel.getName());
+		model.setRelationshipType(soapModel.getRelationshipType());
+		model.setRequired(soapModel.isRequired());
+		model.setType(soapModel.getType());
+
+		return model;
+	}
+
+	/**
+	 * Converts the soap model instances into normal model instances.
+	 *
+	 * @param soapModels the soap model instances to convert
+	 * @return the normal model instances
+	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
+	 */
+	@Deprecated
+	public static List<ObjectField> toModels(ObjectFieldSoap[] soapModels) {
+		if (soapModels == null) {
+			return null;
+		}
+
+		List<ObjectField> models = new ArrayList<ObjectField>(
+			soapModels.length);
+
+		for (ObjectFieldSoap soapModel : soapModels) {
+			models.add(toModel(soapModel));
+		}
+
+		return models;
 	}
 
 	public ObjectFieldModelImpl() {
@@ -313,6 +408,12 @@ public class ObjectFieldModelImpl
 			"modifiedDate",
 			(BiConsumer<ObjectField, Date>)ObjectField::setModifiedDate);
 		attributeGetterFunctions.put(
+			"listTypeDefinitionId", ObjectField::getListTypeDefinitionId);
+		attributeSetterBiConsumers.put(
+			"listTypeDefinitionId",
+			(BiConsumer<ObjectField, Long>)
+				ObjectField::setListTypeDefinitionId);
+		attributeGetterFunctions.put(
 			"objectDefinitionId", ObjectField::getObjectDefinitionId);
 		attributeSetterBiConsumers.put(
 			"objectDefinitionId",
@@ -322,6 +423,11 @@ public class ObjectFieldModelImpl
 		attributeSetterBiConsumers.put(
 			"dbColumnName",
 			(BiConsumer<ObjectField, String>)ObjectField::setDBColumnName);
+		attributeGetterFunctions.put(
+			"dbTableName", ObjectField::getDBTableName);
+		attributeSetterBiConsumers.put(
+			"dbTableName",
+			(BiConsumer<ObjectField, String>)ObjectField::setDBTableName);
 		attributeGetterFunctions.put("indexed", ObjectField::getIndexed);
 		attributeSetterBiConsumers.put(
 			"indexed",
@@ -336,9 +442,17 @@ public class ObjectFieldModelImpl
 		attributeSetterBiConsumers.put(
 			"indexedLanguageId",
 			(BiConsumer<ObjectField, String>)ObjectField::setIndexedLanguageId);
+		attributeGetterFunctions.put("label", ObjectField::getLabel);
+		attributeSetterBiConsumers.put(
+			"label", (BiConsumer<ObjectField, String>)ObjectField::setLabel);
 		attributeGetterFunctions.put("name", ObjectField::getName);
 		attributeSetterBiConsumers.put(
 			"name", (BiConsumer<ObjectField, String>)ObjectField::setName);
+		attributeGetterFunctions.put(
+			"relationshipType", ObjectField::getRelationshipType);
+		attributeSetterBiConsumers.put(
+			"relationshipType",
+			(BiConsumer<ObjectField, String>)ObjectField::setRelationshipType);
 		attributeGetterFunctions.put("required", ObjectField::getRequired);
 		attributeSetterBiConsumers.put(
 			"required",
@@ -353,6 +467,7 @@ public class ObjectFieldModelImpl
 			(Map)attributeSetterBiConsumers);
 	}
 
+	@JSON
 	@Override
 	public long getMvccVersion() {
 		return _mvccVersion;
@@ -367,6 +482,7 @@ public class ObjectFieldModelImpl
 		_mvccVersion = mvccVersion;
 	}
 
+	@JSON
 	@Override
 	public String getUuid() {
 		if (_uuid == null) {
@@ -395,6 +511,7 @@ public class ObjectFieldModelImpl
 		return getColumnOriginalValue("uuid_");
 	}
 
+	@JSON
 	@Override
 	public long getObjectFieldId() {
 		return _objectFieldId;
@@ -409,6 +526,7 @@ public class ObjectFieldModelImpl
 		_objectFieldId = objectFieldId;
 	}
 
+	@JSON
 	@Override
 	public long getCompanyId() {
 		return _companyId;
@@ -433,6 +551,7 @@ public class ObjectFieldModelImpl
 			this.<Long>getColumnOriginalValue("companyId"));
 	}
 
+	@JSON
 	@Override
 	public long getUserId() {
 		return _userId;
@@ -463,6 +582,7 @@ public class ObjectFieldModelImpl
 	public void setUserUuid(String userUuid) {
 	}
 
+	@JSON
 	@Override
 	public String getUserName() {
 		if (_userName == null) {
@@ -482,6 +602,7 @@ public class ObjectFieldModelImpl
 		_userName = userName;
 	}
 
+	@JSON
 	@Override
 	public Date getCreateDate() {
 		return _createDate;
@@ -496,6 +617,7 @@ public class ObjectFieldModelImpl
 		_createDate = createDate;
 	}
 
+	@JSON
 	@Override
 	public Date getModifiedDate() {
 		return _modifiedDate;
@@ -516,6 +638,32 @@ public class ObjectFieldModelImpl
 		_modifiedDate = modifiedDate;
 	}
 
+	@JSON
+	@Override
+	public long getListTypeDefinitionId() {
+		return _listTypeDefinitionId;
+	}
+
+	@Override
+	public void setListTypeDefinitionId(long listTypeDefinitionId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_listTypeDefinitionId = listTypeDefinitionId;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public long getOriginalListTypeDefinitionId() {
+		return GetterUtil.getLong(
+			this.<Long>getColumnOriginalValue("listTypeDefinitionId"));
+	}
+
+	@JSON
 	@Override
 	public long getObjectDefinitionId() {
 		return _objectDefinitionId;
@@ -540,6 +688,7 @@ public class ObjectFieldModelImpl
 			this.<Long>getColumnOriginalValue("objectDefinitionId"));
 	}
 
+	@JSON
 	@Override
 	public String getDBColumnName() {
 		if (_dbColumnName == null) {
@@ -559,11 +708,42 @@ public class ObjectFieldModelImpl
 		_dbColumnName = dbColumnName;
 	}
 
+	@JSON
+	@Override
+	public String getDBTableName() {
+		if (_dbTableName == null) {
+			return "";
+		}
+		else {
+			return _dbTableName;
+		}
+	}
+
+	@Override
+	public void setDBTableName(String dbTableName) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_dbTableName = dbTableName;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public String getOriginalDBTableName() {
+		return getColumnOriginalValue("dbTableName");
+	}
+
+	@JSON
 	@Override
 	public boolean getIndexed() {
 		return _indexed;
 	}
 
+	@JSON
 	@Override
 	public boolean isIndexed() {
 		return _indexed;
@@ -578,11 +758,13 @@ public class ObjectFieldModelImpl
 		_indexed = indexed;
 	}
 
+	@JSON
 	@Override
 	public boolean getIndexedAsKeyword() {
 		return _indexedAsKeyword;
 	}
 
+	@JSON
 	@Override
 	public boolean isIndexedAsKeyword() {
 		return _indexedAsKeyword;
@@ -597,6 +779,7 @@ public class ObjectFieldModelImpl
 		_indexedAsKeyword = indexedAsKeyword;
 	}
 
+	@JSON
 	@Override
 	public String getIndexedLanguageId() {
 		if (_indexedLanguageId == null) {
@@ -616,6 +799,116 @@ public class ObjectFieldModelImpl
 		_indexedLanguageId = indexedLanguageId;
 	}
 
+	@JSON
+	@Override
+	public String getLabel() {
+		if (_label == null) {
+			return "";
+		}
+		else {
+			return _label;
+		}
+	}
+
+	@Override
+	public String getLabel(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getLabel(languageId);
+	}
+
+	@Override
+	public String getLabel(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getLabel(languageId, useDefault);
+	}
+
+	@Override
+	public String getLabel(String languageId) {
+		return LocalizationUtil.getLocalization(getLabel(), languageId);
+	}
+
+	@Override
+	public String getLabel(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getLabel(), languageId, useDefault);
+	}
+
+	@Override
+	public String getLabelCurrentLanguageId() {
+		return _labelCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getLabelCurrentValue() {
+		Locale locale = getLocale(_labelCurrentLanguageId);
+
+		return getLabel(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getLabelMap() {
+		return LocalizationUtil.getLocalizationMap(getLabel());
+	}
+
+	@Override
+	public void setLabel(String label) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_label = label;
+	}
+
+	@Override
+	public void setLabel(String label, Locale locale) {
+		setLabel(label, locale, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setLabel(String label, Locale locale, Locale defaultLocale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(label)) {
+			setLabel(
+				LocalizationUtil.updateLocalization(
+					getLabel(), "Label", label, languageId, defaultLanguageId));
+		}
+		else {
+			setLabel(
+				LocalizationUtil.removeLocalization(
+					getLabel(), "Label", languageId));
+		}
+	}
+
+	@Override
+	public void setLabelCurrentLanguageId(String languageId) {
+		_labelCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setLabelMap(Map<Locale, String> labelMap) {
+		setLabelMap(labelMap, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setLabelMap(
+		Map<Locale, String> labelMap, Locale defaultLocale) {
+
+		if (labelMap == null) {
+			return;
+		}
+
+		setLabel(
+			LocalizationUtil.updateLocalization(
+				labelMap, getLabel(), "Label",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@JSON
 	@Override
 	public String getName() {
 		if (_name == null) {
@@ -644,11 +937,33 @@ public class ObjectFieldModelImpl
 		return getColumnOriginalValue("name");
 	}
 
+	@JSON
+	@Override
+	public String getRelationshipType() {
+		if (_relationshipType == null) {
+			return "";
+		}
+		else {
+			return _relationshipType;
+		}
+	}
+
+	@Override
+	public void setRelationshipType(String relationshipType) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_relationshipType = relationshipType;
+	}
+
+	@JSON
 	@Override
 	public boolean getRequired() {
 		return _required;
 	}
 
+	@JSON
 	@Override
 	public boolean isRequired() {
 		return _required;
@@ -663,6 +978,7 @@ public class ObjectFieldModelImpl
 		_required = required;
 	}
 
+	@JSON
 	@Override
 	public String getType() {
 		if (_type == null) {
@@ -726,6 +1042,72 @@ public class ObjectFieldModelImpl
 	}
 
 	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> labelMap = getLabelMap();
+
+		for (Map.Entry<Locale, String> entry : labelMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getLabel();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			ObjectField.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String label = getLabel(defaultLocale);
+
+		if (Validator.isNull(label)) {
+			setLabel(getLabel(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setLabel(getLabel(defaultLocale), defaultLocale, defaultLocale);
+		}
+	}
+
+	@Override
 	public ObjectField toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, ObjectField>
@@ -752,16 +1134,63 @@ public class ObjectFieldModelImpl
 		objectFieldImpl.setUserName(getUserName());
 		objectFieldImpl.setCreateDate(getCreateDate());
 		objectFieldImpl.setModifiedDate(getModifiedDate());
+		objectFieldImpl.setListTypeDefinitionId(getListTypeDefinitionId());
 		objectFieldImpl.setObjectDefinitionId(getObjectDefinitionId());
 		objectFieldImpl.setDBColumnName(getDBColumnName());
+		objectFieldImpl.setDBTableName(getDBTableName());
 		objectFieldImpl.setIndexed(isIndexed());
 		objectFieldImpl.setIndexedAsKeyword(isIndexedAsKeyword());
 		objectFieldImpl.setIndexedLanguageId(getIndexedLanguageId());
+		objectFieldImpl.setLabel(getLabel());
 		objectFieldImpl.setName(getName());
+		objectFieldImpl.setRelationshipType(getRelationshipType());
 		objectFieldImpl.setRequired(isRequired());
 		objectFieldImpl.setType(getType());
 
 		objectFieldImpl.resetOriginalValues();
+
+		return objectFieldImpl;
+	}
+
+	@Override
+	public ObjectField cloneWithOriginalValues() {
+		ObjectFieldImpl objectFieldImpl = new ObjectFieldImpl();
+
+		objectFieldImpl.setMvccVersion(
+			this.<Long>getColumnOriginalValue("mvccVersion"));
+		objectFieldImpl.setUuid(this.<String>getColumnOriginalValue("uuid_"));
+		objectFieldImpl.setObjectFieldId(
+			this.<Long>getColumnOriginalValue("objectFieldId"));
+		objectFieldImpl.setCompanyId(
+			this.<Long>getColumnOriginalValue("companyId"));
+		objectFieldImpl.setUserId(this.<Long>getColumnOriginalValue("userId"));
+		objectFieldImpl.setUserName(
+			this.<String>getColumnOriginalValue("userName"));
+		objectFieldImpl.setCreateDate(
+			this.<Date>getColumnOriginalValue("createDate"));
+		objectFieldImpl.setModifiedDate(
+			this.<Date>getColumnOriginalValue("modifiedDate"));
+		objectFieldImpl.setListTypeDefinitionId(
+			this.<Long>getColumnOriginalValue("listTypeDefinitionId"));
+		objectFieldImpl.setObjectDefinitionId(
+			this.<Long>getColumnOriginalValue("objectDefinitionId"));
+		objectFieldImpl.setDBColumnName(
+			this.<String>getColumnOriginalValue("dbColumnName"));
+		objectFieldImpl.setDBTableName(
+			this.<String>getColumnOriginalValue("dbTableName"));
+		objectFieldImpl.setIndexed(
+			this.<Boolean>getColumnOriginalValue("indexed"));
+		objectFieldImpl.setIndexedAsKeyword(
+			this.<Boolean>getColumnOriginalValue("indexedAsKeyword"));
+		objectFieldImpl.setIndexedLanguageId(
+			this.<String>getColumnOriginalValue("indexedLanguageId"));
+		objectFieldImpl.setLabel(this.<String>getColumnOriginalValue("label"));
+		objectFieldImpl.setName(this.<String>getColumnOriginalValue("name"));
+		objectFieldImpl.setRelationshipType(
+			this.<String>getColumnOriginalValue("relationshipType"));
+		objectFieldImpl.setRequired(
+			this.<Boolean>getColumnOriginalValue("required"));
+		objectFieldImpl.setType(this.<String>getColumnOriginalValue("type_"));
 
 		return objectFieldImpl;
 	}
@@ -880,6 +1309,8 @@ public class ObjectFieldModelImpl
 			objectFieldCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		objectFieldCacheModel.listTypeDefinitionId = getListTypeDefinitionId();
+
 		objectFieldCacheModel.objectDefinitionId = getObjectDefinitionId();
 
 		objectFieldCacheModel.dbColumnName = getDBColumnName();
@@ -888,6 +1319,14 @@ public class ObjectFieldModelImpl
 
 		if ((dbColumnName != null) && (dbColumnName.length() == 0)) {
 			objectFieldCacheModel.dbColumnName = null;
+		}
+
+		objectFieldCacheModel.dbTableName = getDBTableName();
+
+		String dbTableName = objectFieldCacheModel.dbTableName;
+
+		if ((dbTableName != null) && (dbTableName.length() == 0)) {
+			objectFieldCacheModel.dbTableName = null;
 		}
 
 		objectFieldCacheModel.indexed = isIndexed();
@@ -902,12 +1341,28 @@ public class ObjectFieldModelImpl
 			objectFieldCacheModel.indexedLanguageId = null;
 		}
 
+		objectFieldCacheModel.label = getLabel();
+
+		String label = objectFieldCacheModel.label;
+
+		if ((label != null) && (label.length() == 0)) {
+			objectFieldCacheModel.label = null;
+		}
+
 		objectFieldCacheModel.name = getName();
 
 		String name = objectFieldCacheModel.name;
 
 		if ((name != null) && (name.length() == 0)) {
 			objectFieldCacheModel.name = null;
+		}
+
+		objectFieldCacheModel.relationshipType = getRelationshipType();
+
+		String relationshipType = objectFieldCacheModel.relationshipType;
+
+		if ((relationshipType != null) && (relationshipType.length() == 0)) {
+			objectFieldCacheModel.relationshipType = null;
 		}
 
 		objectFieldCacheModel.required = isRequired();
@@ -929,7 +1384,7 @@ public class ObjectFieldModelImpl
 			getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			(4 * attributeGetterFunctions.size()) + 2);
+			(5 * attributeGetterFunctions.size()) + 2);
 
 		sb.append("{");
 
@@ -940,9 +1395,26 @@ public class ObjectFieldModelImpl
 			Function<ObjectField, Object> attributeGetterFunction =
 				entry.getValue();
 
+			sb.append("\"");
 			sb.append(attributeName);
-			sb.append("=");
-			sb.append(attributeGetterFunction.apply((ObjectField)this));
+			sb.append("\": ");
+
+			Object value = attributeGetterFunction.apply((ObjectField)this);
+
+			if (value == null) {
+				sb.append("null");
+			}
+			else if (value instanceof Blob || value instanceof Date ||
+					 value instanceof Map || value instanceof String) {
+
+				sb.append(
+					"\"" + StringUtil.replace(value.toString(), "\"", "'") +
+						"\"");
+			}
+			else {
+				sb.append(value);
+			}
+
 			sb.append(", ");
 		}
 
@@ -1002,12 +1474,17 @@ public class ObjectFieldModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private long _listTypeDefinitionId;
 	private long _objectDefinitionId;
 	private String _dbColumnName;
+	private String _dbTableName;
 	private boolean _indexed;
 	private boolean _indexedAsKeyword;
 	private String _indexedLanguageId;
+	private String _label;
+	private String _labelCurrentLanguageId;
 	private String _name;
+	private String _relationshipType;
 	private boolean _required;
 	private String _type;
 
@@ -1048,12 +1525,17 @@ public class ObjectFieldModelImpl
 		_columnOriginalValues.put("userName", _userName);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
+		_columnOriginalValues.put(
+			"listTypeDefinitionId", _listTypeDefinitionId);
 		_columnOriginalValues.put("objectDefinitionId", _objectDefinitionId);
 		_columnOriginalValues.put("dbColumnName", _dbColumnName);
+		_columnOriginalValues.put("dbTableName", _dbTableName);
 		_columnOriginalValues.put("indexed", _indexed);
 		_columnOriginalValues.put("indexedAsKeyword", _indexedAsKeyword);
 		_columnOriginalValues.put("indexedLanguageId", _indexedLanguageId);
+		_columnOriginalValues.put("label", _label);
 		_columnOriginalValues.put("name", _name);
+		_columnOriginalValues.put("relationshipType", _relationshipType);
 		_columnOriginalValues.put("required", _required);
 		_columnOriginalValues.put("type_", _type);
 	}
@@ -1096,21 +1578,29 @@ public class ObjectFieldModelImpl
 
 		columnBitmasks.put("modifiedDate", 128L);
 
-		columnBitmasks.put("objectDefinitionId", 256L);
+		columnBitmasks.put("listTypeDefinitionId", 256L);
 
-		columnBitmasks.put("dbColumnName", 512L);
+		columnBitmasks.put("objectDefinitionId", 512L);
 
-		columnBitmasks.put("indexed", 1024L);
+		columnBitmasks.put("dbColumnName", 1024L);
 
-		columnBitmasks.put("indexedAsKeyword", 2048L);
+		columnBitmasks.put("dbTableName", 2048L);
 
-		columnBitmasks.put("indexedLanguageId", 4096L);
+		columnBitmasks.put("indexed", 4096L);
 
-		columnBitmasks.put("name", 8192L);
+		columnBitmasks.put("indexedAsKeyword", 8192L);
 
-		columnBitmasks.put("required", 16384L);
+		columnBitmasks.put("indexedLanguageId", 16384L);
 
-		columnBitmasks.put("type_", 32768L);
+		columnBitmasks.put("label", 32768L);
+
+		columnBitmasks.put("name", 65536L);
+
+		columnBitmasks.put("relationshipType", 131072L);
+
+		columnBitmasks.put("required", 262144L);
+
+		columnBitmasks.put("type_", 524288L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

@@ -58,6 +58,14 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Advanced");
 
+		if (isSet(textNumber)) {
+			var textNumber = selenium.getAttribute("//div[contains(@data-field-name,'fieldReference')]//label[normalize-space(text())='Field Reference']//following-sibling::input[@type='text']@value");
+
+			return "${textNumber}";
+
+			echo("## * textNumber: ${textNumber}");
+		}
+
 		Type(
 			key_fieldLabel = "Field Reference",
 			key_fieldName = "fieldReference",
@@ -585,83 +593,6 @@ definition {
 		}
 	}
 
-	macro assertFieldOptionLabels {
-		Navigator.gotoSidebarTab(tabName = "Builder");
-
-		AssertClick.assertPartialTextClickAt(
-			key_fieldFieldLabel = "${fieldFieldLabel}",
-			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER_LABEL",
-			value1 = "${fieldFieldLabel}");
-
-		if (IsTextEqual(locator1 = "DataEngineBuilder#SIDEBAR_FIELD_NAME_BUTTON", value1 = "Grid")) {
-			var index = "1";
-
-			for (var optionLabel : list "${optionLabelList}") {
-				AssertTextEquals(
-					index = "${index}",
-					key_optionFieldLabel = "${optionFieldLabel}",
-					locator1 = "Sidebar#OPTION_INPUT",
-					value1 = "${optionLabel}");
-
-				var index = ${index} + 1;
-			}
-		}
-		else if (IsTextEqual(locator1 = "DataEngineBuilder#SIDEBAR_FIELD_NAME_BUTTON", value1 = "Select from List")) {
-			var index = "1";
-
-			for (var optionLabel : list "${optionLabelList}") {
-				AssertTextEquals(
-					index = "${index}",
-					locator1 = "Sidebar#OPTION_INPUT_WITHOUT_LABEL",
-					value1 = "${optionLabel}");
-
-				var index = ${index} + 1;
-			}
-		}
-		else {
-			var index = "1";
-
-			for (var optionLabel : list "${optionLabelList}") {
-				AssertTextEquals(
-					index = "${index}",
-					key_optionFieldLabel = "Options",
-					locator1 = "Sidebar#OPTION_INPUT",
-					value1 = "${optionLabel}");
-
-				var index = ${index} + 1;
-			}
-		}
-	}
-
-	macro assertFieldOptionLabelsNotPresent {
-		if (isSet(fieldFieldLabel)) {
-			AssertClick.assertPartialTextClickAt(
-				key_fieldFieldLabel = "${fieldFieldLabel}",
-				locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER",
-				value1 = "${fieldFieldLabel}");
-		}
-
-		if (isSet(optionFieldLabel)) {
-			for (var optionLabel : list "${optionLabelList}") {
-				AssertElementNotPresent(
-					key_optionFieldLabel = "${optionFieldLabel}",
-					key_optionValue = "${optionLabel}",
-					locator1 = "DataEngineBuilder#OPTION_VALUE_INPUT_WITH_LABEL");
-			}
-		}
-		else {
-			for (var optionLabel : list "${optionLabelList}") {
-				AssertElementNotPresent(
-					key_optionValue = "${optionLabel}",
-					locator1 = "DataEngineBuilder#OPTION_VALUE_INPUT");
-			}
-		}
-
-		if (isSet(fieldFieldLabel)) {
-			Click(locator1 = "Sidebar#BACK");
-		}
-	}
-
 	macro assertFieldRepeated {
 		AssertElementPresent(
 			key_fieldName = "${fieldName}",
@@ -674,16 +605,6 @@ definition {
 			key_fieldName = "${fieldName}",
 			key_index = "${index}",
 			locator1 = "WCEditWebContent#REPEATED_FIELD");
-	}
-
-	macro assertFieldsGroup {
-		for (var fieldFieldLabel : list "${fieldsLabelList}") {
-			AssertElementPresent(
-				key_fieldFieldLabel = "${fieldFieldLabel}",
-				key_fieldGroupDepth = "${fieldGroupDepth}",
-				key_fieldGroupLabel = "${fieldGroupLabel}",
-				locator1 = "DataEngineBuilder#FIELDS_GROUP_FIELD_WITH_DEPTH");
-		}
 	}
 
 	macro assertInlineOptions {
@@ -760,7 +681,7 @@ definition {
 			locator1 = "DataEngineRenderer#WEB_CONTENT_DISABLED_FIELD");
 	}
 
-	macro assertSwitcherOptions {
+	macro assertSwitchOptions {
 		if (!(isSet(fieldIndex))) {
 			var fieldIndex = "1";
 		}
@@ -774,7 +695,7 @@ definition {
 				fieldIndex = "${fieldIndex}",
 				key_fieldLabel = "${fieldLabel}",
 				key_optionLabel = "${optionLabel}",
-				locator1 = "DataEngineBuilder#OPTIONS_SWITCHER_INDEXED",
+				locator1 = "DataEngineBuilder#OPTIONS_SWITCH_INDEXED",
 				optionIndex = "${optionIndex}");
 		}
 	}
@@ -1459,7 +1380,7 @@ definition {
 			locator1 = "WCEditWebContent#SELECTION_OPTION");
 	}
 
-	macro toggleShowAsSwitcher {
+	macro toggleShowAsSwitch {
 		if (!(isSet(index))) {
 			var index = "1";
 		}
@@ -1481,14 +1402,14 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Basic");
 
-		if (IsChecked(checkboxName = "Show as a Switcher", locator1 = "Checkbox#ANY_CHECKBOX")) {
+		if (IsChecked(checkboxName = "Show as a Switch", locator1 = "Checkbox#ANY_CHECKBOX")) {
 			Uncheck.uncheckToggleSwitch(
-				checkboxName = "Show as a Switcher",
+				checkboxName = "Show as a Switch",
 				locator1 = "Checkbox#ANY_CHECKBOX");
 		}
 		else {
 			Check.checkToggleSwitch(
-				checkboxName = "Show as a Switcher",
+				checkboxName = "Show as a Switch",
 				locator1 = "Checkbox#ANY_CHECKBOX");
 		}
 
@@ -1583,25 +1504,6 @@ definition {
 				locator1 = "TextInput#GENERIC_TEXT_INPUT",
 				value1 = "${fieldPlaceholder}");
 		}
-	}
-
-	macro viewFieldReference {
-		var key_fieldFieldLabel = "${fieldFieldLabel}";
-		var key_text = "${fieldName}";
-
-		AssertClick.assertPartialTextClickAt(
-			locator1 = "DDMEditStructure#FORM_FIELD_CONTAINER",
-			value1 = "${fieldFieldLabel}");
-
-		AssertTextEquals(
-			locator1 = "Button#ANY",
-			value1 = "${fieldName}");
-
-		Navigator.gotoNavTab(navTab = "Advanced");
-
-		AssertTextEquals.assertValue(
-			locator1 = "Sidebar#DDM_FIELD_REFERENCE",
-			value1 = "${fieldReference}");
 	}
 
 	macro viewFieldSearchable {

@@ -32,12 +32,12 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
@@ -190,6 +190,23 @@ public abstract class BasePageDefinitionResourceTestCase {
 		Assert.assertTrue(false);
 	}
 
+	protected void assertContains(
+		PageDefinition pageDefinition, List<PageDefinition> pageDefinitions) {
+
+		boolean contains = false;
+
+		for (PageDefinition item : pageDefinitions) {
+			if (equals(pageDefinition, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			pageDefinitions + " does not contain " + pageDefinition, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {
@@ -259,6 +276,14 @@ public abstract class BasePageDefinitionResourceTestCase {
 
 			if (Objects.equals("settings", additionalAssertFieldName)) {
 				if (pageDefinition.getSettings() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("version", additionalAssertFieldName)) {
+				if (pageDefinition.getVersion() == null) {
 					valid = false;
 				}
 
@@ -379,6 +404,17 @@ public abstract class BasePageDefinitionResourceTestCase {
 				continue;
 			}
 
+			if (Objects.equals("version", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						pageDefinition1.getVersion(),
+						pageDefinition2.getVersion())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
 			throw new IllegalArgumentException(
 				"Invalid additional assert field name " +
 					additionalAssertFieldName);
@@ -485,6 +521,11 @@ public abstract class BasePageDefinitionResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("version")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		throw new IllegalArgumentException(
 			"Invalid entity field " + entityFieldName);
 	}
@@ -529,6 +570,7 @@ public abstract class BasePageDefinitionResourceTestCase {
 	protected PageDefinition randomPageDefinition() throws Exception {
 		return new PageDefinition() {
 			{
+				version = RandomTestUtil.randomDouble();
 			}
 		};
 	}
@@ -619,8 +661,8 @@ public abstract class BasePageDefinitionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BasePageDefinitionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BasePageDefinitionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

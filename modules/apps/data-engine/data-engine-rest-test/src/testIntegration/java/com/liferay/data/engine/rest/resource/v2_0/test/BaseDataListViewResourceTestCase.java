@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -220,17 +219,17 @@ public abstract class BaseDataListViewResourceTestCase {
 
 	@Test
 	public void testGetDataDefinitionDataListViewsPage() throws Exception {
-		Page<DataListView> page =
-			dataListViewResource.getDataDefinitionDataListViewsPage(
-				testGetDataDefinitionDataListViewsPage_getDataDefinitionId(),
-				RandomTestUtil.randomString(), Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long dataDefinitionId =
 			testGetDataDefinitionDataListViewsPage_getDataDefinitionId();
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataListViewsPage_getIrrelevantDataDefinitionId();
+
+		Page<DataListView> page =
+			dataListViewResource.getDataDefinitionDataListViewsPage(
+				dataDefinitionId, RandomTestUtil.randomString(),
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDataDefinitionId != null) {
 			DataListView irrelevantDataListView =
@@ -257,7 +256,7 @@ public abstract class BaseDataListViewResourceTestCase {
 				dataDefinitionId, randomDataListView());
 
 		page = dataListViewResource.getDataDefinitionDataListViewsPage(
-			dataDefinitionId, null, Pagination.of(1, 2), null);
+			dataDefinitionId, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -642,6 +641,23 @@ public abstract class BaseDataListViewResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		DataListView dataListView, List<DataListView> dataListViews) {
+
+		boolean contains = false;
+
+		for (DataListView item : dataListViews) {
+			if (equals(dataListView, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataListViews + " does not contain " + dataListView, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1309,8 +1325,8 @@ public abstract class BaseDataListViewResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDataListViewResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDataListViewResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

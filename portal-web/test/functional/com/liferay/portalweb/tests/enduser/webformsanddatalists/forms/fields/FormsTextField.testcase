@@ -31,17 +31,157 @@ definition {
 		}
 	}
 
-	@description = "Verify that a Text Field can be Autocompleted from a list of options"
+	@description = "Verify that a Text Field can be Autocompleted from a Data Provider"
 	@priority = "4"
-	test CanBeAutocompletedUsingAList {
-		property forms.functional = "true";
-		property portal.acceptance = "false";
+	test CanBeAutocompletedUsingADataProvider {
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsTextField#CanBeAutocompletedUsingADataProvider";
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		FormsAdminNavigator.enableLocalNetworkDataProvider();
+
+		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Forms");
 
-		FormsAdminNavigator.gotoAddForm();
+		Navigator.gotoNavItem(navItem = "Data Providers");
+
+		FormsAdminNavigator.gotoAddDataProvider();
+
+		FormsAdmin.editDataProvider(
+			name = "Country Names",
+			outputParameterLabel = "Countries Full Name",
+			outputParameterLabel2 = "Countries A2",
+			outputParameterName = "Countries Full Name",
+			outputParameterName2 = "Countries A2",
+			outputParameterPath = "nameCurrentValue",
+			outputParameterPath2 = "a2",
+			outputParameterType = "List",
+			outputParameterType2 = "List",
+			password = "test",
+			url = "${portalURL}/api/jsonws/country/get-countries",
+			username = "test@liferay.com");
+
+		FormsAdmin.saveDataProvider();
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldNameTextFieldAuto = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field With Autocomplete");
+
+		Form.gotoAutocompleteTab();
+
+		Form.enableAutocompleteConfiguration();
+
+		Form.editTextFieldDataProvider(
+			dataProvider = "Country Names",
+			dataProviderOutput = "Countries A2");
+
+		Form.save();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "Created Form Name");
+
+		FormsAdminNavigator.gotoEditField(fieldName = "${fieldNameTextFieldAuto}");
+
+		Form.gotoAutocompleteTab();
+
+		Form.editTextFieldDataProvider(
+			dataProvider = "Country Names",
+			dataProviderOutput = "Countries Full Name");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.editTextWithDataProvider(
+			fieldName = "${fieldNameTextFieldAuto}",
+			fieldValue = "Bra");
+
+		FormFields.selectAutoCompleteOption(autocompleteOption = "Brazil");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text Field With Autocomplete",
+			fieldValue = "Brazil");
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoEditFormByName();
+
+		FormsAdminNavigator.gotoEditField(fieldName = "${fieldNameTextFieldAuto}");
+
+		Form.gotoAutocompleteTab();
+
+		AssertElementPresent(
+			key_fieldName = "dataSourceType",
+			key_radioOption = "From Data Provider",
+			locator1 = "FormFields#RADIO_OPTION_LABEL");
+
+		Form.disableAutocompleteSwitchTextField();
+
+		AssertNotVisible(
+			key_fieldName = "dataSourceType",
+			key_radioOption = "From Data Provider",
+			locator1 = "FormFields#RADIO_OPTION_LABEL");
+
+		Form.closeSidebar();
+
+		Form.save();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.editText(
+			fieldName = "${fieldNameTextFieldAuto}",
+			fieldValue = "Br");
+
+		AssertElementNotPresent(
+			key_autocompleteOption = "Brazil",
+			locator1 = "FormFields#AUTOCOMPLETE_OPTION");
+	}
+
+	@description = "Verify that a Text Field can be Autocompleted from a list of options"
+	@priority = "4"
+	test CanBeAutocompletedUsingAList {
+		property forms.functional = "true";
+
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -84,13 +224,8 @@ definition {
 	@priority = "5"
 	test CanBeCreated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -111,13 +246,8 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -158,13 +288,8 @@ definition {
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -197,17 +322,189 @@ definition {
 			locator1 = "FormFields#FIELD_TARGET_LABEL");
 	}
 
-	@description = "Verify that the "Contains" option can be used to validate a Text Field"
-	@priority = "4"
-	test CanBeValidatedUsingTheContainsOption {
-		property forms.functional = "true";
-		property portal.acceptance = "false";
+	@description = "LPS-58829 - Verify that a Text Field can be required"
+	@priority = "5"
+	test CanBeRequired {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsTextField#CanBeRequired";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewTextLabel(
+			fieldLabel = "Text Field",
+			fieldName = "${fieldTextField}");
+
+		FormFields.viewRequiredAsterisk();
+
+		FormPortlet.submitWithValidationError();
+
+		FormFields.editText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "Text Field Value");
+
+		FormPortlet.waitForValidationErrorNotPresent();
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Forms");
 
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text Field",
+			fieldValue = "Text Field Value");
+	}
+
+	@description = "LPS-59335 - Verify that a Text Field can be set to Repeatable "
+	@priority = "5"
+	test CanBeSetAsRepeatable {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsTextField#CanBeSetAsRepeatable";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Repeatable");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.addRepeatableField(
+			fieldName = "${fieldTextField}",
+			repeatableFieldNumber = "1");
+
+		FormFields.editRepeatingText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "Text Field Value",
+			fieldValueRepeat = "Text Field Value Repeat");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text",
+			fieldValue = "Text Field Value, Text Field Value Repeat");
+	}
+
+	@description = "LPS-59997 - Verify that a Text Field can be set to Multiple Lines"
+	@priority = "3"
+	test CanBeSetToMultipleLines {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsTextField#CanBeSetToMultipleLines";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field");
+
+		FormFields.selectTextFieldLineOption(textFieldLineOption = "Multiple Lines");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewTextLabel(
+			fieldLabel = "Text Field",
+			fieldName = "TextField");
+
+		FormFields.viewRequiredAsterisk();
+
+		FormFields.editBlankMultiTextFieldWithEnterKey(fieldName = "${fieldTextField}");
+
+		FormPortlet.submitWithValidationError();
+
+		FormFields.editTextMultiline(
+			fieldName = "${fieldTextField}",
+			fieldValue = "Text Field Value");
+
+		FormPortlet.waitForValidationErrorNotPresent();
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text Field",
+			fieldValue = "Text Field Value");
+	}
+
+	@description = "Verify that the "Contains" option can be used to validate a Text Field"
+	@priority = "4"
+	test CanBeValidatedUsingTheContainsOption {
+		property forms.functional = "true";
+
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -217,7 +514,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormViewBuilder.checkSwitcher(propertyName = "Validation");
+		FormViewBuilder.checkSwitch(propertyName = "Validation");
 
 		FormFields.selectSelectOption(
 			fieldName = "If Input",
@@ -260,38 +557,91 @@ definition {
 			successPageTitle = "Thank you.");
 	}
 
-	@description = "Verify that the Does Not Match option can be used to validate a Text Field"
+	@description = "Verify that the Does Not Contain option can be used to validate a Text Field"
 	@priority = "4"
-	test CanBeValidatedUsingTheDoesNotMatchOption {
-		property forms.functional = "true";
-		property portal.acceptance = "false";
+	test CanBeValidatedUsingTheDoesNotContainOption {
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "FormsTextField#CanBeValidatedUsingTheDoesNotContainOption";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Validation");
+
+		FormFields.editValidation(
+			validationArgument = "Contains",
+			validationErrorMessage = "Text must contain &apos;&apos;Test&apos;&apos;",
+			validationInput = "Test");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormFields.editText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "text");
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "Text must contain &apos;&apos;Test&apos;&apos;");
+
+		FormFields.editText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "test");
+
+		FormPortlet.waitForValidationErrorNotPresent(validationErrorMessage = "Text must contain &apos;&apos;Test&apos;&apos;");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Forms");
 
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.viewForm();
 
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text",
+			fieldValue = "test");
+	}
+
+	@description = "Verify that the Does Not Match option can be used to validate a Text Field"
+	@priority = "4"
+	test CanBeValidatedUsingTheDoesNotMatchOption {
+		property forms.functional = "true";
+
+		FormsAdmin.addForm();
 		Form.editName(formName = "Form 1");
 
-		Form.gotoAddField(
-			fieldPositionNumber = "0",
-			fieldType = "Text");
+		Form.addTextField(fieldPositionNumber = "0");
 
-		Navigator.gotoNavTab(navTab = "Advanced");
+		Form.gotoAdvancedTab();
 
-		Check.checkToggleSwitch(
-			key_toggleSwitchLabel = "Validation",
-			locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
+		FormFields.enableSwitch(fieldName = "Validation");
 
 		FormFields.editValidation(
-			selectOption = "Test Error",
 			validationArgument = "Matches",
+			validationErrorMessage = "Test Error",
 			validationInput = "Test");
 
-		Click(locator1 = "Button#SAVE");
+		Form.save();
 
-		Button.clickPublish();
+		Form.publishForm();
 
 		FormsAdminNavigator.gotoPublishedForm();
 
@@ -324,13 +674,8 @@ definition {
 	@priority = "4"
 	test CanBeValidatedUsingTheIsNotEmailOption {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -383,13 +728,8 @@ definition {
 	@priority = "4"
 	test CanBeValidatedUsingTheIsNotURLOption {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -436,17 +776,77 @@ definition {
 			successPageTitle = "Thank you.");
 	}
 
-	@description = "Verify that a Text Field can require Confirmation"
+	@description = "LPS-125860 - Verify that Confirmation field property is working as expected"
 	@priority = "5"
 	test CanRequireConfirmation {
-		property forms.functional = "true";
-		property portal.acceptance = "false";
+		property portal.acceptance = "true";
+		property portal.upstream = "true";
+
+		FormsAdmin.addForm();
+
+		Form.editName();
+
+		Form.editDescription();
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		var fieldTextField = FormFields.getFieldName();
+
+		Form.editFieldLabelMetal(fieldValue = "Text Field");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Require Confirmation");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.waitFormRenderer(text = "Submit");
+
+		FormFields.viewTextLabel(
+			fieldLabel = "Text Field",
+			fieldName = "${fieldTextField}");
+
+		FormFields.viewConfirmationFieldTextLabel(
+			fieldLabel = "Text Field",
+			fieldName = "${fieldTextField}");
+
+		FormFields.editText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "Text Field Value");
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "The information does not match.");
+
+		FormFields.editConfirmationFieldText(
+			fieldName = "${fieldTextField}",
+			fieldValue = "Text Field Value");
+
+		FormPortlet.waitForValidationErrorNotPresent(validationErrorMessage = "The information does not match.");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Forms");
 
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text Field",
+			fieldValue = "Text Field Value");
+	}
+
+	@description = "Verify that a Text Field can require Confirmation"
+	@priority = "5"
+	test CanRequireConfirmationWithValidation {
+		property forms.functional = "true";
+
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -454,9 +854,9 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Require Confirmation");
+		FormFields.enableSwitch(fieldName = "Require Confirmation");
 
-		FormFields.enableSwitcher(fieldName = "Validation");
+		FormFields.enableSwitch(fieldName = "Validation");
 
 		FormFields.editValidation(
 			validationArgument = "Contains",
@@ -505,13 +905,8 @@ definition {
 	@priority = "5"
 	test ConfirmationBoxCanBePlacedHorizontally {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -519,9 +914,9 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Require Confirmation");
+		FormFields.enableSwitch(fieldName = "Require Confirmation");
 
-		FormFields.enableSwitcher(fieldName = "Validation");
+		FormFields.enableSwitch(fieldName = "Validation");
 
 		FormFields.editValidation(
 			validationArgument = "Contains",
@@ -569,13 +964,8 @@ definition {
 	@priority = "5"
 	test ConfirmationErrorMessageCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -585,11 +975,11 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Require Confirmation");
+		FormFields.enableSwitch(fieldName = "Require Confirmation");
 
 		FormFields.editRequireConfirmationField(confirmationErrorMessage = "Confirm Text Error");
 
-		FormFields.enableSwitcher(fieldName = "Validation");
+		FormFields.enableSwitch(fieldName = "Validation");
 
 		FormFields.editValidation(
 			validationArgument = "Contains",
@@ -625,14 +1015,8 @@ definition {
 	@priority = "5"
 	test ConfirmationLabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
-
+		FormsAdmin.addForm();
 		Form.editName(formName = "Form 1");
 
 		Form.gotoAddField(fieldType = "Text");
@@ -641,13 +1025,13 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Require Confirmation");
+		FormFields.enableSwitch(fieldName = "Require Confirmation");
 
 		FormFields.editRequireConfirmationField(confirmationLabel = "Confirm Test");
 
 		FormFields.viewTextLabel(fieldLabel = "Confirm Test Text");
 
-		FormFields.enableSwitcher(fieldName = "Validation");
+		FormFields.enableSwitch(fieldName = "Validation");
 
 		FormFields.editValidation(
 			validationArgument = "Contains",
@@ -685,13 +1069,8 @@ definition {
 	@priority = "5"
 	test HelpTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -710,17 +1089,64 @@ definition {
 			fieldValue = "Help Text Test");
 	}
 
+	@description = "LPS-129411 - Verify that a field can be hidden"
+	@priority = "5"
+	test HiddenFieldCanBeEnabled {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Hide Field");
+
+		Form.viewHiddenField(fieldLabel = "Text");
+
+		for (var switchName : list "Show Label,Repeatable,Require Confirmation,Validation") {
+			AssertElementPresent(
+				key_switchOption = "${switchName}",
+				locator1 = "FormFields#SWITCH_NOT_VISIBLE");
+		}
+
+		AssertElementPresent(
+			key_switchOption = "Autocomplete",
+			locator1 = "Form#SIDEBAR_NOT_VISIBLE_TAB");
+	}
+
+	@description = "LPS-129411 - Verify that hidden field is working in a published Form"
+	@priority = "5"
+	test HiddenFieldIsWorking {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Hide Field");
+
+		Form.viewHiddenField(fieldLabel = "Text");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		AssertNotVisible(
+			key_fieldName = "Text",
+			locator1 = "FormFields#TEXT_FIELD");
+
+		FormPortlet.submitSuccessfullyAndViewSuccessPage();
+	}
+
 	@description = "Verify that the Field Label can be edited"
 	@priority = "5"
 	test LabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -746,13 +1172,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeHidden {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form1");
 
@@ -777,13 +1198,8 @@ definition {
 	@priority = "5"
 	test PlaceholderTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -804,13 +1220,8 @@ definition {
 	@priority = "5"
 	test PredefinedValueCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -839,13 +1250,8 @@ definition {
 	@priority = "5"
 	test ReferenceCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -862,6 +1268,111 @@ definition {
 		FormFields.viewFieldReference(
 			fieldName = "Text",
 			key_fieldReferenceValue = "Text1234");
+	}
+
+	@description = "LPS-129419 - Verify that the Required Field Error Message can be Edited"
+	@priority = "5"
+	test RequiredFieldErrorMessageCanBeEdited {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		FormFields.viewRequiredAsterisk();
+
+		AssertElementPresent(locator1 = "FormFields#SIDEBAR_BASIC_DEFAULT_ERROR_MESSAGE");
+
+		FormFields.disableSwitch(fieldName = "Required");
+
+		AssertElementPresent(
+			key_dataFieldName = "requiredErrorMessage",
+			key_fieldName = "Error Message",
+			locator1 = "Form#SIDEBAR_NOT_VISIBLE_FIELD");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		FormFields.editRequiredErrorMessage(errorMessage = "This is a customized message to test feature: 12345 &!@#$%");
+
+		FormFields.viewRequiredErrorMessage(errorMessage = "This is a customized message to test feature: 12345 &!@#$%");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "This is a customized message to test feature: 12345 &!@#$%");
+
+		FormFields.editText(
+			fieldName = "Text",
+			fieldValue = "Test");
+
+		FormPortlet.waitForValidationErrorNotPresent(validationErrorMessage = "This is a customized message to test feature: 12345 &!@#$%r");
+
+		FormPortlet.submitSuccessfullyAndViewSuccessPage();
+
+		FormsAdmin.openFormsAdmin(siteURLKey = "guest");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text",
+			fieldValue = "Test");
+	}
+
+	@description = "LPS-129419 - Verify that the Required Field Error Message can be translated"
+	@priority = "5"
+	test RequiredFieldErrorMessageCanBeTranslated {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.addTextField(fieldPositionNumber = "0");
+
+		FormFields.enableSwitch(fieldName = "Required");
+
+		FormFields.viewRequiredAsterisk();
+
+		FormFields.editRequiredErrorMessage(errorMessage = "This is a customized message to default language US");
+
+		Form.addTranslation(localizedLanguage = "Portuguese (Brazil)");
+
+		FormFields.viewRequiredErrorMessage(errorMessage = "This is a customized message to default language US");
+
+		FormFields.editRequiredErrorMessage(errorMessage = "Essa é uma mensagem customizada para o português brasileiro");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormFields.viewRequiredAsterisk();
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "This is a customized message to default language US");
+
+		FormPortlet.changeLocale(locale = "português-Brasil");
+
+		AssertClick(
+			locator1 = "Button#MAIN_CONTENT_SUBMIT",
+			value1 = "Submeter");
+
+		FormPortlet.viewValidationErrorMessage(validationErrorMessage = "Essa é uma mensagem customizada para o português brasileiro");
+
+		FormFields.editText(
+			fieldName = "Text",
+			fieldValue = "Teste");
+
+		FormPortlet.waitForValidationErrorNotPresent(validationErrorMessage = "Essa é uma mensagem customizada para o português brasileiro");
+
+		FormPortlet.submitLocalizedSuccessfully(buttonName = "Submeter");
+
+		FormsAdmin.openFormsAdmin(siteURLKey = "guest");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Text",
+			fieldValue = "Teste");
 	}
 
 	@description = "Verify that the Field Type can be changed"

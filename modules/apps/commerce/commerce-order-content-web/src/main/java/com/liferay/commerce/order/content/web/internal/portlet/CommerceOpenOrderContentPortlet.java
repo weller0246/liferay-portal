@@ -25,6 +25,7 @@ import com.liferay.commerce.product.service.CommerceChannelLocalService;
 import com.liferay.commerce.service.CommerceAddressService;
 import com.liferay.commerce.service.CommerceOrderNoteService;
 import com.liferay.commerce.service.CommerceOrderService;
+import com.liferay.commerce.service.CommerceOrderTypeService;
 import com.liferay.commerce.service.CommerceShipmentItemService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
@@ -68,7 +69,7 @@ import org.osgi.service.component.annotations.Reference;
 		"com.liferay.portlet.scopeable=true",
 		"javax.portlet.display-name=Open Carts",
 		"javax.portlet.expiration-cache=0",
-		"javax.portlet.init-param.view-template=/pending_orders/view.jsp",
+		"javax.portlet.init-param.view-template=/pending_commerce_orders/view.jsp",
 		"javax.portlet.name=" + CommercePortletKeys.COMMERCE_OPEN_ORDER_CONTENT,
 		"javax.portlet.resource-bundle=content.Language",
 		"javax.portlet.security-role-ref=power-user,user"
@@ -103,6 +104,7 @@ public class CommerceOpenOrderContentPortlet extends MVCPortlet {
 						_commerceAddressService, _commerceChannelLocalService,
 						_commerceOrderNoteService,
 						_commerceOrderPriceCalculation, _commerceOrderService,
+						_commerceOrderTypeService,
 						_commercePaymentMethodGroupRelService,
 						_commerceShipmentItemService,
 						_portal.getHttpServletRequest(renderRequest),
@@ -137,6 +139,9 @@ public class CommerceOpenOrderContentPortlet extends MVCPortlet {
 
 	@Reference
 	private CommerceOrderService _commerceOrderService;
+
+	@Reference
+	private CommerceOrderTypeService _commerceOrderTypeService;
 
 	@Reference
 	private CommercePaymentMethodGroupRelService

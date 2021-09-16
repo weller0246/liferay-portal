@@ -109,9 +109,8 @@ definition {
 
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document Type Name");
 
-		DataEngine.viewFieldReference(
-			fieldFieldLabel = "Separator",
-			fieldName = "Separator",
+		DEBuilder.assertFieldReference(
+			fieldLabel = "Separator",
 			fieldReference = "${assertFieldReference}");
 
 		Button.clickSave();
@@ -145,9 +144,8 @@ definition {
 
 		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Document Type Name");
 
-		DataEngine.viewFieldReference(
-			fieldFieldLabel = "Separator",
-			fieldName = "Separator",
+		DEBuilder.assertFieldReference(
+			fieldLabel = "Separator",
 			fieldReference = "${assertFieldReference}");
 
 		Button.clickSave();
@@ -192,7 +190,7 @@ definition {
 
 		FormViewBuilder.switchToAdvancedTab();
 
-		FormFields.viewSwitcherLabel(
+		FormFields.viewSwitchLabel(
 			fieldLabel = "Separator",
 			fieldName = "Separator");
 
@@ -200,7 +198,7 @@ definition {
 			checkboxName = "Show Label",
 			locator1 = "Checkbox#ANY_CHECKBOX");
 
-		FormFields.viewSwitcherLabelNotPresent(
+		FormFields.viewSwitchLabelNotPresent(
 			fieldLabel = "Separator Label",
 			fieldName = "Separator");
 

@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Commerce";
+	property testray.main.component.name = "Product Info Management";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -34,9 +34,6 @@ definition {
 	@priority = "3"
 	test AddAProductRelations {
 		property portal.acceptance = "false";
-		property test.name.skip.portal.instance = "CPCommerceProductProductRelations#AddAProductRelations";
-
-		// TODO Review
 
 		CommerceNavigator.gotoPortlet(
 			category = "Product Management",
@@ -53,6 +50,7 @@ definition {
 			productCatalog = "Master",
 			productName = "Shoes",
 			productType = "Simple");
+
 		Click(locator1 = "Icon#BACK");
 
 		AppBuilderAdmin.searchByItem(itemName = "Simple T-Shirt");
@@ -61,25 +59,16 @@ definition {
 
 		CommerceEntry.gotoMenuTab(menuTab = "Product Relations");
 
-		CommerceRelations.addAnyProductRelation(
-			key_product = "Shoes",
-			key_relation = "Up-Sell Product");
+		for (var valueList : list "Up-Sell,Cross-Sell,Related,Accessories,Spare") {
+			CommerceRelations.addAnyProductRelation(
+				key_product = "Shoes",
+				key_relation = "${valueList} Product");
 
-		CommerceRelations.addAnyProductRelation(
-			key_product = "Shoes",
-			key_relation = "Cross-Sell Product");
-
-		CommerceRelations.addAnyProductRelation(
-			key_product = "Shoes",
-			key_relation = "Related Product");
-
-		CommerceRelations.addAnyProductRelation(
-			key_product = "Shoes",
-			key_relation = "Accessories Product");
-
-		CommerceRelations.addAnyProductRelation(
-			key_product = "Shoes",
-			key_relation = "Spare Product");
+			AssertElementPresent(
+				key_productName = "Shoes",
+				key_Value = "${valueList}",
+				locator1 = "CommerceEntry#VALUE_PRODUCT_RELATIONS");
+		}
 	}
 
 	@description = "This is a test for COMMERCE-6064. EditAProductRelations"
@@ -152,144 +141,28 @@ definition {
 
 		CommerceEntry.gotoMenuTab(menuTab = "Product Relations");
 
-		Click(locator1 = "Button#PLUS");
+		for (var valueList : list "Up-Sell,Cross-Sell,Related,Accessories,Spare") {
+			CommerceRelations.addAnyProductRelation(
+				key_product = "Shoes",
+				key_relation = "${valueList} Product");
+		}
 
-		Click(
-			key_fieldName = "Up-Sell Product",
-			locator1 = "FormViewBuilder#OBJECT_FIELD_BUTTON_DROPDOWN");
+		for (var number : list "1,2,3,4,5") {
+			Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
 
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
+			Click(
+				filterOption = "Delete",
+				locator1 = "ContentDashboard#FILTER_BY_OPTION");
 
-		Check(
-			key_checkboxName = "Shoes",
-			locator1 = "Checkbox#ENABLE_CHECKBOX");
+			AssertElementPresent(locator1 = "Message#SUCCESS");
+		}
 
-		SelectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrameTop();
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "Button#PLUS");
-
-		Click(
-			key_fieldName = "Add Cross-Sell Product",
-			locator1 = "FormViewBuilder#OBJECT_FIELD_BUTTON_DROPDOWN");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Check(
-			key_checkboxName = "Shoes",
-			locator1 = "Checkbox#ENABLE_CHECKBOX");
-
-		SelectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrameTop();
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "Button#PLUS");
-
-		Click(
-			key_fieldName = "Related Product",
-			locator1 = "FormViewBuilder#OBJECT_FIELD_BUTTON_DROPDOWN");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Check(
-			key_checkboxName = "Shoes",
-			locator1 = "Checkbox#ENABLE_CHECKBOX");
-
-		SelectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrameTop();
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "Button#PLUS");
-
-		Click(
-			key_fieldName = "Accessories Product",
-			locator1 = "FormViewBuilder#OBJECT_FIELD_BUTTON_DROPDOWN");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Check(
-			key_checkboxName = "Shoes",
-			locator1 = "Checkbox#ENABLE_CHECKBOX");
-
-		SelectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrameTop();
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "Button#PLUS");
-
-		Click(
-			key_fieldName = "Spare Product",
-			locator1 = "FormViewBuilder#OBJECT_FIELD_BUTTON_DROPDOWN");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Check(
-			key_checkboxName = "Shoes",
-			locator1 = "Checkbox#ENABLE_CHECKBOX");
-
-		SelectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrameTop();
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
-
-		Click(
-			filterOption = "Delete",
-			locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
-
-		Click(
-			filterOption = "Delete",
-			locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
-
-		Click(
-			filterOption = "Delete",
-			locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
-
-		Click(
-			filterOption = "Delete",
-			locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
-
-		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
-
-		Click(
-			filterOption = "Delete",
-			locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		AssertElementPresent(locator1 = "Message#SUCCESS");
+		for (var valueList : list "Up-Sell,Cross-Sell,Related,Accessories,Spare") {
+			AssertElementNotPresent(
+				key_productName = "Shoes",
+				key_Value = "${valueList}",
+				locator1 = "CommerceEntry#VALUE_PRODUCT_RELATIONS");
+		}
 	}
 
 }

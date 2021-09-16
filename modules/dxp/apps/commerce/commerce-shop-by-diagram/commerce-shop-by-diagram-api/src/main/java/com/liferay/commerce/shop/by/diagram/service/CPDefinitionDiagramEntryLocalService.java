@@ -79,9 +79,10 @@ public interface CPDefinitionDiagramEntryLocalService
 	public CPDefinitionDiagramEntry addCPDefinitionDiagramEntry(
 		CPDefinitionDiagramEntry cpDefinitionDiagramEntry);
 
+	@Indexable(type = IndexableType.REINDEX)
 	public CPDefinitionDiagramEntry addCPDefinitionDiagramEntry(
 			long userId, long cpDefinitionId, String cpInstanceUuid,
-			long cProductId, boolean diagram, int number, int quantity,
+			long cProductId, boolean diagram, int quantity, String sequence,
 			String sku, ServiceContext serviceContext)
 		throws PortalException;
 
@@ -218,6 +219,11 @@ public interface CPDefinitionDiagramEntryLocalService
 		long CPDefinitionDiagramEntryId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public CPDefinitionDiagramEntry fetchCPDefinitionDiagramEntry(
+			long cpDefinitionId, String sequence)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
 
 	/**
@@ -262,9 +268,10 @@ public interface CPDefinitionDiagramEntryLocalService
 			long CPDefinitionDiagramEntryId)
 		throws PortalException;
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public CPDefinitionDiagramEntry getCPDefinitionDiagramEntry(
-			long cpDefinitionId, int number)
+			long cpDefinitionId, String sequence)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -301,7 +308,7 @@ public interface CPDefinitionDiagramEntryLocalService
 
 	public CPDefinitionDiagramEntry updateCPDefinitionDiagramEntry(
 			long cpDefinitionDiagramEntryId, String cpInstanceUuid,
-			long cProductId, boolean diagram, int number, int quantity,
+			long cProductId, boolean diagram, int quantity, String sequence,
 			String sku, ServiceContext serviceContext)
 		throws PortalException;
 

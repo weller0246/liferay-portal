@@ -15,6 +15,7 @@
 package com.liferay.data.cleanup.internal.upgrade;
 
 import com.liferay.data.cleanup.internal.configuration.DataCleanupConfiguration;
+import com.liferay.data.cleanup.internal.upgrade.util.ConfigurationUtil;
 import com.liferay.message.boards.service.MBMessageLocalService;
 import com.liferay.message.boards.service.MBThreadLocalService;
 import com.liferay.petra.reflect.ReflectionUtil;
@@ -32,6 +33,8 @@ import com.liferay.subscription.service.SubscriptionLocalService;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import org.apache.felix.cm.PersistenceManager;
+
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -48,6 +51,9 @@ public class DataCleanup implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		try {
+			ConfigurationUtil.resetConfiguration(
+				_persistenceManager, DataCleanupConfiguration.class);
+
 			_cleanUpModuleData(
 				_dataCleanupConfiguration::cleanUpChatModuleData,
 				"com.liferay.chat.service", ChatUpgradeProcess::new);
@@ -104,8 +110,8 @@ public class DataCleanup implements UpgradeStepRegistrator {
 				_dataCleanupConfiguration::cleanUpOpenSocialModuleData,
 				"opensocial-portlet", OpenSocialUpgradeProcess::new);
 		}
-		catch (UpgradeException upgradeException) {
-			ReflectionUtil.throwException(upgradeException);
+		catch (Exception exception) {
+			ReflectionUtil.throwException(exception);
 		}
 	}
 
@@ -144,6 +150,9 @@ public class DataCleanup implements UpgradeStepRegistrator {
 
 	@Reference
 	private MBThreadLocalService _mbThreadLocalService;
+
+	@Reference
+	private PersistenceManager _persistenceManager;
 
 	@Reference
 	private RatingsStatsLocalService _ratingsStatsLocalService;

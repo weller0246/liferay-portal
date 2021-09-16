@@ -154,21 +154,22 @@ public class PreviewSegmentsEntryUsersDisplayContext {
 	}
 
 	protected PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCRenderCommandName(
 			"/segments/preview_segments_entry_users"
-		).build();
+		).setParameter(
+			"segmentsEntryId",
+			() -> {
+				SegmentsEntry segmentsEntry = getSegmentsEntry();
 
-		SegmentsEntry segmentsEntry = getSegmentsEntry();
+				if (segmentsEntry != null) {
+					return segmentsEntry.getSegmentsEntryId();
+				}
 
-		if (segmentsEntry != null) {
-			portletURL.setParameter(
-				"segmentsEntryId",
-				String.valueOf(segmentsEntry.getSegmentsEntryId()));
-		}
-
-		return portletURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	protected SegmentsEntry getSegmentsEntry() {

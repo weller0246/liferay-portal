@@ -28,8 +28,6 @@ import {getResponsiveConfig} from '../../utils/getResponsiveConfig';
 import {isValidSpacingOption} from '../../utils/isValidSpacingOption';
 import Topper from '../Topper';
 import FragmentContent from '../fragment-content/FragmentContent';
-import FragmentContentInteractionsFilter from '../fragment-content/FragmentContentInteractionsFilter';
-import FragmentContentProcessor from '../fragment-content/FragmentContentProcessor';
 import getAllPortals from './getAllPortals';
 import isHovered from './isHovered';
 
@@ -92,6 +90,7 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 	}, [hoveredItemType, hoveredItemId, editableValues]);
 
 	const {
+		display,
 		marginBottom,
 		marginLeft,
 		marginRight,
@@ -105,6 +104,7 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 	const style = {};
 
 	style.boxShadow = getFrontendTokenValue(shadow);
+	style.display = display;
 	style.maxWidth = maxWidth;
 	style.minWidth = minWidth;
 	style.width = width;
@@ -122,23 +122,13 @@ const FragmentWithControls = React.forwardRef(({item}, ref) => {
 			itemElement={itemElement}
 			style={style}
 		>
-			<FragmentContentInteractionsFilter
+			<FragmentContent
+				elementRef={setRef}
 				fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-				itemId={item.itemId}
-			>
-				<FragmentContent
-					elementRef={setRef}
-					fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-					getPortals={getPortals}
-					item={item}
-					withinTopper
-				/>
-
-				<FragmentContentProcessor
-					fragmentEntryLinkId={item.config.fragmentEntryLinkId}
-					itemId={item.itemId}
-				/>
-			</FragmentContentInteractionsFilter>
+				getPortals={getPortals}
+				item={item}
+				withinTopper
+			/>
 		</Topper>
 	);
 });

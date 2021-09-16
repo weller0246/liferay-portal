@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -191,8 +190,55 @@ public abstract class BaseReindexStatusResourceTestCase {
 	}
 
 	@Test
-	public void testGetReindexStatusPage() throws Exception {
+	public void testGetReindexStatusesPage() throws Exception {
+		Page<ReindexStatus> page =
+			reindexStatusResource.getReindexStatusesPage();
+
+		long totalCount = page.getTotalCount();
+
+		ReindexStatus reindexStatus1 =
+			testGetReindexStatusesPage_addReindexStatus(randomReindexStatus());
+
+		ReindexStatus reindexStatus2 =
+			testGetReindexStatusesPage_addReindexStatus(randomReindexStatus());
+
+		page = reindexStatusResource.getReindexStatusesPage();
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertContains(reindexStatus1, (List<ReindexStatus>)page.getItems());
+		assertContains(reindexStatus2, (List<ReindexStatus>)page.getItems());
+		assertValid(page);
+	}
+
+	protected ReindexStatus testGetReindexStatusesPage_addReindexStatus(
+			ReindexStatus reindexStatus)
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
+
+	@Test
+	public void testGraphQLGetReindexStatusesPage() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(
+		ReindexStatus reindexStatus, List<ReindexStatus> reindexStatuses) {
+
+		boolean contains = false;
+
+		for (ReindexStatus item : reindexStatuses) {
+			if (equals(reindexStatus, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			reindexStatuses + " does not contain " + reindexStatus, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -631,8 +677,8 @@ public abstract class BaseReindexStatusResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseReindexStatusResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseReindexStatusResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

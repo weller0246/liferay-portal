@@ -170,25 +170,31 @@ public class CommerceInventoryWarehousesDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_cpRequestHelper.getRenderResponse()
+		).setKeywords(
+			getKeywords()
+		).setNavigation(
+			getNavigation()
 		).setParameter(
 			"countryTwoLettersISOCode", getCountryTwoLettersIsoCode()
-		).build();
+		).setParameter(
+			"delta",
+			() -> {
+				String delta = ParamUtil.getString(
+					_cpRequestHelper.getRenderRequest(), "delta");
 
-		String delta = ParamUtil.getString(
-			_cpRequestHelper.getRenderRequest(), "delta");
+				if (Validator.isNotNull(delta)) {
+					return delta;
+				}
 
-		if (Validator.isNotNull(delta)) {
-			portletURL.setParameter("delta", delta);
-		}
-
-		portletURL.setParameter("keywords", getKeywords());
-		portletURL.setParameter("navigation", getNavigation());
-		portletURL.setParameter("orderByCol", getOrderByCol());
-		portletURL.setParameter("orderByType", getOrderByType());
-
-		return portletURL;
+				return null;
+			}
+		).setParameter(
+			"orderByCol", getOrderByCol()
+		).setParameter(
+			"orderByType", getOrderByType()
+		).buildPortletURL();
 	}
 
 	public SearchContainer<CommerceInventoryWarehouse> getSearchContainer()
@@ -247,13 +253,12 @@ public class CommerceInventoryWarehousesDisplayContext {
 		_searchContainer.setSearch(search);
 
 		List<CommerceInventoryWarehouse> commerceInventoryWarehouses =
-			_commerceInventoryWarehouseService.
-				searchCommerceInventoryWarehouses(
-					_cpRequestHelper.getCompanyId(), active,
-					countryTwoLettersIsoCode, getKeywords(),
-					_searchContainer.getStart(), _searchContainer.getEnd(),
-					CommerceUtil.getCommerceInventoryWarehouseSort(
-						orderByCol, orderByType));
+			_commerceInventoryWarehouseService.search(
+				_cpRequestHelper.getCompanyId(), active,
+				countryTwoLettersIsoCode, getKeywords(),
+				_searchContainer.getStart(), _searchContainer.getEnd(),
+				CommerceUtil.getCommerceInventoryWarehouseSort(
+					orderByCol, orderByType));
 
 		int commerceInventoryWarehousesCount =
 			_commerceInventoryWarehouseService.

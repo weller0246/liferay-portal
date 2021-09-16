@@ -17,8 +17,11 @@ package com.liferay.dynamic.data.mapping.form.field.type.internal.select;
 import com.liferay.dynamic.data.mapping.form.field.type.BaseDDMFormFieldTypeSettingsTestCase;
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMFormRule;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormLayoutTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
+import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -132,13 +135,12 @@ public class SelectDDMFormFieldTypeSettingsTest
 
 		Assert.assertEquals(actions.toString(), 1, actions.size());
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("call('getDataProviderInstanceOutputParameters', '");
-		sb.append("dataProviderInstanceId=ddmDataProviderInstanceId', '");
-		sb.append("ddmDataProviderInstanceOutput=outputParameterNames')");
-
-		Assert.assertEquals(sb.toString(), actions.get(0));
+		Assert.assertEquals(
+			StringBundler.concat(
+				"call('getDataProviderInstanceOutputParameters', '",
+				"dataProviderInstanceId=ddmDataProviderInstanceId', '",
+				"ddmDataProviderInstanceOutput=outputParameterNames')"),
+			actions.get(0));
 
 		DDMFormRule ddmFormRule1 = ddmFormRules.get(1);
 
@@ -198,6 +200,24 @@ public class SelectDDMFormFieldTypeSettingsTest
 			"setValue('ddmDataProviderInstanceId', '')", actions.get(0));
 		Assert.assertEquals(
 			"setValue('ddmDataProviderInstanceOutput', '')", actions.get(1));
+	}
+
+	@Test
+	public void testCreateSelectDDMFormFieldTypeSettingsDDMFormLayout() {
+		assertDDMFormLayout(
+			DDMFormLayoutFactory.create(SelectDDMFormFieldTypeSettings.class),
+			DDMFormLayoutTestUtil.createDDMFormLayout(
+				DDMFormLayout.TABBED_MODE,
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"label", "tip", "required", "requiredErrorMessage",
+					"dataSourceType", "options", "ddmDataProviderInstanceId",
+					"ddmDataProviderInstanceOutput"),
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"name", "fieldReference", "predefinedValue",
+					"objectFieldName", "visibilityExpression", "fieldNamespace",
+					"indexType", "labelAtStructureLevel", "localizable",
+					"nativeField", "readOnly", "dataType", "type", "showLabel",
+					"repeatable", "multiple", "alphabeticalOrder")));
 	}
 
 	@Override

@@ -10,10 +10,8 @@ exports[`Field Checkbox has a helptext 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -27,6 +25,11 @@ exports[`Field Checkbox has a helptext 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -61,7 +64,6 @@ exports[`Field Checkbox has a key 1`] = `
         checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -75,6 +77,11 @@ exports[`Field Checkbox has a key 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="true"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -95,10 +102,8 @@ exports[`Field Checkbox has a label 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -114,6 +119,11 @@ exports[`Field Checkbox has a label 1`] = `
         </span>
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -134,10 +144,8 @@ exports[`Field Checkbox has a predefined Value 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -152,42 +160,10 @@ exports[`Field Checkbox has a predefined Value 1`] = `
       </span>
     </label>
     <input
-      name="undefined_edited"
+      class="form-control"
       type="hidden"
       value="false"
     />
-    
-  </div>
-</div>
-`;
-
-exports[`Field Checkbox has a spritemap 1`] = `
-<div>
-  <div
-    class="form-group hide"
-    tabindex="0"
-  >
-    <label
-      class="ddm-toggle-switch toggle-switch"
-    >
-      <input
-        checked=""
-        class="toggle-switch-check"
-        type="checkbox"
-        value="true"
-      />
-      <span
-        aria-hidden="true"
-        class="toggle-switch-bar"
-      >
-        <span
-          class="toggle-switch-handle"
-        />
-        <span
-          class="toggle-switch-text toggle-switch-text-right"
-        />
-      </span>
-    </label>
     <input
       name="undefined_edited"
       type="hidden"
@@ -211,7 +187,6 @@ exports[`Field Checkbox has a value 1`] = `
         checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -225,6 +200,11 @@ exports[`Field Checkbox has a value 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="true"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -246,10 +226,8 @@ exports[`Field Checkbox has an id 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -263,6 +241,11 @@ exports[`Field Checkbox has an id 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -283,11 +266,9 @@ exports[`Field Checkbox is not editable 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         disabled=""
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -301,6 +282,11 @@ exports[`Field Checkbox is not editable 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -321,10 +307,8 @@ exports[`Field Checkbox is not required 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -338,6 +322,11 @@ exports[`Field Checkbox is not required 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -358,10 +347,8 @@ exports[`Field Checkbox is shown as a switcher 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -375,6 +362,11 @@ exports[`Field Checkbox is shown as a switcher 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -396,7 +388,6 @@ exports[`Field Checkbox is shown as checkbox 1`] = `
     >
       <label>
         <input
-          checked=""
           class="custom-control-input"
           type="checkbox"
         />
@@ -405,6 +396,11 @@ exports[`Field Checkbox is shown as checkbox 1`] = `
         />
       </label>
     </div>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"
@@ -425,10 +421,8 @@ exports[`Field Checkbox renders Label if showLabel is true 1`] = `
       class="ddm-toggle-switch toggle-switch"
     >
       <input
-        checked=""
         class="toggle-switch-check"
         type="checkbox"
-        value="true"
       />
       <span
         aria-hidden="true"
@@ -442,6 +436,11 @@ exports[`Field Checkbox renders Label if showLabel is true 1`] = `
         />
       </span>
     </label>
+    <input
+      class="form-control"
+      type="hidden"
+      value="false"
+    />
     <input
       name="undefined_edited"
       type="hidden"

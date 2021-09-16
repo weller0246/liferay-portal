@@ -540,6 +540,34 @@ public class AccountEntryLocalServiceTest {
 	}
 
 	@Test
+	public void testGetUserAccountEntriesWithKeywords() throws Exception {
+		User user = UserTestUtil.addUser();
+
+		AccountEntry accountEntry = _addAccountEntryWithUser(user);
+
+		_assertGetUserAccountEntriesWithKeywords(
+			accountEntry, user.getUserId(),
+			String.valueOf(accountEntry.getAccountEntryId()));
+
+		accountEntry.setExternalReferenceCode(RandomTestUtil.randomString());
+
+		accountEntry = _accountEntryLocalService.updateAccountEntry(
+			accountEntry);
+
+		_assertGetUserAccountEntriesWithKeywords(
+			accountEntry, user.getUserId(),
+			accountEntry.getExternalReferenceCode());
+	}
+
+	@Test
+	public void testSearchByAccountEntryId() throws Exception {
+		AccountEntry accountEntry = _addAccountEntry();
+
+		_assertKeywordSearch(
+			accountEntry, String.valueOf(accountEntry.getAccountEntryId()));
+	}
+
+	@Test
 	public void testSearchByAccountGroupIds() throws Exception {
 		_addAccountEntries();
 
@@ -590,6 +618,14 @@ public class AccountEntryLocalServiceTest {
 				_addAccountEntryWithEmailDomain(emailDomain2)),
 			_getLinkedHashMap(
 				"domains", new String[] {emailDomain1, emailDomain2}));
+	}
+
+	@Test
+	public void testSearchByExternalReferenceCode() throws Exception {
+		AccountEntry accountEntry = _addAccountEntry();
+
+		_assertKeywordSearch(
+			accountEntry, accountEntry.getExternalReferenceCode());
 	}
 
 	@Test
@@ -945,6 +981,37 @@ public class AccountEntryLocalServiceTest {
 				String.valueOf(accountEntryId));
 
 		Assert.assertEquals(0, resourcePermissionsCount);
+	}
+
+	private void _assertGetUserAccountEntriesWithKeywords(
+			AccountEntry expectedAccountEntry, long userId, String keywords)
+		throws Exception {
+
+		List<AccountEntry> accountEntries =
+			_accountEntryLocalService.getUserAccountEntries(
+				userId, AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT,
+				keywords,
+				new String[] {AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS},
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+
+		Assert.assertEquals(
+			accountEntries.toString(), 1, accountEntries.size());
+		Assert.assertEquals(expectedAccountEntry, accountEntries.get(0));
+	}
+
+	private void _assertKeywordSearch(
+			AccountEntry expectedAccountEntry, String keywords)
+		throws Exception {
+
+		BaseModelSearchResult<AccountEntry> baseModelSearchResult =
+			_keywordSearch(keywords);
+
+		Assert.assertEquals(1, baseModelSearchResult.getLength());
+
+		List<AccountEntry> accountEntries =
+			baseModelSearchResult.getBaseModels();
+
+		Assert.assertEquals(expectedAccountEntry, accountEntries.get(0));
 	}
 
 	private void _assertPaginationSort(

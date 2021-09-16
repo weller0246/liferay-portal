@@ -25,6 +25,12 @@ import {selectPageContentDropdownItems} from '../../app/selectors/selectPageCont
 import {useId} from '../../app/utils/useId';
 import {openItemSelector} from '../../core/openItemSelector';
 
+const DEFAULT_PREVENT_ITEM_SELECT = () => false;
+
+const DEFAULT_OPTIONS_MENU_ITEMS = [];
+
+const DEFAULT_QUICK_MAPPED_INFO_ITEMS = [];
+
 export default function ItemSelector({
 	className,
 	eventName,
@@ -32,32 +38,36 @@ export default function ItemSelector({
 	label,
 	modalProps,
 	onItemSelect,
-	quickMappedInfoItems = [],
+	optionsMenuItems = DEFAULT_OPTIONS_MENU_ITEMS,
+	quickMappedInfoItems = DEFAULT_QUICK_MAPPED_INFO_ITEMS,
 	selectedItem,
+	shouldPreventItemSelect = DEFAULT_PREVENT_ITEM_SELECT,
 	showEditControls = true,
 	showMappedItems = true,
 	transformValueCallback,
 }) {
 	const itemSelectorInputId = useId();
 
-	const openModal = useCallback(
-		() =>
-			openItemSelector({
-				callback: onItemSelect,
-				eventName:
-					eventName || `${config.portletNamespace}selectInfoItem`,
-				itemSelectorURL: itemSelectorURL || config.infoItemSelectorURL,
-				modalProps,
-				transformValueCallback,
-			}),
-		[
-			eventName,
-			itemSelectorURL,
+	const openModal = useCallback(() => {
+		if (shouldPreventItemSelect()) {
+			return;
+		}
+
+		openItemSelector({
+			callback: onItemSelect,
+			eventName: eventName || `${config.portletNamespace}selectInfoItem`,
+			itemSelectorURL: itemSelectorURL || config.infoItemSelectorURL,
 			modalProps,
-			onItemSelect,
 			transformValueCallback,
-		]
-	);
+		});
+	}, [
+		eventName,
+		itemSelectorURL,
+		modalProps,
+		onItemSelect,
+		shouldPreventItemSelect,
+		transformValueCallback,
+	]);
 
 	const mappedItemsMenu = useSelectorCallback(
 		(state) => {
@@ -127,6 +137,10 @@ export default function ItemSelector({
 				}
 			}
 
+			if (optionsMenuItems.length) {
+				menuItems.push(...optionsMenuItems, {type: 'divider'});
+			}
+
 			menuItems.push({
 				label: Liferay.Util.sub(
 					Liferay.Language.get('remove-x'),
@@ -137,7 +151,7 @@ export default function ItemSelector({
 
 			return menuItems;
 		},
-		[label, onItemSelect, selectedItem]
+		[label, onItemSelect, optionsMenuItems, selectedItem]
 	);
 
 	const selectedItemTitle = useSelectorCallback(
@@ -264,6 +278,12 @@ ItemSelector.propTypes = {
 	label: PropTypes.string.isRequired,
 	modalProps: PropTypes.object,
 	onItemSelect: PropTypes.func.isRequired,
+	optionsMenuItems: PropTypes.arrayOf(
+		PropTypes.shape({
+			label: PropTypes.string.isRequired,
+			onClick: PropTypes.func.isRequired,
+		})
+	),
 	quickMappedInfoItems: PropTypes.arrayOf(
 		PropTypes.shape({
 			classNameId: PropTypes.string,
@@ -272,6 +292,7 @@ ItemSelector.propTypes = {
 		})
 	),
 	selectedItem: PropTypes.shape({title: PropTypes.string}),
+	shouldPreventItemSelect: PropTypes.func,
 	showEditControls: PropTypes.bool,
 	showMappedItems: PropTypes.bool,
 	transformValueCallback: PropTypes.func.isRequired,

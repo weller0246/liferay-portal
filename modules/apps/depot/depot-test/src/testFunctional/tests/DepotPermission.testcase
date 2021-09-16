@@ -153,42 +153,21 @@ definition {
 			resourceName = "com_liferay_site_memberships_web_portlet_SiteMembershipsPortlet",
 			roleTitle = "Depot Regrole Name");
 
-		DepotNavigator.openDepotAdmin();
-
-		DepotNavigator.gotoDepotPortlet(
+		JSONUser.addUserToDepot(
 			depotName = "Test Depot Name",
-			portlet = "Memberships");
-
-		Depot.assignUserAsMember(
-			depotName = "Test Depot Name",
-			userFirstName = "userfn1",
-			userLastName = "userln1",
-			userScreenName = "usersn1");
+			userEmailAddress = "userea1@liferay.com");
 
 		User.logoutAndLoginPG(
 			userLoginEmailAddress = "userea1@liferay.com",
 			userLoginFullName = "userfn1 userln1");
 
-		DepotNavigator.openDepotAdmin();
-
-		DepotNavigator.gotoDepotPortlet(
-			depotName = "Test Depot Name",
-			portlet = "Memberships");
+		DepotNavigator.openDepotMembershipsAdmin(depotName = "Test Depot Name");
 
 		Depot.viewMember(
 			userFirstName = "userfn1",
 			userLastName = "userln1",
-			userScreenName = "usersn1");
-
-		Click.waitForMenuToggleJSClick(
-			key_card = "usersn1",
-			locator1 = "Card#CARD_ELLIPSIS");
-
-		for (var item : list "Remove Membership,Assign Roles") {
-			AssertElementNotPresent(
-				key_menuItem = "${item}",
-				locator1 = "MenuItem#ANY_MENU_ITEM");
-		}
+			userScreenName = "usersn1",
+			viewOnly = "true");
 	}
 
 	@description = "This ensures that the user can only add web content to the depot that has permissions set."
@@ -964,15 +943,16 @@ definition {
 			userLoginEmailAddress = "userea@liferay.com",
 			userLoginFullName = "userfn userln");
 
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
-
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Site DM Document Title");
+		DMNavigator.openToEntryInAdmin(
+			dmDocumentTitle = "Site DM Document Title",
+			groupName = "Site Name",
+			siteURLKey = "site-name");
 
 		DMDocument.viewCP(dmDocumentTitle = "Site DM Document Title");
 
-		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
-
-		DMNavigator.gotoDocumentCP(dmDocumentTitle = "Depot DM Document Title");
+		DepotNavigator.openToDMEntryInDepot(
+			depotName = "Test Depot Name",
+			dmDocumentTitle = "Depot DM Document Title");
 
 		DMDocument.viewCP(dmDocumentTitle = "Depot DM Document Title");
 	}

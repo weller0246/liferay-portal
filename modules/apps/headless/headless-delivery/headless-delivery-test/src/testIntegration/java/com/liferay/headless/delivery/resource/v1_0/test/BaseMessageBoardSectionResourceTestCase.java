@@ -37,7 +37,6 @@ import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -528,19 +527,18 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 	public void testGetMessageBoardSectionMessageBoardSectionsPage()
 		throws Exception {
 
-		Page<MessageBoardSection> page =
-			messageBoardSectionResource.
-				getMessageBoardSectionMessageBoardSectionsPage(
-					testGetMessageBoardSectionMessageBoardSectionsPage_getParentMessageBoardSectionId(),
-					RandomTestUtil.randomString(), null, null,
-					Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long parentMessageBoardSectionId =
 			testGetMessageBoardSectionMessageBoardSectionsPage_getParentMessageBoardSectionId();
 		Long irrelevantParentMessageBoardSectionId =
 			testGetMessageBoardSectionMessageBoardSectionsPage_getIrrelevantParentMessageBoardSectionId();
+
+		Page<MessageBoardSection> page =
+			messageBoardSectionResource.
+				getMessageBoardSectionMessageBoardSectionsPage(
+					parentMessageBoardSectionId, RandomTestUtil.randomString(),
+					null, null, Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantParentMessageBoardSectionId != null) {
 			MessageBoardSection irrelevantMessageBoardSection =
@@ -574,7 +572,7 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 			messageBoardSectionResource.
 				getMessageBoardSectionMessageBoardSectionsPage(
 					parentMessageBoardSectionId, null, null, null,
-					Pagination.of(1, 2), null);
+					Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -910,17 +908,16 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 
 	@Test
 	public void testGetSiteMessageBoardSectionsPage() throws Exception {
-		Page<MessageBoardSection> page =
-			messageBoardSectionResource.getSiteMessageBoardSectionsPage(
-				testGetSiteMessageBoardSectionsPage_getSiteId(), null,
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteMessageBoardSectionsPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteMessageBoardSectionsPage_getIrrelevantSiteId();
+
+		Page<MessageBoardSection> page =
+			messageBoardSectionResource.getSiteMessageBoardSectionsPage(
+				siteId, null, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			MessageBoardSection irrelevantMessageBoardSection =
@@ -948,7 +945,7 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 				siteId, randomMessageBoardSection());
 
 		page = messageBoardSectionResource.getSiteMessageBoardSectionsPage(
-			siteId, null, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1245,7 +1242,7 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -1271,7 +1268,7 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 			"JSONObject/messageBoardSections");
 
 		Assert.assertEquals(
-			2, messageBoardSectionsJSONObject.get("totalCount"));
+			2, messageBoardSectionsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(messageBoardSection1, messageBoardSection2),
@@ -1485,6 +1482,25 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 						graphQLFields)),
 				"JSONObject/data", "JSONObject/createSiteMessageBoardSection"),
 			MessageBoardSection.class);
+	}
+
+	protected void assertContains(
+		MessageBoardSection messageBoardSection,
+		List<MessageBoardSection> messageBoardSections) {
+
+		boolean contains = false;
+
+		for (MessageBoardSection item : messageBoardSections) {
+			if (equals(messageBoardSection, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			messageBoardSections + " does not contain " + messageBoardSection,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -2306,8 +2322,8 @@ public abstract class BaseMessageBoardSectionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseMessageBoardSectionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseMessageBoardSectionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -48,12 +48,18 @@ public class ObjectFieldTable extends BaseTable<ObjectFieldTable> {
 		"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Date> modifiedDate = createColumn(
 		"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, Long> listTypeDefinitionId =
+		createColumn(
+			"listTypeDefinitionId", Long.class, Types.BIGINT,
+			Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Long> objectDefinitionId =
 		createColumn(
 			"objectDefinitionId", Long.class, Types.BIGINT,
 			Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> dbColumnName = createColumn(
 		"dbColumnName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, String> dbTableName = createColumn(
+		"dbTableName", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Boolean> indexed = createColumn(
 		"indexed", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Boolean> indexedAsKeyword =
@@ -64,8 +70,14 @@ public class ObjectFieldTable extends BaseTable<ObjectFieldTable> {
 		createColumn(
 			"indexedLanguageId", String.class, Types.VARCHAR,
 			Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, String> label = createColumn(
+		"label", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> name = createColumn(
 		"name", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
+	public final Column<ObjectFieldTable, String> relationshipType =
+		createColumn(
+			"relationshipType", String.class, Types.VARCHAR,
+			Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, Boolean> required = createColumn(
 		"required", Boolean.class, Types.BOOLEAN, Column.FLAG_DEFAULT);
 	public final Column<ObjectFieldTable, String> type = createColumn(

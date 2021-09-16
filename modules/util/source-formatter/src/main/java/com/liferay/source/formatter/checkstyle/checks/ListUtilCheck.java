@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.source.formatter.util.FileUtil;
 
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
@@ -46,14 +47,19 @@ public class ListUtilCheck extends BaseCheck {
 
 	@Override
 	protected void doVisitToken(DetailAST detailAST) {
+		if (isExcludedPath(RUN_OUTSIDE_PORTAL_EXCLUDES)) {
+			return;
+		}
+
 		if (detailAST.getType() == TokenTypes.METHOD_CALL) {
 			_checkFromArrayCall(detailAST);
+			_checkListIsEmptyCall(detailAST);
 
 			return;
 		}
 
 		if (!Objects.equals(getTypeName(detailAST, false), "List") ||
-			!_isAssignNewArrayList(detailAST)) {
+			!isAssignNewArrayList(detailAST)) {
 
 			return;
 		}
@@ -128,7 +134,7 @@ public class ListUtilCheck extends BaseCheck {
 			}
 		}
 
-		log(detailAST, _MSG_USE_LIST_UTIL);
+		log(detailAST, _MSG_USE_LIST_UTIL_FROM_ARRAY);
 	}
 
 	private void _checkFromArrayCall(DetailAST methodCallDetailAST) {
@@ -166,6 +172,87 @@ public class ListUtilCheck extends BaseCheck {
 
 		if (lastChildDetailAST.getType() == TokenTypes.ARRAY_INIT) {
 			log(methodCallDetailAST, _MSG_UNNEEDED_ARRAY);
+		}
+	}
+
+	private void _checkListEqualsNullAssertion(
+		DetailAST detailAST, String variableName) {
+
+		if (detailAST.getType() != TokenTypes.LPAREN) {
+			return;
+		}
+
+		DetailAST nextSiblingDetailAST = detailAST.getNextSibling();
+
+		if (nextSiblingDetailAST.getType() != TokenTypes.EQUAL) {
+			return;
+		}
+
+		DetailAST identDetailAST = nextSiblingDetailAST.getFirstChild();
+
+		if ((identDetailAST == null) ||
+			(identDetailAST.getType() != TokenTypes.IDENT) ||
+			!Objects.equals(identDetailAST.getText(), variableName)) {
+
+			return;
+		}
+
+		nextSiblingDetailAST = identDetailAST.getNextSibling();
+
+		if (nextSiblingDetailAST.getType() != TokenTypes.LITERAL_NULL) {
+			return;
+		}
+
+		log(detailAST.getParent(), _MSG_USE_LIST_UTIL_IS_EMPTY, variableName);
+	}
+
+	private void _checkListIsEmptyCall(DetailAST detailAST) {
+		DetailAST dotDetailAST = detailAST.findFirstToken(TokenTypes.DOT);
+
+		if (dotDetailAST == null) {
+			return;
+		}
+
+		String variableName = getVariableName(detailAST);
+
+		if (Validator.isNull(variableName)) {
+			return;
+		}
+
+		String methodName = getMethodName(detailAST);
+		String variableTypeName = getVariableTypeName(
+			detailAST, variableName, false);
+
+		if (!methodName.equals("isEmpty") || !variableTypeName.equals("List")) {
+			return;
+		}
+
+		DetailAST nextSiblingDetailAST = dotDetailAST.getNextSibling();
+
+		if ((nextSiblingDetailAST == null) ||
+			(nextSiblingDetailAST.getType() != TokenTypes.ELIST)) {
+
+			return;
+		}
+
+		nextSiblingDetailAST = nextSiblingDetailAST.getNextSibling();
+
+		if ((nextSiblingDetailAST == null) &&
+			(nextSiblingDetailAST.getType() != TokenTypes.RPAREN)) {
+
+			return;
+		}
+
+		DetailAST parentDetailAST = detailAST.getParent();
+
+		if (parentDetailAST.getType() != TokenTypes.LOR) {
+			return;
+		}
+
+		DetailAST firstChildDetailAST = parentDetailAST.getFirstChild();
+
+		if (!equals(firstChildDetailAST, detailAST)) {
+			_checkListEqualsNullAssertion(firstChildDetailAST, variableName);
 		}
 	}
 
@@ -282,58 +369,13 @@ public class ListUtilCheck extends BaseCheck {
 		return true;
 	}
 
-	private boolean _isAssignNewArrayList(DetailAST detailAST) {
-		DetailAST assignDetailAST = detailAST.findFirstToken(TokenTypes.ASSIGN);
-
-		if (assignDetailAST == null) {
-			return false;
-		}
-
-		DetailAST firstChildDetailAST = assignDetailAST.getFirstChild();
-
-		if (firstChildDetailAST.getType() != TokenTypes.EXPR) {
-			return false;
-		}
-
-		firstChildDetailAST = firstChildDetailAST.getFirstChild();
-
-		if (firstChildDetailAST.getType() != TokenTypes.LITERAL_NEW) {
-			return false;
-		}
-
-		DetailAST identDetailAST = firstChildDetailAST.getFirstChild();
-
-		if ((identDetailAST.getType() != TokenTypes.IDENT) ||
-			!Objects.equals(identDetailAST.getText(), "ArrayList")) {
-
-			return false;
-		}
-
-		DetailAST elistDetailAST = firstChildDetailAST.findFirstToken(
-			TokenTypes.ELIST);
-
-		if (elistDetailAST == null) {
-			return false;
-		}
-
-		firstChildDetailAST = elistDetailAST.getFirstChild();
-
-		if (firstChildDetailAST == null) {
-			return true;
-		}
-
-		firstChildDetailAST = firstChildDetailAST.getFirstChild();
-
-		if (firstChildDetailAST.getType() == TokenTypes.NUM_INT) {
-			return true;
-		}
-
-		return false;
-	}
-
 	private static final String _MSG_UNNEEDED_ARRAY = "array.unneeded";
 
-	private static final String _MSG_USE_LIST_UTIL = "list.util.use";
+	private static final String _MSG_USE_LIST_UTIL_FROM_ARRAY =
+		"list.util.from.array.use";
+
+	private static final String _MSG_USE_LIST_UTIL_IS_EMPTY =
+		"list.util.is.empty.use";
 
 	private static final Log _log = LogFactoryUtil.getLog(ListUtilCheck.class);
 

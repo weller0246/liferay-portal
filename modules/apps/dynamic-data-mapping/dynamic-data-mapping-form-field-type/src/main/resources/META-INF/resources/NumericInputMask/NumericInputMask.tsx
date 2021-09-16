@@ -12,7 +12,7 @@
  * details.
  */
 
-import React, {FocusEventHandler, useMemo, useState} from 'react';
+import React, {FocusEventHandler, useEffect, useMemo, useState} from 'react';
 
 // @ts-ignore
 
@@ -33,6 +33,7 @@ interface INumericInputMaskValue {
 	append?: string;
 	appendType?: 'prefix' | 'suffix';
 	decimalSymbol?: DecimalSymbol[];
+	symbols: LocalizedValue<ISymbols>;
 	thousandsSeparator?: ThousandsSeparator[];
 }
 interface IProps {
@@ -40,6 +41,8 @@ interface IProps {
 	appendType?: 'prefix' | 'suffix';
 	decimalSymbol: DecimalSymbol[];
 	decimalSymbols: ISelectProps<DecimalSymbol>[];
+	defaultLanguageId: Locale;
+	editingLanguageId: Locale;
 	readOnly: boolean;
 	thousandsSeparator?: ThousandsSeparator[];
 	thousandsSeparators: ISelectProps<ThousandsSeparator>[];
@@ -57,7 +60,7 @@ export interface ISymbols {
 
 interface ISelectProps<T> {
 	disabled: boolean;
-	label: string;
+	label: LocalizedValue<string>;
 	reference: string;
 	value: T;
 }
@@ -67,12 +70,14 @@ const NumericInputMask: React.FC<IProps> = ({
 	appendType: appendTypeInitial,
 	decimalSymbol: decimalSymbolInitial,
 	decimalSymbols: decimalSymbolsProp,
+	editingLanguageId,
 	onBlur,
 	onChange,
 	onFocus,
 	readOnly,
 	thousandsSeparator: thousandsSeparatorInitial,
 	thousandsSeparators: thousandsSeparatorsProp,
+	value,
 	visible,
 }) => {
 	const [thousandsSeparator, setThousandsSeparator] = useState(
@@ -96,9 +101,34 @@ const NumericInputMask: React.FC<IProps> = ({
 			return {
 				...item,
 				disabled: item.reference === decimalSymbol?.[0],
+				label: item.label?.[editingLanguageId] ?? item.label,
 			};
 		});
-	}, [decimalSymbol, thousandsSeparatorsProp]);
+	}, [decimalSymbol, editingLanguageId, thousandsSeparatorsProp]);
+
+	useEffect(() => {
+		const newValue =
+			typeof value === 'string' ? JSON.parse(value) : {...value};
+
+		setAppend(newValue.append ?? append);
+
+		setAppendType(newValue.appendType ?? appendType);
+
+		const symbols = newValue.symbols;
+
+		setDecimalSymbol(symbols?.decimalSymbol ?? decimalSymbol);
+
+		setThousandsSeparator(
+			symbols?.thousandsSeparator ?? thousandsSeparator
+		);
+	}, [
+		append,
+		appendType,
+		decimalSymbol,
+		editingLanguageId,
+		thousandsSeparator,
+		value,
+	]);
 
 	const handleChange = (key: string, value: string | ISymbols) => {
 		onChange({
@@ -123,9 +153,6 @@ const NumericInputMask: React.FC<IProps> = ({
 			<div className="align-items-end d-flex position-relative">
 				<div className="pr-2 w-50">
 					<Select
-
-						// @ts-ignore
-
 						label={Liferay.Language.get('thousands-separator')}
 						name="thousandsSeparator"
 						onBlur={onBlur}
@@ -139,9 +166,6 @@ const NumericInputMask: React.FC<IProps> = ({
 						}}
 						onFocus={onFocus}
 						options={thousandsSeparators}
-
-						// @ts-ignore
-
 						placeholder={Liferay.Language.get('choose-an-option')}
 						readOnly={readOnly}
 						showEmptyOption={false}
@@ -151,9 +175,6 @@ const NumericInputMask: React.FC<IProps> = ({
 				</div>
 				<div className="pl-2 w-50">
 					<Select
-
-						// @ts-ignore
-
 						label={Liferay.Language.get('decimal-separator')}
 						name="decimalSymbol"
 						onBlur={onBlur}
@@ -171,9 +192,6 @@ const NumericInputMask: React.FC<IProps> = ({
 						}}
 						onFocus={onFocus}
 						options={decimalSymbols}
-
-						// @ts-ignore
-
 						placeholder={Liferay.Language.get('choose-an-option')}
 						readOnly={readOnly}
 						showEmptyOption={false}
@@ -183,10 +201,8 @@ const NumericInputMask: React.FC<IProps> = ({
 				</div>
 			</div>
 			<Text
-
-				// @ts-ignore
-
 				label={Liferay.Language.get('prefix-or-suffix')}
+				maxLength={10}
 				name="append"
 				onBlur={onBlur}
 				onChange={(event: any) => {
@@ -195,17 +211,11 @@ const NumericInputMask: React.FC<IProps> = ({
 					setAppend(event.target.value);
 				}}
 				onFocus={onFocus}
-
-				// @ts-ignore
-
 				placeholder={Liferay.Language.get(
 					'input-mask-append-placeholder'
 				)}
 				readOnly={readOnly}
 				required={false}
-
-				// @ts-ignore
-
 				tip={Liferay.Language.get(
 					'the-maximum-length-is-10-characters'
 				)}
@@ -225,16 +235,10 @@ const NumericInputMask: React.FC<IProps> = ({
 					onFocus={onFocus}
 					options={[
 						{
-
-							// @ts-ignore
-
 							label: Liferay.Language.get('prefix'),
 							value: 'prefix',
 						},
 						{
-
-							// @ts-ignore
-
 							label: Liferay.Language.get('suffix'),
 							value: 'suffix',
 						},

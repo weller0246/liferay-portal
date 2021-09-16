@@ -34,15 +34,17 @@ public class ObjectFieldLocalServiceWrapper
 	}
 
 	@Override
-	public com.liferay.object.model.ObjectField addObjectField(
-			long userId, long objectDefinitionId, String dbColumnName,
+	public com.liferay.object.model.ObjectField addCustomObjectField(
+			long userId, long listTypeDefinitionId, long objectDefinitionId,
 			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
-			String name, boolean required, String type)
+			java.util.Map<java.util.Locale, String> labelMap, String name,
+			boolean required, String type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _objectFieldLocalService.addObjectField(
-			userId, objectDefinitionId, dbColumnName, indexed, indexedAsKeyword,
-			indexedLanguageId, name, required, type);
+		return _objectFieldLocalService.addCustomObjectField(
+			userId, listTypeDefinitionId, objectDefinitionId, indexed,
+			indexedAsKeyword, indexedLanguageId, labelMap, name, required,
+			type);
 	}
 
 	/**
@@ -60,6 +62,19 @@ public class ObjectFieldLocalServiceWrapper
 		com.liferay.object.model.ObjectField objectField) {
 
 		return _objectFieldLocalService.addObjectField(objectField);
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectField addSystemObjectField(
+			long userId, long objectDefinitionId, String dbColumnName,
+			boolean indexed, boolean indexedAsKeyword, String indexedLanguageId,
+			java.util.Map<java.util.Locale, String> labelMap, String name,
+			boolean required, String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectFieldLocalService.addSystemObjectField(
+			userId, objectDefinitionId, dbColumnName, indexed, indexedAsKeyword,
+			indexedLanguageId, labelMap, name, required, type);
 	}
 
 	/**
@@ -114,10 +129,12 @@ public class ObjectFieldLocalServiceWrapper
 	 *
 	 * @param objectField the object field
 	 * @return the object field that was removed
+	 * @throws PortalException
 	 */
 	@Override
 	public com.liferay.object.model.ObjectField deleteObjectField(
-		com.liferay.object.model.ObjectField objectField) {
+			com.liferay.object.model.ObjectField objectField)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectFieldLocalService.deleteObjectField(objectField);
 	}
@@ -242,6 +259,14 @@ public class ObjectFieldLocalServiceWrapper
 		return _objectFieldLocalService.fetchObjectField(objectFieldId);
 	}
 
+	@Override
+	public com.liferay.object.model.ObjectField fetchObjectField(
+		long objectDefinitionId, String name) {
+
+		return _objectFieldLocalService.fetchObjectField(
+			objectDefinitionId, name);
+	}
+
 	/**
 	 * Returns the object field with the matching UUID and company.
 	 *
@@ -347,6 +372,14 @@ public class ObjectFieldLocalServiceWrapper
 		return _objectFieldLocalService.getObjectFields(objectDefinitionId);
 	}
 
+	@Override
+	public java.util.List<com.liferay.object.model.ObjectField> getObjectFields(
+		long objectDefinitionId, String dbTableName) {
+
+		return _objectFieldLocalService.getObjectFields(
+			objectDefinitionId, dbTableName);
+	}
+
 	/**
 	 * Returns the number of object fields.
 	 *
@@ -361,6 +394,14 @@ public class ObjectFieldLocalServiceWrapper
 	public int getObjectFieldsCount(long objectDefinitionId) {
 		return _objectFieldLocalService.getObjectFieldsCount(
 			objectDefinitionId);
+	}
+
+	@Override
+	public int getObjectFieldsCountByListTypeDefinitionId(
+		long listTypeDefinitionId) {
+
+		return _objectFieldLocalService.
+			getObjectFieldsCountByListTypeDefinitionId(listTypeDefinitionId);
 	}
 
 	/**
@@ -382,6 +423,19 @@ public class ObjectFieldLocalServiceWrapper
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectFieldLocalService.getPersistedModel(primaryKeyObj);
+	}
+
+	@Override
+	public com.liferay.object.model.ObjectField updateCustomObjectField(
+			long objectFieldId, long listTypeDefinitionId, boolean indexed,
+			boolean indexedAsKeyword, String indexedLanguageId,
+			java.util.Map<java.util.Locale, String> labelMap, String name,
+			boolean required, String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectFieldLocalService.updateCustomObjectField(
+			objectFieldId, listTypeDefinitionId, indexed, indexedAsKeyword,
+			indexedLanguageId, labelMap, name, required, type);
 	}
 
 	/**

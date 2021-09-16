@@ -113,12 +113,8 @@ html#{$cadmin-selector} {
 				width: $sidebarContentWidth;
 				z-index: $zIndexContent;
 
-				&.rtl {
-					transform: translateX(-100%);
-				}
-
 				&--open.page-editor__sidebar__content {
-					transform: translateX(0);
+					transform: translateX(0%);
 				}
 
 				@include media-breakpoint-up(sm, $cadmin-grid-breakpoints) {
@@ -133,6 +129,20 @@ html#{$cadmin-selector} {
 							$desktopToolbarHeight}
 					);
 				}
+			}
+		}
+	}
+
+	.page-editor__wrapper {
+		padding-right: $sidebarButtonWidth;
+		position: relative;
+		transition: padding-left ease $defaultTransitionDuration,
+			padding-right ease $defaultTransitionDuration;
+		will-change: padding-left, padding-right;
+
+		&--padded {
+			@include media-breakpoint-up(sm) {
+				padding-right: $sidebarButtonWidth + $sidebarContentWidth;
 			}
 		}
 	}

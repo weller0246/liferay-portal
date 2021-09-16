@@ -1,9 +1,9 @@
 @component-name = "portal-user-management-and-portal-configuration"
 definition {
 
-	property portal.release = "false";
+	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Accounts";
+	property testray.main.component.name = "Account";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -22,13 +22,58 @@ definition {
 		}
 	}
 
+	@description = "This test asserts that a user can view all the Account Groups an account is assigned to via Account details page"
+	@priority = "4"
+	test AccountGroupsAreDisplayedInAccountDetailsPage {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Accounts Name",
+			accountEntryType = "Business");
+
+		AccountGroups.openAccountGroupsAdmin();
+
+		for (var accountGroupNum : list "1,2,3") {
+			AccountGroups.addCP(
+				accountGroupDescription = "Account Group Description ${accountGroupNum}",
+				accountGroupName = "Account Group ${accountGroupNum}");
+
+			Navigator.gotoNavTab(navTab = "Accounts");
+
+			AccountGroups.addAssignee(
+				accountGroupName = "Account Group ${accountGroupNum}",
+				assigneeNames = "Accounts Name",
+				assigneeType = "Accounts");
+
+			Navigator.gotoBack();
+		}
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Accounts Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Account Groups");
+
+		for (var accountGroupNum : list "1,2,3") {
+			AssertTextEquals(
+				key_columnName = "lfr-name",
+				key_tableEntry = "Account Group ${accountGroupNum}",
+				locator1 = "LexiconTable#TABLE_ENTRY_INFO",
+				value1 = "Account Group ${accountGroupNum}");
+
+			AssertTextEquals(
+				key_columnName = "lfr-description",
+				key_tableEntry = "Account Group ${accountGroupNum}",
+				locator1 = "LexiconTable#TABLE_ENTRY_INFO",
+				value1 = "Account Group Description ${accountGroupNum}");
+		}
+	}
+
 	@description = "This is a use case for LPS-101893. It asserts all accounts display properly across pages."
 	@priority = "4"
 	test AccountsDisplayWhenChangingPagination {
 		for (var accountNum : list "1,2,3,4,5,6") {
-			Accounts.openAccountsAdmin();
-
-			Accounts.addBusinessAccount(accountName = "Accounts Name ${accountNum}");
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Accounts Name ${accountNum}",
+				accountEntryType = "Business");
 		}
 
 		Accounts.openAccountsAdmin();
@@ -50,26 +95,62 @@ definition {
 		Pagination.viewResults(results = "Showing 5 to 6 of 6 entries.");
 	}
 
+	@description = "Duplicate External Reference Codes should not be allowed for multiple accounts in the same company. If a duplicate ERC is submitted, the form will not be saved and an error message will inform the user that the ERC belongs to another account."
+	@priority = "4"
+	test AccountWithDuplicateExternalReferenceCodeIsNotSaved {
+		Accounts.openAccountsAdmin();
+
+		Accounts.addBusinessAccount(
+			accountName = "Business Account Name",
+			externalReferenceCode = "AAA-0100");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoAdd();
+
+		PortletEntry.inputName(name = "Another Account");
+
+		PortletEntry.inputText(
+			fieldLabel = "External Reference Code",
+			text = "AAA-0100");
+
+		Button.clickSave();
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#ERROR_1",
+			value1 = "The given external reference code belongs to another account.");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.viewEntryName(rowEntry = "Business Account Name");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Another Account");
+	}
+
 	@description = "This test makes sure that only one user can be assigned to a Person Account. When you add another person to a Person Account with assigned user, it will only replace the existing user and not add another one."
 	@priority = "4"
 	test AddingSecondUserToPersonAccountWillReplaceFirstUser {
+		property portal.acceptance = "true";
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Person Account",
+			accountEntryType = "Person");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addPersonAccount(
-			accountDescription = "This is a Person Account.",
-			accountName = "Person Account");
+		LexiconEntry.gotoEntry(rowEntry = "Person Account");
 
 		Accounts.addNewUserToPersonAccount(
 			accountName = "Person Account",
-			accountUserName = "userfn1",
 			userEmailAddress = "userfn1@liferay.com",
+			userFirstName = "userfn1",
 			userLastName = "userln1",
 			userScreenName = "usersn1");
 
 		Accounts.addNewUserToPersonAccount(
 			accountName = "Person Account",
-			accountUserName = "userfn2",
 			userEmailAddress = "userfn2@liferay.com",
+			userFirstName = "userfn2",
 			userLastName = "userln2",
 			userScreenName = "usersn2");
 
@@ -77,30 +158,153 @@ definition {
 
 		AccountUsers.viewEntryAccounts(
 			accountName = "Person Account",
-			accountUserName = "userfn2");
+			accountUserName = "userfn2 userln2");
 
 		AccountUsers.viewEntryAccounts(
 			accountName = "No Assigned Account",
-			accountUserName = "userfn1");
+			accountUserName = "userfn1 userln1");
+	}
+
+	@description = "This test adds an address to account and asserts this address is not shared across accounts"
+	@priority = "3"
+	test AddressesAreAccountSpecific {
+		for (var accountNumber : list "1,2") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account ${accountNumber}",
+				accountEntryType = "Business");
+		}
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "1005 High-Tech Zone",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 2");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No addresses were found.");
+	}
+
+	@description = "This test adds a new user via the Users tab of an Account"
+	@priority = "4"
+	test CanAddAccountUserViaAssignUser {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Assign Account User",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Assign Account User");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Assign Account User",
+			assigneeName = "userfn",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Assign Account User");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		Accounts.viewAssignee(assigneeName = "userfn");
+	}
+
+	@description = "This test adds and removes a user assignee to an Owned or account specific role."
+	@priority = "4"
+	test CanAddAndRemoveAssigneeToAnOwnedAccountRole {
+		property portal.acceptance = "true";
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Account Name",
+			assigneeName = "userfn",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addOwnedAccountRole(accountRoleTitle = "Account Role Title");
+
+		Accounts.addAssigneeToRole(
+			accountRoleTitle = "Account Role Title",
+			assigneeName = "userfn");
+
+		LexiconEntry.viewEntryName(rowEntry = "userfn userln");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		// Navigate to assignees via menu item and removes existing assignee from role
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Assign Users",
+			rowEntry = "Account Role Title");
+
+		LexiconEntry.selectEntry(rowEntry = "userfn userln");
+
+		ClickNoError(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm(value1 = "Are you sure you want to remove the selected users?");
+
+		Alert.viewSuccessMessage();
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "There are no users associated with this role.");
 	}
 
 	@description = "This test adds and removes multiple organizations from an account via management toolbar."
 	@priority = "4"
 	test CanAddAndRemoveOrganizationsInBulk {
 		for (var organizationNumber : list "1,2,3,4") {
-			ApplicationsMenu.gotoPortlet(
-				category = "Users",
-				panel = "Control Panel",
-				portlet = "Users and Organizations");
-
-			Organization.addCP(
-				orgName = "Organization ${organizationNumber}",
-				orgType = "Organization");
+			JSONOrganization.addOrganization(
+				organizationName = "Organization ${organizationNumber}",
+				organizationSite = "true");
 		}
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account with Organization",
+			accountEntryType = "Business");
 
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(accountName = "Account with Organization");
+		LexiconEntry.gotoEntry(rowEntry = "Account with Organization");
 
 		Accounts.assignMultipleOrganizations(
 			accountName = "Account with Organization",
@@ -148,15 +352,44 @@ definition {
 			accountType = "Person");
 	}
 
+	@description = "This test adds a category to an account"
+	@priority = "3"
+	test CanAddCategoryToAnAccount {
+		JSONCategory.addVocabulary(
+			groupName = "Global",
+			title = "Vocabulary Name 1");
+
+		JSONCategory.addCategory(
+			groupName = "Global",
+			title = "Category Name 1",
+			vocabularyName = "Vocabulary Name 1");
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.addBusinessAccountWithCategory(
+			accountName = "Account with Category",
+			categoryName = "Category Name 1",
+			vocabularyName = "Vocabulary Name 1");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account with Category");
+
+		AssetCategorization.viewCategory(categoryName = "Category Name 1");
+
+		AssetCategorization.viewVocabulary(vocabularyName = "Vocabulary Name 1");
+	}
+
 	@description = "This test asserts that users can add more than one domain to a business account."
 	@priority = "4"
 	test CanAddMultipleDomainsToAccount {
+		property portal.acceptance = "true";
+
 		AccountConfiguration.enableAccountEmailDomain();
 
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "This is an Account with Multi Domains",
 			accountName = "Account with Multi Domains",
 			domainNames = "liferay.com,Google.com,si-na.com,9teen.com");
 
@@ -167,22 +400,138 @@ definition {
 		for (var domainName : list "liferay.com,Google.com,si-na.com,9teen.com") {
 			AssertElementPresent(
 				key_domainName = "${domainName}",
-				locator1 = "Account#DOMAIN_TABLE_NAME");
+				locator1 = "Account#VALID_DOMAINS_DOMAIN_NAME");
 		}
 	}
 
-	@description = "This test adds an organization as an assignee of a business account."
+	@description = "This test adds a new shipping address and billing address via Set Default Address. It asserts that these addresses are set by default after adding."
+	@priority = "3"
+	test CanAddNewAddressViaSetDefaultAddress {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_SHIPPING",
+			value1 = "Set Default Address");
+
+		SelectFrame(
+			key_title = "Set Default Shipping Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Accounts.addAddressViaSetDefaultAddress(
+			addressCity = "Diamond Bar",
+			addressCountry = "United States",
+			addressName = "Liferay, Inc.",
+			addressPostalCode = "91765",
+			addressRegion = "California",
+			addressStreet1 = "1400 Montefino Ave",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_BILLING",
+			value1 = "Set Default Address");
+
+		SelectFrame(
+			key_title = "Set Default Billing Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Accounts.addAddressViaSetDefaultAddress(
+			addressCity = "Shibuya-ku",
+			addressCountry = "Japan",
+			addressName = "Liferay Japan K. K.",
+			addressPostalCode = "150-0021",
+			addressRegion = "Tokyo",
+			addressStreet1 = "1F Faveur Ebisu,",
+			addressStreet2 = "1-26-7 Ebisu Nishi",
+			phoneNumber = "+81 3-5456-5796");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.viewDefaultShippingAddress(
+			addressCity = "Diamond Bar",
+			addressCountry = "United States",
+			addressName = "Liferay, Inc.",
+			addressPostalCode = "91765",
+			addressRegion = "California",
+			addressStreet1 = "1400 Montefino Ave",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.viewDefaultBillingAddress(
+			addressCity = "Shibuya-ku",
+			addressCountry = "Japan",
+			addressName = "Liferay Japan K. K.",
+			addressPostalCode = "150-0021",
+			addressRegion = "Tokyo",
+			addressStreet1 = "1F Faveur Ebisu,",
+			addressStreet2 = "1-26-7 Ebisu Nishi",
+			addressType = "Shipping",
+			phoneNumber = "+81 3-5456-5796");
+	}
+
+	@description = "This test assigns an existing user to account through the Users tab"
 	@priority = "4"
-	test CanAssignOrganizationToAccount {
+	test CanAssignExistingUserToAccount {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		AccountUsers.openAccountUsersAdmin();
+
+		AccountUsers.addUser(
+			accountName = "Account Name",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		AccountConfiguration.enableAccountEmailDomain();
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.addAccountWithDomain(
+			accountDescription = "This is a test for adding user to account.",
+			accountName = "Account with Exist User",
+			domainNames = "liferay.com");
+
+		Accounts.assignUsers(
+			accountName = "Account with Exist User",
+			assigneeName = "userfn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account with Exist User");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		Accounts.viewAssignee(assigneeName = "userfn");
+	}
+
+	@description = "This test adds an organization as an assignee of a business account with domain."
+	@priority = "4"
+	test CanAssignOrganizationToAccountWithDomain {
 		JSONOrganization.addOrganization(
 			organizationName = "Organization for Account",
 			organizationSite = "true");
 
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account with Organization",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a test for adding organization to account.",
-			accountName = "Account with Organization");
+		LexiconEntry.gotoEntry(rowEntry = "Account with Organization");
 
 		Accounts.assignOrganizations(
 			accountName = "Account with Organization",
@@ -197,23 +546,116 @@ definition {
 		Accounts.viewAssignee(assigneeName = "Organization for Account");
 	}
 
+	@description = "This test assigns a role to an Account User in the Account Details page via Users tab"
+	@priority = "4"
+	test CanAssignRolesViaUsersTab {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addOwnedAccountRole(accountRoleTitle = "Account Specific Role");
+
+		AccountUsers.openAccountUsersAdmin();
+
+		AccountUsers.addUser(
+			accountName = "Account Name",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addAssigneeToRoleViaUsersTab(
+			accountRoleTitle = "Account Administrator",
+			accountUserName = "userfn userln");
+
+		AssertTextEquals(
+			key_columnName = "lfr-account-roles-column",
+			key_rowEntry = "userfn userln",
+			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+			value1 = "Account Administrator");
+
+		Accounts.addAssigneeToRoleViaUsersTab(
+			accountRoleTitle = "Account Specific Role",
+			accountUserName = "userfn userln");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Navigator.gotoNavTab(navTab = "Users");
+
+		AssertTextEquals(
+			key_columnName = "lfr-account-roles-column",
+			key_rowEntry = "userfn userln",
+			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+			value1 = "Account Administrator, Account Specific Role");
+	}
+
+	@description = "This test updates an account's status from Active to Inactive asserts change saves successfully."
+	@priority = "4"
+	test CanChangeAccountStatusToInactiveThenActiveViaEdit {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Change Account Status",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.editCP(
+			accountName = "Change Account Status",
+			accountNameEdit = "Edited Account Name",
+			accountStatusEdit = "Inactive");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.viewNoEntry(rowEntry = "Edited Account Name");
+
+		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+		LexiconEntry.viewEntryStatus(
+			rowEntry = "Edited Account Name",
+			rowStatus = "Inactive");
+
+		LexiconEntry.gotoEntry(rowEntry = "Edited Account Name");
+
+		Check.checkToggleSwitch(locator1 = "ToggleSwitch#ACCOUNT_STATUS");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.viewEntryStatus(
+			rowEntry = "Edited Account Name",
+			rowStatus = "Active");
+	}
+
 	@description = "This test asserts that address type can be changed from Billing to Shipping and vice versa."
 	@priority = "5"
 	test CanChangeAddressType {
 		property portal.acceptance = "true";
 
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Change Account Address Type",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a test of changing account address type.",
-			accountName = "Change Account Address Type");
+		LexiconEntry.gotoEntry(rowEntry = "Change Account Address Type");
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
 
 		Accounts.addAddress(
 			addressCity = "Dalian",
 			addressCountry = "China",
-			addressDescription = "Address of DL office.",
 			addressName = "Liferay Dalian Software Co., Ltd.",
 			addressPostalCode = "116023",
 			addressRegion = "Liaoning Sheng",
@@ -268,15 +710,124 @@ definition {
 		}
 	}
 
+	@description = "This test adds more than 4 addresses to an account and asserts correct pagination in the address list."
+	@priority = "3"
+	test CanChangePaginationInAddressesList {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Chicago",
+			addressCountry = "United States",
+			addressName = "Chicago",
+			addressPostalCode = "60606",
+			addressRegion = "Illinois",
+			addressStreet1 = "205 W. Wacker Dr",
+			addressStreet2 = "Suite 720",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.addAddress(
+			addressCity = "Hamilton",
+			addressCountry = "United States",
+			addressName = "Hamilton",
+			addressPostalCode = "45011",
+			addressRegion = "Ohio",
+			addressStreet1 = "10 Journal Square",
+			addressStreet2 = "Suite 200",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.addAddress(
+			addressCity = "Shibuya-ku",
+			addressCountry = "Japan",
+			addressName = "Japan K. K.",
+			addressPostalCode = "150-0021",
+			addressRegion = "Tokyo",
+			addressStreet1 = "1F Faveur Ebisu,",
+			addressStreet2 = "1-26-7 Ebisu Nishi",
+			addressType = "Shipping",
+			phoneNumber = "+81 3-5456-5796");
+
+		Accounts.addAddress(
+			addressCity = "Recife",
+			addressCountry = "Brazil",
+			addressName = "Latin America Ltda",
+			addressPostalCode = "2480",
+			addressRegion = "São Paulo",
+			addressStreet1 = "Alameda Santos",
+			addressStreet2 = "7 andar",
+			addressType = "Billing",
+			phoneNumber = "+55 11 3377-7530");
+
+		Accounts.addAddress(
+			addressCity = "Diamond Bar",
+			addressCountry = "United States",
+			addressName = "Los Angeles",
+			addressPostalCode = "91765",
+			addressRegion = "California",
+			addressStreet1 = "1400 Montefino Ave",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.addAddress(
+			addressCity = "Madrid",
+			addressCountry = "Spain",
+			addressName = "Spain and Portugal",
+			addressPostalCode = "28046",
+			addressRegion = "Madrid",
+			addressStreet1 = "Paseo de la Castellana",
+			addressStreet2 = "280 Planta 1. Modulo B",
+			addressType = "Billing",
+			phoneNumber = "+34 91 733 63 43");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Pagination.changePagination(itemsPerPage = "4");
+
+		for (var addressName : list "Chicago,Hamilton,Japan K. K.,Latin America Ltda") {
+			LexiconEntry.viewEntryName(rowEntry = "${addressName}");
+		}
+
+		for (var addressName : list "Los Angeles,Spain and Portugal") {
+			LexiconEntry.viewNoEntry(rowEntry = "${addressName}");
+		}
+
+		Pagination.viewResults(results = "Showing 1 to 4 of 6 entries.");
+
+		Click(locator1 = "Pagination#NEXT_LINK");
+
+		for (var addressName : list "Los Angeles,Spain and Portugal") {
+			LexiconEntry.viewEntryName(rowEntry = "${addressName}");
+		}
+
+		for (var addressName : list "Chicago,Hamilton,Japan K. K.,Latin America Ltda") {
+			LexiconEntry.viewNoEntry(rowEntry = "${addressName}");
+		}
+
+		Pagination.viewResults(results = "Showing 5 to 6 of 6 entries.");
+	}
+
 	@description = "This test deactivates an active account and asserts account displays in correct filter."
 	@priority = "4"
 	test CanDeactivateAccount {
-		for (var accountNumber : list "1,2,3") {
-			Accounts.openAccountsAdmin();
+		property portal.acceptance = "true";
 
-			Accounts.addBusinessAccount(
-				accountDescription = "Accounts Name ${accountNumber} Description",
-				accountName = "Accounts Name ${accountNumber} for Test");
+		for (var accountNumber : list "1,2,3") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Accounts Name ${accountNumber} for Test",
+				accountEntryType = "Business");
 		}
 
 		Accounts.openAccountsAdmin();
@@ -306,9 +857,9 @@ definition {
 	@priority = "4"
 	test CanDeactivateAndActivateAccountsInBulk {
 		for (var accountNumber : list "1,2,3,4,5,6") {
-			Accounts.openAccountsAdmin();
-
-			Accounts.addBusinessAccount(accountName = "Account ${accountNumber}");
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account ${accountNumber}",
+				accountEntryType = "Business");
 		}
 
 		Accounts.openAccountsAdmin();
@@ -358,17 +909,83 @@ definition {
 		}
 	}
 
+	@description = "This only tests the UI for defining permissions for an Owned or account specific role. Permissioning will be covered when 2B widgets are implemented."
+	@priority = "4"
+	test CanDefinePermissionsForOwnedAccountRole {
+		task ("Add a business account with Owned or account specific role and navigate to Define Permissions") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Business Account with Role",
+				accountEntryType = "Business");
+
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Business Account with Role");
+
+			Accounts.addOwnedAccountRole(accountRoleTitle = "Account Specific Role");
+
+			Navigator.gotoBack();
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "Define Permissions",
+				rowEntry = "Account Specific Role");
+		}
+
+		task ("Select All permissions for Applications and Resource Permissions for Account Entries") {
+			var key_navItem = "Accounts";
+
+			var key_subItem = "Accounts";
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM");
+
+			Check(locator1 = "RolesPermissions#ACCOUNTS_APPLICATION_PERMISSIONS_SELECT_ALL");
+
+			Check(locator1 = "RolesPermissions#ACCOUNTS_RESOURCE_PERMISSIONS_ACCOUNT_SELECT_ALL");
+
+			Check(locator1 = "RolesPermissions#ACCOUNTS_RESOURCE_PERMISSIONS_ACCOUNT_ENTRY_SELECT_ALL");
+
+			Button.clickSave();
+		}
+
+		task ("Select All permissions for Resource Permissions for Account Users") {
+			var key_navItem = "Accounts";
+
+			var key_subItem = "Account Users";
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM");
+
+			Check(locator1 = "RolesPermissions#ACCOUNTS_APPLICATION_PERMISSIONS_SELECT_ALL");
+
+			Button.clickSave();
+		}
+
+		task ("Select All permissions for Resource Permissions for Account Groups") {
+			var key_navItem = "Accounts";
+
+			var key_subItem = "Account Groups";
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_COLLAPSED");
+
+			Click.clickAt(locator1 = "RolesPermissionsNavigation#PERMISSIONS_NAVITEM_SUBITEM");
+
+			Check(locator1 = "RolesPermissions#ACCOUNTS_APPLICATION_PERMISSIONS_SELECT_ALL");
+
+			Button.clickSave();
+		}
+	}
+
 	@description = "This test asserts an account can be deleted successfully via management toolbar and menu item."
 	@priority = "5"
 	test CanDeleteAccount {
 		property portal.acceptance = "true";
 
 		for (var accountNumber : list "1,2,3") {
-			Accounts.openAccountsAdmin();
-
-			Accounts.addBusinessAccount(
-				accountDescription = "Accounts Name ${accountNumber} Description",
-				accountName = "Delete Accounts Name ${accountNumber} for Test");
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Delete Accounts Name ${accountNumber} for Test",
+				accountEntryType = "Business");
 		}
 
 		Accounts.openAccountsAdmin();
@@ -402,14 +1019,60 @@ definition {
 		}
 	}
 
+	@description = "This test deletes multiple accounts via management toolbar"
+	@priority = "3"
+	test CanDeleteAccountsInBulk {
+		for (var accountNumber : list "1,2,3") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account ${accountNumber}",
+				accountEntryType = "Business");
+		}
+
+		for (var accountNumber : list "4,5,6") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account ${accountNumber}",
+				accountEntryType = "Person");
+		}
+
+		Accounts.openAccountsAdmin();
+
+		for (var accountNumber : list "1,2,4,6") {
+			LexiconEntry.selectEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		ClickNoError(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
+
+		Alert.viewSuccessMessage();
+
+		for (var accountNumber : list "1,2,4,6") {
+			LexiconEntry.viewNoEntry(rowEntry = "Account ${accountNumber}");
+		}
+
+		for (var accountNumber : list "3,5") {
+			LexiconEntry.viewEntryName(rowEntry = "Account ${accountNumber}");
+		}
+
+		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+		for (var accountNumber : list "1,2,4,6") {
+			LexiconEntry.viewNoEntry(rowEntry = "Account ${accountNumber}");
+		}
+	}
+
 	@description = "This test asserts address deletes successfully."
 	@priority = "3"
 	test CanDeleteAddress {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Delete Address",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "Delete address for account.",
-			accountName = "Account Delete Address");
+		LexiconEntry.gotoEntry(rowEntry = "Account Delete Address");
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
 
@@ -444,6 +1107,83 @@ definition {
 		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
 
 		LexiconEntry.viewNoEntry(rowEntry = "Liferay Dalian Software Co., Ltd.");
+	}
+
+	@description = "This test deletes multiple addresses via management toolbar"
+	@priority = "4"
+	test CanDeleteAddressesInBulk {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Diamond Bar",
+			addressCountry = "United States",
+			addressName = "Liferay, Inc.",
+			addressPostalCode = "91765",
+			addressRegion = "California",
+			addressStreet1 = "1400 Montefino Ave",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.addAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			addressType = "Shipping",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.addAddress(
+			addressCity = "Shibuya-ku",
+			addressCountry = "Japan",
+			addressName = "Liferay Japan K. K.",
+			addressPostalCode = "150-0021",
+			addressRegion = "Tokyo",
+			addressStreet1 = "1F Faveur Ebisu,",
+			addressStreet2 = "1-26-7 Ebisu Nishi",
+			addressType = "Shipping",
+			phoneNumber = "+81 3-5456-5796");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		for (var addressName : list "Liferay Dalian Software Co., Ltd.,Liferay Japan K. K.") {
+			LexiconEntry.selectEntry(rowEntry = "${addressName}");
+		}
+
+		ClickNoError(
+			key_text = "times-circle",
+			locator1 = "Icon#ANY");
+
+		AssertConfirm.waitForConfirmation(value1 = "Are you sure you want to delete this? It will be deleted immediately.");
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		for (var addressName : list "Liferay Dalian Software Co., Ltd.,Liferay Japan K. K.") {
+			LexiconEntry.viewNoEntry(rowEntry = "${addressName}");
+		}
+
+		LexiconEntry.viewEntryName(rowEntry = "Liferay, Inc.");
 	}
 
 	@description = "This is a use case for LPS-101315. Deleting an inactive account will navigate you back to inactive filter."
@@ -481,9 +1221,7 @@ definition {
 			resourceName = "Account Entry");
 
 		JSONAccountEntry.addAccountEntry(
-			accountEntryDescription = "This is a test try to update the custom field of Account.",
 			accountEntryName = "Accounts Name with Custom Field",
-			accountEntryStatus = "Active",
 			accountEntryType = "Business");
 
 		Accounts.openAccountsAdmin();
@@ -500,16 +1238,46 @@ definition {
 			customFieldText = "Custom Field for Account");
 	}
 
+	@description = "This test asserts that External Reference Code is editable."
+	@priority = "3"
+	test CanEditExternalReferenceCode {
+		Accounts.openAccountsAdmin();
+
+		Accounts.addBusinessAccount(
+			accountName = "Business Account Name",
+			externalReferenceCode = "AAA-0100");
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.gotoEdit(accountName = "Business Account Name");
+
+		PortletEntry.inputText(
+			fieldLabel = "External Reference Code",
+			text = "AAA-0111");
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Business Account Name");
+
+		AssertTextEquals(
+			key_fieldLabel = "External Reference Code",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT",
+			value1 = "AAA-0111");
+	}
+
 	@description = "This is a use case for LPS-101221. It updates an inactive account by clicking on its link and asserts user stays on the Inactive filter when you go back to Accounts list."
 	@priority = "4"
 	test CanEditInactiveAccount {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Accounts Name for Test",
+			accountEntryStatus = "Inactive",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
-
-		Accounts.addInactiveBusinessAccount(
-			accountDescription = "Accounts Name Description for Test",
-			accountName = "Accounts Name for Test");
-
-		Navigator.gotoBack();
 
 		LexiconEntry.viewNoEntry(rowEntry = "Accounts Name for Test");
 
@@ -549,6 +1317,8 @@ definition {
 	@description = "This test updates an account's name and description and asserts change saves successfully."
 	@priority = "5"
 	test CanEditNameAndDescription {
+		property portal.acceptance = "true";
+
 		Accounts.openAccountsAdmin();
 
 		Accounts.addBusinessAccount(
@@ -559,37 +1329,20 @@ definition {
 
 		Accounts.openAccountsAdmin();
 
-		Search.searchCP(searchTerm = "Accounts Name for Test");
-
 		Accounts.editCP(
 			accountDescriptionEdit = "Update Accounts Name Description for Test",
 			accountName = "Accounts Name for Test",
-			accountNameEdit = "Update Accounts Name for Test",
-			accountStatusEdit = "Inactive");
+			accountNameEdit = "Update Accounts Name for Test");
 
 		Accounts.openAccountsAdmin();
-
-		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
 
 		LexiconEntry.viewEntryName(rowEntry = "Update Accounts Name for Test");
 
-		LexiconEntry.viewEntryStatus(
-			rowEntry = "Update Accounts Name for Test",
-			rowStatus = "Inactive");
-
 		LexiconEntry.viewNoEntry(rowEntry = "Accounts Name for Test");
-
-		Accounts.openAccountsAdmin();
-
-		LexiconEntry.viewNoEntry(rowEntry = "Accounts Name for Test");
-
-		ManagementBar.setFilterAndOrder(filterBy = "Inactive");
 
 		LexiconEntry.gotoEntry(rowEntry = "Update Accounts Name for Test");
 
 		PortletEntry.inputName(name = "Update Accounts Name via Name Link");
-
-		Check.checkToggleSwitch(locator1 = "ToggleSwitch#ACCOUNT_STATUS");
 
 		Button.clickSave();
 
@@ -603,29 +1356,25 @@ definition {
 
 		LexiconEntry.viewEntryName(rowEntry = "Update Accounts Name via Name Link");
 
-		LexiconEntry.viewEntryStatus(
-			rowEntry = "Update Accounts Name via Name Link",
-			rowStatus = "Active");
-
 		LexiconEntry.viewNoEntry(rowEntry = "Update Accounts Name for Test");
 	}
 
 	@description = "This test asserts accounts are filtered by All Accounts by default. Changing filter to Business and Person shows accurate results."
 	@priority = "3"
 	test CanFilterAccountsByType {
-		Accounts.openAccountsAdmin();
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Business Account",
+			accountEntryType = "Business");
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a Business Account.",
-			accountName = "Business Account");
-
-		Accounts.openAccountsAdmin();
-
-		Accounts.addPersonAccount(
-			accountDescription = "This is a Person Account.",
-			accountName = "Person Account");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Person Account",
+			accountEntryType = "Person");
 
 		Accounts.openAccountsAdmin();
+
+		LexiconEntry.viewEntryName(rowEntry = "Business Account");
+
+		LexiconEntry.viewEntryName(rowEntry = "Person Account");
 
 		ManagementBar.setFilterAndOrder(filterBy = "Business");
 
@@ -638,29 +1387,118 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "Person Account");
 
 		LexiconEntry.viewNoEntry(rowEntry = "Business Account");
-
-		ManagementBar.setFilterAndOrder(filterBy = "All");
-
-		LexiconEntry.viewEntryName(rowEntry = "Business Account");
-
-		LexiconEntry.viewEntryName(rowEntry = "Person Account");
 	}
 
-	@description = "This test adds an address, sets it as default, and removes it as default"
+	@description = "This asserts that filter in setting default shipping will not change to billing and that billing addresses do not display as options."
 	@priority = "3"
-	test CanRemoveAddressAsDefault {
+	test CannotAddBillingAddressAsDefaultShipping {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account 1",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "Remove address for account.",
-			accountName = "Account Remove Address");
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Diamond Bar",
+			addressCountry = "United States",
+			addressName = "Liferay, Inc.",
+			addressPostalCode = "91765",
+			addressRegion = "California",
+			addressStreet1 = "1400 Montefino Ave",
+			addressType = "Billing",
+			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_SHIPPING",
+			value1 = "Set Default Address");
+
+		SelectFrame(
+			key_title = "Set Default Shipping Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No addresses were found.");
+
+		Search.searchCP(searchTerm = "Diamond Bar");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No addresses were found.");
+	}
+
+	@description = "This asserts that filter in setting default billing will not change to shipping and that shipping addresses do not display as options."
+	@priority = "3"
+	test CannotAddShippingAddressAsDefaultBilling {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account 1",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
 
 		Accounts.addAddress(
 			addressCity = "Dalian",
 			addressCountry = "China",
-			addressDescription = "Address of DL office.",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			addressType = "Shipping",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
+
+		AssertClick(
+			locator1 = "Account#DEFAULT_ACCOUNT_ADDRESSES_SET_DEFAULT_BILLING",
+			value1 = "Set Default Address");
+
+		SelectFrame(
+			key_title = "Set Default Billing Address",
+			locator1 = "IFrame#MODAL_ANY");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No addresses were found.");
+
+		Search.searchCP(searchTerm = "China");
+
+		AssertTextEquals(
+			locator1 = "Message#EMPTY_INFO",
+			value1 = "No addresses were found.");
+	}
+
+	@description = "This test adds an address, sets it as default, and removes it as default"
+	@priority = "3"
+	test CanRemoveAddressAsDefault {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Remove Address",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Remove Address");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
 			addressName = "Liferay Dalian Software Co., Ltd.",
 			addressPostalCode = "116023",
 			addressRegion = "Liaoning Sheng",
@@ -673,35 +1511,43 @@ definition {
 
 		LexiconEntry.gotoEntry(rowEntry = "Account Remove Address");
 
-		for (var addressDataType : list "shipping,billing") {
-			Accounts.setDefaultAddress(
-				addressDataType = "${addressDataType}",
-				addressName = "Liferay Dalian Software Co., Ltd.");
+		Accounts.setDefaultShippingAddress(
+			addressDataType = "${addressDataType}",
+			addressName = "Liferay Dalian Software Co., Ltd.");
 
-			Accounts.viewAddress(
-				addressCity = "Dalian",
-				addressCountry = "China",
-				addressDataType = "${addressDataType}",
-				addressName = "Liferay Dalian Software Co., Ltd.",
-				addressPostalCode = "116023",
-				addressRegion = "Liaoning Sheng",
-				addressStreet1 = "537 Huangpu Road Taide Building,",
-				addressStreet2 = "High-Tech Zone",
-				addressStreet3 = "1005",
-				phoneNumber = "+86 (0)411 88120855");
-		}
+		Accounts.viewDefaultShippingAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			phoneNumber = "+86 (0)411 88120855");
 
-		Accounts.removeAddress(
-			accountName = "Account Remove Address",
-			addressDataType = "billing");
+		Accounts.setDefaultBillingAddress(
+			addressDataType = "${addressDataType}",
+			addressName = "Liferay Dalian Software Co., Ltd.");
+
+		Accounts.viewDefaultBillingAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.removeDefaultBillingAddress(accountName = "Account Remove Address");
 
 		Accounts.openAccountsAdmin();
 
 		LexiconEntry.gotoEntry(rowEntry = "Account Remove Address");
 
-		Accounts.removeAddress(
-			accountName = "Account Remove Address",
-			addressDataType = "shipping");
+		Accounts.removeDefaultShippingAddress(accountName = "Account Remove Address");
 
 		Accounts.openAccountsAdmin();
 
@@ -720,7 +1566,6 @@ definition {
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "Remove Domain from the Account",
 			accountName = "Remove Account Domain",
 			domainNames = "liferay.com,Google.com");
 
@@ -736,11 +1581,11 @@ definition {
 
 		AssertElementPresent(
 			key_domainName = "liferay.com",
-			locator1 = "Account#DOMAIN_TABLE_NAME");
+			locator1 = "Account#VALID_DOMAINS_DOMAIN_NAME");
 
 		AssertElementNotPresent(
 			key_domainName = "Google.com",
-			locator1 = "Account#DOMAIN_TABLE_NAME");
+			locator1 = "Account#VALID_DOMAINS_DOMAIN_NAME");
 	}
 
 	@description = "This test removes a blocked domain in Instance Settings."
@@ -774,11 +1619,13 @@ definition {
 			organizationName = "Organization for Account",
 			organizationSite = "true");
 
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Unassign Organization from Account",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a test for unassign organization from account.",
-			accountName = "Unassign Organization from Account");
+		LexiconEntry.gotoEntry(rowEntry = "Unassign Organization from Account");
 
 		Accounts.assignOrganizations(
 			accountName = "Unassign Organization from Account",
@@ -790,9 +1637,7 @@ definition {
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Organizations");
 
-		Accounts.removeAssignee(
-			assigneeName = "Organization for Account",
-			assigneeType = "Organizations");
+		Accounts.removeOrganizationAsAssignee(assigneeName = "Organization for Account");
 
 		Accounts.openAccountsAdmin();
 
@@ -801,14 +1646,49 @@ definition {
 			assigneeType = "Organizations");
 	}
 
+	@description = "This test removes a user from account via Users tab"
+	@priority = "5"
+	test CanRemoveUserFromAccount {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Remove Account User",
+			accountEntryType = "Business");
+
+		AccountUsers.openAccountUsersAdmin();
+
+		AccountUsers.addUser(
+			accountName = "Remove Account User",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Remove Account User");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		Accounts.removeUserAsAssignee(assigneeName = "userfn");
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.viewNoAssignee(
+			accountName = "Remove Account User",
+			assigneeType = "Users");
+	}
+
 	@description = "This test removes a user from a person account"
 	@priority = "4"
 	test CanRemoveUserFromPersonAccount {
+		property portal.acceptance = "true";
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Person Account",
+			accountEntryType = "Person");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addPersonAccount(
-			accountDescription = "This is a Person Account.",
-			accountName = "Person Account");
+		LexiconEntry.gotoEntry(rowEntry = "Person Account");
 
 		Accounts.addNewUserToPersonAccount(
 			accountName = "Person Account",
@@ -838,9 +1718,9 @@ definition {
 	@description = "This test removes multiple users from an account in bulk via management toolbar"
 	@priority = "3"
 	test CanRemoveUsersFromAccountsInBulk {
-		Accounts.openAccountsAdmin();
-
-		Accounts.addBusinessAccount(accountName = "Business Account");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Business Account",
+			accountEntryType = "Business");
 
 		for (var accountUser : list "1,2,3,4") {
 			AccountUsers.openAccountUsersAdmin();
@@ -884,21 +1764,55 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "userfn2 userln2");
 	}
 
-	@description = "This test sets default shipping and default billing addresses for an account."
+	@description = "This test searches for an address in the addresses tab of an account."
 	@priority = "3"
-	test CanSetDefaultAddresses {
+	test CanSearchForAddressInAddressesTab {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Search Address",
+			accountEntryType = "Business");
+
 		Accounts.openAccountsAdmin();
 
-		Accounts.addBusinessAccount(
-			accountDescription = "Set default address for account.",
-			accountName = "Account with Default Address");
+		LexiconEntry.gotoEntry(rowEntry = "Search Address");
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
 
 		Accounts.addAddress(
 			addressCity = "Dalian",
 			addressCountry = "China",
-			addressDescription = "Address of DL office.",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		for (var searchTerm : list "Dalian,China,Liaoning,Liferay,116023") {
+			Search.searchCP(searchTerm = "${searchTerm}");
+
+			LexiconEntry.viewEntryName(rowEntry = "Liferay Dalian Software Co., Ltd.");
+		}
+	}
+
+	@description = "This test sets default shipping and default billing addresses for an account."
+	@priority = "3"
+	test CanSetDefaultAddresses {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account with Default Address",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account with Default Address");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Addresses");
+
+		Accounts.addAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
 			addressName = "Liferay Dalian Software Co., Ltd.",
 			addressPostalCode = "116023",
 			addressRegion = "Liaoning Sheng",
@@ -910,7 +1824,6 @@ definition {
 		Accounts.addAddress(
 			addressCity = "Diamond Bar",
 			addressCountry = "United States",
-			addressDescription = "Address of Los Angeles (Global HQ) office.",
 			addressName = "Liferay, Inc.",
 			addressPostalCode = "91765",
 			addressRegion = "California",
@@ -921,7 +1834,6 @@ definition {
 		Accounts.addAddress(
 			addressCity = "Shibuya-ku",
 			addressCountry = "Japan",
-			addressDescription = "Address of Japan office.",
 			addressName = "Liferay Japan K. K.",
 			addressPostalCode = "150-0021",
 			addressRegion = "Tokyo",
@@ -934,14 +1846,11 @@ definition {
 
 		LexiconEntry.gotoEntry(rowEntry = "Account with Default Address");
 
-		Accounts.setDefaultAddress(
-			addressDataType = "shipping",
-			addressName = "Liferay Japan K. K.");
+		Accounts.setDefaultShippingAddress(addressName = "Liferay Japan K. K.");
 
-		Accounts.viewAddress(
+		Accounts.viewDefaultShippingAddress(
 			addressCity = "Shibuya-ku",
 			addressCountry = "Japan",
-			addressDataType = "shipping",
 			addressName = "Liferay Japan K. K.",
 			addressPostalCode = "150-0021",
 			addressRegion = "Tokyo",
@@ -949,41 +1858,109 @@ definition {
 			addressStreet2 = "1-26-7 Ebisu Nishi",
 			phoneNumber = "+81 3-5456-5796");
 
-		Accounts.setDefaultAddress(
-			addressDataType = "billing",
-			addressName = "Liferay, Inc.");
+		Accounts.setDefaultBillingAddress(addressName = "Liferay, Inc.");
 
-		Accounts.viewAddress(
+		Accounts.viewDefaultBillingAddress(
 			addressCity = "Diamond Bar",
 			addressCountry = "United States",
-			addressDataType = "billing",
 			addressName = "Liferay, Inc.",
 			addressPostalCode = "91765",
 			addressRegion = "California",
 			addressStreet1 = "1400 Montefino Ave",
 			phoneNumber = "+1-877-LIFERAY (1-877-543-3729)");
 
-		Accounts.setDefaultAddress(
-			addressDataType = "shipping",
-			addressName = "Liferay Dalian Software Co., Ltd.");
+		Accounts.changeDefaultShippingAddress(addressName = "Liferay Dalian Software Co., Ltd.");
 
-		Accounts.setDefaultAddress(
-			addressDataType = "billing",
-			addressName = "Liferay Dalian Software Co., Ltd.");
+		Accounts.changeDefaultBillingAddress(addressName = "Liferay Dalian Software Co., Ltd.");
 
-		for (var addressDataType : list "shipping,billing") {
-			Accounts.viewAddress(
-				addressCity = "Dalian",
-				addressCountry = "China",
-				addressDataType = "${addressDataType}",
-				addressName = "Liferay Dalian Software Co., Ltd.",
-				addressPostalCode = "116023",
-				addressRegion = "Liaoning Sheng",
-				addressStreet1 = "537 Huangpu Road Taide Building,",
-				addressStreet2 = "High-Tech Zone",
-				addressStreet3 = "1005",
-				phoneNumber = "+86 (0)411 88120855");
-		}
+		Accounts.viewDefaultBillingAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			phoneNumber = "+86 (0)411 88120855");
+
+		Accounts.viewDefaultShippingAddress(
+			addressCity = "Dalian",
+			addressCountry = "China",
+			addressName = "Liferay Dalian Software Co., Ltd.",
+			addressPostalCode = "116023",
+			addressRegion = "Liaoning Sheng",
+			addressStreet1 = "537 Huangpu Road Taide Building,",
+			addressStreet2 = "High-Tech Zone",
+			addressStreet3 = "1005",
+			phoneNumber = "+86 (0)411 88120855");
+	}
+
+	@description = "This test unassigns a role to an Account User in the Account Details page via Users tab"
+	@priority = "3"
+	test CanUnassignRolesViaUsersTab {
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addOwnedAccountRole(accountRoleTitle = "Account Specific Role");
+
+		AccountUsers.openAccountUsersAdmin();
+
+		AccountUsers.addUser(
+			accountName = "Account Name",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addAssigneeToRoleViaUsersTab(
+			accountRoleTitle = "Account Administrator",
+			accountUserName = "userfn userln");
+
+		AssertTextEquals(
+			key_columnName = "lfr-account-roles-column",
+			key_rowEntry = "userfn userln",
+			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+			value1 = "Account Administrator");
+
+		LexiconEntry.gotoEntryMenuItemNoError(
+			menuItem = "Assign Roles",
+			rowEntry = "userfn userln");
+
+		SelectFrame(
+			key_title = "Assign Roles",
+			locator1 = "IFrame#MODAL_ANY");
+
+		Uncheck(
+			key_tableEntry = "Account Administrator",
+			locator1 = "LexiconTable#TABLE_ENTRY_CHECKBOX");
+
+		SelectFrameTop();
+
+		Button.click(button = "Done");
+
+		Alert.viewSuccessMessage();
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Navigator.gotoNavTab(navTab = "Users");
+
+		AssertElementPresent(
+			key_columnName = "lfr-account-roles-column",
+			key_rowEntry = "userfn userln",
+			locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
+			value1 = "");
 	}
 
 	@description = "This tests canceling account creation will not save it."
@@ -1034,6 +2011,40 @@ definition {
 		LexiconEntry.viewNoEntry(rowEntry = "Back Icon Account");
 	}
 
+	@description = "This test makes sure the default account roles are present in Roles Admin."
+	@priority = "4"
+	test DefaultAccountRolesArePresent {
+		property portal.acceptance = "true";
+
+		Role.openRolesAdmin();
+
+		Navigator.gotoNavItem(navItem = "Account Roles");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "table");
+
+		AssertTextEquals(
+			key_tableEntry = "Account Administrator",
+			locator1 = "LexiconTable#TABLE_ENTRY_TITLE_LINK",
+			value1 = "Account Administrator");
+
+		AssertTextEquals(
+			key_columnName = "description",
+			key_tableEntry = "Account Administrator",
+			locator1 = "LexiconTable#TABLE_ENTRY_COLUMN_LINK",
+			value1 = "Account Administrators are super users of their account.");
+
+		AssertTextEquals(
+			key_tableEntry = "Account Member",
+			locator1 = "LexiconTable#TABLE_ENTRY_TITLE_LINK",
+			value1 = "Account Member");
+
+		AssertTextEquals(
+			key_columnName = "description",
+			key_tableEntry = "Account Member",
+			locator1 = "LexiconTable#TABLE_ENTRY_COLUMN_LINK",
+			value1 = "All users who belong to an account have this role within that account.");
+	}
+
 	@description = "This test removes domain set to an account."
 	@priority = "4"
 	test DisablingDomainValidationRemovesWarningMessages {
@@ -1061,7 +2072,7 @@ definition {
 
 		LexiconEntry.gotoEntry(rowEntry = "Business Account");
 
-		AssertElementNotPresent(locator1 = "Account#DOMAIN_SECTION");
+		AssertElementNotPresent(locator1 = "Account#VALID_DOMAINS_HEADING");
 
 		Accounts.gotoAssigneeTab(assigneeTab = "Users");
 
@@ -1104,17 +2115,13 @@ definition {
 	@description = "This is a use case for LPS-117171. It asserts that Filter By Navigation does not display when assigning a user to a Person Account since domains are not applicable for this type of account."
 	@priority = "3"
 	test NoFilterByNavigationForPersonAccount {
-		Accounts.openAccountsAdmin();
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Business Account",
+			accountEntryType = "Business");
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a Business Account.",
-			accountName = "Business Account");
-
-		Accounts.openAccountsAdmin();
-
-		Accounts.addPersonAccount(
-			accountDescription = "This is a Person Account.",
-			accountName = "Person Account");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Person Account",
+			accountEntryType = "Person");
 
 		for (var accountUser : list "1,2") {
 			AccountUsers.openAccountUsersAdmin();
@@ -1132,7 +2139,7 @@ definition {
 		Accounts.gotoEdit(accountName = "Person Account");
 
 		AssertClick(
-			locator1 = "Account#USER_SELECT",
+			locator1 = "Account#USER_SELECT_BUTTON",
 			value1 = "Select");
 
 		SelectFrame(locator1 = "IFrame#ASSIGN_USER");
@@ -1144,13 +2151,13 @@ definition {
 	@priority = "3"
 	test NoWarningDisplaysWhenAddingAUserWithValidDomain {
 		property custom.properties = "jsonws.web.service.paths.excludes=";
+		property portal.acceptance = "true";
 
 		AccountConfiguration.enableAccountEmailDomain();
 
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "This is an Account with Multi Domains",
 			accountName = "AM Account",
 			domainNames = "liferay.com,Google.com,9teen.com");
 
@@ -1192,20 +2199,58 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "userfn userln");
 	}
 
+	@description = "This test adds an Owned or account specific role and ensures this role is not shared across accounts"
+	@priority = "4"
+	test OwnedAccountRoleIsNotSharedAcrossAccounts {
+		property portal.acceptance = "true";
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account with Role",
+			accountEntryType = "Business");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account without Role",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account with Role");
+
+		Accounts.addOwnedAccountRole(accountRoleTitle = "Account Specific Role");
+
+		Navigator.gotoBack();
+
+		LexiconEntry.viewEntryName(rowEntry = "Account Specific Role");
+
+		AssertTextEquals(
+			key_columnName = "lfr-type",
+			key_tableEntry = "Account Specific Role",
+			locator1 = "LexiconTable#TABLE_ENTRY_COLUMN_LINK",
+			value1 = "Owned");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account without Role");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.viewEntryName(rowEntry = "Account Administrator");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Account without Role");
+	}
+
 	@description = "This test replaces user in Person Account with another existing user. It asserts that first user was replaced by the second user and isn't assigned to the account anymore."
 	@priority = "5"
 	test SelectingUserWillReplaceExistingUserInPersonAccount {
-		Accounts.openAccountsAdmin();
+		property portal.acceptance = "true";
 
-		Accounts.addBusinessAccount(
-			accountDescription = "This is a Business Account.",
-			accountName = "Business Account");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Business Account",
+			accountEntryType = "Business");
 
-		Accounts.openAccountsAdmin();
-
-		Accounts.addPersonAccount(
-			accountDescription = "This is a Person Account.",
-			accountName = "Person Account");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Person Account",
+			accountEntryType = "Person");
 
 		for (var accountUser : list "1,2") {
 			AccountUsers.openAccountUsersAdmin();
@@ -1217,6 +2262,8 @@ definition {
 				userLastName = "userln${accountUser}",
 				userScreenName = "usersn${accountUser}");
 		}
+
+		Accounts.openAccountsAdmin();
 
 		Accounts.gotoEdit(accountName = "Person Account");
 
@@ -1237,6 +2284,60 @@ definition {
 		AssertElementNotPresent(
 			key_userName = "userfn1",
 			locator1 = "Account#USER_TABLE_NAME");
+	}
+
+	@description = "This test makes sure the default account roles are present in Roles Admin."
+	@priority = "4"
+	test SharedAccountRoleDisplaysInAllAccounts {
+		Role.openRolesAdmin();
+
+		Navigator.gotoNavItem(navItem = "Account Roles");
+
+		LexiconEntry.gotoAdd();
+
+		PortletEntry.inputTitle(title = "Shared Account Role");
+
+		AssertClick(
+			locator1 = "Button#SUBMIT",
+			value1 = "Save");
+
+		Alert.viewSuccessMessage();
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account 1",
+			accountEntryType = "Business");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account 2",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 1");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.viewEntryName(rowEntry = "Shared Account Role");
+
+		AssertTextEquals(
+			key_columnName = "lfr-type",
+			key_tableEntry = "Shared Account Role",
+			locator1 = "LexiconTable#TABLE_ENTRY_COLUMN_LINK",
+			value1 = "Shared");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account 2");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Roles");
+
+		LexiconEntry.viewEntryName(rowEntry = "Shared Account Role");
+
+		AssertTextEquals(
+			key_columnName = "lfr-type",
+			key_tableEntry = "Shared Account Role",
+			locator1 = "LexiconTable#TABLE_ENTRY_COLUMN_LINK",
+			value1 = "Shared");
 	}
 
 	@priority = "5"
@@ -1275,15 +2376,12 @@ definition {
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "This is an account with domain",
 			accountName = "Account with Domain",
 			domainNames = "liferay.com");
 
-		Navigator.gotoBack();
-
-		Accounts.addBusinessAccount(
-			accountDescription = "This is an account without domain",
-			accountName = "Account no Domain");
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account no Domain",
+			accountEntryType = "Business");
 
 		AccountUsers.openAccountUsersAdmin();
 
@@ -1356,6 +2454,22 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "userfn2 userln2");
 	}
 
+	@description = "This test asserts that domain validation is not present in Person Accounts."
+	@priority = "4"
+	test ValidDomainSectionDoesNotDisplayInPersonAccounts {
+		AccountConfiguration.enableAccountEmailDomain();
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.addPersonAccount(accountName = "Person Account");
+
+		Accounts.openAccountsAdmin();
+
+		Accounts.gotoEdit(accountName = "Person Account");
+
+		AssertElementNotPresent(locator1 = "Account#VALID_DOMAINS_HEADING");
+	}
+
 	@description = "This test sets a valid domain for a business account. It adds a user with a different domain and asserts that warning displays when a user attempts to do so."
 	@priority = "3"
 	test WarningDisplaysWhenAddingAUserWithInvalidDomain {
@@ -1366,7 +2480,6 @@ definition {
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "This is an Account with Multi Domains",
 			accountName = "AM Account",
 			domainNames = "liferay.com,Google.com,9teen.com");
 
@@ -1419,7 +2532,6 @@ definition {
 		Accounts.openAccountsAdmin();
 
 		Accounts.addAccountWithDomain(
-			accountDescription = "This is an Account with Multi Domains",
 			accountName = "AM Account",
 			domainNames = "liferay.com,Google.com");
 

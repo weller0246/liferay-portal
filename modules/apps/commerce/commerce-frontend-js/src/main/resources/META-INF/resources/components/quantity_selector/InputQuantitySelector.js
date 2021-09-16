@@ -47,7 +47,9 @@ function InputQuantitySelector({
 		keypressDebounce.current = setTimeout(() => {
 			setSelectedQuantity(() => {
 				const quantity = quantityControls.getLowerBound(
-					selectedQuantity
+					selectedQuantity > quantityControls.max
+						? quantityControls.max
+						: selectedQuantity
 				);
 
 				onUpdate(quantity);

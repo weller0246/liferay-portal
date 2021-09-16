@@ -996,15 +996,10 @@ public class JournalArticleLocalServiceImpl
 			if (journalArticlePersistence.countByG_A(groupId, newArticleId) >
 					0) {
 
-				StringBundler sb = new StringBundler(5);
-
-				sb.append("{groupId=");
-				sb.append(groupId);
-				sb.append(", articleId=");
-				sb.append(newArticleId);
-				sb.append("}");
-
-				throw new DuplicateArticleIdException(sb.toString());
+				throw new DuplicateArticleIdException(
+					StringBundler.concat(
+						"{groupId=", groupId, ", articleId=", newArticleId,
+						"}"));
 			}
 		}
 
@@ -1029,9 +1024,11 @@ public class JournalArticleLocalServiceImpl
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		if (serviceContext != null) {
-			modifiedDate = serviceContext.getModifiedDate(modifiedDate);
+		if (serviceContext == null) {
+			serviceContext = new ServiceContext();
 		}
+
+		modifiedDate = serviceContext.getModifiedDate(modifiedDate);
 
 		newArticle.setModifiedDate(modifiedDate);
 
@@ -1040,9 +1037,6 @@ public class JournalArticleLocalServiceImpl
 		newArticle.setTreePath(oldArticle.getTreePath());
 		newArticle.setArticleId(newArticleId);
 		newArticle.setVersion(JournalArticleConstants.VERSION_DEFAULT);
-		newArticle.setUrlTitle(
-			getUniqueUrlTitle(
-				id, groupId, newArticleId, oldArticle.getTitleCurrentValue()));
 		newArticle.setDDMStructureKey(oldArticle.getDDMStructureKey());
 		newArticle.setDDMTemplateKey(oldArticle.getDDMTemplateKey());
 		newArticle.setDefaultLanguageId(oldArticle.getDefaultLanguageId());
@@ -1075,6 +1069,37 @@ public class JournalArticleLocalServiceImpl
 		newArticle.setStatusByUserName(user.getFullName());
 		newArticle.setStatusDate(modifiedDate);
 
+		int uniqueUrlTitleCount = _getUniqueUrlTitleCount(
+			groupId, newArticleId,
+			JournalUtil.getUrlTitle(id, oldArticle.getUrlTitle()));
+
+		Map<Locale, String> newTitleMap = oldArticle.getTitleMap();
+		Map<Locale, String> newUniqueURLTitleMap = new HashMap<>();
+
+		for (Map.Entry<Locale, String> entry : newTitleMap.entrySet()) {
+			Locale locale = entry.getKey();
+
+			String urlTitle = StringBundler.concat(
+				entry.getValue(), StringPool.SPACE,
+				LanguageUtil.get(locale, "duplicate"), StringPool.SPACE,
+				uniqueUrlTitleCount);
+
+			newTitleMap.put(locale, urlTitle);
+			newUniqueURLTitleMap.put(
+				locale, getUniqueUrlTitle(id, groupId, newArticleId, urlTitle));
+		}
+
+		Locale locale = getArticleDefaultLocale(oldArticle.getContent());
+
+		String newURLTitle = newUniqueURLTitleMap.get(locale);
+
+		while (fetchArticleByUrlTitle(groupId, newURLTitle) != null) {
+			newURLTitle = getUniqueUrlTitle(
+				id, groupId, newArticleId, newURLTitle);
+		}
+
+		newArticle.setUrlTitle(newURLTitle);
+
 		ExpandoBridgeUtil.copyExpandoBridgeAttributes(
 			oldArticle.getExpandoBridge(), newArticle.getExpandoBridge());
 
@@ -1082,25 +1107,13 @@ public class JournalArticleLocalServiceImpl
 
 		// Article localization
 
-		int uniqueUrlTitleCount = _getUniqueUrlTitleCount(
-			groupId, newArticleId,
-			JournalUtil.getUrlTitle(id, oldArticle.getUrlTitle()));
+		Map<Locale, String> friendlyURLMap = _checkFriendlyURLMap(
+			locale, new HashMap(), newTitleMap);
 
-		Map<Locale, String> newTitleMap = oldArticle.getTitleMap();
+		Map<String, String> newUrlTitleMap = _getURLTitleMap(
+			groupId, resourcePrimKey, friendlyURLMap, newUniqueURLTitleMap);
 
-		for (Map.Entry<Locale, String> entry : newTitleMap.entrySet()) {
-			Locale locale = entry.getKey();
-
-			StringBundler sb = new StringBundler(5);
-
-			sb.append(entry.getValue());
-			sb.append(StringPool.SPACE);
-			sb.append(LanguageUtil.get(locale, "duplicate"));
-			sb.append(StringPool.SPACE);
-			sb.append(uniqueUrlTitleCount);
-
-			newTitleMap.put(locale, sb.toString());
-		}
+		updateFriendlyURLs(newArticle, newUrlTitleMap, serviceContext);
 
 		_addArticleLocalizedFields(
 			newArticle.getCompanyId(), newArticle.getId(), newTitleMap,
@@ -5309,15 +5322,14 @@ public class JournalArticleLocalServiceImpl
 	}
 
 	@Override
-	public void setTreePaths(
-			final long folderId, final String treePath, final boolean reindex)
+	public void setTreePaths(long folderId, String treePath, boolean reindex)
 		throws PortalException {
 
 		if (treePath == null) {
 			throw new IllegalArgumentException("Tree path is null");
 		}
 
-		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			getIndexableActionableDynamicQuery();
 
 		indexableActionableDynamicQuery.setAddCriteriaMethod(
@@ -5336,7 +5348,7 @@ public class JournalArticleLocalServiceImpl
 						treePathProperty.ne(treePath)));
 			});
 
-		final Indexer<JournalArticle> indexer = IndexerRegistryUtil.getIndexer(
+		Indexer<JournalArticle> indexer = IndexerRegistryUtil.getIndexer(
 			JournalArticle.class.getName());
 
 		indexableActionableDynamicQuery.setPerformActionMethod(
@@ -5566,14 +5578,10 @@ public class JournalArticleLocalServiceImpl
 			double latestArticleVersion = latestArticle.getVersion();
 
 			if ((version > 0) && (version != latestArticleVersion)) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("Version ");
-				sb.append(version);
-				sb.append(" is not the same as ");
-				sb.append(latestArticleVersion);
-
-				throw new ArticleVersionException(sb.toString());
+				throw new ArticleVersionException(
+					StringBundler.concat(
+						"Version ", version, " is not the same as ",
+						latestArticleVersion));
 			}
 
 			serviceContext.validateModifiedDate(
@@ -6274,14 +6282,9 @@ public class JournalArticleLocalServiceImpl
 		double oldVersion = oldArticle.getVersion();
 
 		if ((version > 0) && (version != oldVersion)) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("Version ");
-			sb.append(version);
-			sb.append(" is not the same as ");
-			sb.append(oldVersion);
-
-			throw new ArticleVersionException(sb.toString());
+			throw new ArticleVersionException(
+				StringBundler.concat(
+					"Version ", version, " is not the same as ", oldVersion));
 		}
 
 		boolean incrementVersion = false;
@@ -7958,6 +7961,9 @@ public class JournalArticleLocalServiceImpl
 		Group group = groupLocalService.getGroup(article.getGroupId());
 
 		long liveGroupId = group.getLiveGroupId();
+
+		subscriptionSender.addAssetEntryPersistedSubscribers(
+			JournalArticle.class.getName(), article.getResourcePrimKey());
 
 		if (liveGroupId > 0) {
 			subscriptionSender.addPersistedSubscribers(

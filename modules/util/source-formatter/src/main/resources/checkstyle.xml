@@ -286,6 +286,12 @@
 			<message key="name.invalidConstantPattern" value="{0} constant ''{1}'' must match pattern ''{2}''" />
 			<message key="name.invalidConstantTypePattern" value="{0} constant ''{1}'' of type ''{2}'' must match pattern ''{3}''" />
 		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.ConstructorGlobalVariableDeclarationCheck">
+			<property name="category" value="Performance" />
+			<property name="description" value="Checks that initial values of global variables are not set in the constructor." />
+			<property name="enabled" value="false" />
+			<message key="global.variable.value.declare" value="Set the value of ''{0}'' when declaring the variable on line ''{1}''" />
+		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.ConstructorMissingEmptyLineCheck">
 			<property name="category" value="Styling" />
 			<property name="description" value="Checks for line breaks when assiging variables in constructor." />
@@ -321,6 +327,12 @@
 			<message key="method.call.deprecated" value="Method ''{0}'' has been deprecated" />
 			<message key="type.call.deprecated" value="Type ''{0}'' has been deprecated" />
 		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.EmptyConstructorCheck">
+			<property name="category" value="Bug Prevention" />
+			<property name="description" value="Finds unnecessary empty constructors." />
+			<property name="enabled" value="false" />
+			<message key="empty.constructor.unneeded" value="Empty constructor is not needed" />
+		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.EnumConstantDividerCheck">
 			<property name="category" value="Styling" />
 			<property name="description" value="Find unnecessary empty lines between enum constants." />
@@ -330,6 +342,12 @@
 			<property name="category" value="Styling" />
 			<property name="description" value="Checks the order of enum constants." />
 			<message key="enum.constant.incorrect.order" value="Enum constant ''{0}'' should come after constant ''{1}''" />
+		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.EqualClauseIfStatementsCheck">
+			<property name="category" value="Styling" />
+			<property name="description" value="Finds consecutive if-statements with identical clauses." />
+			<property name="enabled" value="false" />
+			<message key="if.statements.combine" value="Combine if-statements with identical clauses" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.ExceptionCheck">
 			<property name="category" value="Performance" />
@@ -417,7 +435,8 @@
 			<property name="category" value="Styling" />
 			<property name="description" value="Checks for utilization of class `ListUtil`." />
 			<message key="array.unneeded" value="Pass arguments directly to ''ListUtil.fromArray'' instead of passing new array" />
-			<message key="list.util.use" value="Use ''ListUtil.fromArray'' to simplify code" />
+			<message key="list.util.from.array.use" value="Use ''ListUtil.fromArray'' to simplify code" />
+			<message key="list.util.is.empty.use" value="Use ''ListUtil.isEmpty({0})'' to simplify code" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.LiteralStringEqualsCheck">
 			<property name="category" value="Styling" />
@@ -513,6 +532,13 @@
 			<property name="description" value="Checks for consistent naming for values of `mvc.command.name`." />
 			<message key="value.incorrect" value="Incorrect value ''{0}'' for ''mvc.command.name''" />
 		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.NestedFieldAnnotationCheck">
+			<property name="category" value="Bug Prevention" />
+			<property name="description" value="Verifies that `NestedFieldSupport.class` is used in `service` property of `Component` annotation" />
+			<property name="enabled" value="false" />
+			<message key="service.needed" value="''NestedFieldSupport.class'' is needed in ''service'' property of ''Component'' annotation, because at least one of methods has ''NestedField annotation" />
+			<message key="service.unneeded" value="No need to add ''NestedFieldSupport.class'' in ''service'' property of ''Component'' annotation, because no method has ''NestedField'' annotation" />
+		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.NestedIfStatementCheck">
 			<property name="category" value="Styling" />
 			<property name="description" value="Finds nested if statements that can be combined." />
@@ -522,6 +548,11 @@
 			<property name="category" value="Styling" />
 			<property name="description" value="Finds cases of unnecessary use of `this.`." />
 			<message key="variable.not.require.this" value="Reference to variable ''{0}'' does not need ''.this''" />
+		</module>
+		<module name="com.liferay.source.formatter.checkstyle.checks.NullAssertionInIfStatementCheck">
+			<property name="category" value="Bug Prevention" />
+			<property name="description" value="Verifies that null check should always be first in if-statement." />
+			<message key="null.check.move" value="Null check for variable ''{0}'' should always be first in if-statement" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.NumberSuffixCheck">
 			<property name="category" value="Styling" />
@@ -572,11 +603,13 @@
 			<property name="checkInline" value="true" />
 			<property name="description" value="Checks that `PortletURLBuilder` is used when possible." />
 			<property name="enforceBuilderNames" value="" />
+			<message key="build.string.use" value="No need to call ''{0}.toString'', use ''buildString'' instead of ''{1}''" />
 			<message key="builder.include" value="Include method call ''{0}'' ({1}) in ''{2}'' ({3})" />
 			<message key="builder.inline.1" value="Inline variable definition ''{0}'' ({1}) inside ''{2}'' ({3})" />
 			<message key="builder.inline.2" value="Inline variable definition ''{0}'' ({1}) and dependent statements ({2}) inside ''{3}'' ({4})" />
 			<message key="builder.use" value="Use ''{0}'' ({1}, {2})" />
 			<message key="builder.use.instead" value="Use ''{0}'' instead of new instance of ''{1}''" />
+			<message key="if.statement.inline" value="Inline if-statement inside ''{0}'' ({1}) using a lambda function" />
 			<message key="keyword.reserved" value="Do not use ''{0}'' to set parameter ''{1}'', use ''{2}'' instead" />
 			<message key="string.cast.unneeded" value="No need to cast parameter to ''String'' when passing to method ''{0}''" />
 		</module>
@@ -676,6 +709,7 @@
 			<message key="assign.unnecessary.before.return" value="No need to assign call to variable ''{0}'', because ''{0}'' is returned right after" />
 			<message key="assign.unnecessary.to.string" value="No need to assign call to variable ''{0}'', use String.valueOf() to combine line ''{1}'' and ''{2}''" />
 			<message key="assign.unnecessary.unused" value="No need to assign call to variable ''{0}'', because ''{0}'' is not used after the call" />
+			<message key="list.assign.unnecessary.before.return" value="No need to assign List variable ''{0}'' before return, use ''ListUtil.fromArray()'' instead" />
 		</module>
 		<module name="com.liferay.source.formatter.checkstyle.checks.UnnecessaryMethodCallCheck">
 			<property name="category" value="Styling" />
@@ -690,6 +724,7 @@
 		<module name="com.liferay.source.formatter.checkstyle.checks.UnnecessaryVariableDeclarationCheck">
 			<property name="category" value="Performance" />
 			<property name="description" value="Finds unnecessary variable declarations (when it is either reassigned or returned right after)." />
+			<message key="list.declaration.unnecessary.before.return" value="No need to declare List variable ''{0}'' before return, use ''ListUtil.fromArray()'' instead" />
 			<message key="variable.declaration.unnecessary.before.reassign" value="No need to declare variable ''{0}'' because ''{0}'' is reassigned another value without being used" />
 			<message key="variable.declaration.unnecessary.before.return" value="No need to declare variable ''{0}'' because it is returned right after" />
 			<message key="variable.declaration.unnecessary.to.string" value="No need to declare variable ''{0}'', use String.valueOf() to combine line ''{1}'' and ''{2}''" />

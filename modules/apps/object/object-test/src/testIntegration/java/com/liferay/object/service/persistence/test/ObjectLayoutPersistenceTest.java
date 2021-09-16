@@ -136,6 +136,12 @@ public class ObjectLayoutPersistenceTest {
 
 		newObjectLayout.setModifiedDate(RandomTestUtil.nextDate());
 
+		newObjectLayout.setObjectDefinitionId(RandomTestUtil.nextLong());
+
+		newObjectLayout.setDefaultObjectLayout(RandomTestUtil.randomBoolean());
+
+		newObjectLayout.setName(RandomTestUtil.randomString());
+
 		_objectLayouts.add(_persistence.update(newObjectLayout));
 
 		ObjectLayout existingObjectLayout = _persistence.findByPrimaryKey(
@@ -162,6 +168,14 @@ public class ObjectLayoutPersistenceTest {
 		Assert.assertEquals(
 			Time.getShortTimestamp(existingObjectLayout.getModifiedDate()),
 			Time.getShortTimestamp(newObjectLayout.getModifiedDate()));
+		Assert.assertEquals(
+			existingObjectLayout.getObjectDefinitionId(),
+			newObjectLayout.getObjectDefinitionId());
+		Assert.assertEquals(
+			existingObjectLayout.isDefaultObjectLayout(),
+			newObjectLayout.isDefaultObjectLayout());
+		Assert.assertEquals(
+			existingObjectLayout.getName(), newObjectLayout.getName());
 	}
 
 	@Test
@@ -180,6 +194,21 @@ public class ObjectLayoutPersistenceTest {
 		_persistence.countByUuid_C("null", 0L);
 
 		_persistence.countByUuid_C((String)null, 0L);
+	}
+
+	@Test
+	public void testCountByObjectDefinitionId() throws Exception {
+		_persistence.countByObjectDefinitionId(RandomTestUtil.nextLong());
+
+		_persistence.countByObjectDefinitionId(0L);
+	}
+
+	@Test
+	public void testCountByODI_DOL() throws Exception {
+		_persistence.countByODI_DOL(
+			RandomTestUtil.nextLong(), RandomTestUtil.randomBoolean());
+
+		_persistence.countByODI_DOL(0L, RandomTestUtil.randomBoolean());
 	}
 
 	@Test
@@ -209,7 +238,8 @@ public class ObjectLayoutPersistenceTest {
 		return OrderByComparatorFactoryUtil.create(
 			"ObjectLayout", "mvccVersion", true, "uuid", true, "objectLayoutId",
 			true, "companyId", true, "userId", true, "userName", true,
-			"createDate", true, "modifiedDate", true);
+			"createDate", true, "modifiedDate", true, "objectDefinitionId",
+			true, "defaultObjectLayout", true, "name", true);
 	}
 
 	@Test
@@ -443,6 +473,12 @@ public class ObjectLayoutPersistenceTest {
 		objectLayout.setCreateDate(RandomTestUtil.nextDate());
 
 		objectLayout.setModifiedDate(RandomTestUtil.nextDate());
+
+		objectLayout.setObjectDefinitionId(RandomTestUtil.nextLong());
+
+		objectLayout.setDefaultObjectLayout(RandomTestUtil.randomBoolean());
+
+		objectLayout.setName(RandomTestUtil.randomString());
 
 		_objectLayouts.add(_persistence.update(objectLayout));
 

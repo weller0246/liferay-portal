@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -206,14 +205,14 @@ public abstract class BaseSitePageResourceTestCase {
 
 	@Test
 	public void testGetSiteSitePagesPage() throws Exception {
-		Page<SitePage> page = sitePageResource.getSiteSitePagesPage(
-			testGetSiteSitePagesPage_getSiteId(), RandomTestUtil.randomString(),
-			null, null, Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteSitePagesPage_getSiteId();
 		Long irrelevantSiteId = testGetSiteSitePagesPage_getIrrelevantSiteId();
+
+		Page<SitePage> page = sitePageResource.getSiteSitePagesPage(
+			siteId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			SitePage irrelevantSitePage = testGetSiteSitePagesPage_addSitePage(
@@ -237,7 +236,7 @@ public abstract class BaseSitePageResourceTestCase {
 			siteId, randomSitePage());
 
 		page = sitePageResource.getSiteSitePagesPage(
-			siteId, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -503,13 +502,6 @@ public abstract class BaseSitePageResourceTestCase {
 	public void testGetSiteSitePageFriendlyUrlPathExperiencesPage()
 		throws Exception {
 
-		Page<SitePage> page =
-			sitePageResource.getSiteSitePageFriendlyUrlPathExperiencesPage(
-				testGetSiteSitePageFriendlyUrlPathExperiencesPage_getSiteId(),
-				testGetSiteSitePageFriendlyUrlPathExperiencesPage_getFriendlyUrlPath());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId =
 			testGetSiteSitePageFriendlyUrlPathExperiencesPage_getSiteId();
 		Long irrelevantSiteId =
@@ -518,6 +510,12 @@ public abstract class BaseSitePageResourceTestCase {
 			testGetSiteSitePageFriendlyUrlPathExperiencesPage_getFriendlyUrlPath();
 		String irrelevantFriendlyUrlPath =
 			testGetSiteSitePageFriendlyUrlPathExperiencesPage_getIrrelevantFriendlyUrlPath();
+
+		Page<SitePage> page =
+			sitePageResource.getSiteSitePageFriendlyUrlPathExperiencesPage(
+				siteId, friendlyUrlPath);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if ((irrelevantSiteId != null) && (irrelevantFriendlyUrlPath != null)) {
 			SitePage irrelevantSitePage =
@@ -626,6 +624,21 @@ public abstract class BaseSitePageResourceTestCase {
 
 	@Rule
 	public SearchTestRule searchTestRule = new SearchTestRule();
+
+	protected void assertContains(SitePage sitePage, List<SitePage> sitePages) {
+		boolean contains = false;
+
+		for (SitePage item : sitePages) {
+			if (equals(sitePage, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			sitePages + " does not contain " + sitePage, contains);
+	}
 
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
@@ -1645,8 +1658,8 @@ public abstract class BaseSitePageResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseSitePageResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseSitePageResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

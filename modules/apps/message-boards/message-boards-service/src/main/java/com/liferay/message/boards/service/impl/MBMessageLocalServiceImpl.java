@@ -32,7 +32,7 @@ import com.liferay.message.boards.exception.MessageBodyException;
 import com.liferay.message.boards.exception.MessageSubjectException;
 import com.liferay.message.boards.exception.NoSuchThreadException;
 import com.liferay.message.boards.exception.RequiredMessageException;
-import com.liferay.message.boards.internal.util.MBDiscussionSubcriptionSender;
+import com.liferay.message.boards.internal.util.MBDiscussionSubscriptionSender;
 import com.liferay.message.boards.internal.util.MBMailUtil;
 import com.liferay.message.boards.internal.util.MBMessageUtil;
 import com.liferay.message.boards.internal.util.MBSubscriptionSender;
@@ -57,6 +57,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.json.jabsorb.serializer.LiferayJSONDeserializationWhitelist;
 import com.liferay.portal.kernel.comment.Comment;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -123,6 +124,7 @@ import com.liferay.portal.util.PropsValues;
 import com.liferay.social.kernel.model.SocialActivityConstants;
 import com.liferay.subscription.service.SubscriptionLocalService;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -145,7 +147,9 @@ import javax.servlet.http.HttpServletRequest;
 import net.htmlparser.jericho.Source;
 import net.htmlparser.jericho.StartTag;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -781,7 +785,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 					childMessage = mbMessagePersistence.update(childMessage);
 
 					List<MBMessage> repliesMessages =
-						mbMessagePersistence.findByThreadReplies(
+						mbMessagePersistence.findByThreadIdReplies(
 							message.getThreadId());
 
 					for (MBMessage repliesMessage : repliesMessages) {
@@ -1506,7 +1510,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		long threadId, int status, int start, int end) {
 
 		if (status == WorkflowConstants.STATUS_ANY) {
-			return mbMessagePersistence.findByThreadReplies(
+			return mbMessagePersistence.findByThreadIdReplies(
 				threadId, start, end);
 		}
 
@@ -1761,7 +1765,10 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			MBMessage.class);
 
 		if (status == WorkflowConstants.STATUS_APPROVED) {
+			long notifySubscribersUserId = userId;
+
 			if (oldStatus != WorkflowConstants.STATUS_APPROVED) {
+				notifySubscribersUserId = message.getUserId();
 
 				// Asset
 
@@ -1798,7 +1805,7 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			// Subscriptions
 
 			notifySubscribers(
-				userId, (MBMessage)message.clone(),
+				notifySubscribersUserId, (MBMessage)message.clone(),
 				(String)workflowContext.get(WorkflowConstants.CONTEXT_URL),
 				serviceContext);
 
@@ -1833,6 +1840,26 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			message.setUserName(userName);
 
 			mbMessagePersistence.update(message);
+		}
+	}
+
+	@Activate
+	protected void activate() {
+		_closeable = _liferayJSONDeserializationWhitelist.register(
+			MBDiscussionSubscriptionSender.class.getName(),
+			MBSubscriptionSender.class.getName());
+	}
+
+	@Deactivate
+	@Override
+	protected void deactivate() {
+		super.deactivate();
+
+		try {
+			_closeable.close();
+		}
+		catch (Exception exception) {
+			throw new RuntimeException(exception);
 		}
 	}
 
@@ -2076,7 +2103,8 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 		}
 
 		SubscriptionSender subscriptionSender =
-			new MBDiscussionSubcriptionSender(commentGroupServiceConfiguration);
+			new MBDiscussionSubscriptionSender(
+				commentGroupServiceConfiguration);
 
 		subscriptionSender.setCompanyId(message.getCompanyId());
 		subscriptionSender.setClassName(MBDiscussion.class.getName());
@@ -2305,6 +2333,8 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 			fromName, fromAddress, replyToAddress, emailAddress, fullName,
 			subjectLocalizedValuesMap, bodyLocalizedValuesMap, serviceContext);
 
+		subscriptionSender.addAssetEntryPersistedSubscribers(
+			MBMessage.class.getName(), message.getMessageId());
 		subscriptionSender.addPersistedSubscribers(
 			MBCategory.class.getName(), message.getGroupId());
 
@@ -2794,6 +2824,8 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 	private static final Log _log = LogFactoryUtil.getLog(
 		MBMessageLocalServiceImpl.class);
 
+	private Closeable _closeable;
+
 	@Reference
 	private ConfigurationProvider _configurationProvider;
 
@@ -2802,6 +2834,10 @@ public class MBMessageLocalServiceImpl extends MBMessageLocalServiceBaseImpl {
 
 	@Reference
 	private Http _http;
+
+	@Reference
+	private LiferayJSONDeserializationWhitelist
+		_liferayJSONDeserializationWhitelist;
 
 	@Reference
 	private MBCategoryPersistence _mbCategoryPersistence;

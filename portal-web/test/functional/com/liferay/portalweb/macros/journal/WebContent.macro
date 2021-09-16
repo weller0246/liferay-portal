@@ -22,13 +22,14 @@ definition {
 		}
 
 		if (isSet(webContentContent)) {
-			SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME_2");
-
-			Type(
-				locator1 = "CKEditor#BODY",
-				value1 = "${webContentContent}");
-
-			SelectFrame(value1 = "relative=top");
+			if (isSet(source)) {
+				CKEditor.addSourceContent(content = "${webContentContent}");
+			}
+			else {
+				CKEditor.addContentInWebContent(
+					content = "${webContentContent}",
+					fieldLabel = "content");
+			}
 		}
 
 		if (isSet(embedImage)) {
@@ -300,8 +301,6 @@ definition {
 			value1 = "Publish");
 
 		Pause(locator1 = "5000");
-
-		var key_assetTitle = "${webContentTitle}";
 	}
 
 	macro addPGViaWCD {
@@ -311,18 +310,9 @@ definition {
 			embedImage = "${embedImage}",
 			imageFileName = "${imageFileName}",
 			siteName = "${siteName}",
+			source = "${source}",
 			webContentContent = "${webContentContent}",
 			webContentTitle = "${webContentTitle}");
-
-		if (isSet(webContentRichText)) {
-			Click(
-				key_fieldFieldLabel = "${fieldFieldLabel}",
-				locator1 = "WCEditWebContent#SOURCE_BUTTON");
-
-			Type.typeCodeMirrorEditorNoError(
-				locator1 = "CKEditor#BODY_FIELD_SOURCE_ON",
-				value1 = "${webContentRichText}");
-		}
 
 		if (isSet(templateName)) {
 			if (IsTextNotEqual(inputFieldId = "ddmTemplateName", locator1 = "TextInput#INPUT_ID", value1 = "${templateName}")) {
@@ -332,7 +322,7 @@ definition {
 			}
 		}
 
-		Button.clickPublish();
+		PortletEntry.publish();
 	}
 
 	macro addPriority {
@@ -2331,6 +2321,24 @@ definition {
 			value1 = "No web content was found.");
 	}
 
+	macro viewNoTagsFromInfoPanel {
+		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		Check(
+			key_webContentTitle = "${webContentTitle}",
+			locator1 = "WC#ENTRY_LIST_CHECKBOX");
+
+		Click(locator1 = "Icon#INFO");
+
+		for (var tagName : list "${tagNameList}") {
+			var tagName = StringUtil.lowerCase("${tagName}");
+
+			AssertElementNotPresent(
+				key_tagName = "${tagName}",
+				locator1 = "WC#SIDEBAR_TAG");
+		}
+	}
+
 	macro viewNotPresentCP {
 		AssertElementNotPresent(locator1 = "TextInput#TITLE");
 	}
@@ -2528,6 +2536,22 @@ definition {
 		AssertTextEquals(
 			locator1 = "TextInput#TITLE",
 			value1 = "${webContentTitle}");
+	}
+
+	macro viewTagFromInfoPanel {
+		var tagName = StringUtil.lowerCase("${tagName}");
+
+		LexiconEntry.changeDisplayStyle(displayStyle = "list");
+
+		Check(
+			key_webContentTitle = "${webContentTitle}",
+			locator1 = "WC#ENTRY_LIST_CHECKBOX");
+
+		Click(locator1 = "Icon#INFO");
+
+		AssertElementPresent(
+			key_tagName = "${tagName}",
+			locator1 = "WC#SIDEBAR_TAG");
 	}
 
 	macro viewTitle {

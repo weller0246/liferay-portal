@@ -657,7 +657,13 @@ definition {
 
 		WaitForLiferayEvent.initializeLiferayEventLog();
 
-		Blogs.viewEntryTitle(entryTitle = "${entryTitle}");
+		Blogs.viewEntryTitle(
+			entryTitle = "${entryTitle}",
+			position = "${position}");
+
+		if (isSet(relevance)) {
+			ManagementBar.viewFilterAndOrderSelectedItem(menuItem = "Relevance");
+		}
 	}
 
 	macro searchNoCP {
@@ -713,13 +719,7 @@ definition {
 			VerifyElementPresent(locator1 = "Message#SUCCESS");
 		}
 
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Recycle Bin",
-			portlet = "Recycle Bin");
-
-		RecycleBin.emptyCP();
+		JSONRecycleBin.emptyRecycleBin();
 	}
 
 	macro viewAbstractDisplay {
@@ -765,6 +765,10 @@ definition {
 		var tagName = StringUtil.lowerCase("${tagName}");
 
 		var key_tagName = "${tagName}";
+
+		if (IsElementNotPresent(locator1 = "BlogsEntry#TAG")) {
+			Refresh();
+		}
 
 		AssertTextEquals(
 			locator1 = "BlogsEntry#TAG",

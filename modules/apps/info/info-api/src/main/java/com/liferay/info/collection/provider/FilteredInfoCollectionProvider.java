@@ -15,16 +15,15 @@
 package com.liferay.info.collection.provider;
 
 import com.liferay.info.filter.InfoFilter;
-import com.liferay.petra.reflect.GenericUtil;
+
+import java.util.List;
 
 /**
  * @author Eudaldo Alonso
  */
-public interface FilteredInfoCollectionProvider<T, F extends InfoFilter>
+public interface FilteredInfoCollectionProvider<T>
 	extends InfoCollectionProvider<T> {
 
-	public default Class<F> getInfoFilterClass() {
-		return (Class<F>)GenericUtil.getGenericClass(this, 1);
-	}
+	public List<InfoFilter> getSupportedInfoFilters();
 
 }

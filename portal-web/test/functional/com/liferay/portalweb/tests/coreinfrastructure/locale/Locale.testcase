@@ -310,7 +310,7 @@ definition {
 
 		AntCommand(
 			locator1 = "build-test.xml",
-			value1 = "portal-ext-properties-update -Dupdate.properties.original=locale.prepend.friendly.url.style=0-Dupdate.properties=locale.prepend.friendly.url.style=1");
+			value1 = "portal-ext-properties-update -Dupdate.properties.original=locale.prepend.friendly.url.style=0 -Dupdate.properties=locale.prepend.friendly.url.style=1");
 
 		Portlet.startServer(deleteLiferayHome = "false");
 
@@ -467,18 +467,18 @@ definition {
 
 		User.firstLoginPG();
 
-		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
-			userFirstName = "userfn",
-			userLastName = "userln",
-			userScreenName = "usersn");
-
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Localization",
 			configurationName = "Time Zone",
 			configurationScope = "Virtual Instance Scope");
 
 		PortalSettings.configureTimeZone(timeZone = "(UTC +02:00) Central European Summer Time");
+
+		JSONUser.addUser(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Security",
@@ -585,15 +585,9 @@ definition {
 			configurationName = "Language",
 			configurationScope = "Virtual Instance Scope");
 
-		PortalSettings.configureCurrentLanguagesCP(
-			currentPortalLanguages = "English (United States),Italian (Italy)",
-			defaultPortalLanguage = "English (United States)",
-			displaySettings = "Display Settings");
+		PortalSettings.configureCurrentLanguagesCP(currentPortalLanguages = "English (United States),Italian (Italy)");
 
-		PortalSettings.configureCurrentLanguagesCP(
-			currentPortalLanguages = "English (United States),Italian (Italy)",
-			defaultPortalLanguage = "Italian (Italy)",
-			displaySettings = "Display Settings");
+		PortalSettings.configureCurrentLanguagesCP(defaultPortalLanguage = "Italian (Italy)");
 
 		HeadlessPortalInstanceAPI.addPortalInstance(
 			domain = "www.able.com",

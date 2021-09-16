@@ -253,11 +253,15 @@ public class CPSpecificationOptionLocalServiceImpl
 				"keywords", keywords
 			).build();
 
-		Map<String, Serializable> attributes =
+		searchContext.setAttributes(
 			HashMapBuilder.<String, Serializable>put(
 				CPField.CP_OPTION_CATEGORY_ID, keywords
 			).put(
 				CPField.CP_OPTION_CATEGORY_TITLE, keywords
+			).put(
+				CPField.FACETABLE, () -> facetable
+			).put(
+				CPField.KEY, keywords
 			).put(
 				Field.CONTENT, keywords
 			).put(
@@ -266,16 +270,9 @@ public class CPSpecificationOptionLocalServiceImpl
 				Field.ENTRY_CLASS_PK, keywords
 			).put(
 				Field.TITLE, keywords
-			).build();
-
-		if (facetable != null) {
-			attributes.put(CPField.FACETABLE, facetable);
-		}
-
-		attributes.put(CPField.KEY, keywords);
-		attributes.put("params", params);
-
-		searchContext.setAttributes(attributes);
+			).put(
+				"params", params
+			).build());
 
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
@@ -403,10 +400,10 @@ public class CPSpecificationOptionLocalServiceImpl
 			long companyId, long cpSpecificationOptionId)
 		throws Exception {
 
-		final Indexer<CPDefinition> indexer =
-			IndexerRegistryUtil.nullSafeGetIndexer(CPDefinition.class);
+		Indexer<CPDefinition> indexer = IndexerRegistryUtil.nullSafeGetIndexer(
+			CPDefinition.class);
 
-		final IndexableActionableDynamicQuery indexableActionableDynamicQuery =
+		IndexableActionableDynamicQuery indexableActionableDynamicQuery =
 			cpDefinitionSpecificationOptionValueLocalService.
 				getIndexableActionableDynamicQuery();
 

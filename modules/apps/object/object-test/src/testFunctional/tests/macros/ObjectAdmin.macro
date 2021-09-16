@@ -1,0 +1,249 @@
+definition {
+
+	macro addNewObject {
+		var fieldLabelName = "${fieldLabelName}";
+		var pluralLabelName = "${pluralLabelName}";
+
+		Click(locator1 = "ObjectAdmin#ADD_CUSTOM_OBJECT");
+
+		Type(
+			locator1 = "ObjectAdmin#LABEL_CUSTOM_OBJECT",
+			value1 = "${fieldLabelName}");
+
+		Type(
+			locator1 = "ObjectAdmin#PLURAL_LABEL_CUSTOM_OBJECT",
+			value1 = "${pluralLabelName}");
+	}
+
+	macro addObjectFieldViaAPI {
+		JSONObject.addObjectField(
+			fieldLabelName = "${fieldLabelName}",
+			fieldName = "${fieldName}",
+			fieldType = "${fieldType}",
+			isRequired = "${isRequired}",
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+	}
+
+	macro addObjectFieldViaUI {
+		LexiconEntry.gotoAdd();
+
+		Type(
+			locator1 = "ObjectAdmin#OBJECT_FIELDS_LABEL_INPUT",
+			value1 = "${fieldLabel}");
+
+		if (isSet(fieldName)) {
+			Type(
+				locator1 = "ObjectAdmin#OBJECT_FIELDS_NAME_INPUT",
+				value1 = "${fieldName}");
+		}
+
+		Select(
+			locator1 = "ObjectAdmin#OBJECT_FIELDS_TYPE",
+			value1 = "${fieldType}");
+
+		if ("${isMandatory}" == "true") {
+			Check.checkToggleSwitch(locator1 = "ObjectAdmin#OBJECT_FIELDS_MANDATORY_TOGGLE_SWITCH");
+		}
+
+		Button.clickSave();
+	}
+
+	macro addObjectSingleFieldEntryViaAPI {
+		JSONObject.addObjectSingleFieldEntry(
+			fieldName = "${fieldName}",
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}",
+			value = "${value}");
+	}
+
+	macro addObjectViaAPI {
+		JSONObject.addObject(
+			labelName = "${labelName}",
+			objectName = "${objectName}",
+			pluralLabelName = "${pluralLabelName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+	}
+
+	macro assertKeywordAndText {
+		AssertElementPresent(locator1 = "ObjectAdmin#SEARCHABLE_SECTION_TITLE");
+
+		AssertElementNotPresent(locator1 = "ObjectAdmin#VIEW_SEARCHABLE_SECTION_DISABLED");
+
+		AssertElementPresent(
+			key_radioOption = "Keyword",
+			locator1 = "ObjectAdmin#FIELDS_RADIO_OPTION");
+
+		AssertElementPresent(
+			key_radioOption = "Text",
+			locator1 = "ObjectAdmin#FIELDS_RADIO_OPTION");
+	}
+
+	macro assertObjectColumnsAreDisplayed {
+		AssertElementPresent(locator1 = "ObjectAdmin#OBJECT_NAME_COLUMN");
+
+		AssertElementPresent(locator1 = "ObjectAdmin#OBJECT_SYSTEM_COLUMN");
+
+		AssertElementPresent(locator1 = "ObjectAdmin#OBJECT_STATUS_COLUMN");
+	}
+
+	macro assertObjectField {
+		var key_fieldName = "${fieldName}";
+		var key_fieldType = "${fieldType}";
+
+		AssertElementPresent(
+			locator1 = "ObjectAdmin#VIEW_OBJECT_FIELD_NAME",
+			value1 = "${fieldName}");
+
+		AssertElementPresent(
+			locator1 = "ObjectAdmin#VIEW_OBJECT_FIELD_TYPE",
+			value1 = "${fieldType}");
+	}
+
+	macro clickFieldsSearchableSectionRadioOption {
+		Click.javaScriptClick(
+			key_radioOption = "${radioOption}",
+			locator1 = "ObjectAdmin#FIELDS_RADIO_OPTION");
+	}
+
+	macro createCustomObject {
+		Click(locator1 = "ObjectAdmin#ADD_CUSTOM_OBJECT");
+
+		Type(
+			locator1 = "ObjectAdmin#NAME_CUSTOM_OBJECT",
+			value1 = "${name}");
+
+		Click(locator1 = "ObjectAdmin#SAVE_CUSTOM_OBJECT");
+	}
+
+	macro deleteAllCustomObjectsViaAPI {
+		JSONObject.deleteAllCustomObjects(
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+	}
+
+	macro deleteObjectEntryViaAPI {
+		JSONObject.deleteObjectEntry(
+			fieldName = "${fieldName}",
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}",
+			value = "${value}");
+	}
+
+	macro deleteObjectViaAPI {
+		JSONObject.deleteObject(
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+	}
+
+	macro editCustomObject {
+		if (isSet(fieldName)) {
+			Type(
+				locator1 = "ObjectAdmin#DETAILS_NAME_CUSTOM_OBJECT",
+				value1 = "${fieldName}");
+		}
+
+		if (isSet(fieldLabelName)) {
+			Type(
+				locator1 = "ObjectAdmin#DETAILS_LABEL_CUSTOM_OBJECT",
+				value1 = "${labelName}");
+		}
+
+		if (isSet(pluralLabelName)) {
+			Type(
+				locator1 = "ObjectAdmin#DETAILS_PLURAL_LABEL_CUSTOM_OBJECT",
+				value1 = "${pluralLabelName}");
+		}
+
+		Button.clickSave();
+	}
+
+	macro goToCustomObject {
+		var objectID = JSONObject.getObjectId(
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+
+		Navigator.openSpecificURL(url = "/group/guest/~/control_panel/manage?p_p_id=com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet_${objectID}");
+	}
+
+	macro goToFieldsDetails {
+		Click(
+			key_fieldName = "${fieldName}",
+			locator1 = "ObjectAdmin#SELECT_OBJECT_FIELD");
+
+		SelectFrame(locator1 = "IFrame#IFRAME");
+	}
+
+	macro goToFieldsTab {
+		Click(locator1 = "ObjectAdmin#OBJECT_FIELDS_TAB");
+	}
+
+	macro openObjectAdmin {
+		Navigator.openSpecificURL(url = "/group/guest/~/control_panel/manage?p_p_id=com_liferay_object_web_internal_object_definitions_portlet_ObjectDefinitionsPortlet");
+	}
+
+	macro publishObjectViaAPI {
+		JSONObject.publishObject(
+			objectName = "${objectName}",
+			userEmailAddress = "${userEmailAddress}",
+			userPassword = "${userPassword}");
+	}
+
+	macro saveCustomObject {
+		Click(locator1 = "ObjectAdmin#SAVE_CUSTOM_OBJECT");
+	}
+
+	macro selectCustomObjectFieldKebabMenuOption {
+		Click(locator1 = "ObjectAdmin#KEBAB_MENU");
+
+		Click(
+			key_kebabOption = "${kebabOption}",
+			locator1 = "ObjectAdmin#KEBAB_MENU_OPTION");
+	}
+
+	macro selectObjectScope {
+		Select(
+			locator1 = "ObjectAdmin#SELECT_OBJECT_SCOPE",
+			value1 = "${fieldOption}");
+	}
+
+	macro viewCustomObject {
+		AssertElementPresent(
+			key_name = "${name}",
+			key_system = "No",
+			locator1 = "ObjectAdmin#VIEW_OBJECT");
+	}
+
+	macro viewFieldDetails {
+		SelectFrame(locator1 = "IFrame#IFRAME");
+
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELDS_DETAILS_IFRAME");
+
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELDS_DETAILS_TITLE");
+	}
+
+	macro viewFieldErrorMessage {
+		AssertTextEquals(
+			locator1 = "Message#ERROR",
+			value1 = "${message}");
+	}
+
+	macro viewFieldSearchableSectionLanguage {
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELD_SEARCHABLE_LANGUAGE_LABEL");
+		AssertElementPresent(locator1 = "ObjectAdmin#FIELD_SEARCHABLE_LANGUAGE_OPTION");
+	}
+
+	macro viewSystemObject {
+		AssertElementPresent(
+			key_name = "${name}",
+			key_system = "Yes",
+			locator1 = "ObjectAdmin#VIEW_OBJECT");
+	}
+
+}

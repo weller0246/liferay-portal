@@ -14,6 +14,7 @@
 
 package com.liferay.object.rest.manager.v1_0;
 
+import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -29,19 +30,38 @@ public interface ObjectEntryManager {
 
 	public ObjectEntry addObjectEntry(
 			DTOConverterContext dtoConverterContext, long userId,
-			long objectDefinitionId, ObjectEntry objectEntry)
+			ObjectDefinition objectDefinition, ObjectEntry objectEntry,
+			String scopeKey)
+		throws Exception;
+
+	public ObjectEntry addOrUpdateObjectEntry(
+			DTOConverterContext dtoConverterContext,
+			String externalReferenceCode, long userId,
+			ObjectDefinition objectDefinition, ObjectEntry objectEntry,
+			String scopeKey)
 		throws Exception;
 
 	public void deleteObjectEntry(long objectEntryId) throws Exception;
 
+	public void deleteObjectEntry(
+			String externalReferenceCode, long companyId,
+			ObjectDefinition objectDefinition, String scopeKey)
+		throws Exception;
+
 	public Page<ObjectEntry> getObjectEntries(
-			long companyId, long objectDefinitionId, Aggregation aggregation,
-			DTOConverterContext dtoConverterContext, Filter filter,
-			Pagination pagination, String search, Sort[] sorts)
+			long companyId, ObjectDefinition objectDefinition, String scopeKey,
+			Aggregation aggregation, DTOConverterContext dtoConverterContext,
+			Filter filter, Pagination pagination, String search, Sort[] sorts)
 		throws Exception;
 
 	public ObjectEntry getObjectEntry(
 			DTOConverterContext dtoConverterContext, long objectEntryId)
+		throws Exception;
+
+	public ObjectEntry getObjectEntry(
+			DTOConverterContext dtoConverterContext,
+			String externalReferenceCode, long companyId,
+			ObjectDefinition objectDefinition, String scopeKey)
 		throws Exception;
 
 	public ObjectEntry updateObjectEntry(

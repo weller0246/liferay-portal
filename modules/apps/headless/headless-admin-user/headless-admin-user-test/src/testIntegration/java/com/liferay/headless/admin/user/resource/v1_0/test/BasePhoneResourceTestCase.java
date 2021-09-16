@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -196,15 +195,15 @@ public abstract class BasePhoneResourceTestCase {
 
 	@Test
 	public void testGetOrganizationPhonesPage() throws Exception {
-		Page<Phone> page = phoneResource.getOrganizationPhonesPage(
-			testGetOrganizationPhonesPage_getOrganizationId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String organizationId =
 			testGetOrganizationPhonesPage_getOrganizationId();
 		String irrelevantOrganizationId =
 			testGetOrganizationPhonesPage_getIrrelevantOrganizationId();
+
+		Page<Phone> page = phoneResource.getOrganizationPhonesPage(
+			organizationId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantOrganizationId != null) {
 			Phone irrelevantPhone = testGetOrganizationPhonesPage_addPhone(
@@ -314,14 +313,14 @@ public abstract class BasePhoneResourceTestCase {
 
 	@Test
 	public void testGetUserAccountPhonesPage() throws Exception {
-		Page<Phone> page = phoneResource.getUserAccountPhonesPage(
-			testGetUserAccountPhonesPage_getUserAccountId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long userAccountId = testGetUserAccountPhonesPage_getUserAccountId();
 		Long irrelevantUserAccountId =
 			testGetUserAccountPhonesPage_getIrrelevantUserAccountId();
+
+		Page<Phone> page = phoneResource.getUserAccountPhonesPage(
+			userAccountId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantUserAccountId != null) {
 			Phone irrelevantPhone = testGetUserAccountPhonesPage_addPhone(
@@ -376,6 +375,20 @@ public abstract class BasePhoneResourceTestCase {
 	protected Phone testGraphQLPhone_addPhone() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Phone phone, List<Phone> phones) {
+		boolean contains = false;
+
+		for (Phone item : phones) {
+			if (equals(phone, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(phones + " does not contain " + phone, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -873,8 +886,8 @@ public abstract class BasePhoneResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BasePhoneResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BasePhoneResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

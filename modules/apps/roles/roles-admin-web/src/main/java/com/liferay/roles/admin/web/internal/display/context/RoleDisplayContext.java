@@ -19,7 +19,10 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemListBuilder;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.model.Permission;
+import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
+import com.liferay.portal.kernel.model.role.RoleConstants;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
 import com.liferay.portal.kernel.portlet.PortletURLUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -79,6 +82,14 @@ public class RoleDisplayContext {
 				}
 			}
 		};
+	}
+
+	public String getEditRolePermissionsTabs1() {
+		if (isAccountRoleGroupScope()) {
+			return "define-group-scope-permissions";
+		}
+
+		return "define-permissions";
 	}
 
 	public List<NavigationItem> getRoleAssignmentsNavigationItems(
@@ -160,6 +171,37 @@ public class RoleDisplayContext {
 		return navigationItemList;
 	}
 
+	public boolean isAccountRoleGroupScope() {
+		if (_accountRoleGroupScope == null) {
+			_accountRoleGroupScope = false;
+
+			if ((_currentRoleTypeContributor.getType() ==
+					RoleConstants.TYPE_ACCOUNT) &&
+				ParamUtil.getBoolean(
+					_httpServletRequest, "accountRoleGroupScope")) {
+
+				_accountRoleGroupScope = true;
+			}
+		}
+
+		return _accountRoleGroupScope;
+	}
+
+	public boolean isAllowGroupScope() {
+		if (_allowGroupScope == null) {
+			_allowGroupScope = false;
+
+			if ((_currentRoleTypeContributor.getType() ==
+					RoleConstants.TYPE_REGULAR) ||
+				isAccountRoleGroupScope()) {
+
+				_allowGroupScope = true;
+			}
+		}
+
+		return _allowGroupScope;
+	}
+
 	public boolean isAutomaticallyAssigned(Role role) {
 		List<RoleTypeContributor> roleTypeContributors =
 			RoleTypeContributorRetrieverUtil.getRoleTypeContributors(
@@ -169,6 +211,26 @@ public class RoleDisplayContext {
 			if (roleTypeContributor.isAutomaticallyAssigned(role)) {
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	public boolean isValidPermission(Role role, Permission permission) {
+		if (role.getType() != RoleConstants.TYPE_ACCOUNT) {
+			return true;
+		}
+
+		if (isAccountRoleGroupScope() &&
+			((permission.getScope() == ResourceConstants.SCOPE_COMPANY) ||
+			 (permission.getScope() == ResourceConstants.SCOPE_GROUP))) {
+
+			return true;
+		}
+		else if (permission.getScope() ==
+					ResourceConstants.SCOPE_GROUP_TEMPLATE) {
+
+			return true;
 		}
 
 		return false;
@@ -200,6 +262,10 @@ public class RoleDisplayContext {
 				ActionKeys.DEFINE_PERMISSIONS)) {
 
 			tabsNames.add("define-permissions");
+
+			if (role.getType() == RoleConstants.TYPE_ACCOUNT) {
+				tabsNames.add("define-group-scope-permissions");
+			}
 		}
 
 		if (_currentRoleTypeContributor.isAllowAssignMembers(role) &&
@@ -235,6 +301,25 @@ public class RoleDisplayContext {
 				backURL
 			).setTabs1(
 				"assignees"
+			).setParameter(
+				"roleId", role.getRoleId()
+			).buildString()
+		).put(
+			"define-group-scope-permissions",
+			() -> PortletURLBuilder.createRenderURL(
+				_renderResponse
+			).setMVCPath(
+				"/edit_role_permissions.jsp"
+			).setCMD(
+				Constants.VIEW
+			).setRedirect(
+				redirect
+			).setBackURL(
+				backURL
+			).setTabs1(
+				"define-group-scope-permissions"
+			).setParameter(
+				"accountRoleGroupScope", true
 			).setParameter(
 				"roleId", role.getRoleId()
 			).buildString()
@@ -277,6 +362,8 @@ public class RoleDisplayContext {
 		"users", "sites", "organizations", "user-groups", "segments"
 	};
 
+	private Boolean _accountRoleGroupScope;
+	private Boolean _allowGroupScope;
 	private final RoleTypeContributor _currentRoleTypeContributor;
 	private final HttpServletRequest _httpServletRequest;
 	private final RenderResponse _renderResponse;

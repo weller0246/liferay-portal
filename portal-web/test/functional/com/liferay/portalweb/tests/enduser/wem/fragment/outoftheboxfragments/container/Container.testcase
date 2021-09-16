@@ -203,21 +203,21 @@ definition {
 
 			var screenWidth	= selenium.getElementWidth("//body");
 
-			var containerWidth	= selenium.getElementWidth("//div[contains(@class,'container')][contains(@class,'pb-4 pt-2')]");
+			var containerWidth	= selenium.getElementWidth("//div[contains(@class,'container')][contains(@class,'pb-4')][contains(@class,'pt-2')]");
 
 			TestUtils.assertNotEquals(
 				actual = "${containerWidth}",
 				expected = "${screenWidth}");
 
-			AssertVisible(locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4 pt-2')]");
+			AssertVisible(locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4')][contains(@class,'pt-2')]");
 
 			AssertCssValue(
-				locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4 pt-2')]",
+				locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4')][contains(@class,'pt-2')]",
 				locator2 = "background-color",
 				value1 = "rgba(40, 125, 60, 1)");
 
 			AssertCssValue(
-				locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4 pt-2')]",
+				locator1 = "//div[contains(@class,'container')][contains(@class,'pb-4')][contains(@class,'pt-2')]",
 				locator2 = "max-width",
 				value1 = "${containerWidth}px");
 
@@ -607,7 +607,7 @@ definition {
 
 			AssertVisible(
 				key_append = "//img",
-				key_URL = "${baseURL}/en/web/test-site-name/w/web-content-title",
+				key_URL = "${baseURL}/web/test-site-name/w/web-content-title",
 				locator1 = "Fragment#FRAGMENT_LINK");
 
 			PageEditor.clickPublish();
@@ -620,12 +620,12 @@ definition {
 
 			AssertVisible(
 				key_append = "/img",
-				key_URL = "${baseURL}/en/web/test-site-name/w/web-content-title",
+				key_URL = "${baseURL}/web/test-site-name/w/web-content-title",
 				locator1 = "Fragment#FRAGMENT_LINK");
 
 			Click(
 				key_append = "/img",
-				key_URL = "${baseURL}/en/web/test-site-name/w/web-content-title",
+				key_URL = "${baseURL}/web/test-site-name/w/web-content-title",
 				locator1 = "Fragment#FRAGMENT_LINK");
 
 			AssertTextEquals(
@@ -677,12 +677,8 @@ definition {
 	}
 
 	@description = "This is a test for LPS-119817. Map manual URL to Container element."
-	@ignore = "true"
 	@priority = "5"
 	test MapManualURLToContainerElement {
-
-		// Ignored until LRCI-2329 is resolved
-
 		property portal.acceptance = "true";
 
 		task ("Add a Container element to page") {

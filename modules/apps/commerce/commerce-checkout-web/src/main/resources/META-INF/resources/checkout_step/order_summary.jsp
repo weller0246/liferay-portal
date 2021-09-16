@@ -95,11 +95,19 @@ Map<Long, List<CommerceOrderValidatorResult>> commerceOrderValidatorResultMap = 
 						CPDefinition cpDefinition = commerceOrderItem.getCPDefinition();
 						%>
 
-						<liferay-ui:search-container-column-image
+						<liferay-ui:search-container-column-text
 							cssClass="thumbnail-section"
 							name="image"
-							src="<%= orderSummaryCheckoutStepDisplayContext.getCommerceOrderItemThumbnailSrc(commerceOrderItem) %>"
-						/>
+						>
+							<span class="sticker sticker-xl">
+								<span class="sticker-overlay">
+									<liferay-adaptive-media:img
+										class="sticker-img"
+										fileVersion="<%= orderSummaryCheckoutStepDisplayContext.getCPInstanceImageFileVersion(commerceOrderItem) %>"
+									/>
+								</span>
+							</span>
+						</liferay-ui:search-container-column-text>
 
 						<liferay-ui:search-container-column-text
 							cssClass="autofit-col-expand"

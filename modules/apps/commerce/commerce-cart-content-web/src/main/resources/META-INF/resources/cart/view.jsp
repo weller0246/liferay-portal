@@ -29,7 +29,7 @@ PortletURL portletURL = PortletURLBuilder.create(
 	commerceCartContentDisplayContext.getPortletURL()
 ).setParameter(
 	"searchContainerId", "commerceOrderItems"
-).build();
+).buildPortletURL();
 
 request.setAttribute("view.jsp-portletURL", portletURL);
 
@@ -83,8 +83,6 @@ Map<Long, List<CommerceOrderValidatorResult>> commerceOrderValidatorResultMap = 
 
 					long cpDefinitionId = 0;
 
-					String thumbnailSrc = StringPool.BLANK;
-
 					StringJoiner stringJoiner = new StringJoiner(StringPool.COMMA);
 
 					if (cpInstance != null) {
@@ -92,18 +90,24 @@ Map<Long, List<CommerceOrderValidatorResult>> commerceOrderValidatorResultMap = 
 
 						cpDefinitionId = cpDefinition.getCPDefinitionId();
 
-						thumbnailSrc = commerceCartContentDisplayContext.getCommerceOrderItemThumbnailSrc(commerceOrderItem);
-
 						for (KeyValuePair keyValuePair : commerceCartContentDisplayContext.getKeyValuePairs(commerceOrderItem.getCPDefinitionId(), commerceOrderItem.getJson(), locale)) {
 							stringJoiner.add(keyValuePair.getValue());
 						}
 					}
 					%>
 
-					<liferay-ui:search-container-column-image
+					<liferay-ui:search-container-column-text
 						name="product"
-						src="<%= thumbnailSrc %>"
-					/>
+					>
+						<span class="sticker sticker-xl">
+							<span class="sticker-overlay">
+								<liferay-adaptive-media:img
+									class="sticker-img"
+									fileVersion="<%= commerceCartContentDisplayContext.getCPInstanceImageFileVersion(commerceOrderItem) %>"
+								/>
+							</span>
+						</span>
+					</liferay-ui:search-container-column-text>
 
 					<liferay-ui:search-container-column-text
 						name="description"

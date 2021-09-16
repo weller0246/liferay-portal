@@ -84,6 +84,26 @@ public class DiagramResourceImpl extends BaseDiagramResourceImpl {
 	}
 
 	@Override
+	public Diagram patchDiagram(Long diagramId, Diagram diagram)
+		throws Exception {
+
+		CPDefinitionDiagramSetting cpDefinitionDiagramSetting =
+			_cpDefinitionDiagramSettingService.getCPDefinitionDiagramSetting(
+				diagramId);
+
+		_cpDefinitionDiagramSettingService.updateCPDefinitionDiagramSetting(
+			diagramId, cpDefinitionDiagramSetting.getCPAttachmentFileEntryId(),
+			GetterUtil.getString(
+				diagram.getColor(), cpDefinitionDiagramSetting.getColor()),
+			GetterUtil.getDouble(
+				diagram.getRadius(), cpDefinitionDiagramSetting.getRadius()),
+			GetterUtil.getString(
+				diagram.getType(), cpDefinitionDiagramSetting.getType()));
+
+		return _toDiagram(diagramId);
+	}
+
+	@Override
 	public Diagram putProductByExternalReferenceCodeDiagram(
 			String externalReferenceCode, Diagram diagram)
 		throws Exception {
@@ -128,7 +148,7 @@ public class DiagramResourceImpl extends BaseDiagramResourceImpl {
 			cpDefinitionDiagramSetting =
 				_cpDefinitionDiagramSettingService.
 					addCPDefinitionDiagramSetting(
-						contextUser.getUserId(), cpDefinitionId,
+						cpDefinitionId,
 						GetterUtil.getLong(diagram.getImageId()),
 						GetterUtil.getString(diagram.getColor()),
 						GetterUtil.getDouble(diagram.getRadius()),

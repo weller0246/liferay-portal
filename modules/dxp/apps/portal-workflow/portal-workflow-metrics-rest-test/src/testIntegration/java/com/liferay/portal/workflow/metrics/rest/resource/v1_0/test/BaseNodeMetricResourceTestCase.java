@@ -28,7 +28,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -195,17 +194,16 @@ public abstract class BaseNodeMetricResourceTestCase {
 
 	@Test
 	public void testGetProcessNodeMetricsPage() throws Exception {
-		Page<NodeMetric> page = nodeMetricResource.getProcessNodeMetricsPage(
-			testGetProcessNodeMetricsPage_getProcessId(), null,
-			RandomTestUtil.nextDate(), RandomTestUtil.nextDate(),
-			RandomTestUtil.randomString(), RandomTestUtil.randomString(),
-			Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessNodeMetricsPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessNodeMetricsPage_getIrrelevantProcessId();
+
+		Page<NodeMetric> page = nodeMetricResource.getProcessNodeMetricsPage(
+			processId, null, RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate(), RandomTestUtil.randomString(),
+			RandomTestUtil.randomString(), Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			NodeMetric irrelevantNodeMetric =
@@ -231,7 +229,8 @@ public abstract class BaseNodeMetricResourceTestCase {
 			processId, randomNodeMetric());
 
 		page = nodeMetricResource.getProcessNodeMetricsPage(
-			processId, null, null, null, null, null, Pagination.of(1, 2), null);
+			processId, null, null, null, null, null, Pagination.of(1, 10),
+			null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -421,6 +420,23 @@ public abstract class BaseNodeMetricResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(
+		NodeMetric nodeMetric, List<NodeMetric> nodeMetrics) {
+
+		boolean contains = false;
+
+		for (NodeMetric item : nodeMetrics) {
+			if (equals(nodeMetric, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			nodeMetrics + " does not contain " + nodeMetric, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -987,8 +1003,8 @@ public abstract class BaseNodeMetricResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseNodeMetricResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseNodeMetricResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

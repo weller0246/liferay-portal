@@ -92,16 +92,11 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"editUserGroupAssignmentsURL",
-			() -> {
-				PortletURL editUserGroupAssignmentsURL =
-					PortletURLBuilder.createActionURL(
-						_renderResponse
-					).setActionName(
-						"editUserGroupAssignments"
-					).build();
-
-				return editUserGroupAssignmentsURL.toString();
-			}
+			PortletURLBuilder.createActionURL(
+				_renderResponse
+			).setActionName(
+				"editUserGroupAssignments"
+			).buildString()
 		).put(
 			"portletURL",
 			() -> {
@@ -111,19 +106,15 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 			}
 		).put(
 			"selectUsersURL",
-			() -> {
-				PortletURL selectUsersURL = PortletURLBuilder.createActionURL(
-					_renderResponse
-				).setMVCPath(
-					"/select_user_group_users.jsp"
-				).setParameter(
-					"userGroupId", _userGroup.getUserGroupId()
-				).setWindowState(
-					LiferayWindowState.POP_UP
-				).build();
-
-				return selectUsersURL.toString();
-			}
+			PortletURLBuilder.createActionURL(
+				_renderResponse
+			).setMVCPath(
+				"/select_user_group_users.jsp"
+			).setParameter(
+				"userGroupId", _userGroup.getUserGroupId()
+			).setWindowState(
+				LiferayWindowState.POP_UP
+			).buildString()
 		).put(
 			"userGroupName",
 			() -> {
@@ -203,18 +194,23 @@ public class EditUserGroupAssignmentsManagementToolbarDisplayContext {
 			_mvcPath
 		).setRedirect(
 			ParamUtil.getString(_httpServletRequest, "redirect")
+		).setKeywords(
+			() -> {
+				if (Validator.isNotNull(getKeywords())) {
+					return getKeywords();
+				}
+
+				return null;
+			}
 		).setParameter(
 			"displayStyle", _displayStyle
 		).setParameter(
+			"orderByCol", getOrderByCol()
+		).setParameter(
+			"orderByType", getOrderByType()
+		).setParameter(
 			"userGroupId", _userGroup.getUserGroupId()
-		).build();
-
-		if (Validator.isNotNull(getKeywords())) {
-			portletURL.setParameter("keywords", getKeywords());
-		}
-
-		portletURL.setParameter("orderByCol", getOrderByCol());
-		portletURL.setParameter("orderByType", getOrderByType());
+		).buildPortletURL();
 
 		if (_userSearch != null) {
 			portletURL.setParameter(

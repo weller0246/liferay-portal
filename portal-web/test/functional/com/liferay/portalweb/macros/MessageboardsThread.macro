@@ -120,6 +120,10 @@ definition {
 				value1 = "${threadBody}");
 		}
 		else {
+			if ("${bold}" == "true") {
+				FormFields.toggleCKEditorContentStyle(optionTool = "Bold");
+			}
+
 			SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
 
 			Type(
@@ -129,7 +133,23 @@ definition {
 
 		SelectFrame(value1 = "relative=top");
 
-		PortletEntry.publish();
+		if (isSet(tagName)) {
+			Panel.expandPanel(panel = "Categorization");
+
+			AssetCategorization.addTag(tagName = "${tagName}");
+		}
+
+		Button.clickPublish();
+
+		if ("${invalidCharacters}" == "true") {
+			AssertTextEquals.assertPartialText(
+				key_alertMessage = "One or more tags contains invalid characters.",
+				locator1 = "Message#ERROR_ENTER_A_VALID_VALUE",
+				value1 = "One or more tags contains invalid characters.");
+		}
+		else {
+			Alert.viewSuccessMessage();
+		}
 	}
 
 	macro addPGAsQuestion {
@@ -498,6 +518,29 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro editReplyViaAP {
+		MouseOver(locator1 = "Portlet#PORTLET_CONTENT");
+
+		Click(
+			key_threadReplySubject = "${threadReplySubject}",
+			locator1 = "MessageBoards#EDIT_THREAD_REPLY_VIA_AP",
+			value1 = "${threadReplySubject}");
+
+		Type(
+			locator1 = "TextInput#SUBJECT",
+			value1 = "${threadSubject}");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		Type(
+			locator1 = "CKEditor#BODY",
+			value1 = "${threadBody}");
+
+		SelectFrame(value1 = "relative=top");
+
+		PortletEntry.publish();
+	}
+
 	macro editViaMyPosts {
 		AssertClick(
 			locator1 = "MessageBoards#NAVIGATION_MY_POSTS",
@@ -669,12 +712,16 @@ definition {
 			value1 = "There are no threads or categories.");
 	}
 
+	// You can use this navigation when you need to access the configuration quickly without checking the UI.
+
 	macro openToAddThread {
 		var baseURL = "${baseURL}";
 
 		if (contains("${baseURL}", "{baseURL}")) {
 			var baseURL = PropsUtil.get("portal.url");
 		}
+
+		// Threads accessed in site pages will be redirected back to the page after publishing. Those accessed in admin will stay in admin after publishing.
 
 		if (isSet(layoutName)) {
 			if (isSet(categoryName)) {
@@ -989,13 +1036,7 @@ definition {
 			VerifyElementPresent(locator1 = "Message#SUCCESS");
 		}
 
-		Navigator.openURL();
-
-		ProductMenu.gotoPortlet(
-			category = "Recycle Bin",
-			portlet = "Recycle Bin");
-
-		RecycleBin.emptyCP();
+		JSONRecycleBin.emptyRecycleBin();
 	}
 
 	macro unlockPG {
@@ -1350,9 +1391,17 @@ definition {
 			locator1 = "MessageBoardsThread#THREAD_SUBJECT",
 			value1 = "${threadSubject}");
 
-		AssertTextEquals(
-			locator1 = "MessageBoardsThread#THREAD_BODY",
-			value1 = "${threadBody}");
+		if ("${bold}" == "true") {
+			AssertTextEquals(
+				locator1 = "MessageBoardsThread#THREAD_BODY_BOLD",
+				value1 = "${threadBody}");
+		}
+
+		else {
+			AssertTextEquals(
+				locator1 = "MessageBoardsThread#THREAD_BODY",
+				value1 = "${threadBody}");
+		}
 
 		if (isSet(fontSize)) {
 			AssertTextEquals(

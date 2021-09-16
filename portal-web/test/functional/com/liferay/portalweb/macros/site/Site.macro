@@ -169,23 +169,31 @@ definition {
 		Navigator.gotoNavTab(navTab = "Site URL");
 
 		if (isSet(publicVirtualHosts)) {
-			AssertTextEquals(
-				locator1 = "SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PUBLIC_PAGES_LABEL",
-				value1 = "Public Pages Virtual Host");
-
 			Type(
-				locator1 = "TextInput#PUBLIC_VIRTUAL_HOST_URL",
+				key_text = "Public Pages Virtual Host",
+				locator1 = "TextInput#ANY",
 				value1 = "${publicPageVirtualHostURL}");
 		}
 
 		if (isSet(privateVirtualHosts)) {
-			AssertTextEquals(
-				locator1 = "SiteSettingsSiteURL#SITE_URL_VIRTUAL_HOSTS_PRIVATE_PAGES_LABEL",
-				value1 = "Private Pages Virtual Host");
-
 			Type(
-				locator1 = "TextInput#PRIVATE_VIRTUAL_HOST_URL",
+				key_text = "Private Pages Virtual Host",
+				locator1 = "TextInput#ANY",
 				value1 = "${privatePageVirtualHostURL}");
+		}
+
+		if (isSet(stagingPublicPages)) {
+			Type(
+				key_text = "Staging Public Pages",
+				locator1 = "TextInput#ANY",
+				value1 = "${stagingPublicPages}");
+		}
+
+		if (isSet(stagingPrivatePages)) {
+			Type(
+				key_text = "Staging Private Pages",
+				locator1 = "TextInput#ANY",
+				value1 = "${stagingPrivatePages}");
 		}
 
 		PortletEntry.save();
@@ -975,6 +983,10 @@ definition {
 	macro openToSiteSettingsPages {
 		if ("${portlet}" == "Open Graph") {
 			var configurationScreenKey = "site-configuration-open-graph";
+		}
+
+		if ("${portlet}" == "Pages") {
+			var configurationScreenKey = "site-configuration-pages";
 		}
 
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/${siteURLKey}/~/control_panel/manage/-/site/settings?_com_liferay_site_admin_web_portlet_SiteSettingsPortlet_mvcRenderCommandName=%2Fconfiguration_admin%2Fview_configuration_screen&_com_liferay_site_admin_web_portlet_SiteSettingsPortlet_configurationScreenKey=${configurationScreenKey}");

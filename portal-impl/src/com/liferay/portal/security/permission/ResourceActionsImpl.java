@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.permission;
 
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerList;
+import com.liferay.osgi.service.tracker.collections.list.ServiceTrackerListFactory;
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -30,6 +32,7 @@ import com.liferay.portal.kernel.model.Portlet;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.role.RoleConstants;
+import com.liferay.portal.kernel.module.util.SystemBundleUtil;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
@@ -53,8 +56,6 @@ import com.liferay.portal.kernel.xml.DocumentType;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.UnsecureSAXReaderUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.registry.collections.ServiceTrackerCollections;
-import com.liferay.registry.collections.ServiceTrackerList;
 
 import java.io.InputStream;
 
@@ -1255,7 +1256,20 @@ public class ResourceActionsImpl implements ResourceActions {
 					modelResourceElement.elementText("root"));
 
 				if (root) {
-					_portletRootModelResources.put(portletName, modelName);
+					String existingModelName =
+						_portletRootModelResources.putIfAbsent(
+							portletName, modelName);
+
+					if (Validator.isNotNull(existingModelName) &&
+						!Objects.equals(existingModelName, modelName)) {
+
+						throw new ResourceActionsException(
+							StringBundler.concat(
+								"Portlet ", portletName,
+								" cannot be assigned to both ",
+								existingModelName, " and ", modelName,
+								" as root model resources. See LPS-135983."));
+					}
 				}
 			}
 
@@ -1492,9 +1506,11 @@ public class ResourceActionsImpl implements ResourceActions {
 
 	private static class ResourceBundleLoaderListHolder {
 
-		private static final ServiceTrackerList<ResourceBundleLoader>
-			_resourceBundleLoaders = ServiceTrackerCollections.openList(
-				ResourceBundleLoader.class);
+		private static final ServiceTrackerList
+			<ResourceBundleLoader, ResourceBundleLoader>
+				_resourceBundleLoaders = ServiceTrackerListFactory.open(
+					SystemBundleUtil.getBundleContext(),
+					ResourceBundleLoader.class);
 
 	}
 

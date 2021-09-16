@@ -174,7 +174,7 @@ public class CommerceMediaResolverTest {
 				null, _user.getUserId(), _group.getGroupId(),
 				PortalUtil.getClassNameId(CPDefinition.class.getName()),
 				cpDefinition.getCPDefinitionId(), dlFileEntry.getFileEntryId(),
-				displayDateMonth, displayDateDay, displayDateYear,
+				false, null, displayDateMonth, displayDateDay, displayDateYear,
 				displayDateHour, displayDateMinute, expirationDateMonth,
 				expirationDateDay, expirationDateYear, expirationDateHour,
 				expirationDateMinute, true,
@@ -185,18 +185,14 @@ public class CommerceMediaResolverTest {
 			_commerceAccount.getCommerceAccountId(),
 			cpAttachmentFileEntry.getCPAttachmentFileEntryId());
 
-		StringBundler sb = new StringBundler(8);
-
-		sb.append(PortalUtil.getPathModule());
-		sb.append(StringPool.SLASH);
-		sb.append(CommerceMediaConstants.SERVLET_PATH);
-		sb.append("/accounts/");
-		sb.append(_commerceAccount.getCommerceAccountId());
-		sb.append("/images/");
-		sb.append(cpAttachmentFileEntry.getCPAttachmentFileEntryId());
-		sb.append("?download=false");
-
-		Assert.assertEquals(sb.toString(), url);
+		Assert.assertEquals(
+			StringBundler.concat(
+				PortalUtil.getPathModule(), StringPool.SLASH,
+				CommerceMediaConstants.SERVLET_PATH, "/accounts/",
+				_commerceAccount.getCommerceAccountId(), "/images/",
+				cpAttachmentFileEntry.getCPAttachmentFileEntryId(),
+				"?download=false"),
+			url);
 	}
 
 	@Rule

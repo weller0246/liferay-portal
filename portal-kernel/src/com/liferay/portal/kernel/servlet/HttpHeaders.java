@@ -90,8 +90,6 @@ public interface HttpHeaders {
 
 	public static final String X_REQUESTED_WITH = "X-Requested-With";
 
-	public static final String X_XSS_PROTECTION = "X-XSS-Protection";
-
 	// Values
 
 	public static final String ACCEPT_RANGES_BYTES_VALUE = "bytes";

@@ -14,10 +14,10 @@
 
 package com.liferay.commerce.internal.messaging;
 
-import com.liferay.commerce.constants.CommerceDestinationNames;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
 import com.liferay.portal.kernel.messaging.DestinationFactory;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 
 import java.util.Dictionary;
@@ -42,17 +42,15 @@ public class CommerceMessagingConfigurator {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_basePriceListServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.BASE_PRICE_LIST);
+			bundleContext, DestinationNames.COMMERCE_BASE_PRICE_LIST);
 		_orderStatusServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.ORDER_STATUS);
+			bundleContext, DestinationNames.COMMERCE_ORDER_STATUS);
 		_paymentStatusServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.PAYMENT_STATUS);
+			bundleContext, DestinationNames.COMMERCE_PAYMENT_STATUS);
 		_shipmentStatusServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.SHIPMENT_STATUS);
-		_stockQuantityServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.STOCK_QUANTITY);
+			bundleContext, DestinationNames.COMMERCE_SHIPMENT_STATUS);
 		_subscriptionStatusServiceRegistration = _registerDestination(
-			bundleContext, CommerceDestinationNames.SUBSCRIPTION_STATUS);
+			bundleContext, DestinationNames.COMMERCE_SUBSCRIPTION_STATUS);
 	}
 
 	@Deactivate
@@ -73,10 +71,6 @@ public class CommerceMessagingConfigurator {
 			_shipmentStatusServiceRegistration.unregister();
 		}
 
-		if (_stockQuantityServiceRegistration != null) {
-			_stockQuantityServiceRegistration.unregister();
-		}
-
 		if (_subscriptionStatusServiceRegistration != null) {
 			_subscriptionStatusServiceRegistration.unregister();
 		}
@@ -95,6 +89,8 @@ public class CommerceMessagingConfigurator {
 		Dictionary<String, Object> dictionary =
 			HashMapDictionaryBuilder.<String, Object>put(
 				"destination.name", destination.getName()
+			).put(
+				"destination.webhook.required.company.id", 0
 			).build();
 
 		return bundleContext.registerService(
@@ -113,8 +109,6 @@ public class CommerceMessagingConfigurator {
 		_paymentStatusServiceRegistration;
 	private volatile ServiceRegistration<Destination>
 		_shipmentStatusServiceRegistration;
-	private volatile ServiceRegistration<Destination>
-		_stockQuantityServiceRegistration;
 	private volatile ServiceRegistration<Destination>
 		_subscriptionStatusServiceRegistration;
 

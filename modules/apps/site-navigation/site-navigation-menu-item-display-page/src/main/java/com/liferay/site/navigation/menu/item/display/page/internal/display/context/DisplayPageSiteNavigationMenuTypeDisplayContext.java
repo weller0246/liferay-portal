@@ -36,8 +36,6 @@ import com.liferay.site.navigation.constants.SiteNavigationWebKeys;
 import com.liferay.site.navigation.menu.item.display.page.internal.constants.SiteNavigationMenuItemTypeDisplayPageWebKeys;
 import com.liferay.site.navigation.model.SiteNavigationMenuItem;
 
-import java.util.Collection;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -109,7 +107,7 @@ public class DisplayPageSiteNavigationMenuTypeDisplayContext {
 		typeSettingsUnicodeProperties.fastLoad(
 			_siteNavigationMenuItem.getTypeSettings());
 
-		LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider =
+		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
 			_getLayoutDisplayPageObjectProvider(typeSettingsUnicodeProperties);
 
 		if (layoutDisplayPageObjectProvider != null) {
@@ -124,40 +122,35 @@ public class DisplayPageSiteNavigationMenuTypeDisplayContext {
 	}
 
 	public String getItemSubtype() {
-		InfoItemFormVariationsProvider infoItemFormVariationsProvider =
+		InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 			_infoItemServiceTracker.getFirstInfoItemService(
 				InfoItemFormVariationsProvider.class,
 				PortalUtil.getClassName(getClassNameId()));
 
-		if (infoItemFormVariationsProvider != null) {
-			UnicodeProperties typeSettingsUnicodeProperties =
-				new UnicodeProperties();
+		if (infoItemFormVariationsProvider == null) {
+			return StringPool.BLANK;
+		}
 
-			typeSettingsUnicodeProperties.fastLoad(
-				_siteNavigationMenuItem.getTypeSettings());
+		UnicodeProperties typeSettingsUnicodeProperties =
+			new UnicodeProperties();
 
-			LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider =
-				_getLayoutDisplayPageObjectProvider(
-					typeSettingsUnicodeProperties);
+		typeSettingsUnicodeProperties.fastLoad(
+			_siteNavigationMenuItem.getTypeSettings());
 
-			if (layoutDisplayPageObjectProvider == null) {
-				return StringPool.BLANK;
-			}
+		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
+			_getLayoutDisplayPageObjectProvider(typeSettingsUnicodeProperties);
 
-			Collection<InfoItemFormVariation> infoItemFormVariations =
-				infoItemFormVariationsProvider.getInfoItemFormVariations(
-					layoutDisplayPageObjectProvider.getGroupId());
+		if (layoutDisplayPageObjectProvider == null) {
+			return StringPool.BLANK;
+		}
 
-			for (InfoItemFormVariation infoItemFormVariation :
-					infoItemFormVariations) {
+		InfoItemFormVariation infoItemFormVariation =
+			infoItemFormVariationsProvider.getInfoItemFormVariation(
+				layoutDisplayPageObjectProvider.getGroupId(),
+				String.valueOf(getClassTypeId()));
 
-				String key = infoItemFormVariation.getKey();
-
-				if (key.equals(String.valueOf(getClassTypeId()))) {
-					return infoItemFormVariation.getLabel(
-						_themeDisplay.getLocale());
-				}
-			}
+		if (infoItemFormVariation != null) {
+			return infoItemFormVariation.getLabel(_themeDisplay.getLocale());
 		}
 
 		return StringPool.BLANK;
@@ -206,12 +199,8 @@ public class DisplayPageSiteNavigationMenuTypeDisplayContext {
 		typeSettingsUnicodeProperties.fastLoad(
 			_siteNavigationMenuItem.getTypeSettings());
 
-		LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider =
+		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
 			_getLayoutDisplayPageObjectProvider(typeSettingsUnicodeProperties);
-
-		if (layoutDisplayPageObjectProvider == null) {
-			return StringPool.BLANK;
-		}
 
 		if (layoutDisplayPageObjectProvider == null) {
 			_originalTitle = typeSettingsUnicodeProperties.getProperty("title");
@@ -256,8 +245,9 @@ public class DisplayPageSiteNavigationMenuTypeDisplayContext {
 		return _type;
 	}
 
-	private LayoutDisplayPageObjectProvider _getLayoutDisplayPageObjectProvider(
-		UnicodeProperties typeSettingsUnicodeProperties) {
+	private LayoutDisplayPageObjectProvider<?>
+		_getLayoutDisplayPageObjectProvider(
+			UnicodeProperties typeSettingsUnicodeProperties) {
 
 		if (_layoutDisplayPageObjectProvider != null) {
 			return _layoutDisplayPageObjectProvider;
@@ -287,7 +277,7 @@ public class DisplayPageSiteNavigationMenuTypeDisplayContext {
 	private Long _classPK;
 	private Long _classTypeId;
 	private final InfoItemServiceTracker _infoItemServiceTracker;
-	private LayoutDisplayPageObjectProvider _layoutDisplayPageObjectProvider;
+	private LayoutDisplayPageObjectProvider<?> _layoutDisplayPageObjectProvider;
 	private final LayoutDisplayPageProviderTracker
 		_layoutDisplayPageProviderTracker;
 	private String _originalTitle;

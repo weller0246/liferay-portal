@@ -14,8 +14,11 @@
 
 package com.liferay.object.model.impl;
 
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.TextFormatter;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 /**
  * @author Marco Leo
@@ -34,12 +37,20 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 	}
 
 	@Override
-	public String getClassName() {
+	public String getDestinationName() {
+		return StringBundler.concat(
+			"liferay/object/", getCompanyId(), StringPool.SLASH,
+			getShortName());
+	}
+
+	@Override
+	public String getExtensionDBTableName() {
 		if (isSystem()) {
-			throw new UnsupportedOperationException();
+			return StringBundler.concat(
+				getDBTableName(), "_x_", getCompanyId());
 		}
 
-		return getDBTableName();
+		return getDBTableName() + "_x";
 	}
 
 	@Override
@@ -48,7 +59,17 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 			throw new UnsupportedOperationException();
 		}
 
-		return getDBTableName();
+		return "com_liferay_object_web_internal_object_definitions_portlet_" +
+			"ObjectDefinitionsPortlet_" + getObjectDefinitionId();
+	}
+
+	@Override
+	public String getResourceName() {
+		if (isSystem()) {
+			throw new UnsupportedOperationException();
+		}
+
+		return "com.liferay.object#" + getObjectDefinitionId();
 	}
 
 	@Override
@@ -57,13 +78,22 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 			throw new UnsupportedOperationException();
 		}
 
-		return TextFormatter.formatPlural(
-			StringUtil.toLowerCase(getShortName()));
+		return "/c/" +
+			TextFormatter.formatPlural(StringUtil.toLowerCase(getShortName()));
 	}
 
 	@Override
 	public String getShortName() {
 		return getShortName(getName());
+	}
+
+	@Override
+	public boolean isApproved() {
+		if (getStatus() == WorkflowConstants.STATUS_APPROVED) {
+			return true;
+		}
+
+		return false;
 	}
 
 }

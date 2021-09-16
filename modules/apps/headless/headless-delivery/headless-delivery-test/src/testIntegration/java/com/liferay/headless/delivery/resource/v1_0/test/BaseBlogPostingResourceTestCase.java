@@ -38,7 +38,6 @@ import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -197,6 +196,7 @@ public abstract class BaseBlogPostingResourceTestCase {
 		blogPosting.setArticleBody(regex);
 		blogPosting.setDescription(regex);
 		blogPosting.setEncodingFormat(regex);
+		blogPosting.setExternalReferenceCode(regex);
 		blogPosting.setFriendlyUrlPath(regex);
 		blogPosting.setHeadline(regex);
 
@@ -210,6 +210,7 @@ public abstract class BaseBlogPostingResourceTestCase {
 		Assert.assertEquals(regex, blogPosting.getArticleBody());
 		Assert.assertEquals(regex, blogPosting.getDescription());
 		Assert.assertEquals(regex, blogPosting.getEncodingFormat());
+		Assert.assertEquals(regex, blogPosting.getExternalReferenceCode());
 		Assert.assertEquals(regex, blogPosting.getFriendlyUrlPath());
 		Assert.assertEquals(regex, blogPosting.getHeadline());
 	}
@@ -479,16 +480,15 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 	@Test
 	public void testGetSiteBlogPostingsPage() throws Exception {
-		Page<BlogPosting> page = blogPostingResource.getSiteBlogPostingsPage(
-			testGetSiteBlogPostingsPage_getSiteId(),
-			RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-			null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteBlogPostingsPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteBlogPostingsPage_getIrrelevantSiteId();
+
+		Page<BlogPosting> page = blogPostingResource.getSiteBlogPostingsPage(
+			siteId, RandomTestUtil.randomString(), null, null,
+			Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			BlogPosting irrelevantBlogPosting =
@@ -513,7 +513,7 @@ public abstract class BaseBlogPostingResourceTestCase {
 			siteId, randomBlogPosting());
 
 		page = blogPostingResource.getSiteBlogPostingsPage(
-			siteId, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -774,7 +774,7 @@ public abstract class BaseBlogPostingResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -795,7 +795,7 @@ public abstract class BaseBlogPostingResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/blogPostings");
 
-		Assert.assertEquals(2, blogPostingsJSONObject.get("totalCount"));
+		Assert.assertEquals(2, blogPostingsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(blogPosting1, blogPosting2),
@@ -831,6 +831,192 @@ public abstract class BaseBlogPostingResourceTestCase {
 			randomBlogPosting);
 
 		Assert.assertTrue(equals(randomBlogPosting, blogPosting));
+	}
+
+	@Test
+	public void testDeleteSiteBlogPostingByExternalReferenceCode()
+		throws Exception {
+
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		BlogPosting blogPosting =
+			testDeleteSiteBlogPostingByExternalReferenceCode_addBlogPosting();
+
+		assertHttpResponseStatusCode(
+			204,
+			blogPostingResource.
+				deleteSiteBlogPostingByExternalReferenceCodeHttpResponse(
+					blogPosting.getSiteId(),
+					blogPosting.getExternalReferenceCode()));
+
+		assertHttpResponseStatusCode(
+			404,
+			blogPostingResource.
+				getSiteBlogPostingByExternalReferenceCodeHttpResponse(
+					blogPosting.getSiteId(),
+					blogPosting.getExternalReferenceCode()));
+
+		assertHttpResponseStatusCode(
+			404,
+			blogPostingResource.
+				getSiteBlogPostingByExternalReferenceCodeHttpResponse(
+					blogPosting.getSiteId(),
+					blogPosting.getExternalReferenceCode()));
+	}
+
+	protected BlogPosting
+			testDeleteSiteBlogPostingByExternalReferenceCode_addBlogPosting()
+		throws Exception {
+
+		return blogPostingResource.postSiteBlogPosting(
+			testGroup.getGroupId(), randomBlogPosting());
+	}
+
+	@Test
+	public void testGetSiteBlogPostingByExternalReferenceCode()
+		throws Exception {
+
+		BlogPosting postBlogPosting =
+			testGetSiteBlogPostingByExternalReferenceCode_addBlogPosting();
+
+		BlogPosting getBlogPosting =
+			blogPostingResource.getSiteBlogPostingByExternalReferenceCode(
+				postBlogPosting.getSiteId(),
+				postBlogPosting.getExternalReferenceCode());
+
+		assertEquals(postBlogPosting, getBlogPosting);
+		assertValid(getBlogPosting);
+	}
+
+	protected BlogPosting
+			testGetSiteBlogPostingByExternalReferenceCode_addBlogPosting()
+		throws Exception {
+
+		return blogPostingResource.postSiteBlogPosting(
+			testGroup.getGroupId(), randomBlogPosting());
+	}
+
+	@Test
+	public void testGraphQLGetSiteBlogPostingByExternalReferenceCode()
+		throws Exception {
+
+		BlogPosting blogPosting = testGraphQLBlogPosting_addBlogPosting();
+
+		Assert.assertTrue(
+			equals(
+				blogPosting,
+				BlogPostingSerDes.toDTO(
+					JSONUtil.getValueAsString(
+						invokeGraphQLQuery(
+							new GraphQLField(
+								"blogPostingByExternalReferenceCode",
+								new HashMap<String, Object>() {
+									{
+										put(
+											"siteKey",
+											"\"" + blogPosting.getSiteId() +
+												"\"");
+										put(
+											"externalReferenceCode",
+											"\"" +
+												blogPosting.
+													getExternalReferenceCode() +
+														"\"");
+									}
+								},
+								getGraphQLFields())),
+						"JSONObject/data",
+						"Object/blogPostingByExternalReferenceCode"))));
+	}
+
+	@Test
+	public void testGraphQLGetSiteBlogPostingByExternalReferenceCodeNotFound()
+		throws Exception {
+
+		String irrelevantExternalReferenceCode =
+			"\"" + RandomTestUtil.randomString() + "\"";
+
+		Assert.assertEquals(
+			"Not Found",
+			JSONUtil.getValueAsString(
+				invokeGraphQLQuery(
+					new GraphQLField(
+						"blogPostingByExternalReferenceCode",
+						new HashMap<String, Object>() {
+							{
+								put(
+									"siteKey",
+									"\"" + irrelevantGroup.getGroupId() + "\"");
+								put(
+									"externalReferenceCode",
+									irrelevantExternalReferenceCode);
+							}
+						},
+						getGraphQLFields())),
+				"JSONArray/errors", "Object/0", "JSONObject/extensions",
+				"Object/code"));
+	}
+
+	@Test
+	public void testPutSiteBlogPostingByExternalReferenceCode()
+		throws Exception {
+
+		BlogPosting postBlogPosting =
+			testPutSiteBlogPostingByExternalReferenceCode_addBlogPosting();
+
+		BlogPosting randomBlogPosting = randomBlogPosting();
+
+		BlogPosting putBlogPosting =
+			blogPostingResource.putSiteBlogPostingByExternalReferenceCode(
+				postBlogPosting.getSiteId(),
+				postBlogPosting.getExternalReferenceCode(), randomBlogPosting);
+
+		assertEquals(randomBlogPosting, putBlogPosting);
+		assertValid(putBlogPosting);
+
+		BlogPosting getBlogPosting =
+			blogPostingResource.getSiteBlogPostingByExternalReferenceCode(
+				putBlogPosting.getSiteId(),
+				putBlogPosting.getExternalReferenceCode());
+
+		assertEquals(randomBlogPosting, getBlogPosting);
+		assertValid(getBlogPosting);
+
+		BlogPosting newBlogPosting =
+			testPutSiteBlogPostingByExternalReferenceCode_createBlogPosting();
+
+		putBlogPosting =
+			blogPostingResource.putSiteBlogPostingByExternalReferenceCode(
+				newBlogPosting.getSiteId(),
+				newBlogPosting.getExternalReferenceCode(), newBlogPosting);
+
+		assertEquals(newBlogPosting, putBlogPosting);
+		assertValid(putBlogPosting);
+
+		getBlogPosting =
+			blogPostingResource.getSiteBlogPostingByExternalReferenceCode(
+				putBlogPosting.getSiteId(),
+				putBlogPosting.getExternalReferenceCode());
+
+		assertEquals(newBlogPosting, getBlogPosting);
+
+		Assert.assertEquals(
+			newBlogPosting.getExternalReferenceCode(),
+			putBlogPosting.getExternalReferenceCode());
+	}
+
+	protected BlogPosting
+			testPutSiteBlogPostingByExternalReferenceCode_createBlogPosting()
+		throws Exception {
+
+		return randomBlogPosting();
+	}
+
+	protected BlogPosting
+			testPutSiteBlogPostingByExternalReferenceCode_addBlogPosting()
+		throws Exception {
+
+		return blogPostingResource.postSiteBlogPosting(
+			testGroup.getGroupId(), randomBlogPosting());
 	}
 
 	@Test
@@ -1072,6 +1258,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 		List<GraphQLField> graphQLFields = getGraphQLFields();
 
+		graphQLFields.add(new GraphQLField("externalReferenceCode"));
+
 		graphQLFields.add(new GraphQLField("id"));
 
 		return jsonDeserializer.deserialize(
@@ -1090,6 +1278,23 @@ public abstract class BaseBlogPostingResourceTestCase {
 						graphQLFields)),
 				"JSONObject/data", "JSONObject/createSiteBlogPosting"),
 			BlogPosting.class);
+	}
+
+	protected void assertContains(
+		BlogPosting blogPosting, List<BlogPosting> blogPostings) {
+
+		boolean contains = false;
+
+		for (BlogPosting item : blogPostings) {
+			if (equals(blogPosting, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			blogPostings + " does not contain " + blogPosting, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1237,6 +1442,16 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 			if (Objects.equals("encodingFormat", additionalAssertFieldName)) {
 				if (blogPosting.getEncodingFormat() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (blogPosting.getExternalReferenceCode() == null) {
 					valid = false;
 				}
 
@@ -1611,6 +1826,19 @@ public abstract class BaseBlogPostingResourceTestCase {
 				if (!Objects.deepEquals(
 						blogPosting1.getEncodingFormat(),
 						blogPosting2.getEncodingFormat())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals(
+					"externalReferenceCode", additionalAssertFieldName)) {
+
+				if (!Objects.deepEquals(
+						blogPosting1.getExternalReferenceCode(),
+						blogPosting2.getExternalReferenceCode())) {
 
 					return false;
 				}
@@ -2080,6 +2308,14 @@ public abstract class BaseBlogPostingResourceTestCase {
 			return sb.toString();
 		}
 
+		if (entityFieldName.equals("externalReferenceCode")) {
+			sb.append("'");
+			sb.append(String.valueOf(blogPosting.getExternalReferenceCode()));
+			sb.append("'");
+
+			return sb.toString();
+		}
+
 		if (entityFieldName.equals("friendlyUrlPath")) {
 			sb.append("'");
 			sb.append(String.valueOf(blogPosting.getFriendlyUrlPath()));
@@ -2201,6 +2437,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 					RandomTestUtil.randomString());
 				encodingFormat = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
+				externalReferenceCode = StringUtil.toLowerCase(
+					RandomTestUtil.randomString());
 				friendlyUrlPath = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				headline = StringUtil.toLowerCase(
@@ -2313,8 +2551,8 @@ public abstract class BaseBlogPostingResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseBlogPostingResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseBlogPostingResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

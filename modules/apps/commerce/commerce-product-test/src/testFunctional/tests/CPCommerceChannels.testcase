@@ -3,7 +3,7 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.main.component.name = "Commerce";
+	property testray.main.component.name = "Product Info Management";
 
 	setUp {
 		TestCase.setUpPortalInstance();
@@ -400,8 +400,6 @@ definition {
 	test AddTaxRateSettingsByAddressTaxCalculation {
 		property portal.acceptance = "false";
 
-		// TODO Review
-
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
 		CommerceNavigator.gotoPortlet(
@@ -437,9 +435,7 @@ definition {
 
 		SelectFrameTop();
 
-		// TODO Iframe fix at COMMERCE-6481
-
-		SelectFrame.selectFrameNoLoading(locator1 = "//body/div[25]/div[2]/div[1]/div[1]/div[1]/iframe[1]");
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_IFRAME");
 
 		Select(
 			key_fieldLabel = "Tax Category",
@@ -945,8 +941,6 @@ definition {
 	test EditCategoryDisplayPage {
 		property portal.acceptance = "false";
 
-		// TODO Review
-
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
 		CommerceNavigator.gotoPortlet(
@@ -957,49 +951,9 @@ definition {
 
 		CommerceEntry.gotoMenuTab(menuTab = "Category Display Pages");
 
-		Click(locator1 = "Button#PLUS");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
-
-		Button.click(button = "Select");
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Click(locator1 = "Treeview#NODE_COLLAPSED");
-
-		Click(
-			key_card = "Brake System",
-			locator1 = "Card#CARD_TITLE");
-
-		SelectFrame.selectFrameTop();
-
-		Button.click(button = "Add");
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
-
-		Button.click(button = "Choose");
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Click(
-			key_card = "Login",
-			locator1 = "Card#CARD_TITLE");
-
-		SelectFrame.selectFrameTop();
-
-		Button.clickDone();
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
-
-		Button.clickSave();
+		CommerceChannels.createCategoryDisplayPage(
+			page = "Login",
+			vocabulary = "Brake System");
 
 		Alert.viewSuccessMessage();
 
@@ -1011,39 +965,10 @@ definition {
 			key_entryName = "Brake System",
 			locator1 = "CommerceEntry#TABLE_LIST_TITLE");
 
-		Click(
-			key_value = "Brake System",
-			locator1 = "CommerceEntry#BODY_VERTICAL_ELLIPSIS");
-
-		ClickNoError(
-			key_selectAction = "Edit",
-			locator1 = "FormViewBuilder#FIELD_ELLIPSIS_ACTION");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
-
-		Button.click(button = "Choose");
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
-
-		Click(
-			key_tabName = "Private+Pages",
-			locator1 = "AppBuilderAppAdmin#APP_TAB");
-
-		Click(
+		CommerceChannels.editCategoryDisplayPage(
 			key_card = "Catalog",
-			locator1 = "Card#CARD_TITLE");
-
-		SelectFrame.selectFrameTop();
-
-		Button.clickDone();
-
-		SelectFrame.selectFrameTop();
-
-		SelectFrame.selectFrameNoLoading(locator1 = "CommerceEntry#IFRAME_SIDE_PANEL");
-
-		Button.clickSave();
+			name = "Brake System",
+			tabName = "Private+Pages");
 
 		Alert.viewSuccessMessage();
 
@@ -1052,7 +977,7 @@ definition {
 		SelectFrame.selectFrameTop();
 
 		AssertElementPresent(
-			key_productName = "",
+			key_productName = "Brake System",
 			key_Value = "Catalog",
 			locator1 = "CommerceEntry#VALUE_PRODUCT_RELATIONS");
 	}
@@ -1154,7 +1079,7 @@ definition {
 		Refresh();
 
 		CommerceChannels.assertMercanetConfigurationEnvironment(
-			key_value = "Simulation",
+			key_value = "Production",
 			paymentMethod = "Mercanet");
 	}
 
@@ -2042,8 +1967,6 @@ definition {
 	test RemoveTaxRateSettingsFixedTaxRateTaxCalculation {
 		property portal.acceptance = "false";
 
-		// TODO Review
-
 		CommerceAccelerators.initializeNewSiteViaAccelerator(siteName = "Minium");
 
 		CommerceNavigator.gotoPortlet(
@@ -2079,9 +2002,7 @@ definition {
 
 		SelectFrameTop();
 
-		// TODO Update the path once COMMERCE-6121 is resolved, as there is an iframe that is only found with the path below
-
-		SelectFrame.selectFrameNoLoading(locator1 = "//body/div[25]/div[2]/div[1]/div[1]/div[1]/iframe[1]");
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_IFRAME");
 
 		Select(
 			key_fieldLabel = "Tax Category",

@@ -125,44 +125,58 @@ public class SelectOrganizationManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCPath(
 			"/select_organization.jsp"
-		).build();
+		).setKeywords(
+			() -> {
+				String[] keywords = ParamUtil.getStringValues(
+					_httpServletRequest, "keywords");
 
-		User selUser = _getSelectedUser();
+				if (ArrayUtil.isNotEmpty(keywords)) {
+					return keywords[keywords.length - 1];
+				}
 
-		if (selUser != null) {
-			portletURL.setParameter(
-				"p_u_i_d", String.valueOf(selUser.getUserId()));
-		}
+				return null;
+			}
+		).setParameter(
+			"cur", getCur()
+		).setParameter(
+			"delta", getDelta()
+		).setParameter(
+			"eventName",
+			ParamUtil.getString(
+				_httpServletRequest, "eventName",
+				_renderResponse.getNamespace() + "selectOrganization")
+		).setParameter(
+			"orderByCol", getOrderByCol()
+		).setParameter(
+			"orderByType", getOrderByType()
+		).setParameter(
+			"p_u_i_d",
+			() -> {
+				User selUser = _getSelectedUser();
 
-		String eventName = ParamUtil.getString(
-			_httpServletRequest, "eventName",
-			_renderResponse.getNamespace() + "selectOrganization");
+				if (selUser != null) {
+					return selUser.getUserId();
+				}
 
-		portletURL.setParameter("eventName", eventName);
+				return null;
+			}
+		).setParameter(
+			"target",
+			() -> {
+				String target = ParamUtil.getString(
+					_httpServletRequest, "target");
 
-		String[] keywords = ParamUtil.getStringValues(
-			_httpServletRequest, "keywords");
+				if (Validator.isNotNull(target)) {
+					return target;
+				}
 
-		if (ArrayUtil.isNotEmpty(keywords)) {
-			portletURL.setParameter("keywords", keywords[keywords.length - 1]);
-		}
-
-		portletURL.setParameter("cur", String.valueOf(getCur()));
-		portletURL.setParameter("delta", String.valueOf(getDelta()));
-		portletURL.setParameter("orderByCol", getOrderByCol());
-		portletURL.setParameter("orderByType", getOrderByType());
-
-		String target = ParamUtil.getString(_httpServletRequest, "target");
-
-		if (Validator.isNotNull(target)) {
-			portletURL.setParameter("target", target);
-		}
-
-		return portletURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	public String getSearchActionURL() {

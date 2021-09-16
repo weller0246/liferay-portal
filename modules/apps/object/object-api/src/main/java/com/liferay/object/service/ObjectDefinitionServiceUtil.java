@@ -18,6 +18,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.portal.kernel.exception.PortalException;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides the remote service utility for ObjectDefinition. This utility wraps
@@ -39,10 +40,15 @@ public class ObjectDefinitionServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.object.service.impl.ObjectDefinitionServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static ObjectDefinition addCustomObjectDefinition(
-			long userId, String name)
+			Map<java.util.Locale, String> labelMap, String name,
+			String panelAppOrder, String panelCategoryKey,
+			Map<java.util.Locale, String> pluralLabelMap, String scope,
+			List<com.liferay.object.model.ObjectField> objectFields)
 		throws PortalException {
 
-		return getService().addCustomObjectDefinition(userId, name);
+		return getService().addCustomObjectDefinition(
+			labelMap, name, panelAppOrder, panelCategoryKey, pluralLabelMap,
+			scope, objectFields);
 	}
 
 	public static ObjectDefinition deleteObjectDefinition(
@@ -64,6 +70,16 @@ public class ObjectDefinitionServiceUtil {
 		return getService().getObjectDefinitions(start, end);
 	}
 
+	public static List<ObjectDefinition> getObjectDefinitions(
+		long companyId, int start, int end) {
+
+		return getService().getObjectDefinitions(companyId, start, end);
+	}
+
+	public static int getObjectDefinitionsCount() throws PortalException {
+		return getService().getObjectDefinitionsCount();
+	}
+
 	public static int getObjectDefinitionsCount(long companyId)
 		throws PortalException {
 
@@ -77,6 +93,25 @@ public class ObjectDefinitionServiceUtil {
 	 */
 	public static String getOSGiServiceIdentifier() {
 		return getService().getOSGiServiceIdentifier();
+	}
+
+	public static ObjectDefinition publishCustomObjectDefinition(
+			long objectDefinitionId)
+		throws PortalException {
+
+		return getService().publishCustomObjectDefinition(objectDefinitionId);
+	}
+
+	public static ObjectDefinition updateCustomObjectDefinition(
+			Long objectDefinitionId, boolean active,
+			Map<java.util.Locale, String> labelMap, String name,
+			String panelAppOrder, String panelCategoryKey,
+			Map<java.util.Locale, String> pluralLabelMap, String scope)
+		throws PortalException {
+
+		return getService().updateCustomObjectDefinition(
+			objectDefinitionId, active, labelMap, name, panelAppOrder,
+			panelCategoryKey, pluralLabelMap, scope);
 	}
 
 	public static ObjectDefinitionService getService() {

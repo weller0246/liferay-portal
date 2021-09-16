@@ -383,6 +383,80 @@ definition {
 		AssertElementNotPresent(locator1 = "Link#CREATE_ACCOUNT");
 	}
 
+	@description = "This test asserts that a user can create multi factory configurations."
+	@priority = "4"
+	test CanCreateTwoFactoryConfigurations {
+		var openIDConnectClientID = PropsUtil.get("google.client.id.1");
+		var openIDConnectClientID1 = PropsUtil.get("google.client.id.2");
+		var openIDConnectClientSecret = PropsUtil.get("google.client.secret.1");
+		var openIDConnectClientSecret1 = PropsUtil.get("google.client.secret.2");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect Provider",
+			configurationScope = "Virtual Instance Scope");
+
+		OpenIDConnect.addProvider(
+			openIDConnectClientID = "${openIDConnectClientID}",
+			openIDConnectClientSecret = "${openIDConnectClientSecret}",
+			providerName = "Google");
+
+		LexiconEntry.viewEntryName(rowEntry = "Google");
+
+		OpenIDConnect.addProvider(
+			openIDConnectClientID = "${openIDConnectClientID1}",
+			openIDConnectClientSecret = "${openIDConnectClientSecret1}",
+			providerName = "New Entry 1");
+
+		LexiconEntry.viewEntryName(rowEntry = "New Entry 1");
+	}
+
+	@description = "This test asserts that a user can delete site logo via portal setting."
+	@priority = "3"
+	test CanDeleteSiteLogoViaAppearance {
+		Page.viewDefaultLogoPG();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Appearance",
+			configurationScope = "Virtual Instance Scope");
+
+		AssertElementPresent(
+			key_text = "Delete",
+			locator1 = "Button#ANY_DISABLED");
+
+		Page.uploadFileForLogo(logoFile = "Document_2.png");
+
+		AssertElementPresent(locator1 = "Button#DELETE_LAYOUT_LOGO");
+
+		AssertElementNotPresent(
+			key_text = "Delete",
+			locator1 = "Button#ANY_DISABLED");
+
+		Navigator.openURL();
+
+		Page.viewCustomLogoPG();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Appearance",
+			configurationScope = "Virtual Instance Scope");
+
+		AssertClick(
+			locator1 = "Button#DELETE_LAYOUT_LOGO",
+			value1 = "Delete");
+
+		PortletEntry.save();
+
+		AssertElementPresent(
+			key_text = "Delete",
+			locator1 = "Button#ANY_DISABLED");
+
+		Navigator.openURL();
+
+		Page.viewDefaultLogoPG();
+	}
+
 	@description = "This test asserts that a user can disable the account created notification. No email would send to user when the account created notification is disabled."
 	@priority = "3"
 	test CanDisabledAccountCreatedNotification {
@@ -419,6 +493,41 @@ definition {
 			userScreenName = "usersn");
 
 		MockMock.viewNoMail();
+	}
+
+	@description = "This test asserts that a user can disable site admin to use their own logo."
+	@priority = "3"
+	test CanDisableSiteAdminToUseTheirOwnLogo {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "Appearance",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.disableCheckbox(fieldName = "logo");
+
+		PortletEntry.save();
+
+		JSONGroup.addGroup(groupName = "Site Name");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Test Page");
+
+		Navigator.openSiteURL(siteName = "Site Name");
+
+		ProductMenu.gotoPortlet(
+			category = "Site Builder",
+			portlet = "Pages");
+
+		SitePages.togglePrivacy(privacy = "Public Pages");
+
+		Click(
+			key_pageName = "Public Pages",
+			locator1 = "Icon#COG_PAGE");
+
+		AssertElementNotPresent(
+			key_panel = "Logo",
+			locator1 = "Panel#PANEL");
 	}
 
 	@description = "This test specify the Terms of Use content by web content posted in a new site and assert the Terms of Use content updated when a new user login."
@@ -492,6 +601,77 @@ definition {
 		User.answerPasswordReminder();
 
 		AssertElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE");
+	}
+
+	@description = "This test asserts that a user can update the general informations. Including update the default site name, default mail domain and so."
+	@priority = "4"
+	test CanUpdateGeneralInfos {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.editText(
+			fieldName = "name",
+			fieldValue = "EditedLiferay");
+
+		FormFields.editText(
+			fieldName = "mx",
+			fieldValue = "newliferay.com");
+
+		PortletEntry.save();
+
+		ApplicationsMenu.gotoSite(site = "EditedLiferay");
+
+		User.logoutPG();
+
+		Navigator.gotoLoginPage();
+
+		AssertTextEquals(
+			locator1 = "TextInput#EMAIL_ADDRESS",
+			value1 = "@newliferay.com");
+
+		User.loginUserPG();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.editText(
+			fieldName = "cdn-host-http",
+			fieldValue = "http://localhost:8080");
+
+		FormFields.editText(
+			fieldName = "cdn-host-https",
+			fieldValue = "https://localhost:8080");
+
+		for (var fieldName : list "legalName,tickerSymbol,legalId,industry,legalType,type,sicCode") {
+			FormFields.editText(
+				fieldName = "${fieldName}",
+				fieldValue = "${fieldName}");
+		}
+
+		Button.clickSave();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Instance Configuration",
+			configurationName = "General",
+			configurationScope = "Virtual Instance Scope");
+
+		FormFields.viewTextValue(
+			fieldName = "cdn-host-http",
+			fieldValue = "http://localhost:8080");
+
+		FormFields.viewTextValue(
+			fieldName = "cdn-host-https",
+			fieldValue = "https://localhost:8080");
+
+		for (var fieldName : list "legalName,tickerSymbol,legalId,industry,legalType,type,sicCode") {
+			FormFields.viewTextValue(
+				fieldName = "${fieldName}",
+				fieldValue = "${fieldName}");
+		}
 	}
 
 	@priority = "5"
@@ -659,6 +839,77 @@ definition {
 			userFirstName = "userfn",
 			userLastName = "userln",
 			userScreenName = "usersn");
+	}
+
+	@ignore = "true"
+	@priority = "4"
+	test ExportedFactoryConfigurationCanBeImported {
+		property portal.acceptance = "sharry";
+
+		var openIDConnectClientID = PropsUtil.get("google.client.id.1");
+		var openIDConnectClientSecret = PropsUtil.get("google.client.secret.1");
+		var portalURL = PropsUtil.get("portal.url");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect Provider",
+			configurationScope = "Virtual Instance Scope");
+
+		OpenIDConnect.addProvider(
+			openIDConnectClientID = "${openIDConnectClientID}",
+			openIDConnectClientSecret = "${openIDConnectClientSecret}",
+			providerName = "Google");
+
+		LexiconEntry.gotoEntry(rowEntry = "Google");
+
+		SystemSettings.exportConfiguration();
+
+		SystemSettings.deleteConfiguration();
+
+		var tempFileDirectory = selenium.getOutputDirName();
+		var exportConfigFile = FileUtil.exists("${tempFileDirectory}");
+
+		if ("${exportConfigFile}" == "true") {
+			echo("The Configuration file for single factory is exported from edit page Successfully.");
+		}
+		else {
+			fail("FAIL! Cannot find the configuration file exported from edit page for single factory.");
+		}
+
+		var tempFileName = TestCase.getDownloadedTempFileName(fileNamePattern = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~*.config");
+
+		OSGiConfig.deployOSGiConfigFile(
+			OSGiConfigFileBaseDir = "${tempFileDirectory}",
+			OSGiConfigFileName = "${tempFileName}");
+
+		Portlet.shutdownServer();
+
+		Portlet.startServer();
+
+		Navigator.openSpecificURL(url = "${portalURL}/c/portal/logout");
+
+		User.firstLoginPG();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect Provider",
+			configurationScope = "Virtual Instance Scope");
+
+		LexiconEntry.viewEntryName(rowEntry = "Google");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect Provider",
+			configurationScope = "Virtual Instance Scope");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Google");
+
+		AssertElementPresent(locator1 = "Message#EMPTY_INFO_TAGLIB");
 	}
 
 	@priority = "4"
@@ -1115,17 +1366,165 @@ definition {
 	}
 
 	@priority = "3"
-	test ViewEmailNotificationsPasswordChangedNotification {
-		Navigator.openURL();
-
-		PortalSettings.viewEmailNotificationsPasswordChangedNotificationCP();
-	}
-
-	@priority = "3"
 	test ViewEmailNotificationsSender {
 		Navigator.openURL();
 
 		PortalSettings.viewEmailNotificationsSenderCP();
+	}
+
+	@description = "This is a use case for LPS-135132. This test asserts that enabling check in site settings works when it's unchecked in Instance settings > Site scope."
+	@priority = "4"
+	test ViewEnableInSiteSettingWorksWhenDisableInPortalSetting {
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Pages",
+			configurationName = "Google PageSpeed Insights",
+			configurationScope = "Site Scope");
+
+		FormFields.disableCheckbox(fieldName = "enabled");
+
+		PortletEntry.save();
+
+		Navigator.openURL();
+
+		AssertElementNotPresent(locator1 = "PageAudit#PAGE_AUDIT_BUTTON");
+
+		Site.openSiteSettingsAdmin(siteURLKey = "guest");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "Pages",
+			configurationName = "Google PageSpeed Insights",
+			configurationScope = "Site Scope");
+
+		FormFields.viewCheckboxNotChecked(fieldName = "enabled");
+
+		FormFields.enableCheckbox(fieldName = "enabled");
+
+		PortletEntry.save();
+
+		Navigator.openURL();
+
+		AssertElementPresent(locator1 = "PageAudit#PAGE_AUDIT_BUTTON");
+	}
+
+	@description = "This test asserts that a user can update the password changed notification subject and body. The notification also send when set password via json."
+	@priority = "3"
+	test ViewPasswordChangedNotificationTemplateUpdated {
+		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
+		property test.name.skip.portal.instance = "InstanceSettings#ViewPasswordChangedNotificationTemplateUpdated";
+		property test.smtp.server.enabled = "true";
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		Navigator.openURL();
+
+		PortalSettings.viewEmailNotificationsPasswordChangedNotificationCP();
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Email",
+			configurationName = "Email Sender",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.configureEmailSender(
+			emailAddress = "test@liferay.com",
+			emailSenderName = "Joe Bloggs");
+
+		PortalSettings.editConfigurationUsersEmailNotificationsCP(
+			configurationName = "Password Changed Notification",
+			notificationsBody = '''
+				Dear [$TO_NAME$],<br /><br />
+
+				This is a new template for user password change test.<br /><br />
+
+				Your password for [$PORTAL_URL$] has been changed.<br /><br />
+
+				The request for a new password was made from [$REMOTE_ADDRESS$] / [$REMOTE_HOST$].<br /><br />
+
+				Sincerely,<br />
+				[$FROM_NAME$]<br />
+				[$FROM_ADDRESS$]<br />
+				[$PORTAL_URL$]
+			''',
+			notificationsSubject = "[$PORTAL_URL$]: Dear user, your Password Has Been Changed");
+
+		User.openUsersAdmin();
+
+		User.addCP(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		User.openUsersAdmin();
+
+		User.editPasswordCP(
+			userEmailAddress = "userea@liferay.com",
+			userScreenName = "usersn");
+
+		MockMock.viewMail(
+			asset = "${portalURL}: Dear user, your Password Has Been Changed",
+			content = "This is a new template for user password change test.",
+			recipient = "userfn userln",
+			sender = "Joe Bloggs",
+			subject = "${portalURL}: Dear user, your Password Has Been Changed");
+	}
+
+	@description = "This test asserts that a user can update the password reset notification subject and body. The notification also send when set password via json."
+	@priority = "3"
+	test ViewPasswordResetNotificationTemplateUpdated {
+		property custom.properties = "mail.send.blacklist=noreply@liferay.com,noreply@domain.invalid,test@domain.invalid";
+		property test.name.skip.portal.instance = "InstanceSettings#ViewPasswordResetNotificationTemplateUpdated";
+		property test.smtp.server.enabled = "true";
+
+		var portalURL = PropsUtil.get("portal.url");
+
+		PortalSettings.gotoConfiguration(
+			configurationCategory = "Email",
+			configurationName = "Email Sender",
+			configurationScope = "Virtual Instance Scope");
+
+		PortalSettings.configureEmailSender(
+			emailAddress = "test@liferay.com",
+			emailSenderName = "Joe Bloggs");
+
+		PortalSettings.editConfigurationUsersEmailNotificationsCP(
+			configurationName = "Password Reset Notification",
+			notificationsBody = '''
+				Dear [$TO_NAME$],<br /><br />
+
+				This is a new template for user password reset test.<br /><br />
+
+				You can reset your password for [$PORTAL_URL$] at [$PASSWORD_RESET_URL$].<br /><br />
+
+				The request for a new password was made from [$REMOTE_ADDRESS$] / [$REMOTE_HOST$].<br /><br />
+
+				Sincerely,<br />
+				[$FROM_NAME$]<br />
+				[$FROM_ADDRESS$]<br />
+				[$PORTAL_URL$]<br />
+			''',
+			notificationsSubject = "[$PORTAL_URL$]: Dear user, please reset Your Password");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.addCP(
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		User.logoutPG();
+
+		User.forgotPasswordSendResetLink(userEmailAddress = "userea@liferay.com");
+
+		MockMock.viewMail(
+			asset = "${portalURL}: Dear user, please reset Your Password",
+			content = "This is a new template for user password reset test.",
+			recipient = "userfn userln",
+			sender = "Joe Bloggs",
+			subject = "${portalURL}: Dear user, please reset Your Password");
 	}
 
 	@description = "This is a use case for LPS-97907."

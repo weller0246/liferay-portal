@@ -41,11 +41,18 @@ public class ObjectDefinitionSoap implements Serializable {
 		soapModel.setUserName(model.getUserName());
 		soapModel.setCreateDate(model.getCreateDate());
 		soapModel.setModifiedDate(model.getModifiedDate());
+		soapModel.setActive(model.isActive());
 		soapModel.setDBTableName(model.getDBTableName());
+		soapModel.setLabel(model.getLabel());
+		soapModel.setClassName(model.getClassName());
 		soapModel.setName(model.getName());
+		soapModel.setPanelAppOrder(model.getPanelAppOrder());
+		soapModel.setPanelCategoryKey(model.getPanelCategoryKey());
 		soapModel.setPKObjectFieldDBColumnName(
 			model.getPKObjectFieldDBColumnName());
 		soapModel.setPKObjectFieldName(model.getPKObjectFieldName());
+		soapModel.setPluralLabel(model.getPluralLabel());
+		soapModel.setScope(model.getScope());
 		soapModel.setSystem(model.isSystem());
 		soapModel.setVersion(model.getVersion());
 		soapModel.setStatus(model.getStatus());
@@ -174,6 +181,18 @@ public class ObjectDefinitionSoap implements Serializable {
 		_modifiedDate = modifiedDate;
 	}
 
+	public boolean getActive() {
+		return _active;
+	}
+
+	public boolean isActive() {
+		return _active;
+	}
+
+	public void setActive(boolean active) {
+		_active = active;
+	}
+
 	public String getDBTableName() {
 		return _dbTableName;
 	}
@@ -182,12 +201,44 @@ public class ObjectDefinitionSoap implements Serializable {
 		_dbTableName = dbTableName;
 	}
 
+	public String getLabel() {
+		return _label;
+	}
+
+	public void setLabel(String label) {
+		_label = label;
+	}
+
+	public String getClassName() {
+		return _className;
+	}
+
+	public void setClassName(String className) {
+		_className = className;
+	}
+
 	public String getName() {
 		return _name;
 	}
 
 	public void setName(String name) {
 		_name = name;
+	}
+
+	public String getPanelAppOrder() {
+		return _panelAppOrder;
+	}
+
+	public void setPanelAppOrder(String panelAppOrder) {
+		_panelAppOrder = panelAppOrder;
+	}
+
+	public String getPanelCategoryKey() {
+		return _panelCategoryKey;
+	}
+
+	public void setPanelCategoryKey(String panelCategoryKey) {
+		_panelCategoryKey = panelCategoryKey;
 	}
 
 	public String getPKObjectFieldDBColumnName() {
@@ -204,6 +255,22 @@ public class ObjectDefinitionSoap implements Serializable {
 
 	public void setPKObjectFieldName(String pkObjectFieldName) {
 		_pkObjectFieldName = pkObjectFieldName;
+	}
+
+	public String getPluralLabel() {
+		return _pluralLabel;
+	}
+
+	public void setPluralLabel(String pluralLabel) {
+		_pluralLabel = pluralLabel;
+	}
+
+	public String getScope() {
+		return _scope;
+	}
+
+	public void setScope(String scope) {
+		_scope = scope;
 	}
 
 	public boolean getSystem() {
@@ -242,10 +309,17 @@ public class ObjectDefinitionSoap implements Serializable {
 	private String _userName;
 	private Date _createDate;
 	private Date _modifiedDate;
+	private boolean _active;
 	private String _dbTableName;
+	private String _label;
+	private String _className;
 	private String _name;
+	private String _panelAppOrder;
+	private String _panelCategoryKey;
 	private String _pkObjectFieldDBColumnName;
 	private String _pkObjectFieldName;
+	private String _pluralLabel;
+	private String _scope;
 	private boolean _system;
 	private int _version;
 	private int _status;

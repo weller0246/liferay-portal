@@ -161,6 +161,12 @@ Map<String, Object> componentContext = journalDisplayContext.getComponentContext
 					<c:when test='<%= Objects.equals(journalDisplayContext.getDisplayStyle(), "icon") %>'>
 						<liferay-ui:search-container-column-text>
 							<clay:vertical-card
+								additionalProps='<%=
+									HashMapBuilder.<String, Object>put(
+										"trashEnabled", componentContext.get("trashEnabled")
+									).build()
+								%>'
+								propsTransformer="js/ElementsDefaultPropsTransformer"
 								verticalCard="<%= new JournalArticleVerticalCard(curArticle, renderRequest, renderResponse, searchContainer.getRowChecker(), assetDisplayPageFriendlyURLProvider, trashHelper) %>"
 							/>
 						</liferay-ui:search-container-column-text>
@@ -290,7 +296,7 @@ Map<String, Object> componentContext = journalDisplayContext.getComponentContext
 					"folderId", curFolder.getFolderId()
 				).setParameter(
 					"groupId", curFolder.getGroupId()
-				).build();
+				).buildPortletURL();
 				%>
 
 				<c:choose>

@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -206,16 +205,15 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 
 	@Test
 	public void testGetSiteDisplayPageTemplatesPage() throws Exception {
-		Page<DisplayPageTemplate> page =
-			displayPageTemplateResource.getSiteDisplayPageTemplatesPage(
-				testGetSiteDisplayPageTemplatesPage_getSiteId(),
-				Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteDisplayPageTemplatesPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteDisplayPageTemplatesPage_getIrrelevantSiteId();
+
+		Page<DisplayPageTemplate> page =
+			displayPageTemplateResource.getSiteDisplayPageTemplatesPage(
+				siteId, Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			DisplayPageTemplate irrelevantDisplayPageTemplate =
@@ -242,7 +240,7 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 				siteId, randomDisplayPageTemplate());
 
 		page = displayPageTemplateResource.getSiteDisplayPageTemplatesPage(
-			siteId, Pagination.of(1, 2), null);
+			siteId, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -476,6 +474,25 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 		throws Exception {
 
 		Assert.assertTrue(true);
+	}
+
+	protected void assertContains(
+		DisplayPageTemplate displayPageTemplate,
+		List<DisplayPageTemplate> displayPageTemplates) {
+
+		boolean contains = false;
+
+		for (DisplayPageTemplate item : displayPageTemplates) {
+			if (equals(displayPageTemplate, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			displayPageTemplates + " does not contain " + displayPageTemplate,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1271,8 +1288,8 @@ public abstract class BaseDisplayPageTemplateResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDisplayPageTemplateResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDisplayPageTemplateResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

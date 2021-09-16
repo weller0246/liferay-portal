@@ -40,6 +40,7 @@ import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.portlet.LiferayPortletResponse;
+import com.liferay.portal.kernel.repository.model.FileVersion;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
 import com.liferay.portal.kernel.theme.PortletDisplay;
@@ -47,6 +48,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.KeyValuePair;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.math.BigDecimal;
@@ -67,31 +69,31 @@ import javax.servlet.http.HttpServletRequest;
 public class CommerceCartContentDisplayContext {
 
 	public CommerceCartContentDisplayContext(
-			HttpServletRequest httpServletRequest,
 			CommerceChannelLocalService commerceChannelLocalService,
 			CommerceOrderItemService commerceOrderItemService,
+			ModelResourcePermission<CommerceOrder>
+				commerceOrderModelResourcePermission,
 			CommerceOrderPriceCalculation commerceOrderPriceCalculation,
 			CommerceOrderValidatorRegistry commerceOrderValidatorRegistry,
+			PortletResourcePermission commerceProductPortletResourcePermission,
 			CommerceProductPriceCalculation commerceProductPriceCalculation,
 			CPDefinitionHelper cpDefinitionHelper,
 			CPInstanceHelper cpInstanceHelper,
-			ModelResourcePermission<CommerceOrder>
-				commerceOrderModelResourcePermission,
-			PortletResourcePermission commerceProductPortletResourcePermission)
+			HttpServletRequest httpServletRequest, Portal portal)
 		throws PortalException {
 
 		_commerceChannelLocalService = commerceChannelLocalService;
 		_commerceOrderItemService = commerceOrderItemService;
+		this.commerceOrderModelResourcePermission =
+			commerceOrderModelResourcePermission;
 		_commerceOrderPriceCalculation = commerceOrderPriceCalculation;
 		_commerceOrderValidatorRegistry = commerceOrderValidatorRegistry;
-		_commerceProductPriceCalculation = commerceProductPriceCalculation;
 		_commerceProductPortletResourcePermission =
 			commerceProductPortletResourcePermission;
+		_commerceProductPriceCalculation = commerceProductPriceCalculation;
 
 		this.cpDefinitionHelper = cpDefinitionHelper;
 		this.cpInstanceHelper = cpInstanceHelper;
-		this.commerceOrderModelResourcePermission =
-			commerceOrderModelResourcePermission;
 
 		commerceCartContentRequestHelper = new CommerceCartContentRequestHelper(
 			httpServletRequest);
@@ -104,6 +106,9 @@ public class CommerceCartContentDisplayContext {
 		_commerceCartContentPortletInstanceConfiguration =
 			portletDisplay.getPortletInstanceConfiguration(
 				CommerceCartContentPortletInstanceConfiguration.class);
+
+		_httpServletRequest = httpServletRequest;
+		_portal = portal;
 	}
 
 	public CommerceOrder getCommerceOrder() throws PortalException {
@@ -124,14 +129,6 @@ public class CommerceCartContentDisplayContext {
 		}
 
 		return commerceOrder.getCommerceOrderId();
-	}
-
-	public String getCommerceOrderItemThumbnailSrc(
-			CommerceOrderItem commerceOrderItem)
-		throws Exception {
-
-		return cpInstanceHelper.getCPInstanceThumbnailSrc(
-			commerceOrderItem.getCPInstanceId());
 	}
 
 	public CommerceOrderPrice getCommerceOrderPrice() throws PortalException {
@@ -173,6 +170,15 @@ public class CommerceCartContentDisplayContext {
 		throws PortalException {
 
 		return cpDefinitionHelper.getFriendlyURL(cpDefinitionId, themeDisplay);
+	}
+
+	public FileVersion getCPInstanceImageFileVersion(
+			CommerceOrderItem commerceOrderItem)
+		throws Exception {
+
+		return cpInstanceHelper.getCPInstanceImageFileVersion(
+			_portal.getCompanyId(_httpServletRequest),
+			commerceOrderItem.getCPInstanceId());
 	}
 
 	public String getDeleteURL(CommerceOrderItem commerceOrderItem) {
@@ -431,6 +437,8 @@ public class CommerceCartContentDisplayContext {
 	private final CommerceProductPriceCalculation
 		_commerceProductPriceCalculation;
 	private long _displayStyleGroupId;
+	private final HttpServletRequest _httpServletRequest;
+	private final Portal _portal;
 	private SearchContainer<CommerceOrderItem> _searchContainer;
 
 }

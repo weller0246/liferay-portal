@@ -39,7 +39,6 @@ import com.liferay.portal.kernel.json.JSONDeserializer;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -225,18 +224,17 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 	@Test
 	public void testGetAssetLibraryDocumentFoldersPage() throws Exception {
-		Page<DocumentFolder> page =
-			documentFolderResource.getAssetLibraryDocumentFoldersPage(
-				testGetAssetLibraryDocumentFoldersPage_getAssetLibraryId(),
-				null, RandomTestUtil.randomString(), null, null,
-				Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryDocumentFoldersPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
 			testGetAssetLibraryDocumentFoldersPage_getIrrelevantAssetLibraryId();
+
+		Page<DocumentFolder> page =
+			documentFolderResource.getAssetLibraryDocumentFoldersPage(
+				assetLibraryId, null, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAssetLibraryId != null) {
 			DocumentFolder irrelevantDocumentFolder =
@@ -264,7 +262,7 @@ public abstract class BaseDocumentFolderResourceTestCase {
 				assetLibraryId, randomDocumentFolder());
 
 		page = documentFolderResource.getAssetLibraryDocumentFoldersPage(
-			assetLibraryId, null, null, null, null, Pagination.of(1, 2), null);
+			assetLibraryId, null, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -940,18 +938,17 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 	@Test
 	public void testGetDocumentFolderDocumentFoldersPage() throws Exception {
-		Page<DocumentFolder> page =
-			documentFolderResource.getDocumentFolderDocumentFoldersPage(
-				testGetDocumentFolderDocumentFoldersPage_getParentDocumentFolderId(),
-				null, RandomTestUtil.randomString(), null, null,
-				Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long parentDocumentFolderId =
 			testGetDocumentFolderDocumentFoldersPage_getParentDocumentFolderId();
 		Long irrelevantParentDocumentFolderId =
 			testGetDocumentFolderDocumentFoldersPage_getIrrelevantParentDocumentFolderId();
+
+		Page<DocumentFolder> page =
+			documentFolderResource.getDocumentFolderDocumentFoldersPage(
+				parentDocumentFolderId, null, RandomTestUtil.randomString(),
+				null, null, Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantParentDocumentFolderId != null) {
 			DocumentFolder irrelevantDocumentFolder =
@@ -980,8 +977,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 				parentDocumentFolderId, randomDocumentFolder());
 
 		page = documentFolderResource.getDocumentFolderDocumentFoldersPage(
-			parentDocumentFolderId, null, null, null, null, Pagination.of(1, 2),
-			null);
+			parentDocumentFolderId, null, null, null, null,
+			Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1298,17 +1295,16 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 	@Test
 	public void testGetSiteDocumentFoldersPage() throws Exception {
-		Page<DocumentFolder> page =
-			documentFolderResource.getSiteDocumentFoldersPage(
-				testGetSiteDocumentFoldersPage_getSiteId(), null,
-				RandomTestUtil.randomString(), null, null, Pagination.of(1, 2),
-				null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteDocumentFoldersPage_getSiteId();
 		Long irrelevantSiteId =
 			testGetSiteDocumentFoldersPage_getIrrelevantSiteId();
+
+		Page<DocumentFolder> page =
+			documentFolderResource.getSiteDocumentFoldersPage(
+				siteId, null, RandomTestUtil.randomString(), null, null,
+				Pagination.of(1, 10), null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			DocumentFolder irrelevantDocumentFolder =
@@ -1336,7 +1332,7 @@ public abstract class BaseDocumentFolderResourceTestCase {
 				siteId, randomDocumentFolder());
 
 		page = documentFolderResource.getSiteDocumentFoldersPage(
-			siteId, null, null, null, null, Pagination.of(1, 2), null);
+			siteId, null, null, null, null, Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -1622,7 +1618,7 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("siteKey", "\"" + siteId + "\"");
 				}
@@ -1645,7 +1641,7 @@ public abstract class BaseDocumentFolderResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/documentFolders");
 
-		Assert.assertEquals(2, documentFoldersJSONObject.get("totalCount"));
+		Assert.assertEquals(2, documentFoldersJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(documentFolder1, documentFolder2),
@@ -1845,6 +1841,23 @@ public abstract class BaseDocumentFolderResourceTestCase {
 						graphQLFields)),
 				"JSONObject/data", "JSONObject/createSiteDocumentFolder"),
 			DocumentFolder.class);
+	}
+
+	protected void assertContains(
+		DocumentFolder documentFolder, List<DocumentFolder> documentFolders) {
+
+		boolean contains = false;
+
+		for (DocumentFolder item : documentFolders) {
+			if (equals(documentFolder, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			documentFolders + " does not contain " + documentFolder, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -2649,8 +2662,8 @@ public abstract class BaseDocumentFolderResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDocumentFolderResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDocumentFolderResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

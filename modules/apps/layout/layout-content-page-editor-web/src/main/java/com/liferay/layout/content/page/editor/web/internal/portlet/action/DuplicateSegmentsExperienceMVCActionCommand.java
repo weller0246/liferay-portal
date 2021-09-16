@@ -82,14 +82,6 @@ public class DuplicateSegmentsExperienceMVCActionCommand
 			_segmentsExperienceService.getSegmentsExperience(
 				segmentsExperienceId);
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(segmentsExperience.getName(LocaleUtil.getSiteDefault()));
-		sb.append(StringPool.SPACE);
-		sb.append(StringPool.OPEN_PARENTHESIS);
-		sb.append(_language.get(themeDisplay.getLocale(), "copy"));
-		sb.append(StringPool.CLOSE_PARENTHESIS);
-
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
 
@@ -99,10 +91,13 @@ public class DuplicateSegmentsExperienceMVCActionCommand
 				segmentsExperience.getClassNameId(),
 				segmentsExperience.getClassPK(),
 				Collections.singletonMap(
-					LocaleUtil.getSiteDefault(), sb.toString()),
-				segmentsExperience.isActive(),
-				segmentsExperience.getTypeSettingsUnicodeProperties(),
-				serviceContext);
+					LocaleUtil.getSiteDefault(),
+					StringBundler.concat(
+						segmentsExperience.getName(LocaleUtil.getSiteDefault()),
+						StringPool.SPACE, StringPool.OPEN_PARENTHESIS,
+						_language.get(themeDisplay.getLocale(), "copy"),
+						StringPool.CLOSE_PARENTHESIS)),
+				segmentsExperience.isActive(), serviceContext);
 
 		SegmentsExperienceUtil.copySegmentsExperienceData(
 			themeDisplay.getPlid(), _commentManager,

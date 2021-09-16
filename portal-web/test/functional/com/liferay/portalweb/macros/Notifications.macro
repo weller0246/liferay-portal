@@ -110,6 +110,17 @@ definition {
 			value1 = "You do not have any notifications.");
 	}
 
+	macro viewExpiredContent {
+		AssertTextEquals(
+			locator1 = "Notifications#NOTIFICATIONS_TITLE",
+			value1 = "${user}: document has expired.");
+
+		AssertTextEquals(
+			key_contentBody = "${contentBody}",
+			locator1 = "Notifications#NOTIFICATIONS_CONTENT",
+			value1 = "${contentBody}");
+	}
+
 	macro viewNewComment {
 		var assetType = StringUtil.lowerCase("${assetType}");
 		var key_contentBody = "${contentBody}";
@@ -230,6 +241,17 @@ definition {
 		AssertTextEquals(
 			locator1 = "Notifications#NOTIFICATIONS_TITLE",
 			value1 = "${requestsTitle}");
+	}
+
+	macro viewReviewContent {
+		AssertTextEquals(
+			locator1 = "Notifications#NOTIFICATIONS_TITLE",
+			value1 = "${user} needs to review the document.");
+
+		AssertTextEquals(
+			key_contentBody = "${contentBody}",
+			locator1 = "Notifications#NOTIFICATIONS_CONTENT",
+			value1 = "${contentBody}");
 	}
 
 	macro viewSpecificNotificationDetails {

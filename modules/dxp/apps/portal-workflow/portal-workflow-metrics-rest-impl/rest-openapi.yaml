@@ -568,7 +568,7 @@ components:
 info:
     description:
         "A Java client JAR is available for use with the group ID 'com.liferay', artifact ID
-        'com.liferay.portal.workflow.metrics.rest.client', and version '3.0.4'."
+        'com.liferay.portal.workflow.metrics.rest.client', and version '3.0.7'."
     license:
         name: "Apache 2.0"
         url: "http://www.apache.org/licenses/LICENSE-2.0.html"
@@ -592,8 +592,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Calendar"
                                 type: array
-                    description:
-                        ""
             tags: ["Calendar"]
     "/indexes":
         get:
@@ -611,12 +609,10 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Index"
                                 type: array
-                    description:
-                        ""
             tags: ["Index"]
     "/indexes/refresh":
         patch:
-            operationId: patchIndexesRefresh
+            operationId: patchIndexRefresh
             requestBody:
                 content:
                     application/json:
@@ -630,12 +626,10 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Index"]
     "/indexes/reindex":
         patch:
-            operationId: patchIndexesReindex
+            operationId: patchIndexReindex
             requestBody:
                 content:
                     application/json:
@@ -649,28 +643,7 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Index"]
-    "/indexes/reindex/status":
-        get:
-            operationId: getReindexStatusPage
-            responses:
-                200:
-                    content:
-                        application/json:
-                            schema:
-                                items:
-                                    $ref: "#/components/schemas/ReindexStatus"
-                                type: array
-                        application/xml:
-                            schema:
-                                items:
-                                    $ref: "#/components/schemas/ReindexStatus"
-                                type: array
-                    description:
-                        ""
-            tags: ["ReindexStatus"]
     "/processes":
         post:
             operationId: postProcess
@@ -691,8 +664,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Process"
-                    description:
-                        ""
             tags: ["Process"]
     "/processes/metrics":
         get:
@@ -727,8 +698,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ProcessMetric"
                                 type: array
-                    description:
-                        ""
             tags: ["ProcessMetric"]
     "/processes/{processId}":
         delete:
@@ -745,8 +714,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Process"]
         get:
             operationId: getProcess
@@ -766,8 +733,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Process"
-                    description:
-                        ""
             tags: ["Process"]
         put:
             operationId: putProcess
@@ -791,8 +756,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Process"]
     "/processes/{processId}/assignees":
         post:
@@ -825,8 +788,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Assignee"
                                 type: array
-                    description:
-                        ""
             tags: ["Assignee"]
     "/processes/{processId}/assignees/metrics":
         post:
@@ -871,8 +832,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/AssigneeMetric"
                                 type: array
-                    description:
-                        ""
             tags: ["AssigneeMetric"]
     "/processes/{processId}/histograms/metrics":
         get:
@@ -909,8 +868,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/HistogramMetric"
-                    description:
-                        ""
             tags: ["HistogramMetric"]
     "/processes/{processId}/instances":
         get:
@@ -991,8 +948,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Instance"
                                 type: array
-                    description:
-                        ""
             tags: ["Instance"]
         post:
             operationId: postProcessInstance
@@ -1020,8 +975,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Instance"
-                    description:
-                        ""
             tags: ["Instance"]
     "/processes/{processId}/instances/{instanceId}":
         delete:
@@ -1044,8 +997,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Instance"]
         get:
             operationId: getProcessInstance
@@ -1071,8 +1022,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Instance"
-                    description:
-                        ""
             tags: ["Instance"]
         patch:
             operationId: patchProcessInstance
@@ -1102,8 +1051,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Instance"]
     "/processes/{processId}/instances/{instanceId}/complete":
         patch:
@@ -1134,8 +1081,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Instance"]
     "/processes/{processId}/last-sla-result":
         get:
@@ -1156,8 +1101,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLAResult"
-                    description:
-                        ""
             tags: ["SLAResult"]
     "/processes/{processId}/metrics":
         get:
@@ -1192,8 +1135,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/ProcessMetric"
-                    description:
-                        ""
             tags: ["ProcessMetric"]
     "/processes/{processId}/nodes":
         get:
@@ -1218,8 +1159,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Node"
                                 type: array
-                    description:
-                        ""
             tags: ["Node"]
         post:
             operationId: postProcessNode
@@ -1247,8 +1186,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Node"
-                    description:
-                        ""
             tags: ["Node"]
     "/processes/{processId}/nodes/metrics":
         get:
@@ -1307,8 +1244,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/NodeMetric"
                                 type: array
-                    description:
-                        ""
             tags: ["NodeMetric"]
     "/processes/{processId}/nodes/{nodeId}":
         delete:
@@ -1331,12 +1266,10 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Node"]
     "/processes/{processId}/process-versions":
         get:
-            operationId: getProcessVersionsPage
+            operationId: getProcessProcessVersionsPage
             parameters:
                 - in: path
                   name: processId
@@ -1357,8 +1290,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/ProcessVersion"
                                 type: array
-                    description:
-                        ""
             tags: ["ProcessVersion"]
     "/processes/{processId}/roles":
         get:
@@ -1387,8 +1318,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Role"
                                 type: array
-                    description:
-                        ""
             tags: ["Role"]
     "/processes/{processId}/slas":
         get:
@@ -1426,8 +1355,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/SLA"
                                 type: array
-                    description:
-                        ""
             tags: ["SLA"]
         post:
             operationId: postProcessSLA
@@ -1455,8 +1382,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
                 400:
                     content:
                         application/json:
@@ -1465,8 +1390,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/GenericError"
-                    description:
-                        ""
             tags: ["SLA"]
     "/processes/{processId}/tasks":
         get:
@@ -1491,8 +1414,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Task"
                                 type: array
-                    description:
-                        ""
             tags: ["Task"]
         post:
             operationId: postProcessTask
@@ -1520,8 +1441,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Task"
-                    description:
-                        ""
             tags: ["Task"]
     "/processes/{processId}/tasks/{taskId}":
         delete:
@@ -1544,8 +1463,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Task"]
         get:
             operationId: getProcessTask
@@ -1571,8 +1488,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/Task"
-                    description:
-                        ""
             tags: ["Task"]
         patch:
             operationId: patchProcessTask
@@ -1602,8 +1517,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Task"]
     "/processes/{processId}/tasks/{taskId}/complete":
         patch:
@@ -1634,8 +1547,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["Task"]
     "/processes/{processId}/title":
         get:
@@ -1653,9 +1564,24 @@ paths:
                         text/plain:
                             schema:
                                 type: string
-                    description:
-                        ""
             tags: ["Process"]
+    "/reindex/statuses":
+        get:
+            operationId: getReindexStatusesPage
+            responses:
+                200:
+                    content:
+                        application/json:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ReindexStatus"
+                                type: array
+                        application/xml:
+                            schema:
+                                items:
+                                    $ref: "#/components/schemas/ReindexStatus"
+                                type: array
+            tags: ["ReindexStatus"]
     "/slas/{slaId}":
         delete:
             operationId: deleteSLA
@@ -1671,8 +1597,6 @@ paths:
                     content:
                         application/json: {}
                         application/xml: {}
-                    description:
-                        ""
             tags: ["SLA"]
         get:
             operationId: getSLA
@@ -1692,8 +1616,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
             tags: ["SLA"]
         put:
             operationId: putSLA
@@ -1721,8 +1643,6 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/SLA"
-                    description:
-                        ""
                 400:
                     content:
                         application/json:
@@ -1731,12 +1651,10 @@ paths:
                         application/xml:
                             schema:
                                 $ref: "#/components/schemas/GenericError"
-                    description:
-                        ""
             tags: ["SLA"]
     "/tasks":
         post:
-            operationId: postProcessTasksPage
+            operationId: postTasksPage
             parameters:
                 - in: query
                   name: page
@@ -1767,8 +1685,6 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/Task"
                                 type: array
-                    description:
-                        ""
             tags: ["Task"]
     "/time-ranges":
         get:
@@ -1786,6 +1702,4 @@ paths:
                                 items:
                                     $ref: "#/components/schemas/TimeRange"
                                 type: array
-                    description:
-                        ""
             tags: ["TimeRange"]

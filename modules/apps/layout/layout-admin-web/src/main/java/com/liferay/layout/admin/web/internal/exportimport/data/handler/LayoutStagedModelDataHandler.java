@@ -50,7 +50,9 @@ import com.liferay.layout.admin.web.internal.exportimport.data.handler.helper.La
 import com.liferay.layout.configuration.LayoutExportImportConfiguration;
 import com.liferay.layout.friendly.url.LayoutFriendlyURLEntryHelper;
 import com.liferay.layout.model.LayoutClassedModelUsage;
+import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
+import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
 import com.liferay.layout.seo.model.LayoutSEOEntry;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalService;
@@ -626,16 +628,13 @@ public class LayoutStagedModelDataHandler
 					return;
 				}
 
-				StringBundler sb = new StringBundler(6);
-
-				sb.append("Layout with layout ID ");
-				sb.append(layout.getLayoutId());
-				sb.append(" cannot be propagated because the friendly URL ");
-				sb.append("conflicts with the friendly URL of layout with ");
-				sb.append("layout ID ");
-				sb.append(mergeFailFriendlyURLLayout.getLayoutId());
-
-				_log.warn(sb.toString());
+				_log.warn(
+					StringBundler.concat(
+						"Layout with layout ID ", layout.getLayoutId(),
+						" cannot be propagated because the friendly URL ",
+						"conflicts with the friendly URL of layout with ",
+						"layout ID ",
+						mergeFailFriendlyURLLayout.getLayoutId()));
 
 				return;
 			}
@@ -792,6 +791,33 @@ public class LayoutStagedModelDataHandler
 				layoutPlids, masterLayoutPlid, masterLayoutPlid);
 
 			importedLayout.setMasterLayoutPlid(importedMasterLayoutPlid);
+
+			if (MergeLayoutPrototypesThreadLocal.isInProgress()) {
+				String masterLayoutLayoutPageTemplateEntryUuid =
+					layoutElement.attributeValue(
+						"master-layout-layout-page-template-entry-uuid");
+
+				if (Validator.isNotNull(
+						masterLayoutLayoutPageTemplateEntryUuid)) {
+
+					LayoutPageTemplateEntry layoutPageTemplateEntry =
+						_layoutPageTemplateEntryLocalService.
+							fetchLayoutPageTemplateEntryByPlid(
+								importedMasterLayoutPlid);
+
+					if (layoutPageTemplateEntry == null) {
+						Element masterLayoutLayoutPageTemplateEntryElement =
+							portletDataContext.getReferenceDataElement(
+								layout, LayoutPageTemplateEntry.class,
+								layout.getGroupId(),
+								masterLayoutLayoutPageTemplateEntryUuid);
+
+						StagedModelDataHandlerUtil.importStagedModel(
+							portletDataContext,
+							masterLayoutLayoutPageTemplateEntryElement);
+					}
+				}
+			}
 		}
 
 		long parentPlid = layout.getParentPlid();
@@ -846,14 +872,10 @@ public class LayoutStagedModelDataHandler
 		}
 
 		if (_log.isDebugEnabled()) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append("Importing layout with layout ID ");
-			sb.append(layoutId);
-			sb.append(" and parent layout ID ");
-			sb.append(parentLayoutId);
-
-			_log.debug(sb.toString());
+			_log.debug(
+				StringBundler.concat(
+					"Importing layout with layout ID ", layoutId,
+					" and parent layout ID ", parentLayoutId));
 		}
 
 		importedLayout.setCompanyId(portletDataContext.getCompanyId());
@@ -1047,14 +1069,10 @@ public class LayoutStagedModelDataHandler
 		}
 		else {
 			if (_log.isWarnEnabled()) {
-				StringBundler sb = new StringBundler(4);
-
-				sb.append("Unable to export icon image ");
-				sb.append(layout.getIconImageId());
-				sb.append(" to layout ");
-				sb.append(layout.getLayoutId());
-
-				_log.warn(sb.toString());
+				_log.warn(
+					StringBundler.concat(
+						"Unable to export icon image ", layout.getIconImageId(),
+						" to layout ", layout.getLayoutId()));
 			}
 
 			layout.setIconImageId(0);
@@ -1211,8 +1229,7 @@ public class LayoutStagedModelDataHandler
 		}
 
 		if (exportThemeSettings &&
-			!portletDataContext.isPerformDirectBinaryImport() &&
-			!layout.isInheritLookAndFeel()) {
+			!portletDataContext.isPerformDirectBinaryImport()) {
 
 			String css =
 				_dlReferencesExportImportContentProcessor.
@@ -1222,14 +1239,35 @@ public class LayoutStagedModelDataHandler
 
 			layout.setCss(css);
 
-			StagedTheme stagedTheme = new StagedThemeImpl(layout.getTheme());
+			UnicodeProperties typeSettingsUnicodeProperties =
+				layout.getTypeSettingsProperties();
 
-			Element layoutElement = portletDataContext.getExportDataElement(
-				layout);
+			String javascript = GetterUtil.getString(
+				typeSettingsUnicodeProperties.getProperty(
+					"javascript", StringPool.BLANK));
 
-			portletDataContext.addReferenceElement(
-				layout, layoutElement, stagedTheme,
-				PortletDataContext.REFERENCE_TYPE_DEPENDENCY, true);
+			if (Validator.isNotNull(javascript)) {
+				typeSettingsUnicodeProperties.setProperty(
+					"javascript",
+					_dlReferencesExportImportContentProcessor.
+						replaceExportContentReferences(
+							portletDataContext, layout, javascript, true,
+							false));
+
+				layout.setTypeSettingsProperties(typeSettingsUnicodeProperties);
+			}
+
+			if (!layout.isInheritLookAndFeel()) {
+				StagedTheme stagedTheme = new StagedThemeImpl(
+					layout.getTheme());
+
+				Element layoutElement = portletDataContext.getExportDataElement(
+					layout);
+
+				portletDataContext.addReferenceElement(
+					layout, layoutElement, stagedTheme,
+					PortletDataContext.REFERENCE_TYPE_DEPENDENCY, true);
+			}
 		}
 	}
 
@@ -1975,6 +2013,30 @@ public class LayoutStagedModelDataHandler
 
 			importedLayout.setCss(css);
 
+			UnicodeProperties typeSettingsUnicodeProperties =
+				layout.getTypeSettingsProperties();
+
+			String javascript = GetterUtil.getString(
+				typeSettingsUnicodeProperties.getProperty(
+					"javascript", StringPool.BLANK));
+
+			if (Validator.isNotNull(javascript)) {
+				typeSettingsUnicodeProperties.setProperty(
+					"javascript",
+					_dlReferencesExportImportContentProcessor.
+						replaceImportContentReferences(
+							portletDataContext, layout, javascript));
+
+				importedLayout.setTypeSettingsProperties(
+					typeSettingsUnicodeProperties);
+
+				_layoutLocalService.updateLayout(
+					importedLayout.getGroupId(),
+					importedLayout.isPrivateLayout(),
+					importedLayout.getLayoutId(),
+					importedLayout.getTypeSettings());
+			}
+
 			_layoutLocalService.updateLookAndFeel(
 				importedLayout.getGroupId(), importedLayout.isPrivateLayout(),
 				importedLayout.getLayoutId(), layout.getThemeId(),
@@ -2577,6 +2639,26 @@ public class LayoutStagedModelDataHandler
 			"master-layout-uuid", masterLayout.getUuid());
 		layoutElement.addAttribute(
 			"master-layout-plid", String.valueOf(masterLayout.getPlid()));
+
+		if (MergeLayoutPrototypesThreadLocal.isInProgress()) {
+			LayoutPageTemplateEntry layoutPageTemplateEntry =
+				_layoutPageTemplateEntryLocalService.
+					fetchLayoutPageTemplateEntryByPlid(masterLayout.getPlid());
+
+			if ((layoutPageTemplateEntry != null) &&
+				Validator.isNull(
+					layoutElement.attributeValue(
+						"master-layout-layout-page-template-entry-uuid"))) {
+
+				layoutElement.addAttribute(
+					"master-layout-layout-page-template-entry-uuid",
+					layoutPageTemplateEntry.getUuid());
+
+				StagedModelDataHandlerUtil.exportReferenceStagedModel(
+					portletDataContext, layout, layoutPageTemplateEntry,
+					PortletDataContext.REFERENCE_TYPE_DEPENDENCY);
+			}
+		}
 	}
 
 	private List<FriendlyURLEntry> _getFriendlyURLEntries(
@@ -2772,6 +2854,10 @@ public class LayoutStagedModelDataHandler
 	private LayoutLocalServiceHelper _layoutLocalServiceHelper;
 
 	@Reference
+	private LayoutPageTemplateEntryLocalService
+		_layoutPageTemplateEntryLocalService;
+
+	@Reference
 	private LayoutPageTemplateStructureDataHandlerHelper
 		_layoutPageTemplateStructureDataHandlerHelper;
 
@@ -2847,16 +2933,13 @@ public class LayoutStagedModelDataHandler
 
 			if (linkedToLayout == null) {
 				if (_log.isWarnEnabled()) {
-					StringBundler sb = new StringBundler(6);
-
-					sb.append("Unable to link layout with friendly URL ");
-					sb.append(layout.getFriendlyURL());
-					sb.append(" and layout ID ");
-					sb.append(layout.getLayoutId());
-					sb.append(" to layout with layout UUID ");
-					sb.append(_linkedToLayoutUuid);
-
-					_log.warn(sb.toString());
+					_log.warn(
+						StringBundler.concat(
+							"Unable to link layout with friendly URL ",
+							layout.getFriendlyURL(), " and layout ID ",
+							layout.getLayoutId(),
+							" to layout with layout UUID ",
+							_linkedToLayoutUuid));
 				}
 
 				return null;

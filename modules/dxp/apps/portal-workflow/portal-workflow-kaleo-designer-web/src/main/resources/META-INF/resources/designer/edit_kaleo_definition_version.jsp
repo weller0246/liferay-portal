@@ -28,7 +28,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 	<c:when test="<%= WorkflowEngineManagerUtil.isDeployed() %>">
 
 		<%
-		String mvcPath = ParamUtil.getString(request, "mvcPath", "/designer/edit_kaleo_definition_version.jsp");
+		String mvcPath = ParamUtil.getString(request, "mvcPath", KaleoDesignerUtil.getEditJspPath());
 
 		String redirect = ParamUtil.getString(request, "redirect");
 		String closeRedirect = ParamUtil.getString(request, "closeRedirect");
@@ -120,7 +120,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 								<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()), HtmlUtil.escape(userName)} %>" key="revision-from-x-by-x" translateArguments="<%= false %>" />
 							</c:when>
 							<c:otherwise>
-								<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()), HtmlUtil.escape(userName)} %>" key="x-by-x" translateArguments="<%= false %>" />
+								<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()), HtmlUtil.escape(userName)} %>" key="x,-by-x" translateArguments="<%= false %>" />
 							</c:otherwise>
 						</c:choose>
 					</span>
@@ -190,7 +190,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 																<%= dateFormatTime.format(kaleoDesignerDisplayContext.getCreatedDate(kaleoDefinitionVersion)) %>
 															</c:when>
 															<c:otherwise>
-																<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDesignerDisplayContext.getCreatedDate(kaleoDefinitionVersion)), HtmlUtil.escape(creatorUserName)} %>" key="x-by-x" translateArguments="<%= false %>" />
+																<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDesignerDisplayContext.getCreatedDate(kaleoDefinitionVersion)), HtmlUtil.escape(creatorUserName)} %>" key="x,-by-x" translateArguments="<%= false %>" />
 															</c:otherwise>
 														</c:choose>
 													</dd>
@@ -203,7 +203,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 																<%= dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()) %>
 															</c:when>
 															<c:otherwise>
-																<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()), HtmlUtil.escape(userName)} %>" key="x-by-x" translateArguments="<%= false %>" />
+																<liferay-ui:message arguments="<%= new String[] {dateFormatTime.format(kaleoDefinitionVersion.getModifiedDate()), HtmlUtil.escape(userName)} %>" key="x,-by-x" translateArguments="<%= false %>" />
 															</c:otherwise>
 														</c:choose>
 													</dd>
@@ -409,6 +409,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 
 								<aui:script use="liferay-kaleo-designer-dialogs,liferay-kaleo-designer-utils,liferay-portlet-kaleo-designer">
 									var MAP_ROLE_TYPES = {
+										account: 6,
 										depot: 5,
 										organization: 3,
 										regular: 1,
@@ -738,7 +739,7 @@ String successMessageKey = KaleoDesignerPortletKeys.KALEO_DESIGNER + "requestPro
 							</c:when>
 							<c:when test='<%= Objects.equals(state, "view") && KaleoDefinitionVersionPermission.contains(permissionChecker, kaleoDefinitionVersion, ActionKeys.UPDATE) %>'>
 								<portlet:renderURL var="editURL">
-									<portlet:param name="mvcPath" value='<%= "/designer/edit_kaleo_definition_version.jsp" %>' />
+									<portlet:param name="mvcPath" value="<%= KaleoDesignerUtil.getEditJspPath() %>" />
 									<portlet:param name="redirect" value="<%= currentURL %>" />
 									<portlet:param name="name" value="<%= kaleoDefinitionVersion.getName() %>" />
 									<portlet:param name="draftVersion" value="<%= kaleoDefinitionVersion.getVersion() %>" />

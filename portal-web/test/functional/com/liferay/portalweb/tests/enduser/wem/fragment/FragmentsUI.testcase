@@ -3,7 +3,6 @@ definition {
 
 	property portal.release = "true";
 	property portal.upstream = "true";
-	property testray.component.names = "Theme";
 	property testray.main.component.name = "Fragments";
 
 	setUp {
@@ -17,32 +16,10 @@ definition {
 			JSONGroup.addGroup(groupName = "Test Site Name");
 		}
 
-		task ("Navigate to fragments admin") {
-			FragmentsAdminNavigator.openFragmentsAdmin(siteURLKey = "test-site-name");
-		}
-
-		task ("Add a fragment collection") {
-			FragmentsAdmin.addCollection(collectionName = "Collection Name");
-		}
-
-		task ("Navigate to the fragment collection") {
-			FragmentsAdminNavigator.gotoCollection(collectionName = "Collection Name");
-		}
-
-		task ("Add a section fragment that uses the Button fragment code") {
-			FragmentsAdmin.addFragment(fragmentName = "Fragment Name");
-
-			FragmentsEditor.typeFileContent(fileName = "fragment_button.html");
-
-			FragmentsEditor.waitForAutoSave();
-
-			FragmentsEditor.typeFileContent(fileName = "fragment_button.css");
-
-			FragmentsEditor.waitForAutoSave();
-
-			FragmentsEditor.typeFileContent(fileName = "fragment_button.js");
-
-			FragmentsEditor.waitForAutoSave();
+		task ("Add a fragment collection via JSON") {
+			JSONFragment.addFragmentCollection(
+				groupName = "Test Site Name",
+				name = "Collection Name");
 		}
 	}
 
@@ -57,23 +34,33 @@ definition {
 		}
 	}
 
-	@description = "Add a fragment in the UI and then assert that it displays properly when added to a content page."
-	@priority = "5"
-	test AddFragmentToContentPage {
-		property app.server.types = "jboss,tcserver,tomcat,weblogic,websphere,wildfly";
-		property database.types = "db2,hypersonic,mariadb,mysql,oracle,postgresql,sqlserver,sybase";
-		property environment.acceptance = "true";
-		property portal.acceptance = "true";
+	@description = "This is a test for LPS-132422. The list of actions appear in right order for fragments."
+	@priority = "3"
+	test ViewOrderOfFragmentsActions {
+		var htmlSnippet = FragmentsAPI.getFragmentFileContent(fileName = "checkbox_configuration.html");
+		var jsonSnippet = FragmentsAPI.getFragmentFileContent(fileName = "checkbox_configuration.json");
 
-		task ("Publish the fragment") {
-			PortletEntry.publish();
+		task ("Add a draft fragment") {
+			JSONFragment.addSection(
+				collectionName = "Collection Name",
+				configuration = "${jsonSnippet}",
+				fragmentStatus = "Draft",
+				groupName = "Test Site Name",
+				html = "${htmlSnippet}",
+				name = "Draft Fragment Example");
 		}
 
-		task ("Assert the fragment appears in Fragments Admin") {
-			FragmentsAdmin.viewEntryPresent(entry = "Fragment Name");
+		task ("Add an approved fragment") {
+			JSONFragment.addSection(
+				collectionName = "Collection Name",
+				configuration = "${jsonSnippet}",
+				fragmentStatus = "Approved",
+				groupName = "Test Site Name",
+				html = "${htmlSnippet}",
+				name = "Approved Fragment Example");
 		}
 
-		task ("Add a content page") {
+		task ("Add a content page with approved fragment") {
 			JSONLayout.addPublicLayout(
 				groupName = "Test Site Name",
 				layoutName = "Test Content Page Name",
@@ -82,200 +69,47 @@ definition {
 			ContentPagesNavigator.openEditContentPage(
 				pageName = "Test Content Page Name",
 				siteName = "Test Site Name");
-		}
-
-		task ("Add the section fragment to the content page") {
-			PageEditor.addFragment(
-				collectionName = "Collection Name",
-				fragmentName = "Fragment Name");
-		}
-
-		task ("Publish the content page") {
-			PageEditor.clickPublish();
-		}
-
-		task ("Navigate to the content page") {
-			Navigator.openWithAppendToBaseURL(urlAppend = "web/test-site-name/test-content-page-name");
-		}
-
-		task ("Assert the section fragment is present by asserting the elements from the Button fragment") {
-			AssertVisible(
-				key_content = "Submit",
-				key_fragmentClass = "footer",
-				locator1 = "Fragment#FRAGMENT");
-
-			AssertVisible(
-				key_content = "Cancel",
-				key_fragmentClass = "footer",
-				locator1 = "Fragment#FRAGMENT");
-
-			AssertElementPresent(locator1 = "Button#SUBMIT");
-
-			AssertElementPresent(locator1 = "Button#CANCEL");
-		}
-	}
-
-	@description = "Edit a fragment and assert the edits persist."
-	@priority = "5"
-	test EditFragment {
-		property portal.acceptance = "true";
-		property testray.component.names = "Training";
-
-		task ("Publish the section fragment") {
-			PortletEntry.publish();
-		}
-
-		task ("Edit the section fragment to have the Title fragment code") {
-			FragmentsAdminNavigator.gotoEntry(entry = "Fragment Name");
-
-			FragmentsEditor.typeFileContent(fileName = "fragment_title.html");
-
-			FragmentsEditor.typeFileContent(fileName = "fragment_title.css");
-
-			FragmentsEditor.assertFragmentPreview(
-				fragmentLocator = "//div[@class='fragment-header']/h1[@class='title']",
-				text = "LOREM IPSUM DOLOR SIT AMET");
-
-			PortletEntry.publish();
-		}
-
-		task ("Navigate to the section fragment") {
-			FragmentsAdminNavigator.gotoEntry(entry = "Fragment Name");
-		}
-
-		Pause(locator1 = "1000");
-
-		task ("Assert the edits to the section fragment persist by asserting that the preview displays the Title fragment") {
-			FragmentsEditor.assertFragmentPreview(
-				fragmentLocator = "//div[@class='fragment-header']/h1[@class='title']",
-				text = "LOREM IPSUM DOLOR SIT AMET");
-		}
-	}
-
-	@description = "This is a test for LPS-118241. The user could propagate the changes of fragment to content page."
-	@priority = "4"
-	test PropagateChangesOfFragmentToContentPage {
-		task ("Add a new fragment") {
-			var htmlSnippet = '''<h2 data-lfr-editable-id="title1" data-lfr-editable-type="rich-text">''';
-
-			JSONFragment.addSection(
-				collectionName = "Collection Name",
-				fragmentStatus = "Approved",
-				groupName = "Test Site Name",
-				html = "${htmlSnippet}",
-				name = "Test Fragment Name");
-		}
-
-		task ("Add a content page") {
-			JSONLayout.addPublicLayout(
-				groupName = "Test Site Name",
-				layoutName = "Content Page Name",
-				type = "content");
-		}
-
-		task ("Add a new fragment to the page") {
-			ContentPagesNavigator.openEditContentPage(
-				pageName = "Content Page Name",
-				siteName = "Test Site Name");
 
 			PageEditor.addFragment(
 				collectionName = "Collection Name",
-				fragmentName = "Test Fragment Name");
+				fragmentName = "Approved Fragment Example");
 		}
 
-		task ("View the inline text of new fragment at edit mode") {
-			PageEditor.viewFragmentEditableText(
-				editableText = "Example Rich Text",
-				fragmentName = "Test Fragment Name",
-				id = "title1");
-
-			PageEditor.clickPublish();
-		}
-
-		task ("View the inline text of new fragment at view mode") {
-			ContentPagesNavigator.openViewContentPage(
-				pageName = "Content Page Name",
-				siteName = "Test Site Name");
-
-			AssertVisible(
-				id = "title1",
-				key_position = "1",
-				key_text = "Example Rich Text",
-				locator1 = "Fragment#CONTRIBUTED_FRAGMENT_EDITABLE_FIELD_AT_VIEW_MODE");
-		}
-
-		task ("Edit the new fragment") {
+		task ("Navigate to fragment collection") {
 			FragmentsAdminNavigator.openFragmentsAdmin(siteURLKey = "test-site-name");
-
 			FragmentsAdminNavigator.gotoCollection(collectionName = "Collection Name");
-
-			FragmentsAdminNavigator.gotoEntryEllipsisItem(
-				entry = "Test Fragment Name",
-				item = "Edit");
-
-			var htmlSnippet = '''
-<h2 data-lfr-editable-id="title1" data-lfr-editable-type="rich-text">
-<h2 data-lfr-editable-id="title2" data-lfr-editable-type="rich-text">
-			''';
-
-			FragmentsEditor.typeHtmlEditor(content = "${htmlSnippet}");
-
-			FragmentsEditor.waitForAutoSave();
-
-			FragmentsEditor.publish();
 		}
 
-		task ("Propagate the changes") {
-			FragmentsAdminNavigator.gotoEntryEllipsisItem(
-				entry = "Test Fragment Name",
-				item = "View Usages");
+		task ("Assert the actions order of collections menu") {
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#VERTICAL_ELLIPSIS_BUTTON");
 
-			Click(locator1 = "Checkbox#LEXICON_SELECT_ALL_CONTAINER");
+			MenuItem.viewOrder(menuItemList = "Export,Import,-,Delete");
 
-			Click(locator1 = "Button#PROPAGATE");
-
-			Alert.viewSuccessMessage();
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#VERTICAL_ELLIPSIS_BUTTON");
 		}
 
-		task ("View the changes of fragment at view mode") {
-			ContentPagesNavigator.openViewContentPage(
-				pageName = "Content Page Name",
-				siteName = "Test Site Name");
+		task ("Assert the actions order of a collection") {
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 
-			for (var n : list "1,2") {
-				AssertVisible(
-					id = "title${n}",
-					key_position = "1",
-					key_text = "Example Rich Text",
-					locator1 = "Fragment#CONTRIBUTED_FRAGMENT_EDITABLE_FIELD_AT_VIEW_MODE");
-			}
+			MenuItem.viewOrder(menuItemList = "Edit,-,Export,Import,-,Delete");
+
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
 		}
 
-		task ("View the changes of fragment at edit mode") {
-			ContentPagesNavigator.openEditContentPage(
-				pageName = "Content Page Name",
-				siteName = "Test Site Name");
+		task ("Assert the actions order of a draft fragment") {
+			LexiconEntry.openEntryMenu(rowEntry = "Draft Fragment Example");
 
-			for (var n : list "1,2") {
-				PageEditor.viewFragmentEditableText(
-					editableText = "Example Rich Text",
-					fragmentName = "Fragment Name",
-					id = "title${n}");
-			}
-		}
-	}
+			MenuItem.viewOrder(menuItemList = "Edit,-,Change Thumbnail,Discard Draft,Rename,-,Export,Make a Copy,Move,-,Delete");
 
-	@description = "This is a test for LPS-89251. When creating fragments there should be a visible reference to the Liferay Fragments Toolkit."
-	@priority = "4"
-	test ViewReferenceToFragmentsToolkit {
-		task ("Click on the Fragments Toolkit link") {
-			Click(locator1 = "FragmentEditor#FRAGMENTS_TOOLKIT_LINK");
+			LexiconEntry.openEntryMenu(rowEntry = "Draft Fragment Example");
 		}
 
-		task ("Assert user is taken to the the Liferay Fragments Toolkit documentation page") {
-			SelectWindow.selectPopUp(locator1 = "null");
+		task ("Assert the actions order of a published and in use fragment") {
+			LexiconEntry.openEntryMenu(rowEntry = "Approved Fragment Example");
 
-			AssertLocation(value1 = "https://github.com/liferay/generator-liferay-fragments#liferay-fragments-cli");
+			MenuItem.viewOrder(menuItemList = "Edit,-,Change Thumbnail,Rename,View Usages,-,Export,Make a Copy,Move,-,Delete");
+
+			LexiconEntry.openEntryMenu(rowEntry = "Approved Fragment Example");
 		}
 	}
 

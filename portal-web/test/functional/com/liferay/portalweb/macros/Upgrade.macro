@@ -426,6 +426,38 @@ definition {
 			orgType = "Organization");
 	}
 
+	macro addStyleBook {
+		task ("Add a style book") {
+			StyleBooksAdmin.openStyleBooksAdmin(siteURLKey = "test-site-name");
+
+			StyleBooksAdmin.addStyleBooks(styleBookName = "Test Style Book Name 2");
+		}
+
+		task ("Define the Font Family") {
+			var fontFamily = '''"Courier New"''';
+
+			StyleBooks.selectForm(formName = "Typography");
+
+			StyleBooks.expandSection(sectionName = "Font Family");
+
+			PortletEntry.inputText(
+				fieldLabel = "Font Family Base",
+				text = "${fontFamily}");
+
+			StyleBooks.waitForAutoSave();
+		}
+
+		task ("Publish the style book") {
+			StyleBooks.clickPublish();
+		}
+
+		task ("Assert the Style Books") {
+			StyleBooksAdmin.viewStyleBooksPresent(styleBookName = "Test Style Book Name");
+
+			StyleBooksAdmin.viewStyleBooksPresent(styleBookName = "Test Style Book Name 2");
+		}
+	}
+
 	macro addUserAndSuborganization {
 		JSONOrganization.addOrganization(organizationName = "Organization2");
 
@@ -1032,7 +1064,7 @@ definition {
 
 		Navigator.gotoPage(pageName = "Documents");
 
-		DMDocument.viewDefaultCP();
+		DMDocument.viewDefault();
 	}
 
 	macro editAndDeleteKBArticle {
@@ -1203,6 +1235,70 @@ definition {
 		WebContent.viewCP(
 			webContentContent = "Webコンテンツ",
 			webContentTitle = "Webコンテンツのタイトル");
+	}
+
+	macro exportDefaultSiteIntoNewSite {
+		task ("View displayed asset on Asset Publisher on default site") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "home",
+				siteName = "Guest");
+
+			AssetPublisherPortlet.viewAssetPG(
+				assetContent = "Web Content Content Edit",
+				assetTitle = "Web Content Title 2");
+		}
+
+		task ("View the two versions of the web content on default site") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "guest");
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "View History",
+				rowEntry = "Web Content Title 2");
+
+			for (var n : list "1,2") {
+				WebContent.viewSpecificVersionHistoryCP(
+					webContentStatus = "Approved",
+					webContentTitle = "Web Content Title ${n}");
+			}
+		}
+
+		task ("Export the default site") {
+			LAR.exportSiteCP(siteScopeName = "guest");
+
+			var larFileName = LAR.getLarFileName();
+
+			LAR.downloadLar();
+		}
+
+		task ("Import the default site into the new site") {
+			LAR.importSiteCP(
+				larFileName = "${larFileName}",
+				siteName = "Test Site Name");
+		}
+
+		task ("View displayed asset on Asset Publisher on the new site") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "home",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.viewAssetPG(
+				assetContent = "Web Content Content Edit",
+				assetTitle = "Web Content Title 2");
+		}
+
+		task ("View the two versions of the web content on the new site") {
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			LexiconEntry.gotoEntryMenuItem(
+				menuItem = "View History",
+				rowEntry = "Web Content Title 2");
+
+			for (var n : list "1,2") {
+				WebContent.viewSpecificVersionHistoryCP(
+					webContentStatus = "Approved",
+					webContentTitle = "Web Content Title ${n}");
+			}
+		}
 	}
 
 	macro publishCollectionsInStagingDepot {
@@ -2822,6 +2918,25 @@ definition {
 		CalendarEvent.view(eventTitle = "Post Upgrade Calendar Event");
 	}
 
+	macro viewCardWithThreeColumnsInMobileBreakpoint {
+		task ("Select Mobile Device in simulation menu") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Content Page Name",
+				siteName = "Test Site Name");
+
+			MobileDevice.previewPG(deviceType = "smartphone");
+		}
+		task ("View Card fragment width is same as column width at mobile mode") {
+			var columnWidth	= selenium.getElementWidth("//div[contains(@class,'flex-row')]");
+
+			var cardFragmentWidth = selenium.getElementWidth("xpath=(//div[contains(@class,'col-md')])[2]");
+
+			TestUtils.assertEquals(
+				actual = "${cardFragmentWidth}",
+				expected = "${columnWidth}");
+		}
+	}
+
 	macro viewClassicSearchPortletConfiguration {
 		Navigator.gotoSitePage(
 			pageName = "Site Page",
@@ -3370,6 +3485,69 @@ definition {
 			searchTerm = "Drools");
 	}
 
+	macro viewEditableCardFragment {
+		task ("View the inline text of the card fragment at view mode after Upgrade") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			AssertTextEquals.assertPartialText(
+				key_fragmentName = "card",
+				locator1 = "Fragment#FRAGMENT_BASIC_COMPONENT",
+				value1 = "Test Title");
+		}
+
+		task ("View the inline text of the card fragment at edit mode after Upgrade") {
+			ContentPages.clickPencil();
+
+			AssertTextEquals(
+				id = "02-title",
+				key_fragmentName = "Card",
+				locator1 = "Fragment#EDITABLE_FIELD",
+				value1 = "Test Title");
+		}
+
+		task ("View the fragment style of the card title after Upgrade") {
+			PageEditor.viewFragmentStyle(
+				fragmentName = "Card",
+				headingLevel = "h4",
+				text = "Test Title");
+		}
+
+		task ("Edit the inline text of the Card fragment") {
+			PageEditor.gotoTab(tabName = "Browser");
+
+			Navigator.gotoNavTab(navTab = "Page Content");
+
+			PageEditor.editFragmentTextViaPageContentPanel(
+				itemName = "Test Title",
+				text = "Editable Title");
+		}
+
+		task ("View the updated inline text of the card fragment") {
+			AssertTextEquals(
+				id = "02-title",
+				key_fragmentName = "Card",
+				locator1 = "Fragment#EDITABLE_FIELD",
+				value1 = "Editable Title");
+		}
+
+		task ("Publish the content page") {
+			PageEditor.clickPublish();
+		}
+
+		task ("View the inline text of the card fragment at view mode") {
+			ContentPagesNavigator.openViewContentPage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			AssertTextEquals.assertPartialText(
+				key_fragmentName = "card",
+				locator1 = "Fragment#FRAGMENT_BASIC_COMPONENT",
+				value1 = "Editable Title");
+		}
+	}
+
 	macro viewInstanceSettings {
 		PortalSettings.gotoConfiguration(
 			configurationCategory = "Instance Configuration",
@@ -3685,7 +3863,7 @@ definition {
 	}
 
 	macro viewNotifications {
-		Navigator.gotoPage(pageName = "Welcome");
+		Navigator.openURL();
 
 		Notifications.gotoNotifications();
 
@@ -3733,6 +3911,90 @@ definition {
 		MessageboardsThread.viewPG(
 			threadBody = "Message Boards Body",
 			threadSubject = "Message Boards Subject 3");
+	}
+
+	macro viewOrderOfAssetsOnMostedViewedAssets {
+		task ("View order of displayed assets on Mosted Viewed Assets") {
+			Navigator.gotoSitePage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.viewAssetOrderPG(assetTitleList = "Web Content Title 3,Web Content Title 1,Web Content Title 2");
+		}
+
+		task ("View count of the assets on Mosted Viewed Assets") {
+			var n = "1";
+
+			for (var count : list "3,2,5") {
+				AssetPublisherPortlet.viewAssetViewCount(
+					assetTitle = "Web Content Title ${n}",
+					viewCount = "${count} Views");
+
+				var n = ${n} + 1;
+			}
+		}
+
+		task ("View the Web Content Title 1 twice") {
+			var count = "0";
+
+			while ("${count}" != "2") {
+				Navigator.gotoSitePage(
+					pageName = "Test Page Name",
+					siteName = "Test Site Name");
+
+				AssetPublisherPortlet.viewAssetDetailsPG(
+					assetContent = "Web Content Content 1",
+					assetTitle = "Web Content Title 1");
+
+				var count = ${count} + 1;
+			}
+		}
+
+		task ("View the Web Content Title 2 five times") {
+			var count = "0";
+
+			while ("${count}" != "5") {
+				Navigator.gotoSitePage(
+					pageName = "Test Page Name",
+					siteName = "Test Site Name");
+
+				AssetPublisherPortlet.viewAssetDetailsPG(
+					assetContent = "Web Content Content 2",
+					assetTitle = "Web Content Title 2");
+
+				var count = ${count} + 1;
+			}
+		}
+
+		task ("View the Web Content Title 3 once") {
+			Navigator.gotoSitePage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.viewAssetDetailsPG(
+				assetContent = "Web Content Content 3",
+				assetTitle = "Web Content Title 3");
+		}
+
+		task ("View the new order of displayed assets on Mosted Viewed Assets") {
+			Navigator.gotoSitePage(
+				pageName = "Test Page Name",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.viewAssetOrderPG(assetTitleList = "Web Content Title 2,Web Content Title 3,Web Content Title 1");
+		}
+
+		task ("View the new count of the assets on Mosted Viewed Assets") {
+			var n = "1";
+
+			for (var count : list "5,7,6") {
+				AssetPublisherPortlet.viewAssetViewCount(
+					assetTitle = "Web Content Title ${n}",
+					viewCount = "${count} Views");
+
+				var n = ${n} + 1;
+			}
+		}
 	}
 
 	macro viewOutOfDatePublications {
@@ -3787,28 +4049,6 @@ definition {
 		AssertVisible(
 			key_publicationName = "Publication 1 Name",
 			locator1 = "Publications#LIST_REVERT_DISABLED");
-	}
-
-	macro viewPolls {
-		Navigator.gotoPage(pageName = "Polls");
-
-		AssertElementNotPresent(locator1 = "Message#INFO");
-
-		Navigator.gotoPage(pageName = "Polls");
-
-		Polls.viewPollPG(
-			pollsQuestion = "Sample Polls Question",
-			pollsQuestionChoiceList = "Yes,No");
-
-		Polls.votePollPG(pollsQuestionChoice = "Yes");
-
-		Navigator.gotoPage(pageName = "Polls");
-
-		Polls.viewVotedPollPG(
-			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
-			pollsQuestionVotePercent = "100%");
 	}
 
 	macro viewPortalCORS {
@@ -4016,7 +4256,7 @@ definition {
 			password = "test",
 			userEmailAddress = "user2@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		Notifications.viewBadgeCount(notificationCount = "2");
 
 		Notifications.gotoNotifications();
 
@@ -4039,7 +4279,14 @@ definition {
 			password = "test",
 			userEmailAddress = "user1@liferay.com");
 
-		Notifications.viewBadgeCount(notificationCount = "1");
+		if (isSet(depot)) {
+			var notificationCount = "1";
+		}
+		else {
+			var notificationCount = "2";
+		}
+
+		Notifications.viewBadgeCount(notificationCount = "${notificationCount}");
 
 		Notifications.gotoNotifications();
 
@@ -4501,6 +4748,124 @@ definition {
 		AssertVisible(
 			key_pageName = "Site Page",
 			locator1 = "Home#PAGE_ACTIVE");
+
+		SignOut.signOut();
+
+		SignIn.signIn();
+	}
+
+	macro viewUpgradeDBPartition {
+		SignOut.signOut();
+
+		User.firstLoginUI(
+			password = "test",
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@www.able.com");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.viewCP(
+			userEmailAddress = "test1@www.able.com",
+			userFirstName = "Test1",
+			userLastName = "Test1",
+			userScreenName = "test1");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.searchCP(searchTerm = "test2");
+
+		User.viewNoUsersFoundCP();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
+
+		Role.viewCP(
+			roleTitle = "Roles Regrole1 Name",
+			roleType = "Regular");
+
+		Navigator.openSpecificURL(url = "http://www.able.com:8080");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Documents and Media");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document1 Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document1 Title");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent1 Title");
+
+		WebContent.viewCP(
+			webContentContent = "WC WebContent1 Content",
+			webContentTitle = "WC WebContent1 Title");
+
+		SignOut.signOut();
+
+		User.firstLoginUI(
+			password = "test",
+			specificURL = "http://www.baker.com:8080",
+			userEmailAddress = "test@www.baker.com");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.viewCP(
+			userEmailAddress = "test2@www.baker.com",
+			userFirstName = "Test2",
+			userLastName = "Test2",
+			userScreenName = "test2");
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Users and Organizations");
+
+		User.searchCP(searchTerm = "test1");
+
+		User.viewNoUsersFoundCP();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Users",
+			panel = "Control Panel",
+			portlet = "Roles");
+
+		Role.viewCP(
+			roleTitle = "Roles Regrole2 Name",
+			roleType = "Regular");
+
+		Navigator.openSpecificURL(url = "http://www.baker.com:8080");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Documents and Media");
+
+		DMNavigator.gotoDocumentCP(dmDocumentTitle = "DM Document2 Title");
+
+		DMDocument.viewCP(dmDocumentTitle = "DM Document2 Title");
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Web Content");
+
+		WebContentNavigator.gotoEditCP(webContentTitle = "WC WebContent2 Title");
+
+		WebContent.viewCP(
+			webContentContent = "WC WebContent2 Content",
+			webContentTitle = "WC WebContent2 Title");
 
 		SignOut.signOut();
 

@@ -15,6 +15,7 @@
 package com.liferay.journal.web.internal.servlet.taglib.util;
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.journal.constants.JournalFolderConstants;
 import com.liferay.journal.constants.JournalPortletKeys;
@@ -49,8 +50,6 @@ import com.liferay.taglib.security.PermissionsURLTag;
 import com.liferay.trash.TrashHelper;
 
 import java.util.List;
-
-import javax.portlet.PortletURL;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -117,17 +116,16 @@ public class JournalFolderActionDropdownItems {
 					_themeDisplay.getPermissionChecker(), _folder,
 					ActionKeys.ADD_FOLDER)) {
 
-				DropdownItem dropdownItem = new DropdownItem();
-
-				dropdownItem.setHref(
-					_liferayPortletResponse.createRenderURL(), "mvcPath",
-					"/edit_folder.jsp", "redirect", _getRedirect(), "groupId",
-					_folder.getGroupId(), "parentFolderId",
-					_folder.getFolderId());
-				dropdownItem.setLabel(
-					LanguageUtil.get(_httpServletRequest, "add-subfolder"));
-
-				actionDropdownItems.add(0, dropdownItem);
+				actionDropdownItems.add(
+					0,
+					DropdownItemBuilder.setHref(
+						_liferayPortletResponse.createRenderURL(), "mvcPath",
+						"/edit_folder.jsp", "redirect", _getRedirect(),
+						"groupId", _folder.getGroupId(), "parentFolderId",
+						_folder.getFolderId()
+					).setLabel(
+						LanguageUtil.get(_httpServletRequest, "add-subfolder")
+					).build());
 			}
 
 			return actionDropdownItems;
@@ -325,23 +323,26 @@ public class JournalFolderActionDropdownItems {
 	private UnsafeConsumer<DropdownItem, Exception>
 		_getPublishToLiveFolderActionUnsafeConsumer() {
 
-		PortletURL publishFolderURL = PortletURLBuilder.createActionURL(
-			_liferayPortletResponse
-		).setActionName(
-			"/journal/publish_folder"
-		).setBackURL(
-			_getRedirect()
-		).build();
-
-		if (_folder != null) {
-			publishFolderURL.setParameter(
-				"folderId", String.valueOf(_folder.getFolderId()));
-		}
-
 		return dropdownItem -> {
 			dropdownItem.putData("action", "publishFolderToLive");
 			dropdownItem.putData(
-				"publishFolderURL", publishFolderURL.toString());
+				"publishFolderURL",
+				PortletURLBuilder.createActionURL(
+					_liferayPortletResponse
+				).setActionName(
+					"/journal/publish_folder"
+				).setBackURL(
+					_getRedirect()
+				).setParameter(
+					"folderId",
+					() -> {
+						if (_folder != null) {
+							return _folder.getFolderId();
+						}
+
+						return null;
+					}
+				).buildString());
 			dropdownItem.setLabel(
 				LanguageUtil.get(_httpServletRequest, "publish-to-live"));
 		};

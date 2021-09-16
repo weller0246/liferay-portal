@@ -22,82 +22,21 @@
 	CKEDITOR.plugins.add(pluginName, {
 		init(editor) {
 			editor.ui.addBalloonToolbarButton('ImageAlignLeft', {
-				click() {
-					const imageWidget = editor.widgets.selected[0];
-
-					if (imageWidget.name !== 'image') {
-						return;
-					}
-
-					imageWidget.focus();
-
-					const alignValue = imageWidget.data.align;
-
-					if (!alignValue || alignValue !== 'left') {
-						imageWidget.setData('align', 'left');
-					}
-					else {
-						imageWidget.setData('align', 'none');
-					}
-				},
+				command: 'justifyleft',
 				icon: 'align-image-left',
 				title: editor.lang.common.alignLeft,
 			});
 
 			editor.ui.addBalloonToolbarButton('ImageAlignCenter', {
-				click() {
-					const imageWidget = editor.widgets.selected[0];
-
-					if (imageWidget.name !== 'image') {
-						return;
-					}
-
-					imageWidget.focus();
-
-					const alignValue = imageWidget.data.align;
-
-					if (!alignValue || alignValue !== 'center') {
-						imageWidget.setData('align', 'center');
-					}
-					else if (alignValue === 'center') {
-						imageWidget.setData('align', 'none');
-					}
-				},
+				command: 'justifycenter',
 				icon: 'align-image-center',
 				title: editor.lang.common.alignCenter,
 			});
 
 			editor.ui.addBalloonToolbarButton('ImageAlignRight', {
-				click() {
-					const imageWidget = editor.widgets.selected[0];
-
-					if (imageWidget.name !== 'image') {
-						return;
-					}
-
-					imageWidget.focus();
-
-					const alignValue = imageWidget.data.align;
-
-					if (!alignValue || alignValue !== 'right') {
-						imageWidget.setData('align', 'right');
-					}
-					else {
-						imageWidget.setData('align', 'none');
-					}
-				},
+				command: 'justifyright',
 				icon: 'align-image-right',
 				title: editor.lang.common.alignRight,
-			});
-
-			editor.ui.addBalloonToolbarButton('LinkToolbar', {
-				click() {
-					editor.fire('showToolbar', {
-						toolbarCommand: 'linkToolbar',
-					});
-				},
-				icon: 'link',
-				title: editor.lang.link.title,
 			});
 
 			editor.ui.addBalloonToolbarButton('LinkAddOrEdit', {
@@ -108,16 +47,6 @@
 				},
 				icon: 'link',
 				title: editor.lang.link.title,
-			});
-
-			editor.ui.addBalloonToolbarButton('LinkRemove', {
-				click() {
-					editor.fire('unlinkTextOrImage', {
-						selection: editor.getSelection(),
-					});
-				},
-				icon: 'unlink',
-				title: editor.lang.link.unlink,
 			});
 
 			editor.ui.addRichCombo('TableHeaders', {
@@ -148,21 +77,6 @@
 				title: editor.lang.table.title,
 			});
 
-			editor.ui.addBalloonToolbarButton('TableRow', {
-				icon: 'add-row',
-				title: editor.lang.table.row.menu,
-			});
-
-			editor.ui.addBalloonToolbarButton('TableColumn', {
-				icon: 'add-column',
-				title: editor.lang.table.column.menu,
-			});
-
-			editor.ui.addBalloonToolbarButton('TableCell', {
-				icon: 'add-cell',
-				title: editor.lang.table.cell.menu,
-			});
-
 			editor.ui.addBalloonToolbarButton('TableDelete', {
 				click() {
 					const selection = editor.getSelection();
@@ -183,9 +97,7 @@
 
 			editor.ui.addBalloonToolbarButton('TextLink', {
 				click() {
-					editor.fire('showToolbar', {
-						toolbarCommand: 'linkToolbar',
-					});
+					editor.execCommand('linkToolbar');
 				},
 				icon: 'link',
 				title: editor.lang.link.title,

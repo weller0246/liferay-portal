@@ -42,7 +42,7 @@ definition {
 	@description = "Add and edit web content via Asset Publisher in organization site with virtual host."
 	@priority = "4"
 	test AddAndEditWebContentViaAssetPublisherInOrganizationSiteWithVirtualHost {
-		property custom.properties = "virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com";
+		property custom.properties = "auth.login.prompt.enabled=true${line.separator}virtual.hosts.valid.hosts=localhost,127.0.0.1,www.able.com,www.baker.com";
 		property test.name.skip.portal.instance = "AssetPublisherUseCase#AddAndEditWebContentViaAssetPublisherInOrganizationSiteWithVirtualHost";
 
 		task ("Add an organization with site") {
@@ -349,6 +349,66 @@ definition {
 				groupName = "Global",
 				title = "WC WebContent Title Edit");
 		}
+	}
+
+	@description = "This is a use case for LPS-120568."
+	@priority = "5"
+	test EditMessageBoardPostsViaAP {
+		JSONLayout.addPublicLayout(
+			groupName = "Test Site Name",
+			layoutName = "Message Boards Page");
+
+		JSONLayout.addWidgetToPublicLayout(
+			column = "1",
+			groupName = "Test Site Name",
+			layoutName = "Message Boards Page",
+			widgetName = "Message Boards");
+
+		Navigator.gotoSitePage(
+			pageName = "Message Boards Page",
+			siteName = "Test Site Name");
+
+		MessageboardsThread.addPG(
+			threadBody = "MB Thread Message Body",
+			threadSubject = "MB Thread Message Subject");
+
+		Navigator.gotoSitePage(
+			pageName = "Message Boards Page",
+			siteName = "Test Site Name");
+
+		MessageboardsThread.replyPG(
+			threadBody = "MB Thread Message Body",
+			threadReplyBody = "MB Thread Reply Body",
+			threadSubject = "MB Thread Message Subject");
+
+		Navigator.gotoSitePage(
+			pageName = "Asset Publisher Page",
+			siteName = "Test Site Name");
+
+		AssetPublisherPortlet.gotoConfigurationPG();
+
+		Navigator.gotoNavTab(navTab = "Asset Selection");
+
+		Click(locator1 = "APConfiguration#ASSET_SELECTION_DYNAMIC");
+
+		PortletEntry.save();
+
+		IFrame.closeFrame();
+
+		AssetPublisherPortlet.configureSelectedPG(selectedAsset = "Message Boards Message");
+
+		Navigator.gotoSitePage(
+			pageName = "Asset Publisher Page",
+			siteName = "Test Site Name");
+
+		MessageboardsThread.editReplyViaAP(
+			threadBody = "MB Thread Reply Body Edit",
+			threadReplySubject = "RE: MB Thread Message Subject",
+			threadSubject = "RE: MB Thread Message Subject Edit");
+
+		AssetPublisherPortlet.viewPG(
+			assetContent = "MB Thread Reply Body Edit",
+			assetTitle = "RE: MB Thread Message Subject Edit");
 	}
 
 	@description = "Filter and order the displayed assets by field."
@@ -1518,6 +1578,93 @@ definition {
 			Refresh();
 
 			AssertConsoleTextNotPresent(value1 = "NoSuchResourceActionException");
+		}
+	}
+
+	@description = "This is a test for LPS-126190. The user could receive a notification email when the Dynamic Subscription Limit is set to 0 in Asset Publisher."
+	@priority = "4"
+	test ViewNotificationEmailWhenSetDynamicSubscriptionLimitToZero {
+		property custom.properties = "mail.send.blacklist=";
+		property test.name.skip.portal.instance = "AssetPublisherUseCase#ViewNotificationEmailWhenSetDynamicSubscriptionLimitToZero";
+		property test.smtp.server.enabled = "true";
+
+		task ("Go to System Settings") {
+			ApplicationsMenu.gotoPortlet(
+				category = "Configuration",
+				panel = "Control Panel",
+				portlet = "System Settings");
+		}
+
+		task ("Set the Dynamic Subscription Limit to 0 in Asset Publisher") {
+			SystemSettings.gotoConfiguration(
+				configurationCategory = "Assets",
+				configurationName = "Asset Publisher",
+				configurationScope = "System Scope");
+
+			SystemSettings.editTextSetting(
+				settingName = "Dynamic Subscription Limit",
+				settingValue = "0");
+
+			SystemSettings.saveConfiguration();
+		}
+
+		task ("Enable the Subscribe in the Asset Publisher") {
+			Navigator.gotoSitePage(
+				pageName = "Asset Publisher Page",
+				siteName = "Test Site Name");
+
+			AssetPublisherPortlet.configureDisplaySettings(displaySettings = "Subscribe");
+
+			IFrame.closeFrame();
+		}
+
+		task ("Subscribe the Asset Publisher") {
+			Click(locator1 = "Button#SUBSCRIBE");
+		}
+
+		task ("Add a web content") {
+			JSONWebcontent.addWebContent(
+				content = "Web Content Content",
+				groupName = "Test Site Name",
+				title = "Web Content Title");
+		}
+
+		task ("Execute the Groovy script to check displayed asset entries in Asset Publisher") {
+			ServerAdministration.openServerAdmin();
+
+			var script = '''
+import com.liferay.registry.RegistryUtil;
+
+try {
+	def registry = RegistryUtil.getRegistry();
+
+	def serviceReference = registry.getServiceReference("com.liferay.asset.publisher.web.internal.messaging.AssetEntriesCheckerHelper");
+
+	def assetEntriesCheckerHelper = registry.getService(serviceReference);
+
+	def checkEntriesMethod = assetEntriesCheckerHelper.getClass().getMethod("checkAssetEntries");
+
+	checkEntriesMethod.invoke(assetEntriesCheckerHelper);
+}
+catch (Exception e) {
+	e.printStackTrace(out);
+}
+			''';
+			var script = StringUtil.trimLeading("${script}");
+			var script = StringUtil.trimTrailing("${script}");
+
+			ServerAdministration.executeScript(
+				language = "Groovy",
+				script = "${script}");
+		}
+
+		task ("View the notification email in Mock Mock") {
+			MockMock.viewMail(
+				asset = "New Asset Entries Added to Asset Publisher",
+				content = "The following asset entries have been added to Asset Publisher",
+				recipient = "Test Test",
+				sender = "Test Test",
+				subject = "New Asset Entries Added to Asset Publisher");
 		}
 	}
 

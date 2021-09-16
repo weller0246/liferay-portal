@@ -313,7 +313,7 @@ public class DocumentResourceImpl
 				binaryFile.getInputStream(), binaryFile.getSize(),
 				existingFileEntry.getExpirationDate(),
 				existingFileEntry.getReviewDate(),
-				_getServiceContext(
+				_createServiceContext(
 					() -> ArrayUtil.toArray(
 						_assetCategoryLocalService.getCategoryIds(
 							DLFileEntry.class.getName(), documentId)),
@@ -357,16 +357,15 @@ public class DocumentResourceImpl
 	public Document postSiteDocument(Long siteId, MultipartBody multipartBody)
 		throws Exception {
 
-		return _addDocument(null, siteId, siteId, 0L, multipartBody);
+		return _addDocument(null, siteId, siteId, null, multipartBody);
 	}
 
 	@Override
 	public Document putDocument(Long documentId, MultipartBody multipartBody)
 		throws Exception {
 
-		FileEntry fileEntry = _dlAppService.getFileEntry(documentId);
-
-		return _updateDocument(documentId, fileEntry, multipartBody);
+		return _updateDocument(
+			_dlAppService.getFileEntry(documentId), multipartBody);
 	}
 
 	@Override
@@ -389,13 +388,12 @@ public class DocumentResourceImpl
 			_dlAppLocalService.fetchFileEntryByExternalReferenceCode(
 				siteId, externalReferenceCode);
 
-		if (fileEntry == null) {
-			return _addDocument(
-				externalReferenceCode, siteId, siteId, 0L, multipartBody);
+		if (fileEntry != null) {
+			return _updateDocument(fileEntry, multipartBody);
 		}
 
-		return _updateDocument(
-			fileEntry.getFileEntryId(), fileEntry, multipartBody);
+		return _addDocument(
+			externalReferenceCode, siteId, siteId, null, multipartBody);
 	}
 
 	protected Long getPermissionCheckerGroupId(Object id) throws Exception {
@@ -416,14 +414,8 @@ public class DocumentResourceImpl
 
 	private Document _addDocument(
 			String externalReferenceCode, Long groupId, Long repositoryId,
-			long documentFolderId, MultipartBody multipartBody)
+			Long documentFolderId, MultipartBody multipartBody)
 		throws Exception {
-
-		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
-
-		if (binaryFile == null) {
-			throw new BadRequestException("No file found in body");
-		}
 
 		Optional<Document> documentOptional =
 			multipartBody.getValueAsInstanceOptional(
@@ -435,6 +427,16 @@ public class DocumentResourceImpl
 			).orElse(
 				null
 			);
+		}
+
+		if (documentFolderId == null) {
+			documentFolderId = DLFolderConstants.DEFAULT_PARENT_FOLDER_ID;
+		}
+
+		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
+
+		if (binaryFile == null) {
+			throw new BadRequestException("No file found in body");
 		}
 
 		return _toDocument(
@@ -453,7 +455,7 @@ public class DocumentResourceImpl
 				),
 				null, binaryFile.getInputStream(), binaryFile.getSize(), null,
 				null,
-				_getServiceContext(
+				_createServiceContext(
 					() -> new Long[0], () -> new String[0], documentFolderId,
 					documentOptional, groupId)));
 	}
@@ -480,6 +482,78 @@ public class DocumentResourceImpl
 					BooleanClauseOccur.MUST);
 			}
 		};
+	}
+
+	private ServiceContext _createServiceContext(
+			Supplier<Long[]> defaultCategoriesSupplier,
+			Supplier<String[]> defaultKeywordsSupplier, Long documentFolderId,
+			Optional<Document> documentOptional, Long groupId)
+		throws Exception {
+
+		ServiceContext serviceContext =
+			ServiceContextRequestUtil.createServiceContext(
+				documentOptional.map(
+					Document::getTaxonomyCategoryIds
+				).orElseGet(
+					defaultCategoriesSupplier
+				),
+				documentOptional.map(
+					Document::getKeywords
+				).orElseGet(
+					defaultKeywordsSupplier
+				),
+				_getExpandoBridgeAttributes1(documentOptional), groupId,
+				contextHttpServletRequest,
+				documentOptional.map(
+					Document::getViewableByAsString
+				).orElse(
+					Document.ViewableBy.OWNER.getValue()
+				));
+
+		serviceContext.setUserId(contextUser.getUserId());
+
+		Optional<DLFileEntryType> dlFileEntryTypeOptional =
+			_getDLFileEntryTypeOptional(
+				documentFolderId, documentOptional, groupId);
+
+		if (dlFileEntryTypeOptional.isPresent()) {
+			DLFileEntryType dlFileEntryType = dlFileEntryTypeOptional.get();
+
+			serviceContext.setAttribute(
+				"fileEntryTypeId", dlFileEntryType.getFileEntryTypeId());
+
+			Document document = documentOptional.get();
+
+			List<DDMStructure> ddmStructures =
+				dlFileEntryType.getDDMStructures();
+
+			DocumentType documentType = document.getDocumentType();
+
+			ContentField[] contentFields = documentType.getContentFields();
+
+			for (DDMStructure ddmStructure : ddmStructures) {
+				com.liferay.dynamic.data.mapping.model.DDMStructure
+					modelDDMStructure = _ddmStructureService.getStructure(
+						ddmStructure.getStructureId());
+
+				com.liferay.dynamic.data.mapping.storage.DDMFormValues
+					ddmFormValues = DDMFormValuesUtil.toDDMFormValues(
+						contentFields, modelDDMStructure.getDDMForm(),
+						_dlAppService, groupId, _journalArticleService,
+						_layoutLocalService,
+						contextAcceptLanguage.getPreferredLocale(),
+						transform(
+							ddmStructure.getRootFieldNames(),
+							modelDDMStructure::getDDMFormField));
+
+				serviceContext.setAttribute(
+					DDMFormValues.class.getName() + StringPool.POUND +
+						ddmStructure.getStructureId(),
+					_ddmBeanTranslator.translate(ddmFormValues));
+			}
+		}
+
+		return serviceContext;
 	}
 
 	private long _getDDMStructureId(FileEntry fileEntry) throws Exception {
@@ -552,8 +626,8 @@ public class DocumentResourceImpl
 
 		return SearchUtil.search(
 			actions, booleanQueryUnsafeConsumer,
-			FilterUtil.processFilter(_ddmIndexer, filter), DLFileEntry.class,
-			keywords, pagination,
+			FilterUtil.processFilter(_ddmIndexer, filter),
+			DLFileEntry.class.getName(), keywords, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
@@ -594,78 +668,6 @@ public class DocumentResourceImpl
 			DLFileEntry.class.getName(), contextCompany.getCompanyId(),
 			_getExpandoBridgeAttributes(documentOptional),
 			contextAcceptLanguage.getPreferredLocale());
-	}
-
-	private ServiceContext _getServiceContext(
-			Supplier<Long[]> defaultCategoriesSupplier,
-			Supplier<String[]> defaultKeywordsSupplier, Long documentFolderId,
-			Optional<Document> documentOptional, Long groupId)
-		throws Exception {
-
-		ServiceContext serviceContext =
-			ServiceContextRequestUtil.createServiceContext(
-				documentOptional.map(
-					Document::getTaxonomyCategoryIds
-				).orElseGet(
-					defaultCategoriesSupplier
-				),
-				documentOptional.map(
-					Document::getKeywords
-				).orElseGet(
-					defaultKeywordsSupplier
-				),
-				_getExpandoBridgeAttributes1(documentOptional), groupId,
-				contextHttpServletRequest,
-				documentOptional.map(
-					Document::getViewableByAsString
-				).orElse(
-					Document.ViewableBy.OWNER.getValue()
-				));
-
-		serviceContext.setUserId(contextUser.getUserId());
-
-		Optional<DLFileEntryType> dlFileEntryTypeOptional =
-			_getDLFileEntryTypeOptional(
-				documentFolderId, documentOptional, groupId);
-
-		if (dlFileEntryTypeOptional.isPresent()) {
-			DLFileEntryType dlFileEntryType = dlFileEntryTypeOptional.get();
-
-			serviceContext.setAttribute(
-				"fileEntryTypeId", dlFileEntryType.getFileEntryTypeId());
-
-			Document document = documentOptional.get();
-
-			List<DDMStructure> ddmStructures =
-				dlFileEntryType.getDDMStructures();
-
-			DocumentType documentType = document.getDocumentType();
-
-			ContentField[] contentFields = documentType.getContentFields();
-
-			for (DDMStructure ddmStructure : ddmStructures) {
-				com.liferay.dynamic.data.mapping.model.DDMStructure
-					modelDDMStructure = _ddmStructureService.getStructure(
-						ddmStructure.getStructureId());
-
-				com.liferay.dynamic.data.mapping.storage.DDMFormValues
-					ddmFormValues = DDMFormValuesUtil.toDDMFormValues(
-						contentFields, modelDDMStructure.getDDMForm(),
-						_dlAppService, groupId, _journalArticleService,
-						_layoutLocalService,
-						contextAcceptLanguage.getPreferredLocale(),
-						transform(
-							ddmStructure.getRootFieldNames(),
-							modelDDMStructure::getDDMFormField));
-
-				serviceContext.setAttribute(
-					DDMFormValues.class.getName() + StringPool.POUND +
-						ddmStructure.getStructureId(),
-					_ddmBeanTranslator.translate(ddmFormValues));
-			}
-		}
-
-		return serviceContext;
 	}
 
 	private SPIRatingResource<Rating> _getSPIRatingResource() {
@@ -767,7 +769,7 @@ public class DocumentResourceImpl
 	}
 
 	private Document _updateDocument(
-			long documentId, FileEntry fileEntry, MultipartBody multipartBody)
+			FileEntry fileEntry, MultipartBody multipartBody)
 		throws Exception {
 
 		BinaryFile binaryFile = multipartBody.getBinaryFile("file");
@@ -787,11 +789,12 @@ public class DocumentResourceImpl
 				fileEntry.getContentStream(), fileEntry.getSize());
 		}
 
-		fileEntry = _moveDocument(documentId, documentOptional, fileEntry);
+		fileEntry = _moveDocument(
+			fileEntry.getFileEntryId(), documentOptional, fileEntry);
 
 		return _toDocument(
 			_dlAppService.updateFileEntry(
-				documentId, binaryFile.getFileName(),
+				fileEntry.getFileEntryId(), binaryFile.getFileName(),
 				binaryFile.getContentType(),
 				documentOptional.map(
 					Document::getTitle
@@ -806,7 +809,7 @@ public class DocumentResourceImpl
 				null, DLVersionNumberIncrease.AUTOMATIC,
 				binaryFile.getInputStream(), binaryFile.getSize(),
 				fileEntry.getExpirationDate(), fileEntry.getReviewDate(),
-				_getServiceContext(
+				_createServiceContext(
 					() -> new Long[0], () -> new String[0],
 					fileEntry.getFolderId(), documentOptional,
 					fileEntry.getGroupId())));

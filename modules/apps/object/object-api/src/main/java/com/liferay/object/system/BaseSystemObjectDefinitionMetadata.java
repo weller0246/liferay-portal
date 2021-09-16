@@ -15,9 +15,14 @@
 package com.liferay.object.system;
 
 import com.liferay.object.model.ObjectField;
-import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.object.util.LocalizedMapUtil;
+import com.liferay.object.util.ObjectFieldUtil;
+import com.liferay.petra.sql.dsl.Table;
+import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 
-import org.osgi.service.component.annotations.Reference;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Marco Leo
@@ -26,28 +31,40 @@ import org.osgi.service.component.annotations.Reference;
 public abstract class BaseSystemObjectDefinitionMetadata
 	implements SystemObjectDefinitionMetadata {
 
-	protected ObjectField createObjectField(
-		String name, boolean required, String type) {
+	@Override
+	public String getName() {
+		Table table = getTable();
 
-		return createObjectField(null, name, required, type);
+		String tableName = table.getName();
+
+		if (tableName.endsWith("_")) {
+			return tableName.substring(0, tableName.length() - 1);
+		}
+
+		return tableName;
+	}
+
+	protected Map<Locale, String> createLabelMap(String labelKey) {
+		return LocalizedMapUtil.getLocalizedMap(_translate(labelKey));
 	}
 
 	protected ObjectField createObjectField(
-		String dbColumnName, String name, boolean required, String type) {
+		String labelKey, String name, boolean required, String type) {
 
-		ObjectField objectField = objectFieldLocalService.createObjectField(0);
-
-		objectField.setDBColumnName(dbColumnName);
-		objectField.setIndexed(false);
-		objectField.setIndexedAsKeyword(false);
-		objectField.setName(name);
-		objectField.setRequired(required);
-		objectField.setType(type);
-
-		return objectField;
+		return createObjectField(null, labelKey, name, required, type);
 	}
 
-	@Reference
-	protected ObjectFieldLocalService objectFieldLocalService;
+	protected ObjectField createObjectField(
+		String dbColumnName, String labelKey, String name, boolean required,
+		String type) {
+
+		return ObjectFieldUtil.createObjectField(
+			0, dbColumnName, false, false, null, _translate(labelKey), name,
+			required, type);
+	}
+
+	private String _translate(String labelKey) {
+		return LanguageUtil.get(LocaleUtil.getDefault(), labelKey);
+	}
 
 }

@@ -95,7 +95,9 @@ definition {
 	macro _deleteGroup {
 		Variables.assertDefined(parameterList = "${groupId}");
 
-		var portalURL = JSONCompany.getPortalURL();
+		if (!(isSet(portalURL))) {
+			var portalURL = JSONCompany.getPortalURL();
+		}
 
 		var curl = '''
 			${portalURL}/api/jsonws/group/delete-group \
@@ -141,12 +143,21 @@ definition {
 
 		var portalURL = JSONCompany.getPortalURL();
 
+		if (!(isSet(defaultLocale))) {
+			var defaultLocale = "en_US";
+		}
+		else {
+			var defaultLocale = "${defaultLocale}";
+		}
+
+		var locale = '''default-locale=\"${defaultLocale}\"''';
+
 		var curl = '''
 			${portalURL}/api/jsonws/group/get-groups/company-id/${companyId}/parent-group-id/0/site/false \
 				-u test@liferay.com:test
 		''';
 
-		var depotId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${depotName}' && @['companyId'] == '${companyId}')]['classPK']");
+		var depotId = JSONCurlUtil.get("${curl}", "$.[?(@['nameCurrentValue'] == '${depotName}' && @['name'] contains '${locale}')]['classPK']");
 
 		if ("${depotId}" == "") {
 			fail("FAIL. Cannot find group.");

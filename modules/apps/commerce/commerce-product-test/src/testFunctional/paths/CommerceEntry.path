@@ -177,7 +177,7 @@
 </tr>
 <tr>
 	<td>VIRTUAL_SELECT_BY_PANEL</td>
-	<td>//div[contains(@class,'panel-heading')]//a[contains(.,'${key_panel}')]//../../..//span[@class='lfr-btn-label']</td>
+	<td>//div[contains(@class,'content')]//a[contains(.,'${key_panel}')]//..//button[contains(.,'Select')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -406,13 +406,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ACCORDION_COLLAPSED</td>
+	<td>//fieldset[@id='${key_accordionTitle}']/a[contains(@class,'collapsed')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ROLE_SELECT_BUTTON</td>
 	<td>//div/h3[contains(.,'${key_roleType}')]//..//button</td>
 	<td></td>
 </tr>
 <tr>
 	<td>ACCORDION_TITLE</td>
-	<td>//fieldset//div/a[contains(.,'${key_accordionTitle}')]</td>
+	<td>//fieldset[@id='${key_accordionTitle}']/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -501,6 +506,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>TABLE_ENTRY_NAME_NOT_CONTAINS</td>
+	<td>//h4[contains(.,'${key_table}')]//..//div/a[(text()='${key_entryName}')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TABLE_ELIGIBILITY_ACCOUNT_GROUPS</td>
 	<td>//div[@class='dnd-td' and contains(text(),'${key_entryName}')]</td>
 	<td></td>
@@ -518,6 +528,11 @@
 <tr>
 	<td>HEADER_ID</td>
 	<td>//div[@class='header-info']//div//span[contains(.,'ID')]/following-sibling::strong</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NOTIFICATION_DELIVERY_PANEL_CLOSED</td>
+	<td>//div[contains(@class,'content')]//a[contains(.,'${key_contentType}') and contains(@class,'collapsed')]//span[contains(@class,'closed')]//*[name()='svg']</td>
 	<td></td>
 </tr>
 <!--CATALOGS-->
@@ -540,6 +555,52 @@
 <tr>
 	<td>PRODUCT_CARD_LIST_PRICE</td>
 	<td>//p[@title='${key_productName}']//following-sibling::p[@class='card-text']//span[@class='price-value']</td>
+	<td></td>
+</tr>
+<!--DIAGRAM-->
+<tr>
+	<td>VERIFY_PIN</td>
+	<td>//div[contains(@class,'diagram-pins-container')]//*[name()='svg']//*[name()='circle' and @fill='${key_color}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VERIFY_PIN_WITHOUT_COLOR</td>
+	<td>//div[contains(@class,'diagram-pins-container')]//*[name()='svg']//*[name()='circle']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VERIFY_IMAGE</td>
+	<td>//div[contains(@class,'diagram-pins-container')]//*[name()='svg']//*[name()='image' and contains (@href,'${key_image}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEFAULT_DIAMETER_CUSTOM_RADIUS</td>
+	<td>//label[contains (.,'Custom Radius')]//..//input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VERIFY_PIN_RADIUS</td>
+	<td>//div[contains(@class,'diagram-pins-container')]//*[name()='svg']//*[name()='circle' and @r='${key_radius}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>VERIFY_PIN_COLOR_STROKE</td>
+	<td>//div[contains(@class,'diagram-pins-container')]//*[name()='svg']//*[name()='circle' and @stroke='${key_strokeColor}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DEFAULT_DIAMETER_CUSTOM_COLOR_SELECTION</td>
+	<td>//label[contains(.,'Custom Color')]//..//input[contains(@aria-label,'Color selection')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DIAGRAM_ADD_BUTTON</td>
+	<td>//div[contains(@class,'diagram-footer')]//button[contains(.,'Add Pin')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DIAGRAM_ZOOM_SELECT</td>
+	<td>//select[contains(@aria-label,'Select Label')]</td>
 	<td></td>
 </tr>
 <!--OPTION-->
@@ -578,6 +639,11 @@
 	<td>//div[contains(@id,'item-finder')]//td[contains(.,'${key_entryName}')]</td>
 	<td></td>
 </tr>
+<tr>
+	<td>OPTION_TABLE_CHECK</td>
+	<td>//div[(text() = '${key_table}')]//..//..//..//a[(text() = "${key_entryName}")]</td>
+	<td></td>
+</tr>
 <!--IFRAME-->
 <tr>
 	<td>IFRAME_SIDE_PANEL</td>
@@ -587,6 +653,11 @@
 <tr>
 	<td>ANY_IFRAME</td>
 	<td>//iframe[@title='${key_frameTitle}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SIDE_PANEL_IFRAME_TITLE</td>
+	<td>//div[@class='side-panel-iframe-title']//h3</td>
 	<td></td>
 </tr>
 <!--PRICE-->
@@ -662,6 +733,11 @@
 <tr>
 	<td>ASSERT_COLUMN_STATUS_TAX_CALCULATIONS</td>
 	<td>//a[contains(text(),'${key_nameColumn}')]/../../..//span[contains(text(),'')]//span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SELECT_ASSERT_SELECTED_VALUE</td>
+	<td>//label[contains(.,'${key_fieldLabel}')]/../select/option[@selected and contains(.,'${key_value}')]</td>
 	<td></td>
 </tr>
 <!--PRODUCT-->
@@ -788,7 +864,7 @@
 </tr>
 <tr>
 	<td>VALUE_PRODUCT_RELATIONS</td>
-	<td>//a[contains(text(),'${key_productName}')]/../../..//div[contains(@class,'dnd-td') and contains(text(),'${key_Value}')]</td>
+	<td>//a[contains(text(),'${key_productName}')]/../../..//div[contains(@class,'dnd-td') and (text()='${key_Value}')]</td>
 	<td></td>
 </tr>
 <tr>

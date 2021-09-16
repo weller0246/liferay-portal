@@ -4,12 +4,3 @@ dependencies {
 	compileOnly project(":core:osgi-service-tracker-collections")
 	compileOnly project(":core:registry-api")
 }
-
-deployDependencies {
-	from configurations.compileOnly
-	include "org.eclipse.osgi-*.jar"
-}
-
-liferay {
-	deployDir = file("${liferayHome}/osgi/core")
-}

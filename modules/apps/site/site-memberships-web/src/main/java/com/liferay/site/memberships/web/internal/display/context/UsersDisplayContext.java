@@ -160,7 +160,7 @@ public class UsersDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setMVCPath(
 			"/view.jsp"
@@ -172,49 +172,75 @@ public class UsersDisplayContext {
 
 				return themeDisplay.getURLCurrent();
 			}
+		).setKeywords(
+			() -> {
+				String keywords = getKeywords();
+
+				if (Validator.isNotNull(keywords)) {
+					return keywords;
+				}
+
+				return null;
+			}
+		).setNavigation(
+			() -> {
+				String navigation = getNavigation();
+
+				if (Validator.isNotNull(navigation)) {
+					return navigation;
+				}
+
+				return null;
+			}
 		).setTabs1(
 			"users"
 		).setParameter(
+			"displayStyle",
+			() -> {
+				String displayStyle = getDisplayStyle();
+
+				if (Validator.isNotNull(displayStyle)) {
+					return displayStyle;
+				}
+
+				return null;
+			}
+		).setParameter(
 			"groupId", getGroupId()
-		).build();
+		).setParameter(
+			"orderByCol",
+			() -> {
+				String orderByCol = getOrderByCol();
 
-		Role role = getRole();
+				if (Validator.isNotNull(orderByCol)) {
+					return orderByCol;
+				}
 
-		if (role != null) {
-			portletURL.setParameter("roleId", String.valueOf(role.getRoleId()));
-		}
+				return null;
+			}
+		).setParameter(
+			"orderByType",
+			() -> {
+				String orderByType = getOrderByType();
 
-		String displayStyle = getDisplayStyle();
+				if (Validator.isNotNull(orderByType)) {
+					return orderByType;
+				}
 
-		if (Validator.isNotNull(displayStyle)) {
-			portletURL.setParameter("displayStyle", displayStyle);
-		}
+				return null;
+			}
+		).setParameter(
+			"roleId",
+			() -> {
+				Role role = getRole();
 
-		String keywords = getKeywords();
+				if (role != null) {
+					return role.getRoleId();
+				}
 
-		if (Validator.isNotNull(keywords)) {
-			portletURL.setParameter("keywords", keywords);
-		}
-
-		String navigation = getNavigation();
-
-		if (Validator.isNotNull(navigation)) {
-			portletURL.setParameter("navigation", navigation);
-		}
-
-		String orderByCol = getOrderByCol();
-
-		if (Validator.isNotNull(orderByCol)) {
-			portletURL.setParameter("orderByCol", orderByCol);
-		}
-
-		String orderByType = getOrderByType();
-
-		if (Validator.isNotNull(orderByType)) {
-			portletURL.setParameter("orderByType", orderByType);
-		}
-
-		return portletURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	public Role getRole() {
@@ -266,17 +292,21 @@ public class UsersDisplayContext {
 				"inherit", Boolean.TRUE
 			).put(
 				"usersGroups", Long.valueOf(getGroupId())
-			).build();
-
-		Role role = getRole();
-
-		if (role != null) {
-			userParams.put(
+			).put(
 				"userGroupRole",
-				new Long[] {
-					Long.valueOf(getGroupId()), Long.valueOf(role.getRoleId())
-				});
-		}
+				() -> {
+					Role role = getRole();
+
+					if (role != null) {
+						return new Long[] {
+							Long.valueOf(getGroupId()),
+							Long.valueOf(role.getRoleId())
+						};
+					}
+
+					return null;
+				}
+			).build();
 
 		int usersCount = 0;
 		List<User> users = Collections.emptyList();

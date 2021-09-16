@@ -18,7 +18,7 @@
 			</then>
 		</elseif>
 		<else>
-			<property name="elasticsearch.version" value="7.12.0" />
+			<property name="elasticsearch.version" value="7.14.1" />
 		</else>
 	</if>
 
@@ -44,12 +44,12 @@
 	<property name="elasticsearch.tar.url.linux" value="https://artifacts.elastic.co/downloads/elasticsearch/${elasticsearch.tar.name.linux}" />
 	<property name="elasticsearch.tar.url.mac" value="https://artifacts.elastic.co/downloads/elasticsearch/${elasticsearch.tar.name.mac}" />
 	<property name="elasticsearch.zip.url.windows" value="https://artifacts.elastic.co/downloads/elasticsearch/${elasticsearch.zip.name.windows}" />
-	<property name="elasticsearch.sidecar.version" value="7.9.0" />
+	<property name="elasticsearch.sidecar.version" value="7.14.1" />
 	<property name="elasticsearch.sidecar.analysis-icu.zip.url" value="https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-icu/analysis-icu-${elasticsearch.sidecar.version}.zip" />
 	<property name="elasticsearch.sidecar.analysis-kuromoji.zip.url" value="https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-kuromoji/analysis-kuromoji-${elasticsearch.sidecar.version}.zip" />
 	<property name="elasticsearch.sidecar.analysis-smartcn.zip.url" value="https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-smartcn/analysis-smartcn-${elasticsearch.sidecar.version}.zip" />
 	<property name="elasticsearch.sidecar.analysis-stempel.zip.url" value="https://artifacts.elastic.co/downloads/elasticsearch-plugins/analysis-stempel/analysis-stempel-${elasticsearch.sidecar.version}.zip" />
-	<property name="elasticsearch.sidecar.no.jdk.tar.url" value="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-oss-${elasticsearch.sidecar.version}-no-jdk-linux-x86_64.tar.gz" />
+	<property name="elasticsearch.sidecar.no.jdk.tar.url" value="https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-${elasticsearch.sidecar.version}-no-jdk-linux-x86_64.tar.gz" />
 
 	<macrodef name="check-elasticsearch-security">
 		<attribute name="authentication.type" />
@@ -587,7 +587,9 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 		<sequential>
 			<lstopwatch action="start" name="prepare.elasticsearch.ltr" />
 
-			<property name="elasticsearch.ltr.zip.name" value="ltr-plugin-v1.5.0-es${elasticsearch.version}.zip" />
+			<property name="ltr.plugin.version" value="1.5.7" />
+
+			<property name="elasticsearch.ltr.zip.name" value="ltr-plugin-v${ltr.plugin.version}-es${elasticsearch.version}.zip" />
 
 			<if>
 				<not>
@@ -597,7 +599,7 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 					<mirrors-get
 						dest="${elasticsearch.dir}/${elasticsearch.ltr.zip.name}"
 						skipChecksum="true"
-						src="http://es-learn-to-rank.labs.o19s.com/${elasticsearch.ltr.zip.name}"
+						src="https://github.com/o19s/elasticsearch-learning-to-rank/releases/download/v${ltr.plugin.version}-es${elasticsearch.version}/${elasticsearch.ltr.zip.name}"
 					/>
 				</then>
 			</if>
@@ -905,7 +907,12 @@ ${line.separator}CATALINA_OPTS="${CATALINA_OPTS} -Djavax.net.ssl.trustStore=${el
 			</if>
 
 			<if>
-				<os family="unix" />
+				<and>
+					<not>
+						<os family="mac" />
+					</not>
+					<os family="unix" />
+				</and>
 				<then>
 					<if>
 						<not>

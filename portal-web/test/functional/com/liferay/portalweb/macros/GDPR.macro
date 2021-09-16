@@ -107,6 +107,34 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro anonymizeMultipleEntriesCP {
+		for (var rowEntry : list "${rowEntry}") {
+			LexiconEntry.selectEntry(rowEntry = "${rowEntry}");
+		}
+
+		Click(locator1 = "Icon#TOOLBAR_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Anonymize");
+
+		AssertConfirm.assertConfirmationNoError(value1 = "Are you sure you want to anonymize the selected items?");
+
+		Alert.viewSuccessMessage();
+	}
+
+	macro anonymizeSingleEntryViaInfoPanel {
+		LexiconEntry.selectEntry(rowEntry = "${rowEntry}");
+
+		Click.clickAt(locator1 = "Icon#INFO");
+
+		Click(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Anonymize");
+
+		AssertConfirm(value1 = "Are you sure you want to anonymize this entity?");
+
+		Alert.viewSuccessMessage();
+	}
+
 	macro deleteAllEntriesCP {
 		PortletEntry.selectAll();
 
@@ -117,6 +145,34 @@ definition {
 		AssertConfirm.assertConfirmationNoError(value1 = "Are you sure you want to delete the selected items?");
 
 		Alert.viewSuccessMessage();
+	}
+
+	macro deleteAndAnonymizeAllEntriesCP {
+		GDPR.filterByApplications(
+			applications = "All Applications",
+			itemsCount = "${itemsCount}");
+
+		GDPR.deleteAllEntriesCP();
+
+		GDPR.viewNoEntryInApplicationCP(applications = "All Applications");
+
+		Navigator.gotoNavTab(navTab = "Auto Anonymize Data");
+
+		var key_text = "Anonymize";
+
+		AssertClickNoError(
+			locator1 = "Button#ANY",
+			value1 = "Anonymize");
+
+		AssertConfirm.assertConfirmationNoError(value1 = "Are you sure you want to anonymize the user's personal data?");
+
+		AssertConfirm.assertConfirmationNoError(value1 = "All personal data associated with this user's applications has been deleted or anonymized. The user can now be deleted. Click OK to delete the user.");
+
+		Alert.viewSuccessMessage();
+
+		User.openUsersAdmin();
+
+		LexiconEntry.viewNoEntry(rowEntry = "${userName}");
 	}
 
 	macro deleteMultipleEntriesCP {

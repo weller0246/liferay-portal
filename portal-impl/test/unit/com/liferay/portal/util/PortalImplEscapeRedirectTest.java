@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.registry.BasicRegistryImpl;
-import com.liferay.registry.RegistryUtil;
 
 import java.util.Set;
 
@@ -54,8 +52,6 @@ public class PortalImplEscapeRedirectTest {
 			).put(
 				PropsKeys.DNS_SECURITY_THREAD_LIMIT, String.valueOf(10)
 			).build());
-
-		RegistryUtil.setRegistry(new BasicRegistryImpl());
 	}
 
 	@Before
@@ -93,6 +89,7 @@ public class PortalImplEscapeRedirectTest {
 			"web/http:", _portalImpl.escapeRedirect("web/http:"));
 		Assert.assertEquals(
 			"test@google.com", _portalImpl.escapeRedirect("test@google.com"));
+		Assert.assertNull(_portalImpl.escapeRedirect("///liferay.com"));
 
 		// Relative path with protocol
 
@@ -205,6 +202,18 @@ public class PortalImplEscapeRedirectTest {
 			ReflectionTestUtil.setFieldValue(
 				PropsValues.class, "DNS_SECURITY_ADDRESS_TIMEOUT_SECONDS", 2);
 		}
+	}
+
+	@Test
+	public void testEscapeRedirectWithRelativeURL() throws Exception {
+		Assert.assertEquals(
+			"user/test/~/control_panel/manage/-/select/image%2Clurl/",
+			_portalImpl.escapeRedirect(
+				"user/test/~/control_panel/manage/-/select/image%2Clurl/"));
+		Assert.assertEquals(
+			"user/test/~/control_panel/manage/-/select/image,url/",
+			_portalImpl.escapeRedirect(
+				"user/test/~/control_panel/manage/-/select/image,url/"));
 	}
 
 	@Test

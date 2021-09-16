@@ -406,10 +406,13 @@ public class DLReferencesExportImportContentProcessor
 
 				String path = ExportImportPathUtil.getModelPath(fileEntry);
 
-				StringBundler exportedReferenceSB = new StringBundler(6);
+				StringBundler exportedReferenceSB = new StringBundler(10);
 
 				exportedReferenceSB.append("[$dl-reference=");
 				exportedReferenceSB.append(path);
+				exportedReferenceSB.append("$,$include-uuid=");
+				exportedReferenceSB.append(
+					dlReferenceParameters.containsKey("uuid"));
 				exportedReferenceSB.append("$]");
 
 				if (fileEntry.isInTrash()) {
@@ -417,6 +420,9 @@ public class DLReferencesExportImportContentProcessor
 
 					exportedReferenceSB.append("[#dl-reference=");
 					exportedReferenceSB.append(originalReference);
+					exportedReferenceSB.append("#,#include-uuid=");
+					exportedReferenceSB.append(
+						dlReferenceParameters.containsKey("uuid"));
 					exportedReferenceSB.append("#]");
 				}
 
@@ -486,7 +492,11 @@ public class DLReferencesExportImportContentProcessor
 					groupId, className, classPK);
 			}
 
-			while (content.contains("[$dl-reference=" + path + "$]")) {
+			while (content.contains(
+						"[$dl-reference=" + path + "$,$include-uuid=false$]") ||
+				   content.contains(
+					   "[$dl-reference=" + path + "$,$include-uuid=true$]")) {
+
 				try {
 					StagedModelDataHandlerUtil.importReferenceStagedModel(
 						portletDataContext, stagedModel, DLFileEntry.class,
@@ -572,15 +582,29 @@ public class DLReferencesExportImportContentProcessor
 						0, url.lastIndexOf(StringPool.QUESTION));
 				}
 
-				String exportedReference = "[$dl-reference=" + path + "$]";
+				String urlWithoutUUID = url.substring(
+					0, url.lastIndexOf(StringPool.SLASH));
+
+				String exportedReferenceWithoutUUID =
+					"[$dl-reference=" + path + "$,$include-uuid=false$]";
+				String exportedReferenceWithUUID =
+					"[$dl-reference=" + path + "$,$include-uuid=true$]";
 
 				if (content.startsWith("[#dl-reference=", endPos)) {
-					endPos = content.indexOf("#]", beginPos) + 2;
+					endPos = content.indexOf("#,#include-uuid=", beginPos) + 2;
 
-					exportedReference = content.substring(beginPos, endPos);
+					exportedReferenceWithoutUUID =
+						content.substring(beginPos, endPos) +
+							"#include-uuid=false#]";
+					exportedReferenceWithUUID =
+						content.substring(beginPos, endPos) +
+							"#include-uuid=true#]";
 				}
 
-				content = StringUtil.replace(content, exportedReference, url);
+				content = StringUtil.replace(
+					content, exportedReferenceWithUUID, url);
+				content = StringUtil.replace(
+					content, exportedReferenceWithoutUUID, urlWithoutUUID);
 			}
 		}
 

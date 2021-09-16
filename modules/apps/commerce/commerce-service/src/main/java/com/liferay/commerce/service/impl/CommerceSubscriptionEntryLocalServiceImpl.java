@@ -14,7 +14,6 @@
 
 package com.liferay.commerce.service.impl;
 
-import com.liferay.commerce.constants.CommerceDestinationNames;
 import com.liferay.commerce.constants.CommerceSubscriptionEntryConstants;
 import com.liferay.commerce.constants.CommerceSubscriptionNotificationConstants;
 import com.liferay.commerce.exception.CommerceSubscriptionEntryNextIterationDateException;
@@ -31,8 +30,10 @@ import com.liferay.commerce.product.util.CPSubscriptionType;
 import com.liferay.commerce.product.util.CPSubscriptionTypeRegistry;
 import com.liferay.commerce.service.base.CommerceSubscriptionEntryLocalServiceBaseImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.User;
@@ -64,7 +65,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.Callable;
 
 /**
@@ -673,34 +673,25 @@ public class CommerceSubscriptionEntryLocalServiceImpl
 
 		SearchContext searchContext = new SearchContext();
 
-		Map<String, Serializable> attributes =
+		searchContext.setAttributes(
 			HashMapBuilder.<String, Serializable>put(
 				CommerceSubscriptionEntryIndexer.FIELD_CP_INSTANCE_ID, keywords
 			).put(
+				CommerceSubscriptionEntryIndexer.FIELD_MAX_SUBSCRIPTION_CYCLES,
+				() -> maxSubscriptionCycles
+			).put(
 				CommerceSubscriptionEntryIndexer.FIELD_SKU, keywords
 			).put(
-				Field.ENTRY_CLASS_PK, keywords
-			).build();
-
-		if (maxSubscriptionCycles != null) {
-			attributes.put(
-				CommerceSubscriptionEntryIndexer.FIELD_MAX_SUBSCRIPTION_CYCLES,
-				maxSubscriptionCycles);
-		}
-
-		if (subscriptionStatus != null) {
-			attributes.put(
 				CommerceSubscriptionEntryIndexer.FIELD_SUBSCRIPTION_STATUS,
-				subscriptionStatus);
-		}
-
-		attributes.put(
-			"params",
-			LinkedHashMapBuilder.<String, Object>put(
-				"keywords", keywords
+				() -> subscriptionStatus
+			).put(
+				Field.ENTRY_CLASS_PK, keywords
+			).put(
+				"params",
+				LinkedHashMapBuilder.<String, Object>put(
+					"keywords", keywords
+				).build()
 			).build());
-
-		searchContext.setAttributes(attributes);
 
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
@@ -797,13 +788,16 @@ public class CommerceSubscriptionEntryLocalServiceImpl
 				public Void call() throws Exception {
 					Message message = new Message();
 
-					message.put(
-						"commerceSubscriptionEntryId",
-						commerceSubscriptionEntryId);
-					message.put("subscriptionStatus", subscriptionStatus);
+					message.setPayload(
+						JSONUtil.put(
+							"commerceSubscriptionEntryId",
+							commerceSubscriptionEntryId
+						).put(
+							"subscriptionStatus", subscriptionStatus
+						));
 
 					MessageBusUtil.sendMessage(
-						CommerceDestinationNames.SUBSCRIPTION_STATUS, message);
+						DestinationNames.COMMERCE_SUBSCRIPTION_STATUS, message);
 
 					return null;
 				}

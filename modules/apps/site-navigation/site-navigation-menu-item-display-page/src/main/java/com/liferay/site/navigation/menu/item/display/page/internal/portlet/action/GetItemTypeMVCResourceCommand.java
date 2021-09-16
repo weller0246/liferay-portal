@@ -40,8 +40,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.site.navigation.admin.constants.SiteNavigationAdminPortletKeys;
 
-import java.util.Collection;
-
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
@@ -111,41 +109,37 @@ public class GetItemTypeMVCResourceCommand extends BaseMVCResourceCommand {
 
 		String className = _portal.getClassName(classNameId);
 
-		InfoItemFormVariationsProvider infoItemFormVariationsProvider =
+		InfoItemFormVariationsProvider<?> infoItemFormVariationsProvider =
 			_infoItemServiceTracker.getFirstInfoItemService(
 				InfoItemFormVariationsProvider.class, className);
 
-		if (infoItemFormVariationsProvider != null) {
-			LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
-				_layoutDisplayPageProviderTracker.
-					getLayoutDisplayPageProviderByClassName(className);
+		if (infoItemFormVariationsProvider == null) {
+			return StringPool.BLANK;
+		}
 
-			if (layoutDisplayPageProvider == null) {
-				return null;
-			}
+		LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
+			_layoutDisplayPageProviderTracker.
+				getLayoutDisplayPageProviderByClassName(className);
 
-			LayoutDisplayPageObjectProvider layoutDisplayPageObjectProvider =
-				layoutDisplayPageProvider.getLayoutDisplayPageObjectProvider(
-					new InfoItemReference(className, classPK));
+		if (layoutDisplayPageProvider == null) {
+			return StringPool.BLANK;
+		}
 
-			if (layoutDisplayPageObjectProvider == null) {
-				return StringPool.BLANK;
-			}
+		LayoutDisplayPageObjectProvider<?> layoutDisplayPageObjectProvider =
+			layoutDisplayPageProvider.getLayoutDisplayPageObjectProvider(
+				new InfoItemReference(className, classPK));
 
-			Collection<InfoItemFormVariation> infoItemFormVariations =
-				infoItemFormVariationsProvider.getInfoItemFormVariations(
-					layoutDisplayPageObjectProvider.getGroupId());
+		if (layoutDisplayPageObjectProvider == null) {
+			return StringPool.BLANK;
+		}
 
-			for (InfoItemFormVariation infoItemFormVariation :
-					infoItemFormVariations) {
+		InfoItemFormVariation infoItemFormVariation =
+			infoItemFormVariationsProvider.getInfoItemFormVariation(
+				layoutDisplayPageObjectProvider.getGroupId(),
+				String.valueOf(classTypeId));
 
-				String key = infoItemFormVariation.getKey();
-
-				if (key.equals(String.valueOf(classTypeId))) {
-					return infoItemFormVariation.getLabel(
-						themeDisplay.getLocale());
-				}
-			}
+		if (infoItemFormVariation != null) {
+			return infoItemFormVariation.getLabel(themeDisplay.getLocale());
 		}
 
 		return StringPool.BLANK;

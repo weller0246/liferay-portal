@@ -16,6 +16,13 @@ import {config} from '../config/index';
 import serviceFetch from './serviceFetch';
 
 export default {
+	getCollectionConfiguration(collection) {
+		return serviceFetch(config.getCollectionConfigurationURL, {
+			body: {
+				collectionKey: collection.key,
+			},
+		});
+	},
 
 	/**
 	 * Get an asset's value
@@ -63,6 +70,18 @@ export default {
 		return serviceFetch(config.getCollectionFiltersURL, {}, () => {});
 	},
 
+	getCollectionItemCount({collection, onNetworkStatus}) {
+		return serviceFetch(
+			config.getCollectionItemCountURL,
+			{
+				body: {
+					layoutObjectReference: JSON.stringify(collection),
+				},
+			},
+			onNetworkStatus
+		);
+	},
+
 	/**
 	 * Get available collection mapping fields
 	 * @param {object} options
@@ -81,6 +100,18 @@ export default {
 				},
 			},
 			onNetworkStatus
+		);
+	},
+
+	/**
+	 * @param {Array<{collectionId: string}>} collections
+	 * @returns {Promise<string[]>}
+	 */
+	getCollectionSupportedFilters(collections) {
+		return serviceFetch(
+			config.getCollectionSupportedFiltersURL,
+			{body: {collections: JSON.stringify(collections)}},
+			() => {}
 		);
 	},
 };

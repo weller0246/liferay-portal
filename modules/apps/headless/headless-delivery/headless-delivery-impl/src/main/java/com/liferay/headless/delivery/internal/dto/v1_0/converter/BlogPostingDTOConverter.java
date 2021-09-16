@@ -96,6 +96,7 @@ public class BlogPostingDTOConverter
 				dateModified = blogsEntry.getModifiedDate();
 				datePublished = blogsEntry.getDisplayDate();
 				encodingFormat = "text/html";
+				externalReferenceCode = blogsEntry.getExternalReferenceCode();
 				friendlyUrlPath = blogsEntry.getUrlTitle();
 				headline = blogsEntry.getTitle();
 				id = blogsEntry.getEntryId();
@@ -143,6 +144,7 @@ public class BlogPostingDTOConverter
 						_layoutPageTemplateEntryService,
 						"getBlogPostingRenderedContentByDisplayPageDisplay" +
 							"PageKey"));
+				viewableBy = ViewableBy.ANYONE;
 			}
 		};
 	}

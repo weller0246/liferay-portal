@@ -33,7 +33,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -242,18 +241,17 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 	public void testGetDiscountByExternalReferenceCodeDiscountAccountGroupsPage()
 		throws Exception {
 
-		Page<DiscountAccountGroup> page =
-			discountAccountGroupResource.
-				getDiscountByExternalReferenceCodeDiscountAccountGroupsPage(
-					testGetDiscountByExternalReferenceCodeDiscountAccountGroupsPage_getExternalReferenceCode(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String externalReferenceCode =
 			testGetDiscountByExternalReferenceCodeDiscountAccountGroupsPage_getExternalReferenceCode();
 		String irrelevantExternalReferenceCode =
 			testGetDiscountByExternalReferenceCodeDiscountAccountGroupsPage_getIrrelevantExternalReferenceCode();
+
+		Page<DiscountAccountGroup> page =
+			discountAccountGroupResource.
+				getDiscountByExternalReferenceCodeDiscountAccountGroupsPage(
+					externalReferenceCode, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantExternalReferenceCode != null) {
 			DiscountAccountGroup irrelevantDiscountAccountGroup =
@@ -285,7 +283,7 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 		page =
 			discountAccountGroupResource.
 				getDiscountByExternalReferenceCodeDiscountAccountGroupsPage(
-					externalReferenceCode, Pagination.of(1, 2));
+					externalReferenceCode, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -409,16 +407,15 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 
 	@Test
 	public void testGetDiscountIdDiscountAccountGroupsPage() throws Exception {
-		Page<DiscountAccountGroup> page =
-			discountAccountGroupResource.getDiscountIdDiscountAccountGroupsPage(
-				testGetDiscountIdDiscountAccountGroupsPage_getId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long id = testGetDiscountIdDiscountAccountGroupsPage_getId();
 		Long irrelevantId =
 			testGetDiscountIdDiscountAccountGroupsPage_getIrrelevantId();
+
+		Page<DiscountAccountGroup> page =
+			discountAccountGroupResource.getDiscountIdDiscountAccountGroupsPage(
+				id, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantId != null) {
 			DiscountAccountGroup irrelevantDiscountAccountGroup =
@@ -448,7 +445,7 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 
 		page =
 			discountAccountGroupResource.getDiscountIdDiscountAccountGroupsPage(
-				id, Pagination.of(1, 2));
+				id, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -567,6 +564,25 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		DiscountAccountGroup discountAccountGroup,
+		List<DiscountAccountGroup> discountAccountGroups) {
+
+		boolean contains = false;
+
+		for (DiscountAccountGroup item : discountAccountGroups) {
+			if (equals(discountAccountGroup, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			discountAccountGroups + " does not contain " + discountAccountGroup,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1125,8 +1141,8 @@ public abstract class BaseDiscountAccountGroupResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDiscountAccountGroupResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDiscountAccountGroupResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

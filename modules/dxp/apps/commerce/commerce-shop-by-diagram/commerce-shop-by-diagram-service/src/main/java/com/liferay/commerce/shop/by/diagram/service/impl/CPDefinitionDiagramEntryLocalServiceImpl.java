@@ -21,6 +21,8 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.search.Indexable;
+import com.liferay.portal.kernel.search.IndexableType;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 
@@ -41,16 +43,17 @@ import org.osgi.service.component.annotations.Component;
 public class CPDefinitionDiagramEntryLocalServiceImpl
 	extends CPDefinitionDiagramEntryLocalServiceBaseImpl {
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public CPDefinitionDiagramEntry addCPDefinitionDiagramEntry(
 			long userId, long cpDefinitionId, String cpInstanceUuid,
-			long cProductId, boolean diagram, int number, int quantity,
+			long cProductId, boolean diagram, int quantity, String sequence,
 			String sku, ServiceContext serviceContext)
 		throws PortalException {
 
 		User user = userLocalService.getUser(userId);
 
-		validate(null, cpDefinitionId, number);
+		validate(null, cpDefinitionId, sequence);
 
 		long cpDefinitionDiagramEntryId = counterLocalService.increment();
 
@@ -65,8 +68,8 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 		cpDefinitionDiagramEntry.setCPInstanceUuid(cpInstanceUuid);
 		cpDefinitionDiagramEntry.setCProductId(cProductId);
 		cpDefinitionDiagramEntry.setDiagram(diagram);
-		cpDefinitionDiagramEntry.setNumber(number);
 		cpDefinitionDiagramEntry.setQuantity(quantity);
+		cpDefinitionDiagramEntry.setSequence(sequence);
 		cpDefinitionDiagramEntry.setSku(sku);
 		cpDefinitionDiagramEntry.setExpandoBridgeAttributes(serviceContext);
 
@@ -88,6 +91,7 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 		}
 	}
 
+	@Indexable(type = IndexableType.DELETE)
 	@Override
 	@SystemEvent(type = SystemEventConstants.TYPE_DELETE)
 	public CPDefinitionDiagramEntry deleteCPDefinitionDiagramEntry(
@@ -100,6 +104,15 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 			cpDefinitionDiagramEntry.getCPDefinitionDiagramEntryId());
 
 		return cpDefinitionDiagramEntry;
+	}
+
+	@Override
+	public CPDefinitionDiagramEntry fetchCPDefinitionDiagramEntry(
+			long cpDefinitionId, String sequence)
+		throws PortalException {
+
+		return cpDefinitionDiagramEntryPersistence.fetchByCPDI_S(
+			cpDefinitionId, sequence);
 	}
 
 	@Override
@@ -116,19 +129,20 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 			cpDefinitionId);
 	}
 
+	@Indexable(type = IndexableType.REINDEX)
 	@Override
 	public CPDefinitionDiagramEntry getCPDefinitionDiagramEntry(
-			long cpDefinitionId, int number)
+			long cpDefinitionId, String sequence)
 		throws PortalException {
 
-		return cpDefinitionDiagramEntryPersistence.findByCPDI_N(
-			cpDefinitionId, number);
+		return cpDefinitionDiagramEntryPersistence.findByCPDI_S(
+			cpDefinitionId, sequence);
 	}
 
 	@Override
 	public CPDefinitionDiagramEntry updateCPDefinitionDiagramEntry(
 			long cpDefinitionDiagramEntryId, String cpInstanceUuid,
-			long cProductId, boolean diagram, int number, int quantity,
+			long cProductId, boolean diagram, int quantity, String sequence,
 			String sku, ServiceContext serviceContext)
 		throws PortalException {
 
@@ -138,13 +152,13 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 
 		validate(
 			cpDefinitionDiagramEntry,
-			cpDefinitionDiagramEntry.getCPDefinitionId(), number);
+			cpDefinitionDiagramEntry.getCPDefinitionId(), sequence);
 
 		cpDefinitionDiagramEntry.setCPInstanceUuid(cpInstanceUuid);
 		cpDefinitionDiagramEntry.setCProductId(cProductId);
 		cpDefinitionDiagramEntry.setDiagram(diagram);
-		cpDefinitionDiagramEntry.setNumber(number);
 		cpDefinitionDiagramEntry.setQuantity(quantity);
+		cpDefinitionDiagramEntry.setSequence(sequence);
 		cpDefinitionDiagramEntry.setSku(sku);
 		cpDefinitionDiagramEntry.setExpandoBridgeAttributes(serviceContext);
 
@@ -154,12 +168,12 @@ public class CPDefinitionDiagramEntryLocalServiceImpl
 
 	protected void validate(
 			CPDefinitionDiagramEntry oldCPDefinitionDiagramEntry,
-			long cpDefinitionId, int number)
+			long cpDefinitionId, String sequence)
 		throws PortalException {
 
 		CPDefinitionDiagramEntry cpDefinitionDiagramEntry =
-			cpDefinitionDiagramEntryPersistence.fetchByCPDI_N(
-				cpDefinitionId, number);
+			cpDefinitionDiagramEntryPersistence.fetchByCPDI_S(
+				cpDefinitionId, sequence);
 
 		if (!Objects.equals(
 				oldCPDefinitionDiagramEntry, cpDefinitionDiagramEntry)) {

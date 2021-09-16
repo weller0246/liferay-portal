@@ -1,6 +1,9 @@
 @component-name = "portal-staging"
 definition {
 
+	property app.server.bundles.size = "1";
+	property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
+	property databases.size = "1";
 	property portal.release = "true";
 	property portal.upstream = "true";
 	property testray.main.component.name = "Staging";
@@ -32,12 +35,56 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-123156."
+	@priority = "4"
+	test AssertLongPublicationProcessMessage {
+		property test.name.skip.portal.instance = "RemoteStaging#AssertLongPublicationProcessMessage";
+
+		Clustering.runGroovyScript(
+			longTimeRun = "true",
+			nodePort = "8080",
+			scriptFile = "create-300-web-content-articles.groovy");
+
+		Staging.openStagingAdmin(siteURLKey = "site-name");
+
+		MouseOver.mouseOverNotVisible(locator1 = "Button#PLUS");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#TOOLTIP",
+			value1 = "Custom Publish Process");
+
+		Staging.publishCustomPublication(
+			headerTitle = "New Publish Process",
+			inProcess = "true",
+			remoteStaging = "true");
+	}
+
+	@description = "This is a use case for LPS-123156."
+	@priority = "4"
+	test AssertValidationErrors {
+		property test.name.skip.portal.instance = "RemoteStaging#AssertValidationErrors";
+
+		SitePages.openPagesAdmin(siteURLKey = "site-name");
+
+		SitePages.addPublicPage(pageName = "Second Test Page");
+
+		JSONGroup.deleteGroupByName(
+			groupName = "Remote Site",
+			portalURL = "http://localhost:9080");
+
+		Navigator.openSiteURL(siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive(
+			failureExpected = "true",
+			remoteStaging = "true",
+			validateErrorMessage = "An unexpected error occurred with the publish process. Please check your portal and publishing configuration.");
+	}
+
 	@description = "This is a use case for LPS-72545."
 	@priority = "4"
 	test PublishCustomFieldDeletionviaRemoteStaging {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#PublishCustomFieldDeletionviaRemoteStaging";
 
 		ApplicationsMenu.gotoPortlet(
@@ -218,9 +265,6 @@ definition {
 	@description = "This is a use case for LPS-80494."
 	@priority = "3"
 	test StagingRemoteDMDocumentType {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteDMDocumentType";
 
 		Navigator.openSiteURL(siteName = "Site Name");
@@ -299,77 +343,8 @@ definition {
 			assetTitle = "DM Document Type Title");
 	}
 
-	@description = "This is a use case for LPS-72478."
-	@priority = "5"
-	test StagingRemoteLivePolls {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
-		property portal.release = "false";
-		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteLivePolls";
-
-		Navigator.gotoSitePage(
-			pageName = "Staging Test Page",
-			siteName = "Site Name");
-
-		Portlet.addPG(portletName = "Polls Display");
-
-		Polls.addPollPG(
-			pollsQuestion = "Test Remote Staging Poll Display",
-			pollsQuestionChoiceA = "Yes",
-			pollsQuestionChoiceB = "No",
-			pollsQuestionTitle = "Remote Staging Polls Name");
-
-		Navigator.gotoSitePage(
-			pageName = "Staging Test Page",
-			siteName = "Site Name");
-
-		Polls.selectPollPG(pollsQuestionTitle = "Remote Staging Polls Name");
-
-		Navigator.gotoSitePage(
-			pageName = "Staging Test Page",
-			siteName = "Site Name");
-
-		Polls.viewPollPG(
-			pollsQuestion = "Test Remote Staging Poll Display",
-			pollsQuestionChoiceList = "Yes,No");
-
-		Polls.votePollPG(pollsQuestionChoice = "Yes");
-
-		Polls.viewVotedPollPG(
-			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
-			pollsQuestionVotePercent = "100%");
-
-		Staging.gotoPublishToLive();
-
-		Staging.publishToLive(remoteStaging = "true");
-
-		User.logoutPG();
-
-		User.firstLoginUI(
-			password = "test",
-			specificURL = "http://localhost:9080",
-			userEmailAddress = "test@liferay.com");
-
-		Navigator.gotoSitePage(
-			baseURL = "http://localhost:9080",
-			pageName = "Staging Test Page",
-			siteName = "Remote Site");
-
-		Polls.viewVotedPollPG(
-			pollsQuestionChoice = "Yes",
-			pollsQuestionTotalVotes = "1",
-			pollsQuestionVoteCount = "1",
-			pollsQuestionVotePercent = "100%");
-	}
-
 	@priority = "4"
 	test StagingRemoteLiveWebContent {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteLiveWebContent";
 
 		JSONLayout.addWidgetToPublicLayout(
@@ -483,9 +458,6 @@ definition {
 	@description = "This is a use case for LPS-82839."
 	@priority = "5"
 	test StagingRemoteLiveWebContentViaPortletCP {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteLiveWebContentViaPortletCP";
 
@@ -524,9 +496,6 @@ definition {
 	@description = "This is a use case for LPS-81950."
 	@priority = "5"
 	test StagingRemoteLiveWebContentViaPortletPG {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteLiveWebContentViaPortletPG";
 
 		Navigator.gotoSitePage(
@@ -589,9 +558,6 @@ definition {
 	@description = "This is a use case for LPS-81953"
 	@priority = "3"
 	test StagingRemoteLiveWebContentWithManualChosenID {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#StagingRemoteLiveWebContentWithManualChosenID";
 
 		ApplicationsMenu.gotoPortlet(
@@ -674,9 +640,6 @@ definition {
 	@description = "This is a use case for LPS-74038."
 	@priority = "5"
 	test ViewInfoMessageAfterShutDownRemoteSite {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#ViewInfoMessageAfterShutDownRemoteSite";
 
 		Clustering.shutdownSpecificServer(nodePort = "9080");
@@ -684,8 +647,8 @@ definition {
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		AssertVisible(
-			key_connectionInfo = "The connection to the remote live site cannot be established due to a network problem.",
-			locator1 = "Staging#STAGING_CONNECTION_TOOLTIP");
+			key_tooltipInfo = "The connection to the remote live site cannot be established due to a network problem.",
+			locator1 = "Staging#STAGING_TOOLTIP");
 
 		AssertElementNotPresent(locator1 = "Staging#STAGING_LINK_LIVE");
 
@@ -695,9 +658,6 @@ definition {
 	@description = "This is a use case for LPS-81836."
 	@priority = "4"
 	test ViewSingleAssetRemotePublication {
-		property app.server.bundles.size = "1";
-		property custom.properties = "tunneling.servlet.shared.secret=1234567890123456${line.separator}auth.verifier.TunnelAuthVerifier.hosts.allowed=";
-		property databases.size = "1";
 		property test.name.skip.portal.instance = "RemoteStaging#ViewSingleAssetRemotePublication";
 
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");

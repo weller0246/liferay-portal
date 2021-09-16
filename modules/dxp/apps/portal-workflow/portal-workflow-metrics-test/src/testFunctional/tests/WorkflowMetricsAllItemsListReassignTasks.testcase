@@ -199,6 +199,8 @@ definition {
 
 		Refresh();
 
+		Click(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_ASSIGNEE_HEADER");
+
 		Click(
 			locator1 = "WorkflowAllItems#KEBAB_DROPDOWN",
 			task = "1");
@@ -266,24 +268,6 @@ definition {
 			value1 = "Test Test");
 	}
 
-	@description = "LPS-102664 - Verify that when the user clicks on Next in Select Tasks to Reassign, and the connection is lost, a corresponding error message is displayed"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test ErrorMessageIsDisplayedWhenConnectionIsLost {
-
-		// TODO LRQA-67841 ErrorMessageIsDisplayedWhenConnectionIsLost pending implementation
-
-	}
-
-	@description = "LPS-102664 - Verify that when the user clicks on Reassign in Select New Assignee, and the connection is lost, a corresponding error message is displayed"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test ErrorMessageIsDisplayedWhenConnectionIsLostOnReassign {
-
-		// TODO LRQA-67837 ErrorMessageIsDisplayedWhenConnectionIsLostOnReassign pending implementation
-
-	}
-
 	@description = "LPS-106219 - Verify that, in the modal Select Tasks to Reassign, the filters options are ordered alphabetically"
 	@ignore = "Test Stub"
 	@priority = "3"
@@ -325,6 +309,8 @@ definition {
 		Pause(locator1 = "1000");
 
 		Refresh();
+
+		Click(locator1 = "WorkflowAllItems#WORKFLOW_ALL_ITEMS_ASSIGNEE_HEADER");
 
 		Click(
 			locator1 = "WorkflowAllItems#KEBAB_DROPDOWN",
@@ -508,15 +494,6 @@ definition {
 			workflowInstanceName = "Blogs Entry: Blogs Entry Title");
 	}
 
-	@description = "LPS-102664 - Verify that when the user clicks on Next in Select Tasks to Reassign, a loading state with Retrieving all possible assignees message is displayed"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test LoadingStateWithMessageIsDisplayed {
-
-		// TODO LRQA-67846 LoadingStateWithMessageIsDisplayed pending implementation
-
-	}
-
 	@description = "LPS-102664 - Verify that in Select Tasks to Reassign, the tasks are displayed in the same order rule displayed in All Items page"
 	@priority = "3"
 	test TasksAreDisplayedInSameOrderRuleInAllItemsPage {
@@ -645,7 +622,7 @@ definition {
 			portlet = "Process Builder");
 
 		Workflow.uploadDefinition(
-			workflowDefinitionFile = "multi-task-process.xml",
+			workflowDefinitionFile = "multi-task-process-workflow-definition.xml",
 			workflowDefinitionTitle = "Multi Task Process");
 
 		Navigator.gotoNavItem(navItem = "Configuration");

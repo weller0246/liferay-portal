@@ -29,7 +29,6 @@ import com.liferay.commerce.price.list.service.persistence.CommercePriceEntryPer
 import com.liferay.commerce.price.list.util.comparator.CommerceTierPriceEntryMinQuantityComparator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanReference;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -352,16 +351,11 @@ public class CommerceTierPriceEntryLocalServiceImpl
 				expirationDateMinute, neverExpire, serviceContext);
 		}
 
-		StringBundler sb = new StringBundler(6);
-
-		sb.append("{commercePriceEntryId=");
-		sb.append(commercePriceEntryId);
-		sb.append(StringPool.COMMA_AND_SPACE);
-		sb.append("priceEntryExternalReferenceCode=");
-		sb.append(priceEntryExternalReferenceCode);
-		sb.append(CharPool.CLOSE_CURLY_BRACE);
-
-		throw new NoSuchPriceEntryException(sb.toString());
+		throw new NoSuchPriceEntryException(
+			StringBundler.concat(
+				"{commercePriceEntryId=", commercePriceEntryId,
+				", priceEntryExternalReferenceCode=",
+				priceEntryExternalReferenceCode, CharPool.CLOSE_CURLY_BRACE));
 	}
 
 	/**
@@ -528,7 +522,7 @@ public class CommerceTierPriceEntryLocalServiceImpl
 
 		try {
 			commerceTierPriceEntry =
-				commerceTierPriceEntryPersistence.findByC_LtM_S_First(
+				commerceTierPriceEntryPersistence.findByC_LteM_S_First(
 					commercePriceEntryId, quantity,
 					WorkflowConstants.STATUS_APPROVED,
 					new CommerceTierPriceEntryMinQuantityComparator(false));
@@ -548,7 +542,7 @@ public class CommerceTierPriceEntryLocalServiceImpl
 	public List<CommerceTierPriceEntry> findCommerceTierPriceEntries(
 		long commercePriceEntryId, int quantity) {
 
-		return commerceTierPriceEntryPersistence.findByC_LtM_S(
+		return commerceTierPriceEntryPersistence.findByC_LteM_S(
 			commercePriceEntryId, quantity, WorkflowConstants.STATUS_APPROVED,
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			new CommerceTierPriceEntryMinQuantityComparator(true));

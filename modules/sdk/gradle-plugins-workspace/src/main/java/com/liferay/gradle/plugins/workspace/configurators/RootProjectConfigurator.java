@@ -169,6 +169,9 @@ public class RootProjectConfigurator implements Plugin<Project> {
 	}
 
 	public RootProjectConfigurator(Settings settings) {
+		_bundleCheckSumMD5 = GradleUtil.getProperty(
+			settings, WorkspacePlugin.PROPERTY_PREFIX + "bundle.checksum.md5",
+			null);
 		_defaultRepositoryEnabled = GradleUtil.getProperty(
 			settings,
 			WorkspacePlugin.PROPERTY_PREFIX + "default.repository.enabled",
@@ -177,7 +180,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	@Override
 	public void apply(Project project) {
-		final WorkspaceExtension workspaceExtension = GradleUtil.getExtension(
+		WorkspaceExtension workspaceExtension = GradleUtil.getExtension(
 			(ExtensionAware)project.getGradle(), WorkspaceExtension.class);
 
 		_configureWorkspaceExtension(project, workspaceExtension);
@@ -201,7 +204,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 		Configuration bundleSupportConfiguration =
 			_addConfigurationBundleSupport(project);
 
-		final Configuration providedModulesConfiguration =
+		Configuration providedModulesConfiguration =
 			_addConfigurationProvidedModules(project);
 
 		TargetPlatformRootProjectConfigurator.INSTANCE.apply(project);
@@ -735,7 +738,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 	@SuppressWarnings("serial")
 	private Copy _addTaskDockerDeploy(
-		Project project, final WorkspaceExtension workspaceExtension,
+		Project project, WorkspaceExtension workspaceExtension,
 		Configuration providedModulesConfiguration) {
 
 		Copy copy = GradleUtil.addTask(
@@ -1164,6 +1167,17 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 				@Override
 				public boolean isSatisfiedBy(Task task) {
+					if (!Objects.equals(
+							workspaceExtension.getBundleUrl(),
+							workspaceExtension.getDefaultBundleUrl())) {
+
+						if (Objects.nonNull(_bundleCheckSumMD5)) {
+							return true;
+						}
+
+						return false;
+					}
+
 					return Validator.isNotNull(verify.getChecksum());
 				}
 
@@ -1493,6 +1507,7 @@ public class RootProjectConfigurator implements Plugin<Project> {
 	private static final String _LIFERAY_IMAGE_SETUP_SCRIPT =
 		"100_liferay_image_setup.sh";
 
+	private String _bundleCheckSumMD5;
 	private boolean _defaultRepositoryEnabled;
 
 }

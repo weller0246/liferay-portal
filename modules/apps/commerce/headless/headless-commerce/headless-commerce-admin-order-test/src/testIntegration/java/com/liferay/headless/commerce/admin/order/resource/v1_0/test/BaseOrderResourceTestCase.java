@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -44,6 +43,7 @@ import com.liferay.portal.kernel.test.util.GroupTestUtil;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.DateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityField;
@@ -253,21 +253,21 @@ public abstract class BaseOrderResourceTestCase {
 	@Test
 	public void testGetOrdersPage() throws Exception {
 		Page<Order> page = orderResource.getOrdersPage(
-			RandomTestUtil.randomString(), null, Pagination.of(1, 2), null);
+			RandomTestUtil.randomString(), null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(0, page.getTotalCount());
+		long totalCount = page.getTotalCount();
 
 		Order order1 = testGetOrdersPage_addOrder(randomOrder());
 
 		Order order2 = testGetOrdersPage_addOrder(randomOrder());
 
 		page = orderResource.getOrdersPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, 10), null);
 
-		Assert.assertEquals(2, page.getTotalCount());
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(order1, order2), (List<Order>)page.getItems());
+		assertContains(order1, (List<Order>)page.getItems());
+		assertContains(order2, (List<Order>)page.getItems());
 		assertValid(page);
 
 		orderResource.deleteOrder(order1.getId());
@@ -326,6 +326,11 @@ public abstract class BaseOrderResourceTestCase {
 
 	@Test
 	public void testGetOrdersPageWithPagination() throws Exception {
+		Page<Order> totalPage = orderResource.getOrdersPage(
+			null, null, null, null);
+
+		int totalCount = GetterUtil.getInteger(totalPage.getTotalCount());
+
 		Order order1 = testGetOrdersPage_addOrder(randomOrder());
 
 		Order order2 = testGetOrdersPage_addOrder(randomOrder());
@@ -333,27 +338,27 @@ public abstract class BaseOrderResourceTestCase {
 		Order order3 = testGetOrdersPage_addOrder(randomOrder());
 
 		Page<Order> page1 = orderResource.getOrdersPage(
-			null, null, Pagination.of(1, 2), null);
+			null, null, Pagination.of(1, totalCount + 2), null);
 
 		List<Order> orders1 = (List<Order>)page1.getItems();
 
-		Assert.assertEquals(orders1.toString(), 2, orders1.size());
+		Assert.assertEquals(orders1.toString(), totalCount + 2, orders1.size());
 
 		Page<Order> page2 = orderResource.getOrdersPage(
-			null, null, Pagination.of(2, 2), null);
+			null, null, Pagination.of(2, totalCount + 2), null);
 
-		Assert.assertEquals(3, page2.getTotalCount());
+		Assert.assertEquals(totalCount + 3, page2.getTotalCount());
 
 		List<Order> orders2 = (List<Order>)page2.getItems();
 
 		Assert.assertEquals(orders2.toString(), 1, orders2.size());
 
 		Page<Order> page3 = orderResource.getOrdersPage(
-			null, null, Pagination.of(1, 3), null);
+			null, null, Pagination.of(1, totalCount + 3), null);
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(order1, order2, order3),
-			(List<Order>)page3.getItems());
+		assertContains(order1, (List<Order>)page3.getItems());
+		assertContains(order2, (List<Order>)page3.getItems());
+		assertContains(order3, (List<Order>)page3.getItems());
 	}
 
 	@Test
@@ -481,7 +486,7 @@ public abstract class BaseOrderResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 				}
 			},
 			new GraphQLField("items", getGraphQLFields()),
@@ -491,7 +496,7 @@ public abstract class BaseOrderResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/orders");
 
-		Assert.assertEquals(0, ordersJSONObject.get("totalCount"));
+		long totalCount = ordersJSONObject.getLong("totalCount");
 
 		Order order1 = testGraphQLOrder_addOrder();
 		Order order2 = testGraphQLOrder_addOrder();
@@ -500,10 +505,15 @@ public abstract class BaseOrderResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/orders");
 
-		Assert.assertEquals(2, ordersJSONObject.get("totalCount"));
+		Assert.assertEquals(
+			totalCount + 2, ordersJSONObject.getLong("totalCount"));
 
-		assertEqualsIgnoringOrder(
-			Arrays.asList(order1, order2),
+		assertContains(
+			order1,
+			Arrays.asList(
+				OrderSerDes.toDTOs(ordersJSONObject.getString("items"))));
+		assertContains(
+			order2,
 			Arrays.asList(
 				OrderSerDes.toDTOs(ordersJSONObject.getString("items"))));
 	}
@@ -516,20 +526,6 @@ public abstract class BaseOrderResourceTestCase {
 
 		assertEquals(randomOrder, postOrder);
 		assertValid(postOrder);
-
-		randomOrder = randomOrder();
-
-		assertHttpResponseStatusCode(
-			404,
-			orderResource.getOrderByExternalReferenceCodeHttpResponse(
-				randomOrder.getExternalReferenceCode()));
-
-		testPostOrder_addOrder(randomOrder);
-
-		assertHttpResponseStatusCode(
-			200,
-			orderResource.getOrderByExternalReferenceCodeHttpResponse(
-				randomOrder.getExternalReferenceCode()));
 	}
 
 	protected Order testPostOrder_addOrder(Order order) throws Exception {
@@ -760,6 +756,20 @@ public abstract class BaseOrderResourceTestCase {
 			"This method needs to be implemented");
 	}
 
+	protected void assertContains(Order order, List<Order> orders) {
+		boolean contains = false;
+
+		for (Order item : orders) {
+			if (equals(order, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(orders + " does not contain " + order, contains);
+	}
+
 	protected void assertHttpResponseStatusCode(
 		int expectedHttpResponseStatusCode,
 		HttpInvoker.HttpResponse actualHttpResponse) {
@@ -987,6 +997,14 @@ public abstract class BaseOrderResourceTestCase {
 
 			if (Objects.equals("orderStatusInfo", additionalAssertFieldName)) {
 				if (order.getOrderStatusInfo() == null) {
+					valid = false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("orderTypeId", additionalAssertFieldName)) {
+				if (order.getOrderTypeId() == null) {
 					valid = false;
 				}
 
@@ -2030,6 +2048,16 @@ public abstract class BaseOrderResourceTestCase {
 				if (!Objects.deepEquals(
 						order1.getOrderStatusInfo(),
 						order2.getOrderStatusInfo())) {
+
+					return false;
+				}
+
+				continue;
+			}
+
+			if (Objects.equals("orderTypeId", additionalAssertFieldName)) {
+				if (!Objects.deepEquals(
+						order1.getOrderTypeId(), order2.getOrderTypeId())) {
 
 					return false;
 				}
@@ -3277,6 +3305,11 @@ public abstract class BaseOrderResourceTestCase {
 				"Invalid entity field " + entityFieldName);
 		}
 
+		if (entityFieldName.equals("orderTypeId")) {
+			throw new IllegalArgumentException(
+				"Invalid entity field " + entityFieldName);
+		}
+
 		if (entityFieldName.equals("paymentMethod")) {
 			sb.append("'");
 			sb.append(String.valueOf(order.getPaymentMethod()));
@@ -3805,6 +3838,7 @@ public abstract class BaseOrderResourceTestCase {
 				modifiedDate = RandomTestUtil.nextDate();
 				orderDate = RandomTestUtil.nextDate();
 				orderStatus = RandomTestUtil.randomInt();
+				orderTypeId = RandomTestUtil.randomLong();
 				paymentMethod = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
 				paymentStatus = RandomTestUtil.randomInt();
@@ -3993,8 +4027,8 @@ public abstract class BaseOrderResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseOrderResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseOrderResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -205,17 +205,21 @@ public class CommerceAccountUserClayDataSetDataSetDisplayView
 				PortletProvider.Action.VIEW)
 		).setMVCRenderCommandName(
 			"/commerce_account/view_commerce_account_user"
-		).build();
+		).setParameter(
+			"commerceAccountId",
+			() -> {
+				long commerceAccountId = ParamUtil.getLong(
+					httpServletRequest, "commerceAccountId");
 
-		long commerceAccountId = ParamUtil.getLong(
-			httpServletRequest, "commerceAccountId");
+				if (commerceAccountId > 0) {
+					return commerceAccountId;
+				}
 
-		if (commerceAccountId > 0) {
-			viewURL.setParameter(
-				"commerceAccountId", String.valueOf(commerceAccountId));
-		}
-
-		viewURL.setParameter("userId", String.valueOf(userId));
+				return null;
+			}
+		).setParameter(
+			"userId", userId
+		).buildPortletURL();
 
 		String backURL = ParamUtil.getString(
 			httpServletRequest, "currentUrl",

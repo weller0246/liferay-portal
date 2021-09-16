@@ -1058,19 +1058,12 @@ public class ResourcePermissionLocalServiceImpl
 			individualResource.getScope(), individualResource.getPrimKey());
 
 		if (count < 1) {
-			StringBundler sb = new StringBundler(9);
-
-			sb.append("{companyId=");
-			sb.append(individualResource.getCompanyId());
-			sb.append(", name=");
-			sb.append(individualResource.getName());
-			sb.append(", primKey=");
-			sb.append(individualResource.getPrimKey());
-			sb.append(", scope=");
-			sb.append(individualResource.getScope());
-			sb.append("}");
-
-			throw new NoSuchResourcePermissionException(sb.toString());
+			throw new NoSuchResourcePermissionException(
+				StringBundler.concat(
+					"{companyId=", individualResource.getCompanyId(), ", name=",
+					individualResource.getName(), ", primKey=",
+					individualResource.getPrimKey(), ", scope=",
+					individualResource.getScope(), "}"));
 		}
 
 		// Iterate the list of resources in reverse order to test permissions
@@ -1362,10 +1355,7 @@ public class ResourcePermissionLocalServiceImpl
 		ResourcePermission resourcePermission = getResourcePermission(
 			resourcePermissionId);
 
-		long companyId = resourcePermission.getCompanyId();
 		String name = resourcePermission.getName();
-		int scope = resourcePermission.getScope();
-		String primKey = resourcePermission.getPrimKey();
 		long fromRoleId = resourcePermission.getRoleId();
 
 		Role toRole = roleLocalService.getRole(toRoleId);
@@ -1381,8 +1371,9 @@ public class ResourcePermissionLocalServiceImpl
 		}
 
 		setResourcePermissions(
-			companyId, name, scope, primKey, toRoleId,
-			actionIds.toArray(new String[0]));
+			resourcePermission.getCompanyId(), name,
+			resourcePermission.getScope(), resourcePermission.getPrimKey(),
+			toRoleId, actionIds.toArray(new String[0]));
 
 		resourcePermissionPersistence.remove(resourcePermissionId);
 
@@ -2007,29 +1998,32 @@ public class ResourcePermissionLocalServiceImpl
 		boolean modified = false;
 
 		try {
-			if (_updateResourcePermission(
-					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
-					0, guestRole.getRoleId(), Boolean.TRUE,
-					guestActionIds.toArray(new String[0]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap) ||
-				_updateResourcePermission(
-					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
-					0, ownerRole.getRoleId(), Boolean.FALSE,
-					ownerActionIds.toArray(new String[0]),
-					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap)) {
+			boolean guestPermissionModified = _updateResourcePermission(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
+				guestRole.getRoleId(), Boolean.TRUE,
+				guestActionIds.toArray(new String[0]),
+				ResourcePermissionConstants.OPERATOR_SET, true,
+				resourcePermissionsMap);
+			boolean ownerPermissionModified = _updateResourcePermission(
+				companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name, 0,
+				ownerRole.getRoleId(), Boolean.FALSE,
+				ownerActionIds.toArray(new String[0]),
+				ResourcePermissionConstants.OPERATOR_SET, true,
+				resourcePermissionsMap);
 
-				modified = true;
-			}
+			boolean siteMemberPermissionModified = false;
 
-			if ((groupActionIds != null) &&
-				_updateResourcePermission(
+			if (groupActionIds != null) {
+				siteMemberPermissionModified = _updateResourcePermission(
 					companyId, name, ResourceConstants.SCOPE_INDIVIDUAL, name,
 					0, siteMemberRole.getRoleId(), Boolean.FALSE,
 					groupActionIds.toArray(new String[0]),
 					ResourcePermissionConstants.OPERATOR_SET, true,
-					resourcePermissionsMap)) {
+					resourcePermissionsMap);
+			}
+
+			if (guestPermissionModified || ownerPermissionModified ||
+				siteMemberPermissionModified) {
 
 				modified = true;
 			}

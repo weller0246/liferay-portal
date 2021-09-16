@@ -916,8 +916,8 @@ definition {
 			value1 = "${userGroupName}");
 
 		AssertClick(
-			key_userGroupName = "${userGroupName}",
-			locator1 = "UsersAndOrganizationsEditUser#USER_GROUPS_CHOOSE_BUTTON",
+			key_dmDocumentTypeName = "${userGroupName}",
+			locator1 = "DocumentsAndMediaSelectDocument#DOCUMENTS_TABLE_CHOOSE",
 			value1 = "Choose");
 
 		SelectFrame(value1 = "relative=top");
@@ -1009,6 +1009,33 @@ definition {
 				locator1 = "UsersAndOrganizations#USER_TABLE_SCREEN_NAME",
 				value1 = "${userScreenName}");
 		}
+	}
+
+	macro bulkActivateCP {
+		if (isSet(userFirstNameList)) {
+			for (var userFirstName : list "${userFirstNameList}") {
+				LexiconEntry.selectEntry(rowEntry = "${userFirstName}");
+			}
+		}
+		else {
+			PortletEntry.selectAll();
+
+			if (IsChecked(key_rowEntry = "Test Test",locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_CHECKBOX")) {
+				Click(
+					key_rowEntry = "Test Test",
+					locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_CHECKBOX");
+			}
+
+			AssertNotChecked.assertNotCheckedNotVisible(
+				key_rowEntry = "Test Test",
+				locator1 = "ContentRow#ENTRY_CONTENT_ENTRY_CHECKBOX");
+		}
+
+		Click(locator1 = "Icon#TOOLBAR_ELLIPSIS");
+
+		MenuItem.clickNoError(menuItem = "Activate");
+
+		Alert.viewSuccessMessage();
 	}
 
 	macro bulkDeactivateCP {
@@ -1178,6 +1205,8 @@ definition {
 			value1 = "${password}");
 
 		Button.clickConfirm();
+
+		SelectFrameTop();
 
 		Alert.viewSuccessMessage();
 
@@ -1387,7 +1416,7 @@ definition {
 	}
 
 	macro editDetailsViaProfile {
-		Click.mouseOverClick(locator1 = "Icon#EDIT_PENCIL");
+		Click.javaScriptClick(locator1 = "Icon#EDIT_PENCIL");
 
 		Portlet.viewSpecificPG(portletName = "Account Settings");
 
@@ -1702,6 +1731,13 @@ definition {
 			Type(
 				locator1 = "TextInput#MIDDLE_NAME",
 				value1 = "${userMiddleNameEdit}");
+		}
+
+		if (isSet(userCustomField)) {
+			Type(
+				key_fieldLabel = "${userCustomFieldLabel}",
+				locator1 = "TextInput#GENERIC_TEXT_INPUT",
+				value1 = "${userCustomField}");
 		}
 
 		PortletEntry.save();
@@ -2224,6 +2260,8 @@ definition {
 			value1 = "${facebookPassword}");
 
 		Click(locator1 = "FacebookLogin#LOGIN_BUTTON");
+
+		Alert.confirmSecurity();
 
 		SelectWindow.selectWindowTopNoSPARefresh();
 

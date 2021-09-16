@@ -17,13 +17,28 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ADD_BREAKDOWN_BUTTON</td>
+	<td>//div[contains(@class,'distribution-card')]//button[*[name()='svg'][contains(@class,'icon-plus')]]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>ANONYMOUS_LABEL</td>
 	<td>//div[@class='card-header']/div/span[@class='label-item' and text()='Include Anonymous']</td>
 	<td></td>
 </tr>
 <tr>
+	<td>BINS_INPUT</td>
+	<td>//input[contains(@id,'numberOfBins')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BREAKDOWN_NAME_INPUT</td>
+	<td>//input[@type='text' and @name='title']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CANCEL_SEGMENT</td>
-	<td>//a[contains(@href,'segment') and contains(@class,'secondary')]</td>
+	<td>//a[contains(@class,'btn')][normalize-space(text())='Cancel']</td>
 	<td></td>
 </tr>
 <tr>
@@ -33,7 +48,37 @@
 </tr>
 <tr>
 	<td>CREATE_SEGMENT_BUTTON</td>
-	<td>//button[contains(@class,'btn-primary')]</td>
+	<td>//button[contains(@class,'dropdown-toggle')][normalize-space()='Create Segment']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_TABLE_MEMBERSHIP_NAME_AND_VALUE</td>
+	<td>//a[contains(text(),'${segmentName}')]//ancestor::tr//td[contains(@class,'table-column-text-end') and contains(text(),'${membershipNumber}')][1]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CRITERIA_ELLIPSIS</td>
+	<td>xpath=(//div[contains(@class,'criterion')][.//div[contains(@class,'display-value')][normalize-space(.)='${criteriaName}']]//button[contains(@class,'dropdown-toggle')])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_TABLE_TOTAL_ACTIVITIES_NAME_AND_VALUE</td>
+	<td>//a[contains(text(),'${segmentName}')]//ancestor::tr//td[contains(@class,'table-column-text-end') and contains(text(),'${totalActivitiesNumber}')][2]]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CRITERIA_STATEMENT_BODY</td>
+	<td>xpath=(//div[contains(@class,'criteria-statement')])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CRITERIA_GROUP_CARD</td>
+	<td>//div[contains(@class,'criteria-group')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CRITERIA_ROW</td>
+	<td>//div[contains(@class,'criteria-row')][contains(.,'${key_CriteriaName}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -47,13 +92,18 @@
 	<td></td>
 </tr>
 <tr>
+	<td>DELETE_SEGMENT_INLINE_BUTTON</td>
+	<td>//td[contains(.,'${key_segmentName}')]/following-sibling::td//button[contains(@aria-label,'Delete')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>DELETED_CRITERIA</td>
 	<td>//div[@class='criteria-message']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>DUPLICATED_CRITERIA</td>
-	<td>(//div[@class='criteria-statement']//div[text()='${criteriaName}'])[${totalCriteriaCount}]</td>
+	<td>xpath=(//div[@class='criteria-statement']//div[text()='${criteriaName}'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -72,8 +122,48 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FORM_HEADER_LOADING_ANIMATION</td>
+	<td>//div[contains(@class,'form-header')]//span[contains(@class,'loading-animation')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>KNOWN_SEGMENT_MEMBERS_FILTER</td>
+	<td>//button[contains(@class,'btn')]/span[@class='text-truncate' and text()='Name | Email']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>KNOWN_SEGMENT_MEMBERS_FILTER_ARROW_ASC</td>
+	<td>//*[name()='svg'][contains(@class,'lexicon-icon-order-arrow-up')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>KNOWN_SEGMENT_MEMBERS_FILTER_ARROW_DESC</td>
+	<td>//*[name()='svg'][contains(@class,'lexicon-icon-order-arrow-down')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>KNOWN_SEGMENT_MEMBERS_VIEW_SPECIFIC_ORDER</td>
+	<td>//tbody//tr[${resultOrder}]//div[contains(@class,'table-title')and text()='${key_userName}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>TABLE_CHECKBOX</td>
-	<td>//div[text()='${key_TableMember}']/ancestor::tr</td>
+	<td>//tr[.//*[normalize-space(text())='${key_TableMember}']]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ORGANIZATION_NAME_INPUT</td>
+	<td>//input[contains(@data-testid,'string-input')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBER_GENERIC_BUTTON</td>
+	<td>//tr[.//*[text()='${key_TableMember}']]//button[contains(@class,'button-root')and text()='${key_ButtonName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEARCH_MEMBER</td>
+	<td>//div[@class='input-group search']//input[@type='text'and @placeholder='Search'and not(@disabled)]</td>
 	<td></td>
 </tr>
 <tr>
@@ -107,23 +197,33 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SEGMENT_CRITERIA_ATTRIBUTE_NAME</td>
+	<td>xpath=((//div[@class='criteria-group'])[${key_indexNested}]//div[@class='criteria-row']//b[1])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SEGMENT_CRITERIA_ATTRIBUTE_VALUE</td>
-	<td>//div[@class='criteria-row']</td>
+	<td>xpath=((//div[@class='criteria-group'])[${key_indexNested}]//div[@class='criteria-row']//b[2])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_NAME</td>
-	<td>//div[@class='criteria-row']//self::b</td>
+	<td>SEGMENT_CRITERIA_PREPOSITION_AND_TIME</td>
+	<td>xpath=((//div[@class='criteria-group'])[${key_indexNested}]//div[@class='criteria-row']//span[${index_2}])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_DETAIL</td>
-	<td>//div[@class='criteria-row']//self::b//following-sibling::span</td>
+	<td>SEGMENT_CRITERIA_CONDITION</td>
+	<td>xpath=((//div[@class='criteria-group'])[${key_indexNested}]//div[@class='criteria-row']//span[1])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_CRITERIA_CRITERIA_VALUE</td>
-	<td>//div[@class='criteria-row']//self::b//following-sibling::span//following-sibling::b</td>
+	<td>SEGMENT_CRITERIA_CONJUNCTION</td>
+	<td>xpath=((//div[@class='criteria-group'])[${key_indexNested}]//div[contains(@class,'conjunction')])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_CRITERIA_TYPE</td>
+	<td>xpath=(//div[@class='criteria-row'][normalize-space(text())='${type}'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -142,6 +242,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>SEGMENT_OVERVIEW_ATTRIBUTE</td>
+	<td>//div[contains(@class, 'input-group-item')]//input[contains(@id, 'property')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>SEGMENT_TOP_INTERESTS_CARD</td>
 	<td>//div[contains(@class,'interests-card')]//*[@class='card-header']</td>
 	<td></td>
@@ -157,7 +262,7 @@
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_ELLIPSES</td>
+	<td>SEGMENT_ELLIPSIS</td>
 	<td>//div[contains(@class,'dropdown')]/button[contains(@class,'component')]</td>
 	<td></td>
 </tr>
@@ -198,6 +303,16 @@
 	<td></td>
 </tr>
 <tr>
+	<td>CONJUNCTION_BUTTON</td>
+	<td>xpath=(//button[contains(@class,'conjunction-button')])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DATE_PICKER</td>
+	<td>//div[contains(@class,'date-picker')]</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MONTH_AND_YEAR_CALENDAR</td>
 	<td>//select[contains(@class,'date-picker-select-root')][${key_indexCalendar}]</td>
 	<td></td>
@@ -218,33 +333,33 @@
 	<td></td>
 </tr>
 <tr>
-	<td>DUPLICATE_SEGMENT_CRITERION</td>
-	<td>//button[@aria-label='Duplicate']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>DELETE_SEGMENT_CRITERION</td>
-	<td>//button[@aria-label='Delete']</td>
-	<td></td>
-</tr>
-<tr>
 	<td>SEGMENT_CRITERION_ITEM</td>
-	<td>//div[@class='sidebar-collapse']//li[text()='${segmentField}']</td>
+	<td>//div[@class='sidebar-collapse']//li[text()='${key_SegmentField}']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>SEGMENT_DROP_AREA</td>
-	<td>//div[@class='drop-zone-target p-5']</td>
+	<td>xpath=(//div[contains(@class,'drop-zone-target')])[last()]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>SEGMENT_MEMBERSHIP_BUTTON</td>
-	<td>//div[@class='total-members']/following-sibling::button</td>
+	<td>TOTAL_MEMBERS</td>
+	<td>//div[contains(@class,'total-members')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>PREVIEW_CRITERIA_BUTTON</td>
+	<td>//button[@data-testid='preview-criteria-button']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>TEXT_INPUT</td>
-	<td>//div[@class='criteria-statement']//div[@class='input-group-item']/input</td>
+	<td>xpath=(//div[contains(@class,'criteria-statement')]//div[contains(@class,'input-group-item')]//input[@type='text'])[${index}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>NUMBER_INPUT</td>
+	<td>xpath=(//div[contains(@class,'criteria-statement')]//div[contains(@class,'group-item')]//input[@type='number'])[${index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -269,7 +384,7 @@
 </tr>
 <tr>
 	<td>ACTIVITIES_CRITERION</td>
-	<td>xpath=(//select[contains(@class,'criterion-input')])[${key_indexField}]</td>
+	<td>xpath=(//div[contains(@class,'criteria-statement')]//select[contains(@class,'form-control')])[${key_indexField}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -280,6 +395,41 @@
 <tr>
 	<td>TIME_INPUT_CRITERION</td>
 	<td>xpath=(//select[@data-testid='clay-select'])[${key_indexField}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART</td>
+	<td>//div[@class='recharts-responsive-container']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_ACTIVE_POINT</td>
+	<td>xpath=(//*[local-name()='g' and @class='recharts-layer recharts-active-dot'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_EARLY_DATE_POINT</td>
+	<td>xpath=(//*[local-name()='g' and @class='recharts-layer recharts-cartesian-axis recharts-yAxis yAxis'])[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_RECENT_DATE_POINT</td>
+	<td>xpath=(//*[local-name()='g' and @class='recharts-layer recharts-cartesian-axis recharts-yAxis yAxis'])[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_HOVER</td>
+	<td>//table[contains(@class,'analytics-tooltip-chart')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_HOVER_MEMBER_CHANGE</td>
+	<td>//tr[@class='analytics-tooltip-chart-row']//div[text()='${key_membershipType}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERSHIP_CHART_HOVER_DATA_ROW</td>
+	<td>//tr[@class='analytics-tooltip-chart-row' and contains(.,'${key_row}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -296,6 +446,94 @@
 <tr>
 	<td>ADD_MEMBERS_BUTTON</td>
 	<td>//ul/li/button[contains(@class,'btn-primary')]|//ul/li/button[contains(@class,'btn-secondary')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>MEMBER</td>
+	<td>//tr//div[text()='${key_memberName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>DISABLED_MEMBER</td>
+	<td>//tr[contains(@class,'disabled')]//div[text()='${key_memberName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_MEMBERS_SORT_BUTTON</td>
+	<td>//button[contains(@class,'button-root btn btn-unstyled nav-link')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ADD_MEMBERS_INDEX_TABLE</td>
+	<td>//tr[${index}]//td[2]//div[text()='${key_userName}']</td>
+	<td></td>
+</tr>
+<!-- Segments List -->
+<tr>
+	<td>FILTER_AND_ORDER_BUTTON</td>
+	<td>//button[contains(@data-testid,'filter-and-order-button')]/span[@class='text-truncate' and text()='${key_dropdownName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FILTER_DROPDOWN_OPTION</td>
+	<td>//div[contains(@class,'dropdown-item')]//label/input//following-sibling::span/span[text()='${key_filterName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_POSITION_1</td>
+	<td>xpath=(//div[contains(@class,'table-responsive')]/table/tbody/tr/td[contains(@class,'name-cell-root')]//a)[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_POSITION_2</td>
+	<td>xpath=(//div[contains(@class,'table-responsive')]/table/tbody/tr/td[contains(@class,'name-cell-root')]//a)[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_POSITION_3</td>
+	<td>xpath=(//div[contains(@class,'table-responsive')]/table/tbody/tr/td[contains(@class,'name-cell-root')]//a)[3]</td>
+	<td></td>
+</tr>
+<!-- Segment Distribution Breakdown -->
+<tr>
+	<td>ATTRIBUTE_DROPDOWN_MENU_ITEM</td>
+	<td>//ul[contains(@class,'dropdown-menu')][contains(@class,'show')]//button[.//span[normalize-space(text())='${menuItem}']]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>ATTRIBUTE_TEXT_INPUT</td>
+	<td>//div[contains(@class, 'input-group-item')]//input[contains(@id, 'breakdown')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>BREAKDOWN_CHART</td>
+	<td>//div[contains(@class,'chart-container')]</td>
+	<td></td>
+</tr>
+<!-- Segment Membership -->
+<tr>
+	<td>KNOWN_SEGMENT_MEMBERS_FILTER_BY_NAME</td>
+	<td>//button[contains(@class,'btn')]/span[@class='text-truncate' and text()='Name']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERS_NAME_LINK_VIEW_SPECIFIC_ORDER</td>
+	<td>//tbody//tr[${resultOrder}]//div[contains(@class,'table-title')]/a[text()='${key_userName}']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERS_ADDED</td>
+	<td>//div[@class='changed-values']/b[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>SEGMENT_MEMBERS_REMOVED</td>
+	<td>//div[@class='changed-values']/b[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>CLEAR_DATE_SELECTION_BUTTON</td>
+	<td>//button[contains(.,'Clear Date Selection')]</td>
 	<td></td>
 </tr>
 </tbody>

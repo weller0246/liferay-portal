@@ -18,28 +18,19 @@ import com.liferay.asset.kernel.model.AssetCategory;
 import com.liferay.asset.kernel.model.AssetVocabulary;
 import com.liferay.asset.kernel.service.AssetCategoryServiceUtil;
 import com.liferay.asset.kernel.service.AssetVocabularyServiceUtil;
+import com.liferay.fragment.constants.FragmentEntryLinkConstants;
 import com.liferay.fragment.model.FragmentEntryLink;
+import com.liferay.fragment.renderer.FragmentRendererContext;
 import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
-import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.HttpUtil;
-import com.liferay.portal.kernel.util.ParamUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
-import com.liferay.portal.kernel.util.WebKeys;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -49,25 +40,21 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.servlet.http.HttpServletRequest;
-
 /**
  * @author Rubén Pulido
  */
 public class FragmentCollectionFilterCategoryDisplayContext {
 
 	public FragmentCollectionFilterCategoryDisplayContext(
+		String configuration,
 		FragmentEntryConfigurationParser fragmentEntryConfigurationParser,
-		FragmentEntryLink fragmentEntryLink,
-		HttpServletRequest httpServletRequest) {
+		FragmentRendererContext fragmentRendererContext) {
 
+		_configuration = configuration;
 		_fragmentEntryConfigurationParser = fragmentEntryConfigurationParser;
-		_fragmentEntryLink = fragmentEntryLink;
+		_fragmentRendererContext = fragmentRendererContext;
 
-		_httpServletRequest = httpServletRequest;
-
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
+		_fragmentEntryLink = fragmentRendererContext.getFragmentEntryLink();
 	}
 
 	public String getAssetCategoryTreeNodeTitle() throws PortalException {
@@ -83,53 +70,18 @@ public class FragmentCollectionFilterCategoryDisplayContext {
 			AssetCategory assetCategory =
 				AssetCategoryServiceUtil.fetchCategory(assetCategoryTreeNodeId);
 
-			return assetCategory.getTitle(_themeDisplay.getLanguageId());
+			return assetCategory.getTitle(_fragmentRendererContext.getLocale());
 		}
 		else if (assetCategoryTreeNodeType.equals("Vocabulary")) {
 			AssetVocabulary assetVocabulary =
 				AssetVocabularyServiceUtil.fetchVocabulary(
 					assetCategoryTreeNodeId);
 
-			return assetVocabulary.getTitle(_themeDisplay.getLanguageId());
+			return assetVocabulary.getTitle(
+				_fragmentRendererContext.getLocale());
 		}
 
 		return StringPool.BLANK;
-	}
-
-	public List<DropdownItem> getDropdownItems() throws PortalException {
-		String parameterName = _getParameterName();
-
-		String url = HttpUtil.removeParameter(
-			_themeDisplay.getURLCurrent(), parameterName);
-
-		DropdownItemListBuilder.DropdownItemListWrapper
-			dropdownItemListWrapper = DropdownItemListBuilder.add(
-				dropdownItem -> {
-					dropdownItem.setHref(url);
-					dropdownItem.setLabel(
-						LanguageUtil.get(_httpServletRequest, "all"));
-				});
-
-		for (AssetCategory assetCategory : _getAssetCategories()) {
-			dropdownItemListWrapper.add(
-				dropdownItem -> {
-					if (!Objects.equals(
-							ParamUtil.getString(
-								_httpServletRequest, "p_l_mode"),
-							Constants.EDIT)) {
-
-						dropdownItem.setHref(
-							HttpUtil.addParameter(
-								url, parameterName,
-								assetCategory.getCategoryId()));
-					}
-
-					dropdownItem.setLabel(
-						assetCategory.getTitle(_themeDisplay.getLanguageId()));
-				});
-		}
-
-		return dropdownItemListWrapper.build();
 	}
 
 	public String getLabel() throws PortalException {
@@ -163,57 +115,32 @@ public class FragmentCollectionFilterCategoryDisplayContext {
 						"id", String.valueOf(assetCategory.getCategoryId())
 					).put(
 						"label",
-						assetCategory.getTitle(_themeDisplay.getLanguageId())
+						assetCategory.getTitle(
+							_fragmentRendererContext.getLocale())
 					).build()
 				).collect(
 					Collectors.toList()
 				);
 			}
 		).put(
+			"enableDropdown",
+			!Objects.equals(
+				_fragmentRendererContext.getMode(),
+				FragmentEntryLinkConstants.EDIT)
+		).put(
 			"fragmentEntryLinkId",
 			String.valueOf(_fragmentEntryLink.getFragmentEntryLinkId())
 		).put(
-			"selectedAssetCategoryIds",
-			ParamUtil.getStringValues(
-				PortalUtil.getOriginalServletRequest(_httpServletRequest),
-				"categoryId_" + _fragmentEntryLink.getFragmentEntryLinkId())
-		).put(
 			"showSearch", _isShowSearch()
+		).put(
+			"singleSelection", _isSingleSelection()
 		).build();
 
 		return _props;
 	}
 
-	public String getSelectedAssetCategoryTitle() {
-		long assetCategoryId = ParamUtil.get(
-			PortalUtil.getOriginalServletRequest(_httpServletRequest),
-			_getParameterName(), 0);
-
-		if (assetCategoryId != 0) {
-			AssetCategory assetCategory = null;
-
-			try {
-				assetCategory = AssetCategoryServiceUtil.fetchCategory(
-					assetCategoryId);
-			}
-			catch (PortalException portalException) {
-				_log.error(portalException, portalException);
-			}
-
-			if (assetCategory != null) {
-				return assetCategory.getTitle(_themeDisplay.getLanguageId());
-			}
-		}
-
-		return LanguageUtil.get(_httpServletRequest, "select");
-	}
-
 	public boolean isShowLabel() {
 		return GetterUtil.getBoolean(_getFieldValue("showLabel"));
-	}
-
-	public boolean isSingleSelection() {
-		return GetterUtil.getBoolean(_getFieldValue("singleSelection"));
 	}
 
 	private List<AssetCategory> _getAssetCategories() throws PortalException {
@@ -281,13 +208,8 @@ public class FragmentCollectionFilterCategoryDisplayContext {
 
 	private Object _getFieldValue(String fieldName) {
 		return _fragmentEntryConfigurationParser.getFieldValue(
-			_fragmentEntryLink.getConfiguration(),
-			_fragmentEntryLink.getEditableValues(), _themeDisplay.getLocale(),
-			fieldName);
-	}
-
-	private String _getParameterName() {
-		return "categoryId_" + _fragmentEntryLink.getFragmentEntryLinkId();
+			_configuration, _fragmentEntryLink.getEditableValues(),
+			_fragmentRendererContext.getLocale(), fieldName);
 	}
 
 	private JSONObject _getSourceJSONObject() {
@@ -296,6 +218,12 @@ public class FragmentCollectionFilterCategoryDisplayContext {
 		}
 
 		Object sourceObject = _getFieldValue("source");
+
+		if (sourceObject == null) {
+			_sourceJSONObject = JSONFactoryUtil.createJSONObject();
+
+			return _sourceJSONObject;
+		}
 
 		try {
 			_sourceJSONObject = JSONFactoryUtil.createJSONObject(
@@ -312,18 +240,19 @@ public class FragmentCollectionFilterCategoryDisplayContext {
 		return GetterUtil.getBoolean(_getFieldValue("showSearch"));
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		FragmentCollectionFilterCategoryDisplayContext.class);
+	private boolean _isSingleSelection() {
+		return GetterUtil.getBoolean(_getFieldValue("singleSelection"));
+	}
 
 	private List<AssetCategory> _assetCategories;
 	private Long _assetCategoryTreeNodeId;
 	private String _assetCategoryTreeNodeType;
+	private final String _configuration;
 	private final FragmentEntryConfigurationParser
 		_fragmentEntryConfigurationParser;
 	private final FragmentEntryLink _fragmentEntryLink;
-	private final HttpServletRequest _httpServletRequest;
+	private final FragmentRendererContext _fragmentRendererContext;
 	private Map<String, Object> _props;
 	private JSONObject _sourceJSONObject;
-	private final ThemeDisplay _themeDisplay;
 
 }

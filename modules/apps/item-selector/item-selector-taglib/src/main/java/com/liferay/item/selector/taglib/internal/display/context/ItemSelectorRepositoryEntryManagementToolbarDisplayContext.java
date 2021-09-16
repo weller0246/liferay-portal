@@ -138,19 +138,24 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 	}
 
 	public PortletURL getCurrentSortingURL() throws PortletException {
-		PortletURL currentSortingURL = PortletURLBuilder.create(
+		return PortletURLBuilder.create(
 			PortletURLUtil.clone(_getPortletURL(), _liferayPortletResponse)
 		).setParameter(
 			"orderByCol", _getOrderByCol()
 		).setParameter(
 			"orderByType", getOrderByType()
-		).build();
+		).setParameter(
+			"scope",
+			() -> {
+				if (_repositoryEntryBrowserDisplayContext.
+						isSearchEverywhere()) {
 
-		if (_repositoryEntryBrowserDisplayContext.isSearchEverywhere()) {
-			currentSortingURL.setParameter("scope", "everywhere");
-		}
+					return "everywhere";
+				}
 
-		return currentSortingURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	public List<DropdownItem> getFilterDropdownItems() {
@@ -240,7 +245,7 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 			(String)null
 		).setParameter(
 			"resetCur", true
-		).build();
+		).buildPortletURL();
 	}
 
 	public PortletURL getSortingURL() throws PortletException {
@@ -249,7 +254,7 @@ public class ItemSelectorRepositoryEntryManagementToolbarDisplayContext {
 		).setParameter(
 			"orderByType",
 			Objects.equals(getOrderByType(), "asc") ? "desc" : "asc"
-		).build();
+		).buildPortletURL();
 	}
 
 	public ViewTypeItemList getViewTypes() throws PortletException {

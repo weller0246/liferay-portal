@@ -18,6 +18,7 @@ import com.liferay.dynamic.data.mapping.model.DDMStructure;
 import com.liferay.frontend.taglib.clay.servlet.taglib.display.context.SearchContainerManagementToolbarDisplayContext;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemList;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.LabelItem;
@@ -93,46 +94,65 @@ public class JournalManagementToolbarDisplayContext
 
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
-		return DropdownItemListBuilder.add(
-			dropdownItem -> {
-				dropdownItem.putData("action", "deleteEntries");
-
-				boolean trashEnabled = _trashHelper.isTrashEnabled(
-					_themeDisplay.getScopeGroupId());
-
-				dropdownItem.setIcon(trashEnabled ? "trash" : "times-circle");
-
-				String label = "delete";
-
-				if (trashEnabled) {
-					label = "recycle-bin";
-				}
-
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, label));
-
-				dropdownItem.setQuickAction(true);
+		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						dropdownItem -> {
+							dropdownItem.putData("action", "expireEntries");
+							dropdownItem.setIcon("time");
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "expire"));
+							dropdownItem.setQuickAction(true);
+						}
+					).build());
+				dropdownGroupItem.setSeparator(true);
 			}
-		).add(
-			dropdownItem -> {
-				dropdownItem.putData("action", "expireEntries");
-				dropdownItem.setIcon("time");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "expire"));
-				dropdownItem.setQuickAction(true);
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						dropdownItem -> {
+							dropdownItem.putData("action", "moveEntries");
+							dropdownItem.setIcon("move-folder");
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "move"));
+							dropdownItem.setQuickAction(true);
+						}
+					).build());
+				dropdownGroupItem.setSeparator(true);
 			}
-		).add(
-			dropdownItem -> {
-				dropdownItem.putData("action", "moveEntries");
-				dropdownItem.setIcon("move-folder");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "move"));
-				dropdownItem.setQuickAction(true);
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						dropdownItem -> {
+							dropdownItem.putData("action", "deleteEntries");
+
+							boolean trashEnabled = _isTrashEnabled();
+
+							dropdownItem.setIcon(
+								trashEnabled ? "trash" : "times-circle");
+
+							String label = "delete";
+
+							if (trashEnabled) {
+								label = "recycle-bin";
+							}
+
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, label));
+
+							dropdownItem.setQuickAction(true);
+						}
+					).build());
+				dropdownGroupItem.setSeparator(true);
 			}
 		).build();
 	}
 
-	public Map<String, Object> getAdditionalProps() throws Exception {
+	@Override
+	public Map<String, Object> getAdditionalProps() {
 		return HashMapBuilder.<String, Object>put(
 			"addArticleURL",
 			PortletURLBuilder.createRenderURL(
@@ -190,8 +210,7 @@ public class JournalManagementToolbarDisplayContext
 				LiferayWindowState.POP_UP
 			).buildString()
 		).put(
-			"trashEnabled",
-			_trashHelper.isTrashEnabled(_themeDisplay.getScopeGroupId())
+			"trashEnabled", _isTrashEnabled()
 		).put(
 			"viewDDMStructureArticlesURL",
 			PortletURLBuilder.createRenderURL(
@@ -444,17 +463,17 @@ public class JournalManagementToolbarDisplayContext
 				getPortletURL()
 			).setKeywords(
 				StringPool.BLANK
-			).build(),
+			).buildPortletURL(),
 			getNavigationParam(), getNavigation());
 
-		DropdownItem dropdownItem = new DropdownItem();
-
-		dropdownItem.putData("action", "openDDMStructuresSelector");
-		dropdownItem.setActive(_journalDisplayContext.isNavigationStructure());
-		dropdownItem.setLabel(
-			LanguageUtil.get(httpServletRequest, "structures"));
-
-		filterNavigationDropdownItems.add(dropdownItem);
+		filterNavigationDropdownItems.add(
+			DropdownItemBuilder.putData(
+				"action", "openDDMStructuresSelector"
+			).setActive(
+				_journalDisplayContext.isNavigationStructure()
+			).setLabel(
+				LanguageUtil.get(httpServletRequest, "structures")
+			).build());
 
 		return filterNavigationDropdownItems;
 	}
@@ -527,7 +546,7 @@ public class JournalManagementToolbarDisplayContext
 								"groupId", _themeDisplay.getScopeGroupId()
 							).setParameter(
 								"showSelectFolder", false
-							).build();
+							).buildPortletURL();
 
 						UnsafeConsumer<DropdownItem, Exception> unsafeConsumer =
 							dropdownItem -> {
@@ -649,6 +668,20 @@ public class JournalManagementToolbarDisplayContext
 				_journalDisplayContext.getFolderId(), ActionKeys.ADD_ARTICLE)) {
 
 			return true;
+		}
+
+		return false;
+	}
+
+	private boolean _isTrashEnabled() {
+		try {
+			return _trashHelper.isTrashEnabled(_themeDisplay.getScopeGroupId());
+		}
+		catch (PortalException portalException) {
+
+			// LPS-52675
+
+			_log.error(portalException, portalException);
 		}
 
 		return false;

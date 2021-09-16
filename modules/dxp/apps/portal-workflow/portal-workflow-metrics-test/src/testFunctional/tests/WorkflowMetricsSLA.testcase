@@ -12,6 +12,7 @@ definition {
 		var testPortalInstance = PropsUtil.get("test.portal.instance");
 
 		User.firstLoginPG();
+
 		Navigator.openURL();
 
 		ApplicationsMenu.gotoPortlet(
@@ -603,8 +604,6 @@ definition {
 	@description = "LPS-89015 - Verify that the multi-select-fields provide feedback when typing terms that doesn't exist"
 	@priority = "3"
 	test MultiSelectFieldsProvideFeedbackWhenTypingNotExistentTerms {
-		property portal.upstream = "quarantine";
-
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");
 
 		Click(locator1 = "WorkflowMetricsSLA#ADD_NEW_SLA_BUTTON");
@@ -616,7 +615,7 @@ definition {
 			value1 = "Start SLA Counting");
 
 		AssertElementPresent(
-			key_slaDefinitionStart = "No results were found",
+			key_slaDefinitionStart = "No results were found.",
 			locator1 = "WorkflowMetricsSLA#SLA_DROPDOWN_START_OPTION");
 
 		Click(locator1 = "WorkflowMetricsSLA#SLA_DEFINITION_PAUSE");
@@ -626,7 +625,7 @@ definition {
 			value1 = "Pause SLA Counting");
 
 		AssertElementPresent(
-			key_slaDefinitionPause = "No results were found",
+			key_slaDefinitionPause = "No results were found.",
 			locator1 = "WorkflowMetricsSLA#SLA_DROPDOWN_PAUSE_OPTION");
 
 		Click(locator1 = "WorkflowMetricsSLA#SLA_DEFINITION_STOP");
@@ -636,7 +635,7 @@ definition {
 			value1 = "Stop SLA Counting");
 
 		AssertElementPresent(
-			key_slaDefinitionEnd = "No results were found",
+			key_slaDefinitionEnd = "No results were found.",
 			locator1 = "WorkflowMetricsSLA#SLA_DROPDOWN_STOP_OPTION");
 	}
 
@@ -819,6 +818,8 @@ definition {
 	@description = "LPS-89014 - Verify that the SLA infos are correctly displayed on the table view"
 	@priority = "5"
 	test SLAInfosAreCorrectlyDisplayed {
+		property portal.upstream = "quarantine";
+
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");
 
 		Click(locator1 = "WorkflowMetricsSLA#ADD_NEW_SLA_BUTTON");
@@ -909,11 +910,11 @@ definition {
 
 		Button.click(button = "Update");
 
+		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
+
+		WorkflowMetrics.assertWarningBlockedSlaPresent(warningMessage = "1 SLA is blocked.");
+
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");
-
-		Pause(locator1 = "10000");
-
-		Refresh();
 
 		AssertElementPresent(
 			key_columnName = "Status",
@@ -936,8 +937,11 @@ definition {
 	}
 
 	@description = "LPS-94760 - Verify that when there is an alert message on the page, the update date should be displayed bellow it"
+	@ignore = "true"
 	@priority = "3"
 	test SLAProcessingDateIsDisplayedUnderAlertMessage {
+		property test.name.skip.portal.instance = "WorkflowMetricsSLA#SLAProcessingDateIsDisplayedUnderAlertMessage";
+
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");
 
 		Click(locator1 = "WorkflowMetricsSLA#ADD_NEW_SLA_BUTTON");
@@ -996,9 +1000,10 @@ definition {
 	}
 
 	@description = "LPS-94760 - Verify that the time format is following the system language (Example: 03:34 PM for en_US and 15:34 for pt)"
-	@ignore = "Test Stub"
 	@priority = "3"
 	test SLAProcessingTimeFormatIsFollowingSystemLanguage {
+		property portal.upstream = "quarantine";
+
 		var slaName = "SLAName";
 
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");
@@ -1172,7 +1177,6 @@ definition {
 	}
 
 	@description = "LPS-89015 - Verify the options for stop field are: Process ends: [task-name], Enters task: [task-name], and Leaves task: [task-name]"
-	@ignore = "Test Stub"
 	@priority = "4"
 	test StopFieldOptions {
 		WorkflowMetrics.goToWorkflowSLASettings(workflowProcessName = "Single Approver");

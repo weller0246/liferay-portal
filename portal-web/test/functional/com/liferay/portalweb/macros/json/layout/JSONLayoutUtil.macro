@@ -31,6 +31,9 @@ definition {
 		if ("${widgetName}" == "Alerts") {
 			var portletId = "com_liferay_announcements_web_portlet_AlertsPortlet";
 		}
+		else if ("${widgetName}" == "Account Management") {
+			var portletId = "com_liferay_account_admin_web_internal_portlet_AccountEntriesManagementPortlet";
+		}
 		else if ("${widgetName}" == "Announcements") {
 			var portletId = "com_liferay_announcements_web_portlet_AnnouncementsPortlet";
 		}
@@ -52,6 +55,9 @@ definition {
 		else if ("${widgetName}" == "Categories Navigation") {
 			var portletId = "com_liferay_asset_categories_navigation_web_portlet_AssetCategoriesNavigationPortlet";
 		}
+		else if ("${widgetName}" == "Clay Sample") {
+			var portletId = "com_liferay_clay_sample_web_portlet_ClaySamplePortlet";
+		}
 		else if ("${widgetName}" == "Contacts Center") {
 			var portletId = "com_liferay_contacts_web_portlet_ContactsCenterPortlet";
 		}
@@ -60,6 +66,9 @@ definition {
 		}
 		else if ("${widgetName}" == "Documents and Media") {
 			var portletId = "com_liferay_document_library_web_portlet_DLPortlet";
+		}
+		else if ("${widgetName}" == "Dynamic Data Lists Display") {
+			var portletId = "com_liferay_dynamic_data_lists_web_portlet_DDLDisplayPortlet";
 		}
 		else if ("${widgetName}" == "Form") {
 			var portletId = "com_liferay_dynamic_data_mapping_form_web_portlet_DDMFormPortlet";

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -278,18 +277,18 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 	public void testGetDataDefinitionDataRecordCollectionsPage()
 		throws Exception {
 
-		Page<DataRecordCollection> page =
-			dataRecordCollectionResource.
-				getDataDefinitionDataRecordCollectionsPage(
-					testGetDataDefinitionDataRecordCollectionsPage_getDataDefinitionId(),
-					RandomTestUtil.randomString(), Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long dataDefinitionId =
 			testGetDataDefinitionDataRecordCollectionsPage_getDataDefinitionId();
 		Long irrelevantDataDefinitionId =
 			testGetDataDefinitionDataRecordCollectionsPage_getIrrelevantDataDefinitionId();
+
+		Page<DataRecordCollection> page =
+			dataRecordCollectionResource.
+				getDataDefinitionDataRecordCollectionsPage(
+					dataDefinitionId, RandomTestUtil.randomString(),
+					Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantDataDefinitionId != null) {
 			DataRecordCollection irrelevantDataRecordCollection =
@@ -321,7 +320,7 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 		page =
 			dataRecordCollectionResource.
 				getDataDefinitionDataRecordCollectionsPage(
-					dataDefinitionId, null, Pagination.of(1, 2));
+					dataDefinitionId, null, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -775,6 +774,25 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		DataRecordCollection dataRecordCollection,
+		List<DataRecordCollection> dataRecordCollections) {
+
+		boolean contains = false;
+
+		for (DataRecordCollection item : dataRecordCollections) {
+			if (equals(dataRecordCollection, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			dataRecordCollections + " does not contain " + dataRecordCollection,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1332,8 +1350,8 @@ public abstract class BaseDataRecordCollectionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseDataRecordCollectionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseDataRecordCollectionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

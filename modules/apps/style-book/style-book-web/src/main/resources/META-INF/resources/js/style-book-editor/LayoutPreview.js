@@ -26,14 +26,12 @@ export default function LayoutPreview() {
 
 	const loadFrontendTokenValues = useCallback(() => {
 		if (iframeRef.current) {
-			const wrapper = iframeRef.current.contentDocument.querySelector(
-				'#wrapper'
-			);
+			const root = iframeRef.current.contentDocument.documentElement;
 
-			if (wrapper) {
+			if (root) {
 				Object.values(frontendTokensValues).forEach(
 					({cssVariableMapping, value}) => {
-						wrapper.style.setProperty(
+						root.style.setProperty(
 							`--${cssVariableMapping}`,
 							value
 						);

@@ -76,6 +76,22 @@ definition {
 			SiteSelector.selectSite(site = "${otherSite}");
 		}
 
+		if (isSet(depotName)) {
+			Click(locator1 = "Configuration#SCOPE_SELECT");
+
+			MenuItem.click(menuItem = "Other Site or Asset Library...");
+
+			SelectFrame(value1 = "relative=top");
+
+			SelectFrame(locator1 = "IFrame#SELECT_SITES");
+
+			Navigator.gotoNavTab(navTab = "Asset Libraries");
+
+			Click(
+				key_card = "${depotName}",
+				locator1 = "Card#CARD_TITLE");
+		}
+
 		if (isSet(defaultSite)) {
 			Click(locator1 = "Configuration#SCOPE_SELECT");
 
@@ -284,17 +300,31 @@ definition {
 
 		Panel.expandPanel(panel = "Asset Selection");
 
-		Click(locator1 = "APConfiguration#ASSET_SELECTION_INFO_LIST_PROVIDER");
+		Click(locator1 = "APConfiguration#ASSET_SELECTION_ASSET_LIST");
 
 		Alert.viewSuccessMessage();
 
-		Panel.expandPanel(panel = "Select Collection Provider");
+		Panel.expandPanel(panel = "Select Collection");
 
-		Select(
-			locator1 = "APConfiguration#SELECT_COLLECTION_PROVIDER_FIELD",
+		Alert.closeMessage(messageType = "SUCCESS");
+
+		Button.clickSelect();
+
+		WaitForElementPresent(locator1 = "IFrame#ASSET_LIST_DIALOG");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
+
+		NavItem.click(navItem = "Collection Providers");
+
+		LexiconCard.clickCard(card = "${collectionProviderName}");
+
+		SelectFrameTop();
+
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
+
+		AssertTextEquals(
+			locator1 = "APConfiguration#ASSET_SELECTION_ASSET_LIST_TITLE",
 			value1 = "${collectionProviderName}");
-
-		Pause(locator1 = "3000");
 
 		PortletEntry.save();
 
@@ -827,6 +857,8 @@ definition {
 			value1 = "Enable RSS Subscription");
 
 		Check.checkToggleSwitch(locator1 = "APConfiguration#SUBSCRIPTIONS_ENABLE_RSS_SUBSCRIPTION");
+
+		PortletEntry.save();
 	}
 
 	macro enableUserSegementFilter {
@@ -952,6 +984,8 @@ definition {
 
 		Click(locator1 = "APConfiguration#ASSET_SELECTION_ASSET_LIST");
 
+		Alert.viewSuccessMessage();
+
 		Panel.expandPanel(panel = "Select Collection");
 
 		Alert.closeMessage(messageType = "SUCCESS");
@@ -961,6 +995,8 @@ definition {
 		WaitForElementPresent(locator1 = "IFrame#ASSET_LIST_DIALOG");
 
 		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
+
+		NavItem.click(navItem = "Collections");
 
 		if (isSet(depotName)) {
 			AssertClick(
@@ -987,15 +1023,13 @@ definition {
 
 		SelectFrameTop();
 
-		SelectFrame(locator1 = "IFrame#MODAL_BODY");
-
-		Pause(locator1 = "3000");
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_BODY");
 
 		AssertTextEquals(
 			locator1 = "APConfiguration#ASSET_SELECTION_ASSET_LIST_TITLE",
 			value1 = "${assetListName}");
 
-		Button.clickSave();
+		PortletEntry.save();
 
 		SelectFrameTop();
 	}

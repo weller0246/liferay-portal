@@ -28,7 +28,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -205,16 +204,16 @@ public abstract class BaseInstanceResourceTestCase {
 
 	@Test
 	public void testGetProcessInstancesPage() throws Exception {
-		Page<Instance> page = instanceResource.getProcessInstancesPage(
-			testGetProcessInstancesPage_getProcessId(), null, null,
-			RandomTestUtil.nextDate(), RandomTestUtil.nextDate(), null, null,
-			null, Pagination.of(1, 2), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessInstancesPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessInstancesPage_getIrrelevantProcessId();
+
+		Page<Instance> page = instanceResource.getProcessInstancesPage(
+			processId, null, null, RandomTestUtil.nextDate(),
+			RandomTestUtil.nextDate(), null, null, null, Pagination.of(1, 10),
+			null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Instance irrelevantInstance =
@@ -241,7 +240,7 @@ public abstract class BaseInstanceResourceTestCase {
 
 		page = instanceResource.getProcessInstancesPage(
 			processId, null, null, null, null, null, null, null,
-			Pagination.of(1, 2), null);
+			Pagination.of(1, 10), null);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -582,6 +581,21 @@ public abstract class BaseInstanceResourceTestCase {
 	protected Instance testGraphQLInstance_addInstance() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Instance instance, List<Instance> instances) {
+		boolean contains = false;
+
+		for (Instance item : instances) {
+			if (equals(instance, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			instances + " does not contain " + instance, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1517,8 +1531,8 @@ public abstract class BaseInstanceResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseInstanceResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseInstanceResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -20,6 +20,7 @@ import com.liferay.commerce.product.measurement.unit.web.internal.util.CPMeasure
 import com.liferay.commerce.product.model.CPMeasurementUnit;
 import com.liferay.commerce.product.service.CPMeasurementUnitService;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItem;
+import com.liferay.frontend.taglib.clay.servlet.taglib.util.NavigationItemBuilder;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.EmptyOnClickRowChecker;
 import com.liferay.portal.kernel.dao.search.RowChecker;
@@ -125,23 +126,27 @@ public class CPMeasurementUnitsDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setParameter(
 			"orderByCol", getOrderByCol()
 		).setParameter(
 			"orderByType", getOrderByType()
-		).build();
+		).setParameter(
+			"toolbarItem",
+			() -> {
+				String toolbarItem = ParamUtil.getString(
+					_renderRequest, "toolbarItem");
 
-		String toolbarItem = ParamUtil.getString(_renderRequest, "toolbarItem");
+				if (Validator.isNotNull(toolbarItem)) {
+					return toolbarItem;
+				}
 
-		if (Validator.isNotNull(toolbarItem)) {
-			portletURL.setParameter("toolbarItem", toolbarItem);
-		}
-
-		portletURL.setParameter("type", String.valueOf(getType()));
-
-		return portletURL;
+				return null;
+			}
+		).setParameter(
+			"type", getType()
+		).buildPortletURL();
 	}
 
 	public CPMeasurementUnit getPrimaryCPMeasurementUnit()
@@ -222,13 +227,13 @@ public class CPMeasurementUnitsDisplayContext {
 	protected NavigationItem getNavigationItem(
 		boolean active, String href, String label) {
 
-		NavigationItem navigationItem = new NavigationItem();
-
-		navigationItem.setActive(active);
-		navigationItem.setHref(href);
-		navigationItem.setLabel(label);
-
-		return navigationItem;
+		return NavigationItemBuilder.setActive(
+			active
+		).setHref(
+			href
+		).setLabel(
+			label
+		).build();
 	}
 
 	protected String getNavigationItemURL(String toolbarItem, int type) {

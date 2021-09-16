@@ -166,6 +166,24 @@ public class UserLocalServiceUtil {
 		getService().addOrganizationUsers(organizationId, userIds);
 	}
 
+	public static User addOrUpdateUser(
+			String externalReferenceCode, long creatorUserId, long companyId,
+			boolean autoPassword, String password1, String password2,
+			boolean autoScreenName, String screenName, String emailAddress,
+			java.util.Locale locale, String firstName, String middleName,
+			String lastName, long prefixId, long suffixId, boolean male,
+			int birthdayMonth, int birthdayDay, int birthdayYear,
+			String jobTitle, boolean sendEmail, ServiceContext serviceContext)
+		throws PortalException {
+
+		return getService().addOrUpdateUser(
+			externalReferenceCode, creatorUserId, companyId, autoPassword,
+			password1, password2, autoScreenName, screenName, emailAddress,
+			locale, firstName, middleName, lastName, prefixId, suffixId, male,
+			birthdayMonth, birthdayDay, birthdayYear, jobTitle, sendEmail,
+			serviceContext);
+	}
+
 	/**
 	 * Assigns the password policy to the users, removing any other currently
 	 * assigned password policies.
@@ -676,6 +694,7 @@ public class UserLocalServiceUtil {
 	 * authentication, without using the AuthPipeline. Primarily used for
 	 * authenticating users of <code>tunnel-web</code>.
 	 *
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
 	 * @param companyId the primary key of the user's company
 	 * @param realm unused
 	 * @param nonce the number used once
@@ -685,6 +704,7 @@ public class UserLocalServiceUtil {
 	 * @return the user's primary key if authentication is successful;
 	 <code>0</code> otherwise
 	 */
+	@Deprecated
 	public static long authenticateForDigest(
 			long companyId, String userName, String realm, String nonce,
 			String method, String uri, String response)
@@ -702,7 +722,9 @@ public class UserLocalServiceUtil {
 	 * @param encPassword the encrypted password
 	 * @return <code>true</code> if authentication is successful;
 	 <code>false</code> otherwise
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
 	 */
+	@Deprecated
 	public static boolean authenticateForJAAS(long userId, String encPassword) {
 		return getService().authenticateForJAAS(userId, encPassword);
 	}

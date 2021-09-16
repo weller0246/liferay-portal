@@ -327,7 +327,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		final LiferayExtension liferayExtension = GradleUtil.getExtension(
 			project, LiferayExtension.class);
 
-		final GitRepo gitRepo = GitRepo.getGitRepo(project.getProjectDir());
+		GitRepo gitRepo = GitRepo.getGitRepo(project.getProjectDir());
 		boolean privateProject = GradlePluginsDefaultsUtil.isPrivateProject(
 			project);
 		final boolean testProject = GradlePluginsDefaultsUtil.isTestProject(
@@ -396,8 +396,10 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 				project, JavaPlugin.TEST_COMPILE_CLASSPATH_CONFIGURATION_NAME);
 			_configureConfigurationTest(
 				project, JavaPlugin.TEST_RUNTIME_CONFIGURATION_NAME);
-			_configureEclipse(project, portalTestConfiguration);
-			_configureIdea(project, portalTestConfiguration);
+			_configureEclipse(
+				project, portalConfiguration, portalTestConfiguration);
+			_configureIdea(
+				project, portalConfiguration, portalTestConfiguration);
 			_configureSourceSetTest(
 				project, portalConfiguration, portalTestConfiguration,
 				portalTestSnapshotConfiguration);
@@ -751,7 +753,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	private CheckOSGiBundleStateTask _addTaskCheckOSGiBundleState(
-		final Project project, final BundleExtension bundleExtension) {
+		Project project, final BundleExtension bundleExtension) {
 
 		CheckOSGiBundleStateTask checkOSGiBundleStateTask = GradleUtil.addTask(
 			project, CHECK_OSGI_BUNDLE_STATE_TASK_NAME,
@@ -926,7 +928,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	private Copy _addTaskDeployConfigs(
 		Project project, final LiferayExtension liferayExtension) {
 
-		final Copy copy = GradleUtil.addTask(
+		Copy copy = GradleUtil.addTask(
 			project, DEPLOY_CONFIGS_TASK_NAME, Copy.class);
 
 		GradleUtil.setProperty(
@@ -1625,7 +1627,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	private ReplaceRegexTask _addTaskUpdateVersion(Project project) {
-		final ReplaceRegexTask replaceRegexTask = GradleUtil.addTask(
+		ReplaceRegexTask replaceRegexTask = GradleUtil.addTask(
 			project, LiferayRelengPlugin.UPDATE_VERSION_TASK_NAME,
 			ReplaceRegexTask.class);
 
@@ -2023,6 +2025,9 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		bundleDefaultInstructions.put(Constants.BUNDLE_VENDOR, "Liferay, Inc.");
 		bundleDefaultInstructions.put(
+			Constants.CONSUMER_POLICY,
+			"${replacestring;${range;[==,==]};.*,(.*)];$1}");
+		bundleDefaultInstructions.put(
 			Constants.DONOTCOPY,
 			"(" + LiferayOSGiExtension.DONOTCOPY_DEFAULT + "|.touch)");
 		bundleDefaultInstructions.put(Constants.SOURCES, "false");
@@ -2166,7 +2171,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	private void _configureConfigurationJspC(
-		final Project project, final LiferayExtension liferayExtension) {
+		final Project project, LiferayExtension liferayExtension) {
 
 		final Logger logger = project.getLogger();
 
@@ -2818,7 +2823,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 	}
 
 	private void _configureEclipse(
-		Project project, Configuration portalTestConfiguration) {
+		Project project, Configuration portalConfiguration,
+		Configuration portalTestConfiguration) {
 
 		EclipseModel eclipseModel = GradleUtil.getExtension(
 			project, EclipseModel.class);
@@ -2828,11 +2834,13 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		Collection<Configuration> plusConfigurations =
 			eclipseClasspath.getPlusConfigurations();
 
+		plusConfigurations.add(portalConfiguration);
 		plusConfigurations.add(portalTestConfiguration);
 	}
 
 	private void _configureIdea(
-		Project project, Configuration portalTestConfiguration) {
+		Project project, Configuration portalConfiguration,
+		Configuration portalTestConfiguration) {
 
 		IdeaModel ideaModel = GradleUtil.getExtension(project, IdeaModel.class);
 
@@ -2845,6 +2853,7 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 
 		Collection<Configuration> plusConfigurations = testScope.get("plus");
 
+		plusConfigurations.add(portalConfiguration);
 		plusConfigurations.add(portalTestConfiguration);
 	}
 
@@ -2923,8 +2932,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			return;
 		}
 
-		if (logger.isLifecycleEnabled()) {
-			logger.lifecycle("Using local portal tool: {}", dir);
+		if (logger.isInfoEnabled()) {
+			logger.info("Using local portal tool: {}", dir);
 		}
 
 		Configuration configuration = GradleUtil.getConfiguration(
@@ -3051,7 +3060,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			FileUtil.join(
 				compileClasspathConfiguration, sourceSet.getCompileClasspath(),
 				portalTestConfiguration));
-
 		sourceSet.setRuntimeClasspath(
 			FileUtil.join(
 				portalTestSnapshotConfiguration, compileClasspathConfiguration,
@@ -3077,7 +3085,6 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 			FileUtil.join(
 				portalConfiguration, compileOnlyConfiguration,
 				sourceSet.getCompileClasspath(), portalTestConfiguration));
-
 		sourceSet.setRuntimeClasspath(
 			FileUtil.join(
 				portalConfiguration, compileOnlyConfiguration,
@@ -4980,8 +4987,8 @@ public class LiferayOSGiDefaultsPlugin implements Plugin<Project> {
 		new BackupFilesBuildAdapter();
 	private static final Set<String> _copyrightedExtensions = new HashSet<>(
 		Arrays.asList(
-			"ftl", "groovy", "htm", "html", "js", "jsp", "jspf", "txt", "vm",
-			"xml"));
+			"ftl", "groovy", "htm", "html", "java", "js", "jsp", "jspf", "txt",
+			"vm", "xml"));
 	private static final Spec<File> _javaSpec = new NameSuffixFileSpec(".java");
 	private static final Spec<File> _jsdocSpec = new NameSuffixFileSpec(
 		".es.js", ".jsdoc", ".jsx");

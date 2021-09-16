@@ -15,8 +15,12 @@
 package com.liferay.object.system;
 
 import com.liferay.object.model.ObjectField;
+import com.liferay.petra.sql.dsl.Column;
+import com.liferay.petra.sql.dsl.Table;
 
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 /**
  * @author Marco Leo
@@ -24,21 +28,23 @@ import java.util.List;
  */
 public interface SystemObjectDefinitionMetadata {
 
-	public default String getDBTableName() {
-		return null;
-	}
+	public String getClassName();
+
+	public Map<Locale, String> getLabelMap();
 
 	public String getName();
 
 	public List<ObjectField> getObjectFields();
 
-	public default String getPKObjectFieldDBColumnName() {
-		return null;
-	}
+	public Map<Locale, String> getPluralLabelMap();
 
-	public default String getPKObjectFieldName() {
-		return null;
-	}
+	public Column<?, Long> getPrimaryKeyColumn();
+
+	public String getRESTContextPath();
+
+	public String getScope();
+
+	public Table getTable();
 
 	public int getVersion();
 

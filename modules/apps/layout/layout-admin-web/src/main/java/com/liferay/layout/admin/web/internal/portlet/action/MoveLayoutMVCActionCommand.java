@@ -15,14 +15,12 @@
 package com.liferay.layout.admin.web.internal.portlet.action;
 
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
-import com.liferay.layout.admin.web.internal.configuration.FFLayoutTranslationConfiguration;
-import com.liferay.layout.admin.web.internal.configuration.LayoutConverterConfiguration;
 import com.liferay.layout.admin.web.internal.display.context.LayoutsAdminDisplayContext;
 import com.liferay.layout.admin.web.internal.display.context.MillerColumnsDisplayContext;
 import com.liferay.layout.admin.web.internal.handler.LayoutExceptionRequestHandler;
+import com.liferay.layout.admin.web.internal.servlet.taglib.util.LayoutActionDropdownItemsProvider;
 import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.template.LayoutConverterRegistry;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -41,24 +39,17 @@ import com.liferay.translation.security.permission.TranslationPermission;
 import com.liferay.translation.url.provider.TranslationURLProvider;
 
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Eudaldo Alonso
  */
 @Component(
-	configurationPid = {
-		"com.liferay.layout.admin.web.internal.configuration.FFLayoutTranslationConfiguration",
-		"com.liferay.layout.admin.web.internal.configuration.LayoutConverterConfiguration"
-	},
 	immediate = true,
 	property = {
 		"javax.portlet.name=" + LayoutAdminPortletKeys.GROUP_PAGES,
@@ -67,15 +58,6 @@ import org.osgi.service.component.annotations.Reference;
 	service = MVCActionCommand.class
 )
 public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
-
-	@Activate
-	@Modified
-	protected void activate(Map<String, Object> properties) {
-		_ffLayoutTranslationConfiguration = ConfigurableUtil.createConfigurable(
-			FFLayoutTranslationConfiguration.class, properties);
-		_layoutConverterConfiguration = ConfigurableUtil.createConfigurable(
-			LayoutConverterConfiguration.class, properties);
-	}
 
 	@Override
 	protected void doProcessAction(
@@ -114,16 +96,21 @@ public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
 			LiferayPortletResponse liferayPortletResponse =
 				_portal.getLiferayPortletResponse(actionResponse);
 
+			LayoutsAdminDisplayContext layoutsAdminDisplayContext =
+				new LayoutsAdminDisplayContext(
+					_layoutConverterRegistry, _layoutCopyHelper,
+					liferayPortletRequest, liferayPortletResponse,
+					_stagingGroupHelper);
+
 			MillerColumnsDisplayContext millerColumnsDisplayContext =
 				new MillerColumnsDisplayContext(
-					_ffLayoutTranslationConfiguration,
-					new LayoutsAdminDisplayContext(
-						_layoutConverterConfiguration, _layoutConverterRegistry,
-						_layoutCopyHelper, liferayPortletRequest,
-						liferayPortletResponse, _stagingGroupHelper),
-					liferayPortletRequest, liferayPortletResponse,
-					_translationInfoItemFieldValuesExporterTracker,
-					_translationPermission, _translationURLProvider);
+					new LayoutActionDropdownItemsProvider(
+						_portal.getHttpServletRequest(liferayPortletRequest),
+						layoutsAdminDisplayContext, _translationPermission,
+						_translationURLProvider),
+					layoutsAdminDisplayContext, liferayPortletRequest,
+					liferayPortletResponse,
+					_translationInfoItemFieldValuesExporterTracker);
 
 			JSONObject jsonObject = JSONUtil.put(
 				"layoutColumns",
@@ -139,10 +126,6 @@ public class MoveLayoutMVCActionCommand extends BaseAddLayoutMVCActionCommand {
 				actionRequest, actionResponse, exception);
 		}
 	}
-
-	private volatile FFLayoutTranslationConfiguration
-		_ffLayoutTranslationConfiguration;
-	private volatile LayoutConverterConfiguration _layoutConverterConfiguration;
 
 	@Reference
 	private LayoutConverterRegistry _layoutConverterRegistry;

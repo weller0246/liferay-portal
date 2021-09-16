@@ -17,7 +17,9 @@ package com.liferay.info.collection.provider;
 import com.liferay.info.filter.InfoFilter;
 import com.liferay.info.pagination.Pagination;
 import com.liferay.info.sort.Sort;
+import com.liferay.portal.kernel.util.MapUtil;
 
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -26,8 +28,25 @@ import java.util.Optional;
  */
 public class CollectionQuery {
 
-	public Optional<InfoFilter> getInfoFilterOptional() {
-		return Optional.ofNullable(_infoFilter);
+	public Optional<Map<String, String[]>> getConfigurationOptional() {
+		return Optional.ofNullable(_configuration);
+	}
+
+	public <T> Optional<T> getInfoFilterOptional(
+		Class<? extends InfoFilter> clazz) {
+
+		if (MapUtil.isEmpty(_infoFilters)) {
+			return Optional.empty();
+		}
+
+		InfoFilter infoFilter = _infoFilters.getOrDefault(
+			clazz.getName(), null);
+
+		if (infoFilter != null) {
+			return Optional.of((T)infoFilter);
+		}
+
+		return Optional.empty();
 	}
 
 	public Pagination getPagination() {
@@ -46,8 +65,12 @@ public class CollectionQuery {
 		return Optional.ofNullable(_sort);
 	}
 
-	public void setInfoFilter(InfoFilter infoFilter) {
-		_infoFilter = infoFilter;
+	public void setConfiguration(Map<String, String[]> configuration) {
+		_configuration = configuration;
+	}
+
+	public void setInfoFilters(Map<String, InfoFilter> infoFilters) {
+		_infoFilters = infoFilters;
 	}
 
 	public void setPagination(Pagination pagination) {
@@ -62,7 +85,8 @@ public class CollectionQuery {
 		_sort = sort;
 	}
 
-	private InfoFilter _infoFilter;
+	private Map<String, String[]> _configuration;
+	private Map<String, InfoFilter> _infoFilters;
 	private Pagination _pagination;
 	private Object _relatedItemObject;
 	private Sort _sort;

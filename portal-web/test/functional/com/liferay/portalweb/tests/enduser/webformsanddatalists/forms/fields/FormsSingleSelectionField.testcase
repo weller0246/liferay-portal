@@ -32,17 +32,11 @@ definition {
 	}
 
 	@description = "Verify that a Single Selection Field can be created"
-	@ignore = "Test Stub"
 	@priority = "5"
 	test CanBeCreated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -69,13 +63,8 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -108,13 +97,8 @@ definition {
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -170,13 +154,8 @@ definition {
 	@priority = "5"
 	test CanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -211,13 +190,8 @@ definition {
 	@priority = "5"
 	test CanBeRequired {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -228,7 +202,7 @@ definition {
 
 		var fieldSingleSelectionField = FormFields.getFieldName();
 
-		FormFields.enableSwitcher(fieldName = "Required Field");
+		FormFields.enableSwitch(fieldName = "Required Field");
 
 		Form.save();
 
@@ -257,13 +231,8 @@ definition {
 	@priority = "5"
 	test CanBeSetToRepeatable {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -283,7 +252,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormViewBuilder.checkSwitcher(propertyName = "repeatable");
+		FormViewBuilder.checkSwitch(propertyName = "repeatable");
 
 		Form.save();
 
@@ -316,13 +285,8 @@ definition {
 	@priority = "5"
 	test CanBeSubmitted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -398,13 +362,8 @@ definition {
 	@priority = "5"
 	test FieldReferencesOfOptionsCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -443,13 +402,8 @@ definition {
 	@priority = "5"
 	test HelpTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -498,13 +452,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -535,13 +484,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeHidden {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -569,13 +513,8 @@ definition {
 	@priority = "5"
 	test OptionsCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -614,13 +553,8 @@ definition {
 	@priority = "5"
 	test OptionsCanBeDeleted {
 		property forms.functional = "quarantine";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -663,13 +597,8 @@ definition {
 	@priority = "5"
 	test OptionsCanBeDisplayedInlineAndAsList {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -695,7 +624,7 @@ definition {
 
 		Click(
 			key_fieldName = "Inline",
-			locator1 = "FormFields#SWITCHER");
+			locator1 = "FormFields#SWITCH");
 
 		AssertElementNotPresent(locator1 = "FormFields#SELECT_OPTIONS_INLINE_IDENTIFIER");
 
@@ -726,13 +655,8 @@ definition {
 	@priority = "5"
 	test OptionsCanBeRearranged {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -771,13 +695,8 @@ definition {
 	@priority = "5"
 	test PredefinedValueCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -819,13 +738,8 @@ definition {
 	@priority = "4"
 	test PredefinedValueIsResetWhenSelectedOptionIsDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -862,13 +776,8 @@ definition {
 	@priority = "5"
 	test ReferenceCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 

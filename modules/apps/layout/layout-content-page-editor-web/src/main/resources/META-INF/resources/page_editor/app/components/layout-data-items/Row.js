@@ -45,14 +45,11 @@ const Row = React.forwardRef(
 			borderColor,
 			borderRadius,
 			borderWidth,
+			display,
 			fontFamily,
 			fontSize,
 			fontWeight,
 			height,
-			marginBottom,
-			marginLeft,
-			marginRight,
-			marginTop,
 			maxHeight,
 			maxWidth,
 			minHeight,
@@ -99,6 +96,7 @@ const Row = React.forwardRef(
 		}
 
 		if (!withinTopper) {
+			style.display = display;
 			style.maxWidth = maxWidth;
 			style.minWidth = minWidth;
 			style.width = width;
@@ -123,16 +121,12 @@ const Row = React.forwardRef(
 						item.config.numberOfColumns === 2 &&
 						modulesPerRow === 1 &&
 						reverseOrder,
-					[`mb-${marginBottom}`]: isValidSpacingOption(marginBottom),
-					[`mt-${marginTop}`]: isValidSpacingOption(marginTop),
 					[`pb-${paddingBottom}`]: isValidSpacingOption(
 						paddingBottom
 					),
 					[`pl-${paddingLeft}`]: isValidSpacingOption(paddingLeft),
 					[`pr-${paddingRight}`]: isValidSpacingOption(paddingRight),
 					[`pt-${paddingTop}`]: isValidSpacingOption(paddingTop),
-					[`ml-${marginLeft}`]: isValidSpacingOption(marginLeft),
-					[`mr-${marginRight}`]: isValidSpacingOption(marginRight),
 					'no-gutters': !item.config.gutters,
 					[textAlign
 						? textAlign.startsWith('text-')

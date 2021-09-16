@@ -16,6 +16,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>ASSET_INFO</td>
+	<td>//*[contains(@class,'sheet-title')][.//*[normalize-space(text())='${assetTitle}']]/parent::div//*[contains(@class,'mb-2') or contains(@class,'mr-2')][normalize-space()='${info}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>CATEGORY_ALERT</td>
 	<td>//div[contains(@id,'categorization')]/div[contains(@class,'alert-danger')]</td>
 	<td></td>
@@ -313,11 +318,6 @@
 <tr>
 	<td>LOGOUT_URL_SUCCESS</td>
 	<td>//tr[contains(.,'Logout URL')]/td//span[contains(@class,'lfr-status-success')]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>MAX_FILESIZE_ALERT</td>
-	<td>//div[(@class='maxFileSize') and (@role='alert')]</td>
 	<td></td>
 </tr>
 <tr>

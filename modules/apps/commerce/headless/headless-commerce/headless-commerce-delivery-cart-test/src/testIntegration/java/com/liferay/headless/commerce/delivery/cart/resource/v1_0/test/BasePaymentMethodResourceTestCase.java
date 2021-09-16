@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -196,15 +195,14 @@ public abstract class BasePaymentMethodResourceTestCase {
 
 	@Test
 	public void testGetCartPaymentMethodsPage() throws Exception {
-		Page<PaymentMethod> page =
-			paymentMethodResource.getCartPaymentMethodsPage(
-				testGetCartPaymentMethodsPage_getCartId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long cartId = testGetCartPaymentMethodsPage_getCartId();
 		Long irrelevantCartId =
 			testGetCartPaymentMethodsPage_getIrrelevantCartId();
+
+		Page<PaymentMethod> page =
+			paymentMethodResource.getCartPaymentMethodsPage(cartId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantCartId != null) {
 			PaymentMethod irrelevantPaymentMethod =
@@ -257,6 +255,23 @@ public abstract class BasePaymentMethodResourceTestCase {
 		throws Exception {
 
 		return null;
+	}
+
+	protected void assertContains(
+		PaymentMethod paymentMethod, List<PaymentMethod> paymentMethods) {
+
+		boolean contains = false;
+
+		for (PaymentMethod item : paymentMethods) {
+			if (equals(paymentMethod, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			paymentMethods + " does not contain " + paymentMethod, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -722,8 +737,8 @@ public abstract class BasePaymentMethodResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BasePaymentMethodResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BasePaymentMethodResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

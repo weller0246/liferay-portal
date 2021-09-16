@@ -35,13 +35,8 @@ definition {
 	@priority = "5"
 	test CanBeCreated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -66,13 +61,8 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -104,13 +94,8 @@ definition {
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -151,13 +136,8 @@ definition {
 	@priority = "5"
 	test CanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -192,13 +172,8 @@ definition {
 	@priority = "5"
 	test CanBeRequired {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -207,7 +182,7 @@ definition {
 			fieldType = "Numeric",
 			formPageNumber = "0");
 
-		FormFields.enableSwitcher(fieldName = "Required Field");
+		FormFields.enableSwitch(fieldName = "Required Field");
 
 		Form.save();
 
@@ -232,14 +207,8 @@ definition {
 	@priority = "5"
 	test CanBeSetToAcceptDecimals {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
-
+		FormsAdmin.addForm();
 		Form.editName(formName = "Form 1");
 
 		Form.gotoAddField(
@@ -272,13 +241,8 @@ definition {
 	@priority = "5"
 	test CanBeSetToRepeatable {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -289,7 +253,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Repeatable");
+		FormFields.enableSwitch(fieldName = "Repeatable");
 
 		FormFields.viewFieldRepeatableButton(
 			fieldName = "Numeric",
@@ -323,13 +287,8 @@ definition {
 	@priority = "5"
 	test CanBeSubmitted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -374,13 +333,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsEqualTo {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -390,10 +344,10 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormViewBuilder.checkSwitcher(propertyName = "Validation");
+		FormViewBuilder.checkSwitch(propertyName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is equal to",
+			validationArgument = "Is Equal To",
 			validationErrorMessage = "Test Error",
 			validationInput = "123");
 
@@ -426,13 +380,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsGreaterThan {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -445,7 +394,7 @@ definition {
 		FormFields.enableCheckbox(fieldName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is greater than",
+			validationArgument = "Is Greater Than",
 			validationErrorMessage = "Test Error",
 			validationInput = "122");
 
@@ -478,13 +427,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsGreaterThanOrEqualTo {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -497,7 +441,7 @@ definition {
 		FormFields.enableCheckbox(fieldName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is greater than or equal to",
+			validationArgument = "Is Greater Than Or Equal To",
 			validationErrorMessage = "Test Error",
 			validationInput = "123");
 
@@ -530,13 +474,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsLessThan {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -549,7 +488,7 @@ definition {
 		FormFields.enableCheckbox(fieldName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is less than",
+			validationArgument = "Is Less Than",
 			validationErrorMessage = "Test Error",
 			validationInput = "123");
 
@@ -582,13 +521,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsLessThanOrEqualTo {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -601,7 +535,7 @@ definition {
 		FormFields.enableCheckbox(fieldName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is less than or equal to",
+			validationArgument = "Is Less Than Or Equal To",
 			validationErrorMessage = "Test Error",
 			validationInput = "123");
 
@@ -634,13 +568,8 @@ definition {
 	@priority = "5"
 	test CanBeValidatedUsingIsNotEqualTo {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -653,7 +582,7 @@ definition {
 		FormFields.enableCheckbox(fieldName = "Validation");
 
 		FormFields.editValidationTargetArgument(
-			validationArgument = "Is not equal to",
+			validationArgument = "Is Not Equal To",
 			validationErrorMessage = "Test Error",
 			validationInput = "123");
 
@@ -697,13 +626,8 @@ definition {
 	@priority = "5"
 	test DoesNotAcceptDecimalsByDefault {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -735,13 +659,8 @@ definition {
 	@priority = "5"
 	test HelpTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -773,17 +692,203 @@ definition {
 			successPageTitle = "Thank you.");
 	}
 
-	@description = "Verify that the Field Label can be edited"
+	@description = "LPS-129411 - Verify that a field can be hidden"
 	@priority = "5"
-	test LabelCanBeEdited {
-		property forms.functional = "true";
-		property portal.acceptance = "false";
+	test HiddenFieldCanBeEnabled {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Hide Field");
+
+		Form.viewHiddenField(fieldLabel = "Numeric");
+
+		for (var switchName : list "Show Label,Repeatable,Require Confirmation,Validation,Input Mask") {
+			AssertElementPresent(
+				key_switchOption = "${switchName}",
+				locator1 = "FormFields#SWITCH_NOT_VISIBLE");
+		}
+	}
+
+	@description = "LPS-129411 - Verify that hidden field is working on Forms Rules"
+	@priority = "5"
+	test HiddenFieldIWorkingOnRules {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		Form.editFieldLabelMetal(fieldValue = "Numeric 1");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Hide Field");
+
+		Form.viewHiddenField(fieldLabel = "Numeric 1");
+
+		Form.closeSidebar();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "1",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		Form.editFieldLabelMetal(fieldValue = "Numeric 2");
+
+		FormsAdminNavigator.gotoRules();
+
+		FormRules.addRule();
+
+		FormRules.selectConditionField(
+			conditionField = "Numeric 2",
+			conditionRowNumber = "1");
+
+		FormRules.selectConditionOperator(
+			conditionOperator = "Is Not Empty",
+			conditionRowNumber = "1");
+
+		FormRules.configureActionOptions(
+			action = "Calculate",
+			actionRowNumber = "1",
+			actionTarget = "Numeric 1");
+
+		FormRules.clickOnCalculatorNumbersKeyboard(buttonName = "2");
+
+		FormRules.clickOnCalculatorNumbersKeyboard(buttonName = "+");
+
+		FormRules.clickOnCalculatorNumbersKeyboard(buttonName = "2");
+
+		FormRules.save();
+
+		FormsAdminNavigator.gotoFormBuilder();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormViewBuilder.editText(
+			fieldName = "Numeric 2",
+			fieldValue = "1");
+
+		FormPortlet.submitSuccessfullyAndViewSuccessPage();
+
+		Navigator.openURL();
 
 		ProductMenu.gotoPortlet(
 			category = "Content &amp; Data",
 			portlet = "Forms");
 
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Numeric 1",
+			fieldValue = "4");
+
+		FormsAdmin.viewFormTableEntry(
+			fieldLabel = "Numeric 2",
+			fieldValue = "1");
+	}
+
+	@description = "LPS-125861 - Verify that the Input Mask can be enabled on integers"
+	@priority = "5"
+	test InputMaskCanBeEnabledOnIntegers {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		FormFields.viewNumericType(numericType = "integer");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Input Mask");
+
+		AssertElementPresent(locator1 = "FormFields#CHARACTER_OPTIONS_SHOW_MORE_BUTTON");
+
+		Click(locator1 = "FormFields#CHARACTER_OPTIONS_SHOW_MORE_BUTTON");
+
+		AssertElementPresent(locator1 = "FormFields#CHARACTER_OPTIONS_SHOW_LESS_BUTTON");
+
+		FormFields.setInputMaskFormat(inputMaskFormat = "E.g +99 (99) 9999-9999");
+
+		FormFields.viewNumericInputMask(inputMaskValue = "E.g +__ (__) ____-____");
+	}
+
+	@description = "LPS-130848 - Verify that the Input Mask can be applied on integers"
+	@priority = "5"
+	test InputMaskIsWorkingOnIntegers {
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Numeric",
+			formPageNumber = "0");
+
+		FormFields.viewNumericType(numericType = "integer");
+
+		Form.gotoAdvancedTab();
+
+		FormFields.enableSwitch(fieldName = "Input Mask");
+
+		FormFields.setInputMaskFormat(inputMaskFormat = "E.g +99 (99) 9999-9999");
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormFields.viewNumericInputMask(inputMaskValue = "E.g +__ (__) ____-____");
+
+		FormFields.editText(
+			fieldName = "Numeric",
+			fieldValue = "123");
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "Input format is not satisfied.");
+
+		FormFields.editText(
+			fieldName = "Numeric",
+			fieldValue = "123412341234");
+
+		FormPortlet.submitSuccessfully();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content &amp; Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries();
+
+		FormsAdminNavigator.gotoView();
+
+		FormsAdmin.viewTextEntry(
+			fieldLabel = "Numeric",
+			fieldName = "Numeric",
+			fieldValue = "E.g +12 (34) 1234-1234");
+	}
+
+	@description = "Verify that the Field Label can be edited"
+	@priority = "5"
+	test LabelCanBeEdited {
+		property forms.functional = "true";
+
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -809,13 +914,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeHidden {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -830,7 +930,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.disableSwitcher(fieldName = "Show Label");
+		FormFields.disableSwitch(fieldName = "Show Label");
 
 		FormFields.viewFieldLabelNotPresent(fieldLabel = "Numeric");
 
@@ -847,13 +947,8 @@ definition {
 	@priority = "5"
 	test OnlyAcceptsNumbers {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -881,13 +976,8 @@ definition {
 	@priority = "5"
 	test PlaceholderTextCanBeSet {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -920,13 +1010,8 @@ definition {
 	@priority = "5"
 	test PredefinedValueCanBeSet {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -957,13 +1042,8 @@ definition {
 	@priority = "4"
 	test PredefinedValueHasHigherPriorityThanPlaceholderText {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -1000,13 +1080,8 @@ definition {
 	@priority = "4"
 	test PredefinedValueIsReplacedByPlaceholderText {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -1035,13 +1110,8 @@ definition {
 	@priority = "5"
 	test ReferenceCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 

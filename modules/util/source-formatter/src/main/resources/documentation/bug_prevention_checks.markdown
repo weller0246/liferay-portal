@@ -26,6 +26,7 @@ CQLKeywordCheck | .cql | Checks that Cassandra keywords are upper case. |
 CompatClassImportsCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that classes are imported from `compat` modules, when possible. |
 ConsumerTypeAnnotationCheck | .java | Performs several checks on classes with @ConsumerType annotation. |
 DeprecatedUsageCheck | .java | Finds calls to deprecated classes or methods. |
+EmptyConstructorCheck | .java | Finds unnecessary empty constructors. |
 FactoryCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases where `*Factory` should be used when creating new instances of an object. |
 FilterStringWhitespaceCheck | .java | Finds missing and unnecessary whitespace in the value of the filter string in `ServiceTrackerFactory.open` or `WaiterUtil.waitForFilter`. |
 [GenericTypeCheck](checks/generic_type_check.markdown#generictypecheck) | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that generics are always specified to provide compile-time checking and removing the risk of `ClassCastException` during runtime. |
@@ -51,7 +52,6 @@ JSONPackageJSONDependencyVersionCheck | .ipynb, .json or .npmbridgerc | Checks t
 JSPLanguageKeysCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds missing language keys in `Language.properties`. |
 JSPLanguageUtilCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases where Locale is passed to `LanguageUtil.get` instead of `HttpServletRequest`. |
 JSPLogFileNameCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates the value that is passed to `LogFactoryUtil.getLog` in `.jsp`. |
-JSPLogParametersCheck | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates the values of parameters passed to `_log.*` calls. |
 [JSPMethodCallsCheck](checks/jsp_method_calls_check.markdown#jspmethodcallscheck) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that type `LiferayPortletResponse` is used to call `getNamespace()`. |
 [JSPMissingTaglibsCheck](checks/jsp_missing_taglibs_check.markdown#jspmissingtaglibscheck) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for missing taglibs. |
 [JSPSendRedirectCheck](checks/jsp_send_redirect_check.markdown#jspsendredirectcheck) | .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks that there are no calls to `HttpServletResponse.sendRedirect` from `jsp` files. |
@@ -82,7 +82,6 @@ JavaJSPDynamicIncludeCheck | .java | Performs several checks on `*JSPDynamicIncl
 [JavaLocalSensitiveComparisonCheck](checks/java_local_sensitive_comparison_check.markdown#javalocalsensitivecomparisoncheck) | .java | Checks that `java.text.Collator` is used when comparing localized values. |
 JavaLogClassNameCheck | .java | Checks the name of the class that is passed in `LogFactoryUtil.getLog`. |
 [JavaLogLevelCheck](checks/java_log_level_check.markdown#javaloglevelcheck) | .java | Checks that the correct log messages are printed. |
-JavaLogParametersCheck | .java | Validates the values of parameters passed to `_log.*` calls. |
 JavaMapBuilderGenericsCheck | .java | Finds missing or unnecessary generics on `*MapBuilder.put` calls. |
 [JavaMetaAnnotationsCheck](checks/java_meta_annotations_check.markdown#javametaannotationscheck) | .java | Checks for correct use of attributes `description` and `name` in annotation `@aQute.bnd.annotation.metatype.Meta`. |
 JavaMissingXMLPublicIdsCheck | .java | Finds missing public IDs for check XML files. |
@@ -127,11 +126,14 @@ LFRBuildContentCheck | .lfrbuild-* | Finds `.lfrbuild*` files that are not empty
 LPS42924Check | .java | Finds cases where `PortalUtil.getClassName*` (instead of calling `classNameLocalService` directly). |
 LanguageKeysCheck | .java, .js or .jsx | Finds missing language keys in `Language.properties`. |
 LocaleUtilCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds cases where `com.liferay.portal.kernel.util.LocaleUtil` should be used (instead of `java.util.Locale`). |
+LogParametersCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Validates the values of parameters passed to `_log.*` calls. |
 [MissingDeprecatedCheck](https://checkstyle.sourceforge.io/config_annotation.html#MissingDeprecated) | .java | Verifies that the annotation @Deprecated and the Javadoc tag @deprecated are both present when either of them is present. |
 MissingDiamondOperatorCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Checks for missing diamond operator for types that require diamond operator. |
 MissingModifierCheck | .java | Verifies that a method or global variable has a modifier specified. |
 MissingOverrideCheck | .java | Verifies that a method that overrides a method in a superclass has the @Override annotation. |
+NestedFieldAnnotationCheck | .java | Verifies that `NestedFieldSupport.class` is used in `service` property of `Component` annotation |
 NewFileCheck | | Finds new files in directories that should not have added files. |
+NullAssertionInIfStatementCheck | .java | Verifies that null check should always be first in if-statement. |
 PackageinfoBNDExportPackageCheck | packageinfo | Finds legacy `packageinfo` files. |
 PersistenceCallCheck | .java, .jsp, .jspf, .jspx, .tag, .tpl or .vm | Finds illegal persistence calls across component boundaries. |
 [PersistenceUpdateCheck](checks/persistence_update_check.markdown#persistenceupdatecheck) | .java | Checks that there are no stale references in service code from persistence updates. |
@@ -171,6 +173,7 @@ XMLPoshiFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .propert
 XMLProjectElementCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks the project name in `.pom` file. |
 [XMLServiceEntityNameCheck](checks/xml_service_entity_name_check.markdown#xmlserviceentitynamecheck) | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks that the `entity name` in `service.xml` does not equal the `package name`. |
 XMLServiceFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `service.xml` file. |
+[XMLServiceFinderNameCheck](checks/xml_service_finder_name_check.markdown#xmlservicefindernamecheck) | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks that the `finder name` in `service.xml`. |
 XMLServiceReferenceCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Checks for unused references in `service.xml` file. |
 XMLSourcechecksFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `sourcechecks.xml` file. |
 XMLSuppressionsFileCheck | .action, .function, .jrxml, .macro, .pom, .project, .properties, .testcase, .toggle, .tpl, .wsdl, .xml or .xsd | Performs several checks on `source-formatter-suppressions.xml` file. |

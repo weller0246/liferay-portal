@@ -44,13 +44,75 @@ definition {
 		task ("Publish to Live") {
 			Staging.openStagingAdmin(siteURLKey = "test-site-name-staging");
 
-			Staging.publishCustomPublication(checkContentNameList = "PortletDisplayTemplate");
+			Staging.publishCustomPublication(checkContentNameList = "Template");
 		}
 
 		task ("View the widget template in live site") {
 			ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "test-site-name");
 
 			ApplicationDisplayTemplates.viewTemplate(adtType = "Asset Publisher");
+		}
+	}
+
+	@description = "This is a use case for LPS-137903. View the new GUI in Widget Templates in staging model."
+	@priority = "4"
+	@uitest
+	test ViewTemplateEditorSidebarPanel {
+		task ("Enable Staging Model") {
+			JSONStaging.enableLocalStaging(
+				branchingPrivate = "false",
+				branchingPublic = "false",
+				groupName = "Test Site Name");
+		}
+
+		task ("Add a widget template for Asset Publisher") {
+			ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "test-site-name-staging");
+
+			ApplicationDisplayTemplates.addADTWithFieldEntryCP(
+				fieldName = "Asset Entry",
+				portletName = "Asset Publisher");
+
+			Alert.viewSuccessMessage();
+
+			ApplicationDisplayTemplates.viewTemplate(adtType = "Asset Publisher");
+		}
+
+		task ("View sidebar panels in template editor") {
+			ApplicationDisplayTemplates.gotoWidgetTemplatesEllipsisItem(
+				item = "Edit",
+				widgetTemplateName = "Asset Publisher Test ADT");
+		}
+
+		task ("View Elements panel") {
+			Navigator.gotoSidebarTab(tabName = "Elements");
+
+			for (var fieldName : list "Asset Entries*,Asset Entry,Current URL,Locale,Portlet Preferences,Template ID,Theme Display,HTTP Request,Render Request,Render Response,Asset Publisher Helper") {
+				AssertElementPresent(
+					key_fieldName = "${fieldName}",
+					locator1 = "DDMEditTemplate#SCRIPT_FIELD");
+			}
+		}
+
+		task ("View Properties panel and assert Language is Freemarker") {
+			Navigator.gotoSidebarTab(tabName = "Properties");
+
+			AssertSelectedLabel(
+				key_fieldLabel = "Language",
+				locator1 = "Select#GENERIC_SELECT_FIELD",
+				value1 = "FreeMarker (.ftl)");
+
+			for (var fieldName : list "Template Key,URL,WebDAV URL") {
+				AssertVisible(
+					key_text = "${fieldName}",
+					locator1 = "TextInput#ANY");
+			}
+
+			AssertVisible(locator1 = "TextArea#DESCRIPTION");
+
+			AssertSelectedLabel(
+				locator1 = "Select#SELECT_ID",
+				selectFieldId = "smallImageSource",
+				value1 = "No Image");
 		}
 	}
 
@@ -115,11 +177,12 @@ definition {
 				vocabularyName = "Vocabulary Name 3");
 		}
 
-		task ("Add a widget template via Categories Navigation") {
-			ApplicationDisplayTemplates.addPG(
+		task ("Add a widget template for Categories Navigation") {
+			ApplicationDisplayTemplates.openWidgetTemplatesAdmin(siteURLKey = "test-site-name-staging");
+
+			ApplicationDisplayTemplates.addCP(
 				adtFile = "adt_categories_navigation_multi_column.ftl",
-				adtType = "Categories Navigation",
-				siteName = "Test Site Name");
+				adtType = "Categories Navigation");
 		}
 
 		task ("Select the widget template in Categories Navigation") {

@@ -15,12 +15,14 @@
 package com.liferay.portal.upgrade.internal.apache.logging.log4j.core;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.upgrade.internal.release.osgi.commands.ReleaseManagerOSGiCommands;
 import com.liferay.portal.upgrade.internal.report.UpgradeReport;
 
 import java.io.Serializable;
 
 import java.util.Objects;
 
+import org.apache.felix.cm.PersistenceManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
@@ -31,6 +33,8 @@ import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
 
 /**
  * @author Sam Ziemer
@@ -50,11 +54,14 @@ public class UpgradeReportLogAppender implements Appender {
 				logEvent.getLoggerName(), message.getFormattedMessage());
 		}
 		else if (logEvent.getLevel() == Level.INFO) {
+			String formattedMessage = message.getFormattedMessage();
+
 			if (Objects.equals(
-					logEvent.getLoggerName(), UpgradeProcess.class.getName())) {
+					logEvent.getLoggerName(), UpgradeProcess.class.getName()) &&
+				formattedMessage.startsWith("Completed upgrade process ")) {
 
 				_upgradeReport.addEventMessage(
-					logEvent.getLoggerName(), message.getFormattedMessage());
+					logEvent.getLoggerName(), formattedMessage);
 			}
 		}
 		else if (logEvent.getLevel() == Level.WARN) {
@@ -118,6 +125,9 @@ public class UpgradeReportLogAppender implements Appender {
 	@Override
 	public void stop() {
 		if (_started) {
+			_upgradeReport.generateReport(
+				_persistenceManager, _releaseManagerOSGiCommands);
+
 			_upgradeReport = null;
 		}
 
@@ -126,6 +136,12 @@ public class UpgradeReportLogAppender implements Appender {
 
 	private static final Logger _rootLogger =
 		(Logger)LogManager.getRootLogger();
+
+	@Reference
+	private PersistenceManager _persistenceManager;
+
+	@Reference(cardinality = ReferenceCardinality.OPTIONAL)
+	private volatile ReleaseManagerOSGiCommands _releaseManagerOSGiCommands;
 
 	private volatile boolean _started;
 	private volatile UpgradeReport _upgradeReport;

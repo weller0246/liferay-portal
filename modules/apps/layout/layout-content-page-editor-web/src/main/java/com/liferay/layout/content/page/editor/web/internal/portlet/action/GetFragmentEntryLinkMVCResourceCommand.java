@@ -25,8 +25,10 @@ import com.liferay.fragment.service.FragmentEntryLinkLocalService;
 import com.liferay.fragment.service.FragmentEntryService;
 import com.liferay.info.constants.InfoDisplayWebKeys;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
+import com.liferay.info.item.InfoItemDetails;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemServiceTracker;
+import com.liferay.info.item.provider.InfoItemDetailsProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
 import com.liferay.layout.display.page.LayoutDisplayPageProvider;
@@ -104,10 +106,10 @@ public class GetFragmentEntryLinkMVCResourceCommand
 			defaultFragmentRendererContext.setSegmentsExperienceIds(
 				new long[] {segmentsExperienceId});
 
-			String collectionItemClassName = ParamUtil.getString(
-				resourceRequest, "collectionItemClassName");
-			long collectionItemClassPK = ParamUtil.getLong(
-				resourceRequest, "collectionItemClassPK");
+			String itemClassName = ParamUtil.getString(
+				resourceRequest, "itemClassName");
+			long itemClassPK = ParamUtil.getLong(
+				resourceRequest, "itemClassPK");
 
 			HttpServletRequest httpServletRequest =
 				_portal.getHttpServletRequest(resourceRequest);
@@ -116,15 +118,13 @@ public class GetFragmentEntryLinkMVCResourceCommand
 				(LayoutDisplayPageProvider<?>)httpServletRequest.getAttribute(
 					LayoutDisplayPageWebKeys.LAYOUT_DISPLAY_PAGE_PROVIDER);
 
-			if (Validator.isNotNull(collectionItemClassName) &&
-				(collectionItemClassPK > 0)) {
-
+			if (Validator.isNotNull(itemClassName) && (itemClassPK > 0)) {
 				InfoItemIdentifier infoItemIdentifier =
-					new ClassPKInfoItemIdentifier(collectionItemClassPK);
+					new ClassPKInfoItemIdentifier(itemClassPK);
 
 				InfoItemObjectProvider<Object> infoItemObjectProvider =
 					_infoItemServiceTracker.getFirstInfoItemService(
-						InfoItemObjectProvider.class, collectionItemClassName,
+						InfoItemObjectProvider.class, itemClassName,
 						infoItemIdentifier.getInfoItemServiceFilter());
 
 				if (infoItemObjectProvider != null) {
@@ -135,14 +135,30 @@ public class GetFragmentEntryLinkMVCResourceCommand
 						infoItemObject);
 
 					httpServletRequest.setAttribute(
+						InfoDisplayWebKeys.INFO_ITEM, infoItemObject);
+
+					InfoItemDetailsProvider infoItemDetailsProvider =
+						_infoItemServiceTracker.getFirstInfoItemService(
+							InfoItemDetailsProvider.class, itemClassName);
+
+					if (infoItemDetailsProvider != null) {
+						InfoItemDetails infoItemDetails =
+							infoItemDetailsProvider.getInfoItemDetails(
+								infoItemObject);
+
+						httpServletRequest.setAttribute(
+							InfoDisplayWebKeys.INFO_ITEM_DETAILS,
+							infoItemDetails);
+					}
+
+					httpServletRequest.setAttribute(
 						InfoDisplayWebKeys.INFO_LIST_DISPLAY_OBJECT,
 						infoItemObject);
 				}
 
 				LayoutDisplayPageProvider<?> layoutDisplayPageProvider =
 					_layoutDisplayPageProviderTracker.
-						getLayoutDisplayPageProviderByClassName(
-							collectionItemClassName);
+						getLayoutDisplayPageProviderByClassName(itemClassName);
 
 				if (layoutDisplayPageProvider != null) {
 					httpServletRequest.setAttribute(

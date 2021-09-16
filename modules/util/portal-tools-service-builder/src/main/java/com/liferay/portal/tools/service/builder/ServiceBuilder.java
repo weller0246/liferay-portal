@@ -536,6 +536,8 @@ public class ServiceBuilder {
 		_tplJsonJs = _getTplProperty("json_js", _tplJsonJs);
 		_tplJsonJsMethod = _getTplProperty("json_js_method", _tplJsonJsMethod);
 		_tplModel = _getTplProperty("model", _tplModel);
+		_tplModelArgumentsResolver = _getTplProperty(
+			"model_arguments_resolver", _tplModelArgumentsResolver);
 		_tplModelCache = _getTplProperty("model_cache", _tplModelCache);
 		_tplModelHintsXml = _getTplProperty(
 			"model_hints_xml", _tplModelHintsXml);
@@ -749,10 +751,27 @@ public class ServiceBuilder {
 
 			_portletShortName = _portletShortName.trim();
 
-			for (char c : _portletShortName.toCharArray()) {
-				if (!Validator.isChar(c) && (c != CharPool.UNDERLINE)) {
-					throw new RuntimeException(
-						"The namespace element must be a valid keyword");
+			char[] portletShortNameChars = _portletShortName.toCharArray();
+
+			for (int i = 0; i < portletShortNameChars.length; i++) {
+				char portletShortNameChar = portletShortNameChars[i];
+
+				if (i == 0) {
+					if (!Validator.isChar(portletShortNameChar) &&
+						(portletShortNameChar != CharPool.UNDERLINE)) {
+
+						throw new RuntimeException(
+							"The namespace element must be a valid keyword");
+					}
+				}
+				else {
+					if (!Validator.isChar(portletShortNameChar) &&
+						!Validator.isDigit(portletShortNameChar) &&
+						(portletShortNameChar != CharPool.UNDERLINE)) {
+
+						throw new RuntimeException(
+							"The namespace element must be a valid keyword");
+					}
 				}
 			}
 
@@ -799,6 +818,8 @@ public class ServiceBuilder {
 							_createPersistenceImpl(entity);
 							_createPersistence(entity);
 							_createPersistenceUtil(entity);
+
+							_createModelArgumentsResolver(entity);
 
 							if (Validator.isNotNull(_testDirName)) {
 								_createPersistenceTest(entity);
@@ -1349,9 +1370,10 @@ public class ServiceBuilder {
 		return mappingEntities;
 	}
 
-	public int getMaxLength(String model, String field) {
+	public int getMaxLength(String model, EntityColumn entityColumn) {
 		Map<String, String> hints = ModelHintsUtil.getHints(
-			_apiPackagePath + ".model." + model, field);
+			_apiPackagePath + ".model." + model,
+			entityColumn.getModelHintsName());
 
 		if (hints == null) {
 			return _DEFAULT_COLUMN_MAX_LENGTH;
@@ -1557,7 +1579,9 @@ public class ServiceBuilder {
 		return null;
 	}
 
-	public String getSqlType(String model, String field, String type) {
+	public String getSqlType(String model, EntityColumn entityColumn) {
+		String type = entityColumn.getType();
+
 		if (type.equals("boolean") || type.equals("Boolean")) {
 			return "BOOLEAN";
 		}
@@ -1589,7 +1613,7 @@ public class ServiceBuilder {
 			return "CLOB";
 		}
 		else if (type.equals("String")) {
-			int maxLength = getMaxLength(model, field);
+			int maxLength = getMaxLength(model, entityColumn);
 
 			if (maxLength == 2000000) {
 				return "CLOB";
@@ -2422,9 +2446,7 @@ public class ServiceBuilder {
 						entityColumns.size());
 
 					for (EntityColumn entityColumn : entityColumns) {
-						String sqlType = getSqlType(
-							name, entityColumn.getName(),
-							entityColumn.getType());
+						String sqlType = getSqlType(name, entityColumn);
 
 						columns.add(
 							HashMapBuilder.put(
@@ -3051,6 +3073,31 @@ public class ServiceBuilder {
 				_serviceOutputPath, "/model/", entity.getName(), "Model.java"));
 
 		_write(modelFile, content, _modifiedFileNames);
+	}
+
+	private void _createModelArgumentsResolver(Entity entity) throws Exception {
+		if (!entity.hasPersistence() || isVersionLTE_7_3_0()) {
+			return;
+		}
+
+		Map<String, Object> context = _getContext();
+
+		context.put("entity", entity);
+
+		JavaClass modelImplJavaClass = _getJavaClass(
+			StringBundler.concat(
+				_outputPath, "/model/impl/", entity.getName(), "Impl.java"));
+
+		context = _putDeprecatedKeys(context, modelImplJavaClass);
+
+		String content = _processTemplate(_tplModelArgumentsResolver, context);
+
+		File argumentsResolverFile = new File(
+			StringBundler.concat(
+				_outputPath, "/service/persistence/impl/", entity.getName(),
+				"ModelArgumentsResolver.java"));
+
+		_write(argumentsResolverFile, content, _modifiedFileNames);
 	}
 
 	private void _createModelCache(Entity entity) throws Exception {
@@ -4734,8 +4781,7 @@ public class ServiceBuilder {
 			String colType = entityColumn.getType();
 
 			if (colType.equals("String")) {
-				columnLengths[i] = getMaxLength(
-					entity.getName(), entityColumn.getName());
+				columnLengths[i] = getMaxLength(entity.getName(), entityColumn);
 			}
 		}
 
@@ -4964,7 +5010,7 @@ public class ServiceBuilder {
 				}
 				else if (type.equals("String")) {
 					int maxLength = getMaxLength(
-						entity.getName(), entityColumn.getName());
+						entity.getName(), entityColumn);
 
 					if (entityColumn.isLocalized()) {
 						maxLength = 4000;
@@ -5126,7 +5172,7 @@ public class ServiceBuilder {
 			else if (type.equals("BigDecimal")) {
 				Map<String, String> hints = ModelHintsUtil.getHints(
 					_apiPackagePath + ".model." + entity.getName(),
-					entityColumn.getName());
+					entityColumn.getModelHintsName());
 
 				String precision = "30";
 				String scale = "16";
@@ -5152,8 +5198,7 @@ public class ServiceBuilder {
 				sb.append("TEXT");
 			}
 			else if (type.equals("String")) {
-				int maxLength = getMaxLength(
-					entity.getName(), entityColumn.getName());
+				int maxLength = getMaxLength(entity.getName(), entityColumn);
 
 				if (entityColumn.isLocalized() && (maxLength < 4000)) {
 					maxLength = 4000;
@@ -5632,7 +5677,7 @@ public class ServiceBuilder {
 
 	private List<Path> _getUpdateSQLFilePaths() throws Exception {
 		if (!_osgiModule) {
-			final List<Path> updateSQLFilePaths = new ArrayList<>();
+			List<Path> updateSQLFilePaths = new ArrayList<>();
 
 			try (DirectoryStream<Path> paths = Files.newDirectoryStream(
 					Paths.get(_sqlDirName), "update-7.0.0-7.0.1*.sql")) {
@@ -6031,27 +6076,13 @@ public class ServiceBuilder {
 
 			String content = _read(newFinderImplFile);
 
-			StringBundler sb = new StringBundler(13);
-
-			sb.append("package ");
-			sb.append(_packagePath);
-			sb.append(".service.persistence.impl;\n\n");
-
-			sb.append("import ");
-			sb.append(_apiPackagePath);
-			sb.append(".service.persistence.");
-			sb.append(entityName);
-			sb.append("Finder;\n");
-
-			sb.append("import ");
-			sb.append(_apiPackagePath);
-			sb.append(".service.persistence.");
-			sb.append(entityName);
-			sb.append("Util;");
-
 			content = StringUtil.replace(
 				content, "package " + _packagePath + ".service.persistence;",
-				sb.toString());
+				StringBundler.concat(
+					"package ", _packagePath, ".service.persistence.impl;\n\n",
+					"import ", _apiPackagePath, ".service.persistence.",
+					entityName, "Finder;\n", "import ", _apiPackagePath,
+					".service.persistence.", entityName, "Util;"));
 
 			ToolsUtil.writeFileRaw(
 				newFinderImplFile, content, _modifiedFileNames);
@@ -7967,6 +7998,8 @@ public class ServiceBuilder {
 	private String _tplJsonJs = _TPL_ROOT + "json_js.ftl";
 	private String _tplJsonJsMethod = _TPL_ROOT + "json_js_method.ftl";
 	private String _tplModel = _TPL_ROOT + "model.ftl";
+	private String _tplModelArgumentsResolver =
+		_TPL_ROOT + "model_arguments_resolver.ftl";
 	private String _tplModelCache = _TPL_ROOT + "model_cache.ftl";
 	private String _tplModelHintsXml = _TPL_ROOT + "model_hints_xml.ftl";
 	private String _tplModelImpl = _TPL_ROOT + "model_impl.ftl";

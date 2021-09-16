@@ -14,6 +14,7 @@
 
 package com.liferay.object.model.impl;
 
+import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectEntryLocalServiceUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -31,10 +32,16 @@ import java.util.Map;
 public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 
 	@Override
+	public ObjectEntry cloneWithOriginalValues() {
+		ObjectEntry objectEntry = super.cloneWithOriginalValues();
+
+		objectEntry.setValues(_transientValues);
+
+		return objectEntry;
+	}
+
+	@Override
 	public Map<String, Serializable> getValues() {
-
-		// TODO Cache does not work for ObjectEntryLocalServiceTest#_getValues
-
 		if (_values == null) {
 			if (_log.isDebugEnabled()) {
 				_log.debug("Get values for object entry " + getObjectEntryId());
@@ -58,12 +65,19 @@ public class ObjectEntryImpl extends ObjectEntryBaseImpl {
 	}
 
 	@Override
+	public void setTransientValues(Map<String, Serializable> values) {
+		_transientValues = values;
+	}
+
+	@Override
 	public void setValues(Map<String, Serializable> values) {
 		_values = values;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryImpl.class);
+
+	private Map<String, Serializable> _transientValues;
 
 	@CacheField(propagateToInterface = true)
 	private Map<String, Serializable> _values;

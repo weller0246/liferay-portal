@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -195,15 +194,14 @@ public abstract class BaseShippingMethodResourceTestCase {
 
 	@Test
 	public void testGetCartShippingMethodsPage() throws Exception {
-		Page<ShippingMethod> page =
-			shippingMethodResource.getCartShippingMethodsPage(
-				testGetCartShippingMethodsPage_getCartId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long cartId = testGetCartShippingMethodsPage_getCartId();
 		Long irrelevantCartId =
 			testGetCartShippingMethodsPage_getIrrelevantCartId();
+
+		Page<ShippingMethod> page =
+			shippingMethodResource.getCartShippingMethodsPage(cartId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantCartId != null) {
 			ShippingMethod irrelevantShippingMethod =
@@ -263,6 +261,23 @@ public abstract class BaseShippingMethodResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ShippingMethod shippingMethod, List<ShippingMethod> shippingMethods) {
+
+		boolean contains = false;
+
+		for (ShippingMethod item : shippingMethods) {
+			if (equals(shippingMethod, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			shippingMethods + " does not contain " + shippingMethod, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -746,8 +761,8 @@ public abstract class BaseShippingMethodResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseShippingMethodResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseShippingMethodResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -34,7 +34,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -212,15 +211,15 @@ public abstract class BaseLanguageResourceTestCase {
 
 	@Test
 	public void testGetAssetLibraryLanguagesPage() throws Exception {
-		Page<Language> page = languageResource.getAssetLibraryLanguagesPage(
-			testGetAssetLibraryLanguagesPage_getAssetLibraryId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long assetLibraryId =
 			testGetAssetLibraryLanguagesPage_getAssetLibraryId();
 		Long irrelevantAssetLibraryId =
 			testGetAssetLibraryLanguagesPage_getIrrelevantAssetLibraryId();
+
+		Page<Language> page = languageResource.getAssetLibraryLanguagesPage(
+			assetLibraryId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantAssetLibraryId != null) {
 			Language irrelevantLanguage =
@@ -277,13 +276,12 @@ public abstract class BaseLanguageResourceTestCase {
 
 	@Test
 	public void testGetSiteLanguagesPage() throws Exception {
-		Page<Language> page = languageResource.getSiteLanguagesPage(
-			testGetSiteLanguagesPage_getSiteId());
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long siteId = testGetSiteLanguagesPage_getSiteId();
 		Long irrelevantSiteId = testGetSiteLanguagesPage_getIrrelevantSiteId();
+
+		Page<Language> page = languageResource.getSiteLanguagesPage(siteId);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantSiteId != null) {
 			Language irrelevantLanguage = testGetSiteLanguagesPage_addLanguage(
@@ -360,7 +358,7 @@ public abstract class BaseLanguageResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/languages");
 
-		Assert.assertEquals(2, languagesJSONObject.get("totalCount"));
+		Assert.assertEquals(2, languagesJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(language1, language2),
@@ -371,6 +369,21 @@ public abstract class BaseLanguageResourceTestCase {
 	protected Language testGraphQLLanguage_addLanguage() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Language language, List<Language> languages) {
+		boolean contains = false;
+
+		for (Language item : languages) {
+			if (equals(language, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			languages + " does not contain " + language, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -896,8 +909,8 @@ public abstract class BaseLanguageResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseLanguageResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseLanguageResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

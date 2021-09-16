@@ -11,11 +11,6 @@
 
 <tbody>
 <tr>
-	<td>COLLECTION_CATEGORY_FILTER_DROPDOWN_TOGGLE</td>
-	<td>//p[normalize-space(text())='${key_title}']//following-sibling::div//button[contains(@class,'dropdown-toggle')]</td>
-	<td></td>
-</tr>
-<tr>
 	<td>CONTENT_DISPLAY_FRAGMENT_BODY</td>
 	<td>//div[@class='row'][${key_rowPosition}]/div[contains(@class,'col')][${key_colPosition}]//div[contains(@class,'fragment-content') and contains(.,'${key_entryContent}')]</td>
 	<td></td>
@@ -27,7 +22,7 @@
 </tr>
 <tr>
 	<td>CONTENT_DISPLAY_FRAGMENT_IMAGE</td>
-	<td>//div[contains(@class,'content')]//div[@class='row'][${key_rowPosition}]/div[contains(@class,'col')][${key_colPosition}]//*[contains(@src,'${key_image}')]</td>
+	<td>//div[contains(@class,'content')]//div[@class='row'][${key_rowPosition}]/div[contains(@class,'col')][${key_colPosition}]//*[contains(@src,'${key_image}')] | //div[contains(@class,'content')]//div[@class='row'][${key_rowPosition}]/div[contains(@class,'col')][${key_colPosition}]//*[contains(@style,'${key_image}')]</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,6 +38,11 @@
 <tr>
 	<td>FRAGMENT_BASIC_COMPONENT</td>
 	<td>//div[contains(@class,'layout-content')]//*[contains(@class,'component-${key_fragmentName}')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>FRAGMENT_BASIC_COMPONENT_INDEX</td>
+	<td>xpath=(//div[contains(@class,'layout-content')]//*[contains(@class,'component-${key_fragmentName}')])[${key_index}]</td>
 	<td></td>
 </tr>
 <tr>
@@ -255,6 +255,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>FRAGMENT_CONFIGURATION_HEADER_CARD</td>
+	<td>//div[contains(@class,'component-${key_fragmentName}')]//${key_headingLevel}[normalize-space(text())='${key_text}']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>FRAGMENT_CONFIGURATION_TEXT_COLOR</td>
 	<td>//div[contains(@class,'page-editor__topper__bar') and contains(.,'${key_fragmentName}')]/following-sibling::div[contains(@class,'page-editor__topper__content')]//div[contains(@style,'color: var(--${key_textColor})')]</td>
 	<td></td>
@@ -267,27 +272,27 @@
 <!--FRAGMENT_CONFIGURATION_IN_VIEW_MODE-->
 <tr>
 	<td>FRAGMENT_CONFIGURATION_ALIGNMENT_IN_VIEW_MODE</td>
-	<td>//*[contains(@class,'${key_fragmentName}')]/parent::div/parent::div[contains(@class,'text-${key_alignment}')]</td>
+	<td>//div[contains(@class,'text-${key_alignment}')][.//*[contains(@class,'${key_fragmentName}')]]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENT_CONFIGURATION_BORDER_RADIUS_IN_VIEW_MODE</td>
-	<td>//*[contains(@class,'${key_fragmentName}')]/parent::div/parent::div[contains(@style,'border-radius: ${key_borderRadius}')]</td>
+	<td>//div[contains(@style,'border-radius: ${key_borderRadius}')][.//*[contains(@class,'${key_fragmentName}')]]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENT_CONFIGURATION_BOX_SHADOW_IN_VIEW_MODE</td>
-	<td>//*[contains(@class,'${key_fragmentName}')]/parent::div/parent::div[contains(@style,'box-shadow: ${key_boxShadow}')]</td>
+	<td>//div[contains(@style,'box-shadow: ${key_boxShadow}')][.//*[contains(@class,'${key_fragmentName}')]]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENT_CONFIGURATION_MARGIN_BOTTOM_IN_VIEW_MODE</td>
-	<td>//*[contains(@class,'${key_fragmentName}')]/parent::div/parent::div[contains(@class,'mb-${key_marginBottom}')]</td>
+	<td>//div[contains(@class,'mb-${key_marginBottom}')][.//*[contains(@class,'${key_fragmentName}')]]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>FRAGMENT_CONFIGURATION_TEXT_COLOR_IN_VIEW_MODE</td>
-	<td>//*[contains(@class,'${key_fragmentName}')]/parent::div/parent::div[contains(@style,'color: ${key_textColor}')]</td>
+	<td>//div[contains(@style,'color: ${key_textColor}')][.//*[contains(@class,'${key_fragmentName}')]]</td>
 	<td></td>
 </tr>
 <!--FRAGMENT_EDITABLE_FIELD-->

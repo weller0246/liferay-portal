@@ -404,6 +404,42 @@ public class Mutation {
 				Long.valueOf(siteKey), callbackURL, object));
 	}
 
+	@GraphQLField(
+		description = "Deletes the blog post by external reference code."
+	)
+	public boolean deleteSiteBlogPostingByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_blogPostingResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			blogPostingResource ->
+				blogPostingResource.
+					deleteSiteBlogPostingByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode));
+
+		return true;
+	}
+
+	@GraphQLField(
+		description = "Updates the site's blog post with the given external reference code, or creates it if it not exists."
+	)
+	public BlogPosting updateSiteBlogPostingByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode,
+			@GraphQLName("blogPosting") BlogPosting blogPosting)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_blogPostingResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			blogPostingResource ->
+				blogPostingResource.putSiteBlogPostingByExternalReferenceCode(
+					Long.valueOf(siteKey), externalReferenceCode, blogPosting));
+	}
+
 	@GraphQLField
 	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
 			updateSiteBlogPostingPermission(
@@ -1573,6 +1609,47 @@ public class Mutation {
 					Long.valueOf(siteKey), callbackURL, object));
 	}
 
+	@GraphQLField(
+		description = "Deletes the knowledge base article by external reference code."
+	)
+	public boolean deleteSiteKnowledgeBaseArticleByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_knowledgeBaseArticleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseArticleResource ->
+				knowledgeBaseArticleResource.
+					deleteSiteKnowledgeBaseArticleByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode));
+
+		return true;
+	}
+
+	@GraphQLField(
+		description = "Updates the site's knowledge base article with the given external reference code, or creates it if it not exists."
+	)
+	public KnowledgeBaseArticle
+			updateSiteKnowledgeBaseArticleByExternalReferenceCode(
+				@GraphQLName("siteKey") @NotEmpty String siteKey,
+				@GraphQLName("externalReferenceCode") String
+					externalReferenceCode,
+				@GraphQLName("knowledgeBaseArticle") KnowledgeBaseArticle
+					knowledgeBaseArticle)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_knowledgeBaseArticleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseArticleResource ->
+				knowledgeBaseArticleResource.
+					putSiteKnowledgeBaseArticleByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode,
+						knowledgeBaseArticle));
+	}
+
 	@GraphQLField
 	public java.util.Collection<com.liferay.portal.vulcan.permission.Permission>
 			updateSiteKnowledgeBaseArticlePermission(
@@ -1849,6 +1926,47 @@ public class Mutation {
 			knowledgeBaseFolderResource ->
 				knowledgeBaseFolderResource.postSiteKnowledgeBaseFolderBatch(
 					Long.valueOf(siteKey), callbackURL, object));
+	}
+
+	@GraphQLField(
+		description = "Deletes the knowledge base folder by external reference code."
+	)
+	public boolean deleteSiteKnowledgeBaseFolderByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		_applyVoidComponentServiceObjects(
+			_knowledgeBaseFolderResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseFolderResource ->
+				knowledgeBaseFolderResource.
+					deleteSiteKnowledgeBaseFolderByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode));
+
+		return true;
+	}
+
+	@GraphQLField(
+		description = "Updates the site's knowledge base folder with the given external reference code, or creates it if it not exists."
+	)
+	public KnowledgeBaseFolder
+			updateSiteKnowledgeBaseFolderByExternalReferenceCode(
+				@GraphQLName("siteKey") @NotEmpty String siteKey,
+				@GraphQLName("externalReferenceCode") String
+					externalReferenceCode,
+				@GraphQLName("knowledgeBaseFolder") KnowledgeBaseFolder
+					knowledgeBaseFolder)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_knowledgeBaseFolderResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseFolderResource ->
+				knowledgeBaseFolderResource.
+					putSiteKnowledgeBaseFolderByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode,
+						knowledgeBaseFolder));
 	}
 
 	@GraphQLField

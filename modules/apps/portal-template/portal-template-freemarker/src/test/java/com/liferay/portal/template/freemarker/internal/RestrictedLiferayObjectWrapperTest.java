@@ -32,8 +32,6 @@ import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LogEntry;
 import com.liferay.portal.test.log.LoggerTestUtil;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
-import com.liferay.registry.BasicRegistryImpl;
-import com.liferay.registry.RegistryUtil;
 
 import freemarker.ext.beans.InvalidPropertyException;
 import freemarker.ext.beans.SimpleMethodModel;
@@ -75,8 +73,6 @@ public class RestrictedLiferayObjectWrapperTest
 
 	@BeforeClass
 	public static void setUpClass() {
-		RegistryUtil.setRegistry(new BasicRegistryImpl());
-
 		TransactionInvokerUtil transactionInvokerUtil =
 			new TransactionInvokerUtil();
 
@@ -296,6 +292,7 @@ public class RestrictedLiferayObjectWrapperTest
 	@Test
 	public void testWrap() throws Exception {
 		testWrap(new RestrictedLiferayObjectWrapper(null, null, null));
+
 		testWrap(
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.STAR}, null, null));
@@ -303,6 +300,7 @@ public class RestrictedLiferayObjectWrapperTest
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.STAR},
 				new String[] {LiferayObjectWrapper.class.getName()}, null));
+
 		testWrap(
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.BLANK}, null, null));
@@ -313,13 +311,16 @@ public class RestrictedLiferayObjectWrapperTest
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.BLANK},
 				new String[] {StringPool.BLANK}, null));
-
 		testWrap(
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.BLANK},
 				new String[] {StringPool.BLANK},
 				new String[] {StringPool.BLANK}));
-
+		testWrap(
+			new RestrictedLiferayObjectWrapper(
+				new String[] {StringPool.BLANK},
+				new String[] {StringPool.BLANK},
+				new String[] {TestBaseModel.class.getName() + "#getName"}));
 		testWrap(
 			new RestrictedLiferayObjectWrapper(
 				new String[] {StringPool.BLANK},
@@ -491,6 +492,11 @@ public class RestrictedLiferayObjectWrapperTest
 		@Override
 		public Object clone() {
 			return null;
+		}
+
+		@Override
+		public TestBaseModel cloneWithOriginalValues() {
+			throw new UnsupportedOperationException();
 		}
 
 		@Override

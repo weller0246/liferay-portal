@@ -1,0 +1,159 @@
+@component-name = "portal-user-management-and-portal-configuration"
+definition {
+
+	property portal.release = "true";
+	property portal.upstream = "true";
+	property testray.main.component.name = "Account";
+
+	setUp {
+		TestCase.setUpPortalInstance();
+
+		User.firstLoginPG();
+
+		JSONLayout.addPublicLayout(
+			groupName = "Guest",
+			layoutName = "2B Account Page");
+
+		JSONLayout.updateLayoutTemplateOfPublicLayout(
+			groupName = "Guest",
+			layoutName = "2B Account Page",
+			layoutTemplate = "1 Column");
+
+		JSONLayout.addWidgetToPublicLayout(
+			groupName = "Guest",
+			layoutName = "2B Account Page",
+			widgetName = "Account Management");
+
+		JSONAccountEntry.addAccountEntry(
+			accountEntryName = "Account Name",
+			accountEntryType = "Business");
+
+		Accounts.openAccountsAdmin();
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Account Name",
+			assigneeName = "userfn",
+			userEmailAddress = "userea@liferay.com",
+			userFirstName = "userfn",
+			userLastName = "userln",
+			userScreenName = "usersn");
+
+		Accounts.addAssigneeToRoleViaRolesTab(
+			accountRoleTitle = "Account Administrator",
+			assigneeName = "userfn");
+
+		AccountUsers.openAccountUsersAdmin();
+
+		AccountUsers.setUserPassword(
+			accountUser = "userfn",
+			accountUserPassword = "pass");
+
+		User.logoutAndLoginPG(
+			userLoginEmailAddress = "userea@liferay.com",
+			userLoginFullName = "userfn userln");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+	}
+
+	tearDown {
+		var testPortalInstance = PropsUtil.get("test.portal.instance");
+
+		if ("${testPortalInstance}" == "true") {
+			PortalInstances.tearDownCP();
+		}
+		else {
+			Accounts.tearDownCP();
+		}
+	}
+
+	@description = "This test adds the Add Account Entry permission to Account Admin and assert user can add an account."
+	@priority = "5"
+	test AccountAdminCanAddAccount {
+		Permissions.definePermissionViaJSONAPI(
+			resourceAction = "ADD_ACCOUNT_ENTRY",
+			resourceName = "com.liferay.account",
+			roleTitle = "Account Administrator",
+			roleType = "account");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		Accounts.addBusinessAccount(
+			accountDescription = "Accounts Name Description for Test",
+			accountName = "Accounts Name for Test");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.viewEntryName(rowEntry = "Accounts Name for Test");
+	}
+
+	@description = "This test asserts that an Account Admin can add a new user to an account"
+	@priority = "5"
+	test AccountAdminCanAddNewUserToAccount {
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.addNewUserToBusinessAccount(
+			accountName = "Account Name",
+			assigneeName = "userfn1",
+			userEmailAddress = "userea1@liferay.com",
+			userFirstName = "userfn1",
+			userLastName = "userln1",
+			userScreenName = "usersn1");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+		Accounts.gotoAssigneeTab(assigneeTab = "Users");
+
+		Accounts.viewAssignee(assigneeName = "userfn1");
+	}
+
+	@description = "This test asserts that an Account can be deactivated and will show Active and Inactive filters."
+	@priority = "4"
+	test AccountAdminCanDeactivateAccount {
+		Permissions.definePermissionViaJSONAPI(
+			resourceAction = "DELETE",
+			resourceName = "com.liferay.account.model.AccountEntry",
+			roleTitle = "Account Administrator",
+			roleType = "account");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		Accounts.deactivateAccount(accountName = "Account Name");
+
+		Accounts.viewInactiveAccount(accountName = "Account Name");
+	}
+
+	@description = "This test asserts that an Account can be deleted."
+	@priority = "4"
+	test AccountAdminCanDeleteAccount {
+		Permissions.definePermissionViaJSONAPI(
+			resourceAction = "DELETE",
+			resourceName = "com.liferay.account.model.AccountEntry",
+			roleTitle = "Account Administrator",
+			roleType = "account");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		Accounts.deleteAccount(accountName = "Account Name");
+	}
+
+	@description = "This test asserts that an Account Admin can edit an account he is assigned to."
+	@priority = "4"
+	test AccountAdminCanEditAccount {
+		Accounts.editPG(
+			accountName = "Account Name",
+			accountNameEdit = "This is a new update");
+
+		Navigator.gotoPage(pageName = "2B Account Page");
+
+		LexiconEntry.viewEntryName(rowEntry = "This is a new update");
+
+		LexiconEntry.viewNoEntry(rowEntry = "Account Name");
+	}
+
+}

@@ -20,11 +20,13 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.dao.jdbc.util.ConnectionWrapper;
 import com.liferay.portal.dao.jdbc.util.DataSourceWrapper;
+import com.liferay.portal.dao.jdbc.util.StatementWrapper;
 import com.liferay.portal.kernel.dao.db.DB;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.db.DBType;
 import com.liferay.portal.kernel.dao.jdbc.CurrentConnectionUtil;
+import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.CompanyConstants;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
@@ -32,6 +34,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.InfrastructureUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.spring.hibernate.DialectDetector;
 import com.liferay.portal.util.PortalInstances;
 import com.liferay.portal.util.PropsValues;
@@ -108,6 +111,12 @@ public class DBPartitionUtil {
 
 		if (!_DATABASE_PARTITION_ENABLED) {
 			unsafeConsumer.accept(null);
+
+			return;
+		}
+
+		if (CompanyThreadLocal.isLocked()) {
+			unsafeConsumer.accept(CompanyThreadLocal.getCompanyId());
 
 			return;
 		}
@@ -264,7 +273,7 @@ public class DBPartitionUtil {
 				connection.setCatalog(
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
-				return super.createStatement();
+				return _wrapStatement(super.createStatement());
 			}
 
 			@Override
@@ -275,8 +284,8 @@ public class DBPartitionUtil {
 				connection.setCatalog(
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
-				return super.createStatement(
-					resultSetType, resultSetConcurrency);
+				return _wrapStatement(
+					super.createStatement(resultSetType, resultSetConcurrency));
 			}
 
 			@Override
@@ -288,8 +297,10 @@ public class DBPartitionUtil {
 				connection.setCatalog(
 					_getSchemaName(CompanyThreadLocal.getCompanyId()));
 
-				return super.createStatement(
-					resultSetType, resultSetConcurrency, resultSetHoldability);
+				return _wrapStatement(
+					super.createStatement(
+						resultSetType, resultSetConcurrency,
+						resultSetHoldability));
 			}
 
 			@Override
@@ -419,6 +430,26 @@ public class DBPartitionUtil {
 		return false;
 	}
 
+	private static boolean _isSkip(String tableName) throws SQLException {
+		try (Connection connection = DataAccess.getConnection()) {
+			DBInspector dbInspector = new DBInspector(connection);
+
+			if (_isControlTable(dbInspector, tableName) &&
+				!(CompanyThreadLocal.getCompanyId() == _defaultCompanyId)) {
+
+				return true;
+			}
+		}
+		catch (Exception exception) {
+			throw new SQLException(
+				"Unable to check if the table " + tableName +
+					" is a control table",
+				exception);
+		}
+
+		return false;
+	}
+
 	private static void _migrateTable(
 			long companyId, String tableName, Statement statement,
 			DBInspector dbInspector)
@@ -472,6 +503,33 @@ public class DBPartitionUtil {
 		statement.executeUpdate(_getDropTableSQL(companyId, tableName));
 
 		statement.executeUpdate(_getCreateViewSQL(companyId, tableName));
+	}
+
+	private static Statement _wrapStatement(Statement statement) {
+		return new StatementWrapper(statement) {
+
+			@Override
+			public int executeUpdate(String sql) throws SQLException {
+				String lowerCaseSQL = StringUtil.toLowerCase(sql);
+
+				String[] query = sql.split(StringPool.SPACE);
+
+				if ((StringUtil.startsWith(lowerCaseSQL, "alter table") &&
+					 _isSkip(query[2])) ||
+					((StringUtil.startsWith(lowerCaseSQL, "create index") ||
+					  StringUtil.startsWith(lowerCaseSQL, "drop index")) &&
+					 _isSkip(query[4])) ||
+					(StringUtil.startsWith(
+						lowerCaseSQL, "create unique index") &&
+					 _isSkip(query[5]))) {
+
+					return 0;
+				}
+
+				return super.executeUpdate(sql);
+			}
+
+		};
 	}
 
 	private static final boolean _DATABASE_PARTITION_ENABLED =

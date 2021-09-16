@@ -100,7 +100,11 @@ public abstract class StyledLayoutStructureItem extends LayoutStructureItem {
 	}
 
 	public String getContentDisplay() {
-		return GetterUtil.getString(_getStyleProperty("display"));
+		return StringPool.BLANK;
+	}
+
+	public String getDisplay() {
+		return _getStringStyleProperty("display");
 	}
 
 	public String getFontFamily() {
@@ -270,8 +274,15 @@ public abstract class StyledLayoutStructureItem extends LayoutStructureItem {
 						continue;
 					}
 
-					_updateItemConfigValues(
-						currentViewportStyleJSONObject, newStylesJSONObject);
+					List<String> availableStyleNames =
+						CommonStylesUtil.getAvailableStyleNames();
+
+					for (String styleName : availableStyleNames) {
+						if (newStylesJSONObject.has(styleName)) {
+							currentViewportStyleJSONObject.put(
+								styleName, newStylesJSONObject.get(styleName));
+						}
+					}
 				}
 
 				viewportStyleJSONObjects.put(

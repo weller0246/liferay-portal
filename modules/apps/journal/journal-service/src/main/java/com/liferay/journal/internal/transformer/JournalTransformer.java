@@ -269,10 +269,11 @@ public class JournalTransformer {
 				}
 
 				template.put("articleGroupId", articleGroupId);
+				template.put("articleLocale", locale);
 				template.put("company", getCompany(themeDisplay, companyId));
 				template.put("companyId", companyId);
 				template.put("device", getDevice(themeDisplay));
-				template.put("locale", locale);
+				template.put("locale", getLocale(themeDisplay, locale));
 				template.put(
 					"permissionChecker",
 					PermissionThreadLocal.getPermissionChecker());
@@ -421,6 +422,16 @@ public class JournalTransformer {
 		return null;
 	}
 
+	protected Locale getLocale(ThemeDisplay themeDisplay, Locale locale)
+		throws Exception {
+
+		if (themeDisplay != null) {
+			return themeDisplay.getLocale();
+		}
+
+		return locale;
+	}
+
 	protected Template getTemplate(
 			String templateId, String script, String langType)
 		throws Exception {
@@ -523,17 +534,9 @@ public class JournalTransformer {
 	protected String getTemplatesPath(
 		long companyId, long groupId, long classNameId) {
 
-		StringBundler sb = new StringBundler(7);
-
-		sb.append(TemplateConstants.TEMPLATE_SEPARATOR);
-		sb.append(StringPool.SLASH);
-		sb.append(companyId);
-		sb.append(StringPool.SLASH);
-		sb.append(groupId);
-		sb.append(StringPool.SLASH);
-		sb.append(classNameId);
-
-		return sb.toString();
+		return StringBundler.concat(
+			TemplateConstants.TEMPLATE_SEPARATOR, StringPool.SLASH, companyId,
+			StringPool.SLASH, groupId, StringPool.SLASH, classNameId);
 	}
 
 	protected List<TemplateNode> includeBackwardsCompatibilityTemplateNodes(

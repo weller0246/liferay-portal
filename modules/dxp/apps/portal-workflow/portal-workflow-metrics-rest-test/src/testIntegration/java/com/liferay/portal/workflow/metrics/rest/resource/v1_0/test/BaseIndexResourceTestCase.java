@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -194,7 +193,26 @@ public abstract class BaseIndexResourceTestCase {
 
 	@Test
 	public void testGetIndexesPage() throws Exception {
-		Assert.assertTrue(false);
+		Page<Index> page = indexResource.getIndexesPage();
+
+		long totalCount = page.getTotalCount();
+
+		Index index1 = testGetIndexesPage_addIndex(randomIndex());
+
+		Index index2 = testGetIndexesPage_addIndex(randomIndex());
+
+		page = indexResource.getIndexesPage();
+
+		Assert.assertEquals(totalCount + 2, page.getTotalCount());
+
+		assertContains(index1, (List<Index>)page.getItems());
+		assertContains(index2, (List<Index>)page.getItems());
+		assertValid(page);
+	}
+
+	protected Index testGetIndexesPage_addIndex(Index index) throws Exception {
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	@Test
@@ -203,13 +221,27 @@ public abstract class BaseIndexResourceTestCase {
 	}
 
 	@Test
-	public void testPatchIndexesRefresh() throws Exception {
+	public void testPatchIndexRefresh() throws Exception {
 		Assert.assertTrue(false);
 	}
 
 	@Test
-	public void testPatchIndexesReindex() throws Exception {
+	public void testPatchIndexReindex() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(Index index, List<Index> indexes) {
+		boolean contains = false;
+
+		for (Index item : indexes) {
+			if (equals(index, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(indexes + " does not contain " + index, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -653,8 +685,8 @@ public abstract class BaseIndexResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseIndexResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseIndexResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

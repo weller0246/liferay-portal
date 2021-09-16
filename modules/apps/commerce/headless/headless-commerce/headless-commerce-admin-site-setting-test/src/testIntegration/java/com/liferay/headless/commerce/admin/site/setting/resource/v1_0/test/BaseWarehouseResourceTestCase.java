@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -208,17 +207,16 @@ public abstract class BaseWarehouseResourceTestCase {
 	public void testGetCommerceAdminSiteSettingGroupWarehousePage()
 		throws Exception {
 
-		Page<Warehouse> page =
-			warehouseResource.getCommerceAdminSiteSettingGroupWarehousePage(
-				testGetCommerceAdminSiteSettingGroupWarehousePage_getGroupId(),
-				null, Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long groupId =
 			testGetCommerceAdminSiteSettingGroupWarehousePage_getGroupId();
 		Long irrelevantGroupId =
 			testGetCommerceAdminSiteSettingGroupWarehousePage_getIrrelevantGroupId();
+
+		Page<Warehouse> page =
+			warehouseResource.getCommerceAdminSiteSettingGroupWarehousePage(
+				groupId, null, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantGroupId != null) {
 			Warehouse irrelevantWarehouse =
@@ -246,7 +244,7 @@ public abstract class BaseWarehouseResourceTestCase {
 				groupId, randomWarehouse());
 
 		page = warehouseResource.getCommerceAdminSiteSettingGroupWarehousePage(
-			groupId, null, Pagination.of(1, 2));
+			groupId, null, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -470,6 +468,23 @@ public abstract class BaseWarehouseResourceTestCase {
 	protected Warehouse testGraphQLWarehouse_addWarehouse() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		Warehouse warehouse, List<Warehouse> warehouses) {
+
+		boolean contains = false;
+
+		for (Warehouse item : warehouses) {
+			if (equals(warehouse, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			warehouses + " does not contain " + warehouse, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1254,8 +1269,8 @@ public abstract class BaseWarehouseResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseWarehouseResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseWarehouseResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

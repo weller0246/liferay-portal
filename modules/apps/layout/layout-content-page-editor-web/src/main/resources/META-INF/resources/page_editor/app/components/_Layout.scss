@@ -12,6 +12,10 @@ html#{$cadmin-selector} {
 		&__collection {
 			&__block {
 				box-shadow: inset 0 0 0 1px fade_out($cadmin-purple, 0.7);
+
+				&.empty {
+					box-shadow: inset 0 0 0 1px $cadmin-primary-l2;
+				}
 			}
 
 			&__message {
@@ -225,18 +229,6 @@ html#{$cadmin-selector} {
 			}
 		}
 
-		&__conversion-messages {
-			padding-right: $sidebarButtonWidth;
-			transition: padding-right ease $defaultTransitionDuration;
-			will-change: padding-right;
-
-			&--with-sidebar-open {
-				@include media-breakpoint-up(sm) {
-					padding-right: $sidebarButtonWidth + $sidebarContentWidth;
-				}
-			}
-		}
-
 		// LPS-103745
 		// Keep legacy lfr-editable tags
 		// stylelint-disable-next-line selector-type-no-unknown
@@ -312,9 +304,5 @@ html#{$cadmin-selector} {
 		&--active {
 			outline: solid $editablesBorderWidth $cadmin-primary;
 		}
-	}
-
-	&.rtl {
-		transform: translate(50%, -50%);
 	}
 }

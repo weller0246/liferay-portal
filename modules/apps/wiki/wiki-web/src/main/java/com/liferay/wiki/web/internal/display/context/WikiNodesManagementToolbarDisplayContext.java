@@ -145,16 +145,14 @@ public class WikiNodesManagementToolbarDisplayContext {
 
 		return CreationMenuBuilder.addDropdownItem(
 			dropdownItem -> {
-				PortletURL viewNodesURL = PortletURLBuilder.createRenderURL(
-					_liferayPortletResponse
-				).setMVCRenderCommandName(
-					"/wiki_admin/view"
-				).build();
-
 				dropdownItem.setHref(
 					_liferayPortletResponse.createRenderURL(),
 					"mvcRenderCommandName", "/wiki/edit_node", "redirect",
-					viewNodesURL.toString());
+					PortletURLBuilder.createRenderURL(
+						_liferayPortletResponse
+					).setMVCRenderCommandName(
+						"/wiki_admin/view"
+					).buildString());
 
 				dropdownItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "add-wiki"));
@@ -184,7 +182,7 @@ public class WikiNodesManagementToolbarDisplayContext {
 		).setParameter(
 			"orderByType",
 			Objects.equals(_getOrderByType(), "asc") ? "desc" : "asc"
-		).build();
+		).buildPortletURL();
 	}
 
 	public int getTotalItems() {
@@ -255,7 +253,7 @@ public class WikiNodesManagementToolbarDisplayContext {
 			PortletURLUtil.clone(_currentURLObj, _liferayPortletResponse)
 		).setMVCRenderCommandName(
 			"/wiki_admin/view"
-		).build();
+		).buildPortletURL();
 	}
 
 	private boolean _isTrashEnabled() {

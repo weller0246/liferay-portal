@@ -306,11 +306,9 @@ public class MessageBoardMessageResourceImpl
 				Long siteId, String externalReferenceCode)
 		throws Exception {
 
-		MBMessage mbMessage =
+		return _toMessageBoardMessage(
 			_mbMessageLocalService.getMBMessageByExternalReferenceCode(
-				siteId, externalReferenceCode);
-
-		return _toMessageBoardMessage(mbMessage);
+				siteId, externalReferenceCode));
 	}
 
 	@Override
@@ -353,8 +351,13 @@ public class MessageBoardMessageResourceImpl
 			MessageBoardMessage messageBoardMessage)
 		throws Exception {
 
+		MBMessage mbMessage = _mbMessageLocalService.getMBMessage(
+			parentMessageBoardMessageId);
+
 		return _addMessageBoardMessage(
-			parentMessageBoardMessageId, messageBoardMessage);
+			messageBoardMessage.getExternalReferenceCode(),
+			mbMessage.getGroupId(), mbMessage.getMessageId(),
+			messageBoardMessage);
 	}
 
 	@Override
@@ -377,7 +380,9 @@ public class MessageBoardMessageResourceImpl
 			messageBoardThreadId);
 
 		return _addMessageBoardMessage(
-			mbThread.getRootMessageId(), messageBoardMessage);
+			messageBoardMessage.getExternalReferenceCode(),
+			mbThread.getGroupId(), mbThread.getRootMessageId(),
+			messageBoardMessage);
 	}
 
 	@Override
@@ -385,8 +390,10 @@ public class MessageBoardMessageResourceImpl
 			Long messageBoardMessageId, MessageBoardMessage messageBoardMessage)
 		throws Exception {
 
-		return _updateMessageBoardMessage(
-			messageBoardMessageId, messageBoardMessage);
+		MBMessage mbMessage = _mbMessageService.getMessage(
+			messageBoardMessageId);
+
+		return _updateMessageBoardMessage(mbMessage, messageBoardMessage);
 	}
 
 	@Override
@@ -421,24 +428,18 @@ public class MessageBoardMessageResourceImpl
 				MessageBoardMessage messageBoardMessage)
 		throws Exception {
 
-		if (messageBoardMessage.getParentMessageBoardMessageId() == null) {
-			throw new BadRequestException("Parent message board ID is null");
-		}
-
 		MBMessage mbMessage =
 			_mbMessageLocalService.fetchMBMessageByExternalReferenceCode(
 				siteId, externalReferenceCode);
 
-		if (mbMessage == null) {
-			messageBoardMessage.setExternalReferenceCode(externalReferenceCode);
-
-			return _addMessageBoardMessage(
-				messageBoardMessage.getParentMessageBoardMessageId(),
-				messageBoardMessage);
+		if (mbMessage != null) {
+			return _updateMessageBoardMessage(mbMessage, messageBoardMessage);
 		}
 
-		return _updateMessageBoardMessage(
-			mbMessage.getMessageId(), messageBoardMessage);
+		return _addMessageBoardMessage(
+			externalReferenceCode, siteId,
+			messageBoardMessage.getParentMessageBoardMessageId(),
+			messageBoardMessage);
 	}
 
 	@Override
@@ -459,15 +460,20 @@ public class MessageBoardMessageResourceImpl
 	}
 
 	private MessageBoardMessage _addMessageBoardMessage(
-			Long messageBoardMessageId, MessageBoardMessage messageBoardMessage)
+			String externalReferenceCode, Long groupId, Long parentMessageId,
+			MessageBoardMessage messageBoardMessage)
 		throws Exception {
 
-		MBMessage parentMBMessage = _mbMessageService.getMessage(
-			messageBoardMessageId);
+		if (parentMessageId == null) {
+			throw new BadRequestException("Parent message board ID is null");
+		}
 
 		String headline = messageBoardMessage.getHeadline();
 
 		if (headline == null) {
+			MBMessage parentMBMessage = _mbMessageService.getMessage(
+				parentMessageId);
+
 			headline =
 				MBMessageConstants.MESSAGE_SUBJECT_PREFIX_RE +
 					parentMBMessage.getSubject();
@@ -480,18 +486,48 @@ public class MessageBoardMessageResourceImpl
 		}
 
 		MBMessage mbMessage = _mbMessageService.addMessage(
-			messageBoardMessage.getExternalReferenceCode(),
-			messageBoardMessageId, headline,
+			externalReferenceCode, parentMessageId, headline,
 			messageBoardMessage.getArticleBody(), encodingFormat,
 			Collections.emptyList(),
 			GetterUtil.getBoolean(messageBoardMessage.getAnonymous()), 0.0,
-			false,
-			_getServiceContext(
-				messageBoardMessage, parentMBMessage.getGroupId()));
+			false, _createServiceContext(groupId, messageBoardMessage));
 
 		_updateAnswer(mbMessage, messageBoardMessage);
 
 		return _toMessageBoardMessage(mbMessage);
+	}
+
+	private ServiceContext _createServiceContext(
+		long groupId, MessageBoardMessage messageBoardMessage) {
+
+		ServiceContext serviceContext =
+			ServiceContextRequestUtil.createServiceContext(
+				_getExpandoBridgeAttributes(messageBoardMessage), groupId,
+				contextHttpServletRequest,
+				messageBoardMessage.getViewableByAsString());
+
+		String link = contextHttpServletRequest.getHeader("Link");
+
+		if (link == null) {
+			UriBuilder uriBuilder = UriInfoUtil.getBaseUriBuilder(
+				contextUriInfo);
+
+			link = String.valueOf(
+				uriBuilder.replacePath(
+					"/"
+				).build());
+		}
+
+		serviceContext.setAttribute("entryURL", link);
+
+		if (messageBoardMessage.getId() == null) {
+			serviceContext.setCommand("add");
+		}
+		else {
+			serviceContext.setCommand("update");
+		}
+
+		return serviceContext;
 	}
 
 	private Map<String, Serializable> _getExpandoBridgeAttributes(
@@ -588,8 +624,8 @@ public class MessageBoardMessageResourceImpl
 						BooleanClauseOccur.MUST);
 				}
 			},
-			FilterUtil.processFilter(_ddmIndexer, filter), MBMessage.class,
-			keywords, pagination,
+			FilterUtil.processFilter(_ddmIndexer, filter),
+			MBMessage.class.getName(), keywords, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.ENTRY_CLASS_PK),
 			searchContext -> {
@@ -611,39 +647,6 @@ public class MessageBoardMessageResourceImpl
 			document -> _toMessageBoardMessage(
 				_mbMessageService.getMessage(
 					GetterUtil.getLong(document.get(Field.ENTRY_CLASS_PK)))));
-	}
-
-	private ServiceContext _getServiceContext(
-		MessageBoardMessage messageBoardMessage, long siteId) {
-
-		ServiceContext serviceContext =
-			ServiceContextRequestUtil.createServiceContext(
-				_getExpandoBridgeAttributes(messageBoardMessage), siteId,
-				contextHttpServletRequest,
-				messageBoardMessage.getViewableByAsString());
-
-		String link = contextHttpServletRequest.getHeader("Link");
-
-		if (link == null) {
-			UriBuilder uriBuilder = UriInfoUtil.getBaseUriBuilder(
-				contextUriInfo);
-
-			link = String.valueOf(
-				uriBuilder.replacePath(
-					"/"
-				).build());
-		}
-
-		serviceContext.setAttribute("entryURL", link);
-
-		if (messageBoardMessage.getId() == null) {
-			serviceContext.setCommand("add");
-		}
-		else {
-			serviceContext.setCommand("update");
-		}
-
-		return serviceContext;
 	}
 
 	private SPIRatingResource<Rating> _getSPIRatingResource() {
@@ -742,7 +745,7 @@ public class MessageBoardMessageResourceImpl
 	}
 
 	private MessageBoardMessage _updateMessageBoardMessage(
-			Long messageBoardMessageId, MessageBoardMessage messageBoardMessage)
+			MBMessage mbMessage, MessageBoardMessage messageBoardMessage)
 		throws Exception {
 
 		if ((messageBoardMessage.getArticleBody() == null) &&
@@ -751,9 +754,6 @@ public class MessageBoardMessageResourceImpl
 			throw new BadRequestException(
 				"Article body and headline are both null");
 		}
-
-		MBMessage mbMessage = _mbMessageService.getMessage(
-			messageBoardMessageId);
 
 		String headline = messageBoardMessage.getHeadline();
 
@@ -768,9 +768,9 @@ public class MessageBoardMessageResourceImpl
 
 		mbMessage = _mbMessageService.updateDiscussionMessage(
 			mbMessage.getClassName(), mbMessage.getClassPK(),
-			messageBoardMessageId, headline,
+			mbMessage.getMessageId(), headline,
 			messageBoardMessage.getArticleBody(),
-			_getServiceContext(messageBoardMessage, mbMessage.getGroupId()));
+			_createServiceContext(mbMessage.getGroupId(), messageBoardMessage));
 
 		if (messageBoardMessage.getShowAsAnswer() != mbMessage.isAnswer()) {
 			_updateAnswer(mbMessage, messageBoardMessage);

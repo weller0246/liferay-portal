@@ -68,42 +68,55 @@ public class AssetCategoriesManagementToolbarDisplayContext
 
 	@Override
 	public List<DropdownItem> getActionDropdownItems() {
-		return DropdownItemListBuilder.add(
-			this::_isSetDisplayPageTemplateEnabled,
-			dropdownItem -> {
-				PortletURL setCategoryDisplayPageTemplateURL =
-					PortletURLBuilder.createRenderURL(
-						liferayPortletResponse
-					).setMVCPath(
-						"/set_category_display_page_template.jsp"
-					).setRedirect(
-						currentURLObj
-					).setParameter(
-						"parentCategoryId",
-						_assetCategoriesDisplayContext.getCategoryId()
-					).setParameter(
-						"vocabularyId",
-						_assetCategoriesDisplayContext.getVocabularyId()
-					).build();
-
-				dropdownItem.putData(
-					"action", "setCategoryDisplayPageTemplate");
-				dropdownItem.putData(
-					"setCategoryDisplayPageTemplateURL",
-					setCategoryDisplayPageTemplateURL.toString());
-				dropdownItem.setIcon("page");
-				dropdownItem.setLabel(
-					LanguageUtil.get(
-						httpServletRequest, "assign-display-page-template"));
-				dropdownItem.setQuickAction(true);
+		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						this::_isSetDisplayPageTemplateEnabled,
+						dropdownItem -> {
+							dropdownItem.putData(
+								"action", "setCategoryDisplayPageTemplate");
+							dropdownItem.putData(
+								"setCategoryDisplayPageTemplateURL",
+								PortletURLBuilder.createRenderURL(
+									liferayPortletResponse
+								).setMVCPath(
+									"/set_category_display_page_template.jsp"
+								).setRedirect(
+									currentURLObj
+								).setParameter(
+									"parentCategoryId",
+									_assetCategoriesDisplayContext.
+										getCategoryId()
+								).setParameter(
+									"vocabularyId",
+									_assetCategoriesDisplayContext.
+										getVocabularyId()
+								).buildString());
+							dropdownItem.setIcon("page");
+							dropdownItem.setLabel(
+								LanguageUtil.get(
+									httpServletRequest,
+									"assign-display-page-template"));
+							dropdownItem.setQuickAction(true);
+						}
+					).build());
+				dropdownGroupItem.setSeparator(true);
 			}
-		).add(
-			dropdownItem -> {
-				dropdownItem.putData("action", "deleteSelectedCategories");
-				dropdownItem.setIcon("times-circle");
-				dropdownItem.setLabel(
-					LanguageUtil.get(httpServletRequest, "delete"));
-				dropdownItem.setQuickAction(true);
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						dropdownItem -> {
+							dropdownItem.putData(
+								"action", "deleteSelectedCategories");
+							dropdownItem.setIcon("times-circle");
+							dropdownItem.setLabel(
+								LanguageUtil.get(httpServletRequest, "delete"));
+							dropdownItem.setQuickAction(true);
+						}
+					).build());
+				dropdownGroupItem.setSeparator(true);
 			}
 		).build();
 	}
@@ -150,25 +163,27 @@ public class AssetCategoriesManagementToolbarDisplayContext
 	public CreationMenu getCreationMenu() {
 		return CreationMenuBuilder.addPrimaryDropdownItem(
 			dropdownItem -> {
-				PortletURL addCategoryURL = PortletURLBuilder.createRenderURL(
-					liferayPortletResponse
-				).setMVCPath(
-					"/edit_category.jsp"
-				).build();
-
-				if (_assetCategoriesDisplayContext.getCategoryId() > 0) {
-					addCategoryURL.setParameter(
+				dropdownItem.setHref(
+					PortletURLBuilder.createRenderURL(
+						liferayPortletResponse
+					).setMVCPath(
+						"/edit_category.jsp"
+					).setParameter(
 						"parentCategoryId",
-						String.valueOf(
-							_assetCategoriesDisplayContext.getCategoryId()));
-				}
+						() -> {
+							if (_assetCategoriesDisplayContext.getCategoryId() >
+									0) {
 
-				addCategoryURL.setParameter(
-					"vocabularyId",
-					String.valueOf(
-						_assetCategoriesDisplayContext.getVocabularyId()));
+								return _assetCategoriesDisplayContext.
+									getCategoryId();
+							}
 
-				dropdownItem.setHref(addCategoryURL);
+							return null;
+						}
+					).setParameter(
+						"vocabularyId",
+						_assetCategoriesDisplayContext.getVocabularyId()
+					).buildPortletURL());
 
 				String label = "add-category";
 

@@ -22,6 +22,7 @@ import com.liferay.object.model.ObjectDefinitionModel;
 import com.liferay.object.model.ObjectDefinitionSoap;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.bean.AutoEscapeBeanHandler;
+import com.liferay.portal.kernel.exception.LocaleException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSON;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -31,14 +32,19 @@ import com.liferay.portal.kernel.model.impl.BaseModelImpl;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.Validator;
 
 import java.io.Serializable;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 
+import java.sql.Blob;
 import java.sql.Types;
 
 import java.util.ArrayList;
@@ -47,8 +53,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -79,9 +88,13 @@ public class ObjectDefinitionModelImpl
 		{"objectDefinitionId", Types.BIGINT}, {"companyId", Types.BIGINT},
 		{"userId", Types.BIGINT}, {"userName", Types.VARCHAR},
 		{"createDate", Types.TIMESTAMP}, {"modifiedDate", Types.TIMESTAMP},
-		{"dbTableName", Types.VARCHAR}, {"name", Types.VARCHAR},
+		{"active_", Types.BOOLEAN}, {"dbTableName", Types.VARCHAR},
+		{"label", Types.VARCHAR}, {"className", Types.VARCHAR},
+		{"name", Types.VARCHAR}, {"panelAppOrder", Types.VARCHAR},
+		{"panelCategoryKey", Types.VARCHAR},
 		{"pkObjectFieldDBColumnName", Types.VARCHAR},
-		{"pkObjectFieldName", Types.VARCHAR}, {"system_", Types.BOOLEAN},
+		{"pkObjectFieldName", Types.VARCHAR}, {"pluralLabel", Types.VARCHAR},
+		{"scope", Types.VARCHAR}, {"system_", Types.BOOLEAN},
 		{"version", Types.INTEGER}, {"status", Types.INTEGER}
 	};
 
@@ -97,17 +110,24 @@ public class ObjectDefinitionModelImpl
 		TABLE_COLUMNS_MAP.put("userName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
+		TABLE_COLUMNS_MAP.put("active_", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("dbTableName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("label", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("className", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("panelAppOrder", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("panelCategoryKey", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("pkObjectFieldDBColumnName", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("pkObjectFieldName", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("pluralLabel", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("scope", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("system_", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("version", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ObjectDefinition (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectDefinitionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,dbTableName VARCHAR(75) null,name VARCHAR(75) null,pkObjectFieldDBColumnName VARCHAR(75) null,pkObjectFieldName VARCHAR(75) null,system_ BOOLEAN,version INTEGER,status INTEGER)";
+		"create table ObjectDefinition (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,objectDefinitionId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,active_ BOOLEAN,dbTableName VARCHAR(75) null,label STRING null,className VARCHAR(75) null,name VARCHAR(75) null,panelAppOrder VARCHAR(75) null,panelCategoryKey VARCHAR(75) null,pkObjectFieldDBColumnName VARCHAR(75) null,pkObjectFieldName VARCHAR(75) null,pluralLabel STRING null,scope VARCHAR(75) null,system_ BOOLEAN,version INTEGER,status INTEGER)";
 
 	public static final String TABLE_SQL_DROP = "drop table ObjectDefinition";
 
@@ -127,31 +147,37 @@ public class ObjectDefinitionModelImpl
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long COMPANYID_COLUMN_BITMASK = 1L;
+	public static final long ACTIVE_COLUMN_BITMASK = 1L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long NAME_COLUMN_BITMASK = 2L;
+	public static final long COMPANYID_COLUMN_BITMASK = 2L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long STATUS_COLUMN_BITMASK = 4L;
+	public static final long NAME_COLUMN_BITMASK = 4L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long SYSTEM_COLUMN_BITMASK = 8L;
+	public static final long STATUS_COLUMN_BITMASK = 8L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long UUID_COLUMN_BITMASK = 16L;
+	public static final long SYSTEM_COLUMN_BITMASK = 16L;
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link #getColumnBitmask(String)}
+	 */
+	@Deprecated
+	public static final long UUID_COLUMN_BITMASK = 32L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -190,11 +216,18 @@ public class ObjectDefinitionModelImpl
 		model.setUserName(soapModel.getUserName());
 		model.setCreateDate(soapModel.getCreateDate());
 		model.setModifiedDate(soapModel.getModifiedDate());
+		model.setActive(soapModel.isActive());
 		model.setDBTableName(soapModel.getDBTableName());
+		model.setLabel(soapModel.getLabel());
+		model.setClassName(soapModel.getClassName());
 		model.setName(soapModel.getName());
+		model.setPanelAppOrder(soapModel.getPanelAppOrder());
+		model.setPanelCategoryKey(soapModel.getPanelCategoryKey());
 		model.setPKObjectFieldDBColumnName(
 			soapModel.getPKObjectFieldDBColumnName());
 		model.setPKObjectFieldName(soapModel.getPKObjectFieldName());
+		model.setPluralLabel(soapModel.getPluralLabel());
+		model.setScope(soapModel.getScope());
 		model.setSystem(soapModel.isSystem());
 		model.setVersion(soapModel.getVersion());
 		model.setStatus(soapModel.getStatus());
@@ -395,16 +428,42 @@ public class ObjectDefinitionModelImpl
 			"modifiedDate",
 			(BiConsumer<ObjectDefinition, Date>)
 				ObjectDefinition::setModifiedDate);
+		attributeGetterFunctions.put("active", ObjectDefinition::getActive);
+		attributeSetterBiConsumers.put(
+			"active",
+			(BiConsumer<ObjectDefinition, Boolean>)ObjectDefinition::setActive);
 		attributeGetterFunctions.put(
 			"dbTableName", ObjectDefinition::getDBTableName);
 		attributeSetterBiConsumers.put(
 			"dbTableName",
 			(BiConsumer<ObjectDefinition, String>)
 				ObjectDefinition::setDBTableName);
+		attributeGetterFunctions.put("label", ObjectDefinition::getLabel);
+		attributeSetterBiConsumers.put(
+			"label",
+			(BiConsumer<ObjectDefinition, String>)ObjectDefinition::setLabel);
+		attributeGetterFunctions.put(
+			"className", ObjectDefinition::getClassName);
+		attributeSetterBiConsumers.put(
+			"className",
+			(BiConsumer<ObjectDefinition, String>)
+				ObjectDefinition::setClassName);
 		attributeGetterFunctions.put("name", ObjectDefinition::getName);
 		attributeSetterBiConsumers.put(
 			"name",
 			(BiConsumer<ObjectDefinition, String>)ObjectDefinition::setName);
+		attributeGetterFunctions.put(
+			"panelAppOrder", ObjectDefinition::getPanelAppOrder);
+		attributeSetterBiConsumers.put(
+			"panelAppOrder",
+			(BiConsumer<ObjectDefinition, String>)
+				ObjectDefinition::setPanelAppOrder);
+		attributeGetterFunctions.put(
+			"panelCategoryKey", ObjectDefinition::getPanelCategoryKey);
+		attributeSetterBiConsumers.put(
+			"panelCategoryKey",
+			(BiConsumer<ObjectDefinition, String>)
+				ObjectDefinition::setPanelCategoryKey);
 		attributeGetterFunctions.put(
 			"pkObjectFieldDBColumnName",
 			ObjectDefinition::getPKObjectFieldDBColumnName);
@@ -418,6 +477,16 @@ public class ObjectDefinitionModelImpl
 			"pkObjectFieldName",
 			(BiConsumer<ObjectDefinition, String>)
 				ObjectDefinition::setPKObjectFieldName);
+		attributeGetterFunctions.put(
+			"pluralLabel", ObjectDefinition::getPluralLabel);
+		attributeSetterBiConsumers.put(
+			"pluralLabel",
+			(BiConsumer<ObjectDefinition, String>)
+				ObjectDefinition::setPluralLabel);
+		attributeGetterFunctions.put("scope", ObjectDefinition::getScope);
+		attributeSetterBiConsumers.put(
+			"scope",
+			(BiConsumer<ObjectDefinition, String>)ObjectDefinition::setScope);
 		attributeGetterFunctions.put("system", ObjectDefinition::getSystem);
 		attributeSetterBiConsumers.put(
 			"system",
@@ -611,6 +680,37 @@ public class ObjectDefinitionModelImpl
 
 	@JSON
 	@Override
+	public boolean getActive() {
+		return _active;
+	}
+
+	@JSON
+	@Override
+	public boolean isActive() {
+		return _active;
+	}
+
+	@Override
+	public void setActive(boolean active) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_active = active;
+	}
+
+	/**
+	 * @deprecated As of Athanasius (7.3.x), replaced by {@link
+	 *             #getColumnOriginalValue(String)}
+	 */
+	@Deprecated
+	public boolean getOriginalActive() {
+		return GetterUtil.getBoolean(
+			this.<Boolean>getColumnOriginalValue("active_"));
+	}
+
+	@JSON
+	@Override
 	public String getDBTableName() {
 		if (_dbTableName == null) {
 			return "";
@@ -627,6 +727,135 @@ public class ObjectDefinitionModelImpl
 		}
 
 		_dbTableName = dbTableName;
+	}
+
+	@JSON
+	@Override
+	public String getLabel() {
+		if (_label == null) {
+			return "";
+		}
+		else {
+			return _label;
+		}
+	}
+
+	@Override
+	public String getLabel(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getLabel(languageId);
+	}
+
+	@Override
+	public String getLabel(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getLabel(languageId, useDefault);
+	}
+
+	@Override
+	public String getLabel(String languageId) {
+		return LocalizationUtil.getLocalization(getLabel(), languageId);
+	}
+
+	@Override
+	public String getLabel(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getLabel(), languageId, useDefault);
+	}
+
+	@Override
+	public String getLabelCurrentLanguageId() {
+		return _labelCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getLabelCurrentValue() {
+		Locale locale = getLocale(_labelCurrentLanguageId);
+
+		return getLabel(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getLabelMap() {
+		return LocalizationUtil.getLocalizationMap(getLabel());
+	}
+
+	@Override
+	public void setLabel(String label) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_label = label;
+	}
+
+	@Override
+	public void setLabel(String label, Locale locale) {
+		setLabel(label, locale, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setLabel(String label, Locale locale, Locale defaultLocale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(label)) {
+			setLabel(
+				LocalizationUtil.updateLocalization(
+					getLabel(), "Label", label, languageId, defaultLanguageId));
+		}
+		else {
+			setLabel(
+				LocalizationUtil.removeLocalization(
+					getLabel(), "Label", languageId));
+		}
+	}
+
+	@Override
+	public void setLabelCurrentLanguageId(String languageId) {
+		_labelCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setLabelMap(Map<Locale, String> labelMap) {
+		setLabelMap(labelMap, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setLabelMap(
+		Map<Locale, String> labelMap, Locale defaultLocale) {
+
+		if (labelMap == null) {
+			return;
+		}
+
+		setLabel(
+			LocalizationUtil.updateLocalization(
+				labelMap, getLabel(), "Label",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@JSON
+	@Override
+	public String getClassName() {
+		if (_className == null) {
+			return "";
+		}
+		else {
+			return _className;
+		}
+	}
+
+	@Override
+	public void setClassName(String className) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_className = className;
 	}
 
 	@JSON
@@ -656,6 +885,46 @@ public class ObjectDefinitionModelImpl
 	@Deprecated
 	public String getOriginalName() {
 		return getColumnOriginalValue("name");
+	}
+
+	@JSON
+	@Override
+	public String getPanelAppOrder() {
+		if (_panelAppOrder == null) {
+			return "";
+		}
+		else {
+			return _panelAppOrder;
+		}
+	}
+
+	@Override
+	public void setPanelAppOrder(String panelAppOrder) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_panelAppOrder = panelAppOrder;
+	}
+
+	@JSON
+	@Override
+	public String getPanelCategoryKey() {
+		if (_panelCategoryKey == null) {
+			return "";
+		}
+		else {
+			return _panelCategoryKey;
+		}
+	}
+
+	@Override
+	public void setPanelCategoryKey(String panelCategoryKey) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_panelCategoryKey = panelCategoryKey;
 	}
 
 	@JSON
@@ -696,6 +965,138 @@ public class ObjectDefinitionModelImpl
 		}
 
 		_pkObjectFieldName = pkObjectFieldName;
+	}
+
+	@JSON
+	@Override
+	public String getPluralLabel() {
+		if (_pluralLabel == null) {
+			return "";
+		}
+		else {
+			return _pluralLabel;
+		}
+	}
+
+	@Override
+	public String getPluralLabel(Locale locale) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getPluralLabel(languageId);
+	}
+
+	@Override
+	public String getPluralLabel(Locale locale, boolean useDefault) {
+		String languageId = LocaleUtil.toLanguageId(locale);
+
+		return getPluralLabel(languageId, useDefault);
+	}
+
+	@Override
+	public String getPluralLabel(String languageId) {
+		return LocalizationUtil.getLocalization(getPluralLabel(), languageId);
+	}
+
+	@Override
+	public String getPluralLabel(String languageId, boolean useDefault) {
+		return LocalizationUtil.getLocalization(
+			getPluralLabel(), languageId, useDefault);
+	}
+
+	@Override
+	public String getPluralLabelCurrentLanguageId() {
+		return _pluralLabelCurrentLanguageId;
+	}
+
+	@JSON
+	@Override
+	public String getPluralLabelCurrentValue() {
+		Locale locale = getLocale(_pluralLabelCurrentLanguageId);
+
+		return getPluralLabel(locale);
+	}
+
+	@Override
+	public Map<Locale, String> getPluralLabelMap() {
+		return LocalizationUtil.getLocalizationMap(getPluralLabel());
+	}
+
+	@Override
+	public void setPluralLabel(String pluralLabel) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_pluralLabel = pluralLabel;
+	}
+
+	@Override
+	public void setPluralLabel(String pluralLabel, Locale locale) {
+		setPluralLabel(pluralLabel, locale, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setPluralLabel(
+		String pluralLabel, Locale locale, Locale defaultLocale) {
+
+		String languageId = LocaleUtil.toLanguageId(locale);
+		String defaultLanguageId = LocaleUtil.toLanguageId(defaultLocale);
+
+		if (Validator.isNotNull(pluralLabel)) {
+			setPluralLabel(
+				LocalizationUtil.updateLocalization(
+					getPluralLabel(), "PluralLabel", pluralLabel, languageId,
+					defaultLanguageId));
+		}
+		else {
+			setPluralLabel(
+				LocalizationUtil.removeLocalization(
+					getPluralLabel(), "PluralLabel", languageId));
+		}
+	}
+
+	@Override
+	public void setPluralLabelCurrentLanguageId(String languageId) {
+		_pluralLabelCurrentLanguageId = languageId;
+	}
+
+	@Override
+	public void setPluralLabelMap(Map<Locale, String> pluralLabelMap) {
+		setPluralLabelMap(pluralLabelMap, LocaleUtil.getDefault());
+	}
+
+	@Override
+	public void setPluralLabelMap(
+		Map<Locale, String> pluralLabelMap, Locale defaultLocale) {
+
+		if (pluralLabelMap == null) {
+			return;
+		}
+
+		setPluralLabel(
+			LocalizationUtil.updateLocalization(
+				pluralLabelMap, getPluralLabel(), "PluralLabel",
+				LocaleUtil.toLanguageId(defaultLocale)));
+	}
+
+	@JSON
+	@Override
+	public String getScope() {
+		if (_scope == null) {
+			return "";
+		}
+		else {
+			return _scope;
+		}
+	}
+
+	@Override
+	public void setScope(String scope) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_scope = scope;
 	}
 
 	@JSON
@@ -813,6 +1214,94 @@ public class ObjectDefinitionModelImpl
 	}
 
 	@Override
+	public String[] getAvailableLanguageIds() {
+		Set<String> availableLanguageIds = new TreeSet<String>();
+
+		Map<Locale, String> labelMap = getLabelMap();
+
+		for (Map.Entry<Locale, String> entry : labelMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		Map<Locale, String> pluralLabelMap = getPluralLabelMap();
+
+		for (Map.Entry<Locale, String> entry : pluralLabelMap.entrySet()) {
+			Locale locale = entry.getKey();
+			String value = entry.getValue();
+
+			if (Validator.isNotNull(value)) {
+				availableLanguageIds.add(LocaleUtil.toLanguageId(locale));
+			}
+		}
+
+		return availableLanguageIds.toArray(
+			new String[availableLanguageIds.size()]);
+	}
+
+	@Override
+	public String getDefaultLanguageId() {
+		String xml = getLabel();
+
+		if (xml == null) {
+			return "";
+		}
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		return LocalizationUtil.getDefaultLanguageId(xml, defaultLocale);
+	}
+
+	@Override
+	public void prepareLocalizedFieldsForImport() throws LocaleException {
+		Locale defaultLocale = LocaleUtil.fromLanguageId(
+			getDefaultLanguageId());
+
+		Locale[] availableLocales = LocaleUtil.fromLanguageIds(
+			getAvailableLanguageIds());
+
+		Locale defaultImportLocale = LocalizationUtil.getDefaultImportLocale(
+			ObjectDefinition.class.getName(), getPrimaryKey(), defaultLocale,
+			availableLocales);
+
+		prepareLocalizedFieldsForImport(defaultImportLocale);
+	}
+
+	@Override
+	@SuppressWarnings("unused")
+	public void prepareLocalizedFieldsForImport(Locale defaultImportLocale)
+		throws LocaleException {
+
+		Locale defaultLocale = LocaleUtil.getDefault();
+
+		String modelDefaultLanguageId = getDefaultLanguageId();
+
+		String label = getLabel(defaultLocale);
+
+		if (Validator.isNull(label)) {
+			setLabel(getLabel(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setLabel(getLabel(defaultLocale), defaultLocale, defaultLocale);
+		}
+
+		String pluralLabel = getPluralLabel(defaultLocale);
+
+		if (Validator.isNull(pluralLabel)) {
+			setPluralLabel(
+				getPluralLabel(modelDefaultLanguageId), defaultLocale);
+		}
+		else {
+			setPluralLabel(
+				getPluralLabel(defaultLocale), defaultLocale, defaultLocale);
+		}
+	}
+
+	@Override
 	public ObjectDefinition toEscapedModel() {
 		if (_escapedModel == null) {
 			Function<InvocationHandler, ObjectDefinition>
@@ -839,16 +1328,75 @@ public class ObjectDefinitionModelImpl
 		objectDefinitionImpl.setUserName(getUserName());
 		objectDefinitionImpl.setCreateDate(getCreateDate());
 		objectDefinitionImpl.setModifiedDate(getModifiedDate());
+		objectDefinitionImpl.setActive(isActive());
 		objectDefinitionImpl.setDBTableName(getDBTableName());
+		objectDefinitionImpl.setLabel(getLabel());
+		objectDefinitionImpl.setClassName(getClassName());
 		objectDefinitionImpl.setName(getName());
+		objectDefinitionImpl.setPanelAppOrder(getPanelAppOrder());
+		objectDefinitionImpl.setPanelCategoryKey(getPanelCategoryKey());
 		objectDefinitionImpl.setPKObjectFieldDBColumnName(
 			getPKObjectFieldDBColumnName());
 		objectDefinitionImpl.setPKObjectFieldName(getPKObjectFieldName());
+		objectDefinitionImpl.setPluralLabel(getPluralLabel());
+		objectDefinitionImpl.setScope(getScope());
 		objectDefinitionImpl.setSystem(isSystem());
 		objectDefinitionImpl.setVersion(getVersion());
 		objectDefinitionImpl.setStatus(getStatus());
 
 		objectDefinitionImpl.resetOriginalValues();
+
+		return objectDefinitionImpl;
+	}
+
+	@Override
+	public ObjectDefinition cloneWithOriginalValues() {
+		ObjectDefinitionImpl objectDefinitionImpl = new ObjectDefinitionImpl();
+
+		objectDefinitionImpl.setMvccVersion(
+			this.<Long>getColumnOriginalValue("mvccVersion"));
+		objectDefinitionImpl.setUuid(
+			this.<String>getColumnOriginalValue("uuid_"));
+		objectDefinitionImpl.setObjectDefinitionId(
+			this.<Long>getColumnOriginalValue("objectDefinitionId"));
+		objectDefinitionImpl.setCompanyId(
+			this.<Long>getColumnOriginalValue("companyId"));
+		objectDefinitionImpl.setUserId(
+			this.<Long>getColumnOriginalValue("userId"));
+		objectDefinitionImpl.setUserName(
+			this.<String>getColumnOriginalValue("userName"));
+		objectDefinitionImpl.setCreateDate(
+			this.<Date>getColumnOriginalValue("createDate"));
+		objectDefinitionImpl.setModifiedDate(
+			this.<Date>getColumnOriginalValue("modifiedDate"));
+		objectDefinitionImpl.setActive(
+			this.<Boolean>getColumnOriginalValue("active_"));
+		objectDefinitionImpl.setDBTableName(
+			this.<String>getColumnOriginalValue("dbTableName"));
+		objectDefinitionImpl.setLabel(
+			this.<String>getColumnOriginalValue("label"));
+		objectDefinitionImpl.setClassName(
+			this.<String>getColumnOriginalValue("className"));
+		objectDefinitionImpl.setName(
+			this.<String>getColumnOriginalValue("name"));
+		objectDefinitionImpl.setPanelAppOrder(
+			this.<String>getColumnOriginalValue("panelAppOrder"));
+		objectDefinitionImpl.setPanelCategoryKey(
+			this.<String>getColumnOriginalValue("panelCategoryKey"));
+		objectDefinitionImpl.setPKObjectFieldDBColumnName(
+			this.<String>getColumnOriginalValue("pkObjectFieldDBColumnName"));
+		objectDefinitionImpl.setPKObjectFieldName(
+			this.<String>getColumnOriginalValue("pkObjectFieldName"));
+		objectDefinitionImpl.setPluralLabel(
+			this.<String>getColumnOriginalValue("pluralLabel"));
+		objectDefinitionImpl.setScope(
+			this.<String>getColumnOriginalValue("scope"));
+		objectDefinitionImpl.setSystem(
+			this.<Boolean>getColumnOriginalValue("system_"));
+		objectDefinitionImpl.setVersion(
+			this.<Integer>getColumnOriginalValue("version"));
+		objectDefinitionImpl.setStatus(
+			this.<Integer>getColumnOriginalValue("status"));
 
 		return objectDefinitionImpl;
 	}
@@ -967,6 +1515,8 @@ public class ObjectDefinitionModelImpl
 			objectDefinitionCacheModel.modifiedDate = Long.MIN_VALUE;
 		}
 
+		objectDefinitionCacheModel.active = isActive();
+
 		objectDefinitionCacheModel.dbTableName = getDBTableName();
 
 		String dbTableName = objectDefinitionCacheModel.dbTableName;
@@ -975,12 +1525,44 @@ public class ObjectDefinitionModelImpl
 			objectDefinitionCacheModel.dbTableName = null;
 		}
 
+		objectDefinitionCacheModel.label = getLabel();
+
+		String label = objectDefinitionCacheModel.label;
+
+		if ((label != null) && (label.length() == 0)) {
+			objectDefinitionCacheModel.label = null;
+		}
+
+		objectDefinitionCacheModel.className = getClassName();
+
+		String className = objectDefinitionCacheModel.className;
+
+		if ((className != null) && (className.length() == 0)) {
+			objectDefinitionCacheModel.className = null;
+		}
+
 		objectDefinitionCacheModel.name = getName();
 
 		String name = objectDefinitionCacheModel.name;
 
 		if ((name != null) && (name.length() == 0)) {
 			objectDefinitionCacheModel.name = null;
+		}
+
+		objectDefinitionCacheModel.panelAppOrder = getPanelAppOrder();
+
+		String panelAppOrder = objectDefinitionCacheModel.panelAppOrder;
+
+		if ((panelAppOrder != null) && (panelAppOrder.length() == 0)) {
+			objectDefinitionCacheModel.panelAppOrder = null;
+		}
+
+		objectDefinitionCacheModel.panelCategoryKey = getPanelCategoryKey();
+
+		String panelCategoryKey = objectDefinitionCacheModel.panelCategoryKey;
+
+		if ((panelCategoryKey != null) && (panelCategoryKey.length() == 0)) {
+			objectDefinitionCacheModel.panelCategoryKey = null;
 		}
 
 		objectDefinitionCacheModel.pkObjectFieldDBColumnName =
@@ -1003,6 +1585,22 @@ public class ObjectDefinitionModelImpl
 			objectDefinitionCacheModel.pkObjectFieldName = null;
 		}
 
+		objectDefinitionCacheModel.pluralLabel = getPluralLabel();
+
+		String pluralLabel = objectDefinitionCacheModel.pluralLabel;
+
+		if ((pluralLabel != null) && (pluralLabel.length() == 0)) {
+			objectDefinitionCacheModel.pluralLabel = null;
+		}
+
+		objectDefinitionCacheModel.scope = getScope();
+
+		String scope = objectDefinitionCacheModel.scope;
+
+		if ((scope != null) && (scope.length() == 0)) {
+			objectDefinitionCacheModel.scope = null;
+		}
+
 		objectDefinitionCacheModel.system = isSystem();
 
 		objectDefinitionCacheModel.version = getVersion();
@@ -1018,7 +1616,7 @@ public class ObjectDefinitionModelImpl
 			attributeGetterFunctions = getAttributeGetterFunctions();
 
 		StringBundler sb = new StringBundler(
-			(4 * attributeGetterFunctions.size()) + 2);
+			(5 * attributeGetterFunctions.size()) + 2);
 
 		sb.append("{");
 
@@ -1029,9 +1627,27 @@ public class ObjectDefinitionModelImpl
 			Function<ObjectDefinition, Object> attributeGetterFunction =
 				entry.getValue();
 
+			sb.append("\"");
 			sb.append(attributeName);
-			sb.append("=");
-			sb.append(attributeGetterFunction.apply((ObjectDefinition)this));
+			sb.append("\": ");
+
+			Object value = attributeGetterFunction.apply(
+				(ObjectDefinition)this);
+
+			if (value == null) {
+				sb.append("null");
+			}
+			else if (value instanceof Blob || value instanceof Date ||
+					 value instanceof Map || value instanceof String) {
+
+				sb.append(
+					"\"" + StringUtil.replace(value.toString(), "\"", "'") +
+						"\"");
+			}
+			else {
+				sb.append(value);
+			}
+
 			sb.append(", ");
 		}
 
@@ -1091,10 +1707,19 @@ public class ObjectDefinitionModelImpl
 	private Date _createDate;
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
+	private boolean _active;
 	private String _dbTableName;
+	private String _label;
+	private String _labelCurrentLanguageId;
+	private String _className;
 	private String _name;
+	private String _panelAppOrder;
+	private String _panelCategoryKey;
 	private String _pkObjectFieldDBColumnName;
 	private String _pkObjectFieldName;
+	private String _pluralLabel;
+	private String _pluralLabelCurrentLanguageId;
+	private String _scope;
 	private boolean _system;
 	private int _version;
 	private int _status;
@@ -1136,11 +1761,18 @@ public class ObjectDefinitionModelImpl
 		_columnOriginalValues.put("userName", _userName);
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
+		_columnOriginalValues.put("active_", _active);
 		_columnOriginalValues.put("dbTableName", _dbTableName);
+		_columnOriginalValues.put("label", _label);
+		_columnOriginalValues.put("className", _className);
 		_columnOriginalValues.put("name", _name);
+		_columnOriginalValues.put("panelAppOrder", _panelAppOrder);
+		_columnOriginalValues.put("panelCategoryKey", _panelCategoryKey);
 		_columnOriginalValues.put(
 			"pkObjectFieldDBColumnName", _pkObjectFieldDBColumnName);
 		_columnOriginalValues.put("pkObjectFieldName", _pkObjectFieldName);
+		_columnOriginalValues.put("pluralLabel", _pluralLabel);
+		_columnOriginalValues.put("scope", _scope);
 		_columnOriginalValues.put("system_", _system);
 		_columnOriginalValues.put("version", _version);
 		_columnOriginalValues.put("status", _status);
@@ -1152,6 +1784,7 @@ public class ObjectDefinitionModelImpl
 		Map<String, String> attributeNames = new HashMap<>();
 
 		attributeNames.put("uuid_", "uuid");
+		attributeNames.put("active_", "active");
 		attributeNames.put("system_", "system");
 
 		_attributeNames = Collections.unmodifiableMap(attributeNames);
@@ -1184,19 +1817,33 @@ public class ObjectDefinitionModelImpl
 
 		columnBitmasks.put("modifiedDate", 128L);
 
-		columnBitmasks.put("dbTableName", 256L);
+		columnBitmasks.put("active_", 256L);
 
-		columnBitmasks.put("name", 512L);
+		columnBitmasks.put("dbTableName", 512L);
 
-		columnBitmasks.put("pkObjectFieldDBColumnName", 1024L);
+		columnBitmasks.put("label", 1024L);
 
-		columnBitmasks.put("pkObjectFieldName", 2048L);
+		columnBitmasks.put("className", 2048L);
 
-		columnBitmasks.put("system_", 4096L);
+		columnBitmasks.put("name", 4096L);
 
-		columnBitmasks.put("version", 8192L);
+		columnBitmasks.put("panelAppOrder", 8192L);
 
-		columnBitmasks.put("status", 16384L);
+		columnBitmasks.put("panelCategoryKey", 16384L);
+
+		columnBitmasks.put("pkObjectFieldDBColumnName", 32768L);
+
+		columnBitmasks.put("pkObjectFieldName", 65536L);
+
+		columnBitmasks.put("pluralLabel", 131072L);
+
+		columnBitmasks.put("scope", 262144L);
+
+		columnBitmasks.put("system_", 524288L);
+
+		columnBitmasks.put("version", 1048576L);
+
+		columnBitmasks.put("status", 2097152L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}

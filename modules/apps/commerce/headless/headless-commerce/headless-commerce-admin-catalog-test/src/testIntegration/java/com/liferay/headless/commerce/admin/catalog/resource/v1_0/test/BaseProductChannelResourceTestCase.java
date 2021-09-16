@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -326,18 +325,17 @@ public abstract class BaseProductChannelResourceTestCase {
 	public void testGetProductByExternalReferenceCodeProductChannelsPage()
 		throws Exception {
 
-		Page<ProductChannel> page =
-			productChannelResource.
-				getProductByExternalReferenceCodeProductChannelsPage(
-					testGetProductByExternalReferenceCodeProductChannelsPage_getExternalReferenceCode(),
-					Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		String externalReferenceCode =
 			testGetProductByExternalReferenceCodeProductChannelsPage_getExternalReferenceCode();
 		String irrelevantExternalReferenceCode =
 			testGetProductByExternalReferenceCodeProductChannelsPage_getIrrelevantExternalReferenceCode();
+
+		Page<ProductChannel> page =
+			productChannelResource.
+				getProductByExternalReferenceCodeProductChannelsPage(
+					externalReferenceCode, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantExternalReferenceCode != null) {
 			ProductChannel irrelevantProductChannel =
@@ -369,7 +367,7 @@ public abstract class BaseProductChannelResourceTestCase {
 		page =
 			productChannelResource.
 				getProductByExternalReferenceCodeProductChannelsPage(
-					externalReferenceCode, Pagination.of(1, 2));
+					externalReferenceCode, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -462,16 +460,15 @@ public abstract class BaseProductChannelResourceTestCase {
 
 	@Test
 	public void testGetProductIdProductChannelsPage() throws Exception {
-		Page<ProductChannel> page =
-			productChannelResource.getProductIdProductChannelsPage(
-				testGetProductIdProductChannelsPage_getId(),
-				Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long id = testGetProductIdProductChannelsPage_getId();
 		Long irrelevantId =
 			testGetProductIdProductChannelsPage_getIrrelevantId();
+
+		Page<ProductChannel> page =
+			productChannelResource.getProductIdProductChannelsPage(
+				id, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantId != null) {
 			ProductChannel irrelevantProductChannel =
@@ -498,7 +495,7 @@ public abstract class BaseProductChannelResourceTestCase {
 				id, randomProductChannel());
 
 		page = productChannelResource.getProductIdProductChannelsPage(
-			id, Pagination.of(1, 2));
+			id, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -588,6 +585,23 @@ public abstract class BaseProductChannelResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		ProductChannel productChannel, List<ProductChannel> productChannels) {
+
+		boolean contains = false;
+
+		for (ProductChannel item : productChannels) {
+			if (equals(productChannel, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productChannels + " does not contain " + productChannel, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1133,8 +1147,8 @@ public abstract class BaseProductChannelResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseProductChannelResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseProductChannelResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

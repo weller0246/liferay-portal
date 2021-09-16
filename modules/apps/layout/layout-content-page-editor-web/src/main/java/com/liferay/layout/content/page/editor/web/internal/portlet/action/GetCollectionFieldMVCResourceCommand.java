@@ -43,6 +43,7 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.item.selector.criteria.InfoListItemSelectorReturnType;
 import com.liferay.item.selector.criteria.info.item.criterion.InfoListItemSelectorCriterion;
 import com.liferay.layout.content.page.editor.constants.ContentPageEditorPortletKeys;
+import com.liferay.layout.content.page.editor.web.internal.util.LayoutObjectReferenceUtil;
 import com.liferay.layout.list.retriever.DefaultLayoutListRetrieverContext;
 import com.liferay.layout.list.retriever.LayoutListRetriever;
 import com.liferay.layout.list.retriever.LayoutListRetrieverTracker;
@@ -184,6 +185,10 @@ public class GetCollectionFieldMVCResourceCommand
 				DefaultLayoutListRetrieverContext
 					defaultLayoutListRetrieverContext =
 						new DefaultLayoutListRetrieverContext();
+
+				defaultLayoutListRetrieverContext.setConfiguration(
+					LayoutObjectReferenceUtil.getConfiguration(
+						layoutObjectReferenceJSONObject));
 
 				Object infoItem = _getInfoItem(httpServletRequest);
 

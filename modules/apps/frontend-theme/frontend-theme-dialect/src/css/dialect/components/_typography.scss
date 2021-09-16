@@ -1,0 +1,65 @@
+// Links
+
+.text-link {
+	font-weight: var(--text-link-font-weight);
+}
+
+.text-link-lg {
+	@extend .text-link;
+
+	font-size: var(--text-link-lg-font-size);
+	line-height: var(--text-link-lg-line-height);
+}
+
+.text-link-md {
+	@extend .text-link;
+
+	font-size: var(--text-link-md-font-size);
+	line-height: var(--text-link-md-line-height);
+}
+
+.text-link-sm {
+	@extend .text-link;
+
+	font-size: var(--text-link-sm-font-size);
+	line-height: var(--text-link-sm-line-height);
+}
+
+// Paragraphs
+
+.text-paragraph-light {
+	font-weight: var(--text-paragraph-font-weight-light);
+}
+
+.text-paragraph-regular {
+	font-weight: var(--text-paragraph-font-weight-regular);
+}
+
+.text-paragraph-heavy {
+	font-weight: var(--text-paragraph-font-weight-heavy);
+}
+
+.text-paragraph-lg {
+	font-size: var(--text-paragraph-lg-font-size);
+	line-height: var(--text-paragraph-lg-line-height);
+}
+
+.text-paragraph {
+	font-size: var(--text-paragraph-font-size);
+	line-height: var(--text-paragraph-line-height);
+}
+
+.text-paragraph-sm {
+	font-size: var(--text-paragraph-sm-font-size);
+	line-height: var(--text-paragraph-sm-line-height);
+}
+
+.text-paragraph-xs {
+	font-size: var(--text-paragraph-xs-font-size);
+	line-height: var(--text-paragraph-xs-line-height);
+}
+
+.text-paragraph-xxs {
+	font-size: var(--text-paragraph-xxs-font-size);
+	line-height: var(--text-paragraph-xxs-line-height);
+}

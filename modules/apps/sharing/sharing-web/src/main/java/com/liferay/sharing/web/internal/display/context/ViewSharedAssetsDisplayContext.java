@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.servlet.taglib.ui.Menu;
 import com.liferay.portal.kernel.servlet.taglib.ui.MenuItem;
 import com.liferay.portal.kernel.servlet.taglib.ui.URLMenuItem;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
@@ -153,7 +154,7 @@ public class ViewSharedAssetsDisplayContext {
 						_liferayPortletResponse
 					).setParameter(
 						"incoming", true
-					).build());
+					).buildPortletURL());
 
 				navigationItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "shared-with-me"));
@@ -167,7 +168,7 @@ public class ViewSharedAssetsDisplayContext {
 						_liferayPortletResponse
 					).setParameter(
 						"incoming", false
-					).build());
+					).buildPortletURL());
 
 				navigationItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "shared-by-me"));
@@ -263,7 +264,7 @@ public class ViewSharedAssetsDisplayContext {
 
 				return "asc";
 			}
-		).build();
+		).buildPortletURL();
 	}
 
 	public String getTitle(SharingEntry sharingEntry) {
@@ -274,7 +275,7 @@ public class ViewSharedAssetsDisplayContext {
 			return StringPool.BLANK;
 		}
 
-		return sharingEntryInterpreter.getTitle(sharingEntry);
+		return HtmlUtil.escape(sharingEntryInterpreter.getTitle(sharingEntry));
 	}
 
 	public boolean isVisible(SharingEntry sharingEntry) throws PortalException {
@@ -394,7 +395,7 @@ public class ViewSharedAssetsDisplayContext {
 							_currentURLObj, _liferayPortletResponse)
 					).setParameter(
 						"className", (String)null
-					).build());
+					).buildPortletURL());
 
 				dropdownItem.setLabel(
 					LanguageUtil.get(_httpServletRequest, "all"));

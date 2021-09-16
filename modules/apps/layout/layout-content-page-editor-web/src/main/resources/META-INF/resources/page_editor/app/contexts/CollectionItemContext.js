@@ -12,6 +12,7 @@
  * details.
  */
 
+import {usePrevious} from '@liferay/frontend-js-react-web';
 import React, {useCallback, useContext, useEffect} from 'react';
 
 import {updateFragmentEntryLinkContent} from '../actions/index';
@@ -21,11 +22,15 @@ import LayoutService from '../services/LayoutService';
 import isMappedToInfoItem from '../utils/editable-value/isMappedToInfoItem';
 import isMappedToLayout from '../utils/editable-value/isMappedToLayout';
 import isMappedToStructure from '../utils/editable-value/isMappedToStructure';
+import isNullOrUndefined from '../utils/isNullOrUndefined';
 import {useDisplayPagePreviewItem} from './DisplayPagePreviewItemContext';
 import {useDispatch} from './StoreContext';
 
 const defaultFromControlsId = (itemId) => itemId;
 const defaultToControlsId = (controlId) => controlId;
+
+const DISPLAY_PAGE_CONTENT_FRAGMENT_ENTRY_KEY =
+	'com.liferay.fragment.internal.renderer.LayoutDisplayObjectFragmentRenderer';
 
 export const INITIAL_STATE = {
 	collectionConfig: null,
@@ -74,16 +79,41 @@ const useCollectionConfig = () => {
 };
 
 const useGetContent = (fragmentEntryLink, languageId, segmentsExperienceId) => {
-	const context = useContext(CollectionItemContext);
-	const dispatch = useDispatch();
+	const {
+		collectionContent = {},
+		content,
+		editableValues,
+		fragmentEntryKey,
+		fragmentEntryLinkId,
+	} = fragmentEntryLink;
 
-	const {className, classPK} = context.collectionItem || {};
+	const collectionItemContext = useContext(CollectionItemContext);
+	const dispatch = useDispatch();
+	const fieldSets = fragmentEntryLink.configuration?.fieldSets;
 	const toControlsId = useToControlsId();
 
-	const fieldSets = fragmentEntryLink.configuration?.fieldSets;
-	const collectionContentId = toControlsId(
-		fragmentEntryLink.fragmentEntryLinkId
-	);
+	const collectionContentId = toControlsId(fragmentEntryLinkId);
+
+	const {className: collectionItemClassName, classPK: collectionItemClassPK} =
+		collectionItemContext.collectionItem || {};
+	const {collectionItemIndex} = collectionItemContext;
+
+	const {
+		className: displayPagePreviewItemClassName,
+		classPK: displayPagePreviewItemClassPK,
+	} = useDisplayPagePreviewItem()?.data || {};
+
+	const [itemClassName, itemClassPK] =
+		fragmentEntryKey === DISPLAY_PAGE_CONTENT_FRAGMENT_ENTRY_KEY &&
+		displayPagePreviewItemClassName &&
+		displayPagePreviewItemClassPK
+			? [displayPagePreviewItemClassName, displayPagePreviewItemClassPK]
+			: [collectionItemClassName, collectionItemClassPK];
+
+	const previousEditableValues = usePrevious(editableValues);
+	const previousLanguageId = usePrevious(languageId);
+	const previousItemClassName = usePrevious(itemClassName);
+	const previousItemClassPK = usePrevious(itemClassPK);
 
 	useEffect(() => {
 		const hasLocalizable =
@@ -91,11 +121,16 @@ const useGetContent = (fragmentEntryLink, languageId, segmentsExperienceId) => {
 				fieldSet.fields.some((field) => field.localizable)
 			) ?? false;
 
-		if (context.collectionItemIndex != null || hasLocalizable) {
+		if (
+			editableValues !== previousEditableValues ||
+			itemClassName !== previousItemClassName ||
+			itemClassPK !== previousItemClassPK ||
+			(hasLocalizable && languageId !== previousLanguageId)
+		) {
 			FragmentService.renderFragmentEntryLinkContent({
-				collectionItemClassName: className,
-				collectionItemClassPK: classPK,
-				fragmentEntryLinkId: fragmentEntryLink.fragmentEntryLinkId,
+				fragmentEntryLinkId,
+				itemClassName,
+				itemClassPK,
 				languageId,
 				onNetworkStatus: dispatch,
 				segmentsExperienceId,
@@ -104,34 +139,32 @@ const useGetContent = (fragmentEntryLink, languageId, segmentsExperienceId) => {
 					updateFragmentEntryLinkContent({
 						collectionContentId,
 						content,
-						fragmentEntryLinkId:
-							fragmentEntryLink.fragmentEntryLinkId,
+						fragmentEntryLinkId,
 					})
 				);
 			});
 		}
 	}, [
-		className,
 		collectionContentId,
-		classPK,
-		context.collectionItemIndex,
 		dispatch,
+		editableValues,
 		fieldSets,
-		fragmentEntryLink.editableValues,
-		fragmentEntryLink.fragmentEntryLinkId,
+		fragmentEntryLinkId,
+		itemClassName,
+		itemClassPK,
 		languageId,
+		previousEditableValues,
+		previousItemClassName,
+		previousItemClassPK,
+		previousLanguageId,
 		segmentsExperienceId,
 	]);
 
-	if (context.collectionItemIndex != null) {
-		const collectionContent = fragmentEntryLink.collectionContent || {};
-
-		return (
-			collectionContent[collectionContentId] || fragmentEntryLink.content
-		);
-	}
-
-	return fragmentEntryLink.content;
+	return (
+		(!isNullOrUndefined(collectionItemIndex)
+			? collectionContent[collectionContentId]
+			: null) || content
+	);
 };
 
 const useGetFieldValue = () => {
@@ -184,8 +217,7 @@ const useGetFieldValue = () => {
 
 	const getFromCollectionItem = useCallback(
 		({collectionFieldId}) =>
-			collectionItem[collectionFieldId] !== null &&
-			collectionItem[collectionFieldId] !== undefined
+			!isNullOrUndefined(collectionItem[collectionFieldId])
 				? Promise.resolve(collectionItem[collectionFieldId])
 				: Promise.reject(),
 		[collectionItem]
@@ -200,26 +232,28 @@ const useGetFieldValue = () => {
 };
 
 const useRenderFragmentContent = () => {
-	const context = useContext(CollectionItemContext);
+	const collectionItemContext = useContext(CollectionItemContext);
 
-	const {className, classPK} = context.collectionItem || {};
+	const {className: collectionItemClassName, classPK: collectionItemClassPK} =
+		collectionItemContext.collectionItem || {};
+	const {collectionItemIndex} = collectionItemContext;
 
 	return useCallback(
 		({fragmentEntryLinkId, onNetworkStatus, segmentsExperienceId}) => {
 			return FragmentService.renderFragmentEntryLinkContent({
-				collectionItemClassName: className,
-				collectionItemClassPK: classPK,
+				collectionItemClassName,
+				collectionItemClassPK,
 				fragmentEntryLinkId,
 				onNetworkStatus,
 				segmentsExperienceId,
 			}).then(({content}) => {
 				return {
-					collectionItemIndex: context.collectionItemIndex,
+					collectionItemIndex,
 					content,
 				};
 			});
 		},
-		[className, classPK, context.collectionItemIndex]
+		[collectionItemClassName, collectionItemClassPK, collectionItemIndex]
 	);
 };
 

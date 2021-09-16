@@ -482,11 +482,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param accessTokenContentHash the access token content hash
 	 * @return the matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByAccessTokenContentHash(
+	public static List<OAuth2Authorization> findByC_ATCH(
 		long companyId, long accessTokenContentHash) {
 
-		return getPersistence().findByAccessTokenContentHash(
-			companyId, accessTokenContentHash);
+		return getPersistence().findByC_ATCH(companyId, accessTokenContentHash);
 	}
 
 	/**
@@ -502,10 +501,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param end the upper bound of the range of o auth2 authorizations (not inclusive)
 	 * @return the range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByAccessTokenContentHash(
+	public static List<OAuth2Authorization> findByC_ATCH(
 		long companyId, long accessTokenContentHash, int start, int end) {
 
-		return getPersistence().findByAccessTokenContentHash(
+		return getPersistence().findByC_ATCH(
 			companyId, accessTokenContentHash, start, end);
 	}
 
@@ -523,11 +522,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByAccessTokenContentHash(
+	public static List<OAuth2Authorization> findByC_ATCH(
 		long companyId, long accessTokenContentHash, int start, int end,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().findByAccessTokenContentHash(
+		return getPersistence().findByC_ATCH(
 			companyId, accessTokenContentHash, start, end, orderByComparator);
 	}
 
@@ -546,12 +545,12 @@ public class OAuth2AuthorizationUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByAccessTokenContentHash(
+	public static List<OAuth2Authorization> findByC_ATCH(
 		long companyId, long accessTokenContentHash, int start, int end,
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByAccessTokenContentHash(
+		return getPersistence().findByC_ATCH(
 			companyId, accessTokenContentHash, start, end, orderByComparator,
 			useFinderCache);
 	}
@@ -565,13 +564,13 @@ public class OAuth2AuthorizationUtil {
 	 * @return the first matching o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization findByAccessTokenContentHash_First(
+	public static OAuth2Authorization findByC_ATCH_First(
 			long companyId, long accessTokenContentHash,
 			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByAccessTokenContentHash_First(
+		return getPersistence().findByC_ATCH_First(
 			companyId, accessTokenContentHash, orderByComparator);
 	}
 
@@ -583,11 +582,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching o auth2 authorization, or <code>null</code> if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization fetchByAccessTokenContentHash_First(
+	public static OAuth2Authorization fetchByC_ATCH_First(
 		long companyId, long accessTokenContentHash,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().fetchByAccessTokenContentHash_First(
+		return getPersistence().fetchByC_ATCH_First(
 			companyId, accessTokenContentHash, orderByComparator);
 	}
 
@@ -600,13 +599,13 @@ public class OAuth2AuthorizationUtil {
 	 * @return the last matching o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization findByAccessTokenContentHash_Last(
+	public static OAuth2Authorization findByC_ATCH_Last(
 			long companyId, long accessTokenContentHash,
 			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByAccessTokenContentHash_Last(
+		return getPersistence().findByC_ATCH_Last(
 			companyId, accessTokenContentHash, orderByComparator);
 	}
 
@@ -618,11 +617,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching o auth2 authorization, or <code>null</code> if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization fetchByAccessTokenContentHash_Last(
+	public static OAuth2Authorization fetchByC_ATCH_Last(
 		long companyId, long accessTokenContentHash,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().fetchByAccessTokenContentHash_Last(
+		return getPersistence().fetchByC_ATCH_Last(
 			companyId, accessTokenContentHash, orderByComparator);
 	}
 
@@ -636,15 +635,14 @@ public class OAuth2AuthorizationUtil {
 	 * @return the previous, current, and next o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a o auth2 authorization with the primary key could not be found
 	 */
-	public static OAuth2Authorization[]
-			findByAccessTokenContentHash_PrevAndNext(
-				long oAuth2AuthorizationId, long companyId,
-				long accessTokenContentHash,
-				OrderByComparator<OAuth2Authorization> orderByComparator)
+	public static OAuth2Authorization[] findByC_ATCH_PrevAndNext(
+			long oAuth2AuthorizationId, long companyId,
+			long accessTokenContentHash,
+			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByAccessTokenContentHash_PrevAndNext(
+		return getPersistence().findByC_ATCH_PrevAndNext(
 			oAuth2AuthorizationId, companyId, accessTokenContentHash,
 			orderByComparator);
 	}
@@ -655,11 +653,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param companyId the company ID
 	 * @param accessTokenContentHash the access token content hash
 	 */
-	public static void removeByAccessTokenContentHash(
+	public static void removeByC_ATCH(
 		long companyId, long accessTokenContentHash) {
 
-		getPersistence().removeByAccessTokenContentHash(
-			companyId, accessTokenContentHash);
+		getPersistence().removeByC_ATCH(companyId, accessTokenContentHash);
 	}
 
 	/**
@@ -669,10 +666,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param accessTokenContentHash the access token content hash
 	 * @return the number of matching o auth2 authorizations
 	 */
-	public static int countByAccessTokenContentHash(
+	public static int countByC_ATCH(
 		long companyId, long accessTokenContentHash) {
 
-		return getPersistence().countByAccessTokenContentHash(
+		return getPersistence().countByC_ATCH(
 			companyId, accessTokenContentHash);
 	}
 
@@ -683,10 +680,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param refreshTokenContentHash the refresh token content hash
 	 * @return the matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByRefreshTokenContentHash(
+	public static List<OAuth2Authorization> findByC_RTCH(
 		long companyId, long refreshTokenContentHash) {
 
-		return getPersistence().findByRefreshTokenContentHash(
+		return getPersistence().findByC_RTCH(
 			companyId, refreshTokenContentHash);
 	}
 
@@ -703,10 +700,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param end the upper bound of the range of o auth2 authorizations (not inclusive)
 	 * @return the range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByRefreshTokenContentHash(
+	public static List<OAuth2Authorization> findByC_RTCH(
 		long companyId, long refreshTokenContentHash, int start, int end) {
 
-		return getPersistence().findByRefreshTokenContentHash(
+		return getPersistence().findByC_RTCH(
 			companyId, refreshTokenContentHash, start, end);
 	}
 
@@ -724,11 +721,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByRefreshTokenContentHash(
+	public static List<OAuth2Authorization> findByC_RTCH(
 		long companyId, long refreshTokenContentHash, int start, int end,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().findByRefreshTokenContentHash(
+		return getPersistence().findByC_RTCH(
 			companyId, refreshTokenContentHash, start, end, orderByComparator);
 	}
 
@@ -747,12 +744,12 @@ public class OAuth2AuthorizationUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching o auth2 authorizations
 	 */
-	public static List<OAuth2Authorization> findByRefreshTokenContentHash(
+	public static List<OAuth2Authorization> findByC_RTCH(
 		long companyId, long refreshTokenContentHash, int start, int end,
 		OrderByComparator<OAuth2Authorization> orderByComparator,
 		boolean useFinderCache) {
 
-		return getPersistence().findByRefreshTokenContentHash(
+		return getPersistence().findByC_RTCH(
 			companyId, refreshTokenContentHash, start, end, orderByComparator,
 			useFinderCache);
 	}
@@ -766,13 +763,13 @@ public class OAuth2AuthorizationUtil {
 	 * @return the first matching o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization findByRefreshTokenContentHash_First(
+	public static OAuth2Authorization findByC_RTCH_First(
 			long companyId, long refreshTokenContentHash,
 			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByRefreshTokenContentHash_First(
+		return getPersistence().findByC_RTCH_First(
 			companyId, refreshTokenContentHash, orderByComparator);
 	}
 
@@ -784,11 +781,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching o auth2 authorization, or <code>null</code> if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization fetchByRefreshTokenContentHash_First(
+	public static OAuth2Authorization fetchByC_RTCH_First(
 		long companyId, long refreshTokenContentHash,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().fetchByRefreshTokenContentHash_First(
+		return getPersistence().fetchByC_RTCH_First(
 			companyId, refreshTokenContentHash, orderByComparator);
 	}
 
@@ -801,13 +798,13 @@ public class OAuth2AuthorizationUtil {
 	 * @return the last matching o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization findByRefreshTokenContentHash_Last(
+	public static OAuth2Authorization findByC_RTCH_Last(
 			long companyId, long refreshTokenContentHash,
 			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByRefreshTokenContentHash_Last(
+		return getPersistence().findByC_RTCH_Last(
 			companyId, refreshTokenContentHash, orderByComparator);
 	}
 
@@ -819,11 +816,11 @@ public class OAuth2AuthorizationUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching o auth2 authorization, or <code>null</code> if a matching o auth2 authorization could not be found
 	 */
-	public static OAuth2Authorization fetchByRefreshTokenContentHash_Last(
+	public static OAuth2Authorization fetchByC_RTCH_Last(
 		long companyId, long refreshTokenContentHash,
 		OrderByComparator<OAuth2Authorization> orderByComparator) {
 
-		return getPersistence().fetchByRefreshTokenContentHash_Last(
+		return getPersistence().fetchByC_RTCH_Last(
 			companyId, refreshTokenContentHash, orderByComparator);
 	}
 
@@ -837,15 +834,14 @@ public class OAuth2AuthorizationUtil {
 	 * @return the previous, current, and next o auth2 authorization
 	 * @throws NoSuchOAuth2AuthorizationException if a o auth2 authorization with the primary key could not be found
 	 */
-	public static OAuth2Authorization[]
-			findByRefreshTokenContentHash_PrevAndNext(
-				long oAuth2AuthorizationId, long companyId,
-				long refreshTokenContentHash,
-				OrderByComparator<OAuth2Authorization> orderByComparator)
+	public static OAuth2Authorization[] findByC_RTCH_PrevAndNext(
+			long oAuth2AuthorizationId, long companyId,
+			long refreshTokenContentHash,
+			OrderByComparator<OAuth2Authorization> orderByComparator)
 		throws com.liferay.oauth2.provider.exception.
 			NoSuchOAuth2AuthorizationException {
 
-		return getPersistence().findByRefreshTokenContentHash_PrevAndNext(
+		return getPersistence().findByC_RTCH_PrevAndNext(
 			oAuth2AuthorizationId, companyId, refreshTokenContentHash,
 			orderByComparator);
 	}
@@ -856,11 +852,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param companyId the company ID
 	 * @param refreshTokenContentHash the refresh token content hash
 	 */
-	public static void removeByRefreshTokenContentHash(
+	public static void removeByC_RTCH(
 		long companyId, long refreshTokenContentHash) {
 
-		getPersistence().removeByRefreshTokenContentHash(
-			companyId, refreshTokenContentHash);
+		getPersistence().removeByC_RTCH(companyId, refreshTokenContentHash);
 	}
 
 	/**
@@ -870,10 +865,10 @@ public class OAuth2AuthorizationUtil {
 	 * @param refreshTokenContentHash the refresh token content hash
 	 * @return the number of matching o auth2 authorizations
 	 */
-	public static int countByRefreshTokenContentHash(
+	public static int countByC_RTCH(
 		long companyId, long refreshTokenContentHash) {
 
-		return getPersistence().countByRefreshTokenContentHash(
+		return getPersistence().countByC_RTCH(
 			companyId, refreshTokenContentHash);
 	}
 

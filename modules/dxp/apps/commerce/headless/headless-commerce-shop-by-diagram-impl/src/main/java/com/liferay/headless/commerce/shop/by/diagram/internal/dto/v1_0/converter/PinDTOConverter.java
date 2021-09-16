@@ -51,17 +51,21 @@ public class PinDTOConverter
 		return new Pin() {
 			{
 				id = cpDefinitionDiagramPin.getCPDefinitionDiagramPinId();
-				number = cpDefinitionDiagramPin.getNumber();
 				positionX = cpDefinitionDiagramPin.getPositionX();
 				positionY = cpDefinitionDiagramPin.getPositionY();
+				sequence = cpDefinitionDiagramPin.getSequence();
 
 				setDiagramEntry(
 					() -> {
 						CPDefinitionDiagramEntry cpDefinitionDiagramEntry =
 							_cpDefinitionDiagramEntryService.
-								getCPDefinitionDiagramEntry(
+								fetchCPDefinitionDiagramEntry(
 									cpDefinitionDiagramPin.getCPDefinitionId(),
-									cpDefinitionDiagramPin.getNumber());
+									cpDefinitionDiagramPin.getSequence());
+
+						if (cpDefinitionDiagramEntry == null) {
+							return null;
+						}
 
 						return _diagramEntryDTOConverter.toDTO(
 							new DefaultDTOConverterContext(

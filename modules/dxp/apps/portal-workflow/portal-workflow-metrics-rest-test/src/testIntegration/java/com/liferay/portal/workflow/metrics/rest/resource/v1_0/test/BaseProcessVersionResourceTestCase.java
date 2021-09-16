@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -192,23 +191,22 @@ public abstract class BaseProcessVersionResourceTestCase {
 	}
 
 	@Test
-	public void testGetProcessVersionsPage() throws Exception {
+	public void testGetProcessProcessVersionsPage() throws Exception {
+		Long processId = testGetProcessProcessVersionsPage_getProcessId();
+		Long irrelevantProcessId =
+			testGetProcessProcessVersionsPage_getIrrelevantProcessId();
+
 		Page<ProcessVersion> page =
-			processVersionResource.getProcessVersionsPage(
-				testGetProcessVersionsPage_getProcessId());
+			processVersionResource.getProcessProcessVersionsPage(processId);
 
 		Assert.assertEquals(0, page.getTotalCount());
 
-		Long processId = testGetProcessVersionsPage_getProcessId();
-		Long irrelevantProcessId =
-			testGetProcessVersionsPage_getIrrelevantProcessId();
-
 		if (irrelevantProcessId != null) {
 			ProcessVersion irrelevantProcessVersion =
-				testGetProcessVersionsPage_addProcessVersion(
+				testGetProcessProcessVersionsPage_addProcessVersion(
 					irrelevantProcessId, randomIrrelevantProcessVersion());
 
-			page = processVersionResource.getProcessVersionsPage(
+			page = processVersionResource.getProcessProcessVersionsPage(
 				irrelevantProcessId);
 
 			Assert.assertEquals(1, page.getTotalCount());
@@ -220,14 +218,14 @@ public abstract class BaseProcessVersionResourceTestCase {
 		}
 
 		ProcessVersion processVersion1 =
-			testGetProcessVersionsPage_addProcessVersion(
+			testGetProcessProcessVersionsPage_addProcessVersion(
 				processId, randomProcessVersion());
 
 		ProcessVersion processVersion2 =
-			testGetProcessVersionsPage_addProcessVersion(
+			testGetProcessProcessVersionsPage_addProcessVersion(
 				processId, randomProcessVersion());
 
-		page = processVersionResource.getProcessVersionsPage(processId);
+		page = processVersionResource.getProcessProcessVersionsPage(processId);
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -237,28 +235,43 @@ public abstract class BaseProcessVersionResourceTestCase {
 		assertValid(page);
 	}
 
-	protected ProcessVersion testGetProcessVersionsPage_addProcessVersion(
-			Long processId, ProcessVersion processVersion)
+	protected ProcessVersion
+			testGetProcessProcessVersionsPage_addProcessVersion(
+				Long processId, ProcessVersion processVersion)
 		throws Exception {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetProcessVersionsPage_getProcessId() throws Exception {
+	protected Long testGetProcessProcessVersionsPage_getProcessId()
+		throws Exception {
+
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
 	}
 
-	protected Long testGetProcessVersionsPage_getIrrelevantProcessId()
+	protected Long testGetProcessProcessVersionsPage_getIrrelevantProcessId()
 		throws Exception {
 
 		return null;
 	}
 
-	@Test
-	public void testGraphQLGetProcessVersionsPage() throws Exception {
-		Assert.assertTrue(false);
+	protected void assertContains(
+		ProcessVersion processVersion, List<ProcessVersion> processVersions) {
+
+		boolean contains = false;
+
+		for (ProcessVersion item : processVersions) {
+			if (equals(processVersion, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			processVersions + " does not contain " + processVersion, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -669,8 +682,8 @@ public abstract class BaseProcessVersionResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseProcessVersionResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseProcessVersionResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

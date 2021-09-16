@@ -16,7 +16,9 @@ package com.liferay.object.rest.internal.resource.v1_0;
 
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.resource.v1_0.ObjectEntryResource;
+import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.function.UnsafeFunction;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.GroupedModel;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
@@ -27,6 +29,9 @@ import com.liferay.portal.kernel.service.ResourcePermissionLocalService;
 import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.odata.entity.EntityModel;
+import com.liferay.portal.odata.filter.ExpressionConvert;
+import com.liferay.portal.odata.filter.FilterParser;
+import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 import com.liferay.portal.vulcan.batch.engine.VulcanBatchEngineTaskItemDelegate;
 import com.liferay.portal.vulcan.batch.engine.resource.VulcanBatchEngineImportTaskResource;
@@ -59,6 +64,7 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -153,6 +159,135 @@ public abstract class BaseObjectEntryResourceImpl
 	@DELETE
 	@Override
 	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path("/by-external-reference-code/{externalReferenceCode}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public void deleteByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode)
+		throws Exception {
+	}
+
+	@GET
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path("/by-external-reference-code/{externalReferenceCode}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry getByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode)
+		throws Exception {
+
+		return new ObjectEntry();
+	}
+
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path("/by-external-reference-code/{externalReferenceCode}")
+	@Produces({"application/json", "application/xml"})
+	@PUT
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry putByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode,
+			ObjectEntry objectEntry)
+		throws Exception {
+
+		return new ObjectEntry();
+	}
+
+	@DELETE
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path(
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
+	)
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public void deleteScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode)
+		throws Exception {
+	}
+
+	@GET
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path(
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
+	)
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry getScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode)
+		throws Exception {
+
+		return new ObjectEntry();
+	}
+
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
+			@Parameter(in = ParameterIn.PATH, name = "externalReferenceCode")
+		}
+	)
+	@Path(
+		"/scopes/{scopeKey}/by-external-reference-code/{externalReferenceCode}"
+	)
+	@Produces({"application/json", "application/xml"})
+	@PUT
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry putScopeScopeKeyByExternalReferenceCode(
+			@NotNull @Parameter(hidden = true) @PathParam("scopeKey") String
+				scopeKey,
+			@NotNull @Parameter(hidden = true)
+			@PathParam("externalReferenceCode")
+			String externalReferenceCode,
+			ObjectEntry objectEntry)
+		throws Exception {
+
+		return new ObjectEntry();
+	}
+
+	@DELETE
+	@Override
+	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "objectEntryId")}
 	)
 	@Path("/{objectEntryId}")
@@ -216,6 +351,49 @@ public abstract class BaseObjectEntryResourceImpl
 	@Parameters(
 		value = {@Parameter(in = ParameterIn.PATH, name = "objectEntryId")}
 	)
+	@PATCH
+	@Path("/{objectEntryId}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry patchObjectEntry(
+			@NotNull @Parameter(hidden = true) @PathParam("objectEntryId") Long
+				objectEntryId,
+			ObjectEntry objectEntry)
+		throws Exception {
+
+		ObjectEntry existingObjectEntry = getObjectEntry(objectEntryId);
+
+		if (objectEntry.getActions() != null) {
+			existingObjectEntry.setActions(objectEntry.getActions());
+		}
+
+		if (objectEntry.getDateCreated() != null) {
+			existingObjectEntry.setDateCreated(objectEntry.getDateCreated());
+		}
+
+		if (objectEntry.getDateModified() != null) {
+			existingObjectEntry.setDateModified(objectEntry.getDateModified());
+		}
+
+		if (objectEntry.getExternalReferenceCode() != null) {
+			existingObjectEntry.setExternalReferenceCode(
+				objectEntry.getExternalReferenceCode());
+		}
+
+		if (objectEntry.getProperties() != null) {
+			existingObjectEntry.setProperties(objectEntry.getProperties());
+		}
+
+		preparePatch(objectEntry, existingObjectEntry);
+
+		return putObjectEntry(objectEntryId, existingObjectEntry);
+	}
+
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(
+		value = {@Parameter(in = ParameterIn.PATH, name = "objectEntryId")}
+	)
 	@Path("/{objectEntryId}")
 	@Produces({"application/json", "application/xml"})
 	@PUT
@@ -260,6 +438,50 @@ public abstract class BaseObjectEntryResourceImpl
 		).build();
 	}
 
+	@GET
+	@Override
+	@Parameters(
+		value = {
+			@Parameter(in = ParameterIn.PATH, name = "scopeKey"),
+			@Parameter(in = ParameterIn.QUERY, name = "flatten"),
+			@Parameter(in = ParameterIn.QUERY, name = "search"),
+			@Parameter(in = ParameterIn.QUERY, name = "filter"),
+			@Parameter(in = ParameterIn.QUERY, name = "page"),
+			@Parameter(in = ParameterIn.QUERY, name = "pageSize"),
+			@Parameter(in = ParameterIn.QUERY, name = "sort")
+		}
+	)
+	@Path("/scopes/{scopeKey}")
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public Page<ObjectEntry> getScopeScopeKeyPage(
+			@Parameter(hidden = true) @PathParam("scopeKey") String scopeKey,
+			@Parameter(hidden = true) @QueryParam("flatten") Boolean flatten,
+			@Parameter(hidden = true) @QueryParam("search") String search,
+			@Context com.liferay.portal.vulcan.aggregation.Aggregation
+				aggregation,
+			@Context Filter filter, @Context Pagination pagination,
+			@Context Sort[] sorts)
+		throws Exception {
+
+		return Page.of(Collections.emptyList());
+	}
+
+	@Consumes({"application/json", "application/xml"})
+	@Override
+	@Parameters(value = {@Parameter(in = ParameterIn.PATH, name = "scopeKey")})
+	@Path("/scopes/{scopeKey}")
+	@POST
+	@Produces({"application/json", "application/xml"})
+	@Tags(value = {@Tag(name = "ObjectEntry")})
+	public ObjectEntry postScopeScopeKey(
+			@Parameter(hidden = true) @PathParam("scopeKey") String scopeKey,
+			ObjectEntry objectEntry)
+		throws Exception {
+
+		return new ObjectEntry();
+	}
+
 	@Override
 	@SuppressWarnings("PMD.UnusedLocalVariable")
 	public void create(
@@ -267,8 +489,11 @@ public abstract class BaseObjectEntryResourceImpl
 			Map<String, Serializable> parameters)
 		throws Exception {
 
+		UnsafeConsumer<ObjectEntry, Exception> objectEntryUnsafeConsumer =
+			objectEntry -> postObjectEntry(objectEntry);
+
 		for (ObjectEntry objectEntry : objectEntries) {
-			postObjectEntry(objectEntry);
+			objectEntryUnsafeConsumer.accept(objectEntry);
 		}
 	}
 
@@ -375,12 +600,63 @@ public abstract class BaseObjectEntryResourceImpl
 		this.contextUser = contextUser;
 	}
 
+	public void setExpressionConvert(
+		ExpressionConvert<Filter> expressionConvert) {
+
+		this.expressionConvert = expressionConvert;
+	}
+
+	public void setFilterParserProvider(
+		FilterParserProvider filterParserProvider) {
+
+		this.filterParserProvider = filterParserProvider;
+	}
+
 	public void setGroupLocalService(GroupLocalService groupLocalService) {
 		this.groupLocalService = groupLocalService;
 	}
 
+	public void setResourceActionLocalService(
+		ResourceActionLocalService resourceActionLocalService) {
+
+		this.resourceActionLocalService = resourceActionLocalService;
+	}
+
+	public void setResourcePermissionLocalService(
+		ResourcePermissionLocalService resourcePermissionLocalService) {
+
+		this.resourcePermissionLocalService = resourcePermissionLocalService;
+	}
+
 	public void setRoleLocalService(RoleLocalService roleLocalService) {
 		this.roleLocalService = roleLocalService;
+	}
+
+	@Override
+	public Filter toFilter(
+		String filterString, Map<String, List<String>> multivaluedMap) {
+
+		try {
+			EntityModel entityModel = getEntityModel(multivaluedMap);
+
+			FilterParser filterParser = filterParserProvider.provide(
+				entityModel);
+
+			com.liferay.portal.odata.filter.Filter oDataFilter =
+				new com.liferay.portal.odata.filter.Filter(
+					filterParser.parse(filterString));
+
+			return expressionConvert.convert(
+				oDataFilter.getExpression(),
+				contextAcceptLanguage.getPreferredLocale(), entityModel);
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug("Invalid filter " + filterString, exception);
+			}
+		}
+
+		return null;
 	}
 
 	protected Map<String, String> addAction(
@@ -415,6 +691,10 @@ public abstract class BaseObjectEntryResourceImpl
 
 		return addAction(
 			actionName, siteId, methodName, null, permissionName, siteId);
+	}
+
+	protected void preparePatch(
+		ObjectEntry objectEntry, ObjectEntry existingObjectEntry) {
 	}
 
 	protected <T, R> List<R> transform(
@@ -452,11 +732,16 @@ public abstract class BaseObjectEntryResourceImpl
 	protected Object contextScopeChecker;
 	protected UriInfo contextUriInfo;
 	protected com.liferay.portal.kernel.model.User contextUser;
+	protected ExpressionConvert<Filter> expressionConvert;
+	protected FilterParserProvider filterParserProvider;
 	protected GroupLocalService groupLocalService;
 	protected ResourceActionLocalService resourceActionLocalService;
 	protected ResourcePermissionLocalService resourcePermissionLocalService;
 	protected RoleLocalService roleLocalService;
 	protected VulcanBatchEngineImportTaskResource
 		vulcanBatchEngineImportTaskResource;
+
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseObjectEntryResourceImpl.class);
 
 }

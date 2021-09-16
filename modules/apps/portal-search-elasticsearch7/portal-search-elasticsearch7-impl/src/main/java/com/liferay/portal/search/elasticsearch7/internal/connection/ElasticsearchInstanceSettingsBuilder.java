@@ -218,8 +218,6 @@ public class ElasticsearchInstanceSettingsBuilder {
 		if (Validator.isNotNull(transportTcpPort)) {
 			put("transport.port", transportTcpPort);
 		}
-
-		put("transport.type", "netty4");
 	}
 
 	protected void configurePaths() {
@@ -244,6 +242,14 @@ public class ElasticsearchInstanceSettingsBuilder {
 		}
 
 		put("monitor.jvm.gc.enabled", StringPool.FALSE);
+	}
+
+	protected void configureXPack() {
+		put("xpack.ml.enabled", false);
+		put("xpack.monitoring.enabled", false);
+		put("xpack.security.enabled", false);
+		put("xpack.sql.enabled", false);
+		put("xpack.watcher.enabled", false);
 	}
 
 	protected Path getHomePath() {
@@ -298,6 +304,8 @@ public class ElasticsearchInstanceSettingsBuilder {
 		configurePaths();
 
 		configureTestMode();
+
+		configureXPack();
 	}
 
 	protected void loadSettingsContributors() {

@@ -77,6 +77,13 @@ function removeValue({value, valueToBeRemoved}) {
 function toArray(value = '') {
 	let newValue = value;
 
+	if (newValue && typeof newValue === 'string') {
+		try {
+			newValue = JSON.parse(newValue);
+		}
+		catch (error) {}
+	}
+
 	if (!Array.isArray(newValue)) {
 		newValue = [newValue];
 	}
@@ -288,7 +295,7 @@ const DropdownListWithSearch = ({
 				option.label.toLowerCase().includes(query.toLowerCase())
 		);
 
-		if (showEmptyOption) {
+		if (showEmptyOption && !multiple) {
 			const emptyOption = {
 				label: Liferay.Language.get('choose-an-option'),
 				value: null,

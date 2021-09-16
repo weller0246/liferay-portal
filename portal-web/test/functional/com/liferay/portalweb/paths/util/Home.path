@@ -220,7 +220,7 @@
 <!--PAGE-->
 <tr>
 	<td>PAGE</td>
-	<td>//div[contains(@id,'navbar')]/ul/li/a[contains(.,'${key_pageName}')]</td>
+	<td>//div[contains(@id,'navbar')]/ul/li/a[normalize-space()='${key_pageName}']</td>
 	<td>Page</td>
 </tr>
 <tr>
@@ -230,7 +230,7 @@
 </tr>
 <tr>
 	<td>PAGE_ACTIVE</td>
-	<td>//div[contains(@id,'navbar')]/ul//*[contains(@class,'selected active')][contains(.,'${key_pageName}')]</td>
+	<td>//div[contains(@id,'navbar')]/ul//*[contains(@class,'active')][.//*[normalize-space(text())='${key_pageName}']]</td>
 	<td>Page</td>
 </tr>
 <tr>
@@ -449,7 +449,7 @@
 </tr>
 <tr>
 	<td>PAGE_COLUMN_PORTLET_HEADER_ELLIPSIS</td>
-	<td>//div[@id='column-${key_columnNumber}']//header[@class='portlet-topper' and contains(.,'${key_portletName}')]//div[contains(@class,'portlet-options')]/a</td>
+	<td>//div[@id='column-${key_columnNumber}']//header[contains(@class,'portlet-topper') and contains(.,'${key_portletName}')]//div[contains(@class,'portlet-options')]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -573,7 +573,7 @@
 </tr>
 <tr>
 	<td>PORTLET_HEADER</td>
-	<td>//section[contains(@id, '${key_portletTitleName}')]//header[@class='portlet-topper']</td>
+	<td>//section[contains(@id, '${key_portletTitleName}')]//header[contains(@class,'portlet-topper')]</td>
 	<td></td>
 </tr>
 <tr>

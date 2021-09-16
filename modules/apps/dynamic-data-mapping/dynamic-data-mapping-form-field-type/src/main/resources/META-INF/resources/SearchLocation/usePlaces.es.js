@@ -15,48 +15,52 @@
 import {useEffect, useRef, useState} from 'react';
 
 const loadScript = (readOnly, elementId, googlePlacesAPIKey, callback) => {
-	const script = document.createElement('script');
-	script.setAttribute('type', 'text/javascript');
-	const scriptReadyState = script.getAttribute('readyState');
+	let script = document.getElementById('googleMapsScript');
 
-	if (scriptReadyState) {
-		script.setAttribute('onreadystatechange', () => {
-			if (
-				scriptReadyState === 'loaded' ||
-				scriptReadyState === 'complete'
-			) {
-				script.setAttribute('onreadystatechange', null);
-				callback();
-			}
+	if (!script) {
+		script = document.createElement('script');
+
+		script.addEventListener('load', () => {
+			script.setAttribute('data-loaded', 'true');
 		});
+
+		script.setAttribute('id', 'googleMapsScript');
+		script.setAttribute('type', 'text/javascript');
+
+		let url = 'https://maps.googleapis.com/maps/api/js?libraries=places';
+
+		if (googlePlacesAPIKey) {
+			url += '&key=' + googlePlacesAPIKey;
+		}
+
+		script.setAttribute('src', url);
+	}
+
+	const dataLoaded = script.getAttribute('data-loaded');
+
+	if (dataLoaded) {
+		callback();
 	}
 	else {
-		script.onload = () => callback();
+		script.addEventListener('load', callback);
 	}
 
-	let url = 'https://maps.googleapis.com/maps/api/js?libraries=places';
-
-	if (googlePlacesAPIKey) {
-		url += '&key=' + googlePlacesAPIKey;
-	}
-
-	script.setAttribute('src', url);
 	const element = document.getElementById(elementId);
 	/* eslint-disable-next-line no-unused-expressions */
 	element && !readOnly ? element.appendChild(script) : null;
 };
 
-function handleScriptLoad(autoComplete, elementId, setListener, onChange) {
+function handleScriptLoad(autoComplete, elementId, setListener, setValue) {
 	const element = document.getElementById(elementId);
 	autoComplete.current = new window.google.maps.places.Autocomplete(element);
 	autoComplete.current.setFields(['address_component', 'formatted_address']);
 	const listener = autoComplete.current.addListener('place_changed', () =>
-		handlePlaceSelect(autoComplete, onChange)
+		handlePlaceSelect(autoComplete, setValue)
 	);
 	setListener(listener);
 }
 
-async function handlePlaceSelect(autoComplete, onChange) {
+async function handlePlaceSelect(autoComplete, setValue) {
 	const place = autoComplete.current.getPlace();
 	const addressComponents = place?.address_components;
 	const addressTypes = {
@@ -81,7 +85,7 @@ async function handlePlaceSelect(autoComplete, onChange) {
 		address[addressType] = addressComponents[i][addressTypes[addressType]];
 	}
 
-	onChange({
+	setValue({
 		target: {
 			value: JSON.stringify({
 				address: address.route,
@@ -95,18 +99,57 @@ async function handlePlaceSelect(autoComplete, onChange) {
 	});
 }
 
-const usePlaces = ({elementId, googlePlacesAPIKey, isReadOnly, onChange}) => {
+const usePlaces = ({
+	elementId,
+	googlePlacesAPIKey,
+	isReadOnly,
+	onChange,
+	viewMode,
+}) => {
 	const autoComplete = useRef();
 	const [listener, setListener] = useState();
+	const [value, setValue] = useState();
 
 	useEffect(() => {
-		loadScript(isReadOnly, elementId, googlePlacesAPIKey, () =>
-			handleScriptLoad(autoComplete, elementId, setListener, onChange)
-		);
+		if (viewMode) {
+			loadScript(isReadOnly, elementId, googlePlacesAPIKey, () =>
+				handleScriptLoad(autoComplete, elementId, setListener, setValue)
+			);
 
-		return () => {
-			window.google.maps.event.removeListener(listener);
+			return () => {
+				window.google.maps.event.removeListener(listener);
+			};
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
+
+	useEffect(() => {
+		if (viewMode && value) {
+			onChange(value);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [value]);
+
+	useEffect(() => {
+		const onScroll = () => {
+			const autoCompleteDropdown = document.querySelector(
+				'.pac-container:not([style*="display: none"])'
+			);
+			const element = document.getElementById(elementId);
+
+			if (autoCompleteDropdown && element === document.activeElement) {
+				const {height, top} = element?.getBoundingClientRect();
+				const scrollTop =
+					window.pageYOffset || document.documentElement.scrollTop;
+
+				autoCompleteDropdown.style.top =
+					height + scrollTop + top + 'px';
+			}
 		};
+
+		document.addEventListener('scroll', onScroll, true);
+
+		return () => document.removeEventListener('scroll', onScroll, true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 };

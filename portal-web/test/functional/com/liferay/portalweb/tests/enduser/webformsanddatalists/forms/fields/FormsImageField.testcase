@@ -31,17 +31,72 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-98073."
+	@priority = "5"
+	test CanBeCreated {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "FormsImageField#CanBeCreated";
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Image");
+
+		Form.save();
+
+		FormsAdminNavigator.gotoBack();
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Form");
+
+		FormViewBuilder.validateFieldLabel(fieldLabel = "Image");
+	}
+
+	@description = "LPS-84335 - Verify that an Image Field can be deleted"
+	@priority = "5"
+	test CanBeDeleted {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "FormsImageField#CanBeDeleted";
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form 1");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Image");
+
+		Form.closeSidebar();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "1",
+			fieldType = "Image");
+
+		Form.editFieldLabelMetal(fieldValue = "Image Field 2");
+
+		Form.closeSidebar();
+
+		FormsAdminNavigator.gotoDeleteField(fieldName = "Image Field 2");
+
+		FormFields.viewDeletedFieldLabel(fieldName = "Image Field 2");
+
+		Form.save();
+
+		FormsAdminNavigator.gotoBack();
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Form 1");
+
+		FormFields.viewDeletedFieldLabel(fieldName = "Image Field 2");
+	}
+
 	@description = "Verify that an Image Field can be duplicated"
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -72,17 +127,99 @@ definition {
 			fieldName = "Copy of Image");
 	}
 
+	@description = "LPS-98073 - Verify that an Image Field can be edited"
+	@priority = "5"
+	test CanBeEdited {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "FormsImageField#CanBeEdited";
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form");
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Image");
+
+		Form.save();
+
+		FormsAdminNavigator.gotoBack();
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Form");
+
+		FormsAdminNavigator.gotoEditField(fieldName = "Image");
+
+		Form.editFieldLabelMetal(fieldValue = "Test Image Field");
+
+		Form.save();
+
+		FormsAdminNavigator.gotoBack();
+
+		FormsAdminNavigator.gotoEditFormByName(formName = "Form");
+
+		FormFields.viewLabel(
+			fieldLabel = "Test Image Field",
+			fieldName = "Test Image Field");
+	}
+
+	@description = "LPS-98073 - Verify that an Image Field can be required"
+	@priority = "5"
+	test CanBeRequired {
+		property portal.acceptance = "true";
+		property test.name.skip.portal.instance = "FormsImageField#CanBeRequired";
+
+		FormsAdmin.addForm();
+
+		Form.editName(formName = "Form");
+
+		Form.editPageTitle(
+			formPageName = "Created Form Page Name",
+			formTitleNumber = "1");
+
+		Form.editDescription();
+
+		Form.gotoAddField(
+			fieldPositionNumber = "0",
+			fieldType = "Image");
+
+		FormFields.enableSwitch(fieldName = "Required Field");
+
+		Form.save();
+
+		Form.publishForm();
+
+		FormsAdminNavigator.gotoPublishedForm();
+
+		FormPortlet.submitWithValidationError(validationErrorMessage = "This field is required.");
+
+		FormFields.selectImageUpload(
+			fileName = "Document_1.jpg",
+			navTab = "Documents and Media",
+			rowNumber = "1");
+
+		Form.editImageDescription(
+			descriptionContent = "Test Image Description",
+			descriptionPosition = "1");
+
+		FormPortlet.submitSuccessfullyAndViewSuccessPage();
+
+		Navigator.openURL();
+
+		ProductMenu.gotoPortlet(
+			category = "Content & Data",
+			portlet = "Forms");
+
+		FormsAdminNavigator.gotoViewEntries(formName = "Form");
+
+		FormsAdmin.viewImageTableEntry();
+	}
+
 	@description = "Verify that an Image Field can be set to repeatable"
 	@priority = "5"
 	test CanBeSetToRepeatable {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -93,7 +230,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.enableSwitcher(fieldName = "Repeatable");
+		FormFields.enableSwitch(fieldName = "Repeatable");
 
 		FormFields.viewFieldRepeatableButton(
 			fieldName = "Image",
@@ -127,13 +264,8 @@ definition {
 	@priority = "5"
 	test CanUploadAnImage {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -163,7 +295,6 @@ definition {
 	@priority = "5"
 	test CanUploadFromDocumentsAndMedia {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
@@ -176,11 +307,7 @@ definition {
 			dmDocumentFile = "Document_1.jpg",
 			dmDocumentTitle = "Document_1.jpg");
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -220,13 +347,8 @@ definition {
 	@priority = "4"
 	test DescriptionCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -275,13 +397,8 @@ definition {
 	@priority = "5"
 	test HelpTextCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -319,13 +436,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -353,13 +465,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeHidden {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -373,7 +480,7 @@ definition {
 
 		Form.gotoAdvancedTab();
 
-		FormFields.disableSwitcher(fieldName = "Show Label");
+		FormFields.disableSwitch(fieldName = "Show Label");
 
 		FormFields.viewFieldLabelNotPresent(fieldLabel = "Image");
 
@@ -390,13 +497,8 @@ definition {
 	@priority = "4"
 	test PredefinedValueCanBeAdded {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -430,13 +532,8 @@ definition {
 	@priority = "5"
 	test ReferenceCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -463,13 +560,8 @@ definition {
 	@priority = "5"
 	test SelectedImagesCanBeCleared {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 

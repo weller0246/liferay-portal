@@ -60,6 +60,8 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletResponse;
 import javax.portlet.PortletURL;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @author Julio Camarero
  */
@@ -388,6 +390,13 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 		return true;
 	}
 
+	public boolean isShowLayoutsTree() throws PortalException {
+		ProductMenuDisplayContext productMenuDisplayContext =
+			new ProductMenuDisplayContext(_portletRequest, _portletResponse);
+
+		return productMenuDisplayContext.isShowLayoutsTree();
+	}
+
 	public boolean isShowSiteAdministration() throws PortalException {
 		Group group = getGroup();
 
@@ -494,8 +503,12 @@ public class SiteAdministrationPanelCategoryDisplayContext {
 			return;
 		}
 
-		_groupProvider.setGroup(
-			PortalUtil.getHttpServletRequest(_portletRequest), _group);
+		HttpServletRequest httpServletRequest =
+			PortalUtil.getHttpServletRequest(_portletRequest);
+
+		_recentGroupManager.addRecentGroup(httpServletRequest, groupId);
+
+		_groupProvider.setGroup(httpServletRequest, _group);
 	}
 
 	private Layout _getFirstLayout(Group group) {

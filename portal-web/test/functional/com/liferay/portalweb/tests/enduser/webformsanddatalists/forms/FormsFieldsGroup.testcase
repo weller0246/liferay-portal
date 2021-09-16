@@ -35,13 +35,9 @@ definition {
 	@priority = "5"
 	test CanBeCollapsed {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
+		property test.name.skip.portal.instance = "FormsFieldsGroup#CanBeCollapsed";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -59,7 +55,7 @@ definition {
 			key_fieldLabel = "Fields Group",
 			locator1 = "FormFields#LABEL");
 
-		FormFields.enableSwitcher(fieldName = "Collapsible");
+		FormFields.enableSwitch(fieldName = "Collapsible");
 
 		Form.save();
 
@@ -73,9 +69,7 @@ definition {
 
 		Form.viewFieldsGroupNotCollapsedField(fieldLabel = "Numeric");
 
-		Click(
-			key_trueOrFalse = "true",
-			locator1 = "Form#COLLAPSE_BUTTON");
+		Click(locator1 = "Form#COLLAPSE_BUTTON");
 
 		Form.viewCollapsedCollapseButton();
 
@@ -88,13 +82,8 @@ definition {
 	@priority = "5"
 	test CanBeCreated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -125,13 +114,8 @@ definition {
 	@priority = "5"
 	test CanBeCreatedFromExistingField {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -180,13 +164,8 @@ definition {
 	@priority = "5"
 	test CanBeDeleted {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -223,13 +202,8 @@ definition {
 	@priority = "5"
 	test CanBeDuplicated {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -254,13 +228,8 @@ definition {
 	@priority = "5"
 	test CanBeMovedBetweenPages {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -305,13 +274,8 @@ definition {
 	@priority = "5"
 	test CanBeRepeatable {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -325,7 +289,7 @@ definition {
 
 		Form.gotoFieldContainer(fieldName = "Fields Group");
 
-		FormFields.enableSwitcher(fieldName = "Repeatable");
+		FormFields.enableSwitch(fieldName = "Repeatable");
 
 		Form.save();
 
@@ -360,13 +324,8 @@ definition {
 	@priority = "4"
 	test FieldsCanBeReordered {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -399,13 +358,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeEdited {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
+		FormsAdmin.addForm();
 
 		Form.editName(formName = "Form 1");
 
@@ -440,14 +394,8 @@ definition {
 	@priority = "5"
 	test LabelCanBeHidden {
 		property forms.functional = "true";
-		property portal.acceptance = "false";
 
-		ProductMenu.gotoPortlet(
-			category = "Content &amp; Data",
-			portlet = "Forms");
-
-		FormsAdminNavigator.gotoAddForm();
-
+		FormsAdmin.addForm();
 		Form.editName(formName = "Form 1");
 
 		Form.gotoAddField(fieldType = "Text");
@@ -460,7 +408,7 @@ definition {
 
 		Form.gotoFieldContainer(fieldName = "Fields Group");
 
-		FormFields.disableSwitcher(fieldName = "Show Label");
+		FormFields.disableSwitch(fieldName = "Show Label");
 
 		FormFields.viewFieldLabelNotPresent(fieldLabel = "Fields Group");
 

@@ -36,13 +36,11 @@ import com.liferay.layout.seo.open.graph.OpenGraphConfiguration;
 import com.liferay.layout.seo.service.LayoutSEOEntryLocalService;
 import com.liferay.layout.seo.service.LayoutSEOSiteLocalService;
 import com.liferay.layout.seo.template.LayoutSEOTemplateProcessor;
-import com.liferay.layout.seo.web.internal.configuration.FFSEOInlineFieldMapping;
 import com.liferay.layout.seo.web.internal.util.OpenGraphImageProvider;
 import com.liferay.layout.seo.web.internal.util.TitleProvider;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.model.Group;
@@ -57,31 +55,33 @@ import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.translation.info.item.provider.InfoItemLanguagesProvider;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import java.util.Collections;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Modified;
 import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Alicia García
  */
-@Component(
-	configurationPid = "com.liferay.layout.seo.web.internal.configuration.FFSEOInlineFieldMapping",
-	service = DynamicInclude.class
-)
+@Component(service = DynamicInclude.class)
 public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 	@Override
@@ -101,28 +101,35 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 				return;
 			}
 
+			Set<Locale> availableLocales = _getAvailableLocales(
+				layout, _portal.getSiteDefaultLocale(layout.getGroupId()));
+
 			String completeURL = _portal.getCurrentCompleteURL(
 				httpServletRequest);
 
 			String canonicalURL = _portal.getCanonicalURL(
 				completeURL, themeDisplay, layout, false, false);
 
-			Map<Locale, String> alternateURLs = Collections.emptyMap();
+			Map<Locale, String> alternateURLs = new HashMap<>();
 
-			Set<Locale> availableLocales = _language.getAvailableLocales(
-				themeDisplay.getSiteGroupId());
-
-			if (availableLocales.size() > 1) {
-				alternateURLs = _portal.getAlternateURLs(
-					canonicalURL, themeDisplay, layout);
+			for (Locale availableLocale : availableLocales) {
+				alternateURLs.put(
+					availableLocale,
+					_portal.getAlternateURL(
+						canonicalURL, themeDisplay, availableLocale, layout));
 			}
 
 			PrintWriter printWriter = httpServletResponse.getWriter();
 
+			Locale locale = _portal.getLocale(httpServletRequest);
+
+			if (!availableLocales.contains(locale)) {
+				locale = LocaleUtil.getSiteDefault();
+			}
+
 			for (LayoutSEOLink layoutSEOLink :
 					_layoutSEOLinkManager.getLocalizedLayoutSEOLinks(
-						layout, _portal.getLocale(httpServletRequest),
-						canonicalURL, alternateURLs)) {
+						layout, locale, canonicalURL, alternateURLs)) {
 
 				printWriter.println(_addLinkTag(layoutSEOLink));
 			}
@@ -178,8 +185,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 			Optional<String> descriptionOptional = _getMappedValueOptional(
 				layout.getTypeSettingsProperty(
-					"mapped-openGraphDescription",
-					_getDefaultDescriptionTemplate()),
+					"mapped-openGraphDescription", "${description}"),
 				infoItemFieldValues, themeDisplay.getLocale());
 
 			String description = descriptionOptional.orElseGet(
@@ -203,10 +209,10 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 				_getOpenGraphTag("og:locale", themeDisplay.getLanguageId()));
 
 			availableLocales.forEach(
-				locale -> printWriter.println(
+				availableLocale -> printWriter.println(
 					_getOpenGraphTag(
 						"og:locale:alternate",
-						LocaleUtil.toLanguageId(locale))));
+						LocaleUtil.toLanguageId(availableLocale))));
 
 			Group group = layout.getGroup();
 
@@ -215,7 +221,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 
 			Optional<String> titleOptional = _getMappedValueOptional(
 				layout.getTypeSettingsProperty(
-					"mapped-openGraphTitle", _getDefaultTitleTemplate()),
+					"mapped-openGraphTitle", "${title}"),
 				infoItemFieldValues, themeDisplay.getLocale());
 
 			String title = titleOptional.orElseGet(
@@ -237,7 +243,8 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 			LayoutSEOLink layoutSEOLink =
 				_layoutSEOLinkManager.getCanonicalLayoutSEOLink(
 					layout, themeDisplay.getLocale(), canonicalURL,
-					alternateURLs);
+					_portal.getAlternateURLs(
+						canonicalURL, themeDisplay, layout));
 
 			printWriter.println(
 				_getOpenGraphTag("og:url", layoutSEOLink.getHref()));
@@ -300,10 +307,8 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	}
 
 	@Activate
+	@Modified
 	protected void activate(Map<String, Object> properties) {
-		_ffSEOInlineFieldMapping = ConfigurableUtil.createConfigurable(
-			FFSEOInlineFieldMapping.class, properties);
-
 		_openGraphImageProvider = new OpenGraphImageProvider(
 			_ddmStructureLocalService, _dlAppLocalService,
 			_dlFileEntryMetadataLocalService, _dlurlHelper,
@@ -333,20 +338,40 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 		return sb.toString();
 	}
 
-	private String _getDefaultDescriptionTemplate() {
-		if (_ffSEOInlineFieldMapping.enabled()) {
-			return "${description}";
+	private Set<Locale> _getAvailableLocales(
+			Layout layout, Locale siteDefaultLocale)
+		throws PortalException {
+
+		Set<Locale> siteAvailableLocales = _language.getAvailableLocales(
+			layout.getGroupId());
+
+		if (!_openGraphConfiguration.isLayoutTranslatedLanguagesEnabled(
+				layout.getGroup())) {
+
+			return siteAvailableLocales;
 		}
 
-		return "description";
-	}
+		InfoItemLanguagesProvider<Object> infoItemLanguagesProvider =
+			_infoItemServiceTracker.getFirstInfoItemService(
+				InfoItemLanguagesProvider.class, Layout.class.getName());
 
-	private String _getDefaultTitleTemplate() {
-		if (_ffSEOInlineFieldMapping.enabled()) {
-			return "${title}";
+		if (infoItemLanguagesProvider == null) {
+			return siteAvailableLocales;
 		}
 
-		return "title";
+		Stream<String> stream = Arrays.stream(
+			infoItemLanguagesProvider.getAvailableLanguageIds(layout));
+
+		Stream<Locale> localesStream = stream.map(LocaleUtil::fromLanguageId);
+
+		Set<Locale> availableLocales = localesStream.collect(
+			Collectors.toSet());
+
+		if (!availableLocales.contains(siteDefaultLocale)) {
+			availableLocales.add(siteDefaultLocale);
+		}
+
+		return availableLocales;
 	}
 
 	private InfoItemFieldValues _getInfoItemFieldValues(
@@ -430,8 +455,6 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	@Reference
 	private DLURLHelper _dlurlHelper;
 
-	private FFSEOInlineFieldMapping _ffSEOInlineFieldMapping;
-
 	@Reference
 	private InfoItemServiceTracker _infoItemServiceTracker;
 
@@ -453,7 +476,7 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	@Reference
 	private OpenGraphConfiguration _openGraphConfiguration;
 
-	private OpenGraphImageProvider _openGraphImageProvider;
+	private volatile OpenGraphImageProvider _openGraphImageProvider;
 
 	@Reference
 	private Portal _portal;
@@ -461,6 +484,6 @@ public class OpenGraphTopHeadDynamicInclude extends BaseDynamicInclude {
 	@Reference
 	private StorageEngine _storageEngine;
 
-	private TitleProvider _titleProvider;
+	private volatile TitleProvider _titleProvider;
 
 }

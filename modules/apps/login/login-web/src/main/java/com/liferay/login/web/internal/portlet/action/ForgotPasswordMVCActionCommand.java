@@ -335,9 +335,19 @@ public class ForgotPasswordMVCActionCommand extends BaseMVCActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		Company company = themeDisplay.getCompany();
+		String authType = null;
 
-		String authType = company.getAuthType();
+		PortletPreferences portletPreferences = actionRequest.getPreferences();
+
+		if (portletPreferences != null) {
+			authType = portletPreferences.getValue("authType", null);
+		}
+
+		if (Validator.isNull(authType)) {
+			Company company = themeDisplay.getCompany();
+
+			authType = company.getAuthType();
+		}
 
 		PortletSession portletSession = actionRequest.getPortletSession();
 

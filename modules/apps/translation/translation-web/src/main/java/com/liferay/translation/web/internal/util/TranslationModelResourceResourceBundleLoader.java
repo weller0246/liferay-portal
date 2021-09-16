@@ -21,6 +21,7 @@ import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
 import com.liferay.portal.kernel.util.AggregateResourceBundle;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.translation.constants.TranslationConstants;
 
@@ -49,7 +50,7 @@ public class TranslationModelResourceResourceBundleLoader
 	@Override
 	public ResourceBundle loadResourceBundle(Locale locale) {
 		return new AggregateResourceBundle(
-			_resourceBundleLoader.loadResourceBundle(locale),
+			LanguageResources.getResourceBundle(locale),
 			new ResourceBundle() {
 
 				@Override
@@ -87,10 +88,5 @@ public class TranslationModelResourceResourceBundleLoader
 	private static final String _PREFIX =
 		"model.resource." + TranslationConstants.RESOURCE_NAME +
 			StringPool.PERIOD;
-
-	@Reference(
-		target = "(&(bundle.symbolic.name=com.liferay.translation.web)(!(component.name=com.liferay.translation.web.internal.util.TranslationModelResourceResourceBundleLoader)))"
-	)
-	private ResourceBundleLoader _resourceBundleLoader;
 
 }

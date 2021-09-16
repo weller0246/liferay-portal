@@ -18,18 +18,17 @@ import com.liferay.asset.kernel.model.AssetEntry;
 import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.info.collection.provider.CollectionQuery;
+import com.liferay.info.collection.provider.ConfigurableInfoCollectionProvider;
 import com.liferay.info.collection.provider.FilteredInfoCollectionProvider;
 import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.info.collection.provider.RelatedInfoItemCollectionProvider;
 import com.liferay.info.filter.InfoFilter;
-import com.liferay.info.filter.InfoRequestItemProvider;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
 import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
-import com.liferay.info.item.provider.filter.PropertyInfoItemServiceFilter;
 import com.liferay.info.list.provider.item.selector.criterion.InfoListProviderItemSelectorReturnType;
 import com.liferay.info.pagination.InfoPage;
 import com.liferay.info.pagination.Pagination;
@@ -43,10 +42,9 @@ import com.liferay.portal.kernel.service.UserLocalService;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -81,6 +79,16 @@ public class InfoCollectionProviderLayoutListRetriever
 		CollectionQuery collectionQuery = new CollectionQuery();
 
 		if (infoCollectionProvider instanceof
+				ConfigurableInfoCollectionProvider) {
+
+			Optional<Map<String, String[]>> configurationOptional =
+				layoutListRetrieverContext.getConfigurationOptional();
+
+			collectionQuery.setConfiguration(
+				configurationOptional.orElse(null));
+		}
+
+		if (infoCollectionProvider instanceof
 				RelatedInfoItemCollectionProvider) {
 
 			Optional<Object> contextObjectOptional =
@@ -113,15 +121,10 @@ public class InfoCollectionProviderLayoutListRetriever
 		collectionQuery.setPagination(paginationOptional.orElse(null));
 
 		if (infoCollectionProvider instanceof FilteredInfoCollectionProvider) {
-			FilteredInfoCollectionProvider<Object, InfoFilter>
-				filteredInfoCollectionProvider =
-					(FilteredInfoCollectionProvider<Object, InfoFilter>)
-						infoCollectionProvider;
+			Optional<Map<String, InfoFilter>> infoFiltersOptional =
+				layoutListRetrieverContext.getInfoFiltersOptional();
 
-			collectionQuery.setInfoFilter(
-				_getInfoFilter(
-					filteredInfoCollectionProvider,
-					layoutListRetrieverContext));
+			collectionQuery.setInfoFilters(infoFiltersOptional.orElse(null));
 		}
 
 		InfoPage<?> infoPage = infoCollectionProvider.getCollectionInfoPage(
@@ -152,6 +155,16 @@ public class InfoCollectionProviderLayoutListRetriever
 		CollectionQuery collectionQuery = new CollectionQuery();
 
 		if (infoCollectionProvider instanceof
+				ConfigurableInfoCollectionProvider) {
+
+			Optional<Map<String, String[]>> configurationOptional =
+				layoutListRetrieverContext.getConfigurationOptional();
+
+			collectionQuery.setConfiguration(
+				configurationOptional.orElse(null));
+		}
+
+		if (infoCollectionProvider instanceof
 				RelatedInfoItemCollectionProvider) {
 
 			Optional<Object> contextObjectOptional =
@@ -179,21 +192,46 @@ public class InfoCollectionProviderLayoutListRetriever
 		}
 
 		if (infoCollectionProvider instanceof FilteredInfoCollectionProvider) {
-			FilteredInfoCollectionProvider<Object, InfoFilter>
-				filteredInfoCollectionProvider =
-					(FilteredInfoCollectionProvider<Object, InfoFilter>)
-						infoCollectionProvider;
+			Optional<Map<String, InfoFilter>> infoFiltersOptional =
+				layoutListRetrieverContext.getInfoFiltersOptional();
 
-			collectionQuery.setInfoFilter(
-				_getInfoFilter(
-					filteredInfoCollectionProvider,
-					layoutListRetrieverContext));
+			collectionQuery.setInfoFilters(infoFiltersOptional.orElse(null));
 		}
 
 		InfoPage<?> infoPage = infoCollectionProvider.getCollectionInfoPage(
 			collectionQuery);
 
 		return infoPage.getTotalCount();
+	}
+
+	@Override
+	public List<InfoFilter> getSupportedInfoFilters(
+		KeyListObjectReference keyListObjectReference) {
+
+		InfoCollectionProvider<Object> infoCollectionProvider =
+			_infoItemServiceTracker.getInfoItemService(
+				InfoCollectionProvider.class, keyListObjectReference.getKey());
+
+		if (infoCollectionProvider == null) {
+			infoCollectionProvider = _infoItemServiceTracker.getInfoItemService(
+				RelatedInfoItemCollectionProvider.class,
+				keyListObjectReference.getKey());
+		}
+
+		if (infoCollectionProvider == null) {
+			return Collections.emptyList();
+		}
+
+		if (infoCollectionProvider instanceof FilteredInfoCollectionProvider) {
+			FilteredInfoCollectionProvider<Object>
+				filteredInfoCollectionProvider =
+					(FilteredInfoCollectionProvider<Object>)
+						infoCollectionProvider;
+
+			return filteredInfoCollectionProvider.getSupportedInfoFilters();
+		}
+
+		return Collections.emptyList();
 	}
 
 	private AssetEntry _getAssetEntryOptional(Object contextObject) {
@@ -237,33 +275,6 @@ public class InfoCollectionProviderLayoutListRetriever
 
 		return _assetEntryLocalService.fetchEntry(
 			className, classPKInfoItemIdentifier.getClassPK());
-	}
-
-	private InfoFilter _getInfoFilter(
-		FilteredInfoCollectionProvider<Object, InfoFilter>
-			filteredInfoCollectionProvider,
-		LayoutListRetrieverContext layoutListRetrieverContext) {
-
-		Optional<HttpServletRequest> httpServletRequestOptional =
-			layoutListRetrieverContext.getHttpServletRequestOptional();
-
-		HttpServletRequest httpServletRequest =
-			httpServletRequestOptional.orElse(null);
-
-		if (!httpServletRequestOptional.isPresent()) {
-			return null;
-		}
-
-		Class<?> infoFilterClass =
-			filteredInfoCollectionProvider.getInfoFilterClass();
-
-		InfoRequestItemProvider<InfoFilter> infoRequestItemProvider =
-			_infoItemServiceTracker.getFirstInfoItemService(
-				InfoRequestItemProvider.class, InfoFilter.class.getName(),
-				new PropertyInfoItemServiceFilter(
-					"infoFilterKey", infoFilterClass.getName()));
-
-		return infoRequestItemProvider.create(httpServletRequest);
 	}
 
 	private String _getModelClassName(Object contextObject) {

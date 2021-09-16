@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -365,13 +364,13 @@ public abstract class BaseCartCommentResourceTestCase {
 
 	@Test
 	public void testGetCartCommentsPage() throws Exception {
-		Page<CartComment> page = cartCommentResource.getCartCommentsPage(
-			testGetCartCommentsPage_getCartId(), Pagination.of(1, 2));
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long cartId = testGetCartCommentsPage_getCartId();
 		Long irrelevantCartId = testGetCartCommentsPage_getIrrelevantCartId();
+
+		Page<CartComment> page = cartCommentResource.getCartCommentsPage(
+			cartId, Pagination.of(1, 10));
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantCartId != null) {
 			CartComment irrelevantCartComment =
@@ -396,7 +395,7 @@ public abstract class BaseCartCommentResourceTestCase {
 			cartId, randomCartComment());
 
 		page = cartCommentResource.getCartCommentsPage(
-			cartId, Pagination.of(1, 2));
+			cartId, Pagination.of(1, 10));
 
 		Assert.assertEquals(2, page.getTotalCount());
 
@@ -475,7 +474,7 @@ public abstract class BaseCartCommentResourceTestCase {
 			new HashMap<String, Object>() {
 				{
 					put("page", 1);
-					put("pageSize", 2);
+					put("pageSize", 10);
 
 					put("cartId", cartId);
 				}
@@ -496,7 +495,7 @@ public abstract class BaseCartCommentResourceTestCase {
 			invokeGraphQLQuery(graphQLField), "JSONObject/data",
 			"JSONObject/cartComments");
 
-		Assert.assertEquals(2, cartCommentsJSONObject.get("totalCount"));
+		Assert.assertEquals(2, cartCommentsJSONObject.getLong("totalCount"));
 
 		assertEqualsIgnoringOrder(
 			Arrays.asList(cartComment1, cartComment2),
@@ -529,6 +528,23 @@ public abstract class BaseCartCommentResourceTestCase {
 
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(
+		CartComment cartComment, List<CartComment> cartComments) {
+
+		boolean contains = false;
+
+		for (CartComment item : cartComments) {
+			if (equals(cartComment, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			cartComments + " does not contain " + cartComment, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -1031,8 +1047,8 @@ public abstract class BaseCartCommentResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseCartCommentResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseCartCommentResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

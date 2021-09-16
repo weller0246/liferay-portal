@@ -23,7 +23,6 @@ import com.liferay.exportimport.kernel.staging.StagingUtil;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
 import com.liferay.layout.admin.constants.LayoutAdminPortletKeys;
-import com.liferay.layout.admin.web.internal.configuration.LayoutConverterConfiguration;
 import com.liferay.layout.page.template.model.LayoutPageTemplateCollection;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 import com.liferay.layout.page.template.service.LayoutPageTemplateCollectionLocalServiceUtil;
@@ -100,6 +99,7 @@ import com.liferay.taglib.security.PermissionsURLTag;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.TreeMap;
 
@@ -116,14 +116,12 @@ import javax.servlet.http.HttpServletRequest;
 public class LayoutsAdminDisplayContext {
 
 	public LayoutsAdminDisplayContext(
-		LayoutConverterConfiguration layoutConverterConfiguration,
 		LayoutConverterRegistry layoutConverterRegistry,
 		LayoutCopyHelper layoutCopyHelper,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		StagingGroupHelper stagingGroupHelper) {
 
-		_layoutConverterConfiguration = layoutConverterConfiguration;
 		_layoutConverterRegistry = layoutConverterRegistry;
 		_layoutCopyHelper = layoutCopyHelper;
 		_liferayPortletRequest = liferayPortletRequest;
@@ -198,7 +196,7 @@ public class LayoutsAdminDisplayContext {
 			"privateLayout", isPrivateLayout()
 		).setParameter(
 			"stagingGroupId", getStagingGroupId()
-		).build();
+		).buildPortletURL();
 
 		String type = ParamUtil.getString(httpServletRequest, "type");
 
@@ -266,6 +264,18 @@ public class LayoutsAdminDisplayContext {
 		_backURL = backURL;
 
 		return _backURL;
+	}
+
+	public String getConfigurationTitle(Layout layout, Locale locale) {
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			LayoutPageTemplateEntryLocalServiceUtil.
+				fetchLayoutPageTemplateEntryByPlid(layout.getPlid());
+
+		if (layoutPageTemplateEntry != null) {
+			return layoutPageTemplateEntry.getName();
+		}
+
+		return layout.getName(locale);
 	}
 
 	public String getConfigureLayoutURL(Layout layout) {
@@ -415,6 +425,8 @@ public class LayoutsAdminDisplayContext {
 			"groupId", themeDisplay.getScopeGroupId()
 		).setParameter(
 			"privateLayout", privatePages
+		).setParameter(
+			"selPlid", LayoutConstants.DEFAULT_PLID
 		).buildString();
 	}
 
@@ -546,10 +558,6 @@ public class LayoutsAdminDisplayContext {
 		).setParameter(
 			"selPlid", layout.getPlid()
 		).buildString();
-	}
-
-	public LayoutConverterConfiguration getLayoutConverterConfiguration() {
-		return _layoutConverterConfiguration;
 	}
 
 	public List<LayoutDescription> getLayoutDescriptions() {
@@ -738,23 +746,27 @@ public class LayoutsAdminDisplayContext {
 
 		breadcrumbEntry.setTitle(LanguageUtil.get(httpServletRequest, "pages"));
 
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
-			_liferayPortletResponse
-		).setTabs1(
-			getTabs1()
-		).setParameter(
-			"selPlid", LayoutConstants.DEFAULT_PLID
-		).build();
+		breadcrumbEntry.setURL(
+			PortletURLBuilder.createRenderURL(
+				_liferayPortletResponse
+			).setTabs1(
+				getTabs1()
+			).setParameter(
+				"displayStyle",
+				() -> {
+					String displayStyle = getDisplayStyle();
 
-		String displayStyle = getDisplayStyle();
+					if (Validator.isNotNull(displayStyle)) {
+						return displayStyle;
+					}
 
-		if (Validator.isNotNull(displayStyle)) {
-			portletURL.setParameter("displayStyle", displayStyle);
-		}
-
-		portletURL.setParameter("firstColumn", Boolean.TRUE.toString());
-
-		breadcrumbEntry.setURL(portletURL.toString());
+					return null;
+				}
+			).setParameter(
+				"firstColumn", true
+			).setParameter(
+				"selPlid", LayoutConstants.DEFAULT_PLID
+			).buildString());
 
 		breadcrumbEntries.add(breadcrumbEntry);
 
@@ -806,21 +818,24 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setTabs1(
 			getTabs1()
 		).setParameter(
+			"displayStyle",
+			() -> {
+				String displayStyle = getDisplayStyle();
+
+				if (Validator.isNotNull(displayStyle)) {
+					return displayStyle;
+				}
+
+				return null;
+			}
+		).setParameter(
 			"privateLayout", isPrivateLayout()
-		).build();
-
-		String displayStyle = getDisplayStyle();
-
-		if (Validator.isNotNull(displayStyle)) {
-			portletURL.setParameter("displayStyle", displayStyle);
-		}
-
-		return portletURL;
+		).buildPortletURL();
 	}
 
 	public String getRedirect() {
@@ -841,7 +856,7 @@ public class LayoutsAdminDisplayContext {
 			getRedirect()
 		).setParameter(
 			"groupId", getSelGroupId()
-		).build();
+		).buildPortletURL();
 	}
 
 	public List<BreadcrumbEntry> getRelativeBreadcrumbEntries(Layout layout)
@@ -853,33 +868,21 @@ public class LayoutsAdminDisplayContext {
 
 		Collections.reverse(ancestorLayouts);
 
-		boolean showLayoutPath = false;
-
-		if (getSelPlid() <= 0) {
-			showLayoutPath = true;
-		}
-
 		for (Layout ancestorLayout : ancestorLayouts) {
-			if (showLayoutPath) {
-				BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
+			BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
 
-				if (LayoutPermissionUtil.contains(
-						themeDisplay.getPermissionChecker(), ancestorLayout,
-						ActionKeys.VIEW)) {
+			if (LayoutPermissionUtil.contains(
+					themeDisplay.getPermissionChecker(), ancestorLayout,
+					ActionKeys.VIEW)) {
 
-					breadcrumbEntry.setTitle(
-						ancestorLayout.getName(themeDisplay.getLocale()));
-				}
-				else {
-					breadcrumbEntry.setTitle(StringPool.TRIPLE_PERIOD);
-				}
-
-				breadcrumbEntries.add(breadcrumbEntry);
+				breadcrumbEntry.setTitle(
+					ancestorLayout.getName(themeDisplay.getLocale()));
+			}
+			else {
+				breadcrumbEntry.setTitle(StringPool.TRIPLE_PERIOD);
 			}
 
-			if (ancestorLayout.getPlid() == getSelPlid()) {
-				showLayoutPath = true;
-			}
+			breadcrumbEntries.add(breadcrumbEntry);
 		}
 
 		BreadcrumbEntry breadcrumbEntry = new BreadcrumbEntry();
@@ -922,34 +925,36 @@ public class LayoutsAdminDisplayContext {
 			ParamUtil.getString(httpServletRequest, "portletResource")
 		).setParameter(
 			"selPlid", getSelPlid()
-		).build();
+		).buildPortletURL();
 	}
 
 	public String getSelectLayoutCollectionURL(
 		long selPlid, String selectedTab, boolean privateLayout) {
 
-		PortletURL selectLayoutCollectionsURL =
-			PortletURLBuilder.createRenderURL(
-				_liferayPortletResponse
-			).setMVCPath(
-				"/select_layout_collections.jsp"
-			).setRedirect(
-				getRedirect()
-			).setBackURL(
-				_getBackURL()
-			).setParameter(
-				"groupId", getSelGroupId()
-			).setParameter(
-				"privateLayout", privateLayout
-			).setParameter(
-				"selPlid", selPlid
-			).build();
+		return PortletURLBuilder.createRenderURL(
+			_liferayPortletResponse
+		).setMVCPath(
+			"/select_layout_collections.jsp"
+		).setRedirect(
+			getRedirect()
+		).setBackURL(
+			_getBackURL()
+		).setParameter(
+			"groupId", getSelGroupId()
+		).setParameter(
+			"privateLayout", privateLayout
+		).setParameter(
+			"selectedTab",
+			() -> {
+				if (Validator.isNotNull(selectedTab)) {
+					return selectedTab;
+				}
 
-		if (Validator.isNotNull(selectedTab)) {
-			selectLayoutCollectionsURL.setParameter("selectedTab", selectedTab);
-		}
-
-		return selectLayoutCollectionsURL.toString();
+				return null;
+			}
+		).setParameter(
+			"selPlid", selPlid
+		).buildString();
 	}
 
 	public String getSelectLayoutPageTemplateEntryURL(boolean privateLayout)
@@ -995,7 +1000,7 @@ public class LayoutsAdminDisplayContext {
 				"privateLayout", privateLayout
 			).setParameter(
 				"selPlid", selPlid
-			).build();
+			).buildPortletURL();
 
 		if (layoutPageTemplateCollectionId > 0) {
 			selectLayoutPageTemplateEntryURL.setParameter(
@@ -1419,7 +1424,7 @@ public class LayoutsAdminDisplayContext {
 	}
 
 	public boolean isShowConvertLayoutAction(Layout layout) {
-		if (_isLiveGroup() || !_layoutConverterConfiguration.enabled() ||
+		if (_isLiveGroup() ||
 			!Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
 
 			return false;
@@ -1921,7 +1926,6 @@ public class LayoutsAdminDisplayContext {
 	private SearchContainer<String> _firstColumnLayoutsSearchContainer;
 	private final GroupDisplayContextHelper _groupDisplayContextHelper;
 	private String _keywords;
-	private final LayoutConverterConfiguration _layoutConverterConfiguration;
 	private final LayoutConverterRegistry _layoutConverterRegistry;
 	private final LayoutCopyHelper _layoutCopyHelper;
 	private List<LayoutDescription> _layoutDescriptions;

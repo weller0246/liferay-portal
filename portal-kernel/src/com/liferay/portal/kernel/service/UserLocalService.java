@@ -161,6 +161,16 @@ public interface UserLocalService
 	public void addOrganizationUsers(long organizationId, long[] userIds)
 		throws PortalException;
 
+	public User addOrUpdateUser(
+			String externalReferenceCode, long creatorUserId, long companyId,
+			boolean autoPassword, String password1, String password2,
+			boolean autoScreenName, String screenName, String emailAddress,
+			Locale locale, String firstName, String middleName, String lastName,
+			long prefixId, long suffixId, boolean male, int birthdayMonth,
+			int birthdayDay, int birthdayYear, String jobTitle,
+			boolean sendEmail, ServiceContext serviceContext)
+		throws PortalException;
+
 	/**
 	 * Assigns the password policy to the users, removing any other currently
 	 * assigned password policies.
@@ -590,6 +600,7 @@ public interface UserLocalService
 	 * authentication, without using the AuthPipeline. Primarily used for
 	 * authenticating users of <code>tunnel-web</code>.
 	 *
+	 * @deprecated As of Cavanaugh (7.4.x), with no direct replacement
 	 * @param companyId the primary key of the user's company
 	 * @param realm unused
 	 * @param nonce the number used once
@@ -599,6 +610,7 @@ public interface UserLocalService
 	 * @return the user's primary key if authentication is successful;
 	 <code>0</code> otherwise
 	 */
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS)
 	public long authenticateForDigest(
 			long companyId, String userName, String realm, String nonce,
@@ -613,7 +625,9 @@ public interface UserLocalService
 	 * @param encPassword the encrypted password
 	 * @return <code>true</code> if authentication is successful;
 	 <code>false</code> otherwise
+	 * @deprecated As of Cavanaugh (7.4.x), with no replacement
 	 */
+	@Deprecated
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean authenticateForJAAS(long userId, String encPassword);
 

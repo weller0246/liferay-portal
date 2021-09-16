@@ -145,7 +145,7 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 					RenderRequest.RENDER_PHASE)
 			).setMVCPath(
 				"/segments_experiment_panel.jsp"
-			).build();
+			).buildPortletURL();
 
 			try {
 				portletURL.setWindowState(LiferayWindowState.EXCLUSIVE);
@@ -308,9 +308,9 @@ public class SegmentsExperimentProductNavigationControlMenuEntry
 
 			jspWriter.write(
 				StringBundler.concat(
-					"d-print-none lfr-admin-panel lfr-product-menu-panel ",
-					"lfr-segments-experiment-panel sidenav-fixed ",
-					"sidenav-menu-slider sidenav-right\" id=\""));
+					"cadmin d-print-none lfr-admin-panel ",
+					"lfr-product-menu-panel lfr-segments-experiment-panel ",
+					"sidenav-fixed sidenav-menu-slider sidenav-right\" id=\""));
 
 			String portletNamespace = _portal.getPortletNamespace(
 				SegmentsPortletKeys.SEGMENTS_EXPERIMENT);

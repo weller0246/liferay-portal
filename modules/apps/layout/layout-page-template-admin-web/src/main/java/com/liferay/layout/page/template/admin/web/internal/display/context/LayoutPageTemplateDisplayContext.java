@@ -275,42 +275,57 @@ public class LayoutPageTemplateDisplayContext {
 	}
 
 	public PortletURL getPortletURL() {
-		PortletURL portletURL = PortletURLBuilder.createRenderURL(
+		return PortletURLBuilder.createRenderURL(
 			_renderResponse
 		).setRedirect(
 			_themeDisplay.getURLCurrent()
+		).setKeywords(
+			() -> {
+				String keywords = getKeywords();
+
+				if (Validator.isNotNull(keywords)) {
+					return keywords;
+				}
+
+				return null;
+			}
 		).setTabs1(
 			"page-templates"
-		).build();
+		).setParameter(
+			"layoutPageTemplateCollectionId",
+			() -> {
+				long layoutPageTemplateCollectionId =
+					getLayoutPageTemplateCollectionId();
 
-		long layoutPageTemplateCollectionId =
-			getLayoutPageTemplateCollectionId();
+				if (layoutPageTemplateCollectionId > 0) {
+					return layoutPageTemplateCollectionId;
+				}
 
-		if (layoutPageTemplateCollectionId > 0) {
-			portletURL.setParameter(
-				"layoutPageTemplateCollectionId",
-				String.valueOf(layoutPageTemplateCollectionId));
-		}
+				return null;
+			}
+		).setParameter(
+			"orderByCol",
+			() -> {
+				String orderByCol = getOrderByCol();
 
-		String keywords = getKeywords();
+				if (Validator.isNotNull(orderByCol)) {
+					return orderByCol;
+				}
 
-		if (Validator.isNotNull(keywords)) {
-			portletURL.setParameter("keywords", keywords);
-		}
+				return null;
+			}
+		).setParameter(
+			"orderByType",
+			() -> {
+				String orderByType = getOrderByType();
 
-		String orderByCol = getOrderByCol();
+				if (Validator.isNotNull(orderByType)) {
+					return orderByType;
+				}
 
-		if (Validator.isNotNull(orderByCol)) {
-			portletURL.setParameter("orderByCol", orderByCol);
-		}
-
-		String orderByType = getOrderByType();
-
-		if (Validator.isNotNull(orderByType)) {
-			portletURL.setParameter("orderByType", orderByType);
-		}
-
-		return portletURL;
+				return null;
+			}
+		).buildPortletURL();
 	}
 
 	public boolean isSearch() {

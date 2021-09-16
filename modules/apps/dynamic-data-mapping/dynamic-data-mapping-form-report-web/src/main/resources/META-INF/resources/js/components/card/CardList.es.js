@@ -69,14 +69,18 @@ const chartFactory = ({
 			);
 		}
 
+		case 'object-relationship':
+		case 'checkbox':
 		case 'radio':
-		case 'select':
+		case 'select': {
 			return (
 				<PieChart
 					data={toDataArray(options, values)}
 					totalEntries={sumTotalValues}
 				/>
 			);
+		}
+
 		case 'address':
 		case 'city':
 		case 'color':
@@ -109,9 +113,14 @@ export default ({data, fields}) => {
 	let hasCards = false;
 
 	const cards = fields.map((field, index) => {
-		const {values = {}, structure = {}, summary = {}, totalEntries} =
-			data[field.name] || {};
-
+		const newData =
+			data[field.parentFieldName]?.[field.name] ?? data[field.name] ?? {};
+		const {
+			values = {},
+			structure = {},
+			summary = {},
+			totalEntries,
+		} = newData;
 		const sumTotalValues = sumTotalEntries(values);
 
 		field = {

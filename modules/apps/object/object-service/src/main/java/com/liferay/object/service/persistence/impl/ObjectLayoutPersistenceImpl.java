@@ -23,7 +23,6 @@ import com.liferay.object.service.persistence.ObjectLayoutPersistence;
 import com.liferay.object.service.persistence.impl.constants.ObjectPersistenceConstants;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.configuration.Configuration;
-import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -34,13 +33,11 @@ import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.dao.orm.SessionFactory;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.BasePersistence;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -57,12 +54,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
 
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
@@ -1209,6 +1203,1074 @@ public class ObjectLayoutPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"objectLayout.companyId = ?";
 
+	private FinderPath _finderPathWithPaginationFindByObjectDefinitionId;
+	private FinderPath _finderPathWithoutPaginationFindByObjectDefinitionId;
+	private FinderPath _finderPathCountByObjectDefinitionId;
+
+	/**
+	 * Returns all the object layouts where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @return the matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByObjectDefinitionId(
+		long objectDefinitionId) {
+
+		return findByObjectDefinitionId(
+			objectDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the object layouts where objectDefinitionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @return the range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end) {
+
+		return findByObjectDefinitionId(objectDefinitionId, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the object layouts where objectDefinitionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectLayout> orderByComparator) {
+
+		return findByObjectDefinitionId(
+			objectDefinitionId, start, end, orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the object layouts where objectDefinitionId = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByObjectDefinitionId(
+		long objectDefinitionId, int start, int end,
+		OrderByComparator<ObjectLayout> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath =
+					_finderPathWithoutPaginationFindByObjectDefinitionId;
+				finderArgs = new Object[] {objectDefinitionId};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByObjectDefinitionId;
+			finderArgs = new Object[] {
+				objectDefinitionId, start, end, orderByComparator
+			};
+		}
+
+		List<ObjectLayout> list = null;
+
+		if (useFinderCache) {
+			list = (List<ObjectLayout>)finderCache.getResult(
+				finderPath, finderArgs);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (ObjectLayout objectLayout : list) {
+					if (objectDefinitionId !=
+							objectLayout.getObjectDefinitionId()) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					3 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(3);
+			}
+
+			sb.append(_SQL_SELECT_OBJECTLAYOUT_WHERE);
+
+			sb.append(_FINDER_COLUMN_OBJECTDEFINITIONID_OBJECTDEFINITIONID_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(ObjectLayoutModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(objectDefinitionId);
+
+				list = (List<ObjectLayout>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first object layout in the ordered set where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching object layout
+	 * @throws NoSuchObjectLayoutException if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout findByObjectDefinitionId_First(
+			long objectDefinitionId,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = fetchByObjectDefinitionId_First(
+			objectDefinitionId, orderByComparator);
+
+		if (objectLayout != null) {
+			return objectLayout;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("objectDefinitionId=");
+		sb.append(objectDefinitionId);
+
+		sb.append("}");
+
+		throw new NoSuchObjectLayoutException(sb.toString());
+	}
+
+	/**
+	 * Returns the first object layout in the ordered set where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching object layout, or <code>null</code> if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout fetchByObjectDefinitionId_First(
+		long objectDefinitionId,
+		OrderByComparator<ObjectLayout> orderByComparator) {
+
+		List<ObjectLayout> list = findByObjectDefinitionId(
+			objectDefinitionId, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last object layout in the ordered set where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching object layout
+	 * @throws NoSuchObjectLayoutException if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout findByObjectDefinitionId_Last(
+			long objectDefinitionId,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = fetchByObjectDefinitionId_Last(
+			objectDefinitionId, orderByComparator);
+
+		if (objectLayout != null) {
+			return objectLayout;
+		}
+
+		StringBundler sb = new StringBundler(4);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("objectDefinitionId=");
+		sb.append(objectDefinitionId);
+
+		sb.append("}");
+
+		throw new NoSuchObjectLayoutException(sb.toString());
+	}
+
+	/**
+	 * Returns the last object layout in the ordered set where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching object layout, or <code>null</code> if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout fetchByObjectDefinitionId_Last(
+		long objectDefinitionId,
+		OrderByComparator<ObjectLayout> orderByComparator) {
+
+		int count = countByObjectDefinitionId(objectDefinitionId);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<ObjectLayout> list = findByObjectDefinitionId(
+			objectDefinitionId, count - 1, count, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the object layouts before and after the current object layout in the ordered set where objectDefinitionId = &#63;.
+	 *
+	 * @param objectLayoutId the primary key of the current object layout
+	 * @param objectDefinitionId the object definition ID
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next object layout
+	 * @throws NoSuchObjectLayoutException if a object layout with the primary key could not be found
+	 */
+	@Override
+	public ObjectLayout[] findByObjectDefinitionId_PrevAndNext(
+			long objectLayoutId, long objectDefinitionId,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = findByPrimaryKey(objectLayoutId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			ObjectLayout[] array = new ObjectLayoutImpl[3];
+
+			array[0] = getByObjectDefinitionId_PrevAndNext(
+				session, objectLayout, objectDefinitionId, orderByComparator,
+				true);
+
+			array[1] = objectLayout;
+
+			array[2] = getByObjectDefinitionId_PrevAndNext(
+				session, objectLayout, objectDefinitionId, orderByComparator,
+				false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected ObjectLayout getByObjectDefinitionId_PrevAndNext(
+		Session session, ObjectLayout objectLayout, long objectDefinitionId,
+		OrderByComparator<ObjectLayout> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				4 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(3);
+		}
+
+		sb.append(_SQL_SELECT_OBJECTLAYOUT_WHERE);
+
+		sb.append(_FINDER_COLUMN_OBJECTDEFINITIONID_OBJECTDEFINITIONID_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(ObjectLayoutModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(objectDefinitionId);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(objectLayout)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<ObjectLayout> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the object layouts where objectDefinitionId = &#63; from the database.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 */
+	@Override
+	public void removeByObjectDefinitionId(long objectDefinitionId) {
+		for (ObjectLayout objectLayout :
+				findByObjectDefinitionId(
+					objectDefinitionId, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+					null)) {
+
+			remove(objectLayout);
+		}
+	}
+
+	/**
+	 * Returns the number of object layouts where objectDefinitionId = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @return the number of matching object layouts
+	 */
+	@Override
+	public int countByObjectDefinitionId(long objectDefinitionId) {
+		FinderPath finderPath = _finderPathCountByObjectDefinitionId;
+
+		Object[] finderArgs = new Object[] {objectDefinitionId};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(2);
+
+			sb.append(_SQL_COUNT_OBJECTLAYOUT_WHERE);
+
+			sb.append(_FINDER_COLUMN_OBJECTDEFINITIONID_OBJECTDEFINITIONID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(objectDefinitionId);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String
+		_FINDER_COLUMN_OBJECTDEFINITIONID_OBJECTDEFINITIONID_2 =
+			"objectLayout.objectDefinitionId = ?";
+
+	private FinderPath _finderPathWithPaginationFindByODI_DOL;
+	private FinderPath _finderPathWithoutPaginationFindByODI_DOL;
+	private FinderPath _finderPathCountByODI_DOL;
+
+	/**
+	 * Returns all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @return the matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout) {
+
+		return findByODI_DOL(
+			objectDefinitionId, defaultObjectLayout, QueryUtil.ALL_POS,
+			QueryUtil.ALL_POS, null);
+	}
+
+	/**
+	 * Returns a range of all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @return the range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout, int start,
+		int end) {
+
+		return findByODI_DOL(
+			objectDefinitionId, defaultObjectLayout, start, end, null);
+	}
+
+	/**
+	 * Returns an ordered range of all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @return the ordered range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout, int start,
+		int end, OrderByComparator<ObjectLayout> orderByComparator) {
+
+		return findByODI_DOL(
+			objectDefinitionId, defaultObjectLayout, start, end,
+			orderByComparator, true);
+	}
+
+	/**
+	 * Returns an ordered range of all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * <p>
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>ObjectLayoutModelImpl</code>.
+	 * </p>
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param start the lower bound of the range of object layouts
+	 * @param end the upper bound of the range of object layouts (not inclusive)
+	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the ordered range of matching object layouts
+	 */
+	@Override
+	public List<ObjectLayout> findByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout, int start,
+		int end, OrderByComparator<ObjectLayout> orderByComparator,
+		boolean useFinderCache) {
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		if ((start == QueryUtil.ALL_POS) && (end == QueryUtil.ALL_POS) &&
+			(orderByComparator == null)) {
+
+			if (useFinderCache) {
+				finderPath = _finderPathWithoutPaginationFindByODI_DOL;
+				finderArgs = new Object[] {
+					objectDefinitionId, defaultObjectLayout
+				};
+			}
+		}
+		else if (useFinderCache) {
+			finderPath = _finderPathWithPaginationFindByODI_DOL;
+			finderArgs = new Object[] {
+				objectDefinitionId, defaultObjectLayout, start, end,
+				orderByComparator
+			};
+		}
+
+		List<ObjectLayout> list = null;
+
+		if (useFinderCache) {
+			list = (List<ObjectLayout>)finderCache.getResult(
+				finderPath, finderArgs);
+
+			if ((list != null) && !list.isEmpty()) {
+				for (ObjectLayout objectLayout : list) {
+					if ((objectDefinitionId !=
+							objectLayout.getObjectDefinitionId()) ||
+						(defaultObjectLayout !=
+							objectLayout.isDefaultObjectLayout())) {
+
+						list = null;
+
+						break;
+					}
+				}
+			}
+		}
+
+		if (list == null) {
+			StringBundler sb = null;
+
+			if (orderByComparator != null) {
+				sb = new StringBundler(
+					4 + (orderByComparator.getOrderByFields().length * 2));
+			}
+			else {
+				sb = new StringBundler(4);
+			}
+
+			sb.append(_SQL_SELECT_OBJECTLAYOUT_WHERE);
+
+			sb.append(_FINDER_COLUMN_ODI_DOL_OBJECTDEFINITIONID_2);
+
+			sb.append(_FINDER_COLUMN_ODI_DOL_DEFAULTOBJECTLAYOUT_2);
+
+			if (orderByComparator != null) {
+				appendOrderByComparator(
+					sb, _ORDER_BY_ENTITY_ALIAS, orderByComparator);
+			}
+			else {
+				sb.append(ObjectLayoutModelImpl.ORDER_BY_JPQL);
+			}
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(objectDefinitionId);
+
+				queryPos.add(defaultObjectLayout);
+
+				list = (List<ObjectLayout>)QueryUtil.list(
+					query, getDialect(), start, end);
+
+				cacheResult(list);
+
+				if (useFinderCache) {
+					finderCache.putResult(finderPath, finderArgs, list);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return list;
+	}
+
+	/**
+	 * Returns the first object layout in the ordered set where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching object layout
+	 * @throws NoSuchObjectLayoutException if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout findByODI_DOL_First(
+			long objectDefinitionId, boolean defaultObjectLayout,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = fetchByODI_DOL_First(
+			objectDefinitionId, defaultObjectLayout, orderByComparator);
+
+		if (objectLayout != null) {
+			return objectLayout;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("objectDefinitionId=");
+		sb.append(objectDefinitionId);
+
+		sb.append(", defaultObjectLayout=");
+		sb.append(defaultObjectLayout);
+
+		sb.append("}");
+
+		throw new NoSuchObjectLayoutException(sb.toString());
+	}
+
+	/**
+	 * Returns the first object layout in the ordered set where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the first matching object layout, or <code>null</code> if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout fetchByODI_DOL_First(
+		long objectDefinitionId, boolean defaultObjectLayout,
+		OrderByComparator<ObjectLayout> orderByComparator) {
+
+		List<ObjectLayout> list = findByODI_DOL(
+			objectDefinitionId, defaultObjectLayout, 0, 1, orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the last object layout in the ordered set where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching object layout
+	 * @throws NoSuchObjectLayoutException if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout findByODI_DOL_Last(
+			long objectDefinitionId, boolean defaultObjectLayout,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = fetchByODI_DOL_Last(
+			objectDefinitionId, defaultObjectLayout, orderByComparator);
+
+		if (objectLayout != null) {
+			return objectLayout;
+		}
+
+		StringBundler sb = new StringBundler(6);
+
+		sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+		sb.append("objectDefinitionId=");
+		sb.append(objectDefinitionId);
+
+		sb.append(", defaultObjectLayout=");
+		sb.append(defaultObjectLayout);
+
+		sb.append("}");
+
+		throw new NoSuchObjectLayoutException(sb.toString());
+	}
+
+	/**
+	 * Returns the last object layout in the ordered set where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the last matching object layout, or <code>null</code> if a matching object layout could not be found
+	 */
+	@Override
+	public ObjectLayout fetchByODI_DOL_Last(
+		long objectDefinitionId, boolean defaultObjectLayout,
+		OrderByComparator<ObjectLayout> orderByComparator) {
+
+		int count = countByODI_DOL(objectDefinitionId, defaultObjectLayout);
+
+		if (count == 0) {
+			return null;
+		}
+
+		List<ObjectLayout> list = findByODI_DOL(
+			objectDefinitionId, defaultObjectLayout, count - 1, count,
+			orderByComparator);
+
+		if (!list.isEmpty()) {
+			return list.get(0);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Returns the object layouts before and after the current object layout in the ordered set where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectLayoutId the primary key of the current object layout
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
+	 * @return the previous, current, and next object layout
+	 * @throws NoSuchObjectLayoutException if a object layout with the primary key could not be found
+	 */
+	@Override
+	public ObjectLayout[] findByODI_DOL_PrevAndNext(
+			long objectLayoutId, long objectDefinitionId,
+			boolean defaultObjectLayout,
+			OrderByComparator<ObjectLayout> orderByComparator)
+		throws NoSuchObjectLayoutException {
+
+		ObjectLayout objectLayout = findByPrimaryKey(objectLayoutId);
+
+		Session session = null;
+
+		try {
+			session = openSession();
+
+			ObjectLayout[] array = new ObjectLayoutImpl[3];
+
+			array[0] = getByODI_DOL_PrevAndNext(
+				session, objectLayout, objectDefinitionId, defaultObjectLayout,
+				orderByComparator, true);
+
+			array[1] = objectLayout;
+
+			array[2] = getByODI_DOL_PrevAndNext(
+				session, objectLayout, objectDefinitionId, defaultObjectLayout,
+				orderByComparator, false);
+
+			return array;
+		}
+		catch (Exception exception) {
+			throw processException(exception);
+		}
+		finally {
+			closeSession(session);
+		}
+	}
+
+	protected ObjectLayout getByODI_DOL_PrevAndNext(
+		Session session, ObjectLayout objectLayout, long objectDefinitionId,
+		boolean defaultObjectLayout,
+		OrderByComparator<ObjectLayout> orderByComparator, boolean previous) {
+
+		StringBundler sb = null;
+
+		if (orderByComparator != null) {
+			sb = new StringBundler(
+				5 + (orderByComparator.getOrderByConditionFields().length * 3) +
+					(orderByComparator.getOrderByFields().length * 3));
+		}
+		else {
+			sb = new StringBundler(4);
+		}
+
+		sb.append(_SQL_SELECT_OBJECTLAYOUT_WHERE);
+
+		sb.append(_FINDER_COLUMN_ODI_DOL_OBJECTDEFINITIONID_2);
+
+		sb.append(_FINDER_COLUMN_ODI_DOL_DEFAULTOBJECTLAYOUT_2);
+
+		if (orderByComparator != null) {
+			String[] orderByConditionFields =
+				orderByComparator.getOrderByConditionFields();
+
+			if (orderByConditionFields.length > 0) {
+				sb.append(WHERE_AND);
+			}
+
+			for (int i = 0; i < orderByConditionFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByConditionFields[i]);
+
+				if ((i + 1) < orderByConditionFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN_HAS_NEXT);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(WHERE_GREATER_THAN);
+					}
+					else {
+						sb.append(WHERE_LESSER_THAN);
+					}
+				}
+			}
+
+			sb.append(ORDER_BY_CLAUSE);
+
+			String[] orderByFields = orderByComparator.getOrderByFields();
+
+			for (int i = 0; i < orderByFields.length; i++) {
+				sb.append(_ORDER_BY_ENTITY_ALIAS);
+				sb.append(orderByFields[i]);
+
+				if ((i + 1) < orderByFields.length) {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC_HAS_NEXT);
+					}
+					else {
+						sb.append(ORDER_BY_DESC_HAS_NEXT);
+					}
+				}
+				else {
+					if (orderByComparator.isAscending() ^ previous) {
+						sb.append(ORDER_BY_ASC);
+					}
+					else {
+						sb.append(ORDER_BY_DESC);
+					}
+				}
+			}
+		}
+		else {
+			sb.append(ObjectLayoutModelImpl.ORDER_BY_JPQL);
+		}
+
+		String sql = sb.toString();
+
+		Query query = session.createQuery(sql);
+
+		query.setFirstResult(0);
+		query.setMaxResults(2);
+
+		QueryPos queryPos = QueryPos.getInstance(query);
+
+		queryPos.add(objectDefinitionId);
+
+		queryPos.add(defaultObjectLayout);
+
+		if (orderByComparator != null) {
+			for (Object orderByConditionValue :
+					orderByComparator.getOrderByConditionValues(objectLayout)) {
+
+				queryPos.add(orderByConditionValue);
+			}
+		}
+
+		List<ObjectLayout> list = query.list();
+
+		if (list.size() == 2) {
+			return list.get(1);
+		}
+		else {
+			return null;
+		}
+	}
+
+	/**
+	 * Removes all the object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63; from the database.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 */
+	@Override
+	public void removeByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout) {
+
+		for (ObjectLayout objectLayout :
+				findByODI_DOL(
+					objectDefinitionId, defaultObjectLayout, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS, null)) {
+
+			remove(objectLayout);
+		}
+	}
+
+	/**
+	 * Returns the number of object layouts where objectDefinitionId = &#63; and defaultObjectLayout = &#63;.
+	 *
+	 * @param objectDefinitionId the object definition ID
+	 * @param defaultObjectLayout the default object layout
+	 * @return the number of matching object layouts
+	 */
+	@Override
+	public int countByODI_DOL(
+		long objectDefinitionId, boolean defaultObjectLayout) {
+
+		FinderPath finderPath = _finderPathCountByODI_DOL;
+
+		Object[] finderArgs = new Object[] {
+			objectDefinitionId, defaultObjectLayout
+		};
+
+		Long count = (Long)finderCache.getResult(finderPath, finderArgs);
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_OBJECTLAYOUT_WHERE);
+
+			sb.append(_FINDER_COLUMN_ODI_DOL_OBJECTDEFINITIONID_2);
+
+			sb.append(_FINDER_COLUMN_ODI_DOL_DEFAULTOBJECTLAYOUT_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(objectDefinitionId);
+
+				queryPos.add(defaultObjectLayout);
+
+				count = (Long)query.uniqueResult();
+
+				finderCache.putResult(finderPath, finderArgs, count);
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_ODI_DOL_OBJECTDEFINITIONID_2 =
+		"objectLayout.objectDefinitionId = ? AND ";
+
+	private static final String _FINDER_COLUMN_ODI_DOL_DEFAULTOBJECTLAYOUT_2 =
+		"objectLayout.defaultObjectLayout = ?";
+
 	public ObjectLayoutPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -1744,13 +2806,7 @@ public class ObjectLayoutPersistenceImpl
 	 * Initializes the object layout persistence.
 	 */
 	@Activate
-	public void activate(BundleContext bundleContext) {
-		_bundleContext = bundleContext;
-
-		_argumentsResolverServiceRegistration = _bundleContext.registerService(
-			ArgumentsResolver.class, new ObjectLayoutModelArgumentsResolver(),
-			new HashMapDictionary<>());
-
+	public void activate() {
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
 			new String[0], true);
@@ -1799,13 +2855,48 @@ public class ObjectLayoutPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
+
+		_finderPathWithPaginationFindByObjectDefinitionId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByObjectDefinitionId",
+			new String[] {
+				Long.class.getName(), Integer.class.getName(),
+				Integer.class.getName(), OrderByComparator.class.getName()
+			},
+			new String[] {"objectDefinitionId"}, true);
+
+		_finderPathWithoutPaginationFindByObjectDefinitionId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"findByObjectDefinitionId", new String[] {Long.class.getName()},
+			new String[] {"objectDefinitionId"}, true);
+
+		_finderPathCountByObjectDefinitionId = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
+			"countByObjectDefinitionId", new String[] {Long.class.getName()},
+			new String[] {"objectDefinitionId"}, false);
+
+		_finderPathWithPaginationFindByODI_DOL = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findByODI_DOL",
+			new String[] {
+				Long.class.getName(), Boolean.class.getName(),
+				Integer.class.getName(), Integer.class.getName(),
+				OrderByComparator.class.getName()
+			},
+			new String[] {"objectDefinitionId", "defaultObjectLayout"}, true);
+
+		_finderPathWithoutPaginationFindByODI_DOL = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "findByODI_DOL",
+			new String[] {Long.class.getName(), Boolean.class.getName()},
+			new String[] {"objectDefinitionId", "defaultObjectLayout"}, true);
+
+		_finderPathCountByODI_DOL = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByODI_DOL",
+			new String[] {Long.class.getName(), Boolean.class.getName()},
+			new String[] {"objectDefinitionId", "defaultObjectLayout"}, false);
 	}
 
 	@Deactivate
 	public void deactivate() {
 		entityCache.removeCache(ObjectLayoutImpl.class.getName());
-
-		_argumentsResolverServiceRegistration.unregister();
 	}
 
 	@Override
@@ -1833,8 +2924,6 @@ public class ObjectLayoutPersistenceImpl
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		super.setSessionFactory(sessionFactory);
 	}
-
-	private BundleContext _bundleContext;
 
 	@Reference
 	protected EntityCache entityCache;
@@ -1873,93 +2962,8 @@ public class ObjectLayoutPersistenceImpl
 		return finderCache;
 	}
 
-	private ServiceRegistration<ArgumentsResolver>
-		_argumentsResolverServiceRegistration;
-
-	private static class ObjectLayoutModelArgumentsResolver
-		implements ArgumentsResolver {
-
-		@Override
-		public Object[] getArguments(
-			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-			boolean original) {
-
-			String[] columnNames = finderPath.getColumnNames();
-
-			if ((columnNames == null) || (columnNames.length == 0)) {
-				if (baseModel.isNew()) {
-					return FINDER_ARGS_EMPTY;
-				}
-
-				return null;
-			}
-
-			ObjectLayoutModelImpl objectLayoutModelImpl =
-				(ObjectLayoutModelImpl)baseModel;
-
-			long columnBitmask = objectLayoutModelImpl.getColumnBitmask();
-
-			if (!checkColumn || (columnBitmask == 0)) {
-				return _getValue(objectLayoutModelImpl, columnNames, original);
-			}
-
-			Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
-				finderPath);
-
-			if (finderPathColumnBitmask == null) {
-				finderPathColumnBitmask = 0L;
-
-				for (String columnName : columnNames) {
-					finderPathColumnBitmask |=
-						objectLayoutModelImpl.getColumnBitmask(columnName);
-				}
-
-				_finderPathColumnBitmasksCache.put(
-					finderPath, finderPathColumnBitmask);
-			}
-
-			if ((columnBitmask & finderPathColumnBitmask) != 0) {
-				return _getValue(objectLayoutModelImpl, columnNames, original);
-			}
-
-			return null;
-		}
-
-		@Override
-		public String getClassName() {
-			return ObjectLayoutImpl.class.getName();
-		}
-
-		@Override
-		public String getTableName() {
-			return ObjectLayoutTable.INSTANCE.getTableName();
-		}
-
-		private static Object[] _getValue(
-			ObjectLayoutModelImpl objectLayoutModelImpl, String[] columnNames,
-			boolean original) {
-
-			Object[] arguments = new Object[columnNames.length];
-
-			for (int i = 0; i < arguments.length; i++) {
-				String columnName = columnNames[i];
-
-				if (original) {
-					arguments[i] = objectLayoutModelImpl.getColumnOriginalValue(
-						columnName);
-				}
-				else {
-					arguments[i] = objectLayoutModelImpl.getColumnValue(
-						columnName);
-				}
-			}
-
-			return arguments;
-		}
-
-		private static final Map<FinderPath, Long>
-			_finderPathColumnBitmasksCache = new ConcurrentHashMap<>();
-
-	}
+	@Reference
+	private ObjectLayoutModelArgumentsResolver
+		_objectLayoutModelArgumentsResolver;
 
 }

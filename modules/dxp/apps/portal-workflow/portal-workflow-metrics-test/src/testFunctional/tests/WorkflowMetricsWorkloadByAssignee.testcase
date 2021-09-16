@@ -44,8 +44,6 @@ definition {
 	@description = "LPS-98518 - Verify that there is an image besides the assignee name that is retrieved from the global user profile picture (add, delete, update)"
 	@priority = "3"
 	test AssigneeImagesRetrievedFromGlobalUserProfile {
-		property portal.upstream = "quarantine";
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -122,7 +120,7 @@ definition {
 
 		Navigator.gotoNavTab(navTab = "Assigned to My Roles");
 
-		Workflow.assignByDetails(user = "userfn");
+		Workflow.assignByDetails(user = "userfn_ (userfn userln)");
 
 		Navigator.openURL();
 
@@ -138,8 +136,6 @@ definition {
 	@description = "LPS-97669 - Verify the user can search for a assignee with name containing non-ASCII chars (eg: japanese chars) using the search bar"
 	@priority = "3"
 	test CanSearchNonAsciiChars {
-		property portal.upstream = "quarantine";
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -177,7 +173,7 @@ definition {
 		Workflow.assignTaskToUser(
 			assetTitle = "Blogs Entry Title",
 			assetType = "Blogs Entry",
-			assigneeName = "さくら さくら",
+			assigneeName = "user1 (さくら さくら)",
 			workflowTask = "Review");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
@@ -387,8 +383,6 @@ definition {
 	@description = "LPS-97669 - Verify that a long username is placed in more than one line, respecting the alignment of the field inside Workload by Assignee card"
 	@priority = "3"
 	test LongUsernameIsPlacedInMoreThanOneLine {
-		property portal.upstream = "quarantine";
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -426,7 +420,7 @@ definition {
 		Workflow.assignTaskToUser(
 			assetTitle = "Blogs Entry Title",
 			assetType = "Blogs Entry",
-			assigneeName = "BuyerBuyerBuyerBuyerBuyerBuyerBuyer BuyerBuyerBuyerBuyerBuyerBuyerBuyer",
+			assigneeName = "buyer (BuyerBuyerBuyerBuyerBuyerBuyerBuyer BuyerBuyerBuyerBuyerBuyerBuyerBuyer)",
 			workflowTask = "Review");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");
@@ -436,15 +430,6 @@ definition {
 			locator1 = "WorkflowMetrics#METRICS_PERFORMANCE_BY_ASSIGNEE_NAME",
 			locator2 = "line-height",
 			value1 = "18px");
-	}
-
-	@description = "LPS-98518 - Verify that the (Workload by Assignee) page is providing the loading feedback when the table is being updated"
-	@ignore = "Test Stub"
-	@priority = "2"
-	test PageProvidesLoadingFeedbackWhenTableIsBeingUpdated {
-
-		// TODO LRQA-67611 PageProvidesLoadingFeedbackWhenTableIsBeingUpdated pending implementation
-
 	}
 
 	@description = "LPS-97669 - Verify that there is a percentage indication out of the total amount of assigned tasks when the tab On Time is selected"
@@ -554,7 +539,6 @@ definition {
 	@description = "LPS-103365 - Verify that when the filters inside (Workload by Assignee) page are higher than 496px, a search bar on it should be included"
 	@priority = "3"
 	test SearchBarIsIncludedWhenDropdownIsHigherThan496Px {
-		property portal.upstream = "quarantine";
 		property test.name.skip.portal.instance = "WorkflowMetricsWorkloadByAssignee#SearchBarIsIncludedWhenDropdownIsHigherThan496Px";
 
 		ApplicationsMenu.gotoPortlet(
@@ -563,7 +547,7 @@ definition {
 			portlet = "Process Builder");
 
 		Workflow.uploadDefinition(
-			workflowDefinitionFile = "12_transitions_definition.xml",
+			workflowDefinitionFile = "12-transitions-workflow-definition.xml",
 			workflowDefinitionTitle = "12 Transitions Definition");
 
 		Navigator.gotoNavItem(navItem = "Configuration");
@@ -614,7 +598,7 @@ definition {
 			portlet = "Process Builder");
 
 		Workflow.uploadDefinition(
-			workflowDefinitionFile = "12_transitions_definition.xml",
+			workflowDefinitionFile = "12-transitions-workflow-definition.xml",
 			workflowDefinitionTitle = "12 transitions");
 
 		Navigator.gotoNavItem(navItem = "Configuration");
@@ -647,8 +631,6 @@ definition {
 	@description = "LPS-103368 - Verify that the user can filter the results inside (Workload by Assignee) page by assignee names that contain non-ascii chars (such as ç,é,コン, etc) using the search field"
 	@priority = "3"
 	test SearchFieldAcceptsNonAsciiChars {
-		property portal.upstream = "quarantine";
-
 		ApplicationsMenu.gotoPortlet(
 			category = "Workflow",
 			panel = "Applications",
@@ -686,7 +668,7 @@ definition {
 		Workflow.assignTaskToUser(
 			assetTitle = "Blogs Entry Title",
 			assetType = "Blogs Entry",
-			assigneeName = "Mariã 更新",
+			assigneeName = "usertest (Mariã 更新)",
 			workflowTask = "Review");
 
 		WorkflowMetrics.goToWorkflowProcessMetrics(workflowProcessName = "Single Approver");

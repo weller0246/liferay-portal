@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.test.log.LogCapture;
 import com.liferay.portal.test.log.LoggerTestUtil;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,47 +47,6 @@ public class MessageBoardMessageResourceTest
 		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setScopeGroupId(testGroup.getGroupId());
-	}
-
-	@Override
-	@Test
-	public void testPutSiteMessageBoardMessageByExternalReferenceCode()
-		throws Exception {
-
-		// Update
-
-		super.testPutSiteMessageBoardMessageByExternalReferenceCode();
-
-		// Add
-
-		MessageBoardMessage randomMessageBoardMessage =
-			randomMessageBoardMessage();
-
-		randomMessageBoardMessage.setParentMessageBoardMessageId(
-			_mbThread.getRootMessageId());
-
-		MessageBoardMessage putMessageBoardMessage =
-			messageBoardMessageResource.
-				putSiteMessageBoardMessageByExternalReferenceCode(
-					testGroup.getGroupId(),
-					randomMessageBoardMessage.getExternalReferenceCode(),
-					randomMessageBoardMessage);
-
-		assertEquals(randomMessageBoardMessage, putMessageBoardMessage);
-		assertValid(putMessageBoardMessage);
-
-		MessageBoardMessage getMessageBoardMessage =
-			messageBoardMessageResource.
-				getSiteMessageBoardMessageByExternalReferenceCode(
-					testGroup.getGroupId(),
-					putMessageBoardMessage.getExternalReferenceCode());
-
-		assertEquals(randomMessageBoardMessage, getMessageBoardMessage);
-		assertValid(getMessageBoardMessage);
-
-		Assert.assertEquals(
-			randomMessageBoardMessage.getExternalReferenceCode(),
-			getMessageBoardMessage.getExternalReferenceCode());
 	}
 
 	@Test
@@ -288,6 +246,21 @@ public class MessageBoardMessageResourceTest
 		throws Exception {
 
 		return _addMessageBoardMessage();
+	}
+
+	@Override
+	protected MessageBoardMessage
+			testPutSiteMessageBoardMessageByExternalReferenceCode_createMessageBoardMessage()
+		throws Exception {
+
+		MessageBoardMessage messageBoardMessage =
+			super.
+				testPutSiteMessageBoardMessageByExternalReferenceCode_createMessageBoardMessage();
+
+		messageBoardMessage.setParentMessageBoardMessageId(
+			_mbThread.getRootMessageId());
+
+		return messageBoardMessage;
 	}
 
 	@Override

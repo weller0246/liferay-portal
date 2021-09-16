@@ -81,6 +81,7 @@ import com.liferay.dynamic.data.mapping.validator.DDMFormValidationException;
 import com.liferay.dynamic.data.mapping.validator.DDMFormValidator;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.editor.configuration.EditorConfiguration;
 import com.liferay.portal.kernel.editor.configuration.EditorConfigurationFactoryUtil;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -151,6 +152,7 @@ import org.osgi.service.component.annotations.ServiceScope;
 	properties = "OSGI-INF/liferay/rest/v2_0/data-definition.properties",
 	scope = ServiceScope.PROTOTYPE, service = DataDefinitionResource.class
 )
+@CTAware
 public class DataDefinitionResourceImpl
 	extends BaseDataDefinitionResourceImpl implements EntityModelResource {
 
@@ -394,7 +396,7 @@ public class DataDefinitionResourceImpl
 			Collections.emptyMap(),
 			booleanQuery -> {
 			},
-			null, DDMStructure.class, keywords, pagination,
+			null, DDMStructure.class.getName(), keywords, pagination,
 			queryConfig -> queryConfig.setSelectedFieldNames(
 				Field.CLASS_NAME_ID, Field.ENTRY_CLASS_PK),
 			searchContext -> {
@@ -470,10 +472,6 @@ public class DataDefinitionResourceImpl
 				StorageType.DEFAULT.getValue()),
 			new ServiceContext());
 
-		_addDataDefinitionFieldLinks(
-			ddmStructure.getStructureId(), ddmForm.getDDMFormFields(),
-			ddmStructure.getGroupId());
-
 		DataLayout dataLayout = dataDefinition.getDefaultDataLayout();
 
 		if (dataLayout != null) {
@@ -486,10 +484,21 @@ public class DataDefinitionResourceImpl
 			DataLayoutResource dataLayoutResource = _getDataLayoutResource(
 				false);
 
-			dataDefinition.setDefaultDataLayout(
-				dataLayoutResource.postDataDefinitionDataLayout(
-					ddmStructure.getStructureId(), dataLayout));
+			try {
+				dataDefinition.setDefaultDataLayout(
+					dataLayoutResource.postDataDefinitionDataLayout(
+						ddmStructure.getStructureId(), dataLayout));
+			}
+			catch (Exception exception) {
+				_ddmStructureLocalService.deleteStructure(ddmStructure);
+
+				throw exception;
+			}
 		}
+
+		_addDataDefinitionFieldLinks(
+			ddmStructure.getStructureId(), ddmForm.getDDMFormFields(),
+			ddmStructure.getGroupId());
 
 		dataDefinition = DataDefinitionUtil.toDataDefinition(
 			_dataDefinitionContentTypeTracker, _ddmFormFieldTypeServicesTracker,

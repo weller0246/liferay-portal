@@ -32,7 +32,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -249,6 +248,29 @@ public abstract class BaseProductSubscriptionConfigurationResourceTestCase {
 	@Test
 	public void testPatchProductIdSubscriptionConfiguration() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(
+		ProductSubscriptionConfiguration productSubscriptionConfiguration,
+		List<ProductSubscriptionConfiguration>
+			productSubscriptionConfigurations) {
+
+		boolean contains = false;
+
+		for (ProductSubscriptionConfiguration item :
+				productSubscriptionConfigurations) {
+
+			if (equals(productSubscriptionConfiguration, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			productSubscriptionConfigurations + " does not contain " +
+				productSubscriptionConfiguration,
+			contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -818,8 +840,9 @@ public abstract class BaseProductSubscriptionConfigurationResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseProductSubscriptionConfigurationResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(
+			BaseProductSubscriptionConfigurationResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

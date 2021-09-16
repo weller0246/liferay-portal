@@ -19,7 +19,16 @@ package com.liferay.object.constants;
  */
 public class ObjectPortletKeys {
 
-	public static final String OBJECT =
-		"com_liferay_object_web_portlet_ObjectPortlet";
+	public static final String LIST_TYPE_DEFINITIONS =
+		"com_liferay_object_web_internal_list_type_portlet_portlet_" +
+			"ListTypeDefinitionsPortlet";
+
+	public static final String OBJECT_DEFINITIONS =
+		"com_liferay_object_web_internal_object_definitions_portlet_" +
+			"ObjectDefinitionsPortlet";
+
+	public static final String OBJECT_ENTRIES =
+		"com_liferay_object_web_internal_object_entries_portlet_" +
+			"ObjectEntriesPortlet";
 
 }

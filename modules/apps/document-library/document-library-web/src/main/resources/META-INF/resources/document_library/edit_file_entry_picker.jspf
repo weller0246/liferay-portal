@@ -18,12 +18,12 @@
 DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker(liferayPortletResponse.getNamespace() + "onFilePick");
 %>
 
-<label class="control-label">
-	<liferay-ui:message key="file-upload" />
-</label>
-
 <c:choose>
 	<c:when test="<%= dlFilePicker == null %>">
+		<label class="control-label">
+			<liferay-ui:message key="file-upload" />
+		</label>
+
 		<div class="form-group">
 			<aui:button value="select-file" />
 
@@ -43,6 +43,10 @@ DLFilePicker dlFilePicker = dlEditFileEntryDisplayContext.getDLFilePicker(lifera
 	</c:when>
 	<c:otherwise>
 		<c:if test="<%= dlFilePicker.isCustomizedFileButtonVisible() %>">
+			<label class="control-label">
+				<liferay-ui:message key="file-upload" />
+			</label>
+
 			<aui:field-wrapper>
 				<aui:button cssClass="customized-file-button disabled" disabled="<%= true %>" name="file" value="select-file" />
 

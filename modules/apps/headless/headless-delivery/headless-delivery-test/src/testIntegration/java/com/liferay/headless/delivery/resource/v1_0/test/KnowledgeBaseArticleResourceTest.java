@@ -86,6 +86,19 @@ public class KnowledgeBaseArticleResourceTest
 	}
 
 	@Override
+	protected KnowledgeBaseArticle randomKnowledgeBaseArticle()
+		throws Exception {
+
+		KnowledgeBaseArticle knowledgeBaseArticle =
+			super.randomKnowledgeBaseArticle();
+
+		knowledgeBaseArticle.setParentKnowledgeBaseArticleId(0L);
+		knowledgeBaseArticle.setParentKnowledgeBaseFolderId(0L);
+
+		return knowledgeBaseArticle;
+	}
+
+	@Override
 	protected Long
 			testGetKnowledgeBaseArticleKnowledgeBaseArticlesPage_getParentKnowledgeBaseArticleId()
 		throws Exception {

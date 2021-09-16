@@ -100,6 +100,135 @@ definition {
 		AssertConsoleTextNotPresent(value1 = "PortletDataException");
 	}
 
+	@description = "This is a use case for LPS-132493."
+	@priority = "5"
+	test PublishPageVersioningAfterUpgrade71103 {
+		property data.archive.type = "data-archive-local-staging-with-page-versioning";
+		property portal.version = "7.1.10.3";
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Staging Test Page",
+			sitePagesVariationName = "Site Pages Variation Name");
+
+		Navigator.gotoSitePage(
+			pageName = "Test Variation Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Test Variation Page",
+			pagesVariationName = "Page Variation Name",
+			sitePagesVariationName = "Site Pages Variation Name");
+	}
+
+	@description = "This is a use case for LPS-132493."
+	@priority = "5"
+	test PublishPageVersioningAfterUpgrade72101 {
+		property data.archive.type = "data-archive-local-staging-with-page-versioning";
+		property portal.version = "7.2.10.1";
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Staging Test Page",
+			sitePagesVariationName = "Site Pages Variation Name");
+
+		Navigator.gotoSitePage(
+			pageName = "Test Variation Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Test Variation Page",
+			pagesVariationName = "Page Variation Name",
+			sitePagesVariationName = "Site Pages Variation Name");
+	}
+
+	@description = "This is a use case for LPS-132493."
+	@priority = "5"
+	test PublishPageVersioningAfterUpgrade73101 {
+		property data.archive.type = "data-archive-local-staging-with-page-versioning";
+		property portal.version = "7.3.10.1";
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Staging Test Page",
+			sitePagesVariationName = "Site Pages Variation Name");
+
+		Navigator.gotoSitePage(
+			pageName = "Test Variation Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Test Variation Page",
+			pagesVariationName = "Page Variation Name",
+			sitePagesVariationName = "Site Pages Variation Name");
+	}
+
+	@description = "This is a use case for LPS-132493."
+	@priority = "5"
+	test PublishPageVersioningAfterUpgrade701016 {
+		property data.archive.type = "data-archive-local-staging-with-page-versioning";
+		property portal.upstream = "quarantine";
+		property portal.version = "7.0.10.16";
+
+		Navigator.gotoStagedSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.publishToLive();
+
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Staging Test Page",
+			sitePagesVariationName = "Site Pages Variation Name");
+
+		Navigator.gotoSitePage(
+			pageName = "Test Variation Page",
+			siteName = "Site Name");
+
+		Staging.viewStagingLocalLiveVariationMessagePG(
+			pageName = "Test Variation Page",
+			pagesVariationName = "Page Variation Name",
+			sitePagesVariationName = "Site Pages Variation Name");
+	}
+
 	@description = "This is a use case for LPS-87237 and LPS-126769."
 	@priority = "5"
 	test ViewStagingDefaultSettingAfterUpgrade704 {
@@ -110,7 +239,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Message Boards,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Message Boards,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -125,7 +254,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -140,7 +269,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -155,7 +284,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -169,7 +298,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Message Boards,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Message Boards,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -183,7 +312,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -197,7 +326,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -211,7 +340,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Calendar,Dynamic Data Lists,Forms,Knowledge Base,Message Boards,Segments,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}
@@ -225,7 +354,7 @@ definition {
 
 		Staging.openStagingAdmin(siteURLKey = "site-name-staging");
 
-		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Dynamic Data Lists,Message Boards,Widget Templates,Wiki");
+		Staging.viewUncheckContentNameList(uncheckContentNameList = "Blogs,Dynamic Data Lists,Message Boards,Templates,Wiki");
 
 		Upgrade.viewStagingConfiguration();
 	}

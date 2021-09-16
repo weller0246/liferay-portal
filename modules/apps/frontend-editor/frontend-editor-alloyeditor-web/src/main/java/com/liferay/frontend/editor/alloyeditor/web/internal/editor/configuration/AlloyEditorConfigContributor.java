@@ -20,26 +20,14 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactory;
-import com.liferay.portal.kernel.resource.bundle.AggregateResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 
-import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferencePolicy;
-import org.osgi.service.component.annotations.ReferencePolicyOption;
 
 /**
  * @author Sergio González
@@ -80,13 +68,6 @@ public class AlloyEditorConfigContributor
 		);
 	}
 
-	@Activate
-	protected void activate() {
-		_aggregateResourceBundleLoader = new AggregateResourceBundleLoader(
-			_resourceBundleLoader,
-			ResourceBundleLoaderUtil.getPortalResourceBundleLoader());
-	}
-
 	protected JSONObject getStyleFormatJSONObject(
 		String styleFormatName, String element, String cssClass, int type) {
 
@@ -98,54 +79,40 @@ public class AlloyEditorConfigContributor
 	}
 
 	protected JSONArray getStyleFormatsJSONArray(Locale locale) {
-		ResourceBundle resourceBundle = null;
-
-		try {
-			resourceBundle = _aggregateResourceBundleLoader.loadResourceBundle(
-				locale);
-		}
-		catch (MissingResourceException missingResourceException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(missingResourceException, missingResourceException);
-			}
-
-			resourceBundle = ResourceBundleUtil.EMPTY_RESOURCE_BUNDLE;
-		}
-
 		return JSONUtil.putAll(
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "normal"), "p", null,
+				LanguageUtil.get(locale, "normal"), "p", null,
 				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "1"), "h1",
-				null, _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.format(locale, "heading-x", "1"), "h1", null,
+				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "2"), "h2",
-				null, _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.format(locale, "heading-x", "2"), "h2", null,
+				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "3"), "h3",
-				null, _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.format(locale, "heading-x", "3"), "h3", null,
+				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.format(resourceBundle, "heading-x", "4"), "h4",
-				null, _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.format(locale, "heading-x", "4"), "h4", null,
+				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "preformatted-text"), "pre",
-				null, _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.get(locale, "preformatted-text"), "pre", null,
+				_CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "cited-work"), "cite", null,
+				LanguageUtil.get(locale, "cited-work"), "cite", null,
 				_CKEDITOR_STYLE_INLINE),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "computer-code"), "code", null,
+				LanguageUtil.get(locale, "computer-code"), "code", null,
 				_CKEDITOR_STYLE_INLINE),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "info-message"), "div",
-				"portlet-msg-info", _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.get(locale, "info-message"), "div",
+				"overflow-auto portlet-msg-info", _CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "alert-message"), "div",
-				"portlet-msg-alert", _CKEDITOR_STYLE_BLOCK),
+				LanguageUtil.get(locale, "alert-message"), "div",
+				"overflow-auto portlet-msg-alert", _CKEDITOR_STYLE_BLOCK),
 			getStyleFormatJSONObject(
-				LanguageUtil.get(resourceBundle, "error-message"), "div",
-				"portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
+				LanguageUtil.get(locale, "error-message"), "div",
+				"overflow-auto portlet-msg-error", _CKEDITOR_STYLE_BLOCK));
 	}
 
 	protected JSONObject getStyleFormatsJSONObject(Locale locale) {
@@ -283,17 +250,5 @@ public class AlloyEditorConfigContributor
 	private static final int _CKEDITOR_STYLE_BLOCK = 1;
 
 	private static final int _CKEDITOR_STYLE_INLINE = 2;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		AlloyEditorConfigContributor.class);
-
-	private ResourceBundleLoader _aggregateResourceBundleLoader;
-
-	@Reference(
-		policy = ReferencePolicy.DYNAMIC,
-		policyOption = ReferencePolicyOption.GREEDY,
-		target = "(bundle.symbolic.name=com.liferay.frontend.editor.lang)"
-	)
-	private volatile ResourceBundleLoader _resourceBundleLoader;
 
 }

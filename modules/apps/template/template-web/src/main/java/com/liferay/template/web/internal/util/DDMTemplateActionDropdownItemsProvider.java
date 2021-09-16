@@ -39,34 +39,69 @@ import javax.servlet.http.HttpServletRequest;
 public class DDMTemplateActionDropdownItemsProvider {
 
 	public DDMTemplateActionDropdownItemsProvider(
-		DDMTemplate ddmTemplate, HttpServletRequest httpServletRequest,
-		LiferayPortletResponse liferayPortletResponse) {
+		boolean addButtonEnabled, DDMTemplate ddmTemplate,
+		HttpServletRequest httpServletRequest,
+		LiferayPortletResponse liferayPortletResponse, String tabs1) {
 
+		_addButtonEnabled = addButtonEnabled;
 		_ddmTemplate = ddmTemplate;
 		_httpServletRequest = httpServletRequest;
 		_liferayPortletResponse = liferayPortletResponse;
+		_tabs1 = tabs1;
 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
-	public List<DropdownItem> getActionDropdownItems() throws Exception {
-		return DropdownItemListBuilder.add(
-			() -> DDMTemplatePermission.containsAddTemplatePermission(
-				_themeDisplay.getPermissionChecker(),
-				_themeDisplay.getScopeGroupId(), _ddmTemplate.getClassNameId(),
-				_ddmTemplate.getResourceClassNameId()),
-			_getCopyDDMTemplateActionUnsafeConsumer()
-		).add(
-			() -> DDMTemplatePermission.contains(
-				_themeDisplay.getPermissionChecker(), _ddmTemplate,
-				ActionKeys.DELETE),
-			_getDeleteDDMTemplateActionUnsafeConsumer()
-		).add(
-			() -> DDMTemplatePermission.contains(
-				_themeDisplay.getPermissionChecker(), _ddmTemplate,
-				ActionKeys.PERMISSIONS),
-			_getPermissionsDDMTemplateActionUnsafeConsumer()
+	public List<DropdownItem> getActionDropdownItems() {
+		return DropdownItemListBuilder.addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> DDMTemplatePermission.contains(
+							_themeDisplay.getPermissionChecker(), _ddmTemplate,
+							ActionKeys.UPDATE),
+						_getEditDDMTemplateActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() ->
+							_addButtonEnabled &&
+							DDMTemplatePermission.containsAddTemplatePermission(
+								_themeDisplay.getPermissionChecker(),
+								_themeDisplay.getScopeGroupId(),
+								_ddmTemplate.getClassNameId(),
+								_ddmTemplate.getResourceClassNameId()),
+						_getCopyDDMTemplateActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> DDMTemplatePermission.contains(
+							_themeDisplay.getPermissionChecker(), _ddmTemplate,
+							ActionKeys.PERMISSIONS),
+						_getPermissionsDDMTemplateActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
+		).addGroup(
+			dropdownGroupItem -> {
+				dropdownGroupItem.setDropdownItems(
+					DropdownItemListBuilder.add(
+						() -> DDMTemplatePermission.contains(
+							_themeDisplay.getPermissionChecker(), _ddmTemplate,
+							ActionKeys.DELETE),
+						_getDeleteDDMTemplateActionUnsafeConsumer()
+					).build());
+				dropdownGroupItem.setSeparator(true);
+			}
 		).build();
 	}
 
@@ -77,10 +112,13 @@ public class DDMTemplateActionDropdownItemsProvider {
 			dropdownItem.setHref(
 				PortletURLBuilder.createRenderURL(
 					_liferayPortletResponse
-				).build(),
-				"redirect", _themeDisplay.getURLCurrent(), "ddmTemplateId",
-				_ddmTemplate.getTemplateId(), "mvcPath",
-				"/copy_ddm_template.jsp");
+				).setMVCPath(
+					"/copy_ddm_template.jsp"
+				).setRedirect(
+					_themeDisplay.getURLCurrent()
+				).setParameter(
+					"ddmTemplateId", _ddmTemplate.getTemplateId()
+				).buildPortletURL());
 			dropdownItem.setLabel(
 				LanguageUtil.get(_httpServletRequest, "copy"));
 		};
@@ -108,6 +146,27 @@ public class DDMTemplateActionDropdownItemsProvider {
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception>
+		_getEditDDMTemplateActionUnsafeConsumer() {
+
+		return dropdownItem -> {
+			dropdownItem.setHref(
+				PortletURLBuilder.createRenderURL(
+					_liferayPortletResponse
+				).setMVCRenderCommandName(
+					"/template/edit_ddm_template"
+				).setRedirect(
+					_themeDisplay.getURLCurrent()
+				).setTabs1(
+					_tabs1
+				).setParameter(
+					"ddmTemplateId", _ddmTemplate.getTemplateId()
+				).buildPortletURL());
+			dropdownItem.setLabel(
+				LanguageUtil.get(_httpServletRequest, "edit"));
+		};
+	}
+
+	private UnsafeConsumer<DropdownItem, Exception>
 			_getPermissionsDDMTemplateActionUnsafeConsumer()
 		throws Exception {
 
@@ -126,9 +185,11 @@ public class DDMTemplateActionDropdownItemsProvider {
 		};
 	}
 
+	private final boolean _addButtonEnabled;
 	private final DDMTemplate _ddmTemplate;
 	private final HttpServletRequest _httpServletRequest;
 	private final LiferayPortletResponse _liferayPortletResponse;
+	private final String _tabs1;
 	private final ThemeDisplay _themeDisplay;
 
 }

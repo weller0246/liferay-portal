@@ -57,6 +57,11 @@ function PageTypeSelector({
 		<div className="align-items-center d-flex page-type-selector">
 			<ClayDropDown
 				active={pageTypeDropdownActive}
+				menuElementAttrs={{
+					containerProps: {
+						className: 'cadmin',
+					},
+				}}
 				onActiveChange={setPageTypeDropdownActive}
 				trigger={
 					<ClayButton
@@ -101,6 +106,11 @@ function PageTypeSelector({
 				{showAddIcon && (
 					<ClayDropDown
 						active={addPageDropdownActive}
+						menuElementAttrs={{
+							containerProps: {
+								className: 'cadmin',
+							},
+						}}
 						onActiveChange={setAddPageDropdownActive}
 						trigger={
 							<ClayButton

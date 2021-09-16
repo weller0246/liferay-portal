@@ -112,7 +112,7 @@ definition {
 
 		DMNavigator.gotoFolder(dmFolderName = "DM Folder Name");
 
-		DMDocument.viewCPStatus(
+		DMDocument.viewStatus(
 			dmDocumentStatus = "Approved",
 			dmDocumentTitle = "Document_1.jpg");
 
@@ -156,9 +156,7 @@ definition {
 			webContentStatus = "Pending",
 			webContentTitle = "Depot WebContent Title");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -170,9 +168,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -383,11 +379,12 @@ definition {
 	@priority = "5"
 	@refactorneeded
 	test ApproveWCInFolder {
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
+		JSONWebcontent.addFolder(
+			folderName = "WC Folder Name",
+			groupName = "Test Depot Name",
+			site = "false");
 
-		WebContentFolder.addCP(
-			folderDescription = "WC Folder Description",
-			folderName = "WC Folder Name");
+		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
 
 		WebContentFolder.configureWorkflowCP(
 			folderName = "WC Folder Name",
@@ -408,9 +405,7 @@ definition {
 			webContentStatus = "Pending",
 			webContentTitle = "Depot WebContent Title");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -422,9 +417,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -561,13 +554,11 @@ definition {
 
 		DMNavigator.gotoFolder(dmFolderName = "DM Folder Name");
 
-		DMDocument.viewCPStatus(
+		DMDocument.viewStatus(
 			dmDocumentStatus = "Approved",
 			dmDocumentTitle = "Document_2.jpg");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -579,9 +570,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -685,9 +674,7 @@ definition {
 			webContentStatus = "Approved",
 			webContentTitle = "Depot WebContent Title Edit");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoStructures();
+		WebContentStructures.openWebContentStructuresAdmin(siteURLKey = "site-name");
 
 		WebContentStructures.addCP(
 			structureDescription = "WC Structure Description",
@@ -699,9 +686,7 @@ definition {
 
 		WebContentStructures.saveCP(structureName = "WC Structure Name");
 
-		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
-
-		NavItem.gotoTemplates();
+		WebContentNavigator.openWebContentTemplatesAdmin(siteURLKey = "site-name");
 
 		WebContentTemplates.addCP(
 			structureName = "WC Structure Name",
@@ -914,10 +899,14 @@ definition {
 			workflowDefinition = "Single Approver",
 			workflowRestriction = "Specific Restrictions");
 
+		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
+
 		DMFolder.configureWorkflowCP(
 			dmFolderName = "DM Folder Name",
 			workflowDefinition = "Single Approver",
 			workflowRestriction = "Default Workflow");
+
+		DepotNavigator.openDepotDocumentsAndMediaAdmin(depotName = "Test Depot Name");
 
 		DMFolder.configureWorkflowCP(
 			dmFolderName = "DM Folder Name",
@@ -934,7 +923,7 @@ definition {
 
 		DMNavigator.gotoFolder(dmFolderName = "DM Folder Name");
 
-		DMDocument.viewCPStatus(
+		DMDocument.viewStatus(
 			dmDocumentStatus = "Approved",
 			dmDocumentTitle = "Depot Document Title");
 	}
@@ -943,11 +932,12 @@ definition {
 	@priority = "4"
 	@refactorneeded
 	test RestoreWCFolderWorkflowToDefault {
-		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
+		JSONWebcontent.addFolder(
+			folderName = "WC Folder Name",
+			groupName = "Test Depot Name",
+			site = "false");
 
-		WebContentFolder.addCP(
-			folderDescription = "WC Folder Description",
-			folderName = "WC Folder Name");
+		DepotNavigator.openDepotWebContentAdmin(depotName = "Test Depot Name");
 
 		WebContentFolder.configureWorkflowCP(
 			folderName = "WC Folder Name",

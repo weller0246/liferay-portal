@@ -18,9 +18,12 @@ import com.liferay.dynamic.data.mapping.form.field.type.BaseDDMFormFieldTypeSett
 import com.liferay.dynamic.data.mapping.model.DDMForm;
 import com.liferay.dynamic.data.mapping.model.DDMFormField;
 import com.liferay.dynamic.data.mapping.model.DDMFormFieldOptions;
+import com.liferay.dynamic.data.mapping.model.DDMFormLayout;
 import com.liferay.dynamic.data.mapping.model.DDMFormRule;
 import com.liferay.dynamic.data.mapping.model.LocalizedValue;
+import com.liferay.dynamic.data.mapping.test.util.DDMFormLayoutTestUtil;
 import com.liferay.dynamic.data.mapping.util.DDMFormFactory;
+import com.liferay.dynamic.data.mapping.util.DDMFormLayoutFactory;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -216,13 +219,12 @@ public class TextDDMFormFieldTypeSettingsTest
 
 		Assert.assertEquals(actions.toString(), 1, actions.size());
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append("call('getDataProviderInstanceOutputParameters', '");
-		sb.append("dataProviderInstanceId=ddmDataProviderInstanceId', '");
-		sb.append("ddmDataProviderInstanceOutput=outputParameterNames')");
-
-		Assert.assertEquals(sb.toString(), actions.get(0));
+		Assert.assertEquals(
+			StringBundler.concat(
+				"call('getDataProviderInstanceOutputParameters', '",
+				"dataProviderInstanceId=ddmDataProviderInstanceId', '",
+				"ddmDataProviderInstanceOutput=outputParameterNames')"),
+			actions.get(0));
 
 		DDMFormRule ddmFormRule1 = ddmFormRules.get(1);
 
@@ -347,6 +349,29 @@ public class TextDDMFormFieldTypeSettingsTest
 			"setValue('ddmDataProviderInstanceId', '')", actions.get(0));
 		Assert.assertEquals(
 			"setValue('ddmDataProviderInstanceOutput', '')", actions.get(1));
+	}
+
+	@Test
+	public void testCreateTextDDMFormFieldTypeSettingsDDMFormLayout() {
+		assertDDMFormLayout(
+			DDMFormLayoutFactory.create(TextDDMFormFieldTypeSettings.class),
+			DDMFormLayoutTestUtil.createDDMFormLayout(
+				DDMFormLayout.TABBED_MODE,
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"label", "placeholder", "tip", "displayStyle", "required",
+					"requiredErrorMessage"),
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"name", "fieldReference", "predefinedValue",
+					"objectFieldName", "visibilityExpression", "fieldNamespace",
+					"indexType", "labelAtStructureLevel", "localizable",
+					"nativeField", "readOnly", "dataType", "type", "hideField",
+					"showLabel", "repeatable", "requireConfirmation",
+					"direction", "confirmationLabel",
+					"confirmationErrorMessage", "validation", "tooltip"),
+				DDMFormLayoutTestUtil.createDDMFormLayoutPage(
+					"autocomplete", "dataSourceType",
+					"ddmDataProviderInstanceId",
+					"ddmDataProviderInstanceOutput", "options")));
 	}
 
 	@Override

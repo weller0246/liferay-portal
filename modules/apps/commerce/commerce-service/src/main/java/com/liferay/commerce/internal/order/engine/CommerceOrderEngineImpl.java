@@ -17,7 +17,6 @@ package com.liferay.commerce.internal.order.engine;
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.configuration.CommerceOrderCheckoutConfiguration;
 import com.liferay.commerce.constants.CommerceConstants;
-import com.liferay.commerce.constants.CommerceDestinationNames;
 import com.liferay.commerce.constants.CommerceOrderActionKeys;
 import com.liferay.commerce.constants.CommerceOrderConstants;
 import com.liferay.commerce.constants.CommercePaymentConstants;
@@ -58,6 +57,8 @@ import com.liferay.commerce.service.CommerceShippingMethodLocalService;
 import com.liferay.commerce.subscription.CommerceSubscriptionEntryHelperUtil;
 import com.liferay.commerce.util.CommerceShippingHelper;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONUtil;
+import com.liferay.portal.kernel.messaging.DestinationNames;
 import com.liferay.portal.kernel.messaging.Message;
 import com.liferay.portal.kernel.messaging.MessageBusUtil;
 import com.liferay.portal.kernel.model.User;
@@ -415,7 +416,7 @@ public class CommerceOrderEngineImpl implements CommerceOrderEngine {
 			_configurationProvider.getConfiguration(
 				CommerceOrderCheckoutConfiguration.class,
 				new GroupServiceSettingsLocator(
-					groupId, CommerceConstants.SERVICE_NAME_ORDER));
+					groupId, CommerceConstants.SERVICE_NAME_COMMERCE_ORDER));
 
 		return commerceOrderCheckoutConfiguration.guestCheckoutEnabled();
 	}
@@ -451,12 +452,16 @@ public class CommerceOrderEngineImpl implements CommerceOrderEngine {
 
 					Message message = new Message();
 
-					message.put(
-						"commerceOrderId", commerceOrder.getCommerceOrderId());
-					message.put("orderStatus", commerceOrder.getOrderStatus());
+					message.setPayload(
+						JSONUtil.put(
+							"commerceOrderId",
+							commerceOrder.getCommerceOrderId()
+						).put(
+							"orderStatus", commerceOrder.getOrderStatus()
+						));
 
 					MessageBusUtil.sendMessage(
-						CommerceDestinationNames.ORDER_STATUS, message);
+						DestinationNames.COMMERCE_ORDER_STATUS, message);
 
 					return null;
 				}

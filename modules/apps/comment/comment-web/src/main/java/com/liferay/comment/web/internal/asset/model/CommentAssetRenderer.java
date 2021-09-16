@@ -14,6 +14,8 @@
 
 package com.liferay.comment.web.internal.asset.model;
 
+import com.liferay.asset.kernel.AssetRendererFactoryRegistryUtil;
+import com.liferay.asset.kernel.model.AssetRenderer;
 import com.liferay.asset.kernel.model.AssetRendererFactory;
 import com.liferay.asset.kernel.model.BaseJSPAssetRenderer;
 import com.liferay.comment.web.internal.constants.CommentPortletKeys;
@@ -161,7 +163,7 @@ public class CommentAssetRenderer
 			"/comment/edit_discussion"
 		).setParameter(
 			"commentId", _workflowableComment.getCommentId()
-		).build();
+		).buildPortletURL();
 	}
 
 	@Override
@@ -186,11 +188,24 @@ public class CommentAssetRenderer
 
 	@Override
 	public String getURLViewInContext(
-		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		String noSuchEntryRedirect) {
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			String noSuchEntryRedirect)
+		throws Exception {
 
-		return null;
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+				_workflowableComment.getClassName());
+
+		if (assetRendererFactory == null) {
+			return null;
+		}
+
+		AssetRenderer<?> assetRenderer = assetRendererFactory.getAssetRenderer(
+			_workflowableComment.getClassPK());
+
+		return assetRenderer.getURLViewInContext(
+			liferayPortletRequest, liferayPortletResponse, noSuchEntryRedirect);
 	}
 
 	@Override

@@ -56,9 +56,11 @@ import org.osgi.service.component.annotations.Reference;
 public class CommercePaymentUtilsImpl implements CommercePaymentUtils {
 
 	@Override
-	public CommercePaymentResult emptyResult(long commerceOrderId) {
+	public CommercePaymentResult emptyResult(
+		long commerceOrderId, String transactionId) {
+
 		return new CommercePaymentResult(
-			null, commerceOrderId, -1, false, null, null,
+			transactionId, commerceOrderId, -1, false, null, null,
 			Collections.emptyList(), false);
 	}
 

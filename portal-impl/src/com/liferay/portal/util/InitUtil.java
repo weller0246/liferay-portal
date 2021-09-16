@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.log.SanitizerLogWrapper;
 import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.security.xml.SecureXMLFactoryProviderUtil;
 import com.liferay.portal.kernel.util.BasePortalLifecycle;
+import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.JavaDetector;
@@ -167,6 +168,12 @@ public class InitUtil {
 
 		DBManagerUtil.setDBManager(new DBManagerImpl());
 
+		// File
+
+		FileUtil fileUtil = new FileUtil();
+
+		fileUtil.setFile(new FileImpl());
+
 		// XML
 
 		SecureXMLFactoryProviderUtil secureXMLFactoryProviderUtil =
@@ -267,10 +274,6 @@ public class InitUtil {
 
 			PortalBeanLocatorUtil.setBeanLocator(beanLocator);
 
-			if (initModuleFramework) {
-				ModuleFrameworkUtil.startRuntime();
-			}
-
 			_appApplicationContext = configurableApplicationContext;
 
 			if (initModuleFramework && registerContext) {
@@ -327,24 +330,6 @@ public class InitUtil {
 
 			},
 			PortalLifecycle.METHOD_DESTROY);
-	}
-
-	public static synchronized void stopModuleFramework() {
-		try {
-			ModuleFrameworkUtil.stopFramework(0);
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
-
-	public static synchronized void stopRuntime() {
-		try {
-			ModuleFrameworkUtil.stopRuntime();
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
 	}
 
 	private static final boolean _PRINT_TIME = false;

@@ -55,7 +55,7 @@ definition {
 		}
 
 		task ("Add a Collection Page based on Dynamic Collection via Pages Tree Panel") {
-			SitePages.openPagesAdmin(siteURLKey = "test-site-name-staging");
+			ProductMenu.gotoStagingSite(site = "Test Site Name");
 
 			PagesFinder.goToFindAPage();
 
@@ -162,7 +162,7 @@ definition {
 			DragAndDrop.dragAndDropReorganizeObjects(
 				locator1 = "//ul[contains(@class,'tree-container')]/li[contains(@class,'tree-node')][2][contains(.,'Test Content Page')]",
 				locator2 = "//ul[contains(@class,'tree-container')]/li[contains(@class,'tree-node')][1][contains(.,'Test Widget Page')]",
-				position = "0,-3");
+				position = "0,-4");
 
 			var n = "1";
 

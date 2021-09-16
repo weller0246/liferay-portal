@@ -154,18 +154,23 @@ public class ViewRolesManagementToolbarDisplayContext {
 			_renderResponse
 		).setMVCPath(
 			"/view.jsp"
+		).setKeywords(
+			() -> {
+				if (Validator.isNotNull(getKeywords())) {
+					return getKeywords();
+				}
+
+				return null;
+			}
 		).setParameter(
 			"displayStyle", _displayStyle
 		).setParameter(
+			"orderByCol", getOrderByCol()
+		).setParameter(
+			"orderByType", getOrderByType()
+		).setParameter(
 			"roleType", _currentRoleTypeContributor.getType()
-		).build();
-
-		if (Validator.isNotNull(getKeywords())) {
-			portletURL.setParameter("keywords", getKeywords());
-		}
-
-		portletURL.setParameter("orderByCol", getOrderByCol());
-		portletURL.setParameter("orderByType", getOrderByType());
+		).buildPortletURL();
 
 		if (_roleSearch != null) {
 			portletURL.setParameter(

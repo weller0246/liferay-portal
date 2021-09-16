@@ -12,17 +12,15 @@ definition {
 		Click(locator1 = "ContentDashboard#DELETE_SECOND_FILTER_SELECTED");
 	}
 
-	macro editWebContent {
+	macro editAsset {
 		Click(locator1 = "ContentDashboard#WEB_CONTENT_MENU_DROPDOWN_BUTTON");
 
 		Click(locator1 = "ContentDashboard#EDIT_OPTION");
 
-		Pause(locator1 = "3000");
-
-		if (isSet(webContentTitle)) {
+		if (isSet(assetTitle)) {
 			Click(locator1 = "TextInput#TITLE");
 
-			PortletEntry.inputTitle(title = "${webContentTitle}");
+			PortletEntry.inputTitle(title = "${assetTitle}");
 		}
 
 		Button.clickPublish();
@@ -266,40 +264,6 @@ definition {
 		Click(locator1 = "ContentDashboard#FILTER_BY_OPTION");
 	}
 
-	macro filterBySubtype {
-		if (IsElementPresent(locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN")) {
-			AssertClickNoError(
-				locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN",
-				value1 = "Filter and Order");
-		}
-
-		var key_filterOption = "${filterOption}";
-
-		Click(locator1 = "ContentDashboard#FILTER_BY_OPTION");
-
-		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_IFRAME");
-
-		Click(locator1 = "ContentDashboard#SEARCH_SUBTYPE_FIELD");
-
-		Type(
-			locator1 = "ContentDashboard#SEARCH_SUBTYPE_FIELD",
-			value1 = "${subtypeName}");
-
-		KeyPress(
-			locator1 = "ContentDashboard#SEARCH_FIELD",
-			value1 = "\ENTER");
-
-		Click(locator1 = "ContentDashboard#SUBTYPE_ELEMENT_CHECKBOX");
-
-		SelectFrame(value1 = "relative=top");
-
-		AssertClickNoError(
-			locator1 = "Button#SELECT",
-			value1 = "Select");
-
-		SelectFrame(value1 = "relative=top");
-	}
-
 	macro filterByTag {
 		if (IsElementPresent(locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN")) {
 			AssertClickNoError(
@@ -329,6 +293,36 @@ definition {
 		else {
 			Click(locator1 = "ContentDashboard#CHECKBOX_TAGS");
 		}
+
+		SelectFrame(value1 = "relative=top");
+
+		AssertClickNoError(
+			locator1 = "Button#SELECT",
+			value1 = "Select");
+
+		SelectFrame(value1 = "relative=top");
+	}
+
+	macro filterByType {
+		if (IsElementPresent(locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN")) {
+			AssertClickNoError(
+				locator1 = "ContentDashboard#FILTER_AND_ORDER_DROPDOWN",
+				value1 = "Filter and Order");
+		}
+
+		var key_filterOption = "${filterOption}";
+
+		Click(locator1 = "ContentDashboard#FILTER_BY_OPTION");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "IFrame#MODAL_IFRAME");
+
+		Click(locator1 = "ContentDashboard#SEARCH_SUBTYPE_FIELD");
+
+		Type(
+			locator1 = "ContentDashboard#SEARCH_SUBTYPE_FIELD",
+			value1 = "${subtypeName}");
+
+		Click(locator1 = "ContentDashboard#SUBTYPE_NAME_ELEMENT");
 
 		SelectFrame(value1 = "relative=top");
 
@@ -426,6 +420,28 @@ definition {
 			value1 = "\ENTER");
 	}
 
+	macro selectListofCategoriesForAudienceAndStage {
+		WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+		for (var count : list "1,2,3") {
+			WebContentNavigator.gotoEditCP(webContentTitle = "Webcontent Title ${count}");
+
+			for (var count : list "1,2,3") {
+				WebContent.selectCategory(
+					categoryName = "S ${count}",
+					vocabularyName = "Audience");
+			}
+
+			for (var count : list "1,2,3") {
+				WebContent.selectCategory(
+					categoryName = "test ${count}",
+					vocabularyName = "Stage");
+			}
+
+			PortletEntry.publish();
+		}
+	}
+
 	macro setVocabularyInUseSecondPosition {
 		Click(locator1 = "ContentDashboard#AUDIT_GRAPH_CONFIGURATION_BUTTON");
 
@@ -456,18 +472,6 @@ definition {
 			value1 = "Save");
 
 		IFrame.closeFrame();
-	}
-
-	macro setVocabularySessionPropertyDropdown {
-		Click(locator1 = "ContentDashboard#SESSION_PROPERTY_SESSION_LINK_PROPERTY");
-
-		Click(locator1 = "ContentDashboard#SESSION_PROPERTY_SESSION_LINK_PROPERTY_OPTION");
-
-		Click(locator1 = "ContentDashboard#SESSION_PROPERTY_SESSION_LINK_VOCABULARY");
-
-		Click(locator1 = "ContentDashboard#SESSION_PROPERTY_SESSION_LINK_VOCABULARY_OPTION");
-
-		Button.click(button = "Save");
 	}
 
 	macro stageFirstVocabularyConfiguration {

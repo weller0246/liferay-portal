@@ -15,6 +15,7 @@
 package com.liferay.data.cleanup.internal.upgrade;
 
 import com.liferay.data.cleanup.internal.configuration.DataRemovalConfiguration;
+import com.liferay.data.cleanup.internal.upgrade.util.ConfigurationUtil;
 import com.liferay.journal.service.JournalArticleLocalService;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -27,6 +28,8 @@ import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import java.util.Map;
 import java.util.function.Supplier;
+
+import org.apache.felix.cm.PersistenceManager;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -44,14 +47,17 @@ public class DataRemoval implements UpgradeStepRegistrator {
 	@Override
 	public void register(Registry registry) {
 		try {
+			ConfigurationUtil.resetConfiguration(
+				_persistenceManager, DataRemovalConfiguration.class);
+
 			_removeModuleData(
 				_dataRemovalConfiguration::removeExpiredJournalArticles,
 				"com.liferay.journal.service",
 				() -> new ExpiredJournalArticleUpgradeProcess(
 					_journalArticleLocalService));
 		}
-		catch (UpgradeException upgradeException) {
-			ReflectionUtil.throwException(upgradeException);
+		catch (Exception exception) {
+			ReflectionUtil.throwException(exception);
 		}
 	}
 
@@ -84,6 +90,9 @@ public class DataRemoval implements UpgradeStepRegistrator {
 
 	@Reference
 	private JournalArticleLocalService _journalArticleLocalService;
+
+	@Reference
+	private PersistenceManager _persistenceManager;
 
 	@Reference
 	private ReleaseLocalService _releaseLocalService;

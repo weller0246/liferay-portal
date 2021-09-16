@@ -32,7 +32,7 @@ function WrapperWithQuantity({AddToCartButton, ...props}) {
 			cpInstance.purchasable &&
 			(cpInstance.backOrderAllowed || cpInstance.stockQuantity > 0);
 
-		setDisabled(!isPurchasable);
+		setDisabled(disabled || !isPurchasable);
 	};
 
 	useEffect(() => {
@@ -51,6 +51,7 @@ function WrapperWithQuantity({AddToCartButton, ...props}) {
 				);
 			}
 		};
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [settings.namespace]);
 
 	return (

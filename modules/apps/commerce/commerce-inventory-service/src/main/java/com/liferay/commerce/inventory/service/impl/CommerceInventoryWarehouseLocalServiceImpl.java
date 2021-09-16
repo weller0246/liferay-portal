@@ -50,7 +50,6 @@ import java.io.Serializable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author Luca Pellizzon
@@ -291,7 +290,7 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 	}
 
 	@Override
-	public List<CommerceInventoryWarehouse> searchCommerceInventoryWarehouses(
+	public List<CommerceInventoryWarehouse> search(
 			long companyId, Boolean active, String commerceCountryCode,
 			String keywords, int start, int end, Sort sort)
 		throws PortalException {
@@ -301,7 +300,7 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 
 		searchContext.setKeywords(keywords);
 
-		return searchCommerceInventoryWarehouses(searchContext);
+		return search(searchContext);
 	}
 
 	@Override
@@ -385,7 +384,7 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 
 		SearchContext searchContext = new SearchContext();
 
-		Map<String, Serializable> attributes =
+		searchContext.setAttributes(
 			HashMapBuilder.<String, Serializable>put(
 				CommerceInventoryWarehouseIndexer.FIELD_CITY, keywords
 			).put(
@@ -403,21 +402,19 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 				LinkedHashMapBuilder.<String, Object>put(
 					"keywords", keywords
 				).build()
-			).build();
-
-		if (active != null) {
-			attributes.put(
-				CommerceInventoryWarehouseIndexer.FIELD_ACTIVE, active);
-		}
-
-		if (Validator.isNotNull(commerceCountryCode)) {
-			attributes.put(
+			).put(
+				CommerceInventoryWarehouseIndexer.FIELD_ACTIVE, () -> active
+			).put(
 				CommerceInventoryWarehouseIndexer.
 					FIELD_COUNTRY_TWO_LETTERS_ISO_CODE,
-				commerceCountryCode);
-		}
+				() -> {
+					if (Validator.isNotNull(commerceCountryCode)) {
+						return commerceCountryCode;
+					}
 
-		searchContext.setAttributes(attributes);
+					return null;
+				}
+			).build());
 
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
@@ -474,8 +471,8 @@ public class CommerceInventoryWarehouseLocalServiceImpl
 		return commerceInventoryWarehouses;
 	}
 
-	protected List<CommerceInventoryWarehouse>
-			searchCommerceInventoryWarehouses(SearchContext searchContext)
+	protected List<CommerceInventoryWarehouse> search(
+			SearchContext searchContext)
 		throws PortalException {
 
 		Indexer<CommerceInventoryWarehouse> indexer =

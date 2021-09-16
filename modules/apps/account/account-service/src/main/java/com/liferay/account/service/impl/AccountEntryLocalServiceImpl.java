@@ -19,6 +19,7 @@ import com.liferay.account.exception.AccountEntryDomainsException;
 import com.liferay.account.exception.AccountEntryEmailAddressException;
 import com.liferay.account.exception.AccountEntryNameException;
 import com.liferay.account.exception.AccountEntryTypeException;
+import com.liferay.account.exception.DuplicateAccountEntryExternalReferenceCodeException;
 import com.liferay.account.model.AccountEntry;
 import com.liferay.account.model.AccountEntryOrganizationRelTable;
 import com.liferay.account.model.AccountEntryTable;
@@ -81,6 +82,7 @@ import com.liferay.users.admin.kernel.file.uploads.UserFileUploadsSettings;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import org.apache.commons.validator.routines.DomainValidator;
@@ -689,6 +691,37 @@ public class AccountEntryLocalServiceImpl
 
 	@Indexable(type = IndexableType.REINDEX)
 	@Override
+	public AccountEntry updateExternalReferenceCode(
+			AccountEntry accountEntry, String externalReferenceCode)
+		throws PortalException {
+
+		if (Objects.equals(
+				accountEntry.getExternalReferenceCode(),
+				externalReferenceCode)) {
+
+			return accountEntry;
+		}
+
+		_validateExternalReferenceCode(
+			accountEntry.getAccountEntryId(), externalReferenceCode);
+
+		accountEntry.setExternalReferenceCode(externalReferenceCode);
+
+		return updateAccountEntry(accountEntry);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
+	public AccountEntry updateExternalReferenceCode(
+			long accountEntryId, String externalReferenceCode)
+		throws PortalException {
+
+		return updateExternalReferenceCode(
+			getAccountEntry(accountEntryId), externalReferenceCode);
+	}
+
+	@Indexable(type = IndexableType.REINDEX)
+	@Override
 	public AccountEntry updateStatus(AccountEntry accountEntry, int status) {
 		accountEntry.setStatus(status);
 
@@ -752,12 +785,26 @@ public class AccountEntryLocalServiceImpl
 				}
 
 				if (Validator.isNotNull(keywords)) {
+					Predicate keywordsPredicate =
+						_customSQL.getKeywordsPredicate(
+							DSLFunctionFactoryUtil.lower(
+								AccountEntryTable.INSTANCE.name),
+							_customSQL.keywords(keywords, true));
+
+					if (Validator.isDigit(keywords)) {
+						keywordsPredicate = Predicate.or(
+							AccountEntryTable.INSTANCE.accountEntryId.eq(
+								Long.valueOf(keywords)),
+							keywordsPredicate);
+					}
+
+					keywordsPredicate = Predicate.or(
+						AccountEntryTable.INSTANCE.externalReferenceCode.eq(
+							keywords),
+						keywordsPredicate);
+
 					predicate = predicate.and(
-						Predicate.withParentheses(
-							_customSQL.getKeywordsPredicate(
-								DSLFunctionFactoryUtil.lower(
-									AccountEntryTable.INSTANCE.name),
-								_customSQL.keywords(keywords, true))));
+						Predicate.withParentheses(keywordsPredicate));
 				}
 
 				if (types != null) {
@@ -964,6 +1011,28 @@ public class AccountEntryLocalServiceImpl
 			if (!emailValidator.isValid(emailAddress)) {
 				throw new AccountEntryEmailAddressException();
 			}
+		}
+	}
+
+	private void _validateExternalReferenceCode(
+			long accountEntryId, String externalReferenceCode)
+		throws PortalException {
+
+		if (Validator.isNull(externalReferenceCode)) {
+			return;
+		}
+
+		AccountEntry accountEntry = getAccountEntry(accountEntryId);
+
+		accountEntry = fetchAccountEntryByExternalReferenceCode(
+			accountEntry.getCompanyId(), externalReferenceCode);
+
+		if (accountEntry == null) {
+			return;
+		}
+
+		if (accountEntry.getAccountEntryId() != accountEntryId) {
+			throw new DuplicateAccountEntryExternalReferenceCodeException();
 		}
 	}
 

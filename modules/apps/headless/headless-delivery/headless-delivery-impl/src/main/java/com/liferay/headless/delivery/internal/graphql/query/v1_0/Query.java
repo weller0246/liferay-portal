@@ -299,7 +299,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {blogPosting(blogPostingId: ___){actions, aggregateRating, alternativeHeadline, articleBody, creator, customFields, dateCreated, dateModified, datePublished, description, encodingFormat, friendlyUrlPath, headline, id, image, keywords, numberOfComments, relatedContents, renderedContents, siteId, taxonomyCategoryBriefs, taxonomyCategoryIds, viewableBy}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {blogPosting(blogPostingId: ___){actions, aggregateRating, alternativeHeadline, articleBody, creator, customFields, dateCreated, dateModified, datePublished, description, encodingFormat, externalReferenceCode, friendlyUrlPath, headline, id, image, keywords, numberOfComments, relatedContents, renderedContents, siteId, taxonomyCategoryBriefs, taxonomyCategoryIds, viewableBy}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the blog post.")
 	public BlogPosting blogPosting(
@@ -402,6 +402,27 @@ public class Query {
 					_filterBiFunction.apply(blogPostingResource, filterString),
 					Pagination.of(page, pageSize),
 					_sortsBiFunction.apply(blogPostingResource, sortsString))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {blogPostingByExternalReferenceCode(externalReferenceCode: ___, siteKey: ___){actions, aggregateRating, alternativeHeadline, articleBody, creator, customFields, dateCreated, dateModified, datePublished, description, encodingFormat, externalReferenceCode, friendlyUrlPath, headline, id, image, keywords, numberOfComments, relatedContents, renderedContents, siteId, taxonomyCategoryBriefs, taxonomyCategoryIds, viewableBy}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrieves the site's blog post by external reference code."
+	)
+	public BlogPosting blogPostingByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_blogPostingResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			blogPostingResource ->
+				blogPostingResource.getSiteBlogPostingByExternalReferenceCode(
+					Long.valueOf(siteKey), externalReferenceCode));
 	}
 
 	/**
@@ -1415,7 +1436,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseArticle(knowledgeBaseArticleId: ___){actions, aggregateRating, articleBody, creator, customFields, dateCreated, dateModified, description, encodingFormat, friendlyUrlPath, id, keywords, numberOfAttachments, numberOfKnowledgeBaseArticles, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, relatedContents, siteId, subscribed, taxonomyCategoryBriefs, taxonomyCategoryIds, title, viewableBy}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseArticle(knowledgeBaseArticleId: ___){actions, aggregateRating, articleBody, creator, customFields, dateCreated, dateModified, description, encodingFormat, externalReferenceCode, friendlyUrlPath, id, keywords, numberOfAttachments, numberOfKnowledgeBaseArticles, parentKnowledgeBaseArticleId, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, relatedContents, siteId, subscribed, taxonomyCategoryBriefs, taxonomyCategoryIds, title, viewableBy}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the knowledge base article.")
 	public KnowledgeBaseArticle knowledgeBaseArticle(
@@ -1578,6 +1599,28 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseArticleByExternalReferenceCode(externalReferenceCode: ___, siteKey: ___){actions, aggregateRating, articleBody, creator, customFields, dateCreated, dateModified, description, encodingFormat, externalReferenceCode, friendlyUrlPath, id, keywords, numberOfAttachments, numberOfKnowledgeBaseArticles, parentKnowledgeBaseArticleId, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, relatedContents, siteId, subscribed, taxonomyCategoryBriefs, taxonomyCategoryIds, title, viewableBy}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrieves the site's knowledge base article by external reference code."
+	)
+	public KnowledgeBaseArticle knowledgeBaseArticleByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_knowledgeBaseArticleResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseArticleResource ->
+				knowledgeBaseArticleResource.
+					getSiteKnowledgeBaseArticleByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {siteKnowledgeBaseArticlePermissions(roleNames: ___, siteKey: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField
@@ -1640,7 +1683,7 @@ public class Query {
 	/**
 	 * Invoke this method with the command line:
 	 *
-	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseFolder(knowledgeBaseFolderId: ___){actions, creator, customFields, dateCreated, dateModified, description, id, name, numberOfKnowledgeBaseArticles, numberOfKnowledgeBaseFolders, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, siteId, viewableBy}}"}' -u 'test@liferay.com:test'
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseFolder(knowledgeBaseFolderId: ___){actions, creator, customFields, dateCreated, dateModified, description, externalReferenceCode, id, name, numberOfKnowledgeBaseArticles, numberOfKnowledgeBaseFolders, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, siteId, viewableBy}}"}' -u 'test@liferay.com:test'
 	 */
 	@GraphQLField(description = "Retrieves the knowledge base folder.")
 	public KnowledgeBaseFolder knowledgeBaseFolder(
@@ -1720,6 +1763,28 @@ public class Query {
 			knowledgeBaseFolderResource -> new KnowledgeBaseFolderPage(
 				knowledgeBaseFolderResource.getSiteKnowledgeBaseFoldersPage(
 					Long.valueOf(siteKey), Pagination.of(page, pageSize))));
+	}
+
+	/**
+	 * Invoke this method with the command line:
+	 *
+	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {knowledgeBaseFolderByExternalReferenceCode(externalReferenceCode: ___, siteKey: ___){actions, creator, customFields, dateCreated, dateModified, description, externalReferenceCode, id, name, numberOfKnowledgeBaseArticles, numberOfKnowledgeBaseFolders, parentKnowledgeBaseFolder, parentKnowledgeBaseFolderId, siteId, viewableBy}}"}' -u 'test@liferay.com:test'
+	 */
+	@GraphQLField(
+		description = "Retrieves the site's knowledge base folder by external reference code."
+	)
+	public KnowledgeBaseFolder knowledgeBaseFolderByExternalReferenceCode(
+			@GraphQLName("siteKey") @NotEmpty String siteKey,
+			@GraphQLName("externalReferenceCode") String externalReferenceCode)
+		throws Exception {
+
+		return _applyComponentServiceObjects(
+			_knowledgeBaseFolderResourceComponentServiceObjects,
+			this::_populateResourceContext,
+			knowledgeBaseFolderResource ->
+				knowledgeBaseFolderResource.
+					getSiteKnowledgeBaseFolderByExternalReferenceCode(
+						Long.valueOf(siteKey), externalReferenceCode));
 	}
 
 	/**
@@ -2381,7 +2446,7 @@ public class Query {
 	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {navigationMenu(navigationMenuId: ___){actions, creator, dateCreated, dateModified, id, name, navigationMenuItems, navigationType, siteId}}"}' -u 'test@liferay.com:test'
 	 */
-	@GraphQLField(description = "")
+	@GraphQLField
 	public NavigationMenu navigationMenu(
 			@GraphQLName("navigationMenuId") Long navigationMenuId)
 		throws Exception {
@@ -2417,7 +2482,7 @@ public class Query {
 	 *
 	 * curl -H 'Content-Type: text/plain; charset=utf-8' -X 'POST' 'http://localhost:8080/o/graphql' -d $'{"query": "query {navigationMenus(page: ___, pageSize: ___, siteKey: ___){items {__}, page, pageSize, totalCount}}"}' -u 'test@liferay.com:test'
 	 */
-	@GraphQLField(description = "")
+	@GraphQLField
 	public NavigationMenuPage navigationMenus(
 			@GraphQLName("siteKey") @NotEmpty String siteKey,
 			@GraphQLName("pageSize") int pageSize,
@@ -5862,6 +5927,38 @@ public class Query {
 
 	}
 
+	@GraphQLTypeExtension(KnowledgeBaseArticle.class)
+	public class ParentKnowledgeBaseArticleKnowledgeBaseArticleIdTypeExtension {
+
+		public ParentKnowledgeBaseArticleKnowledgeBaseArticleIdTypeExtension(
+			KnowledgeBaseArticle knowledgeBaseArticle) {
+
+			_knowledgeBaseArticle = knowledgeBaseArticle;
+		}
+
+		@GraphQLField(description = "Retrieves the knowledge base article.")
+		public KnowledgeBaseArticle parentKnowledgeBaseArticle()
+			throws Exception {
+
+			if (_knowledgeBaseArticle.getParentKnowledgeBaseArticleId() ==
+					null) {
+
+				return null;
+			}
+
+			return _applyComponentServiceObjects(
+				_knowledgeBaseArticleResourceComponentServiceObjects,
+				Query.this::_populateResourceContext,
+				knowledgeBaseArticleResource ->
+					knowledgeBaseArticleResource.getKnowledgeBaseArticle(
+						_knowledgeBaseArticle.
+							getParentKnowledgeBaseArticleId()));
+		}
+
+		private KnowledgeBaseArticle _knowledgeBaseArticle;
+
+	}
+
 	@GraphQLTypeExtension(MessageBoardMessage.class)
 	public class ParentMessageBoardMessageMessageBoardMessageIdTypeExtension {
 
@@ -5929,7 +6026,7 @@ public class Query {
 			_navigationMenuItem = navigationMenuItem;
 		}
 
-		@GraphQLField(description = "")
+		@GraphQLField
 		public NavigationMenu parentNavigationMenuItem() throws Exception {
 			if (_navigationMenuItem.getParentNavigationMenuId() == null) {
 				return null;

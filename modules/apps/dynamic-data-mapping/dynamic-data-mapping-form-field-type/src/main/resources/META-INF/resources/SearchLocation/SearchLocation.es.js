@@ -48,22 +48,36 @@ const Field = ({
 	onBlur,
 	onChange,
 	onFocus,
+	pageValidationFailed = false,
 	parsedValue,
 	placeholder,
 	readOnly,
 	repeatable,
 	showLabel,
+	valid: initialValid,
 	visibleField,
 	...otherProps
 }) => {
+	const [valid, setValid] = useState(true);
+
+	useEffect(() => {
+		if (pageValidationFailed) {
+			setValid(initialValid);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [pageValidationFailed]);
+
 	return (
 		<FieldBase
 			{...otherProps}
+			hideEditedFlag
 			label={label[editingLanguageId] ?? label}
+			localizedValue={{}}
 			name={name}
 			readOnly={readOnly}
 			repeatable={repeatable}
 			showLabel={showLabel}
+			valid={!!parsedValue[visibleField] || valid}
 		>
 			<ClayInput
 				className="ddm-field-text"
@@ -71,8 +85,14 @@ const Field = ({
 				disabled={disabled}
 				id={id}
 				name={name}
-				onBlur={onBlur}
+				onBlur={(event) => {
+					setValid(initialValid);
+
+					onBlur(event);
+				}}
 				onChange={(event) => {
+					setValid(initialValid);
+
 					const value = !isEmpty(parsedValue)
 						? {
 								...parsedValue,
@@ -114,11 +134,14 @@ const Main = ({
 	visibleFields,
 	...otherProps
 }) => {
+	const {editingLanguageId, viewMode} = useFormState();
+
 	usePlaces({
 		elementId: `${name}#place`,
 		googlePlacesAPIKey,
 		isReadOnly: readOnly,
 		onChange,
+		viewMode,
 	});
 
 	const [availableLabels, setAvailableLabels] = useState();
@@ -127,9 +150,6 @@ const Main = ({
 		? visibleFields
 		: parse(visibleFields, []);
 	const currentLayout = Array.isArray(layout) ? layout : parse(layout, []);
-
-	const {editingLanguageId} = useFormState();
-
 	const parsedValue = parse(value, {});
 
 	useEffect(() => {
@@ -161,9 +181,14 @@ const Main = ({
 	return (
 		<FieldBase
 			{...otherProps}
+			accessible={false}
+			displayErrors={false}
 			name={name}
+			placeholder=""
 			readOnly={readOnly}
 			repeatable={repeatable}
+			required={false}
+			tip=""
 		>
 			<Field
 				{...otherProps}
@@ -207,10 +232,11 @@ const Main = ({
 										onChange={onChange}
 										onFocus={onFocus}
 										parsedValue={parsedValue}
-										placeholder={placeholder}
+										placeholder=""
 										readOnly={readOnly}
 										repeatable={false}
 										showLabel
+										tip=""
 										visibleField={visibleField}
 									/>
 								</div>

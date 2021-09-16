@@ -1,7 +1,7 @@
 definition {
 
 	macro addAccountEntry {
-		Variables.assertDefined(parameterList = "${accountEntryName},${accountEntryType},${accountEntryStatus}");
+		Variables.assertDefined(parameterList = "${accountEntryName},${accountEntryType}");
 
 		if (!(isSet(creatorEmailAddress))) {
 			var creatorEmailAddress = "test@liferay.com";
@@ -11,8 +11,12 @@ definition {
 			var creatorPassword = "test";
 		}
 
+		if (!(isSet(accountEntryDescription))) {
+			var accountEntryDescription = "Account Entry Description";
+		}
+
 		var accountEntryStatus = JSONAccountEntrySetter.setStatus(
-			fragmentStatus = "${accountEntryStatus}");
+			accountEntryStatus = "${accountEntryStatus}");
 
 		var accountEntryType = JSONAccountEntrySetter.setType(
 			accountEntryType = "${accountEntryType}");

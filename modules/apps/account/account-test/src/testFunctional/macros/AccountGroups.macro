@@ -56,6 +56,34 @@ definition {
 		Alert.viewSuccessMessage();
 	}
 
+	macro editCP {
+		AccountGroups.openAccountGroupsAdmin();
+
+		Search.searchCP(searchTerm = "${accountGroupName}");
+
+		LexiconEntry.gotoEntryMenuItem(
+			menuItem = "Edit",
+			rowEntry = "${accountGroupName}");
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Edit ${accountGroupName}");
+
+		PortletEntry.inputName(name = "${accountGroupNameEdit}");
+
+		if (isSet(accountGroupDescriptionEdit)) {
+			PortletEntry.inputDescription(description = "${accountGroupDescriptionEdit}");
+		}
+
+		Button.clickSave();
+
+		Alert.viewSuccessMessage();
+
+		AssertTextEquals(
+			locator1 = "Portlet#HEADER",
+			value1 = "Edit ${accountGroupNameEdit}");
+	}
+
 	macro openAccountGroupsAdmin {
 		Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_account_admin_web_internal_portlet_AccountGroupsAdminPortlet");
 	}
@@ -133,8 +161,9 @@ definition {
 
 		if (isSet(accountGroupAccount)) {
 			AssertTextEquals(
+				key_columnName = "lfr-accounts-column",
 				key_rowEntry = "${accountGroupName}",
-				locator1 = "AccountGroup#ACCOUNT_GROUP_ACCOUNTS",
+				locator1 = "ContentRow#ENTRY_CONTENT_ROW_NUMBER_TD",
 				value1 = "${accountGroupAccount}");
 		}
 	}

@@ -22,9 +22,6 @@ import com.liferay.item.selector.ItemSelector;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.NoSuchLayoutException;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -135,7 +132,7 @@ public class LayoutSiteNavigationMenuItemType
 			renderResponse
 		).setActionName(
 			"/navigation_menu/add_layout_site_navigation_menu_item"
-		).build();
+		).buildPortletURL();
 	}
 
 	@Override
@@ -293,15 +290,9 @@ public class LayoutSiteNavigationMenuItemType
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(pathImage);
-		sb.append("/layout_icon?img_id=");
-		sb.append(layout.getIconImageId());
-		sb.append("&t=");
-		sb.append(WebServerServletTokenUtil.getToken(layout.getIconImageId()));
-
-		return sb.toString();
+		return StringBundler.concat(
+			pathImage, "/layout_icon?img_id=", layout.getIconImageId(), "&t=",
+			WebServerServletTokenUtil.getToken(layout.getIconImageId()));
 	}
 
 	@Override
@@ -401,37 +392,20 @@ public class LayoutSiteNavigationMenuItemType
 			return false;
 		}
 
-		DynamicQuery dynamicQuery =
-			_siteNavigationMenuItemLocalService.dynamicQuery();
+		List<Long> parentSiteNavigationMenuItemIds =
+			_siteNavigationMenuItemLocalService.
+				getParentSiteNavigationMenuItemIds(
+					siteNavigationMenuItem.getSiteNavigationMenuId(),
+					StringBundler.concat(
+						"%layoutUuid=", curLayout.getUuid(),
+						StringPool.PERCENT));
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(StringPool.PERCENT);
-		sb.append("layoutUuid");
-		sb.append(StringPool.EQUAL);
-		sb.append(curLayout.getUuid());
-		sb.append(StringPool.PERCENT);
-
-		Property typeSettingsProperty = PropertyFactoryUtil.forName(
-			"typeSettings");
-
-		dynamicQuery.add(typeSettingsProperty.like(sb.toString()));
-
-		Property siteNavigationMenuIdProperty = PropertyFactoryUtil.forName(
-			"siteNavigationMenuId");
-
-		dynamicQuery.add(
-			siteNavigationMenuIdProperty.eq(
-				siteNavigationMenuItem.getSiteNavigationMenuId()));
-
-		List<SiteNavigationMenuItem> siteNavigationMenuItems =
-			_siteNavigationMenuItemLocalService.dynamicQuery(dynamicQuery);
-
-		for (SiteNavigationMenuItem curSiteNavigationMenuItem :
-				siteNavigationMenuItems) {
+		for (Long parentSiteNavigationMenuItemId :
+				parentSiteNavigationMenuItemIds) {
 
 			if (_isAncestor(
-					siteNavigationMenuItem, curSiteNavigationMenuItem)) {
+					siteNavigationMenuItem.getSiteNavigationMenuItemId(),
+					parentSiteNavigationMenuItemId)) {
 
 				return true;
 			}
@@ -568,26 +542,23 @@ public class LayoutSiteNavigationMenuItemType
 	}
 
 	private boolean _isAncestor(
-		SiteNavigationMenuItem siteNavigationMenuItem1,
-		SiteNavigationMenuItem siteNavigationMenuItem2) {
-
-		long parentSiteNavigationMenuItemId =
-			siteNavigationMenuItem2.getParentSiteNavigationMenuItemId();
+		long siteNavigationMenuItemId, long parentSiteNavigationMenuItemId) {
 
 		if (parentSiteNavigationMenuItemId == 0) {
 			return false;
 		}
 
-		if (parentSiteNavigationMenuItemId ==
-				siteNavigationMenuItem1.getSiteNavigationMenuItemId()) {
-
+		if (parentSiteNavigationMenuItemId == siteNavigationMenuItemId) {
 			return true;
 		}
 
-		return _isAncestor(
-			siteNavigationMenuItem1,
+		SiteNavigationMenuItem parentSiteNavigationMenuItem =
 			_siteNavigationMenuItemLocalService.fetchSiteNavigationMenuItem(
-				parentSiteNavigationMenuItemId));
+				parentSiteNavigationMenuItemId);
+
+		return _isAncestor(
+			siteNavigationMenuItemId,
+			parentSiteNavigationMenuItem.getParentSiteNavigationMenuItemId());
 	}
 
 	private boolean _isUseCustomName(

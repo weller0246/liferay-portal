@@ -16,7 +16,9 @@ package com.liferay.layout.taglib.internal.servlet;
 
 import com.liferay.fragment.contributor.FragmentCollectionContributorTracker;
 import com.liferay.fragment.entry.processor.helper.FragmentEntryProcessorHelper;
+import com.liferay.fragment.renderer.FragmentRendererController;
 import com.liferay.fragment.renderer.FragmentRendererTracker;
+import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.frontend.token.definition.FrontendTokenDefinitionRegistry;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.list.renderer.InfoListRendererTracker;
@@ -57,10 +59,20 @@ public class ServletContextUtil {
 		return _fragmentCollectionContributorTracker;
 	}
 
+	public static FragmentEntryConfigurationParser
+		getFragmentEntryConfigurationParser() {
+
+		return _fragmentEntryConfigurationParser;
+	}
+
 	public static FragmentEntryProcessorHelper
 		getFragmentEntryProcessorHelper() {
 
 		return _fragmentEntryProcessorHelper;
+	}
+
+	public static FragmentRendererController getFragmentRendererController() {
+		return _fragmentRendererController;
 	}
 
 	public static FragmentRendererTracker getFragmentRendererTracker() {
@@ -165,10 +177,24 @@ public class ServletContextUtil {
 	}
 
 	@Reference(unbind = "-")
+	protected void setFragmentEntryConfigurationParser(
+		FragmentEntryConfigurationParser fragmentEntryConfigurationParser) {
+
+		_fragmentEntryConfigurationParser = fragmentEntryConfigurationParser;
+	}
+
+	@Reference(unbind = "-")
 	protected void setFragmentEntryProcessorHelper(
 		FragmentEntryProcessorHelper fragmentEntryProcessorHelper) {
 
 		_fragmentEntryProcessorHelper = fragmentEntryProcessorHelper;
+	}
+
+	@Reference(unbind = "-")
+	protected void setFragmentRendererController(
+		FragmentRendererController fragmentRendererController) {
+
+		_fragmentRendererController = fragmentRendererController;
 	}
 
 	@Reference(unbind = "-")
@@ -251,7 +277,10 @@ public class ServletContextUtil {
 
 	private static FragmentCollectionContributorTracker
 		_fragmentCollectionContributorTracker;
+	private static FragmentEntryConfigurationParser
+		_fragmentEntryConfigurationParser;
 	private static FragmentEntryProcessorHelper _fragmentEntryProcessorHelper;
+	private static FragmentRendererController _fragmentRendererController;
 	private static FragmentRendererTracker _fragmentRendererTracker;
 	private static FrontendTokenDefinitionRegistry
 		_frontendTokenDefinitionRegistry;

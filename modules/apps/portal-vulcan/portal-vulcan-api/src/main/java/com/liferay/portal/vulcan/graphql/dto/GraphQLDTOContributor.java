@@ -24,15 +24,20 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.List;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Javier de Arcos
  */
+@ProviderType
 public interface GraphQLDTOContributor<D, R> {
 
 	public R createDTO(D dto, DTOConverterContext dtoConverterContext)
 		throws Exception;
 
 	public boolean deleteDTO(long id) throws Exception;
+
+	public long getCompanyId();
 
 	public R getDTO(DTOConverterContext dtoConverterContext, long id)
 		throws Exception;
@@ -49,6 +54,10 @@ public interface GraphQLDTOContributor<D, R> {
 	public String getIdName();
 
 	public String getResourceName();
+
+	public String getTypeName();
+
+	public boolean hasScope();
 
 	public R updateDTO(D dto, DTOConverterContext dtoConverterContext, long id)
 		throws Exception;

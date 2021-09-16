@@ -180,6 +180,10 @@ public class LayoutPageTemplatesImporterTest {
 			2, collectionStyledLayoutStructureItem.getNumberOfColumns());
 		Assert.assertEquals(
 			4, collectionStyledLayoutStructureItem.getNumberOfItems());
+		Assert.assertEquals(
+			1, collectionStyledLayoutStructureItem.getNumberOfItemsPerPage());
+		Assert.assertEquals(
+			"simple", collectionStyledLayoutStructureItem.getPaginationType());
 	}
 
 	@Test
@@ -654,14 +658,11 @@ public class LayoutPageTemplatesImporterTest {
 
 		ZipWriter zipWriter = ZipWriterFactoryUtil.getZipWriter();
 
-		StringBundler sb = new StringBundler(3);
-
-		sb.append(_LAYOUT_PATE_TEMPLATES_PATH + type);
-		sb.append(StringPool.FORWARD_SLASH + _ROOT_FOLDER);
-		sb.append(StringPool.FORWARD_SLASH);
-
 		Enumeration<URL> enumeration = _bundle.findEntries(
-			sb.toString(),
+			StringBundler.concat(
+				_LAYOUT_PATE_TEMPLATES_PATH + type,
+				StringPool.FORWARD_SLASH + _ROOT_FOLDER,
+				StringPool.FORWARD_SLASH),
 			LayoutPageTemplateExportImportConstants.
 				FILE_NAME_PAGE_TEMPLATE_COLLECTION,
 			true);
@@ -878,7 +879,7 @@ public class LayoutPageTemplatesImporterTest {
 		}
 	}
 
-	private void _registerTestPortlet(final String portletId) throws Exception {
+	private void _registerTestPortlet(String portletId) throws Exception {
 		_serviceRegistrations.add(
 			_bundleContext.registerService(
 				Portlet.class,

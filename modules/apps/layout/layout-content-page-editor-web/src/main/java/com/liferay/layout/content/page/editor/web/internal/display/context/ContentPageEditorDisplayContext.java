@@ -110,8 +110,6 @@ import com.liferay.portal.kernel.portlet.PortletIdCodec;
 import com.liferay.portal.kernel.portlet.PortletURLFactoryUtil;
 import com.liferay.portal.kernel.portlet.RequestBackedPortletURLFactoryUtil;
 import com.liferay.portal.kernel.repository.model.FileEntry;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoader;
-import com.liferay.portal.kernel.resource.bundle.ResourceBundleLoaderUtil;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
 import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
@@ -135,6 +133,7 @@ import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
+import com.liferay.portal.language.LanguageResources;
 import com.liferay.portal.util.PropsValues;
 import com.liferay.segments.constants.SegmentsExperienceConstants;
 import com.liferay.segments.model.SegmentsExperience;
@@ -210,11 +209,6 @@ public class ContentPageEditorDisplayContext {
 		_pageEditorConfiguration = pageEditorConfiguration;
 		_renderResponse = renderResponse;
 
-		_resourceBundleLoader =
-			ResourceBundleLoaderUtil.
-				getResourceBundleLoaderByBundleSymbolicName(
-					"com.liferay.layout.content.page.editor.web");
-
 		this.httpServletRequest = httpServletRequest;
 		this.infoItemServiceTracker = infoItemServiceTracker;
 		this.portletRequest = portletRequest;
@@ -272,15 +266,11 @@ public class ContentPageEditorDisplayContext {
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor/change_style_book_entry")
 			).put(
-				"collectionDisplayFragmentPaginationEnabled",
-				_ffLayoutContentPageEditorConfiguration.
-					collectionDisplayFragmentPaginationEnabled()
-			).put(
 				"collectionSelectorURL", _getCollectionSelectorURL()
 			).put(
 				"commonStyles",
 				CommonStylesUtil.getCommonStylesJSONArray(
-					_resourceBundleLoader.loadResourceBundle(
+					LanguageResources.getResourceBundle(
 						themeDisplay.getLocale()))
 			).put(
 				"defaultEditorConfigurations", _getDefaultConfigurations()
@@ -318,10 +308,6 @@ public class ContentPageEditorDisplayContext {
 					"/layout_content_page_editor" +
 						"/delete_fragment_entry_link_comment")
 			).put(
-				"deleteItemURL",
-				getFragmentEntryActionURL(
-					"/layout_content_page_editor/delete_item")
-			).put(
 				"discardDraftURL", _getDiscardDraftURL()
 			).put(
 				"draft",
@@ -348,6 +334,9 @@ public class ContentPageEditorDisplayContext {
 				"editFragmentEntryLinkURL",
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor/edit_fragment_entry_link")
+			).put(
+				"fragmentsHidingEnabled",
+				_ffLayoutContentPageEditorConfiguration.fragmentsHidingEnabled()
 			).put(
 				"frontendTokens",
 				() -> {
@@ -386,6 +375,10 @@ public class ContentPageEditorDisplayContext {
 				getResourceURL(
 					"/layout_content_page_editor/get_available_templates")
 			).put(
+				"getCollectionConfigurationURL",
+				getResourceURL(
+					"/layout_content_page_editor/get_collection_configuration")
+			).put(
 				"getCollectionFieldURL",
 				getResourceURL(
 					"/layout_content_page_editor/get_collection_field")
@@ -394,9 +387,18 @@ public class ContentPageEditorDisplayContext {
 				getResourceURL(
 					"/layout_content_page_editor/get_collection_filters")
 			).put(
+				"getCollectionItemCountURL",
+				getResourceURL(
+					"/layout_content_page_editor/get_collection_item_count")
+			).put(
 				"getCollectionMappingFieldsURL",
 				getResourceURL(
 					"/layout_content_page_editor/get_collection_mapping_fields")
+			).put(
+				"getCollectionSupportedFiltersURL",
+				getResourceURL(
+					"/layout_content_page_editor" +
+						"/get_collection_supported_filters")
 			).put(
 				"getExperienceUsedPortletsURL",
 				getResourceURL(
@@ -520,6 +522,11 @@ public class ContentPageEditorDisplayContext {
 				getResourceURL(
 					"/layout_content_page_editor/get_fragment_entry_link")
 			).put(
+				"restoreCollectionDisplayConfigURL",
+				getFragmentEntryActionURL(
+					"/layout_content_page_editor" +
+						"/restore_collection_display_config")
+			).put(
 				"searchContainerPageMaxDelta",
 				PropsValues.SEARCH_CONTAINER_PAGE_MAX_DELTA
 			).put(
@@ -558,6 +565,11 @@ public class ContentPageEditorDisplayContext {
 				"unmarkItemForDeletionURL",
 				getFragmentEntryActionURL(
 					"/layout_content_page_editor/unmark_item_for_deletion")
+			).put(
+				"updateCollectionDisplayConfigURL",
+				getFragmentEntryActionURL(
+					"/layout_content_page_editor" +
+						"/update_collection_display_config")
 			).put(
 				"updateConfigurationValuesURL",
 				getFragmentEntryActionURL(
@@ -703,18 +715,21 @@ public class ContentPageEditorDisplayContext {
 	}
 
 	protected String getFragmentEntryActionURL(String action, String command) {
-		PortletURL actionURL = PortletURLBuilder.createActionURL(
-			_renderResponse
-		).setActionName(
-			action
-		).build();
-
-		if (Validator.isNotNull(command)) {
-			actionURL.setParameter(Constants.CMD, command);
-		}
-
 		return HttpUtil.addParameter(
-			actionURL.toString(), "p_l_mode", Constants.EDIT);
+			PortletURLBuilder.createActionURL(
+				_renderResponse
+			).setActionName(
+				action
+			).setCMD(
+				() -> {
+					if (Validator.isNotNull(command)) {
+						return command;
+					}
+
+					return null;
+				}
+			).buildString(),
+			"p_l_mode", Constants.EDIT);
 	}
 
 	protected long getGroupId() {
@@ -1673,7 +1688,6 @@ public class ContentPageEditorDisplayContext {
 
 		if (infoItemClassNames.contains(FileEntry.class.getName())) {
 			infoItemClassNames.add(DLFileEntryConstants.getClassName());
-			infoItemClassNames.remove(FileEntry.class.getName());
 		}
 
 		return infoItemClassNames;
@@ -2237,7 +2251,6 @@ public class ContentPageEditorDisplayContext {
 	private Layout _publishedLayout;
 	private String _redirect;
 	private final RenderResponse _renderResponse;
-	private final ResourceBundleLoader _resourceBundleLoader;
 	private Long _segmentsExperienceId;
 	private List<Map<String, Object>> _sidebarPanels;
 	private ItemSelectorCriterion _urlItemSelectorCriterion;

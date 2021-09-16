@@ -22,7 +22,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -116,6 +115,21 @@ public abstract class BaseActiveViewResourceTestCase {
 	@Test
 	public void testPutActiveViewPageLayoutPortlet() throws Exception {
 		Assert.assertTrue(false);
+	}
+
+	protected void assertContains(Object activeView, List<Object> activeViews) {
+		boolean contains = false;
+
+		for (Object item : activeViews) {
+			if (equals(activeView, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(
+			activeViews + " does not contain " + activeView, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -460,8 +474,8 @@ public abstract class BaseActiveViewResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseActiveViewResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseActiveViewResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -129,7 +129,7 @@ public class AssetDisplayPageUsagesDisplayContext {
 			getRedirect()
 		).setParameter(
 			"layoutPageTemplateEntryId", getLayoutPageTemplateEntryId()
-		).build();
+		).buildPortletURL();
 	}
 
 	public String getRedirect() {
@@ -243,8 +243,7 @@ public class AssetDisplayPageUsagesDisplayContext {
 		}
 
 		InfoFieldValue<Object> infoFieldValue =
-			infoItemFieldValuesProvider.getInfoItemFieldValue(
-				infoItem, "title");
+			infoItemFieldValuesProvider.getInfoFieldValue(infoItem, "title");
 
 		if (infoFieldValue == null) {
 			return title;

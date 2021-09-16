@@ -2,6 +2,23 @@ definition {
 
 	var rowNumber = "1";
 
+	macro addParagraphLinkToAURL {
+		Click(
+			key_titleName = "Link",
+			locator1 = "FormFields#TOOLBAR_ANY_ITEM_BUTTON");
+
+		SelectFrame.selectFrameNoLoading(locator1 = "FormFields#PARAGRAPH_LINK_MODAL");
+
+		SelectFrame(value1 = "relative=top");
+
+		Type(
+			fieldLabel = "URL",
+			locator1 = "FormFields#PARAGRAPH_LINK_TEXT_INPUT",
+			value1 = "${paragraphLink}");
+
+		Click(locator1 = "CKEditor#OK_BUTTON");
+	}
+
 	macro addRepeatableField {
 		Pause(locator1 = "2000");
 
@@ -136,10 +153,10 @@ definition {
 		FormFields.viewCheckboxNotChecked(fieldName = "${fieldName}");
 	}
 
-	macro disableSwitcher {
-		Click(
+	macro disableSwitch {
+		Uncheck.uncheckToggleSwitch(
 			key_fieldName = "${fieldName}",
-			locator1 = "FormFields#SWITCHER");
+			locator1 = "FormFields#SWITCH");
 
 		FormFields.viewCheckboxNotChecked(fieldName = "${fieldName}");
 	}
@@ -481,6 +498,13 @@ definition {
 		}
 	}
 
+	macro editRequiredErrorMessage {
+		Type(
+			key_fieldName = "requiredErrorMessage",
+			locator1 = "FormFields#TEXT_FIELD",
+			value1 = "${errorMessage}");
+	}
+
 	macro editText {
 		Pause(locator1 = "1000");
 
@@ -513,17 +537,7 @@ definition {
 			locator1 = "CKEditor#BODY",
 			value1 = "${content}");
 
-		SelectFieldText(locator1 = "CKEditor#BODY");
-
-		SelectFrame(value1 = "relative=top");
-
-		WaitForElementPresent(
-			key_titleName = "${optionTool}",
-			locator1 = "FormFields#TOOLBAR_ANY_ITEM_BUTTON");
-
-		Click(
-			key_titleName = "${optionTool}",
-			locator1 = "FormFields#TOOLBAR_ANY_ITEM_BUTTON");
+		SelectFrame();
 	}
 
 	macro editTextDescription {
@@ -636,14 +650,10 @@ definition {
 			locator1 = "FormFields#SELECT_SINGLE_SELECTION_ROW_OPTION_INPUT");
 	}
 
-	macro enableSwitcher {
-		Pause(locator1 = "2000");
-
-		Click(
+	macro enableSwitch {
+		Check.checkToggleSwitch(
 			key_fieldName = "${fieldName}",
-			locator1 = "FormFields#SWITCHER");
-
-		Pause(locator1 = "2000");
+			locator1 = "FormFields#SWITCH");
 	}
 
 	macro getFieldName {
@@ -957,12 +967,12 @@ definition {
 		Click(locator1 = "FormFields#SELECT_FIELD");
 	}
 
-	macro selectSwitcherOption {
+	macro selectSwitchOption {
 		var key_fieldName = "${fieldName}";
-		var key_switcherOption = "${switcherOption}";
-		var key_switcherOption = StringUtil.replace("${switcherOption}", " ", "");
+		var key_switchOption = "${switchOption}";
+		var key_switchOption = StringUtil.replace("${switchOption}", " ", "");
 
-		Click(locator1 = "FormFields#SWITCHER");
+		Click(locator1 = "FormFields#SWITCH");
 	}
 
 	macro selectTextFieldLineOption {
@@ -983,6 +993,28 @@ definition {
 		AssertElementPresent(
 			key_imageName = "${uploadFileName}",
 			locator1 = "Form#SIDEBAR_ADVANCED_PREDEFINED_VALUE");
+	}
+
+	macro setInputMaskFormat {
+		Type(
+			locator1 = "FormFields#INPUT_MASK_FORMAT_VALUE",
+			value1 = "${inputMaskFormat}");
+	}
+
+	macro toggleCKEditorContentStyle {
+		SelectFrame.selectFrameNoLoading(locator1 = "CKEditor#BODY_FIELD_IFRAME");
+
+		SelectFieldText(locator1 = "CKEditor#BODY");
+
+		SelectFrame();
+
+		WaitForElementPresent(
+			key_titleName = "${optionTool}",
+			locator1 = "FormFields#TOOLBAR_ANY_ITEM_BUTTON");
+
+		Click(
+			key_titleName = "${optionTool}",
+			locator1 = "FormFields#TOOLBAR_ANY_ITEM_BUTTON");
 	}
 
 	macro validateImagePredefinedValue {
@@ -1427,6 +1459,18 @@ definition {
 			locator1 = "FormFields#NUMBER_FIELD_VALUE_ROW");
 	}
 
+	macro viewNumericInputMask {
+		AssertElementPresent(
+			key_inputMaskValue = "${inputMaskValue}",
+			locator1 = "FormFields#INPUT_MASK_VALUE");
+	}
+
+	macro viewNumericType {
+		AssertElementPresent(
+			key_numericType = "${numericType}",
+			locator1 = "FormFields#NUMERIC_TYPE");
+	}
+
 	macro viewOptionColumnsName {
 		AssertElementPresent(
 			key_fieldName = "${fieldTitle}",
@@ -1735,6 +1779,12 @@ definition {
 		AssertElementNotPresent(locator1 = "Icon#ASTERISK");
 	}
 
+	macro viewRequiredErrorMessage {
+		AssertElementPresent(
+			key_errorMessage = "${errorMessage}",
+			locator1 = "FormFields#SIDEBAR_BASIC_ERROR_MESSAGE");
+	}
+
 	macro viewRichTextPredefinedValue {
 		SelectFrame.selectFrameNoLoading(
 			key_fieldLabel = "Rich Text",
@@ -1850,17 +1900,17 @@ definition {
 		AssertElementPresent(locator1 = "FormFields#ANY_SOURCE_ELEMENT");
 	}
 
-	macro viewSwitcher {
+	macro viewSwitch {
 		var key_fieldName = "${fieldName}";
 
-		AssertElementPresent(locator1 = "FormFields#SWITCHER");
+		AssertElementPresent(locator1 = "FormFields#SWITCH");
 	}
 
-	macro viewSwitcherChecked {
+	macro viewSwitchChecked {
 		FormFields.viewCheckboxChecked(fieldName = "${fieldName}");
 	}
 
-	macro viewSwitcherLabel {
+	macro viewSwitchLabel {
 		AssertTextEquals.assertText(
 			key_fieldLabel = "${fieldLabel}",
 			key_fieldName = "${fieldName}",
@@ -1868,7 +1918,7 @@ definition {
 			value1 = "${fieldLabel}");
 	}
 
-	macro viewSwitcherLabelNotPresent {
+	macro viewSwitchLabelNotPresent {
 		var key_fieldName = "${fieldName}";
 
 		AssertTextNotPresent(
@@ -1877,11 +1927,11 @@ definition {
 			value1 = "${fieldLabel}");
 	}
 
-	macro viewSwitcherOption {
+	macro viewSwitchOption {
 		var key_fieldName = "${fieldName}";
 		var key_optionValue = "${optionValue}";
 
-		AssertElementPresent(locator1 = "FormFields#SWITCHER_OPTION_IN_FIELD");
+		AssertElementPresent(locator1 = "FormFields#SWITCH_OPTION_IN_FIELD");
 	}
 
 	macro viewTableNotPresent {

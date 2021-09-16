@@ -948,29 +948,31 @@ public class PortalImpl implements Portal {
 			return null;
 		}
 
-		String domain = uri.getHost();
+		String decodedURL = HttpUtil.decodeURL(url);
 
-		String protocol = uri.getScheme();
+		if (Validator.isNotNull(uri.getPath()) &&
+			decodedURL.startsWith(HttpUtil.decodeURL(uri.getPath()))) {
 
-		if (domain == null) {
-			if (uri.getPath() == null) {
-				return null;
-			}
-
-			// Specs allow URL of protocol followed by path, but we do not
-
-			if (protocol != null) {
-				return null;
-			}
-
-			// The URL is a relative path
+			// Relative URL
 
 			return url;
 		}
 
-		// Specs regard URL starting with double slashes as valid, but we do not
+		String protocol = uri.getScheme();
 
 		if (protocol == null) {
+
+			// Protocol is required
+
+			return null;
+		}
+
+		String domain = uri.getHost();
+
+		if (Validator.isNull(domain)) {
+
+			// Absolute URL must have a domain
+
 			return null;
 		}
 
@@ -1867,7 +1869,7 @@ public class PortalImpl implements Portal {
 				PortletMode.VIEW
 			).setWindowState(
 				WindowState.MAXIMIZED
-			).build();
+			).buildPortletURL();
 
 			if (!PropsValues.COMPANY_SECURITY_AUTH_REQUIRES_HTTPS) {
 				return createAccountURL.toString();
@@ -3950,15 +3952,9 @@ public class PortalImpl implements Portal {
 
 		long plid = LayoutConstants.DEFAULT_PLID;
 
-		StringBundler sb = new StringBundler(5);
-
-		sb.append(groupId);
-		sb.append(StringPool.SPACE);
-		sb.append(privateLayout);
-		sb.append(StringPool.SPACE);
-		sb.append(portletId);
-
-		String key = sb.toString();
+		String key = StringBundler.concat(
+			groupId, StringPool.SPACE, privateLayout, StringPool.SPACE,
+			portletId);
 
 		Long plidObj = _plidToPortletIdMap.get(key);
 
@@ -5604,14 +5600,8 @@ public class PortalImpl implements Portal {
 		x = url.indexOf(CharPool.QUESTION);
 
 		if (x != -1) {
-			StringBundler sb = new StringBundler(4);
-
-			sb.append(url.substring(0, x));
-			sb.append(JSESSIONID);
-			sb.append(sessionId);
-			sb.append(url.substring(x));
-
-			return sb.toString();
+			return StringBundler.concat(
+				url.substring(0, x), JSESSIONID, sessionId, url.substring(x));
 		}
 
 		// In IE6, http://www.abc.com;jsessionid=XYZ does not work, but
@@ -5659,9 +5649,9 @@ public class PortalImpl implements Portal {
 			String remoteUser = httpServletRequest.getRemoteUser();
 
 			if ((remoteUser == null) && !PropsValues.PORTAL_JAAS_ENABLE) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				remoteUser = (String)session.getAttribute("j_remoteuser");
+				remoteUser = (String)httpSession.getAttribute("j_remoteuser");
 			}
 
 			if (remoteUser == null) {
@@ -5751,7 +5741,6 @@ public class PortalImpl implements Portal {
 				httpServletRequest, "mvcRenderCommandName");
 			String path = GetterUtil.getString(
 				httpServletRequest.getPathInfo());
-			String strutsAction = getStrutsAction(httpServletRequest);
 
 			boolean alwaysAllowDoAsUser = false;
 
@@ -5760,7 +5749,8 @@ public class PortalImpl implements Portal {
 					"/document_library/edit_file_entry") ||
 				path.equals("/portal/session_click") ||
 				isAlwaysAllowDoAsUser(
-					actionName, mvcRenderCommandName, path, strutsAction)) {
+					actionName, mvcRenderCommandName, path,
+					getStrutsAction(httpServletRequest))) {
 
 				try {
 					alwaysAllowDoAsUser = isAlwaysAllowDoAsUser(
@@ -5796,9 +5786,9 @@ public class PortalImpl implements Portal {
 			}
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		userIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
+		userIdObj = (Long)httpSession.getAttribute(WebKeys.USER_ID);
 
 		if (userIdObj != null) {
 			httpServletRequest.setAttribute(WebKeys.USER_ID, userIdObj);
@@ -5927,8 +5917,8 @@ public class PortalImpl implements Portal {
 	}
 
 	@Override
-	public String getUserPassword(HttpSession session) {
-		return (String)session.getAttribute(WebKeys.USER_PASSWORD);
+	public String getUserPassword(HttpSession httpSession) {
+		return (String)httpSession.getAttribute(WebKeys.USER_PASSWORD);
 	}
 
 	@Override
@@ -6111,9 +6101,9 @@ public class PortalImpl implements Portal {
 			long userId = getUserId(httpServletRequest);
 
 			if (userId > 0) {
-				HttpSession session = httpServletRequest.getSession();
+				HttpSession httpSession = httpServletRequest.getSession();
 
-				session.invalidate();
+				httpSession.invalidate();
 			}
 
 			throw noSuchUserException;
@@ -6434,13 +6424,13 @@ public class PortalImpl implements Portal {
 			return httpServletRequest.isSecure();
 		}
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		if (session == null) {
+		if (httpSession == null) {
 			return httpServletRequest.isSecure();
 		}
 
-		Boolean httpsInitial = (Boolean)session.getAttribute(
+		Boolean httpsInitial = (Boolean)httpSession.getAttribute(
 			WebKeys.HTTPS_INITIAL);
 
 		if ((httpsInitial == null) || httpsInitial) {
@@ -6768,17 +6758,17 @@ public class PortalImpl implements Portal {
 		}
 
 		if (Validator.isNotNull(redirect)) {
-			HttpSession session = PortalSessionThreadLocal.getHttpSession();
+			HttpSession httpSession = PortalSessionThreadLocal.getHttpSession();
 
-			if (session == null) {
-				session = httpServletRequest.getSession();
+			if (httpSession == null) {
+				httpSession = httpServletRequest.getSession();
 			}
 
 			httpServletResponse.setStatus(status);
 
-			SessionErrors.add(session, exception.getClass(), exception);
+			SessionErrors.add(httpSession, exception.getClass(), exception);
 
-			ServletContext servletContext = session.getServletContext();
+			ServletContext servletContext = httpSession.getServletContext();
 
 			RequestDispatcher requestDispatcher =
 				servletContext.getRequestDispatcher(redirect);
@@ -7642,6 +7632,14 @@ public class PortalImpl implements Portal {
 			return 0;
 		}
 
+		HttpSession httpSession = httpServletRequest.getSession();
+
+		Long realUserIdObj = (Long)httpSession.getAttribute(WebKeys.USER_ID);
+
+		if (!alwaysAllowDoAsUser && (realUserIdObj == null)) {
+			return 0;
+		}
+
 		long doAsUserId = GetterUtil.getLong(doAsUserIdString);
 
 		if (doAsUserId == 0) {
@@ -7652,11 +7650,16 @@ public class PortalImpl implements Portal {
 					Encryptor.decrypt(company.getKeyObj(), doAsUserIdString));
 			}
 			catch (Exception exception) {
-				if (_log.isWarnEnabled()) {
-					_log.warn(
+				if (_log.isDebugEnabled()) {
+					_log.debug(
 						"Unable to impersonate " + doAsUserIdString +
 							" because the string cannot be decrypted",
 						exception);
+				}
+				else if (_log.isWarnEnabled()) {
+					_log.warn(
+						"Unable to impersonate " + doAsUserIdString +
+							" because the string cannot be decrypted");
 				}
 
 				return 0;
@@ -7681,17 +7684,7 @@ public class PortalImpl implements Portal {
 			return doAsUserId;
 		}
 
-		HttpSession session = httpServletRequest.getSession();
-
-		Long realUserIdObj = (Long)session.getAttribute(WebKeys.USER_ID);
-
-		if (realUserIdObj == null) {
-			return 0;
-		}
-
 		User doAsUser = UserLocalServiceUtil.getUserById(doAsUserId);
-
-		long[] organizationIds = doAsUser.getOrganizationIds();
 
 		User realUser = UserLocalServiceUtil.getUserById(
 			realUserIdObj.longValue());
@@ -7701,7 +7694,7 @@ public class PortalImpl implements Portal {
 
 		if (doAsUser.isDefaultUser() ||
 			UserPermissionUtil.contains(
-				permissionChecker, doAsUserId, organizationIds,
+				permissionChecker, doAsUserId, doAsUser.getOrganizationIds(),
 				ActionKeys.IMPERSONATE)) {
 
 			httpServletRequest.setAttribute(
@@ -8122,9 +8115,9 @@ public class PortalImpl implements Portal {
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse, Locale locale) {
 
-		HttpSession session = httpServletRequest.getSession();
+		HttpSession httpSession = httpServletRequest.getSession();
 
-		session.setAttribute(WebKeys.LOCALE, locale);
+		httpSession.setAttribute(WebKeys.LOCALE, locale);
 
 		LanguageUtil.updateCookie(
 			httpServletRequest, httpServletResponse, locale);
@@ -8773,7 +8766,9 @@ public class PortalImpl implements Portal {
 		String siteGroupFriendlyURL, String layoutFriendlyURL,
 		String groupFriendlyURL) {
 
-		if (groupFriendlyURL.contains(_PUBLIC_GROUP_SERVLET_MAPPING)) {
+		if (groupFriendlyURL.contains(
+				_PUBLIC_GROUP_SERVLET_MAPPING + StringPool.SLASH)) {
+
 			if (groupFriendlyURL.contains(
 					StringBundler.concat(
 						_PUBLIC_GROUP_SERVLET_MAPPING, siteGroupFriendlyURL,

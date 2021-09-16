@@ -17,17 +17,17 @@ package com.liferay.object.admin.rest.resource.v1_0.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.client.dto.v1_0.ObjectField;
-import com.liferay.object.admin.rest.client.pagination.Page;
-import com.liferay.object.admin.rest.client.pagination.Pagination;
+import com.liferay.object.constants.ObjectDefinitionConstants;
+import com.liferay.object.exception.NoSuchObjectDefinitionException;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.test.rule.Inject;
 
+import java.util.Collections;
+
 import org.junit.After;
-import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -39,61 +39,30 @@ public class ObjectDefinitionResourceTest
 	extends BaseObjectDefinitionResourceTestCase {
 
 	@After
-	@Override
-	public void tearDown() {
+	public void tearDown() throws Exception {
+		super.tearDown();
+
 		if (_objectDefinition != null) {
 			try {
 				_objectDefinitionLocalService.deleteObjectDefinition(
 					_objectDefinition.getId());
 			}
-			catch (Exception exception) {
+			catch (NoSuchObjectDefinitionException
+						noSuchObjectDefinitionException) {
+
 				if (_log.isDebugEnabled()) {
-					_log.debug(exception, exception);
+					_log.debug(
+						noSuchObjectDefinitionException,
+						noSuchObjectDefinitionException);
 				}
 			}
 		}
 	}
 
+	@Ignore
 	@Override
 	@Test
-	public void testGetObjectDefinitionsPage() throws Exception {
-		Page<ObjectDefinition> objectDefinitionsPage =
-			objectDefinitionResource.getObjectDefinitionsPage(
-				Pagination.of(1, 10));
-
-		long totalCount = objectDefinitionsPage.getTotalCount();
-
-		_addObjectDefinition(randomObjectDefinition());
-
-		objectDefinitionsPage =
-			objectDefinitionResource.getObjectDefinitionsPage(
-				Pagination.of(1, 10));
-
-		Assert.assertEquals(
-			totalCount + 1, objectDefinitionsPage.getTotalCount());
-	}
-
-	@Override
-	@Test
-	public void testGraphQLGetObjectDefinitionsPage() throws Exception {
-		GraphQLField graphQLField = new GraphQLField(
-			"objectDefinitions", new GraphQLField("items", getGraphQLFields()),
-			new GraphQLField("page"), new GraphQLField("totalCount"));
-
-		JSONObject objectDefinitionsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/objectDefinitions");
-
-		int totalCount = (int)objectDefinitionsJSONObject.get("totalCount");
-
-		testGraphQLObjectDefinition_addObjectDefinition();
-
-		objectDefinitionsJSONObject = JSONUtil.getValueAsJSONObject(
-			invokeGraphQLQuery(graphQLField), "JSONObject/data",
-			"JSONObject/objectDefinitions");
-
-		Assert.assertEquals(
-			totalCount + 1, objectDefinitionsJSONObject.get("totalCount"));
+	public void testGraphQLGetObjectDefinitionNotFound() {
 	}
 
 	@Override
@@ -105,14 +74,24 @@ public class ObjectDefinitionResourceTest
 	protected ObjectDefinition randomObjectDefinition() throws Exception {
 		ObjectDefinition objectDefinition = super.randomObjectDefinition();
 
+		objectDefinition.setLabel(
+			Collections.singletonMap(
+				"en_US", "A" + objectDefinition.getName()));
 		objectDefinition.setName("A" + objectDefinition.getName());
-
-		ObjectField objectField = new ObjectField();
-
-		objectField.setName("column");
-		objectField.setType("String");
-
-		objectDefinition.setObjectFields(new ObjectField[] {objectField});
+		objectDefinition.setPluralLabel(
+			Collections.singletonMap(
+				"en_US", "A" + objectDefinition.getName()));
+		objectDefinition.setObjectFields(
+			new ObjectField[] {
+				new ObjectField() {
+					{
+						setLabel(Collections.singletonMap("en_US", "Column"));
+						setName("column");
+						setType(ObjectField.Type.create("String"));
+					}
+				}
+			});
+		objectDefinition.setScope(ObjectDefinitionConstants.SCOPE_COMPANY);
 
 		return objectDefinition;
 	}
@@ -132,7 +111,22 @@ public class ObjectDefinitionResourceTest
 	}
 
 	@Override
+	protected ObjectDefinition testGetObjectDefinitionsPage_addObjectDefinition(
+			ObjectDefinition objectDefinition)
+		throws Exception {
+
+		return _addObjectDefinition(objectDefinition);
+	}
+
+	@Override
 	protected ObjectDefinition testGraphQLObjectDefinition_addObjectDefinition()
+		throws Exception {
+
+		return _addObjectDefinition(randomObjectDefinition());
+	}
+
+	@Override
+	protected ObjectDefinition testPatchObjectDefinition_addObjectDefinition()
 		throws Exception {
 
 		return _addObjectDefinition(randomObjectDefinition());
@@ -146,12 +140,27 @@ public class ObjectDefinitionResourceTest
 		return _addObjectDefinition(objectDefinition);
 	}
 
+	@Override
+	protected ObjectDefinition
+			testPostObjectDefinitionPublish_addObjectDefinition()
+		throws Exception {
+
+		return _addObjectDefinition(randomObjectDefinition());
+	}
+
+	@Override
+	protected ObjectDefinition testPutObjectDefinition_addObjectDefinition()
+		throws Exception {
+
+		return _addObjectDefinition(randomObjectDefinition());
+	}
+
 	private ObjectDefinition _addObjectDefinition(
-			ObjectDefinition randomObjectDefinition)
+			ObjectDefinition objectDefinition)
 		throws Exception {
 
 		_objectDefinition = objectDefinitionResource.postObjectDefinition(
-			randomObjectDefinition);
+			objectDefinition);
 
 		return _objectDefinition;
 	}

@@ -21,7 +21,6 @@ import com.liferay.commerce.price.list.model.impl.CommercePriceListImpl;
 import com.liferay.commerce.price.list.model.impl.CommercePriceListModelImpl;
 import com.liferay.commerce.price.list.service.persistence.CommercePriceListPersistence;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.EntityCache;
 import com.liferay.portal.kernel.dao.orm.FinderCache;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
@@ -32,14 +31,12 @@ import com.liferay.portal.kernel.dao.orm.SQLQuery;
 import com.liferay.portal.kernel.dao.orm.Session;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.BaseModel;
 import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
 import com.liferay.portal.kernel.security.permission.InlineSQLHelperUtil;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.ServiceContextThreadLocal;
 import com.liferay.portal.kernel.service.persistence.impl.BasePersistenceImpl;
 import com.liferay.portal.kernel.util.ArrayUtil;
-import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
@@ -61,12 +58,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
-import org.osgi.framework.FrameworkUtil;
-import org.osgi.framework.ServiceRegistration;
 
 /**
  * The persistence implementation for the commerce price list service.
@@ -4162,8 +4153,8 @@ public class CommercePriceListPersistenceImpl
 	private static final String _FINDER_COLUMN_G_C_COMPANYID_2 =
 		"commercePriceList.companyId = ?";
 
-	private FinderPath _finderPathFetchByCatalogBasePriceList;
-	private FinderPath _finderPathCountByCatalogBasePriceList;
+	private FinderPath _finderPathFetchByG_CatalogBasePriceList;
+	private FinderPath _finderPathCountByG_CatalogBasePriceList;
 
 	/**
 	 * Returns the commerce price list where groupId = &#63; and catalogBasePriceList = &#63; or throws a <code>NoSuchPriceListException</code> if it could not be found.
@@ -4174,11 +4165,11 @@ public class CommercePriceListPersistenceImpl
 	 * @throws NoSuchPriceListException if a matching commerce price list could not be found
 	 */
 	@Override
-	public CommercePriceList findByCatalogBasePriceList(
+	public CommercePriceList findByG_CatalogBasePriceList(
 			long groupId, boolean catalogBasePriceList)
 		throws NoSuchPriceListException {
 
-		CommercePriceList commercePriceList = fetchByCatalogBasePriceList(
+		CommercePriceList commercePriceList = fetchByG_CatalogBasePriceList(
 			groupId, catalogBasePriceList);
 
 		if (commercePriceList == null) {
@@ -4212,10 +4203,11 @@ public class CommercePriceListPersistenceImpl
 	 * @return the matching commerce price list, or <code>null</code> if a matching commerce price list could not be found
 	 */
 	@Override
-	public CommercePriceList fetchByCatalogBasePriceList(
+	public CommercePriceList fetchByG_CatalogBasePriceList(
 		long groupId, boolean catalogBasePriceList) {
 
-		return fetchByCatalogBasePriceList(groupId, catalogBasePriceList, true);
+		return fetchByG_CatalogBasePriceList(
+			groupId, catalogBasePriceList, true);
 	}
 
 	/**
@@ -4227,7 +4219,7 @@ public class CommercePriceListPersistenceImpl
 	 * @return the matching commerce price list, or <code>null</code> if a matching commerce price list could not be found
 	 */
 	@Override
-	public CommercePriceList fetchByCatalogBasePriceList(
+	public CommercePriceList fetchByG_CatalogBasePriceList(
 		long groupId, boolean catalogBasePriceList, boolean useFinderCache) {
 
 		Object[] finderArgs = null;
@@ -4240,7 +4232,7 @@ public class CommercePriceListPersistenceImpl
 
 		if (useFinderCache) {
 			result = finderCache.getResult(
-				_finderPathFetchByCatalogBasePriceList, finderArgs);
+				_finderPathFetchByG_CatalogBasePriceList, finderArgs);
 		}
 
 		if (result instanceof CommercePriceList) {
@@ -4259,10 +4251,10 @@ public class CommercePriceListPersistenceImpl
 
 			sb.append(_SQL_SELECT_COMMERCEPRICELIST_WHERE);
 
-			sb.append(_FINDER_COLUMN_CATALOGBASEPRICELIST_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_CATALOGBASEPRICELIST_GROUPID_2);
 
 			sb.append(
-				_FINDER_COLUMN_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2);
+				_FINDER_COLUMN_G_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2);
 
 			String sql = sb.toString();
 
@@ -4284,8 +4276,8 @@ public class CommercePriceListPersistenceImpl
 				if (list.isEmpty()) {
 					if (useFinderCache) {
 						finderCache.putResult(
-							_finderPathFetchByCatalogBasePriceList, finderArgs,
-							list);
+							_finderPathFetchByG_CatalogBasePriceList,
+							finderArgs, list);
 					}
 				}
 				else {
@@ -4300,7 +4292,7 @@ public class CommercePriceListPersistenceImpl
 							}
 
 							_log.warn(
-								"CommercePriceListPersistenceImpl.fetchByCatalogBasePriceList(long, boolean, boolean) with parameters (" +
+								"CommercePriceListPersistenceImpl.fetchByG_CatalogBasePriceList(long, boolean, boolean) with parameters (" +
 									StringUtil.merge(finderArgs) +
 										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
 						}
@@ -4337,11 +4329,11 @@ public class CommercePriceListPersistenceImpl
 	 * @return the commerce price list that was removed
 	 */
 	@Override
-	public CommercePriceList removeByCatalogBasePriceList(
+	public CommercePriceList removeByG_CatalogBasePriceList(
 			long groupId, boolean catalogBasePriceList)
 		throws NoSuchPriceListException {
 
-		CommercePriceList commercePriceList = findByCatalogBasePriceList(
+		CommercePriceList commercePriceList = findByG_CatalogBasePriceList(
 			groupId, catalogBasePriceList);
 
 		return remove(commercePriceList);
@@ -4355,10 +4347,10 @@ public class CommercePriceListPersistenceImpl
 	 * @return the number of matching commerce price lists
 	 */
 	@Override
-	public int countByCatalogBasePriceList(
+	public int countByG_CatalogBasePriceList(
 		long groupId, boolean catalogBasePriceList) {
 
-		FinderPath finderPath = _finderPathCountByCatalogBasePriceList;
+		FinderPath finderPath = _finderPathCountByG_CatalogBasePriceList;
 
 		Object[] finderArgs = new Object[] {groupId, catalogBasePriceList};
 
@@ -4369,10 +4361,10 @@ public class CommercePriceListPersistenceImpl
 
 			sb.append(_SQL_COUNT_COMMERCEPRICELIST_WHERE);
 
-			sb.append(_FINDER_COLUMN_CATALOGBASEPRICELIST_GROUPID_2);
+			sb.append(_FINDER_COLUMN_G_CATALOGBASEPRICELIST_GROUPID_2);
 
 			sb.append(
-				_FINDER_COLUMN_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2);
+				_FINDER_COLUMN_G_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2);
 
 			String sql = sb.toString();
 
@@ -4404,11 +4396,12 @@ public class CommercePriceListPersistenceImpl
 		return count.intValue();
 	}
 
-	private static final String _FINDER_COLUMN_CATALOGBASEPRICELIST_GROUPID_2 =
-		"commercePriceList.groupId = ? AND ";
+	private static final String
+		_FINDER_COLUMN_G_CATALOGBASEPRICELIST_GROUPID_2 =
+			"commercePriceList.groupId = ? AND ";
 
 	private static final String
-		_FINDER_COLUMN_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2 =
+		_FINDER_COLUMN_G_CATALOGBASEPRICELIST_CATALOGBASEPRICELIST_2 =
 			"commercePriceList.catalogBasePriceList = ?";
 
 	private FinderPath _finderPathWithPaginationFindByLtD_S;
@@ -8655,7 +8648,7 @@ public class CommercePriceListPersistenceImpl
 			commercePriceList);
 
 		finderCache.putResult(
-			_finderPathFetchByCatalogBasePriceList,
+			_finderPathFetchByG_CatalogBasePriceList,
 			new Object[] {
 				commercePriceList.getGroupId(),
 				commercePriceList.isCatalogBasePriceList()
@@ -8769,9 +8762,9 @@ public class CommercePriceListPersistenceImpl
 		};
 
 		finderCache.putResult(
-			_finderPathCountByCatalogBasePriceList, args, Long.valueOf(1));
+			_finderPathCountByG_CatalogBasePriceList, args, Long.valueOf(1));
 		finderCache.putResult(
-			_finderPathFetchByCatalogBasePriceList, args,
+			_finderPathFetchByG_CatalogBasePriceList, args,
 			commercePriceListModelImpl);
 
 		args = new Object[] {
@@ -9255,16 +9248,6 @@ public class CommercePriceListPersistenceImpl
 	 * Initializes the commerce price list persistence.
 	 */
 	public void afterPropertiesSet() {
-		Bundle bundle = FrameworkUtil.getBundle(
-			CommercePriceListPersistenceImpl.class);
-
-		_bundleContext = bundle.getBundleContext();
-
-		_argumentsResolverServiceRegistration = _bundleContext.registerService(
-			ArgumentsResolver.class,
-			new CommercePriceListModelArgumentsResolver(),
-			new HashMapDictionary<>());
-
 		_finderPathWithPaginationFindAll = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITH_PAGINATION, "findAll", new String[0],
 			new String[0], true);
@@ -9395,14 +9378,14 @@ public class CommercePriceListPersistenceImpl
 			new String[] {Long.class.getName(), Long.class.getName()},
 			new String[] {"groupId", "companyId"}, false);
 
-		_finderPathFetchByCatalogBasePriceList = new FinderPath(
-			FINDER_CLASS_NAME_ENTITY, "fetchByCatalogBasePriceList",
+		_finderPathFetchByG_CatalogBasePriceList = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByG_CatalogBasePriceList",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"groupId", "catalogBasePriceList"}, true);
 
-		_finderPathCountByCatalogBasePriceList = new FinderPath(
+		_finderPathCountByG_CatalogBasePriceList = new FinderPath(
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION,
-			"countByCatalogBasePriceList",
+			"countByG_CatalogBasePriceList",
 			new String[] {Long.class.getName(), Boolean.class.getName()},
 			new String[] {"groupId", "catalogBasePriceList"}, false);
 
@@ -9499,11 +9482,7 @@ public class CommercePriceListPersistenceImpl
 
 	public void destroy() {
 		entityCache.removeCache(CommercePriceListImpl.class.getName());
-
-		_argumentsResolverServiceRegistration.unregister();
 	}
-
-	private BundleContext _bundleContext;
 
 	@ServiceReference(type = EntityCache.class)
 	protected EntityCache entityCache;
@@ -9571,120 +9550,6 @@ public class CommercePriceListPersistenceImpl
 	@Override
 	protected FinderCache getFinderCache() {
 		return finderCache;
-	}
-
-	private ServiceRegistration<ArgumentsResolver>
-		_argumentsResolverServiceRegistration;
-
-	private static class CommercePriceListModelArgumentsResolver
-		implements ArgumentsResolver {
-
-		@Override
-		public Object[] getArguments(
-			FinderPath finderPath, BaseModel<?> baseModel, boolean checkColumn,
-			boolean original) {
-
-			String[] columnNames = finderPath.getColumnNames();
-
-			if ((columnNames == null) || (columnNames.length == 0)) {
-				if (baseModel.isNew()) {
-					return FINDER_ARGS_EMPTY;
-				}
-
-				return null;
-			}
-
-			CommercePriceListModelImpl commercePriceListModelImpl =
-				(CommercePriceListModelImpl)baseModel;
-
-			long columnBitmask = commercePriceListModelImpl.getColumnBitmask();
-
-			if (!checkColumn || (columnBitmask == 0)) {
-				return _getValue(
-					commercePriceListModelImpl, columnNames, original);
-			}
-
-			Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
-				finderPath);
-
-			if (finderPathColumnBitmask == null) {
-				finderPathColumnBitmask = 0L;
-
-				for (String columnName : columnNames) {
-					finderPathColumnBitmask |=
-						commercePriceListModelImpl.getColumnBitmask(columnName);
-				}
-
-				if (finderPath.isBaseModelResult() &&
-					(FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION ==
-						finderPath.getCacheName())) {
-
-					finderPathColumnBitmask |= _ORDER_BY_COLUMNS_BITMASK;
-				}
-
-				_finderPathColumnBitmasksCache.put(
-					finderPath, finderPathColumnBitmask);
-			}
-
-			if ((columnBitmask & finderPathColumnBitmask) != 0) {
-				return _getValue(
-					commercePriceListModelImpl, columnNames, original);
-			}
-
-			return null;
-		}
-
-		@Override
-		public String getClassName() {
-			return CommercePriceListImpl.class.getName();
-		}
-
-		@Override
-		public String getTableName() {
-			return CommercePriceListTable.INSTANCE.getTableName();
-		}
-
-		private static Object[] _getValue(
-			CommercePriceListModelImpl commercePriceListModelImpl,
-			String[] columnNames, boolean original) {
-
-			Object[] arguments = new Object[columnNames.length];
-
-			for (int i = 0; i < arguments.length; i++) {
-				String columnName = columnNames[i];
-
-				if (original) {
-					arguments[i] =
-						commercePriceListModelImpl.getColumnOriginalValue(
-							columnName);
-				}
-				else {
-					arguments[i] = commercePriceListModelImpl.getColumnValue(
-						columnName);
-				}
-			}
-
-			return arguments;
-		}
-
-		private static final Map<FinderPath, Long>
-			_finderPathColumnBitmasksCache = new ConcurrentHashMap<>();
-
-		private static final long _ORDER_BY_COLUMNS_BITMASK;
-
-		static {
-			long orderByColumnsBitmask = 0;
-
-			orderByColumnsBitmask |=
-				CommercePriceListModelImpl.getColumnBitmask("displayDate");
-			orderByColumnsBitmask |=
-				CommercePriceListModelImpl.getColumnBitmask("createDate");
-			orderByColumnsBitmask |=
-				CommercePriceListModelImpl.getColumnBitmask("priority");
-
-			_ORDER_BY_COLUMNS_BITMASK = orderByColumnsBitmask;
-		}
-
 	}
 
 }

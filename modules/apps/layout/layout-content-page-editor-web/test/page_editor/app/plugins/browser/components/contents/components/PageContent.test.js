@@ -44,15 +44,6 @@ jest.mock(
 	'../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/contexts/EditableProcessorContext'
 );
 
-jest.mock(
-	'../../../../../../../../src/main/resources/META-INF/resources/page_editor/app/config',
-	() => ({
-		config: {
-			contentBrowsingEnabled: true,
-		},
-	})
-);
-
 const contents = [
 	{
 		actions: {
@@ -102,9 +93,15 @@ const inlineText = {
 	title: 'Heading Example',
 };
 
-const renderPageContent = (props = contents[0], pageContents = contents) =>
+const renderPageContent = (props = contents[0]) =>
 	render(
-		<StoreContextProvider initialState={{pageContents}}>
+		<StoreContextProvider
+			initialState={{
+				layoutData: {items: {}},
+				pageContents: contents,
+				permissions: {UPDATE: true, UPDATE_LAYOUT_CONTENT: true},
+			}}
+		>
 			<PageContent {...props} />
 		</StoreContextProvider>
 	);

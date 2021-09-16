@@ -137,7 +137,7 @@ public class SiteNavigationMenuLocalServiceImpl
 
 		resourceLocalService.deleteResource(
 			siteNavigationMenu.getCompanyId(),
-			SiteNavigationMenuItem.class.getName(),
+			SiteNavigationMenu.class.getName(),
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			siteNavigationMenu.getSiteNavigationMenuId());
 
@@ -178,6 +178,13 @@ public class SiteNavigationMenuLocalServiceImpl
 		}
 
 		return siteNavigationMenus.get(0);
+	}
+
+	@Override
+	public SiteNavigationMenu fetchSiteNavigationMenuByName(
+		long groupId, String name) {
+
+		return siteNavigationMenuPersistence.fetchByG_N(groupId, name);
 	}
 
 	@Override

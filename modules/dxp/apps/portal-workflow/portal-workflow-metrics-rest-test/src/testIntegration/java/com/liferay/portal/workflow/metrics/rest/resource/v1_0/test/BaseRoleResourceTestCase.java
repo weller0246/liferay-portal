@@ -27,7 +27,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
@@ -192,14 +191,13 @@ public abstract class BaseRoleResourceTestCase {
 
 	@Test
 	public void testGetProcessRolesPage() throws Exception {
-		Page<Role> page = roleResource.getProcessRolesPage(
-			testGetProcessRolesPage_getProcessId(), null);
-
-		Assert.assertEquals(0, page.getTotalCount());
-
 		Long processId = testGetProcessRolesPage_getProcessId();
 		Long irrelevantProcessId =
 			testGetProcessRolesPage_getIrrelevantProcessId();
+
+		Page<Role> page = roleResource.getProcessRolesPage(processId, null);
+
+		Assert.assertEquals(0, page.getTotalCount());
 
 		if (irrelevantProcessId != null) {
 			Role irrelevantRole = testGetProcessRolesPage_addRole(
@@ -248,6 +246,20 @@ public abstract class BaseRoleResourceTestCase {
 	protected Role testGraphQLRole_addRole() throws Exception {
 		throw new UnsupportedOperationException(
 			"This method needs to be implemented");
+	}
+
+	protected void assertContains(Role role, List<Role> roles) {
+		boolean contains = false;
+
+		for (Role item : roles) {
+			if (equals(role, item)) {
+				contains = true;
+
+				break;
+			}
+		}
+
+		Assert.assertTrue(roles + " does not contain " + role, contains);
 	}
 
 	protected void assertHttpResponseStatusCode(
@@ -662,8 +674,8 @@ public abstract class BaseRoleResourceTestCase {
 
 	}
 
-	private static final Log _log = LogFactoryUtil.getLog(
-		BaseRoleResourceTestCase.class);
+	private static final com.liferay.portal.kernel.log.Log _log =
+		LogFactoryUtil.getLog(BaseRoleResourceTestCase.class);
 
 	private static BeanUtilsBean _beanUtilsBean = new BeanUtilsBean() {
 

@@ -19,6 +19,9 @@ import com.liferay.asset.kernel.service.AssetTagServiceUtil;
 import com.liferay.asset.tags.selector.web.internal.search.EntriesChecker;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.Group;
+import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -27,10 +30,8 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portlet.asset.util.comparator.AssetTagNameComparator;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Locale;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -58,6 +59,14 @@ public class AssetTagsSelectorDisplayContext {
 		_renderRequest = renderRequest;
 		_renderResponse = renderResponse;
 		_rowChecker = rowChecker;
+	}
+
+	public String getAssetTagGroupName(AssetTag assetTag, Locale locale)
+		throws PortalException {
+
+		Group group = GroupLocalServiceUtil.getGroup(assetTag.getGroupId());
+
+		return group.getDescriptiveName(locale);
 	}
 
 	public String getEventName() {
@@ -94,7 +103,7 @@ public class AssetTagsSelectorDisplayContext {
 			"groupIds", StringUtil.merge(_getGroupIds())
 		).setParameter(
 			"selectedTagNames", StringUtil.merge(getSelectedTagNames())
-		).build();
+		).buildPortletURL();
 	}
 
 	public String[] getSelectedTagNames() {
@@ -136,16 +145,17 @@ public class AssetTagsSelectorDisplayContext {
 				new EntriesChecker(_renderRequest, _renderResponse));
 		}
 
+		int tagsCount = AssetTagServiceUtil.getTagsCount(
+			_getGroupIds(), _getKeywords());
+
+		tagsSearchContainer.setTotal(tagsCount);
+
 		List<AssetTag> tags = AssetTagServiceUtil.getTags(
 			_getGroupIds(), _getKeywords(), tagsSearchContainer.getStart(),
 			tagsSearchContainer.getEnd(),
 			tagsSearchContainer.getOrderByComparator());
 
-		List<AssetTag> filteredTags = _removeDuplicateAssetTags(tags);
-
-		tagsSearchContainer.setTotal(filteredTags.size());
-
-		tagsSearchContainer.setResults(filteredTags);
+		tagsSearchContainer.setResults(tags);
 
 		_tagsSearchContainer = tagsSearchContainer;
 
@@ -201,20 +211,6 @@ public class AssetTagsSelectorDisplayContext {
 			_httpServletRequest, "orderByCol", "name");
 
 		return _orderByCol;
-	}
-
-	private List<AssetTag> _removeDuplicateAssetTags(List<AssetTag> tags) {
-		Map<String, AssetTag> filteredTags = new LinkedHashMap<>();
-
-		for (AssetTag tag : tags) {
-			String tagName = tag.getName();
-
-			if (!filteredTags.containsKey(tagName)) {
-				filteredTags.put(tagName, tag);
-			}
-		}
-
-		return new ArrayList<>(filteredTags.values());
 	}
 
 	private String _eventName;

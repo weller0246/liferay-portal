@@ -987,8 +987,6 @@ mariadb.executable=${mariadb.executable}]]></echo>
 				</not>
 				<then>
 					<antcall target="deploy-license-xml" />
-
-					<antcall target="deploy-commerce-license-xml" />
 				</then>
 			</if>
 
@@ -2914,6 +2912,7 @@ log.sanitizer.enabled=false</echo>
 
 	<macrodef name="run-modules-integration-test">
 		<attribute default="tomcat" name="app.server.type" />
+		<attribute default="" name="aws.store.enabled" />
 		<attribute name="database.type" />
 		<attribute default="${database.@{database.type}.version}" name="database.version" />
 		<attribute default="" name="refreshdependencies" />
@@ -2944,6 +2943,7 @@ log.sanitizer.enabled=false</echo>
 							</antcall>
 
 							<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
+								<param name="aws.store.enabled" value="@{aws.store.enabled}" />
 								<param name="database.type" value="@{database.type}" />
 							</antcall>
 
@@ -5456,7 +5456,7 @@ log.sanitizer.enabled=false</echo>
 					<then>
 						<gradle-execute dir="modules" outputproperty="modules.project.paths" task="printProjectPath">
 							<arg value="--quiet" />
-							<arg value="-Dbuild.exclude.dirs=private/apps/osb-lcs,third-party" />
+							<arg value="-Dbuild.exclude.dirs=third-party" />
 						</gradle-execute>
 
 						<loadresource property="modules.test.class.group">
@@ -5525,6 +5525,34 @@ log.sanitizer.enabled=false</echo>
 
 	<target name="modules-functional-tomcat90-mysql57-jdk8">
 		<run-functional-test app.server.type="tomcat" database.type="mysql" database.version="5.7" />
+	</target>
+
+	<target name="modules-integration-aws-s3-mysql57-jdk8">
+		<set-tomcat-version-number liferay.portal.bundle="${test.portal.bundle.version}" />
+
+		<tstamp>
+			<format pattern="yyyyMMddkkmmssSSS" property="aws.bucket.id" />
+		</tstamp>
+
+		<ant antfile="build-test-aws-s3.xml" target="configure-aws-cli" />
+
+		<prepare-aws-s3-configuration />
+
+		<ant antfile="build-test-aws-s3.xml" target="create-s3-bucket" />
+
+		<trycatch>
+			<try>
+				<run-modules-integration-test
+					aws.store.enabled="true"
+					database.type="mysql"
+					database.version="5.7"
+				/>
+			</try>
+
+			<finally>
+				<ant antfile="build-test-aws-s3.xml" target="delete-s3-bucket" />
+			</finally>
+		</trycatch>
 	</target>
 
 	<target name="modules-integration-bundle-db2111-jdk8">
@@ -6360,6 +6388,56 @@ ${output.content}</echo>
 		</run-batch-test>
 	</target>
 
+	<target name="portal-license-smoke-jdk8">
+		<run-batch-test>
+			<test-action>
+				<database-test-run-test database.type="mysql" stop.app.server="true">
+					<test-action>
+						<antcall inheritAll="false" target="prepare-log4j-ext-xml">
+							<param name="database.type" value="@{database.type}" />
+						</antcall>
+
+						<antcall if:set="env.JENKINS_HOME" inheritAll="false" target="prepare-portal-ext-properties">
+							<param name="database.type" value="@{database.type}" />
+						</antcall>
+
+						<antcall inheritAll="false" target="prepare-system-ext-properties" />
+
+						<trycatch>
+							<try>
+								<antcall inheritall="false" target="start-app-server" />
+
+								<!--<antcall inheritall="false" target="run-selenium-test">
+									<param name="test.class" value="CommerceLicense#ViewCommerceEnabled" />
+								</antcall>-->
+							</try>
+
+							<finally>
+								<ant dir="portal-kernel" inheritAll="false" target="test-class">
+									<property name="test.class" value="PortalLogAssertorTest" />
+								</ant>
+							</finally>
+						</trycatch>
+					</test-action>
+				</database-test-run-test>
+			</test-action>
+
+			<test-set-up>
+				<ant antfile="build-test.xml" target="prepare-release-bundle" />
+
+				<tar
+					basedir="."
+					compression="gzip"
+					destfile="liferay-portal-bundle-tomcat.tar.gz"
+					includes="bundles/**"
+					longfile="posix"
+				/>
+
+				<prepare-test-environment />
+			</test-set-up>
+		</run-batch-test>
+	</target>
+
 	<target name="portal-renamed-tomcat-in-path-jdk8">
 		<run-batch-test>
 			<test-action>
@@ -6932,30 +7010,35 @@ information. Make sure to commit in all build REST results.
 			</test-action>
 
 			<test-set-up>
-				<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
+				<if>
+					<available file="liferay-portal-source.tar.gz" />
+					<then>
+						<echo>tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
 tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose</echo>
 
-				<execute>
-					<![CDATA[
-						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
-						tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
-					]]>
-				</execute>
-
-				<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
-
-				<trycatch property="tar.failure">
-					<try>
 						<execute>
 							<![CDATA[
-								tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
+								tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/build/system.packages.extra.mf --gzip --verbose
+								tar --extract --file=liferay-portal-source.tar.gz modules/core/portal-bootstrap/lib/biz.aQute.bnd.annotation.jar --gzip --verbose
 							]]>
 						</execute>
-					</try>
-					<catch>
-						<echo>${tar.failure}</echo>
-					</catch>
-				</trycatch>
+
+						<echo>tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'</echo>
+
+						<trycatch property="tar.failure">
+							<try>
+								<execute>
+									<![CDATA[
+										tar -zxvf liferay-portal-source.tar.gz --wildcards '*.profile-dxp.properties'
+									]]>
+								</execute>
+							</try>
+							<catch>
+								<echo>${tar.failure}</echo>
+							</catch>
+						</trycatch>
+					</then>
+				</if>
 
 				<echo>Deleting stale baseline log files.</echo>
 

@@ -553,23 +553,27 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 		AssetRenderer<?> assetRenderer, AssetEntry assetEntry,
 		boolean viewInContext) {
 
-		int delta = ParamUtil.getInteger(liferayPortletRequest, "delta");
-		boolean resetCur = ParamUtil.getBoolean(
-			liferayPortletRequest, "resetCur");
-
 		PortletURL redirectURL = PortletURLBuilder.createRenderURL(
 			liferayPortletResponse
 		).setParameter(
+			"assetEntryId", assetEntry.getEntryId()
+		).setParameter(
 			"cur", ParamUtil.getInteger(liferayPortletRequest, "cur")
-		).build();
+		).setParameter(
+			"delta",
+			() -> {
+				int delta = ParamUtil.getInteger(
+					liferayPortletRequest, "delta");
 
-		if (delta > 0) {
-			redirectURL.setParameter("delta", String.valueOf(delta));
-		}
+				if (delta > 0) {
+					return delta;
+				}
 
-		redirectURL.setParameter("resetCur", String.valueOf(resetCur));
-		redirectURL.setParameter(
-			"assetEntryId", String.valueOf(assetEntry.getEntryId()));
+				return null;
+			}
+		).setParameter(
+			"resetCur", ParamUtil.getBoolean(liferayPortletRequest, "resetCur")
+		).buildPortletURL();
 
 		PortletURL viewFullContentURL = PortletURLBuilder.create(
 			getBaseAssetViewURL(
@@ -577,7 +581,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 				assetEntry)
 		).setRedirect(
 			redirectURL
-		).build();
+		).buildPortletURL();
 
 		String viewURL = null;
 
@@ -631,7 +635,7 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 
 				return assetRendererFactory.getType();
 			}
-		).build();
+		).buildPortletURL();
 
 		String urlTitle = assetRenderer.getUrlTitle(
 			liferayPortletRequest.getLocale());
@@ -648,13 +652,10 @@ public class AssetPublisherHelperImpl implements AssetPublisherHelper {
 
 			urlTitle = urlTitle.replaceAll(StringPool.SLASH, StringPool.DASH);
 
-			StringBundler sb = new StringBundler(3);
-
-			sb.append(StringPool.DASH);
-			sb.append(StringPool.DASH);
-			sb.append(StringPool.PLUS);
-
-			urlTitle = urlTitle.replaceAll(sb.toString(), StringPool.DASH);
+			urlTitle = urlTitle.replaceAll(
+				StringBundler.concat(
+					StringPool.DASH, StringPool.DASH, StringPool.PLUS),
+				StringPool.DASH);
 
 			baseAssetViewURL.setParameter("urlTitle", urlTitle);
 		}
