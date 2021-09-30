@@ -30,8 +30,8 @@ definition {
 	@priority = "5"
 	test AssertUserIsStillLoggedInAfterAccessTokenExpiresAndRenew {
 		property keycloak.enabled = "true";
-		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsStillLoggedInAfterAccessTokenExpiresAndRenew";
+
 
 		// For testing only
 
@@ -97,7 +97,10 @@ definition {
 	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
 	test TokenRefreshOffsetCanBeSetAtSystemLevel {
 		property keycloak.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		OpenIDConnect.getOpenIDAccessToken();
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
