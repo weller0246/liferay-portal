@@ -37,17 +37,15 @@ definition {
 		Click(locator1 = "Button#SIGN_IN");
 
 		Type(
-			locator1 = "GoogleLogin#LOGIN_EMAIL_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_USERNAME_FIELD",
 			value1 = "${userEmailAddress}");
 
-		Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
-
 		Type(
-			locator1 = "GoogleLogin#LOGIN_PASSWORD_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_PASSWORD_FIELD",
 			value1 = "${userPassword}");
 
-		if (IsElementPresent(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON")) {
-			Click(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON");
+		if (IsElementPresent(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON")) {
+			Click(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON");
 		}
 		else {
 			Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
@@ -74,6 +72,58 @@ definition {
 			fieldValue = "https://accounts.google.com/.well-known/openid-configuration");
 
 		PortletEntry.save();
+	}
+
+	macro copyOSGIConnectionConfiguration {
+		var companyId = JSONCompany.getCompanyId();
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+		var OSGIPreConfigContent = FileUtil.read("test/functional/com/liferay/portalweb/tests/coreinfrastructure/security/openidconnect/dependencies/OpenIdConnectProviderConfiguration_default.config");
+		var OSGIConfig = "${liferayHome}/osgi/configs/${OSGiConfigFileName}";
+
+		FileUtil.write("${OSGIConfig}", "${OSGIPreConfigContent}");
+
+		//WaitForConsoleTextPresent(value1 = "Configuration Updater");
+	}
+
+	macro enableOpenIdConnect {
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect",
+			configurationScope = "System Scope");
+
+		FormFields.enableCheckbox(fieldName = "Enabled");
+
+    	AssertClick(
+    		locator1 = "Button#SUBMIT",
+    		value1 = "Save");
+
+   		WaitForElementPresent(locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET");
+	}
+
+	macro setTokenRefreshOffset {
+		AssertElementPresent(locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET");
+
+		AssertTextEquals(
+        	locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+        	value1 = "30");
+
+		Type(
+    		locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+    		value1 = "${expirationTime}");
+
+    	AssertClick(
+    		locator1 = "Button#SUBMIT",
+    		value1 = "Update");
+
+    	AssertTextEquals(
+    		locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+    		value1 = "${expirationTime}");
 	}
 
 	macro viewProvider {
