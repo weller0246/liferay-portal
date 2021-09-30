@@ -37,17 +37,15 @@ definition {
 		Click(locator1 = "Button#SIGN_IN");
 
 		Type(
-			locator1 = "GoogleLogin#LOGIN_EMAIL_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_USERNAME_FIELD",
 			value1 = "${userEmailAddress}");
 
-		Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
-
 		Type(
-			locator1 = "GoogleLogin#LOGIN_PASSWORD_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_PASSWORD_FIELD",
 			value1 = "${userPassword}");
 
-		if (IsElementPresent(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON")) {
-			Click(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON");
+		if (IsElementPresent(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON")) {
+			Click(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON");
 		}
 		else {
 			Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
@@ -76,6 +74,43 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro getOpenIDAccessTokenValue {
+		var mysqlStatement = "SELECT accessToken FROM lportal.OpenIdConnectSession;";
+
+		var sqlResults = SQL.executeMySQLStatement(
+			mysqlStatement = "${mysqlStatement}");
+
+		var int accessToken = StringUtil.extractDigits(StringUtil.regexReplaceAll("${sqlResults}", "[\r\n]", ""));
+
+		// 1. idot kiszedni es osszehasonlitani az elozoevel frissites utan 2. mcvvVersiont megnezni hogy nott-e 1-el. 3. accessTokent is ellenorizni hogy valtozott-e
+
+		return "${accessToken}";
+	}
+
+	macro getOpenIDModifiedDate {
+		var mysqlStatement = "SELECT modifiedDate FROM lportal.OpenIdConnectSession;";
+
+		var sqlResults = SQL.executeMySQLStatement(
+			mysqlStatement = "${mysqlStatement}");
+
+		echo("## * modifiedDate is: ${sqlResults}");
+
+		return "${sqlResults}";
+	}
+
+	macro getOpenIDMvccVersionValue {
+		var mysqlStatement = "SELECT mvccVersion FROM lportal.OpenIdConnectSession;";
+
+		var sqlResults = SQL.executeMySQLStatement(
+			mysqlStatement = "${mysqlStatement}");
+
+		var mvccVersion = StringUtil.extractDigits(StringUtil.regexReplaceAll("${sqlResults}", "[\r\n]", ""));
+
+		echo("## * mccVersion is: ${mvccVersion}");
+
+		return "${mvccVersion}";
+	}
+
 	macro viewProvider {
 		AssertClick(
 			locator1 = "UserBar#USER_SIGN_IN",
@@ -92,6 +127,22 @@ definition {
 		AssertElementPresent(
 			key_providerNname = "Google",
 			locator1 = "OpenIDConnectLogin#OPENID_CONNECT_DROPDOWN_OPTION");
+	}
+
+	macro waitForNewAccessTokenValue {
+		var isChanged = "false";
+
+		while (isChanged = "false") {
+			var first = "${firstValue}";
+			var second = OpenIDConnect.getOpenIDMvccVersionValue();
+
+			if (first > second ) {
+				isChanged = "true";
+			}
+			else {
+				Pause(locator1 = "10000");
+			}
+		}
 	}
 
 }
