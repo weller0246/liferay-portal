@@ -37,17 +37,15 @@ definition {
 		Click(locator1 = "Button#SIGN_IN");
 
 		Type(
-			locator1 = "GoogleLogin#LOGIN_EMAIL_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_USERNAME_FIELD",
 			value1 = "${userEmailAddress}");
 
-		Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
-
 		Type(
-			locator1 = "GoogleLogin#LOGIN_PASSWORD_FIELD",
+			locator1 = "OpenIDConnect#LOGIN_PASSWORD_FIELD",
 			value1 = "${userPassword}");
 
-		if (IsElementPresent(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON")) {
-			Click(locator1 = "GoogleLogin#LOGIN_SIGN_IN_BUTTON");
+		if (IsElementPresent(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON")) {
+			Click(locator1 = "OpenIDConnect#LOGIN_SIGN_IN_BUTTON");
 		}
 		else {
 			Click(locator1 = "GoogleLogin#LOGIN_NEXT_BUTTON");
@@ -76,6 +74,47 @@ definition {
 		PortletEntry.save();
 	}
 
+	macro getOpenIDAccessTokenValue {
+		var mysqlStatement = "SELECT accessToken FROM lportal.OpenIdConnectSession";
+
+		var sqlResults = SQL.executeMySQLStatement(
+			mysqlStatement = "${mysqlStatement}");
+
+		var accessToken = StringUtil.extractDigits(StringUtil.regexReplaceAll("${sqlResults}", "[\r\n]", ""));
+
+		// 1. idot kiszedni es osszehasonlitani az elozoevel frissites utan 2. mcvvVersiont megnezni hogy nott-e 1-el. 3. accessTokent is ellenorizni hogy valtozott-e
+
+		return "${accessToken}";
+	}
+
+	macro getOpenIDModifiedDate {
+		var liferayHome = PropsUtil.get("liferay.home.dir.name");
+    	var outputFile = "mysqltemp.txt";
+		var mysqlStatement = "SELECT DATE_FORMAT (modifiedDate, '%Y-%c-%e %T') FROM keycloak.OpenIdConnectSession;";
+
+		var sqlResults = SQL.executeMySQLStatement(
+			mysqlStatement = "${mysqlStatement}");
+
+		var modifiedDate = Files.readAllLines("${liferayHome}/${outputFile}").get(1);
+
+		echo("## * Modified date is: ${modifiedDate}");
+
+		return "${modifiedDate}";
+	}
+
+	macro getOpenIDMvccVersionValue {
+
+		var mysqlStatement = "SELECT mvccVersion FROM keycloak.OpenIdConnectSession";
+
+		SQL.executeMySQLStatement(mysqlStatement = "${mysqlStatement}");
+
+		//var mvccVersion = Files.readAllLines("${liferayHome}/${outputFile}").get(2);
+
+		echo("## mvcc Version  is: ${mysqlStatement}");
+
+		return "${mysqlStatement}";
+	}
+
 	macro viewProvider {
 		AssertClick(
 			locator1 = "UserBar#USER_SIGN_IN",
@@ -92,6 +131,24 @@ definition {
 		AssertElementPresent(
 			key_providerNname = "Google",
 			locator1 = "OpenIDConnectLogin#OPENID_CONNECT_DROPDOWN_OPTION");
+	}
+
+	macro waitForNewAccessTokenValue {
+		var isChanged = "false";
+		var first = "${firstAccessToken}";
+		var second = "";
+
+		while ("${isChanged}" == "false") {
+			second = OpenIDConnect.getOpenIDAccessTokenValue();
+
+			if ("${first}" == "${second}") {
+				Pause(locator1 = "10000");
+			}
+			else {
+				isChanged = "true";
+			}
+		}
+		return "${second}";
 	}
 
 }
