@@ -9,31 +9,175 @@ definition {
 		User.firstLoginUI();
 	}
 
-	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
-	test TokenRefreshOffsetCanBeSetAtSystemLevel {
+	@description = "This is a use case for LPS-124898 TC-1: Verify Refresh Token Offset is not existing in the Instance Settings."
+	test AssertTokenRefreshOffsetCannotBeSetAtInstanceLevel {
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
 
 		ApplicationsMenu.gotoPortlet(
 			category = "Configuration",
 			panel = "Control Panel",
-			portlet = "System Settings");
+			portlet = "Instance Settings");
 
 		SystemSettings.gotoConfiguration(
 			configurationCategory = "SSO",
 			configurationName = "OpenID Connect",
-			configurationScope = "System Scope");
+			configurationScope = "Virtual Instance Scope");
 
-		AssertTextEquals.assertPartialText(
-			locator1 = "Message#INFO",
-			value1 = "This configuration is not saved yet. The values shown are the default.");
+		AssertElementNotPresent(locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET");
+	}
 
-		Type(
-			locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
-			value1 = "60");
+	@description = "This is a use case for LPS-124900 TC-4: Verify that user session is terminated after a new access token is generated when the Refresh Token Offset is higher. "
+	@priority = "5"
+	test AssertUserIsLoggedOutWithHigherRefreshToken {
+		property keycloak.enabled = "true";
+		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config";
+		property portal.upstream = "marcell";
+		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsLoggedOutWithHigherRefreshToken";
 
-		AssertClick(
-			locator1 = "Button#SUBMIT",
-			value1 = "Save");
+		task ("Add and verify that the OSGI configuration has been added") {
+			OpenIDConnect.copyOSGIConnectionConfiguration(OSGiConfigFileName = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config");
+		}
+
+		task ("Enable and set the OpenID connect token refresh offset time") {
+			OpenIDConnect.enableOpenIdConnect();
+
+			OpenIDConnect.setTokenRefreshOffset(expirationTime = "20");
+		}
+
+		User.logoutPG();
+
+		task ("Verify that the User stay logged in after a new access token is generated five times") {
+			User.loginUserWithOpenIDConnectEnabledPG(
+				userEmailAddress = "user1",
+				userPassword = "test");
+
+			Pause(locator1 = "70000");
+
+			MyAccount.openMyAccountAdmin();
+
+			User.viewLoggedOutPG();
+
+			AssertConsoleTextPresent(value1 = "User 0 is not allowed to serve resource");
+		}
+	}
+
+	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
+	test TokenRefreshOffsetCanBeSetAtSystemLevel {
+		property portal.upstream = "true";
+		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		task ("Enable and set the OpenID connect token refresh offset time") {
+			OpenIDConnect.enableOpenIdConnect();
+
+			OpenIDConnect.setTokenRefreshOffset(expirationTime = "60");
+		}
+	}
+
+	@description = "This is a use case for LPS-124898 TC-1: Verify Token Refresh Offset cannot be saved with a value under 30 second. Blocked by LPS-138193"
+	test VerifyTokenRefreshOffsetMinimum {
+		property portal.upstream = "marcell";
+		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config";
+		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		task ("Verify that the User is not able to set the Token Refresh Offset below 30 seconds") {
+			OpenIDConnect.enableOpenIdConnect();
+
+			OpenIDConnect.setTokenRefreshOffset(expirationTime = "20");
+		}
+
+		task ("Verify that the User is not able to set the Token Refresh Offset below 30 seconds") {
+
+			WaitForConsoleTextPresent(value1 = "Token refresh offset needs to be at least 30 seconds");
+
+			AssertTextEquals(
+				locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+				value1 = "30");
+		}
+	}
+
+	@description = "This is a use case for LPS-124900 TC-2: Verify that user session is not terminated after a new access token is generated when Refresh Token Offset is not higher. "
+	@priority = "5"
+	test VerifyUserIsStillLoggedInAfterAccessTokenExpiresAndRenew {
+		property keycloak.enabled = "true";
+		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config";
+		property portal.upstream = "marcell";
+		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsStillLoggedInAfterAccessTokenExpiresAndRenew";
+
+		task ("Add and verify that the OSGI configuration has been added") {
+			OpenIDConnect.copyOSGIConnectionConfiguration(OSGiConfigFileName = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config");
+		}
+
+		task ("Enable OpenID connect") {
+			OpenIDConnect.enableOpenIdConnect();
+		}
+
+		User.logoutPG();
+
+		task ("Verify that the User stay logged in after a new access token is generated") {
+			User.loginUserWithOpenIDConnectEnabledPG(
+				userEmailAddress = "user1",
+				userPassword = "test");
+
+			Pause(locator1 = "65000");
+
+			MyAccount.openMyAccountAdmin();
+
+			User.viewLoggedInPG();
+		}
+	}
+
+	@description = "This is a use case for LPS-124898 TC-3: Verify that user session is not terminated after a new access token is generated in a clustered environment "
+	test VerifyUserIsStillLoggedInAfterAccessTokenExpiresAndRenewInClusteredEnvironment {
+		property keycloak.enabled = "true";
+		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config";
+		property portal.upstream = "marcell";
+		property test.name.skip.portal.instance = "OpenIDConnect#VerifyUserIsStillLoggedInAfterAccessTokenExpiresAndRenewInClusteredEnvironment";
+
+		task ("Add and verify that the OSGI configuration has been added") {
+			OpenIDConnect.copyOSGIConnectionConfiguration(OSGiConfigFileName = "com.liferay.portal.security.sso.openid.connect.internal.configuration.OpenIdConnectProviderConfiguration~default.config");
+		}
+
+		task ("Enable OpenID connect and add a virtual instance") {
+			OpenIDConnect.enableOpenIdConnect();
+
+			Navigator.openURL();
+
+			SAML.addVirtualInstances(virtualHosts = "www.able.com");
+		}
+
+		User.logoutPG();
+
+		task ("Verify that the User on the first instance stay logged in after the 5. new access token is generated") {
+			User.loginUserWithOpenIDConnectEnabledPG(
+				userEmailAddress = "user1",
+				userPassword = "test");
+
+			Pause(locator1 = "350000");
+
+			MyAccount.openMyAccountAdmin();
+
+			User.viewUserInfomation(
+				userEmailAddress = "tester1@liferay.com",
+				userFirstName = "First1",
+				userLastName = "Last1");
+		}
+
+		User.logoutPG();
+
+		task ("Verify that the User on the second instance stay logged in after a new access token is generated") {
+			User.loginUserWithOpenIDConnectEnabledPG(
+				specificURL = "http://www.able.com:8080",
+				userEmailAddress = "user2",
+				userPassword = "test");
+
+			MyAccount.openMyAccountAdmin();
+
+			User.viewUserInfomation(
+				userEmailAddress = "tester2@liferay.com",
+				userFirstName = "First2",
+				userLastName = "Last2");
+		}
 	}
 
 }
