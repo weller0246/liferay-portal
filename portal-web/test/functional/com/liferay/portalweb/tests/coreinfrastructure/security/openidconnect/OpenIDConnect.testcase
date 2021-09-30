@@ -9,8 +9,78 @@ definition {
 		User.firstLoginUI();
 	}
 
+	@description = "This is a use case for LPS-124898 TC-1: Verify Refresh Token Offset is not existing in the Instance Settings."
+	test AssertTokenRefreshOffsetCannotBeSetAtInstanceLevel {
+		property keycloak.enabled = "true";
+		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		OpenIDConnect.getOpenIDAccessTokenValue();
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "Instance Settings Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect",
+			configurationScope = "Virtual Instance Scope");
+
+		AssertNotVisible(locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET");
+	}
+
+	@description = "This is a use cae for LPS-124900 TC-2: Verify that user session is not terminated after a new access token is generated when Refresh Token Offset is not larger "
+	@priority = "5"
+	test AssertUserIsStillLoggedInAfterAccessTokenExpiresAndRenew {
+		property keycloak.enabled = "true";
+		property portal.upstream = "marcell";
+		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsStillLoggedInAfterAccessTokenExpiresAndRenew";
+
+		// For testing only
+
+		User.logoutPG()
+
+		User.loginUserWithOpenIDConnectEnabledPG(
+			userEmailAddress = "user1",
+			userPassword = "test");
+
+		var firstAccessToken = OpenIDConnect.getOpenIDAccessTokenValue();
+
+		var firstMvccVersion = OpenIDConnect.getOpenIDMvccVersionValue();
+
+		var firstOpenIDModifiedDate = OpenIDConnect.getOpenIDModifiedDate();
+
+		Pause(locator1 = "60000");
+
+		var secondAccessToken = OpenIDConnect.waitForNewAccessTokenValue(firstValue = "${firstAccessToken}");
+
+		// Read the mvccVersion from the Database then subtract 1 to see
+
+		var secondMvccVersion = OpenIDConnect.getOpenIDMvccVersionValue();
+
+		var secondOpenIDModifiedDate = OpenIDConnect.getOpenIDModifiedDate();
+
+		if ("${firstAccessToken}" == "${secondAccessToken}") {
+			fail("Access Token is not changed");
+		}
+
+		if ("${firstMvccVersion}" != "${secondMvccVersion}") {
+			fail("Mvcc Version is not changed");
+		}
+
+		if ("${firstOpenIDModifiedDate}" == "${secondOpenIDModifiedDate}") {
+			fail("Modified Date is not changed");
+		}
+
+		MyAccount.openMyAccountAdmin();
+
+		User.viewLoggedInPG();
+	}
+
 	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
 	test TokenRefreshOffsetCanBeSetAtSystemLevel {
+		property keycloak.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
 
 		ApplicationsMenu.gotoPortlet(
@@ -34,6 +104,44 @@ definition {
 		AssertClick(
 			locator1 = "Button#SUBMIT",
 			value1 = "Save");
+
+		AssertTextEquals(
+			locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+			value1 = "60");
+	}
+
+	@description = "This is a use case for LPS-124898 TC-1: Verify Token Refresh Offset cannot be saved with a value under 30 second."
+	test VerifyTokenRefreshOffsetMinimum {
+		property keycloak.enabled = "true";
+		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
+
+		ApplicationsMenu.gotoPortlet(
+			category = "Configuration",
+			panel = "Control Panel",
+			portlet = "System Settings");
+
+		SystemSettings.gotoConfiguration(
+			configurationCategory = "SSO",
+			configurationName = "OpenID Connect",
+			configurationScope = "System Scope");
+
+		AssertTextEquals.assertPartialText(
+			locator1 = "Message#INFO",
+			value1 = "This configuration is not saved yet. The values shown are the default.");
+
+		Type(
+			locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+			value1 = "20");
+
+		AssertClick(
+			locator1 = "Button#SUBMIT",
+			value1 = "Save");
+
+		AssertTextEquals(
+			locator1 = "OpenIDConnect#TOKEN_REFRESH_OFFSET",
+			value1 = "30");
+
+		AssertConsoleTextPresent(value1 = "TODO");
 	}
 
 }
