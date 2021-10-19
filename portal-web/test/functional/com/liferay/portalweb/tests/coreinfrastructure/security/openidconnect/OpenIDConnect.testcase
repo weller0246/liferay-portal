@@ -2,7 +2,7 @@
 definition {
 
 	property portal.release = "true";
-	property portal.upstream = "true";
+	property portal.upstream = "marcell";
 	property testray.main.component.name = "Login";
 
 	setUp {
@@ -64,7 +64,7 @@ definition {
 
 	@description = "This is a use case for LPS-124898 TC-1: Verify Instance admin can set the token refresh offset via System settings."
 	test TokenRefreshOffsetCanBeSetAtSystemLevel {
-		property portal.upstream = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#TokenRefreshOffsetCanBeSetAtSystemLevel";
 
 		task ("Enable and set the OpenID connect token refresh offset time") {
