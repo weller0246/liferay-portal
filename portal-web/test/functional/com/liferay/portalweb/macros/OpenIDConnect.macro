@@ -75,7 +75,6 @@ definition {
 	}
 
 	macro copyOSGIConnectionConfiguration {
-		var companyId = JSONCompany.getCompanyId();
 		var liferayHome = PropsUtil.get("liferay.home.dir.name");
 		var OSGIPreConfigContent = FileUtil.read("test/functional/com/liferay/portalweb/tests/coreinfrastructure/security/openidconnect/dependencies/OpenIdConnectProviderConfiguration_default.config");
 		var OSGIConfig = "${liferayHome}/osgi/configs/${OSGiConfigFileName}";
