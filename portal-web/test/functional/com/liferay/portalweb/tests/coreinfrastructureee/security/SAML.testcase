@@ -3241,6 +3241,9 @@ definition {
 				password = "test",
 				userEmailAddress = "test@liferay.com",
 				userScreenName = "test");
+
+			User.logoutPG(specificURL = "http://www.baker.com:9080");
+
 			User.firstLoginUI(
 				password = "test",
 				specificURL = "http://www.able.com:9080",
