@@ -478,9 +478,7 @@ definition {
 		}
 
 		task ("Change the new site's status to active then verify it") {
-      		 SiteTemplates.editTemplateStatusCP(
-      	 		siteTemplateActiveEdit = "Yes",
-      	 		siteTemplateName = "Site Template Name Edit");
+      		SiteTemplates.activateCP(siteTemplateName = "Site Template Name Edit");
 
 			SiteTemplatesNavigator.openSiteTemplatesAdmin();
 
@@ -508,9 +506,7 @@ definition {
 		}
 
 		task ("Change the new site's status to active then verify it") {
-      		 SiteTemplates.editTemplateStatusCP(
-      	 		siteTemplateActiveEdit = "Yes",
-      	 		siteTemplateName = "Site Template Name Edit");
+      		SiteTemplates.activateCP(siteTemplateName = "Site Template Name Edit");
 
 			SiteTemplatesNavigator.openSiteTemplatesAdmin();
 
@@ -538,9 +534,7 @@ definition {
 		}
 
 		task ("Change the new site's status to active then verify it") {
-      		 SiteTemplates.editTemplateStatusCP(
-      	 		siteTemplateActiveEdit = "Yes",
-      	 		siteTemplateName = "Site Template Name Edit");
+      		SiteTemplates.activateCP(siteTemplateName = "Site Template Name Edit");
 
 			SiteTemplatesNavigator.openSiteTemplatesAdmin();
 
@@ -568,9 +562,7 @@ definition {
 		}
 
 		task ("Change the new site's status to active then verify it") {
-      		 SiteTemplates.editTemplateStatusCP(
-      	 		siteTemplateActiveEdit = "Yes",
-      	 		siteTemplateName = "Site Template Name Edit");
+      		SiteTemplates.activateCP(siteTemplateName = "Site Template Name Edit");
 
 			SiteTemplatesNavigator.openSiteTemplatesAdmin();
 
@@ -588,9 +580,7 @@ definition {
     	property portal.version = "7.0.10.16";
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -604,9 +594,8 @@ definition {
     	}
 
     	task ("Delete the AP widget from the created template") {
-			SiteTemplatesNavigator.openSiteTemplatesAdmin();
-
-    		SiteTemplates.gotoViewPages(
+    		SiteTemplatesNavigator.gotoSiteTemplatesPage(
+    			pageName = "Home",
     			siteName = "Liferay DXP",
     			siteTemplateName = "Site Template Name");
 
@@ -614,9 +603,7 @@ definition {
     	}
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -632,9 +619,7 @@ definition {
     	property portal.version = "7.1.10.3";
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -648,9 +633,8 @@ definition {
     	}
 
     	task ("Delete the AP widget from the created template") {
-			SiteTemplatesNavigator.openSiteTemplatesAdmin();
-
-    		SiteTemplates.gotoViewPages(
+    		SiteTemplatesNavigator.gotoSiteTemplatesPage(
+    			pageName = "Home",
     			siteName = "Liferay DXP",
     			siteTemplateName = "Site Template Name");
 
@@ -658,9 +642,7 @@ definition {
     	}
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -675,9 +657,7 @@ definition {
     	property portal.version = "7.2.10.1";
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -691,9 +671,8 @@ definition {
     	}
 
     	task ("Delete the AP widget from the created template") {
-			SiteTemplatesNavigator.openSiteTemplatesAdmin();
-
-    		SiteTemplates.gotoViewPages(
+    		SiteTemplatesNavigator.gotoSiteTemplatesPage(
+    			pageName = "Home",
     			siteName = "Liferay DXP",
     			siteTemplateName = "Site Template Name");
 
@@ -701,9 +680,7 @@ definition {
     	}
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -719,9 +696,7 @@ definition {
     	property portal.version = "7.3.10.1";
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
@@ -735,9 +710,8 @@ definition {
     	}
 
     	task ("Delete the AP widget from the created template") {
-			SiteTemplatesNavigator.openSiteTemplatesAdmin();
-
-    		SiteTemplates.gotoViewPages(
+    		SiteTemplatesNavigator.gotoSiteTemplatesPage(
+    			pageName = "Home",
     			siteName = "Liferay DXP",
     			siteTemplateName = "Site Template Name");
 
@@ -745,9 +719,7 @@ definition {
     	}
 
     	task ("Verify that the AP Widget is still present on the Site Name page") {
-			Site.openSitesAdmin();
-
-    		Site.viewCP(siteName = "Site Name");
+			Navigator.openSiteURL(siteName = "Site Name");
 
     		Refresh();
 
