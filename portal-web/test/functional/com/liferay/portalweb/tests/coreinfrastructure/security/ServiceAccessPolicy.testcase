@@ -65,6 +65,7 @@ definition {
 					-d emailAddress=test@liferay.com
 			''';
 
+
 			SystemSettings.getViewUserEmailPermissionDenied(curl = "${curl}");
 		}
 

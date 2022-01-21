@@ -190,7 +190,7 @@ definition {
 	macro getUserEmailSuccessfully {
 		var output = JSONCurlUtil.post("${curl}");
 
-		if (contains("${output}", ""agreedToTermsOfUse":true") && contains("${output}", ""companyId":"${companyId}"")) {
+		if (contains("${output}", ""agreedToTermsOfUse":true") && contains("${output}", ""companyId":"20099"")) {
 			echo("Get current user successful.");
 		}
 		else {
@@ -201,12 +201,10 @@ definition {
 	macro getViewUserEmailPermissionDenied {
 		var output = JSONCurlUtil.post("${curl}");
 
-		if (contains("${output}", "must have VIEW permission for com.liferay.portal.kernel.model.User ${userId}")) {
-			echo("Default user must have VIEW permission for com.liferay.portal.kernel.model.User ${userId}");
+		if (!(contains("${output}", "must have VIEW permission for com.liferay.portal.kernel.model"))) {
+			fail("FAIL! Cannot find the currrent user.");
 		}
-		else {
-			fail("FAIL! Cannot find the user info message.");
-		}
+
 	}
 
 	macro gotoConfiguration {
