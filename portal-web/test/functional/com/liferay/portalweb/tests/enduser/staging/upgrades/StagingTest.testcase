@@ -1,0 +1,27 @@
+@component-name = "portal-upgrades"
+definition {
+
+	property portal.upstream = "marcell";
+	property testray.main.component.name = "Staging";
+
+	setUp {
+		User.firstLoginPG();
+	}
+
+	test JSONSiteTemplateTest {
+		JSONSiteTemplate.addSiteTemplate(siteTemplateName = "AutomationSiteTemplate");
+
+		JSONSiteTemplate.addLayoutToSiteTemplate(
+			pageName = "AutomationPage",
+			siteTemplateName = "AutomationSiteTemplate");
+
+		JSONSiteTemplate.addSiteFromSiteTemplate(
+			groupName = "AutomationSite",
+			siteTemplateName = "AutomationSiteTemplate");
+
+		JSONSiteTemplate.deleteSiteTemplateByName(siteTemplateName = "AutomationSiteTemplate");
+
+		JSONSiteTemplate.deleteNonDefaultTemplates();
+	}
+
+}
