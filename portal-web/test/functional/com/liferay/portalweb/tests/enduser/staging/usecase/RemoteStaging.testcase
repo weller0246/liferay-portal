@@ -119,6 +119,37 @@ definition {
 			validateErrorMessage = "An unexpected error occurred with the publish process. Please check your portal and publishing configuration.");
 	}
 
+	test OnlyPublishedPagesShouldBePresentInSummary {
+		property portal.upstream = "marcell";
+
+		JSONLayout.addPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Staging Test Page 1");
+
+		JSONLayout.addPublicLayout(
+			groupName = "Site Name",
+			layoutName = "Staging Test Page 2");
+
+		Navigator.gotoSitePage(
+			pageName = "Staging Test Page 1",
+			siteName = "Site Name");
+
+		Staging.gotoPublishToLive();
+
+		Staging.configurePublishToLive(checkPageName = "Staging Test Page 1");
+
+		Staging.publishToLive(
+			publicationName = "sumCheck",
+			remoteStaging = "true");
+
+		Staging.openStagingAdmin(siteURLKey = "site-name");
+
+		Staging.viewPublicationSummary(
+			pagesNotToPublish = "Staging Test Page 2",
+			pagesToPublish = '''Staging Test Page 1''',
+			publicationTitle = "sumCheck");
+	}
+
 	@description = "This is a use case for LPS-72545."
 	@priority = "4"
 	test PublishCustomFieldDeletionviaRemoteStaging {
