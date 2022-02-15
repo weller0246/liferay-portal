@@ -2001,7 +2001,7 @@ definition {
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 
 			User.logoutPG(specificURL = "http://www.able.com:8080");
 
@@ -2016,7 +2016,7 @@ definition {
 				newUserScreenName = "user2",
 				portalInstanceName = "www.baker.com",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Verify IdP is logged in at baker.com:8080") {
