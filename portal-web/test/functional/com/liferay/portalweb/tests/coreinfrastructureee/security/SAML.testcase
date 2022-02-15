@@ -1886,6 +1886,7 @@ definition {
 	@description = "This is a use case for LPS-105170 TC-7: User creation and sync after SAML setup with 2 IdP portal - Using virtual instances."
 	@priority = "3"
 	test CreateAndSyncUserAfterSAMLSetupWithMultipleIdPs {
+		property portal.upstream = "marcell";
 		property app.server.bundles.size = "0";
 
 		task ("Enable SAML debug logs") {
