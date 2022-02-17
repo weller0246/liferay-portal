@@ -169,6 +169,16 @@ definition {
 			larFileName = "custom_fields.portlet.lar",
 			portletName = "Custom Fields");
 
+		Navigator.openSiteURL(siteName = "Site Name");
+
+		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
+
+		DMDocument.addCP(
+			customFieldText = "DM Document Custom Field",
+			dmDocumentDescription = "DM Document Description",
+			dmDocumentFile = "Document_1.txt",
+			dmDocumentTitle = "DM Document Title");
+
 		User.logoutPG();
 
 		User.firstLoginUI(
@@ -185,16 +195,6 @@ definition {
 		User.loginPG(
 			password = "test",
 			userEmailAddress = "test@liferay.com");
-
-		Navigator.openSiteURL(siteName = "Site Name");
-
-		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
-
-		DMDocument.addCP(
-			customFieldText = "DM Document Custom Field",
-			dmDocumentDescription = "DM Document Description",
-			dmDocumentFile = "Document_1.txt",
-			dmDocumentTitle = "DM Document Title");
 
 		Navigator.gotoSitePage(
 			pageName = "Staging Test Page",
@@ -239,32 +239,6 @@ definition {
 			customFieldName = "Text Field",
 			resourceName = "Document");
 
-		CustomFields.openCustomFieldAdmin();
-
-		LAR.exportPortlet(
-			exportIndividualDeletions = "true",
-			larFileName = "custom_fields_deletion.portlet.lar",
-			portletName = "Custom Fields");
-
-		User.logoutPG();
-
-		User.firstLoginUI(
-			password = "test",
-			specificURL = "http://localhost:9080",
-			userEmailAddress = "test@liferay.com");
-
-		CustomFields.openCustomFieldAdmin(baseURL = "http://localhost:9080");
-
-		LAR.importPortlet(
-			importDeletions = "true",
-			larFileName = "custom_fields_deletion.portlet.lar");
-
-		User.logoutPG(specificURL = "http://localhost:9080");
-
-		User.loginPG(
-			password = "test",
-			userEmailAddress = "test@liferay.com");
-
 		Navigator.openSiteURL(siteName = "Site Name");
 
 		DMNavigator.openDocumentsAndMediaAdmin(siteURLKey = "site-name");
@@ -281,6 +255,8 @@ definition {
 			siteName = "Site Name");
 
 		Staging.gotoPublishToLive();
+
+		Staging.configurePublishToLive(replicateIndividualDeletions = "true");
 
 		Staging.publishToLive(remoteStaging = "true");
 
