@@ -353,6 +353,10 @@ definition {
 			ContentConfiguration.uncheckLogo();
 		}
 
+		if ("${replicateIndividualDeletions}" == "true") {
+			Click(locator1 = "Staging#REPLICATE_INDIVIDUAL_DELETIONS");
+		}
+
 		if (isSet(checkPageName)) {
 			ContentConfiguration.checkPageName(checkPageName = "${checkPageName}");
 		}
