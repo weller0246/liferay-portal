@@ -155,6 +155,7 @@ definition {
 	@description = "This is a use case for LPS-72545. Custom fields can be deleted through publishing to live."
 	@priority = "4"
 	test PublishCustomFieldDeletionviaRemoteStaging {
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "RemoteStaging#PublishCustomFieldDeletionviaRemoteStaging";
 
 		CustomFields.addCP(
