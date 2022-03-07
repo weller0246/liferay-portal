@@ -1078,6 +1078,8 @@ definition {
 	@priority = "4"
 	test PublishViaPortletWithoutContent {
 		property portal.upstream = "marcell";
+		property test.name.skip.portal.instance = "Staging#PublishViaPortletWithoutContent";
+
 		SystemSettings.openSystemSettingsAdmin();
 
 		SystemSettings.gotoConfiguration(
