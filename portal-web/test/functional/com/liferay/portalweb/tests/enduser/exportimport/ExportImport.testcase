@@ -146,6 +146,7 @@ definition {
 		property test.name.skip.portal.instance = "ExportImport#CustomFieldDeletionViaImporting";
 		property minimum.slave.ram = "24";
 		property portal.upstream = "marcell";
+		property databases.size = "1";
 
 		CustomFields.addCP(
 			customFieldName = "Text Field",
