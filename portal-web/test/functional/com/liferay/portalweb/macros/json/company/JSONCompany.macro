@@ -72,7 +72,13 @@ definition {
 		Variables.assertDefined(parameterList = "${portalURL}");
 
 		var portalInstanceName = StringUtil.replace("${portalURL}", "http://", "");
-		var portalInstanceName = StringUtil.replace("${portalInstanceName}", ":8080", "");
+
+		if (contains("${portalURL}", "9080")) {
+			var portalInstanceName = StringUtil.replace("${portalInstanceName}", ":9080", "");
+		}
+		else {
+			var portalInstanceName = StringUtil.replace("${portalInstanceName}", ":8080", "");
+		}
 
 		return "${portalInstanceName}";
 	}
