@@ -483,23 +483,19 @@ definition {
 			userLastName = "userln",
 			userScreenName = "usersn");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		User.addPersonalSiteCP(
 			siteTemplateName = "Site Template Name",
 			userScreenName = "usersn");
 
-		ApplicationsMenu.gotoPortlet(
-			category = "Users",
-			panel = "Control Panel",
-			portlet = "Users and Organizations");
+		User.openUsersAdmin();
 
 		User.editPasswordCP(
 			userEmailAddress = "userea@liferay.com",
 			userScreenName = "usersn");
+
+		User.logoutPG();
 
 		User.firstLoginPG(
 			password = "test",
@@ -513,10 +509,6 @@ definition {
 			dmDocumentDescription = "DM Document Description",
 			dmDocumentFile = "Document_1.png",
 			dmDocumentTitle = "Document_1.png");
-
-		User.firstLoginPG(
-			password = "test",
-			userEmailAddress = "test@liferay.com");
 	}
 
 	@description = "This is a use case for LPS-86487. Page links on sites which were created in site templates should redirect correctly to other pages."
