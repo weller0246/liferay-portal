@@ -95,6 +95,8 @@ definition {
 		SAMLPortlet.addIdentityProviderConnection(
 			idpAttributeMapping = "${idpAttributeMapping}",
 			idpAttributeMappingText = "${idpAttributeMappingText}",
+			idpCustomFieldAttributeMapping = "${idpCustomFieldAttributeMapping}",
+			idpCustomFieldAttributeMappingText = "${idpCustomFieldAttributeMappingText}",
 			idpEntityId = "${idpEntityId}",
 			idpKeepAliveURL = "${idpKeepAliveURL}",
 			idpMetadataURL = "${idpURL}/c/portal/saml/metadata",
@@ -301,6 +303,10 @@ definition {
 
 		SAML.connectSPAndIdP(
 			idpAttributes = "${idpAttributes}",
+			idpAttributeMapping = "${idpAttributeMapping}",
+			idpAttributeMappingText = "${idpAttributeMappingText}",
+			idpCustomFieldAttributeMapping = "${idpCustomFieldAttributeMapping}",
+			idpCustomFieldAttributeMappingText = "${idpCustomFieldAttributeMappingText}",
 			idpEntityId = "samlidp",
 			idpKeepAliveURL = "${idpKeepAliveURL}",
 			idpURL = "http://localhost:8080",
@@ -333,7 +339,11 @@ definition {
 		SAMLNavigation.gotoIdentityProviderConnections();
 
 		SAMLPortlet.addIdentityProviderConnection(
+			customFieldUserMatching = "${customFieldUserMatching}",
 			idpAttributeMapping = "${idpAttributeMapping}",
+			idpAttributeMappingText = "${idpAttributeMappingText}",
+			idpCustomFieldAttributeMapping = "${idpCustomFieldAttributeMapping}",
+			idpCustomFieldAttributeMappingText = "${idpCustomFieldAttributeMappingText}",
 			idpEntityId = "${idpEntityId}",
 			idpKeepAliveURL = "${idpKeepAliveURL}",
 			idpMetadataURL = "${idpURL}/c/portal/saml/metadata",
