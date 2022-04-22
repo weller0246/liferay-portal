@@ -1979,6 +1979,7 @@ definition {
 	@description = "This is a use case for LPS-105170 TC-7: User creation and sync after SAML setup with 2 IdP portal - Using virtual instances."
 	@priority = "3"
 	test CreateAndSyncUserAfterSAMLSetupWithMultipleIdPs {
+		property portal.upstream = "gabor";
 		property app.server.bundles.size = "0";
 
 		task ("Enable SAML debug logs") {
@@ -2114,6 +2115,7 @@ definition {
 	@description = "LPS-128600 TC-1. Custom fields and their values will sync on SAML connection."
 	@priority = "5"
 	test CustomFieldsCanBeConfiguredForSAML {
+		property portal.upstream = "gabor";
 		property app.server.bundles.size = "0";
 		property test.name.skip.portal.instance = "SAML#ConfigureCustomFieldsForSAMLConnection";
 
@@ -2274,6 +2276,7 @@ definition {
 	@description = "LPS-128600 TC-2. Custom fields and their values will sync with 2 IdP provider. "
 	@priority = "5"
 	test CustomFieldsCanBeConfiguredForSAMLWithMultipleIdPs {
+		property portal.upstream = "gabor";
 		property app.server.bundles.size = "0";
 		property test.name.skip.portal.instance = "SAML#ConfigureCustomFieldsForSAMLConnectionWithMultipleIdPs";
 
@@ -2569,6 +2572,7 @@ definition {
 	@description = "LPS-128600 TC-6-7. Custom fields can be used for User matching in a SAML connection."
 	@priority = "4"
 	test CustomFieldsCanBeUsedForUserMatchingInSAML {
+		property portal.upstream = "gabor";
 		property app.server.bundles.size = "0";
 		property test.name.skip.portal.instance = "SAML#CustomFieldsCanBeUsedForUserMatchingInSAML";
 
