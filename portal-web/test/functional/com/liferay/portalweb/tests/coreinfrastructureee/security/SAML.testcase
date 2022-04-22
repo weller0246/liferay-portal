@@ -2009,9 +2009,15 @@ definition {
 				userEmailAddress = "test@liferay.com");
 
 			SAML.setupIDP(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				samlEntityId = "samlidp2",
 				userEmailAddress = "test@www.baker.com");
+
+			SAML.setupSP(
+				encryptionCertificate = "true",
+				samlEntityId = "samlsp",
+				spURL = "http://www.able.com:8080",
+				userEmailAddress = "test@www.able.com");
 		}
 
 		task ("Add IdP samlidp1 and samlidp2 configurations to SP able.com:8080") {
@@ -2029,7 +2035,7 @@ definition {
 			SAML.addIDPConfigurationsToServiceProvider(
 				idpAttributeMapping = "screenName,UUID,firstName,lastName,emailAddress",
 				idpEntityId = "samlidp2",
-				idpKeepAliveURL = "www.baker.com:8080/c/portal/saml/keep_alive",
+				idpKeepAliveURL = "http://www.baker.com:8080/c/portal/saml/keep_alive",
 				idpURL = "http://www.baker.com:8080",
 				nameIdentifierFormat = "Unspecified",
 				spURL = "http://www.able.com:8080",
@@ -2061,7 +2067,7 @@ definition {
 				userEmailAddress = "test@liferay.com");
 
 			SAML.addSPConfigurationsToIdentityProvider(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				nameIdentifierAttributeName = "emailAddress",
 				nameIdentifierFormat = "Email Address",
 				spAttributes = '''emailAddress
@@ -2087,7 +2093,7 @@ definition {
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 
 			User.logoutPG(specificURL = "http://www.able.com:8080");
 
@@ -2102,7 +2108,7 @@ definition {
 				newUserScreenName = "user2",
 				portalInstanceName = "www.baker.com",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Verify IdP is logged in at baker.com:8080") {
