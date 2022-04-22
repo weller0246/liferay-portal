@@ -1982,11 +1982,11 @@ definition {
 		property portal.upstream = "gabor";
 		property app.server.bundles.size = "0";
 
-		task ("Enable SAML debug logs") {
+		task ("Setup: Enable SAML debug logs") {
 			SAML.enableSAMLDebugLogs();
 		}
 
-		task ("Add virtual instance able.com and baker.com") {
+		task ("Given: Add virtual instance able.com and baker.com") {
 			HeadlessPortalInstanceAPI.addPortalInstance(
 				domain = "www.able.com",
 				portalInstanceId = "www.able.com",
@@ -2002,7 +2002,7 @@ definition {
 			User.viewLoggedOutPG();
 		}
 
-		task ("Setup IdP samlidp1 at localhost:8080 and samlidp2 at baker.com:8080") {
+		task ("And: Setup IdP samlidp1 at localhost:8080 and samlidp2 at baker.com:8080") {
 			SAML.setupIDP(
 				idpURL = "http://localhost:8080",
 				samlEntityId = "samlidp1",
@@ -2020,7 +2020,7 @@ definition {
 				userEmailAddress = "test@www.able.com");
 		}
 
-		task ("Add IdP samlidp1 and samlidp2 configurations to SP able.com:8080") {
+		task ("And: Add IdP samlidp1 and samlidp2 configurations to SP able.com:8080") {
 			SAML.addIDPConfigurationsToServiceProvider(
 				idpAttributeMapping = "screenName,emailAddress,firstName,lastName,UUID",
 				idpEntityId = "samlidp1",
@@ -2044,14 +2044,14 @@ definition {
 				userResolution = "attribute");
 		}
 
-		task ("Enable SP roles") {
+		task ("And: Enable SP roles for www.able.com:8080") {
 			SAML.enableSPRoles(
 				samlEntityId = "samlsp",
 				spURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 		}
 
-		task ("Add SP samlsp configurations to IdP localhost:8080 and able.com:8080") {
+		task ("When: Add SP samlsp configurations to IdP localhost:8080 and able.com:8080 are set") {
 			SAML.addSPConfigurationsToIdentityProvider(
 				idpURL = "http://localhost:8080",
 				nameIdentifierAttributeName = "screenName",
@@ -2081,7 +2081,7 @@ definition {
 				userEmailAddress = "test@www.baker.com");
 		}
 
-		task ("Add and sync users at localhost:8080 and able.com:8080") {
+		task ("And: Add and sync users at localhost:8080 and able.com:8080") {
 			SAML.addAndSyncNewUser(
 				creatorEmailAddress = "test@liferay.com",
 				creatorPassword = "test",
@@ -2111,7 +2111,7 @@ definition {
 				spURL = "http://www.able.com:8080");
 		}
 
-		task ("Verify IdP is logged in at baker.com:8080") {
+		task ("Then: Verify user is synced and is logged in at baker.com:8080") {
 			Navigator.openURL(baseURL = "http://www.baker.com:8080");
 
 			User.viewLoggedInPG();
