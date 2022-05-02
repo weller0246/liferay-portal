@@ -3176,6 +3176,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 					serviceContext.getCompanyId(),
 					userAccount.getEmailAddress());
 
+			Long userId = null;
+
 			if (existingUserAccount == null) {
 				JSONObject accountBriefsJSONObject =
 					accountBriefsJSONArray.getJSONObject(j);
@@ -3193,18 +3195,16 @@ public class BundleSiteInitializer implements SiteInitializer {
 					accountBriefsJSONObject,
 					jsonObject.getString("emailAddress"), serviceContext);
 
-				if (jsonObject.has("organizationBriefs")) {
-					_addOrganizationUser(
-						jsonObject.getJSONArray("organizationBriefs"),
-						serviceContext, userAccount.getId());
-				}
+				userId = userAccount.getId();
 			}
 			else {
-				if (jsonObject.has("organizationBriefs")) {
-					_addOrganizationUser(
-						jsonObject.getJSONArray("organizationBriefs"),
-						serviceContext, existingUserAccount.getUserId());
-				}
+				userId = existingUserAccount.getUserId();
+			}
+
+			if (jsonObject.has("organizationBriefs")) {
+				_addOrganizationUser(
+					jsonObject.getJSONArray("organizationBriefs"),
+					serviceContext, userId);
 			}
 
 			for (; j < accountBriefsJSONArray.length(); j++) {
