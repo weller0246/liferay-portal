@@ -3406,6 +3406,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 			Organization organization = organizationsPage.fetchFirstItem();
 
+			if(organization == null){
+				continue;
+			}
+
 			_userLocalService.addOrganizationUser(
 				GetterUtil.getLong(organization.getId()), userId);
 		}
