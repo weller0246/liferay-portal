@@ -1,0 +1,6 @@
+dn: cn=testgroup,dc=example,dc=com
+objectClass: groupOfUniqueNames
+objectClass: top
+cn: testgroup
+uniqueMember: cn=notTestUser,dc=openmicroscopy,dc=com
+uniqueMember: cn=testUser,dc=openmicroscopy,dc=com
