@@ -48,4 +48,36 @@ definition {
 		PortalSettings.viewEnabledLDAPSetting(enableSettingList = "${enableSettingList}");
 	}
 
+	@description = "Update LDAP database through LDIF file"
+	macro installLDAPCommandUtil {
+		AntCommand(
+			locator1 = "build-test-apacheds.xml",
+			value1 = "get-apacheds-commands");
+	}
+
+	@description = "Update LDAP database through LDIF file"
+	macro updateLDAPDatabaseWithLDIFFile {
+		AntCommand(
+			locator1 = "build-test-apacheds.xml",
+			value1 = "update-apacheds -DldifName=${ldifName}");
+	}
+
+	@description = "Verify that the group is imported on localhost after LDAP sync"
+	macro verifyLDAPUserGroupIsImported {
+		UserGroup.openUserGroupsAdmin();
+
+		AssertElementPresent(
+			key_userGroupName = "${userGroupName}",
+			locator1 = "UserGroups#USER_GROUP_TABLE_CHECKBOX");
+	}
+
+	@description = "Verify that the user is removed from group on localhost after LDAP sync"
+	macro verifyLDAPUserIsRemovedFromGroup {
+		UserGroup.openUserGroupsAdmin();
+
+		UserGroup.viewRemoveMemberCP(
+			userFirstName = "firstName2",
+			userGroupName = "testgroup");
+	}
+
 }
