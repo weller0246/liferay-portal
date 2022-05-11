@@ -161,6 +161,67 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-151394. LDAP user can be unassigned from groups through LDAP."
+	@priority = "5"
+	test CanRemoveUserFromGroupThroughLDAP {
+		property apacheds.enabled = "true";
+		property test.name.skip.portal.instance = "LDAP#CanRemoveUserFromGroupThroughLDAP";
+
+		task ("When: User enable DEBUG log level for LDAP related loggers") {
+			LDAP.enableLDAPDebugLogs();
+		}
+
+		task ("And: Add LDAP server and test connection") {
+			PortalSettings.addLDAPServer(ldapServerName = "ApacheDS Server");
+
+			PortalSettings.editLDAPServer(ldapServerName = "ApacheDS Server");
+
+			PortalSettings.testLDAPConnection();
+		}
+
+		task ("And: Configure LDAP settings") {
+			var enableSettingList = "enabled,ldapImportEnabled,importOnStartup";
+
+			LDAP.enableLDAPSettings(enableSettingList = "${enableSettingList}");
+
+			PortalSettings.changeGroupImportMethod(groupImportMethod = "Group");
+
+			PortalSettings.setImportIntervalTime(importIntervalTime = "1");
+		}
+
+		task ("When: User adds 2 user and to a group on LDAP, from wich only one have the mandatory fields to be imported") {
+			LDAP.installLDAPCommandUtil();
+
+			LDAP.updateLDAPDatabaseWithLDIFFile(ldifName = "addUser");
+
+			LDAP.updateLDAPDatabaseWithLDIFFile(ldifName = "addGroup");
+		}
+
+		task ("And: Manually triggers the LDAP import flow") {
+			Clustering.runGroovyScript(
+				nodePort = "8080",
+				scriptFile = "groovy-script-invoke-LDAPUSER-importon-master.groovy");
+
+			LDAP.verifyLDAPUserGroupIsImported(userGroupName = "testgroup");
+		}
+
+		task ("And: Removes the imported user on LDAP") {
+			LDAP.updateLDAPDatabaseWithLDIFFile(ldifName = "removeUser");
+		}
+
+		task ("And: Manually trigger the LDAP import flow") {
+			Clustering.runGroovyScript(
+				nodePort = "8080",
+				scriptFile = "groovy-script-invoke-LDAPUSER-importon-master.groovy");
+		}
+
+		task ("Then: The imported group should be empty and the user should be unassigned") {
+			LDAP.verifyLDAPUserIsRemovedFromGroup(
+				userGroupName = "testgroup",
+				userScreenName = "testuser");
+		}
+	}
+
 	@description = "This is a use case for LPS-30529. User fields are not reset to default when signing in with imported LDAP user."
 	@priority = "4"
 	test FieldValuesNotResetForImportedLDAPUser {
