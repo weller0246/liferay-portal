@@ -2,12 +2,12 @@
 definition {
 
 	property app.server.bundles.size = "1";
-	property custom.properties = "javascript.single.page.application.enabled=false${line.separator}jsonws.web.service.paths.excludes=";
+	property custom.properties = "jsonws.web.service.paths.excludes=";
 	property databases.size = "1";
 	property dummy.socket.proxy.disabled = "true";
 	property minimum.slave.ram = "24";
 	property portal.release = "true";
-	property portal.upstream = "true";
+	property portal.upstream = "marcell";
 	property test.run.environment = "EE";
 	property testray.main.component.name = "SAML";
 
