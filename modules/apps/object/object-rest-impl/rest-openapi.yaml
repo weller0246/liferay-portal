@@ -282,6 +282,7 @@ paths:
             tags: ["ObjectEntry"]
     "/{currentObjectEntryId}/{objectRelationshipName}":
         get:
+            operationId: getCurrentObjectEntriesObjectRelationshipNamePage
             parameters:
                 - in: path
                   name: currentObjectEntryId
