@@ -240,7 +240,9 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 				<div class="sidebar-section">
 
 					<%
-					boolean isLatestVersion = fileVersion.equals(fileEntry.getLatestFileVersion());
+					DLViewFileEntryDisplayContext dlViewFileEntryDisplayContext = (DLViewFileEntryDisplayContext)request.getAttribute(DLViewFileEntryDisplayContext.class.getName());
+
+					boolean isLatestVersion = fileVersion.equals(dlViewFileEntryDisplayContext.getFileVersion());
 
 					String urlLabel = null;
 
