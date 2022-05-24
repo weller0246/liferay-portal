@@ -45,10 +45,9 @@ public class DepotAdminDLDisplayContext {
 
 		_depotEntry = depotEntry;
 		_dlSizeLimitConfigurationProvider = dlSizeLimitConfigurationProvider;
-
 		_httpServletRequest = httpServletRequest;
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 

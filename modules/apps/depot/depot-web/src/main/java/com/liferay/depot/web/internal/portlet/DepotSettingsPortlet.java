@@ -81,13 +81,12 @@ public class DepotSettingsPortlet extends MVCPortlet {
 				themeDisplay.getScopeGroupId());
 
 			renderRequest.setAttribute(
-				DepotAdminWebKeys.DEPOT_ENTRY, depotEntry);
-
-			renderRequest.setAttribute(
 				DepotAdminDLDisplayContext.class.getName(),
 				new DepotAdminDLDisplayContext(
 					depotEntry, _dlSizeLimitConfigurationProvider,
 					_portal.getHttpServletRequest(renderRequest)));
+			renderRequest.setAttribute(
+				DepotAdminWebKeys.DEPOT_ENTRY, depotEntry);
 
 			renderRequest.setAttribute(
 				DepotAdminWebKeys.ITEM_SELECTOR, _itemSelector);

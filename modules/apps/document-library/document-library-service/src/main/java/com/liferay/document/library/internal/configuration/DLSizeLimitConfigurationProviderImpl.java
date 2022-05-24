@@ -46,7 +46,7 @@ public class DLSizeLimitConfigurationProviderImpl
 			long groupId, Map<String, Long> mimeTypeSizeLimit)
 		throws Exception {
 
-		Dictionary<String, Object> properties;
+		Dictionary<String, Object> properties = null;
 
 		Configuration configuration = _getGroupConfiguration(groupId);
 
