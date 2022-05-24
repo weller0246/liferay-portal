@@ -201,10 +201,11 @@ public class DLUploadFileEntryHandler implements UploadFileEntryHandler {
 				uploadPortletRequest);
 		}
 
-		ExpandoBridge expandoBridge = fileEntry.getExpandoBridge();
 		ServiceContext serviceContext =
 			_getServiceContextWithRestrictedGuestPermissions(
 				uploadPortletRequest);
+
+		ExpandoBridge expandoBridge = fileEntry.getExpandoBridge();
 
 		serviceContext.setExpandoBridgeAttributes(
 			expandoBridge.getAttributes());
