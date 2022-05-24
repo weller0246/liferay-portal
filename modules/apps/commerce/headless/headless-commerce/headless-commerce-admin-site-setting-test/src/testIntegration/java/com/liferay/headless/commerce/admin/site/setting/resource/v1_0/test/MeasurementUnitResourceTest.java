@@ -217,18 +217,15 @@ public class MeasurementUnitResourceTest
 				companyId = testCompany.getCompanyId();
 				externalReferenceCode = StringUtil.toLowerCase(
 					RandomTestUtil.randomString());
-
 				key = StringUtil.toLowerCase(RandomTestUtil.randomString());
-
 				name = HashMapBuilder.put(
 					LocaleUtil.US.toString(), RandomTestUtil.randomString()
 				).build();
-
 				primary = RandomTestUtil.randomBoolean();
 				priority = RandomTestUtil.randomDouble();
 				rate = RandomTestUtil.randomDouble();
-				type = _typesList.get(
-					RandomTestUtil.randomInt(0, _typesList.size() - 1));
+				type = _types.get(
+					RandomTestUtil.randomInt(0, _types.size() - 1));
 			}
 		};
 	}
@@ -288,8 +285,7 @@ public class MeasurementUnitResourceTest
 
 	@Override
 	protected String testGetMeasurementUnitsByType_getMeasurementUnitType() {
-		return _typesList.get(
-			RandomTestUtil.randomInt(0, _typesList.size() - 1));
+		return _types.get(RandomTestUtil.randomInt(0, _types.size() - 1));
 	}
 
 	@Override
@@ -354,7 +350,7 @@ public class MeasurementUnitResourceTest
 			randomMeasurementUnit);
 	}
 
-	private static final List<String> _typesList = Collections.unmodifiableList(
+	private static final List<String> _types = Collections.unmodifiableList(
 		ListUtil.fromArray("0", "1", "2", "Dimensions", "Unit", "Weight"));
 
 }
