@@ -60,6 +60,7 @@ export default function EditObjectField({
 	forbiddenLastChars,
 	forbiddenNames,
 	isApproved,
+	isSystem,
 	objectField: initialValues,
 	objectFieldTypes,
 	objectName,
@@ -131,12 +132,12 @@ export default function EditObjectField({
 		<SidePanelForm
 			className="lfr-objects__edit-object-field"
 			onSubmit={handleSubmit}
-			readOnly={disabled}
+			readOnly={isSystem ? disabled : readOnly}
 			title={Liferay.Language.get('field')}
 		>
 			<Card title={Liferay.Language.get('basic-info')}>
 				<InputLocalized
-					disabled={disabled}
+					disabled={isSystem ? disabled : readOnly}
 					error={errors.label}
 					label={Liferay.Language.get('label')}
 					locales={locales}
@@ -169,7 +170,7 @@ export default function EditObjectField({
 					{(values.businessType === 'Text' ||
 						values.businessType === 'LongText') && (
 						<MaxLengthProperties
-							disabled={disabled}
+							disabled={isSystem ? disabled : readOnly}
 							errors={errors}
 							objectField={values}
 							objectFieldSettings={
@@ -473,6 +474,7 @@ interface IProps {
 	forbiddenLastChars: string[];
 	forbiddenNames: string[];
 	isApproved: boolean;
+	isSystem: boolean;
 	objectField: ObjectField;
 	objectFieldTypes: ObjectFieldType[];
 	objectName: string;
