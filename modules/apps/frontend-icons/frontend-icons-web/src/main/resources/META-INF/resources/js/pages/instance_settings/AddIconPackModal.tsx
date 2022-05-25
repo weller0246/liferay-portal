@@ -353,7 +353,7 @@ function IconPicker({
 														) {
 															alert(
 																Liferay.Language.get(
-																	'icon-name-already-exists-in-pack'
+																	'icon-name-already-exists-in-the-pack'
 																)
 															);
 
