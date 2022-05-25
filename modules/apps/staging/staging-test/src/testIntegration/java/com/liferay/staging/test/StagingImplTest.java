@@ -521,7 +521,6 @@ public class StagingImplTest {
 		PropsValuesTestUtil.setPortalProperty(
 			"TUNNELING_SERVLET_SHARED_SECRET",
 			"F0E1D2C3B4A5968778695A4B3C2D1E0F");
-
 		PropsValuesTestUtil.setPortalProperty(
 			"TUNNELING_SERVLET_SHARED_SECRET_HEX", true);
 
