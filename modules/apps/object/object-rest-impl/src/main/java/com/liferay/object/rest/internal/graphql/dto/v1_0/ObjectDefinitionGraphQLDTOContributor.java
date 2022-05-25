@@ -176,7 +176,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 			Filter filter, Pagination pagination, String search, Sort[] sorts)
 		throws Exception {
 
-		Page<ObjectEntry> page;
+		Page<ObjectEntry> page = null;
 
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-153768"))) {
 			page = _objectEntryManager.getObjectEntries(
