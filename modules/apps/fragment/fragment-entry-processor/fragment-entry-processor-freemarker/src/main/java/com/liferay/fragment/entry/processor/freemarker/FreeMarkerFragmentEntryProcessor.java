@@ -338,7 +338,7 @@ public class FreeMarkerFragmentEntryProcessor
 
 		String defaultHelpTextValue = LanguageUtil.get(
 			httpServletRequest,
-			"guide-your-users-to-fill-in-the-field-by-adding-a-help-text-here");
+			"guide-your-users-to-fill-in-the-field-by-adding-help-text-here");
 
 		String inputHelpText = GetterUtil.getString(
 			_fragmentEntryConfigurationParser.getFieldValue(
