@@ -178,7 +178,7 @@ public class ConfigurationModelToDDMFormValuesConverter {
 				(_locationVariableResolver.isLocationVariable(
 					value, LocationVariableProtocol.RESOURCE) ||
 				 _locationVariableResolver.isLocationVariable(
-					 value, LocationVariableProtocol.LANGUAGE))) {
+					value, LocationVariableProtocol.LANGUAGE))) {
 
 				value = _locationVariableResolver.resolve(value);
 			}
