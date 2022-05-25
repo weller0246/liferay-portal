@@ -746,7 +746,7 @@ public class PoshiRunnerPlugin implements Plugin<Project> {
 		}
 
 		if (Validator.isNull(url)) {
-			throw new RuntimeException("Unable to get browser driver url");
+			throw new RuntimeException("Unable to get browser driver URL");
 		}
 
 		try {
