@@ -397,7 +397,7 @@ public class ObjectEntryLocalServiceImpl
 			DSLFunctionFactoryUtil.countDistinct(
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
 			).as(
-				"entryCount"
+				"aggregationCount"
 			)
 		).from(
 			dynamicObjectDefinitionTable
