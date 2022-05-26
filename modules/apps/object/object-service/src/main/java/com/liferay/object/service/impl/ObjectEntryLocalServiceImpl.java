@@ -677,8 +677,6 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionTable.getSelectExpressions(),
 			extensionDynamicObjectDefinitionTable.getSelectExpressions());
 
-		predicate = _fillPredicate(objectDefinitionId, predicate, search);
-
 		List<Object[]> rows = _list(
 			DSLQueryFactoryUtil.selectDistinct(
 				selectExpressions
@@ -698,7 +696,7 @@ public class ObjectEntryLocalServiceImpl
 				ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
 					objectDefinitionId
 				).and(
-					predicate
+					_fillPredicate(objectDefinitionId, predicate, search)
 				).and(
 					() -> {
 						if (PermissionThreadLocal.getPermissionChecker() ==
@@ -737,8 +735,6 @@ public class ObjectEntryLocalServiceImpl
 		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
 			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
 
-		predicate = _fillPredicate(objectDefinitionId, predicate, search);
-
 		DSLQuery dslQuery = DSLQueryFactoryUtil.countDistinct(
 			ObjectEntryTable.INSTANCE.objectEntryId
 		).from(
@@ -757,7 +753,7 @@ public class ObjectEntryLocalServiceImpl
 			ObjectEntryTable.INSTANCE.objectDefinitionId.eq(
 				objectDefinitionId
 			).and(
-				predicate
+				_fillPredicate(objectDefinitionId, predicate, search)
 			).and(
 				() -> {
 					if (PermissionThreadLocal.getPermissionChecker() == null) {
