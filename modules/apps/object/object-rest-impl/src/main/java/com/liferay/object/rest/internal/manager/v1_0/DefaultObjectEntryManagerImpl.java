@@ -640,7 +640,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				oDataFilter.getExpression(), locale);
 		}
 		catch (Exception exception) {
-			System.out.println(exception.getMessage());
+			_log.error("Invalid filter " + filterString, exception);
 		}
 
 		return null;
