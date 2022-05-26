@@ -98,9 +98,9 @@ public class PredicateExpressionVisitorImpl
 		return lambdaFunctionExpression.accept(
 			new PredicateExpressionVisitorImpl(
 				_getLambdaEntityModel(
-					lambdaFunctionExpression.getVariableName(),
 					(CollectionEntityField)entityFieldsMap.get(
-						collectionPropertyExpression.getName())),
+						collectionPropertyExpression.getName()),
+					lambdaFunctionExpression.getVariableName()),
 				_format, _locale, _objectDefinitionId, _objectTableProvider));
 	}
 
@@ -170,10 +170,12 @@ public class PredicateExpressionVisitorImpl
 
 			objects = right.toArray(objects);
 
-			com.liferay.petra.sql.dsl.expression.Expression<Object> column =
-				(com.liferay.petra.sql.dsl.expression.Expression<Object>)left;
+			com.liferay.petra.sql.dsl.expression.Expression<Object>
+				petraExpression =
+					(com.liferay.petra.sql.dsl.expression.Expression<Object>)
+						left;
 
-			return column.in(objects);
+			return petraExpression.in(objects);
 		}
 
 		throw new UnsupportedOperationException(
@@ -184,7 +186,7 @@ public class PredicateExpressionVisitorImpl
 	@Override
 	public Object visitLiteralExpression(LiteralExpression literalExpression) {
 
-		// TODO Implement all types conversions
+		// TODO
 
 		/*if (Objects.equals(
 				LiteralExpression.Type.DATE, literalExpression.getType()) ||
@@ -192,20 +194,20 @@ public class PredicateExpressionVisitorImpl
 				LiteralExpression.Type.DATE_TIME,
 				literalExpression.getType())) {
 
-			return TO CONVERT TO DATE
+			return ...;
 		}
 
 		else*/
 		if (Objects.equals(
-				LiteralExpression.Type.STRING, literalExpression.getType())) {
-
-			return _normalizeStringLiteral(literalExpression.getText());
-		}
-		else if (Objects.equals(
-					LiteralExpression.Type.INTEGER,
-					literalExpression.getType())) {
+				LiteralExpression.Type.INTEGER, literalExpression.getType())) {
 
 			return GetterUtil.getInteger(literalExpression.getText());
+		}
+		else if (Objects.equals(
+					LiteralExpression.Type.STRING,
+					literalExpression.getType())) {
+
+			return _normalize(literalExpression.getText());
 		}
 
 		return literalExpression.getText();
@@ -296,7 +298,7 @@ public class PredicateExpressionVisitorImpl
 	}
 
 	private EntityModel _getLambdaEntityModel(
-		String variableName, CollectionEntityField collectionEntityField) {
+		CollectionEntityField collectionEntityField, String variableName) {
 
 		return new EntityModel() {
 
@@ -373,13 +375,12 @@ public class PredicateExpressionVisitorImpl
 		return null;
 	}
 
-	private Object _normalizeStringLiteral(String literal) {
-		literal = StringUtil.toLowerCase(literal);
-
-		literal = StringUtil.unquote(literal);
+	private Object _normalize(String string) {
+		string = StringUtil.toLowerCase(string);
+		string = StringUtil.unquote(string);
 
 		return StringUtil.replace(
-			literal, StringPool.DOUBLE_APOSTROPHE, StringPool.APOSTROPHE);
+			string, StringPool.DOUBLE_APOSTROPHE, StringPool.APOSTROPHE);
 	}
 
 	private Predicate _startsWith(
