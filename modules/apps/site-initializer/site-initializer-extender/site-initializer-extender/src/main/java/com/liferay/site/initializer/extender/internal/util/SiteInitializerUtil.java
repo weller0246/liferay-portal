@@ -43,14 +43,6 @@ import org.osgi.framework.Bundle;
  */
 public class SiteInitializerUtil {
 
-	private static final String[] _PORTAL_PROPERTIES_KEYS_WHITELIST = {
-		"default.guest.public.layout.friendly.url",
-		"default.guest.public.layout.name",
-		"default.guest.public.layout.regular.color.scheme.id",
-		"default.guest.public.layout.regular.theme.id",
-		"default.guest.public.layout.template.id"
-	};
-
 	public static String read(Bundle bundle, String fileName, URL url)
 		throws Exception {
 
@@ -132,7 +124,8 @@ public class SiteInitializerUtil {
 
 			if ((value == null) ||
 				!ArrayUtil.contains(
-					_PORTAL_PROPERTIES_KEYS_WHITELIST, portalPropertyParts[1])) {
+					_PORTAL_PROPERTIES_KEYS_WHITELIST,
+					portalPropertyParts[1])) {
 
 				value = StringPool.BLANK;
 			}
@@ -142,6 +135,14 @@ public class SiteInitializerUtil {
 
 		return portalPropertiesReplaceValues;
 	}
+
+	private static final String[] _PORTAL_PROPERTIES_KEYS_WHITELIST = {
+		"default.guest.public.layout.friendly.url",
+		"default.guest.public.layout.name",
+		"default.guest.public.layout.regular.color.scheme.id",
+		"default.guest.public.layout.regular.theme.id",
+		"default.guest.public.layout.template.id"
+	};
 
 	private static final Pattern _portalPropertyPattern = Pattern.compile(
 		"\\[\\$PORTAL_PROPERTY:((?!\\.)(?!.*\\.\\.)[a-zA-Z0-9_.]+)\\$\\]");
