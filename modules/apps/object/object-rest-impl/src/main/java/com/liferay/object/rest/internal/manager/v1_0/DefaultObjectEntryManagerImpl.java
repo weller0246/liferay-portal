@@ -312,7 +312,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				List<Facet.FacetValue> facetValues = new ArrayList<>();
 
 				Map<Object, Long> aggregationCounts =
-					_objectEntryLocalService.getAggregationCount(
+					_objectEntryLocalService.getAggregationCounts(
 						objectDefinition.getObjectDefinitionId(),
 						entry1.getKey(), predicate,
 						pagination.getStartPosition(),
