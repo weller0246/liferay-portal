@@ -66,7 +66,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
-		List<ObjectField> objectFields,
 		ObjectScopeProvider objectScopeProvider) {
 
 		List<GraphQLDTOProperty> graphQLDTOProperties = new ArrayList<>();
@@ -87,6 +86,10 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 		List<GraphQLDTOProperty> relationshipGraphQLDTOProperties =
 			new ArrayList<>();
+
+		List<ObjectField> objectFields =
+			objectFieldLocalService.getObjectFields(
+				objectDefinition.getObjectDefinitionId());
 
 		for (ObjectField objectField : objectFields) {
 			if (objectField.getListTypeDefinitionId() != 0) {

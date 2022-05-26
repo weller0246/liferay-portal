@@ -167,10 +167,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_filterParserProvider, objectDefinition,
 					_objectEntryManagerServicesTracker.getObjectEntryManager(
 						objectDefinition.getStorageType()),
-					_objectFieldLocalService,
-					_objectFieldLocalService.getObjectFields(
-						objectDefinition.getObjectDefinitionId()),
-					objectScopeProvider),
+					_objectFieldLocalService, objectScopeProvider),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"dto.name", objectDefinition.getDBTableName()
 				).build()));
