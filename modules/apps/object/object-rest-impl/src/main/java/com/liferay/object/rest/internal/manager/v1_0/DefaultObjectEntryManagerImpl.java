@@ -25,6 +25,7 @@ import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConverter;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
+import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResourceImpl;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.scope.ObjectScopeProvider;
@@ -369,9 +370,11 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			return getObjectEntries(
 				companyId, objectDefinition, scopeKey, aggregation,
 				dtoConverterContext, pagination,
-				_toPredicate(
-					filterString, dtoConverterContext.getLocale(),
-					objectDefinition),
+				PredicateUtil.toPredicate(
+					_filterParserProvider, filterString,
+					dtoConverterContext.getLocale(),
+					objectDefinition.getObjectDefinitionId(),
+					_objectFieldLocalService, _predicateExpressionConvert),
 				search, sorts);
 		}
 
@@ -659,30 +662,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		}
 
 		return values;
-	}
-
-	private Predicate _toPredicate(
-		String filterString, Locale locale, ObjectDefinition objectDefinition) {
-
-		try {
-			EntityModel entityModel = new ObjectEntryEntityModel(
-				_objectFieldLocalService.getObjectFields(
-					objectDefinition.getObjectDefinitionId()));
-
-			FilterParser filterParser = _filterParserProvider.provide(
-				entityModel);
-
-			Filter oDataFilter = new Filter(filterParser.parse(filterString));
-
-			return _predicateExpressionConvert.convert(
-				objectDefinition.getObjectDefinitionId(), entityModel,
-				oDataFilter.getExpression(), locale);
-		}
-		catch (Exception exception) {
-			_log.error("Invalid filter " + filterString, exception);
-		}
-
-		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

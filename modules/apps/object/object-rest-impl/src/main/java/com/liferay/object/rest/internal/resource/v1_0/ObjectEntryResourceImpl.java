@@ -18,6 +18,7 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
+import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerServicesTracker;
 import com.liferay.object.rest.resource.v1_0.ObjectEntryResource;
@@ -26,9 +27,6 @@ import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.function.UnsafeConsumer;
-import com.liferay.petra.sql.dsl.expression.Predicate;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -36,7 +34,6 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
-import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
@@ -169,8 +166,12 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			return objectEntryManager.getObjectEntries(
 				contextCompany.getCompanyId(), _objectDefinition, null,
 				aggregation, _getDTOConverterContext(null), pagination,
-				toPredicate(
-					ParamUtil.getString(contextHttpServletRequest, "filter")),
+				PredicateUtil.toPredicate(
+					_filterParserProvider,
+					ParamUtil.getString(contextHttpServletRequest, "filter"),
+					contextAcceptLanguage.getPreferredLocale(),
+					_objectDefinition.getObjectDefinitionId(),
+					_objectFieldLocalService, _predicateExpressionConvert),
 				search, sorts);
 		}
 
@@ -219,8 +220,12 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			return objectEntryManager.getObjectEntries(
 				contextCompany.getCompanyId(), _objectDefinition, scopeKey,
 				aggregation, _getDTOConverterContext(null), pagination,
-				toPredicate(
-					ParamUtil.getString(contextHttpServletRequest, "filter")),
+				PredicateUtil.toPredicate(
+					_filterParserProvider,
+					ParamUtil.getString(contextHttpServletRequest, "filter"),
+					contextAcceptLanguage.getPreferredLocale(),
+					_objectDefinition.getObjectDefinitionId(),
+					_objectFieldLocalService, _predicateExpressionConvert),
 				search, sorts);
 		}
 
@@ -339,31 +344,6 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			null, filter, pagination, sorts);
 	}
 
-	public Predicate toPredicate(String filterString) {
-		try {
-			EntityModel entityModel = new ObjectEntryEntityModel(
-				_objectFieldLocalService.getObjectFields(
-					_objectDefinition.getObjectDefinitionId()));
-
-			FilterParser filterParser = filterParserProvider.provide(
-				entityModel);
-
-			com.liferay.portal.odata.filter.Filter oDataFilter =
-				new com.liferay.portal.odata.filter.Filter(
-					filterParser.parse(filterString));
-
-			return _predicateExpressionConvert.convert(
-				_objectDefinition.getObjectDefinitionId(), entityModel,
-				oDataFilter.getExpression(),
-				contextAcceptLanguage.getPreferredLocale());
-		}
-		catch (Exception exception) {
-			_log.error("Invalid filter " + filterString, exception);
-		}
-
-		return null;
-	}
-
 	@Override
 	public void update(
 			Collection<ObjectEntry> objectEntries,
@@ -418,9 +398,6 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 
 		throw new NotFoundException("Missing parameter \"objectDefinitionId\"");
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectEntryResourceImpl.class);
 
 	@Reference
 	private FilterParserProvider _filterParserProvider;
