@@ -26,7 +26,6 @@ import com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConvert
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
 import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResourceImpl;
-import com.liferay.object.rest.internal.search.aggregation.AggregationUtil;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
@@ -35,6 +34,7 @@ import com.liferay.object.service.ObjectEntryService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectRelationshipService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.search.BooleanClauseOccur;
@@ -57,6 +57,8 @@ import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.search.aggregation.Aggregations;
+import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
+import com.liferay.portal.search.aggregation.bucket.NestedAggregation;
 import com.liferay.portal.search.legacy.searcher.SearchRequestBuilderFactory;
 import com.liferay.portal.search.query.Queries;
 import com.liferay.portal.search.searcher.SearchRequestBuilder;
@@ -270,7 +272,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				SearchRequestBuilder searchRequestBuilder =
 					_searchRequestBuilderFactory.builder(searchContext);
 
-				AggregationUtil.processVulcanAggregation(
+				_processVulcanAggregation(
 					_aggregations, _queries, searchRequestBuilder, aggregation);
 			},
 			sorts,
@@ -479,6 +481,43 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	private String _getObjectEntryPermissionName(long objectDefinitionId) {
 		return ObjectDefinition.class.getName() + "#" + objectDefinitionId;
+	}
+
+	private void _processVulcanAggregation(
+		Aggregations aggregations, Queries queries,
+		SearchRequestBuilder searchRequestBuilder,
+		Aggregation vulcanAggregation) {
+
+		if (vulcanAggregation == null) {
+			return;
+		}
+
+		Map<String, String> aggregationTerms =
+			vulcanAggregation.getAggregationTerms();
+
+		for (Map.Entry<String, String> entry : aggregationTerms.entrySet()) {
+			String value = entry.getValue();
+
+			if (!value.startsWith("nestedFieldArray")) {
+				continue;
+			}
+
+			NestedAggregation nestedAggregation = aggregations.nested(
+				entry.getKey(), "nestedFieldArray");
+
+			String[] valueParts = value.split(StringPool.POUND);
+
+			FilterAggregation filterAggregation = aggregations.filter(
+				"filterAggregation",
+				queries.term("nestedFieldArray.fieldName", valueParts[1]));
+
+			filterAggregation.addChildAggregation(
+				aggregations.terms(entry.getKey(), valueParts[0]));
+
+			nestedAggregation.addChildAggregation(filterAggregation);
+
+			searchRequestBuilder.addAggregation(nestedAggregation);
+		}
 	}
 
 	private Date _toDate(Locale locale, String valueString) {
