@@ -431,6 +431,7 @@ definition {
 	@priority = "3"
 	test UserChangesCanBeExportedToLDAP {
 		property apacheds.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "LDAP#UserChangesCanBeExportedToLDAP";
 
 		task ("Given: User adds LDAP server and configure settings with group import method") {
