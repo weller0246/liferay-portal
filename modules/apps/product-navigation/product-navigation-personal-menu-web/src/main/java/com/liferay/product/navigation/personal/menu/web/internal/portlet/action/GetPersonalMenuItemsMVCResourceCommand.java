@@ -220,7 +220,7 @@ public class GetPersonalMenuItemsMVCResourceCommand
 				else {
 					jsonObject.put(
 						"jsOnClickConfig",
-						personalMenuEntry.getPortletJSOnClickConfig(
+						personalMenuEntry.getJSOnClickConfigJSONObject(
 							_portal.getHttpServletRequest(portletRequest)));
 				}
 			}

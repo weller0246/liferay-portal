@@ -69,7 +69,7 @@ public class MySitesPersonalMenuEntry implements PersonalMenuEntry {
 	}
 
 	@Override
-	public JSONObject getPortletJSOnClickConfig(
+	public JSONObject getJSOnClickConfigJSONObject(
 		HttpServletRequest httpServletRequest) {
 
 		String namespace = AUIUtil.getNamespace(httpServletRequest);

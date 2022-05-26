@@ -60,7 +60,7 @@ public interface PersonalMenuEntry {
 	 */
 	public String getLabel(Locale locale);
 
-	public default JSONObject getPortletJSOnClickConfig(
+	public default JSONObject getJSOnClickConfigJSONObject(
 		HttpServletRequest httpServletRequest) {
 
 		return null;
