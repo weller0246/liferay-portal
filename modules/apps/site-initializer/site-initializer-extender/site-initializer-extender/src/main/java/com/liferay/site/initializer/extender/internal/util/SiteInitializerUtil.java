@@ -69,11 +69,11 @@ public class SiteInitializerUtil {
 
 			String content = StringUtil.read(inputStream);
 
-			Map<String, String> portalPropertiesReplaceValues =
-				_getPortalPropertiesReplaceValues(content);
+			Map<String, String> portalPropertiesStringUtilReplaceValues =
+				_getPortalPropertiesStringUtilReplaceValues(content);
 
 			return StringUtil.replace(
-				content, "[$", "$]", portalPropertiesReplaceValues);
+				content, "[$", "$]", portalPropertiesStringUtilReplaceValues);
 		}
 	}
 
@@ -100,13 +100,14 @@ public class SiteInitializerUtil {
 		return map;
 	}
 
-	private static Map<String, String> _getPortalPropertiesReplaceValues(
-		String content) {
+	private static Map<String, String>
+		_getPortalPropertiesStringUtilReplaceValues(String content) {
 
-		Map<String, String> portalPropertiesReplaceValues = new HashMap<>();
+		Map<String, String> portalPropertiesStringUtilReplaceValues =
+			new HashMap<>();
 
 		if (Validator.isNull(content)) {
-			return portalPropertiesReplaceValues;
+			return portalPropertiesStringUtilReplaceValues;
 		}
 
 		Matcher matcher = _portalPropertyPattern.matcher(content);
@@ -130,10 +131,10 @@ public class SiteInitializerUtil {
 				value = StringPool.BLANK;
 			}
 
-			portalPropertiesReplaceValues.put(portalProperty, value);
+			portalPropertiesStringUtilReplaceValues.put(portalProperty, value);
 		}
 
-		return portalPropertiesReplaceValues;
+		return portalPropertiesStringUtilReplaceValues;
 	}
 
 	private static final String[] _PORTAL_PROPERTIES_KEYS_WHITELIST = {
