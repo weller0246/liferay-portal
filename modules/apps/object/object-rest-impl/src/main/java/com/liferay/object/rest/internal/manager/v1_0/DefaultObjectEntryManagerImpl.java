@@ -21,10 +21,10 @@ import com.liferay.object.exception.NoSuchObjectEntryException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConverter;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
-import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
 import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResourceImpl;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
@@ -374,7 +374,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					_filterParserProvider, filterString,
 					dtoConverterContext.getLocale(),
 					objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _predicateExpressionConvert),
+					_objectFieldLocalService, _objectTableProvider),
 				search, sorts);
 		}
 
@@ -704,7 +704,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 	private ObjectScopeProviderRegistry _objectScopeProviderRegistry;
 
 	@Reference
-	private PredicateExpressionConvert _predicateExpressionConvert;
+	private ObjectTableProvider _objectTableProvider;
 
 	@Reference
 	private Queries _queries;

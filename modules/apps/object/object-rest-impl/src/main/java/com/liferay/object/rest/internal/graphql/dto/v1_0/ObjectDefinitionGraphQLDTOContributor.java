@@ -16,10 +16,10 @@ package com.liferay.object.rest.internal.graphql.dto.v1_0;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
+import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.dto.v1_0.Status;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
-import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
 import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
 import com.liferay.object.scope.ObjectScopeProvider;
@@ -68,7 +68,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
 		List<ObjectField> objectFields, ObjectScopeProvider objectScopeProvider,
-		PredicateExpressionConvert predicateExpressionConvert) {
+		ObjectTableProvider objectTableProvider) {
 
 		List<GraphQLDTOProperty> graphQLDTOProperties = new ArrayList<>();
 
@@ -128,7 +128,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 			StringUtil.removeSubstring(
 				objectDefinition.getPKObjectFieldName(), "c_"),
 			objectDefinition, objectEntryManager, objectFieldLocalService,
-			objectScopeProvider, predicateExpressionConvert,
+			objectScopeProvider, objectTableProvider,
 			relationshipGraphQLDTOProperties, objectDefinition.getShortName(),
 			objectDefinition.getName());
 	}
@@ -186,7 +186,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 						dtoConverterContext.getHttpServletRequest(), "filter"),
 					dtoConverterContext.getLocale(),
 					_objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _predicateExpressionConvert),
+					_objectFieldLocalService, _objectTableProvider),
 				search, sorts);
 		}
 		else {
@@ -296,7 +296,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
-		PredicateExpressionConvert predicateExpressionConvert,
+		ObjectTableProvider objectTableProvider,
 		List<GraphQLDTOProperty> relationshipGraphQLDTOProperties,
 		String resourceName, String typeName) {
 
@@ -309,7 +309,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 		_objectEntryManager = objectEntryManager;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
-		_predicateExpressionConvert = predicateExpressionConvert;
+		_objectTableProvider = objectTableProvider;
 		_relationshipGraphQLDTOProperties = relationshipGraphQLDTOProperties;
 		_resourceName = resourceName;
 		_typeName = typeName;
@@ -389,7 +389,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 	private final ObjectEntryManager _objectEntryManager;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectScopeProvider _objectScopeProvider;
-	private final PredicateExpressionConvert _predicateExpressionConvert;
+	private final ObjectTableProvider _objectTableProvider;
 	private final List<GraphQLDTOProperty> _relationshipGraphQLDTOProperties;
 	private final String _resourceName;
 	private final String _typeName;

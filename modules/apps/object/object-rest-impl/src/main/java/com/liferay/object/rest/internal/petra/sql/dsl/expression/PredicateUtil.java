@@ -14,16 +14,21 @@
 
 package com.liferay.object.rest.internal.petra.sql.dsl.expression;
 
+import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
-import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionConvert;
+import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionVisitorImpl;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
 import com.liferay.portal.odata.filter.FilterParserProvider;
+import com.liferay.portal.odata.filter.expression.Expression;
 
 import java.util.Locale;
 
@@ -37,7 +42,7 @@ public class PredicateUtil {
 		FilterParserProvider filterParserProvider, String filterString,
 		Locale locale, long objectDefinitionId,
 		ObjectFieldLocalService objectFieldLocalService,
-		PredicateExpressionConvert predicateExpressionConvert) {
+		ObjectTableProvider objectTableProvider) {
 
 		try {
 			EntityModel entityModel = new ObjectEntryEntityModel(
@@ -48,9 +53,14 @@ public class PredicateUtil {
 
 			Filter oDataFilter = new Filter(filterParser.parse(filterString));
 
-			return predicateExpressionConvert.convert(
-				objectDefinitionId, entityModel, oDataFilter.getExpression(),
-				locale);
+			Expression expression = oDataFilter.getExpression();
+
+			return (Predicate)expression.accept(
+				new PredicateExpressionVisitorImpl(
+					entityModel,
+					FastDateFormatFactoryUtil.getSimpleDateFormat(
+						PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN)),
+					locale, objectDefinitionId, objectTableProvider));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
