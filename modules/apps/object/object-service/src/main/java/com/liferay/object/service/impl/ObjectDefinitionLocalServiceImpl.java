@@ -89,7 +89,6 @@ import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
 import com.liferay.portal.kernel.transaction.TransactionCommitCallbackUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.MethodHandler;
 import com.liferay.portal.kernel.util.MethodKey;
@@ -104,8 +103,6 @@ import com.liferay.portal.kernel.workflow.WorkflowInstanceManager;
 import com.liferay.portal.search.batch.DynamicQueryBatchIndexingActionableFactory;
 import com.liferay.portal.search.spi.model.query.contributor.ModelPreFilterContributor;
 import com.liferay.portal.search.spi.model.registrar.ModelSearchRegistrarHelper;
-
-import java.sql.Types;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -758,9 +755,8 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.addSystemObjectField(
 				userId, objectDefinition.getObjectDefinitionId(), "Text",
 				ObjectEntryTable.INSTANCE.status.getName(),
-				ObjectEntryTable.INSTANCE.getTableName(),
-				_dbTypes.get(ObjectEntryTable.INSTANCE.status.getSQLType()),
-				false, false, null,
+				ObjectEntryTable.INSTANCE.getTableName(), "Integer", false,
+				false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "status")),
 				"status", false);
@@ -1228,25 +1224,6 @@ public class ObjectDefinitionLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectDefinitionLocalServiceImpl.class);
 
-	private static final Map<Integer, String> _dbTypes = HashMapBuilder.put(
-		Types.BIGINT, "Long"
-	).put(
-		Types.BLOB, "Blob"
-	).put(
-		Types.BOOLEAN, "Boolean"
-	).put(
-		Types.CLOB, "Clob"
-	).put(
-		Types.DATE, "Date"
-	).put(
-		Types.DECIMAL, "BigDecimal"
-	).put(
-		Types.DOUBLE, "Double"
-	).put(
-		Types.INTEGER, "Integer"
-	).put(
-		Types.VARCHAR, "String"
-	).build();
 	private static final MethodKey _deployObjectDefinitionMethodKey =
 		new MethodKey(
 			ObjectDefinitionLocalServiceUtil.class, "deployObjectDefinition",
