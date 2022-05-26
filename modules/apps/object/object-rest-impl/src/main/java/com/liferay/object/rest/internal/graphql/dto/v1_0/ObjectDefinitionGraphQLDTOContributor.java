@@ -184,7 +184,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 				_objectDefinition,
 				(String)dtoConverterContext.getAttribute("scopeKey"),
 				aggregation, dtoConverterContext, pagination,
-				toPredicate(
+				_toPredicate(
 					ParamUtil.getString(
 						dtoConverterContext.getHttpServletRequest(), "filter"),
 					dtoConverterContext.getLocale()),
@@ -277,30 +277,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 		return _objectScopeProvider.isGroupAware();
 	}
 
-	public Predicate toPredicate(String filterString, Locale locale) {
-		try {
-			EntityModel entityModel = new ObjectEntryEntityModel(
-				_objectFieldLocalService.getObjectFields(
-					_objectDefinition.getObjectDefinitionId()));
-
-			FilterParser filterParser = _filterParserProvider.provide(
-				entityModel);
-
-			com.liferay.portal.odata.filter.Filter oDataFilter =
-				new com.liferay.portal.odata.filter.Filter(
-					filterParser.parse(filterString));
-
-			return _predicateExpressionConvert.convert(
-				_objectDefinition.getObjectDefinitionId(), entityModel,
-				oDataFilter.getExpression(), locale);
-		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
-
-		return null;
-	}
-
 	@Override
 	public Map<String, Object> updateDTO(
 			Map<String, Object> dto, DTOConverterContext dtoConverterContext,
@@ -384,6 +360,30 @@ public class ObjectDefinitionGraphQLDTOContributor
 		}
 
 		return objectEntry;
+	}
+
+	private Predicate _toPredicate(String filterString, Locale locale) {
+		try {
+			EntityModel entityModel = new ObjectEntryEntityModel(
+				_objectFieldLocalService.getObjectFields(
+					_objectDefinition.getObjectDefinitionId()));
+
+			FilterParser filterParser = _filterParserProvider.provide(
+				entityModel);
+
+			com.liferay.portal.odata.filter.Filter oDataFilter =
+				new com.liferay.portal.odata.filter.Filter(
+					filterParser.parse(filterString));
+
+			return _predicateExpressionConvert.convert(
+				_objectDefinition.getObjectDefinitionId(), entityModel,
+				oDataFilter.getExpression(), locale);
+		}
+		catch (Exception exception) {
+			_log.error(exception);
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
