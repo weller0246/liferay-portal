@@ -89,8 +89,8 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 		PageEditorConfiguration pageEditorConfiguration,
 		boolean pageIsDisplayPage, PortletRequest portletRequest,
 		RenderResponse renderResponse,
-		SegmentsExperienceManager segmentsExperienceManager,
 		SegmentsConfigurationProvider segmentsConfigurationProvider,
+		SegmentsExperienceManager segmentsExperienceManager,
 		StagingGroupHelper stagingGroupHelper) {
 
 		super(
@@ -100,7 +100,7 @@ public class ContentPageEditorLayoutPageTemplateDisplayContext
 			fragmentRendererTracker, frontendTokenDefinitionRegistry,
 			httpServletRequest, infoItemServiceTracker, itemSelector,
 			pageEditorConfiguration, portletRequest, renderResponse,
-			segmentsExperienceManager, segmentsConfigurationProvider,
+			segmentsConfigurationProvider, segmentsExperienceManager,
 			stagingGroupHelper);
 
 		_itemSelector = itemSelector;

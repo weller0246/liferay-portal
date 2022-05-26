@@ -192,8 +192,8 @@ public class ContentPageEditorDisplayContext {
 		ItemSelector itemSelector,
 		PageEditorConfiguration pageEditorConfiguration,
 		PortletRequest portletRequest, RenderResponse renderResponse,
-		SegmentsExperienceManager segmentsExperienceManager,
 		SegmentsConfigurationProvider segmentsConfigurationProvider,
+		SegmentsExperienceManager segmentsExperienceManager,
 		StagingGroupHelper stagingGroupHelper) {
 
 		_commentManager = commentManager;
@@ -207,8 +207,8 @@ public class ContentPageEditorDisplayContext {
 		_itemSelector = itemSelector;
 		_pageEditorConfiguration = pageEditorConfiguration;
 		_renderResponse = renderResponse;
-		_segmentsExperienceManager = segmentsExperienceManager;
 		_segmentsConfigurationProvider = segmentsConfigurationProvider;
+		_segmentsExperienceManager = segmentsExperienceManager;
 
 		this.httpServletRequest = httpServletRequest;
 		this.infoItemServiceTracker = infoItemServiceTracker;

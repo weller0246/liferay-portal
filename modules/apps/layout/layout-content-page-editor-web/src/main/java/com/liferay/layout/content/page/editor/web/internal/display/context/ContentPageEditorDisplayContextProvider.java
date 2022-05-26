@@ -79,8 +79,9 @@ public class ContentPageEditorDisplayContextProvider {
 				_fragmentRendererTracker, _frontendTokenDefinitionRegistry,
 				httpServletRequest, _infoItemServiceTracker, _itemSelector,
 				_pageEditorConfiguration, portletRequest, renderResponse,
+				_segmentsConfigurationProvider,
 				new SegmentsExperienceManager(_segmentsExperienceLocalService),
-				_segmentsConfigurationProvider, _stagingGroupHelper);
+				_stagingGroupHelper);
 		}
 
 		long classPK = GetterUtil.getLong(
@@ -106,9 +107,9 @@ public class ContentPageEditorDisplayContextProvider {
 			_fragmentRendererTracker, _frontendTokenDefinitionRegistry,
 			httpServletRequest, _infoItemServiceTracker, _itemSelector,
 			_pageEditorConfiguration, pageIsDisplayPage, portletRequest,
-			renderResponse,
+			renderResponse, _segmentsConfigurationProvider,
 			new SegmentsExperienceManager(_segmentsExperienceLocalService),
-			_segmentsConfigurationProvider, _stagingGroupHelper);
+			_stagingGroupHelper);
 	}
 
 	@Activate
