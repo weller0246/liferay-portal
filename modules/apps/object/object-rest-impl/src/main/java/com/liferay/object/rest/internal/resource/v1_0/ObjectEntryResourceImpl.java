@@ -358,7 +358,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 				contextAcceptLanguage.getPreferredLocale());
 		}
 		catch (Exception exception) {
-			_log.error(exception);
+			_log.error("Invalid filter " + filterString, exception);
 		}
 
 		return null;
