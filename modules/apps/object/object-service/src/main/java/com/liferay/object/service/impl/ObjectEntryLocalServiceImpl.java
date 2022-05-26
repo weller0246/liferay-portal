@@ -664,7 +664,7 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public List<Map<String, Serializable>> getValuesList(
-			long objectDefinitionId, String search, Predicate predicate,
+			long objectDefinitionId, Predicate predicate, String search,
 			int start, int end)
 		throws PortalException {
 
@@ -729,7 +729,7 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public int getValuesListCount(
-			long objectDefinitionId, String search, Predicate predicate)
+			long objectDefinitionId, Predicate predicate, String search)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =

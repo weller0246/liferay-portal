@@ -346,7 +346,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			facets,
 			TransformUtil.transform(
 				_objectEntryLocalService.getValuesList(
-					objectDefinition.getObjectDefinitionId(), search, predicate,
+					objectDefinition.getObjectDefinitionId(), predicate, search,
 					pagination.getStartPosition(), pagination.getEndPosition()),
 				values -> getObjectEntry(
 					dtoConverterContext, objectDefinition,
@@ -354,7 +354,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						values.get(objectDefinition.getPKObjectFieldName())))),
 			pagination,
 			_objectEntryLocalService.getValuesListCount(
-				objectDefinition.getObjectDefinitionId(), search, predicate));
+				objectDefinition.getObjectDefinitionId(), predicate, search));
 	}
 
 	@Override
