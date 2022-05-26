@@ -20,9 +20,6 @@ import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
-import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.odata.filter.Filter;
 import com.liferay.portal.odata.filter.FilterParser;
@@ -55,10 +52,8 @@ public class PredicateUtil {
 
 			return (Predicate)expression.accept(
 				new PredicateExpressionVisitorImpl(
-					entityModel,
-					FastDateFormatFactoryUtil.getSimpleDateFormat(
-						PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN)),
-					locale, objectDefinitionId, objectFieldLocalService));
+					entityModel, locale, objectDefinitionId,
+					objectFieldLocalService));
 		}
 		catch (Exception exception) {
 			_log.error(exception);

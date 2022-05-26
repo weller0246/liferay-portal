@@ -23,6 +23,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FastDateFormatFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.CollectionEntityField;
@@ -44,6 +45,7 @@ import com.liferay.portal.odata.filter.expression.MethodExpression;
 import com.liferay.portal.odata.filter.expression.PrimitivePropertyExpression;
 import com.liferay.portal.odata.filter.expression.PropertyExpression;
 import com.liferay.portal.odata.filter.expression.UnaryExpression;
+import com.liferay.portal.util.PropsValues;
 
 import java.text.Format;
 
@@ -61,12 +63,10 @@ public class PredicateExpressionVisitorImpl
 	implements ExpressionVisitor<Object> {
 
 	public PredicateExpressionVisitorImpl(
-		EntityModel entityModel, Format format, Locale locale,
-		long objectDefinitionId,
+		EntityModel entityModel, Locale locale, long objectDefinitionId,
 		ObjectFieldLocalService objectFieldLocalService) {
 
 		_entityModel = entityModel;
-		_format = format;
 		_locale = locale;
 		_objectDefinitionId = objectDefinitionId;
 		_objectFieldLocalService = objectFieldLocalService;
@@ -102,8 +102,7 @@ public class PredicateExpressionVisitorImpl
 					(CollectionEntityField)entityFieldsMap.get(
 						collectionPropertyExpression.getName()),
 					lambdaFunctionExpression.getVariableName()),
-				_format, _locale, _objectDefinitionId,
-				_objectFieldLocalService));
+				_locale, _objectDefinitionId, _objectFieldLocalService));
 	}
 
 	@Override
@@ -188,20 +187,23 @@ public class PredicateExpressionVisitorImpl
 	@Override
 	public Object visitLiteralExpression(LiteralExpression literalExpression) {
 
-		// TODO
+		// TODO BOOLEAN, DOUBLE, NULL
 
-		/*if (Objects.equals(
+		if (Objects.equals(
 				LiteralExpression.Type.DATE, literalExpression.getType()) ||
 			Objects.equals(
 				LiteralExpression.Type.DATE_TIME,
 				literalExpression.getType())) {
 
-			return ...;
-		}
+			// TODO
 
-		else*/
-		if (Objects.equals(
-				LiteralExpression.Type.INTEGER, literalExpression.getType())) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(_format);
+			}
+		}
+		else if (Objects.equals(
+					LiteralExpression.Type.INTEGER,
+					literalExpression.getType())) {
 
 			return GetterUtil.getInteger(literalExpression.getText());
 		}
@@ -396,8 +398,11 @@ public class PredicateExpressionVisitorImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		PredicateExpressionVisitorImpl.class);
 
+	private static final Format _format =
+		FastDateFormatFactoryUtil.getSimpleDateFormat(
+			PropsValues.INDEX_DATE_FORMAT_PATTERN);
+
 	private final EntityModel _entityModel;
-	private final Format _format;
 	private final Locale _locale;
 	private final long _objectDefinitionId;
 	private final ObjectFieldLocalService _objectFieldLocalService;
