@@ -82,7 +82,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.core.MultivaluedMap;
@@ -214,11 +213,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 		long groupId = _getGroupId(objectDefinition, scopeKey);
 
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
-
-		UriInfo uriInfo = uriInfoOptional.orElse(null);
-
 		return SearchUtil.search(
 			HashMapBuilder.put(
 				"create",
@@ -227,7 +221,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"postObjectEntry", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).put(
 				"get",
 				ActionUtil.addAction(
@@ -235,7 +229,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"getObjectEntriesPage", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).build(),
 			booleanQuery -> {
 				BooleanFilter booleanFilter =
@@ -258,6 +252,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				searchContext.setAttribute(
 					"objectDefinitionId",
 					objectDefinition.getObjectDefinitionId());
+
+				UriInfo uriInfo = dtoConverterContext.getUriInfo();
 
 				if (uriInfo != null) {
 					MultivaluedMap<String, String> queryParameters =
@@ -292,11 +288,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		throws Exception {
 
 		long groupId = _getGroupId(objectDefinition, scopeKey);
-
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
-
-		UriInfo uriInfo = uriInfoOptional.orElse(null);
 
 		List<Facet> facets = new ArrayList<>();
 
@@ -340,7 +331,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"postObjectEntry", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).put(
 				"get",
 				ActionUtil.addAction(
@@ -348,7 +339,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					"getObjectEntriesPage", null, objectDefinition.getUserId(),
 					_getObjectEntriesPermissionName(
 						objectDefinition.getObjectDefinitionId()),
-					groupId, uriInfo)
+					groupId, dtoConverterContext.getUriInfo())
 			).build(),
 			facets,
 			TransformUtil.transform(
@@ -539,11 +530,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			com.liferay.object.model.ObjectEntry objectEntry)
 		throws Exception {
 
-		Optional<UriInfo> uriInfoOptional =
-			dtoConverterContext.getUriInfoOptional();
-
-		UriInfo uriInfo = uriInfoOptional.orElse(null);
-
 		DefaultDTOConverterContext defaultDTOConverterContext =
 			new DefaultDTOConverterContext(
 				dtoConverterContext.isAcceptAllLanguages(),
@@ -555,7 +541,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						null, objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"get",
 					ActionUtil.addAction(
@@ -564,7 +551,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"permissions",
 					ActionUtil.addAction(
@@ -573,7 +561,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						null, objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).put(
 					"update",
 					ActionUtil.addAction(
@@ -582,12 +571,14 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						objectEntry.getUserId(),
 						_getObjectEntryPermissionName(
 							objectEntry.getObjectDefinitionId()),
-						objectEntry.getGroupId(), uriInfo)
+						objectEntry.getGroupId(),
+						dtoConverterContext.getUriInfo())
 				).build(),
 				dtoConverterContext.getDTOConverterRegistry(),
 				dtoConverterContext.getHttpServletRequest(),
 				objectEntry.getObjectEntryId(), dtoConverterContext.getLocale(),
-				uriInfo, dtoConverterContext.getUser());
+				dtoConverterContext.getUriInfo(),
+				dtoConverterContext.getUser());
 
 		defaultDTOConverterContext.setAttribute(
 			"objectDefinition", objectDefinition);
