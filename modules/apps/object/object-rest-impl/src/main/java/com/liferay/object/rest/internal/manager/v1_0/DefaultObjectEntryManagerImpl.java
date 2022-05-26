@@ -306,29 +306,29 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			Map<String, String> aggregationTerms =
 				aggregation.getAggregationTerms();
 
-			for (Map.Entry<String, String> entry :
+			for (Map.Entry<String, String> entry1 :
 					aggregationTerms.entrySet()) {
 
-				Map<Object, Long> aggregationCountMap =
+				List<Facet.FacetValue> facetValues = new ArrayList<>();
+
+				Map<Object, Long> aggregationCounts =
 					_objectEntryLocalService.getAggregationCount(
 						objectDefinition.getObjectDefinitionId(),
-						entry.getKey(), predicate,
+						entry1.getKey(), predicate,
 						pagination.getStartPosition(),
 						pagination.getEndPosition());
 
-				ArrayList<Facet.FacetValue> facetValues = new ArrayList<>();
+				for (Map.Entry<Object, Long> entry2 :
+						aggregationCounts.entrySet()) {
 
-				for (Map.Entry<Object, Long> entry1 :
-						aggregationCountMap.entrySet()) {
-
-					Long value = entry1.getValue();
+					Long value = entry2.getValue();
 
 					facetValues.add(
 						new Facet.FacetValue(
-							value.intValue(), String.valueOf(entry1.getKey())));
+							value.intValue(), String.valueOf(entry2.getKey())));
 				}
 
-				facets.add(new Facet(entry.getKey(), facetValues));
+				facets.add(new Facet(entry1.getKey(), facetValues));
 			}
 		}
 
