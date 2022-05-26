@@ -52,6 +52,12 @@ public interface PersonalMenuEntry {
 		return StringPool.BLANK;
 	}
 
+	public default JSONObject getJSOnClickConfigJSONObject(
+		HttpServletRequest httpServletRequest) {
+
+		return null;
+	}
+
 	/**
 	 * Returns the label that is displayed in the user personal menu.
 	 *
@@ -59,12 +65,6 @@ public interface PersonalMenuEntry {
 	 * @return the label of the user personal menu entry
 	 */
 	public String getLabel(Locale locale);
-
-	public default JSONObject getJSOnClickConfigJSONObject(
-		HttpServletRequest httpServletRequest) {
-
-		return null;
-	}
 
 	/**
 	 * Returns the URL used to render a portlet based on the servlet request

@@ -64,11 +64,6 @@ public class MySitesPersonalMenuEntry implements PersonalMenuEntry {
 	}
 
 	@Override
-	public String getLabel(Locale locale) {
-		return _language.get(locale, "my-sites");
-	}
-
-	@Override
 	public JSONObject getJSOnClickConfigJSONObject(
 		HttpServletRequest httpServletRequest) {
 
@@ -93,6 +88,11 @@ public class MySitesPersonalMenuEntry implements PersonalMenuEntry {
 		).put(
 			"url", itemSelectorURL.toString()
 		);
+	}
+
+	@Override
+	public String getLabel(Locale locale) {
+		return _language.get(locale, "my-sites");
 	}
 
 	@Override
