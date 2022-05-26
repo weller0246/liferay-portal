@@ -69,6 +69,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.ActionUtil;
 import com.liferay.portal.vulcan.util.GroupUtil;
 import com.liferay.portal.vulcan.util.SearchUtil;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
@@ -297,21 +298,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 		UriInfo uriInfo = uriInfoOptional.orElse(null);
 
-		List<Map<String, Serializable>> valuesList =
-			_objectEntryLocalService.getValuesList(
-				objectDefinition.getObjectDefinitionId(), search, predicate,
-				pagination.getStartPosition(), pagination.getEndPosition());
-
-		List<ObjectEntry> items = new ArrayList<>();
-
-		for (Map<String, Serializable> map : valuesList) {
-			items.add(
-				getObjectEntry(
-					dtoConverterContext, objectDefinition,
-					GetterUtil.getLong(
-						map.get(objectDefinition.getPKObjectFieldName()))));
-		}
-
 		List<Facet> facets = new ArrayList<>();
 
 		if ((aggregation != null) &&
@@ -364,7 +350,16 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						objectDefinition.getObjectDefinitionId()),
 					groupId, uriInfo)
 			).build(),
-			facets, items, pagination,
+			facets,
+			TransformUtil.transform(
+				_objectEntryLocalService.getValuesList(
+					objectDefinition.getObjectDefinitionId(), search, predicate,
+					pagination.getStartPosition(), pagination.getEndPosition()),
+				values -> getObjectEntry(
+					dtoConverterContext, objectDefinition,
+					GetterUtil.getLong(
+						values.get(objectDefinition.getPKObjectFieldName())))),
+			pagination,
 			_objectEntryLocalService.getValuesListCount(
 				objectDefinition.getObjectDefinitionId(), search, predicate));
 	}
