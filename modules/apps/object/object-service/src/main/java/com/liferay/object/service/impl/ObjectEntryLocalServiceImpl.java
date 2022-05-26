@@ -379,7 +379,7 @@ public class ObjectEntryLocalServiceImpl
 			Predicate predicate, int start, int end)
 		throws PortalException {
 
-		Table objectFieldTable = _objectFieldLocalService.getObjectFieldTable(
+		Table table = _objectFieldLocalService.getTable(
 			objectDefinitionId, aggregationTerm);
 
 		ObjectField objectField = _objectFieldLocalService.getObjectField(
@@ -391,7 +391,7 @@ public class ObjectEntryLocalServiceImpl
 			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
 
 		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
-			objectFieldTable.getColumn(objectField.getDBColumnName()),
+			table.getColumn(objectField.getDBColumnName()),
 			DSLFunctionFactoryUtil.countDistinct(
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn()
 			).as(
@@ -426,7 +426,7 @@ public class ObjectEntryLocalServiceImpl
 				}
 			)
 		).groupBy(
-			objectFieldTable.getColumn(objectField.getDBColumnName())
+			table.getColumn(objectField.getDBColumnName())
 		).limit(
 			start, end
 		);
@@ -1154,11 +1154,10 @@ public class ObjectEntryLocalServiceImpl
 				objectDefinitionId, "String", true);
 
 		for (ObjectField objectField : objectFields) {
-			Table<?> objectFieldTable =
-				_objectFieldLocalService.getObjectFieldTable(
-					objectDefinitionId, objectField.getName());
+			Table<?> table = _objectFieldLocalService.getTable(
+				objectDefinitionId, objectField.getName());
 
-			Column<?, ?> column = objectFieldTable.getColumn(
+			Column<?, ?> column = table.getColumn(
 				objectField.getDBColumnName());
 
 			Predicate likePredicate = column.like("%" + search + "%");

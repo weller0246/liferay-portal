@@ -369,7 +369,7 @@ public class PredicateExpressionVisitorImpl
 
 	private Table _getTable(String columnName) {
 		try {
-			return _objectFieldLocalService.getObjectFieldTable(
+			return _objectFieldLocalService.getTable(
 				_objectDefinitionId, columnName);
 		}
 		catch (PortalException portalException) {

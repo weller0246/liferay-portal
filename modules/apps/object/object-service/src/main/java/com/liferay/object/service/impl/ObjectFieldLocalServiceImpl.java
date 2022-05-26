@@ -299,8 +299,7 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	@Override
-	public Table getObjectFieldTable(
-			long objectDefinitionId, String objectFieldName)
+	public Table getTable(long objectDefinitionId, String objectFieldName)
 		throws PortalException {
 
 		// TODO Cache this across the cluster with proper invalidation when the
