@@ -308,16 +308,20 @@ public class ObjectFieldLocalServiceImpl
 		ObjectField objectField = objectFieldLocalService.getObjectField(
 			objectDefinitionId, objectFieldName);
 
-		String dbTableName = objectField.getDBTableName();
+		if (Objects.equals(
+				objectField.getDBTableName(),
+				ObjectEntryTable.INSTANCE.getTableName())) {
 
-		if (dbTableName.equals(ObjectEntryTable.INSTANCE.getTableName())) {
 			return ObjectEntryTable.INSTANCE;
 		}
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId);
 
-		if (dbTableName.equals(objectDefinition.getDBTableName())) {
+		if (Objects.equals(
+				objectField.getDBTableName(),
+				objectDefinition.getDBTableName())) {
+
 			return new DynamicObjectDefinitionTable(
 				objectDefinition,
 				objectFieldLocalService.getObjectFields(
