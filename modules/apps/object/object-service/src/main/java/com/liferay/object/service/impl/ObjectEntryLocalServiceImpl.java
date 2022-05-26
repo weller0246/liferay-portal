@@ -379,6 +379,8 @@ public class ObjectEntryLocalServiceImpl
 			Predicate predicate, int start, int end)
 		throws PortalException {
 
+		Map<Object, Long> aggregationCounts = new HashMap<>();
+
 		Table table = _objectFieldLocalService.getTable(
 			objectDefinitionId, aggregationTerm);
 
@@ -431,17 +433,12 @@ public class ObjectEntryLocalServiceImpl
 			start, end
 		);
 
-		List<Object[]> results = dslQuery(dslQuery);
-
-		Map<Object, Long> map = new HashMap<>();
-
-		for (Object[] columns : results) {
-			map.put(
-				GetterUtil.getObject(columns[0]),
-				GetterUtil.getLong(columns[1]));
+		for (Object[] values : (List<Object[]>)dslQuery(dslQuery)) {
+			aggregationCounts.put(
+				GetterUtil.getObject(values[0]), GetterUtil.getLong(values[1]));
 		}
 
-		return map;
+		return aggregationCounts;
 	}
 
 	@Override
