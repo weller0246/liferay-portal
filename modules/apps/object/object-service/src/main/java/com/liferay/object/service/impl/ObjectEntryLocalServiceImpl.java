@@ -677,7 +677,7 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionTable.getSelectExpressions(),
 			extensionDynamicObjectDefinitionTable.getSelectExpressions());
 
-		predicate = _fillSearch(objectDefinitionId, predicate, search);
+		predicate = _fillPredicate(objectDefinitionId, predicate, search);
 
 		List<Object[]> rows = _list(
 			DSLQueryFactoryUtil.selectDistinct(
@@ -737,7 +737,7 @@ public class ObjectEntryLocalServiceImpl
 		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
 			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId);
 
-		predicate = _fillSearch(objectDefinitionId, predicate, search);
+		predicate = _fillPredicate(objectDefinitionId, predicate, search);
 
 		DSLQuery dslQuery = DSLQueryFactoryUtil.countDistinct(
 			ObjectEntryTable.INSTANCE.objectEntryId
@@ -1138,7 +1138,7 @@ public class ObjectEntryLocalServiceImpl
 				objectEntry.getObjectEntryId()));
 	}
 
-	private Predicate _fillSearch(
+	private Predicate _fillPredicate(
 			long objectDefinitionId, Predicate predicate, String search)
 		throws PortalException {
 
