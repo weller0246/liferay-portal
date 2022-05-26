@@ -15,6 +15,7 @@
 package com.liferay.object.rest.internal.odata.filter.expression;
 
 import com.liferay.object.service.ObjectFieldLocalService;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.sql.dsl.expression.Predicate;
@@ -296,9 +297,15 @@ public class PredicateExpressionVisitorImpl
 	}
 
 	private Column<?, ?> _getColumn(String columnName) {
-		Table<?> table = _getTable(columnName);
+		try {
+			Table<?> table = _objectFieldLocalService.getTable(
+				_objectDefinitionId, columnName);
 
-		return table.getColumn(columnName);
+			return table.getColumn(columnName);
+		}
+		catch (PortalException portalException) {
+			return ReflectionUtil.throwException(portalException);
+		}
 	}
 
 	private EntityModel _getLambdaEntityModel(
@@ -365,18 +372,6 @@ public class PredicateExpressionVisitorImpl
 		}
 
 		return Optional.of(predicate);
-	}
-
-	private Table _getTable(String columnName) {
-		try {
-			return _objectFieldLocalService.getTable(
-				_objectDefinitionId, columnName);
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-		}
-
-		return null;
 	}
 
 	private Object _normalize(String string) {
