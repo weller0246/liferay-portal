@@ -60,16 +60,6 @@ public interface PersonalMenuEntry {
 	 */
 	public String getLabel(Locale locale);
 
-	/**
-	 * Returns JSONObject to be used by the menu entry onClick action.
-	 *
-	 * The object should contain the keys `selectEventName`, `title`, and `url`.
-	 * These values are passed to Liferay.Util.openSelectionModal, which is called
-	 * at product-navigation-taglib/src/main/resources/META-INF/resources/personal_menu/js/PersonalMenu.es.js
-	 *
-	 * @param  httpServletRequest the servlet request used to create a portlet's URL
-	 * @return JSONObject
-	 */
 	public default JSONObject getPortletJSOnClickConfig(
 		HttpServletRequest httpServletRequest) {
 
