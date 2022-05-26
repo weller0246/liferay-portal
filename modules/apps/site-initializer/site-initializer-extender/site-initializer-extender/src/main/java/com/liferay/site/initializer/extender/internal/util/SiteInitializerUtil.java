@@ -43,7 +43,7 @@ import org.osgi.framework.Bundle;
  */
 public class SiteInitializerUtil {
 
-	public static final String[] PORTLET_PROPERTIES_WHITELIST = {
+	public static final String[] PORTAL_PROPERTIES_KEYS_WHITELIST = {
 		"default.guest.public.layout.friendly.url",
 		"default.guest.public.layout.name",
 		"default.guest.public.layout.regular.color.scheme.id",
@@ -132,7 +132,7 @@ public class SiteInitializerUtil {
 
 			if ((value == null) ||
 				!ArrayUtil.contains(
-					PORTLET_PROPERTIES_WHITELIST, portalPropertyParts[1])) {
+					PORTAL_PROPERTIES_KEYS_WHITELIST, portalPropertyParts[1])) {
 
 				value = StringPool.BLANK;
 			}
