@@ -242,9 +242,7 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 					<%
 					DLViewFileEntryDisplayContext dlViewFileEntryDisplayContext = (DLViewFileEntryDisplayContext)request.getAttribute(DLViewFileEntryDisplayContext.class.getName());
 
-					String urlLabel = null;
-
-					boolean latestVersion;
+					boolean latestVersion = false;
 
 					if (dlViewFileEntryDisplayContext != null) {
 						latestVersion = fileVersion.equals(dlViewFileEntryDisplayContext.getFileVersion());
@@ -252,6 +250,8 @@ long assetClassPK = DLAssetHelperUtil.getAssetClassPK(fileEntry, fileVersion);
 					else {
 						latestVersion = fileVersion.equals(fileEntry.getLatestFileVersion());
 					}
+
+					String urlLabel = null;
 
 					if (latestVersion) {
 						urlLabel = LanguageUtil.get(resourceBundle, "latest-version-url");
