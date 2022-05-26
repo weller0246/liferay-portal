@@ -299,14 +299,13 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	@Override
-	public Table getTable(long objectDefinitionId, String objectFieldName)
+	public Table getTable(long objectDefinitionId, String name)
 		throws PortalException {
 
 		// TODO Cache this across the cluster with proper invalidation when the
 		// object definition or its object fields are updated
 
-		ObjectField objectField = objectFieldLocalService.getObjectField(
-			objectDefinitionId, objectFieldName);
+		ObjectField objectField = getObjectField(objectDefinitionId, name);
 
 		if (Objects.equals(
 				objectField.getDBTableName(),
@@ -497,9 +496,7 @@ public class ObjectFieldLocalServiceImpl
 		}
 	}
 
-	private void _deleteFileEntries(
-		long objectDefinitionId, String objectFieldName) {
-
+	private void _deleteFileEntries(long objectDefinitionId, String name) {
 		List<ObjectEntry> objectEntries =
 			_objectEntryPersistence.findByObjectDefinitionId(
 				objectDefinitionId);
@@ -509,7 +506,7 @@ public class ObjectFieldLocalServiceImpl
 
 			try {
 				_dlFileEntryLocalService.deleteFileEntry(
-					GetterUtil.getLong(values.get(objectFieldName)));
+					GetterUtil.getLong(values.get(name)));
 			}
 			catch (PortalException portalException) {
 				if (_log.isDebugEnabled()) {
