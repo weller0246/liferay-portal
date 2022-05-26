@@ -460,7 +460,7 @@ const ExperiencesSelectorHeader = ({
 				<ClayAlert className="mx-0" displayType="warning">
 					<strong className="lead">
 						{Liferay.Language.get(
-							'experiences-can-not-be-displayed-because-segmentation-is-disabled'
+							'experiences-cannot-be-displayed-because-segmentation-is-disabled'
 						)}
 					</strong>
 
