@@ -15,7 +15,6 @@
 package com.liferay.object.rest.internal.resource.v1_0;
 
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
@@ -171,7 +170,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 					ParamUtil.getString(contextHttpServletRequest, "filter"),
 					contextAcceptLanguage.getPreferredLocale(),
 					_objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _objectTableProvider),
+					_objectFieldLocalService),
 				search, sorts);
 		}
 
@@ -225,7 +224,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 					ParamUtil.getString(contextHttpServletRequest, "filter"),
 					contextAcceptLanguage.getPreferredLocale(),
 					_objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _objectTableProvider),
+					_objectFieldLocalService),
 				search, sorts);
 		}
 
@@ -417,8 +416,5 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 
 	@Reference
 	private ObjectScopeProviderRegistry _objectScopeProviderRegistry;
-
-	@Reference
-	private ObjectTableProvider _objectTableProvider;
 
 }

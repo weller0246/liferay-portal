@@ -14,7 +14,6 @@
 
 package com.liferay.object.rest.internal.petra.sql.dsl.expression;
 
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.odata.filter.expression.PredicateExpressionVisitorImpl;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -41,8 +40,7 @@ public class PredicateUtil {
 	public static Predicate toPredicate(
 		FilterParserProvider filterParserProvider, String filterString,
 		Locale locale, long objectDefinitionId,
-		ObjectFieldLocalService objectFieldLocalService,
-		ObjectTableProvider objectTableProvider) {
+		ObjectFieldLocalService objectFieldLocalService) {
 
 		try {
 			EntityModel entityModel = new ObjectEntryEntityModel(
@@ -60,7 +58,7 @@ public class PredicateUtil {
 					entityModel,
 					FastDateFormatFactoryUtil.getSimpleDateFormat(
 						PropsUtil.get(PropsKeys.INDEX_DATE_FORMAT_PATTERN)),
-					locale, objectDefinitionId, objectTableProvider));
+					locale, objectDefinitionId, objectFieldLocalService));
 		}
 		catch (Exception exception) {
 			_log.error(exception);

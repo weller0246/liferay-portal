@@ -16,7 +16,6 @@ package com.liferay.object.rest.internal.deployer;
 
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.internal.graphql.dto.v1_0.ObjectDefinitionGraphQLDTOContributor;
 import com.liferay.object.rest.internal.jaxrs.context.provider.ObjectDefinitionContextProvider;
 import com.liferay.object.rest.internal.jaxrs.exception.mapper.RequiredObjectFieldExceptionMapper;
@@ -171,7 +170,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectFieldLocalService,
 					_objectFieldLocalService.getObjectFields(
 						objectDefinition.getObjectDefinitionId()),
-					objectScopeProvider, _objectTableProvider),
+					objectScopeProvider),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"dto.name", objectDefinition.getDBTableName()
 				).build()));
@@ -319,9 +318,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private ObjectScopeProviderRegistry _objectScopeProviderRegistry;
-
-	@Reference
-	private ObjectTableProvider _objectTableProvider;
 
 	@Reference
 	private Portal _portal;

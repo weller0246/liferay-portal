@@ -14,7 +14,7 @@
 
 package com.liferay.object.rest.internal.odata.filter.expression;
 
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
 import com.liferay.petra.sql.dsl.expression.Predicate;
@@ -62,13 +62,14 @@ public class PredicateExpressionVisitorImpl
 
 	public PredicateExpressionVisitorImpl(
 		EntityModel entityModel, Format format, Locale locale,
-		long objectDefinitionId, ObjectTableProvider objectTableProvider) {
+		long objectDefinitionId,
+		ObjectFieldLocalService objectFieldLocalService) {
 
 		_entityModel = entityModel;
 		_format = format;
 		_locale = locale;
 		_objectDefinitionId = objectDefinitionId;
-		_objectTableProvider = objectTableProvider;
+		_objectFieldLocalService = objectFieldLocalService;
 	}
 
 	@Override
@@ -101,7 +102,8 @@ public class PredicateExpressionVisitorImpl
 					(CollectionEntityField)entityFieldsMap.get(
 						collectionPropertyExpression.getName()),
 					lambdaFunctionExpression.getVariableName()),
-				_format, _locale, _objectDefinitionId, _objectTableProvider));
+				_format, _locale, _objectDefinitionId,
+				_objectFieldLocalService));
 	}
 
 	@Override
@@ -365,7 +367,7 @@ public class PredicateExpressionVisitorImpl
 
 	private Table _getTable(String columnName) {
 		try {
-			return _objectTableProvider.getTable(
+			return _objectFieldLocalService.getObjectFieldTable(
 				_objectDefinitionId, columnName);
 		}
 		catch (PortalException portalException) {
@@ -398,6 +400,6 @@ public class PredicateExpressionVisitorImpl
 	private final Format _format;
 	private final Locale _locale;
 	private final long _objectDefinitionId;
-	private final ObjectTableProvider _objectTableProvider;
+	private final ObjectFieldLocalService _objectFieldLocalService;
 
 }

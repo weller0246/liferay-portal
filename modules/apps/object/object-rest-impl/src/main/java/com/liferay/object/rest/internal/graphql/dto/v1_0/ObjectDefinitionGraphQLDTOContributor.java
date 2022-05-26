@@ -16,7 +16,6 @@ package com.liferay.object.rest.internal.graphql.dto.v1_0;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.dto.v1_0.Status;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
@@ -67,8 +66,8 @@ public class ObjectDefinitionGraphQLDTOContributor
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
-		List<ObjectField> objectFields, ObjectScopeProvider objectScopeProvider,
-		ObjectTableProvider objectTableProvider) {
+		List<ObjectField> objectFields,
+		ObjectScopeProvider objectScopeProvider) {
 
 		List<GraphQLDTOProperty> graphQLDTOProperties = new ArrayList<>();
 
@@ -128,9 +127,8 @@ public class ObjectDefinitionGraphQLDTOContributor
 			StringUtil.removeSubstring(
 				objectDefinition.getPKObjectFieldName(), "c_"),
 			objectDefinition, objectEntryManager, objectFieldLocalService,
-			objectScopeProvider, objectTableProvider,
-			relationshipGraphQLDTOProperties, objectDefinition.getShortName(),
-			objectDefinition.getName());
+			objectScopeProvider, relationshipGraphQLDTOProperties,
+			objectDefinition.getShortName(), objectDefinition.getName());
 	}
 
 	@Override
@@ -186,7 +184,7 @@ public class ObjectDefinitionGraphQLDTOContributor
 						dtoConverterContext.getHttpServletRequest(), "filter"),
 					dtoConverterContext.getLocale(),
 					_objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _objectTableProvider),
+					_objectFieldLocalService),
 				search, sorts);
 		}
 		else {
@@ -296,7 +294,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
-		ObjectTableProvider objectTableProvider,
 		List<GraphQLDTOProperty> relationshipGraphQLDTOProperties,
 		String resourceName, String typeName) {
 
@@ -309,7 +306,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 		_objectEntryManager = objectEntryManager;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
-		_objectTableProvider = objectTableProvider;
 		_relationshipGraphQLDTOProperties = relationshipGraphQLDTOProperties;
 		_resourceName = resourceName;
 		_typeName = typeName;
@@ -389,7 +385,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 	private final ObjectEntryManager _objectEntryManager;
 	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectScopeProvider _objectScopeProvider;
-	private final ObjectTableProvider _objectTableProvider;
 	private final List<GraphQLDTOProperty> _relationshipGraphQLDTOProperties;
 	private final String _resourceName;
 	private final String _typeName;

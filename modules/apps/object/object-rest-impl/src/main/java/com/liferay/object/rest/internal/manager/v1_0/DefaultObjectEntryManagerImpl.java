@@ -21,7 +21,6 @@ import com.liferay.object.exception.NoSuchObjectEntryException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
-import com.liferay.object.petra.sql.dsl.ObjectTableProvider;
 import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.dto.v1_0.converter.ObjectEntryDTOConverter;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
@@ -374,7 +373,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					_filterParserProvider, filterString,
 					dtoConverterContext.getLocale(),
 					objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _objectTableProvider),
+					_objectFieldLocalService),
 				search, sorts);
 		}
 
@@ -702,9 +701,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	@Reference
 	private ObjectScopeProviderRegistry _objectScopeProviderRegistry;
-
-	@Reference
-	private ObjectTableProvider _objectTableProvider;
 
 	@Reference
 	private Queries _queries;
