@@ -380,6 +380,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>TREEVIEW_NODE_COLLAPSED_PAGES</td>
+	<td>//div[contains(normalize-space(text()), '${key_site}')]//..//..//div//button[contains(@class,'component-expander')][@aria-expanded='false']</td>
+	<td></td>
+</tr>
+<tr>
 	<td>MODAL_NAME_FIELD</td>
 	<td>//div/input[contains(@id,'Name')]</td>
 	<td></td>
