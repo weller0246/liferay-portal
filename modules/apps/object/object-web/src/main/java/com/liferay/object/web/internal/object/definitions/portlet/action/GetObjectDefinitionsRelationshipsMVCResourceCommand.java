@@ -60,16 +60,15 @@ public class GetObjectDefinitionsRelationshipsMVCResourceCommand
 
 		JSONArray objectDefinitionsJSONArray = _jsonFactory.createJSONArray();
 
-		List<ObjectDefinition> objectDefinitions =
-			_objectDefinitionLocalService.getObjectDefinitions(
-				_portal.getCompanyId(resourceRequest), true, false,
-				WorkflowConstants.STATUS_APPROVED);
-
 		List<ObjectRelationship> objectRelationships =
 			_objectRelationshipLocalService.getObjectRelationships(
 				ParamUtil.getLong(resourceRequest, "objectDefinitionId"));
 
-		for (ObjectDefinition objectDefinition : objectDefinitions) {
+		for (ObjectDefinition objectDefinition :
+				_objectDefinitionLocalService.getObjectDefinitions(
+					_portal.getCompanyId(resourceRequest), true, false,
+					WorkflowConstants.STATUS_APPROVED)) {
+
 			objectDefinitionsJSONArray.put(
 				JSONUtil.put(
 					"id", objectDefinition.getObjectDefinitionId()
