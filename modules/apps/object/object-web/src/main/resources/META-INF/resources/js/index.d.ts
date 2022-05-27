@@ -43,6 +43,7 @@ interface ObjectFieldType {
 interface ObjectField {
 	DBType: string;
 	businessType: ObjectFieldBusinessType;
+	defaultValue: number;
 	id?: number;
 	indexed: boolean;
 	indexedAsKeyword: boolean;
@@ -53,6 +54,7 @@ interface ObjectField {
 	objectFieldSettings?: ObjectFieldSetting[];
 	relationshipType?: unknown;
 	required: boolean;
+	state: boolean;
 }
 
 interface ObjectFieldSetting {
