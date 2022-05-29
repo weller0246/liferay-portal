@@ -145,7 +145,7 @@ public abstract class BaseBatchEngineExportTaskItemWriterImplTestCase {
 					Item childItem = new Item();
 
 					childItem.setCreateDate(_createDate);
-					childItem.setDescription("child description");
+					childItem.setDescription("Child Description");
 					childItem.setId((long)(i + j));
 
 					Map<String, String> childItemName = new HashMap<>();
@@ -158,7 +158,7 @@ public abstract class BaseBatchEngineExportTaskItemWriterImplTestCase {
 									return null;
 								}
 
-								return "child item " +
+								return "Child Item " +
 									name.get(childItemNameKey);
 							});
 					}
