@@ -163,7 +163,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 
 	@Override
 	public boolean hasModelResourcePermission(
-			Long objectDefinitionId, Long objectEntryId, String actionId)
+			long objectDefinitionId, long objectEntryId, String actionId)
 		throws PortalException {
 
 		ObjectDefinition objectDefinition =
