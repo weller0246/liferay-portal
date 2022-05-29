@@ -91,14 +91,14 @@ public class RegionServiceImpl extends RegionServiceBaseImpl {
 	@Override
 	public List<Region> getRegions(long countryId) {
 		return regionPersistence.findByCountryId(
-			countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			countryId, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	@AccessControlled(guestAccessEnabled = true)
 	@Override
 	public List<Region> getRegions(long countryId, boolean active) {
 		return regionPersistence.findByC_A(
-			countryId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
+			countryId, active, QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 	}
 
 	@Override
