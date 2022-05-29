@@ -147,12 +147,13 @@ public class ObjectEntryAssetRenderer
 		throws Exception {
 
 		httpServletRequest.setAttribute(
+			ObjectWebKeys.EXTERNAL_REFERENCE_CODE,
+			_objectEntry.getExternalReferenceCode());
+		httpServletRequest.setAttribute(
 			ObjectWebKeys.OBJECT_DEFINITION, _objectDefinition);
 		httpServletRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
 			_objectEntryDisplayContextFactory.create(httpServletRequest, true));
-		httpServletRequest.setAttribute(
-			"externalReferenceCode", _objectEntry.getExternalReferenceCode());
 
 		return super.include(httpServletRequest, httpServletResponse, template);
 	}

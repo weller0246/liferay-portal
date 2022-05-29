@@ -218,7 +218,7 @@ public class ObjectEntryDisplayContext {
 				_objectRequestHelper.getRequest();
 
 			externalReferenceCode = (String)httpServletRequest.getAttribute(
-				"externalReferenceCode");
+				ObjectWebKeys.EXTERNAL_REFERENCE_CODE);
 		}
 
 		ObjectDefinition objectDefinition = getObjectDefinition();
