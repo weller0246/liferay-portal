@@ -25,7 +25,7 @@ import javax.ws.rs.ext.Provider;
  * @author Javier Gamarra
  */
 @Provider
-public class RequiredObjectFieldExceptionMapper
+public class ObjectEntryValuesExceptionMapper
 	extends BaseExceptionMapper<ObjectEntryValuesException> {
 
 	@Override

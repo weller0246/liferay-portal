@@ -23,7 +23,7 @@ import javax.ws.rs.core.Response;
 /**
  * @author Luis Miguel Barcos
  */
-public class ObjectValidationExceptionMapper
+public class ObjectValidationRuleEngineExceptionMapper
 	extends BaseExceptionMapper<ObjectValidationRuleEngineException> {
 
 	@Override
