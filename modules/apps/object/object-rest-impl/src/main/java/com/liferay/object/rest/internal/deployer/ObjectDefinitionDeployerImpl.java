@@ -135,19 +135,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					).build()),
 				_bundleContext.registerService(
 					ExceptionMapper.class,
-					new ObjectValidationRuleEngineExceptionMapper(),
-					HashMapDictionaryBuilder.<String, Object>put(
-						"osgi.jaxrs.application.select",
-						"(osgi.jaxrs.name=" + objectDefinition.getName() + ")"
-					).put(
-						"osgi.jaxrs.extension", "true"
-					).put(
-						"osgi.jaxrs.name",
-						objectDefinition.getName() +
-							"ObjectValidationRuleEngineExceptionMapper"
-					).build()),
-				_bundleContext.registerService(
-					ExceptionMapper.class,
 					new ObjectEntryValuesExceptionMapper(),
 					HashMapDictionaryBuilder.<String, Object>put(
 						"osgi.jaxrs.application.select",
@@ -158,6 +145,19 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						"osgi.jaxrs.name",
 						objectDefinition.getName() +
 							"ObjectEntryValuesExceptionMapper"
+					).build()),
+				_bundleContext.registerService(
+					ExceptionMapper.class,
+					new ObjectValidationRuleEngineExceptionMapper(),
+					HashMapDictionaryBuilder.<String, Object>put(
+						"osgi.jaxrs.application.select",
+						"(osgi.jaxrs.name=" + objectDefinition.getName() + ")"
+					).put(
+						"osgi.jaxrs.extension", "true"
+					).put(
+						"osgi.jaxrs.name",
+						objectDefinition.getName() +
+							"ObjectValidationRuleEngineExceptionMapper"
 					).build()),
 				_bundleContext.registerService(
 					ExceptionMapper.class,
