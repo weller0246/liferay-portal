@@ -124,14 +124,11 @@ public class ShippingAddressResourceTest
 	public void testGraphQLGetShipmentByExternalReferenceCodeShippingAddress()
 		throws Exception {
 
-		ShippingAddress shippingAddress =
-			testGraphQLGetShipmentByExternalReferenceCodeShippingAddress_addShippingAddress();
-
 		String externalReferenceCode =
 			"\"" + _commerceShipment.getExternalReferenceCode() + "\"";
 
 		assertEquals(
-			shippingAddress,
+			testGraphQLGetShipmentByExternalReferenceCodeShippingAddress_addShippingAddress(),
 			ShippingAddressSerDes.toDTO(
 				JSONUtil.getValueAsString(
 					invokeGraphQLQuery(
