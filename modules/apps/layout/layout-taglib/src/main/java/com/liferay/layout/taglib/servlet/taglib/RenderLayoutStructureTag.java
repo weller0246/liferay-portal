@@ -225,7 +225,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderCollectionStyledLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, InfoForm infoForm,
+			InfoForm infoForm, LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -522,8 +522,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderColumnLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, int collectionElementIndex,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -553,8 +553,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderContainerStyledLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, int collectionElementIndex,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -659,8 +659,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderDropZoneLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, int collectionElementIndex,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -738,8 +738,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderFormStyledLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, int collectionElementIndex,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -777,8 +777,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderFragmentStyledLayoutStructureItem(
-			int collectionElementIndex, LayoutStructureItem layoutStructureItem,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -830,9 +830,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 						true)) {
 
 					_write(
-						jspWriter, fragmentEntryLink,
-						fragmentStyledLayoutStructureItem,
-						renderLayoutStructureDisplayContext);
+						fragmentEntryLink, fragmentStyledLayoutStructureItem,
+						jspWriter, renderLayoutStructureDisplayContext);
 				}
 				else {
 					jspWriter.write("<div>");
@@ -863,12 +862,12 @@ public class RenderLayoutStructureTag extends IncludeTag {
 					CollectionStyledLayoutStructureItem) {
 
 				_renderCollectionStyledLayoutStructureItem(
-					layoutStructureItem, infoForm,
+					infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof ColumnLayoutStructureItem) {
 				_renderColumnLayoutStructureItem(
-					layoutStructureItem, collectionElementIndex, infoForm,
+					collectionElementIndex, infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -885,14 +884,14 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderContainerStyledLayoutStructureItem(
-					layoutStructureItem, collectionElementIndex, infoForm,
+					collectionElementIndex, infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
 						DropZoneLayoutStructureItem) {
 
 				_renderDropZoneLayoutStructureItem(
-					layoutStructureItem, collectionElementIndex, infoForm,
+					collectionElementIndex, infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -908,9 +907,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderFormStyledLayoutStructureItem(
-					layoutStructureItem, collectionElementIndex,
+					collectionElementIndex,
 					_getInfoForm(formStyledLayoutStructureItem),
-					renderLayoutStructureDisplayContext);
+					layoutStructureItem, renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
 						FragmentStyledLayoutStructureItem) {
@@ -926,7 +925,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderFragmentStyledLayoutStructureItem(
-					collectionElementIndex, layoutStructureItem, infoForm,
+					collectionElementIndex, infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -942,7 +941,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderRowStyledLayoutStructureItem(
-					layoutStructureItem, collectionElementIndex, infoForm,
+					collectionElementIndex, infoForm, layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else {
@@ -972,8 +971,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderRowStyledLayoutStructureItem(
-			LayoutStructureItem layoutStructureItem, int collectionElementIndex,
-			InfoForm infoForm,
+			int collectionElementIndex, InfoForm infoForm,
+			LayoutStructureItem layoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -1127,8 +1126,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _write(
-			JspWriter jspWriter, FragmentEntryLink fragmentEntryLink,
+			FragmentEntryLink fragmentEntryLink,
 			FragmentStyledLayoutStructureItem fragmentStyledLayoutStructureItem,
+			JspWriter jspWriter,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
