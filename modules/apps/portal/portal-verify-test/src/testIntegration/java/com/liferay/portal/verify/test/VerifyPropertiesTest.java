@@ -98,7 +98,7 @@ public class VerifyPropertiesTest {
 			Assert.assertEquals(
 				StringBundler.concat(
 					"Stopping the server due to incorrect use of migrated ",
-					"Portal properties [", migratedPortalKey, "]"),
+					"portal properties [", migratedPortalKey, "]"),
 				logEntry.getMessage());
 		}
 		finally {

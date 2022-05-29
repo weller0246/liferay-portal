@@ -47,7 +47,7 @@ public class VerifyProperties {
 
 		if (!keys.isEmpty()) {
 			_log.error(
-				"Stopping the server due to incorrect use of migrated Portal " +
+				"Stopping the server due to incorrect use of migrated portal " +
 					"properties " + keys);
 
 			System.exit(1);
