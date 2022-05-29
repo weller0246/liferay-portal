@@ -339,8 +339,8 @@ public class ObjectEntryServiceHttp {
 	}
 
 	public static boolean hasModelResourcePermission(
-			HttpPrincipal httpPrincipal, Long objectDefinitionId,
-			Long objectEntryId, String actionId)
+			HttpPrincipal httpPrincipal, long objectDefinitionId,
+			long objectEntryId, String actionId)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -486,7 +486,7 @@ public class ObjectEntryServiceHttp {
 	private static final Class<?>[] _getObjectEntryParameterTypes6 =
 		new Class[] {String.class, long.class, long.class};
 	private static final Class<?>[] _hasModelResourcePermissionParameterTypes7 =
-		new Class[] {Long.class, Long.class, String.class};
+		new Class[] {long.class, long.class, String.class};
 	private static final Class<?>[] _hasModelResourcePermissionParameterTypes8 =
 		new Class[] {com.liferay.object.model.ObjectEntry.class, String.class};
 	private static final Class<?>[] _updateObjectEntryParameterTypes9 =

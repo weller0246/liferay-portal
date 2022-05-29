@@ -105,7 +105,7 @@ public class ObjectEntryServiceUtil {
 	}
 
 	public static boolean hasModelResourcePermission(
-			Long objectDefinitionId, Long objectEntryId, String actionId)
+			long objectDefinitionId, long objectEntryId, String actionId)
 		throws PortalException {
 
 		return getService().hasModelResourcePermission(

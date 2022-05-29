@@ -93,7 +93,7 @@ public interface ObjectEntryService extends BaseService {
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public boolean hasModelResourcePermission(
-			Long objectDefinitionId, Long objectEntryId, String actionId)
+			long objectDefinitionId, long objectEntryId, String actionId)
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
