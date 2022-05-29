@@ -6555,7 +6555,10 @@ public class ServiceBuilder {
 				"name", externalReferenceCodeUpperCase.charAt(0) + "_ERC");
 
 			finderElement.addAttribute("return-type", entityName);
-			finderElement.addAttribute("unique", "true");
+
+			if (isVersionGTE_7_4_0()) {
+				finderElement.addAttribute("unique", "true");
+			}
 
 			Element finderColumnElement = finderElement.addElement(
 				"finder-column");
