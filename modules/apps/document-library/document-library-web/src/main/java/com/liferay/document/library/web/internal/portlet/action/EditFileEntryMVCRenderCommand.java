@@ -56,7 +56,6 @@ public class EditFileEntryMVCRenderCommand
 		renderRequest.setAttribute(
 			DDMFormValuesToMapConverter.class.getName(),
 			_ddmFormValuesToMapConverter);
-
 		renderRequest.setAttribute(
 			DLAdminDisplayContext.class.getName(),
 			_dlAdminDisplayContextProvider.getDLAdminDisplayContext(
