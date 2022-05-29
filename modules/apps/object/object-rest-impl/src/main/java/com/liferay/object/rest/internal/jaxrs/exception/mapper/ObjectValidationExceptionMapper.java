@@ -21,7 +21,7 @@ import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 import javax.ws.rs.core.Response;
 
 /**
- * @author luismiguel barcos
+ * @author Luis Miguel Barcos
  */
 public class ObjectValidationExceptionMapper
 	extends BaseExceptionMapper<ObjectValidationRuleEngineException> {
