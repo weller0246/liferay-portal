@@ -562,9 +562,12 @@ public class CPDefinitionLocalServiceImpl
 			CProduct newCProduct = (CProduct)originalCProduct.clone();
 
 			newCProduct.setUuid(PortalUUIDUtil.generate());
-			newCProduct.setCProductId(counterLocalService.increment());
-			newCProduct.setExternalReferenceCode(
-				String.valueOf(newCProduct.getCProductId()));
+
+			long cProductId = counterLocalService.increment();
+
+			newCProduct.setExternalReferenceCode(String.valueOf(cProductId));
+			newCProduct.setCProductId(cProductId);
+
 			newCProduct.setUserId(user.getUserId());
 			newCProduct.setUserName(user.getFullName());
 			newCProduct.setPublishedCPDefinitionId(newCPDefinitionId);
@@ -632,12 +635,14 @@ public class CPDefinitionLocalServiceImpl
 			CPAttachmentFileEntry newCPAttachmentFileEntry =
 				(CPAttachmentFileEntry)cpAttachmentFileEntry.clone();
 
-			newCPAttachmentFileEntry.setCPAttachmentFileEntryId(
-				counterLocalService.increment());
-			newCPAttachmentFileEntry.setExternalReferenceCode(
-				String.valueOf(
-					newCPAttachmentFileEntry.getCPAttachmentFileEntryId()));
 			newCPAttachmentFileEntry.setUuid(PortalUUIDUtil.generate());
+
+			long cpAttachmentFileEntryId = counterLocalService.increment();
+
+			newCPAttachmentFileEntry.setExternalReferenceCode(
+				String.valueOf(cpAttachmentFileEntryId));
+			newCPAttachmentFileEntry.setCPAttachmentFileEntryId(
+				cpAttachmentFileEntryId);
 
 			newCPAttachmentFileEntry.setClassPK(newCPDefinitionId);
 
@@ -766,10 +771,14 @@ public class CPDefinitionLocalServiceImpl
 		for (CPInstance cpInstance : cpInstances) {
 			CPInstance newCPInstance = (CPInstance)cpInstance.clone();
 
-			newCPInstance.setCPInstanceId(counterLocalService.increment());
-			newCPInstance.setExternalReferenceCode(
-				String.valueOf(newCPInstance.getCPInstanceId()));
 			newCPInstance.setUuid(PortalUUIDUtil.generate());
+
+			long cpInstanceId = counterLocalService.increment();
+
+			newCPInstance.setExternalReferenceCode(
+				String.valueOf(cpInstanceId));
+			newCPInstance.setCPInstanceId(cpInstanceId);
+
 			newCPInstance.setCPInstanceUuid(PortalUUIDUtil.generate());
 
 			newCPInstance.setCPDefinitionId(newCPDefinitionId);
