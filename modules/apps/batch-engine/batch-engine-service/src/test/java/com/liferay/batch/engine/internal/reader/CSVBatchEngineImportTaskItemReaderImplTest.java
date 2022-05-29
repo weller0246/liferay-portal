@@ -330,7 +330,7 @@ public class CSVBatchEngineImportTaskItemReaderImplTest
 	}
 
 	private Object[] _encloseWithCharacter(
-		Object[] rowValues, String enclosingCharacter) {
+		String enclosingCharacter, Object[] rowValues) {
 
 		if (Validator.isNull(enclosingCharacter)) {
 			return rowValues;
@@ -362,7 +362,7 @@ public class CSVBatchEngineImportTaskItemReaderImplTest
 		for (Object[] singleRowValues : rowValues) {
 			sb.append(
 				StringUtil.merge(
-					_encloseWithCharacter(singleRowValues, enclosingCharacter),
+					_encloseWithCharacter(enclosingCharacter, singleRowValues),
 					delimiter));
 			sb.append("\n");
 		}
