@@ -573,7 +573,7 @@ public class AnnouncementsEntryLocalServiceImpl
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to read the content for: " +
+				"Unable to read the content for " +
 					PropsValues.ANNOUNCEMENTS_EMAIL_BODY);
 		}
 
@@ -593,7 +593,7 @@ public class AnnouncementsEntryLocalServiceImpl
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to read the content for: " +
+				"Unable to read the content for " +
 					PropsValues.ANNOUNCEMENTS_EMAIL_SUBJECT);
 		}
 

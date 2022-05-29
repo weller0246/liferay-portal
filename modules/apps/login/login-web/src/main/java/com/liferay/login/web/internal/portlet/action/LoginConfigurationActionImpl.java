@@ -70,7 +70,7 @@ public class LoginConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to read the content for: " +
+				"Unable to read the content for " +
 					PropsValues.ADMIN_EMAIL_PASSWORD_RESET_BODY);
 		}
 
@@ -84,7 +84,7 @@ public class LoginConfigurationActionImpl extends DefaultConfigurationAction {
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to read the content for: " +
+				"Unable to read the content for " +
 					PropsValues.ADMIN_EMAIL_PASSWORD_RESET_SUBJECT);
 		}
 

@@ -45,7 +45,7 @@ public class RobotsUtil {
 			}
 			catch (IOException ioException) {
 				_log.error(
-					"Unable to read the content for: " +
+					"Unable to read the content for " +
 						PropsValues.ROBOTS_TXT_WITHOUT_SITEMAP);
 			}
 		}
@@ -73,7 +73,7 @@ public class RobotsUtil {
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to read the content for: " +
+				"Unable to read the content for " +
 					PropsValues.ROBOTS_TXT_WITH_SITEMAP);
 		}
 
