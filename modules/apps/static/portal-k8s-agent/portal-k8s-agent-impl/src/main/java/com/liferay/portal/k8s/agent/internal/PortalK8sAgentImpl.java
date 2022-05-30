@@ -329,8 +329,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		ObjectMeta metadata = configMap.getMetadata();
 
 		String configurationFilter = StringBundler.concat(
-			"(.k8s.config.uid=", metadata.getUid(),
-			StringPool.CLOSE_PARENTHESIS);
+			"(.k8s.config.uid=", metadata.getUid(), ")");
 
 		try {
 			Configuration[] configurations =
@@ -350,20 +349,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		catch (Exception exception) {
 			_log.error(exception);
 		}
-	}
-
-	private Configuration _findExistingConfiguration(String fileName)
-		throws Exception {
-
-		Configuration[] configurations = _configurationAdmin.listConfigurations(
-			StringBundler.concat(
-				"(.k8s.config.key=", fileName, StringPool.CLOSE_PARENTHESIS));
-
-		if ((configurations != null) && (configurations.length > 0)) {
-			return configurations[0];
-		}
-
-		return null;
 	}
 
 	private Configuration _getConfiguration(
@@ -403,13 +388,17 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ObjectMeta objectMeta)
 		throws Exception {
 
-		Configuration configuration = _findExistingConfiguration(
-			config.getPid());
+		Configuration configuration = null;
 
-		if (configuration == null) {
+		Configuration[] configurations = _configurationAdmin.listConfigurations(
+			StringBundler.concat("(.k8s.config.key=", config.getPid(), ")"));
+
+		if ((configurations == null) || (configurations.length == 0)) {
 			configuration = _getConfiguration(config);
 		}
 		else {
+			configuration = configurations[0];
+
 			Dictionary<String, Object> properties =
 				configuration.getProperties();
 
