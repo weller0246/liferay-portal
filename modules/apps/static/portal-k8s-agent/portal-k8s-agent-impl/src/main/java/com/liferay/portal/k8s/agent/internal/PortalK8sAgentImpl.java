@@ -204,7 +204,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		if (configMap != null) {
 			Map<String, String> data = configMap.getData();
 
-			Map<String, String> originalCopy = new TreeMap<>(data);
+			Map<String, String> originalData = new TreeMap<>(data);
 
 			configMapDataConsumer.accept(data);
 
@@ -215,12 +215,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				);
 
 				if (_log.isDebugEnabled()) {
-					_log.debug("Deleted ".concat(configMap.toString()));
+					_log.debug("Deleted " + configMap);
 				}
 
 				return Result.DELETED;
 			}
-			else if (!Objects.equals(data, originalCopy)) {
+			else if (!Objects.equals(data, originalData)) {
 				configMap = _kubernetesClient.configMaps(
 				).withName(
 					configMapName
@@ -229,14 +229,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				);
 
 				if (_log.isDebugEnabled()) {
-					_log.debug("Updated ".concat(configMap.toString()));
+					_log.debug("Updated " + configMap);
 				}
 
 				return Result.UPDATED;
 			}
 			else {
 				if (_log.isDebugEnabled()) {
-					_log.debug("Unchanged ".concat(configMap.toString()));
+					_log.debug("Unchanged " + configMap);
 				}
 
 				return Result.UNCHANGED;
