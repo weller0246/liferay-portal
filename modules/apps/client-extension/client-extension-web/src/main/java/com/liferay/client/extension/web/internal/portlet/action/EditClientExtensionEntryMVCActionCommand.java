@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.web.internal.portlet.action;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryService;
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminPortletKeys;
@@ -105,7 +105,7 @@ public class EditClientExtensionEntryMVCActionCommand
 			actionRequest, "sourceCodeURL");
 		String type = ParamUtil.getString(actionRequest, "type");
 
-		if (type.equals(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 			_clientExtensionEntryService.addCustomElementClientExtensionEntry(
 				StringPool.BLANK,
 				StringUtil.merge(
@@ -122,7 +122,7 @@ public class EditClientExtensionEntryMVCActionCommand
 				description, friendlyURLMapping, instanceable, nameMap,
 				portletCategoryName, properties, sourceCodeURL);
 		}
-		else if (type.equals(ClientExtensionConstants.TYPE_IFRAME)) {
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
 			_clientExtensionEntryService.addIFrameClientExtensionEntry(
 				description, friendlyURLMapping,
 				ParamUtil.getString(actionRequest, "iFrameURL"), instanceable,
@@ -162,7 +162,7 @@ public class EditClientExtensionEntryMVCActionCommand
 
 		if (Objects.equals(
 				clientExtensionEntry.getType(),
-				ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)) {
+				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			_clientExtensionEntryService.
 				updateCustomElementClientExtensionEntry(
@@ -183,7 +183,7 @@ public class EditClientExtensionEntryMVCActionCommand
 		}
 		else if (Objects.equals(
 					clientExtensionEntry.getType(),
-					ClientExtensionConstants.TYPE_IFRAME)) {
+					ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			_clientExtensionEntryService.updateIFrameClientExtensionEntry(
 				clientExtensionEntry.getClientExtensionEntryId(), description,

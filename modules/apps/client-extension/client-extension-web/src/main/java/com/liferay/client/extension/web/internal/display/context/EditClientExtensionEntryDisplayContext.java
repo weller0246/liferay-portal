@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.web.internal.display.context;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementCSSURLsException;
 import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementHTMLElementNameException;
 import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementURLsException;
@@ -240,7 +240,7 @@ public class EditClientExtensionEntryDisplayContext {
 		}
 
 		if (_clientExtensionEntry == null) {
-			return ClientExtensionConstants.TYPE_IFRAME;
+			return ClientExtensionEntryConstants.TYPE_IFRAME;
 		}
 
 		return _clientExtensionEntry.getType();
@@ -251,7 +251,7 @@ public class EditClientExtensionEntryDisplayContext {
 				_portletRequest,
 				ClientExtensionEntryIFrameURLException.class.getName())) {
 
-			return ClientExtensionConstants.TYPE_IFRAME;
+			return ClientExtensionEntryConstants.TYPE_IFRAME;
 		}
 
 		if (MultiSessionErrors.contains(
@@ -267,7 +267,7 @@ public class EditClientExtensionEntryDisplayContext {
 				ClientExtensionEntryCustomElementURLsException.class.
 					getName())) {
 
-			return ClientExtensionConstants.TYPE_CUSTOM_ELEMENT;
+			return ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT;
 		}
 
 		return null;

@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.web.internal.deployer;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.deployer.ClientExtensionEntryDeployer;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.web.internal.portlet.ClientExtensionEntryFriendlyURLMapper;
@@ -146,7 +146,7 @@ public class ClientExtensionEntryDeployerImpl
 
 		if (Objects.equals(
 				clientExtensionEntry.getType(),
-				ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)) {
+				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			String customElementURLs =
 				clientExtensionEntry.getCustomElementURLs();
@@ -172,7 +172,7 @@ public class ClientExtensionEntryDeployerImpl
 		}
 		else if (Objects.equals(
 					clientExtensionEntry.getType(),
-					ClientExtensionConstants.TYPE_IFRAME)) {
+					ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			dictionary.put(
 				"com.liferay.portlet.footer-portlet-css",

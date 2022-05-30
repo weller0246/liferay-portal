@@ -67,14 +67,14 @@ renderResponse.setTitle(editClientExtensionEntryDisplayContext.getTitle());
 				label="type"
 				name="type"
 				options='<%=
-					Arrays.asList(new SelectOption(LanguageUtil.get(request, "custom-element"), ClientExtensionConstants.TYPE_CUSTOM_ELEMENT, editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)), new SelectOption(LanguageUtil.get(request, "iframe"), ClientExtensionConstants.TYPE_IFRAME, editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_IFRAME)))
+					Arrays.asList(new SelectOption(LanguageUtil.get(request, "custom-element"), ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT, editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)), new SelectOption(LanguageUtil.get(request, "iframe"), ClientExtensionEntryConstants.TYPE_IFRAME, editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_IFRAME)))
 				%>'
 				propsTransformer="admin/js/clientExtensionEntryTypeSelectPropsTransformer"
 			/>
 
 			<liferay-frontend:fieldset
-				cssClass='<%= editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_IFRAME) ? StringPool.BLANK : "d-none" %>'
-				disabled="<%= !editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_IFRAME) %>"
+				cssClass='<%= editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_IFRAME) ? StringPool.BLANK : "d-none" %>'
+				disabled="<%= !editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_IFRAME) %>"
 				id='<%= liferayPortletResponse.getNamespace() + "_type_iframe" %>'
 			>
 				<aui:input label="url" name="iFrameURL">
@@ -83,8 +83,8 @@ renderResponse.setTitle(editClientExtensionEntryDisplayContext.getTitle());
 			</liferay-frontend:fieldset>
 
 			<liferay-frontend:fieldset
-				cssClass='<%= editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT) ? StringPool.BLANK : "d-none" %>'
-				disabled="<%= !editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT) %>"
+				cssClass='<%= editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT) ? StringPool.BLANK : "d-none" %>'
+				disabled="<%= !editClientExtensionEntryDisplayContext.isEditingClientExtensionEntryType(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT) %>"
 				id='<%= liferayPortletResponse.getNamespace() + "_type_customElement" %>'
 			>
 				<aui:input label="html-element-name" name="customElementHTMLElementName">

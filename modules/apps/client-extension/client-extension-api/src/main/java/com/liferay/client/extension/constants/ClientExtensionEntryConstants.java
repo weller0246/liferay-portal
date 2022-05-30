@@ -17,8 +17,10 @@ package com.liferay.client.extension.constants;
 /**
  * @author Iván Zaera Avellón
  */
-public class ClientExtensionConstants {
+public class ClientExtensionEntryConstants {
 
-	public static final String RESOURCE_NAME = "com.liferay.client.extension";
+	public static final String TYPE_CUSTOM_ELEMENT = "customElement";
+
+	public static final String TYPE_IFRAME = "iframe";
 
 }

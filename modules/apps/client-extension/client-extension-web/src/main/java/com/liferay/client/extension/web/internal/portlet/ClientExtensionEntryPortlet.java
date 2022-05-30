@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.web.internal.portlet;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.CharPool;
@@ -66,10 +66,10 @@ public class ClientExtensionEntryPortlet extends MVCPortlet {
 
 		String type = _clientExtensionEntry.getType();
 
-		if (type.equals(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 			_renderCustomElement(renderRequest, renderResponse);
 		}
-		else if (type.equals(ClientExtensionConstants.TYPE_IFRAME)) {
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
 			_renderIFrame(renderRequest, renderResponse);
 		}
 		else {

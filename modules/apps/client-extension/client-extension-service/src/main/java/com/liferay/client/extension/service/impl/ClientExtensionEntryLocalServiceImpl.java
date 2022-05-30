@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.service.impl;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.deployer.ClientExtensionEntryDeployer;
 import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementCSSURLsException;
 import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementHTMLElementNameException;
@@ -142,7 +142,7 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
 		clientExtensionEntry.setType(
-			ClientExtensionConstants.TYPE_CUSTOM_ELEMENT);
+			ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT);
 		clientExtensionEntry.setTypeSettings(
 			UnicodePropertiesBuilder.create(
 				true
@@ -199,7 +199,7 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setPortletCategoryName(portletCategoryName);
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
-		clientExtensionEntry.setType(ClientExtensionConstants.TYPE_IFRAME);
+		clientExtensionEntry.setType(ClientExtensionEntryConstants.TYPE_IFRAME);
 		clientExtensionEntry.setTypeSettings(
 			UnicodePropertiesBuilder.create(
 				true

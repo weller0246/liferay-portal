@@ -14,7 +14,7 @@
 
 package com.liferay.client.extension.web.internal.frontend.data.set.model;
 
-import com.liferay.client.extension.constants.ClientExtensionConstants;
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
@@ -51,10 +51,10 @@ public class ClientExtensionFDSEntry {
 	public String getType() {
 		String type = _clientExtensionEntry.getType();
 
-		if (type.equals(ClientExtensionConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 			return LanguageUtil.get(_locale, "custom-element");
 		}
-		else if (type.equals(ClientExtensionConstants.TYPE_IFRAME)) {
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
 			return LanguageUtil.get(_locale, "iframe");
 		}
 
