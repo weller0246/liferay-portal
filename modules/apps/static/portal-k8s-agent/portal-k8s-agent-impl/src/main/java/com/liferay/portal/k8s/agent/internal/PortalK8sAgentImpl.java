@@ -370,12 +370,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			org.apache.felix.configurator.impl.model.Config config)
 		throws Exception {
 
-		String path = config.getPid();
+		String pid = config.getPid();
 
-		String pid = path;
-
-		if (path.endsWith(_FILE_JSON_EXT)) {
-			pid = path.substring(0, path.length() - _FILE_JSON_EXT.length());
+		if (pid.endsWith(_FILE_JSON_EXT)) {
+			pid = pid.substring(0, pid.length() - _FILE_JSON_EXT.length());
 		}
 
 		int index = pid.indexOf(CharPool.TILDE);
