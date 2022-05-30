@@ -90,18 +90,17 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			Map<String, Object> properties)
 		throws Exception {
 
+		if (_log.isInfoEnabled()) {
+			_log.info("Initializing K8s agent with " + properties);
+		}
+
 		_configurationAdmin = configurationAdmin;
 		_portalK8sConfigurationPropertiesMutators =
 			portalK8sConfigurationPropertiesMutators;
 
+		_bundle = bundleContext.getBundle();
 		_portalK8sAgentConfiguration = ConfigurableUtil.createConfigurable(
 			PortalK8sAgentConfiguration.class, properties);
-
-		_bundle = bundleContext.getBundle();
-
-		if (_log.isInfoEnabled()) {
-			_log.info("Initializing K8s agent with: " + properties);
-		}
 
 		Config config = Config.empty();
 
