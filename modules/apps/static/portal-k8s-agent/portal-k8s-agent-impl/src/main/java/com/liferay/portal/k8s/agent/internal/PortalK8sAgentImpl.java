@@ -99,10 +99,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		_bundle = bundleContext.getBundle();
 
 		if (_log.isInfoEnabled()) {
-			_log.info(
-				StringBundler.concat(
-					"Initializing ", PortalK8sAgentConstants.AGENT_NAME,
-					" with: ", properties));
+			_log.info("Initializing K8s agent with: " + properties);
 		}
 
 		Config config = Config.empty();
@@ -182,8 +179,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		);
 
 		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Initialized ".concat(PortalK8sAgentConstants.AGENT_NAME));
+			_log.debug("Initialized K8s agent");
 		}
 	}
 
@@ -277,14 +273,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	@Deactivate
 	protected void deactivate() {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Deactivating " + PortalK8sAgentConstants.AGENT_NAME);
+			_log.debug("Deactivating K8s agent");
 		}
 
 		_sharedIndexInformer.close();
 		_kubernetesClient.close();
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Deactivated " + PortalK8sAgentConstants.AGENT_NAME);
+			_log.debug("Deactivated K8s agent");
 		}
 	}
 

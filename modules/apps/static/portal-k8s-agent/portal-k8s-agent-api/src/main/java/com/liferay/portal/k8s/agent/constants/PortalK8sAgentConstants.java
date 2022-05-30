@@ -19,8 +19,6 @@ package com.liferay.portal.k8s.agent.constants;
  */
 public class PortalK8sAgentConstants {
 
-	public static final String AGENT_NAME = "Kubernetes Agent";
-
 	public static final String FILE_JSON_EXT = ".config.json";
 
 }
