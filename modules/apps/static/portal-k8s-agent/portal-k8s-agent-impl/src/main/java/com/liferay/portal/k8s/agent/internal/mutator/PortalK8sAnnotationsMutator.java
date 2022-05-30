@@ -19,7 +19,6 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.liferay.portal.k8s.agent.constants.PortalK8sAgentConstants;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -65,10 +64,7 @@ public class PortalK8sAnnotationsMutator
 				environment = environmentJsonNode.textValue();
 			}
 
-			properties.put(
-				PortalK8sAgentConstants.K8S_PROPERTY_KEY.concat(
-					"lxc.environment"),
-				environment);
+			properties.put("k8s.lxc.environment", environment);
 
 			List<String> serviceDomains = new ArrayList<>();
 

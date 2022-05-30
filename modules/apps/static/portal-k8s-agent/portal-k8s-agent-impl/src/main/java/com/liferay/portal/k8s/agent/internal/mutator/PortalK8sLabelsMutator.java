@@ -17,7 +17,6 @@ package com.liferay.portal.k8s.agent.internal.mutator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
-import com.liferay.portal.k8s.agent.constants.PortalK8sAgentConstants;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 
 import java.util.Dictionary;
@@ -42,8 +41,7 @@ public class PortalK8sLabelsMutator
 		Dictionary<String, Object> properties) {
 
 		for (Map.Entry<String, String> entry : labels.entrySet()) {
-			String modifiedKey =
-				PortalK8sAgentConstants.K8S_PROPERTY_KEY.concat(entry.getKey());
+			String modifiedKey = "k8s." + entry.getKey();
 
 			if (modifiedKey.contains(StringPool.SLASH)) {
 				modifiedKey = StringUtil.replace(

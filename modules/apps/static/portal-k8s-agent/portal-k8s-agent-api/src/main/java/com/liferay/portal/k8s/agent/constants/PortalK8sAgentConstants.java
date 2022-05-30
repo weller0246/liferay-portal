@@ -23,6 +23,4 @@ public class PortalK8sAgentConstants {
 
 	public static final String FILE_JSON_EXT = ".config.json";
 
-	public static final String K8S_PROPERTY_KEY = "k8s.";
-
 }
