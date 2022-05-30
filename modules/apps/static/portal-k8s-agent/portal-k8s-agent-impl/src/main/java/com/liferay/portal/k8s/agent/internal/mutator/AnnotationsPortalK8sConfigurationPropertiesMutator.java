@@ -15,7 +15,6 @@
 package com.liferay.portal.k8s.agent.internal.mutator;
 
 import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -47,14 +46,13 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 		Dictionary<String, Object> properties) {
 
 		try {
-			ObjectMapper mapper = new ObjectMapper();
+			ObjectMapper objectMapper = new ObjectMapper();
 
-			JsonFactory factory = mapper.getFactory();
+			JsonFactory jsonFactory = objectMapper.getFactory();
 
-			JsonParser parser = factory.createParser(
-				annotations.get("cloud.liferay.com/context-data"));
-
-			JsonNode jsonNode = mapper.readTree(parser);
+			JsonNode jsonNode = objectMapper.readTree(
+				jsonFactory.createParser(
+					annotations.get("cloud.liferay.com/context-data")));
 
 			JsonNode environmentJsonNode = jsonNode.get("environment");
 
