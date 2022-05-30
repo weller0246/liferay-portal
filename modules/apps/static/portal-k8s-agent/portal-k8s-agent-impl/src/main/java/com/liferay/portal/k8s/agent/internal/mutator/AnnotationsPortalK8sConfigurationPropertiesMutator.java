@@ -77,7 +77,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 					if (i == 0) {
 						properties.put(
 							"com.liferay.lxc.ext.mainDomain",
-							"https://".concat(entryJsonNode.textValue()));
+							"https://" + entryJsonNode.textValue());
 					}
 				}
 			}
