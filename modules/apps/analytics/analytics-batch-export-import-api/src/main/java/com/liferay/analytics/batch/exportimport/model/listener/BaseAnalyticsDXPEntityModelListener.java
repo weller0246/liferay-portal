@@ -219,8 +219,7 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Unable to add analytics association change for model " +
-						model,
+					"Unable to add analytics association for model " + model,
 					exception);
 			}
 		}
