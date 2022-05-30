@@ -189,7 +189,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		Objects.requireNonNull(configMapDataConsumer, "must not be null");
 		Objects.requireNonNull(serviceId, "must not be null");
 
-		String configMapName = serviceId.concat(_EXTENSION_CONFIG_MAP_SUFFIX);
+		String configMapName = serviceId.concat("-lxc-ext-init-metadata");
 
 		ConfigMap configMap = _kubernetesClient.configMaps(
 		).inNamespace(
@@ -607,9 +607,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	private static final String _ERROR_MESSAGE =
 		"Configured service account does not have access. Service account " +
 			"may have been revoked.";
-
-	private static final String _EXTENSION_CONFIG_MAP_SUFFIX =
-		"-lxc-ext-init-metadata";
 
 	private static final String _FILE_JSON_EXT = ".config.json";
 
