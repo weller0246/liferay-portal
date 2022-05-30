@@ -265,7 +265,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			);
 
 			if (_log.isDebugEnabled()) {
-				_log.debug("Created ".concat(configMap.toString()));
+				_log.debug("Created " + configMap);
 			}
 
 			return Result.CREATED;
