@@ -491,7 +491,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 				@Override
 				public Enumeration<URL> findEntries(
-					String path, String filePattern) {
+					String path, String pattern) {
 
 					return Collections.emptyEnumeration();
 				}
