@@ -441,12 +441,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		}
 
 		properties.put(".k8s.config.key", config.getPid());
-		properties.put(".k8s.config.uid", objectMeta.getUid());
 		properties.put(
 			".k8s.config.resource.version", objectMeta.getResourceVersion());
+		properties.put(".k8s.config.uid", objectMeta.getUid());
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Created Configuration " + properties);
+			_log.debug("Processed configuration " + properties);
 		}
 
 		configuration.updateIfDifferent(properties);
