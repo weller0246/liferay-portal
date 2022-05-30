@@ -327,14 +327,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			return;
 		}
 
-		ObjectMeta metadata = configMap.getMetadata();
-
-		String configurationFilter = StringBundler.concat(
-			"(.k8s.config.uid=", metadata.getUid(), ")");
+		ObjectMeta objectMeta = configMap.getMetadata();
 
 		try {
 			Configuration[] configurations =
-				_configurationAdmin.listConfigurations(configurationFilter);
+				_configurationAdmin.listConfigurations(
+					"(.k8s.config.uid=" + objectMeta.getUid() + ")");
 
 			if (configurations != null) {
 				for (Configuration configuration : configurations) {
