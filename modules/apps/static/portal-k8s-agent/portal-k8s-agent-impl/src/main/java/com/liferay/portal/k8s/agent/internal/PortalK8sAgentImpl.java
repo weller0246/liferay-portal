@@ -20,7 +20,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
-import com.liferay.portal.k8s.agent.constants.PortalK8sAgentConstants;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -306,9 +305,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			String configName = entry.getKey();
 
 			try {
-				if (configName.endsWith(
-						PortalK8sAgentConstants.FILE_JSON_EXT)) {
-
+				if (configName.endsWith(_FILE_JSON_EXT)) {
 					_processConfigMapConfigJSONResource(
 						configName, entry.getValue(), configMap);
 				}
@@ -389,10 +386,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	private String[] _parsePid(String path) {
 		String pid = path;
 
-		if (path.endsWith(PortalK8sAgentConstants.FILE_JSON_EXT)) {
-			pid = path.substring(
-				0,
-				path.length() - PortalK8sAgentConstants.FILE_JSON_EXT.length());
+		if (path.endsWith(_FILE_JSON_EXT)) {
+			pid = path.substring(0, path.length() - _FILE_JSON_EXT.length());
 		}
 
 		int index = pid.indexOf(CharPool.TILDE);
@@ -570,9 +565,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				String configName = entry.getKey();
 
 				try {
-					if (configName.endsWith(
-							PortalK8sAgentConstants.FILE_JSON_EXT)) {
-
+					if (configName.endsWith(_FILE_JSON_EXT)) {
 						_processConfigMapConfigJSONResource(
 							configName, entry.getValue(), newConfigMap);
 					}
@@ -617,6 +610,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	private static final String _EXTENSION_CONFIG_MAP_SUFFIX =
 		"-lxc-ext-init-metadata";
+
+	private static final String _FILE_JSON_EXT = ".config.json";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalK8sAgentImpl.class);
