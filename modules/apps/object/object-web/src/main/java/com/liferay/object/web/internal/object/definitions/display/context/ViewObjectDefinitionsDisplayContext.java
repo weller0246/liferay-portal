@@ -125,10 +125,17 @@ public class ViewObjectDefinitionsDisplayContext {
 				"get", "permissions", "modal-permissions"));
 	}
 
+	public PortletURL getPortletURL() throws PortletException {
+		return PortletURLUtil.clone(
+			PortletURLUtil.getCurrent(
+				_objectRequestHelper.getLiferayPortletRequest(),
+				_objectRequestHelper.getLiferayPortletResponse()),
+			_objectRequestHelper.getLiferayPortletResponse());
+	}
+
 	public List<String> getStorageTypes() {
 		List<String> storageTypes = TransformUtil.transform(
-			_objectEntryManagerServicesTracker.
-				getStorageTypes(),
+			_objectEntryManagerServicesTracker.getStorageTypes(),
 			objectEntryManagerStorageType -> LanguageUtil.get(
 				_objectRequestHelper.getLocale(),
 				objectEntryManagerStorageType));
@@ -136,14 +143,6 @@ public class ViewObjectDefinitionsDisplayContext {
 		Collections.sort(storageTypes);
 
 		return storageTypes;
-	}
-
-	public PortletURL getPortletURL() throws PortletException {
-		return PortletURLUtil.clone(
-			PortletURLUtil.getCurrent(
-				_objectRequestHelper.getLiferayPortletRequest(),
-				_objectRequestHelper.getLiferayPortletResponse()),
-			_objectRequestHelper.getLiferayPortletResponse());
 	}
 
 	private String _getPermissionsURL() throws Exception {
