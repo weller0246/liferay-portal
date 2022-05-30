@@ -43,11 +43,11 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	immediate = true, service = PortalK8sConfigurationPropertiesMutator.class
 )
-public class PortalK8sEnvironmentMutator
+public class EnvironmentPortalK8sConfigurationPropertiesMutator
 	implements PortalK8sConfigurationPropertiesMutator {
 
 	@Activate
-	public PortalK8sEnvironmentMutator(
+	public EnvironmentPortalK8sConfigurationPropertiesMutator(
 		@Reference CompanyLocalService companyLocalService) {
 
 		_companyLocalService = companyLocalService;
@@ -111,7 +111,7 @@ public class PortalK8sEnvironmentMutator
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PortalK8sEnvironmentMutator.class);
+		EnvironmentPortalK8sConfigurationPropertiesMutator.class);
 
 	private final CompanyLocalService _companyLocalService;
 

@@ -32,7 +32,7 @@ import org.osgi.service.component.propertytypes.ServiceRanking;
 	immediate = true, service = PortalK8sConfigurationPropertiesMutator.class
 )
 @ServiceRanking(2000)
-public class PortalK8sLabelsMutator
+public class LabelsPortalK8sConfigurationPropertiesMutator
 	implements PortalK8sConfigurationPropertiesMutator {
 
 	@Override

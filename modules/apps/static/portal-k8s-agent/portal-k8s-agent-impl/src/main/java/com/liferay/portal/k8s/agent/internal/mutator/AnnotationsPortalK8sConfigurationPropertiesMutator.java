@@ -38,7 +38,7 @@ import org.osgi.service.component.propertytypes.ServiceRanking;
 	immediate = true, service = PortalK8sConfigurationPropertiesMutator.class
 )
 @ServiceRanking(1900)
-public class PortalK8sAnnotationsMutator
+public class AnnotationsPortalK8sConfigurationPropertiesMutator
 	implements PortalK8sConfigurationPropertiesMutator {
 
 	@Override
@@ -94,6 +94,6 @@ public class PortalK8sAnnotationsMutator
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PortalK8sAnnotationsMutator.class);
+		AnnotationsPortalK8sConfigurationPropertiesMutator.class);
 
 }
