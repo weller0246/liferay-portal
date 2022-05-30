@@ -64,7 +64,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 
 			properties.put("k8s.lxc.environment", environment);
 
-			List<String> serviceDomains = new ArrayList<>();
+			List<String> domains = new ArrayList<>();
 
 			JsonNode domainsJsonNode = jsonNode.get("domains");
 
@@ -72,7 +72,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 				for (int i = 0; i < domainsJsonNode.size(); i++) {
 					JsonNode entryJsonNode = domainsJsonNode.get(i);
 
-					serviceDomains.add(entryJsonNode.textValue());
+					domains.add(entryJsonNode.textValue());
 
 					if (i == 0) {
 						properties.put(
@@ -83,8 +83,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 			}
 
 			properties.put(
-				"com.liferay.lxc.ext.domains",
-				serviceDomains.toArray(new String[0]));
+				"com.liferay.lxc.ext.domains", domains.toArray(new String[0]));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
