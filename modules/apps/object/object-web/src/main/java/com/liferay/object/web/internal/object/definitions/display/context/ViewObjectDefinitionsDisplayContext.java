@@ -125,17 +125,17 @@ public class ViewObjectDefinitionsDisplayContext {
 				"get", "permissions", "modal-permissions"));
 	}
 
-	public List<String> getObjectEntryManagerStorageTypes() {
-		List<String> objectEntryManagerStorageTypes = TransformUtil.transform(
+	public List<String> getStorageTypes() {
+		List<String> storageTypes = TransformUtil.transform(
 			_objectEntryManagerServicesTracker.
-				getObjectEntryManagerStorageTypes(),
+				getStorageTypes(),
 			objectEntryManagerStorageType -> LanguageUtil.get(
 				_objectRequestHelper.getLocale(),
 				objectEntryManagerStorageType));
 
-		Collections.sort(objectEntryManagerStorageTypes);
+		Collections.sort(storageTypes);
 
-		return objectEntryManagerStorageTypes;
+		return storageTypes;
 	}
 
 	public PortletURL getPortletURL() throws PortletException {

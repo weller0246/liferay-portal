@@ -46,7 +46,7 @@ public class ObjectEntryManagerServicesTrackerImpl
 	}
 
 	@Override
-	public Set<String> getObjectEntryManagerStorageTypes() {
+	public Set<String> getStorageTypes() {
 		return _serviceTrackerMap.keySet();
 	}
 

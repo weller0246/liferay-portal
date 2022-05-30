@@ -37,7 +37,7 @@ ViewObjectDefinitionsDisplayContext viewObjectDefinitionsDisplayContext = (ViewO
 			HashMapBuilder.<String, Object>put(
 				"apiURL", viewObjectDefinitionsDisplayContext.getAPIURL()
 			).put(
-				"storageTypes", viewObjectDefinitionsDisplayContext.getObjectEntryManagerStorageTypes()
+				"storageTypes", viewObjectDefinitionsDisplayContext.getStorageTypes()
 			).build()
 		%>'
 	/>

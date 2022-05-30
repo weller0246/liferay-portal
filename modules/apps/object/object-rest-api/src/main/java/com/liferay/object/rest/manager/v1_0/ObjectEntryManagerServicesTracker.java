@@ -26,6 +26,6 @@ public interface ObjectEntryManagerServicesTracker {
 
 	public List<ObjectEntryManager> getObjectEntryManagers();
 
-	public Set<String> getObjectEntryManagerStorageTypes();
+	public Set<String> getStorageTypes();
 
 }
