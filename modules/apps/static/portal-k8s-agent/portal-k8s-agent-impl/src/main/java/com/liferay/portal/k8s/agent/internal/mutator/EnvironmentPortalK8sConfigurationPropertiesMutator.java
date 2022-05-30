@@ -14,7 +14,6 @@
 
 package com.liferay.portal.k8s.agent.internal.mutator;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.dao.orm.Property;
@@ -61,36 +60,35 @@ public class EnvironmentPortalK8sConfigurationPropertiesMutator
 		String environment = GetterUtil.getString(
 			properties.get("lxc.environment"), "default");
 
-		if (Validator.isNotNull(environment)) {
-			try {
-				Company company = _getCompanyIdByEnvironment(environment);
+		if (Validator.isNull(environment)) {
+			return;
+		}
 
-				properties.put("companyId", company.getCompanyId());
-			}
-			catch (PortalException portalException) {
-				_log.error(portalException);
-			}
+		try {
+			Company company = _getCompany(environment);
+
+			properties.put("companyId", company.getCompanyId());
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
 		}
 	}
 
-	private Company _getCompanyIdByEnvironment(String environment)
-		throws PortalException {
-
-		if (Objects.equals("default", environment)) {
+	private Company _getCompany(String environment) throws PortalException {
+		if (Objects.equals(environment, "default")) {
 			return _companyLocalService.getCompanyByWebId(
 				PropsValues.COMPANY_DEFAULT_WEB_ID);
 		}
 
+		// TODO Environments need to map to web IDs
+
 		DynamicQuery dynamicQuery = _companyLocalService.dynamicQuery();
 
-		Property webIdProperty = PropertyFactoryUtil.forName("webId");
-
-		// TODO: rationalize this against the scheme for mapping environments to
-		// virtual instances
+		Property property = PropertyFactoryUtil.forName("webId");
 
 		String webId = environment;
 
-		dynamicQuery.add(webIdProperty.eq(webId));
+		dynamicQuery.add(property.eq(webId));
 
 		List<Company> companies = _companyLocalService.dynamicQuery(
 			dynamicQuery);
@@ -100,10 +98,7 @@ public class EnvironmentPortalK8sConfigurationPropertiesMutator
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug(
-				StringBundler.concat(
-					"Could not locate a company by webId: ", webId,
-					". Using the default."));
+			_log.debug("Unable to get company with web ID " + webId);
 		}
 
 		return _companyLocalService.getCompanyByWebId(
