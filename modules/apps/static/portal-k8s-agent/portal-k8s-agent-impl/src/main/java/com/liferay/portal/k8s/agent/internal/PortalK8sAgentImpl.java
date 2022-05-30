@@ -285,15 +285,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	private void _add(ConfigMap configMap) {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Adding " + configMap.toString());
+			_log.debug("Adding config map " + configMap.toString());
 		}
 
 		Map<String, String> data = configMap.getData();
 
 		if (data == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Data is null, skipping: ".concat(configMap.toString()));
+				_log.debug("Data is null for config map " + configMap);
 			}
 
 			return;
@@ -318,7 +317,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	private void _delete(ConfigMap configMap) {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Deleting " + configMap);
+			_log.debug("Deleting config map " + configMap);
 		}
 
 		Map<String, String> data = configMap.getData();
@@ -555,7 +554,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"Updating ", oldConfigMap, " to ", newConfigMap));
+					"Updating config map ", oldConfigMap, " to ", newConfigMap));
 		}
 
 		Map<String, String> data = newConfigMap.getData();
