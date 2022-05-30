@@ -518,14 +518,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			binaryManager, fileName, new URL("file", null, fileName),
 			_bundle.getBundleId(), json, report);
 
+		for (String error : report.errors) {
+			_log.error(error);
+		}
+
 		for (String warning : report.warnings) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(warning);
 			}
-		}
-
-		for (String error : report.errors) {
-			_log.error(error);
 		}
 
 		if (configurationFile == null) {
