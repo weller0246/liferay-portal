@@ -575,29 +575,32 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			}
 		}
 
+		Configuration[] configurations = null;
+
 		try {
 			ObjectMeta oldObjectMeta = oldConfigMap.getMetadata();
 
-			Configuration[] configurations =
-				_configurationAdmin.listConfigurations(
-					StringBundler.concat(
-						"(&(.k8s.config.resource.version=",
-						oldObjectMeta.getResourceVersion(),
-						")(.k8s.config.uid=", objectMeta.getUid(), "))"));
-
-			if (configurations != null) {
-				for (Configuration configuration : configurations) {
-					try {
-						configuration.delete();
-					}
-					catch (Exception exception) {
-						_log.error(exception);
-					}
-				}
-			}
+			configurations = _configurationAdmin.listConfigurations(
+				StringBundler.concat(
+					"(&(.k8s.config.resource.version=",
+					oldObjectMeta.getResourceVersion(), ")(.k8s.config.uid=",
+					objectMeta.getUid(), "))"));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
+		}
+
+		if (configurations == null) {
+			return;
+		}
+
+		for (Configuration configuration : configurations) {
+			try {
+				configuration.delete();
+			}
+			catch (Exception exception) {
+				_log.error(exception);
+			}
 		}
 	}
 
