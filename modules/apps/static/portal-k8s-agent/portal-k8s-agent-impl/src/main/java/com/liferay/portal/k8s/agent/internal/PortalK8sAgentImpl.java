@@ -104,32 +104,28 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		Config config = Config.empty();
 
+		Map<Integer, String> errorMessages = config.getErrorMessages();
+
+		errorMessages.put(401, _ERROR_MESSAGE);
+		errorMessages.put(403, _ERROR_MESSAGE);
+
+		config.setCaCertData(_portalK8sAgentConfiguration.caCertData());
+
 		String protocol = Http.HTTP;
 
 		if (_portalK8sAgentConfiguration.apiServerSSL()) {
 			protocol = Http.HTTPS;
 		}
 
-		String apiServerHost = _portalK8sAgentConfiguration.apiServerHost();
-		int apiServerPort = _portalK8sAgentConfiguration.apiServerPort();
+		config.setMasterUrl(
+			StringBundler.concat(
+				protocol, Http.PROTOCOL_DELIMITER,
+				_portalK8sAgentConfiguration.apiServerHost(), StringPool.COLON,
+				_portalK8sAgentConfiguration.apiServerPort(),
+				StringPool.SLASH));
 
-		String apiServerAddress = StringBundler.concat(
-			protocol, Http.PROTOCOL_DELIMITER, apiServerHost, StringPool.COLON,
-			apiServerPort, StringPool.SLASH);
-
-		String caCertData = _portalK8sAgentConfiguration.caCertData();
-		String namespace = _portalK8sAgentConfiguration.namespace();
-		String saToken = _portalK8sAgentConfiguration.saToken();
-
-		config.setCaCertData(caCertData);
-		config.setMasterUrl(apiServerAddress);
-		config.setNamespace(namespace);
-		config.setOauthToken(saToken);
-
-		Map<Integer, String> errorMessages = config.getErrorMessages();
-
-		errorMessages.put(401, _ERROR_MESSAGE);
-		errorMessages.put(403, _ERROR_MESSAGE);
+		config.setNamespace(_portalK8sAgentConfiguration.namespace());
+		config.setOauthToken(_portalK8sAgentConfiguration.saToken());
 
 		Config.configFromSysPropsOrEnvVars(config);
 
