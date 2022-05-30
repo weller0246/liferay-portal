@@ -14,7 +14,7 @@
 
 package com.liferay.analytics.message.storage.model.impl;
 
-import com.liferay.analytics.message.storage.model.AnalyticsAssociationChange;
+import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
 import com.liferay.petra.lang.HashUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.CacheModel;
@@ -28,13 +28,13 @@ import java.io.ObjectOutput;
 import java.util.Date;
 
 /**
- * The cache model class for representing AnalyticsAssociationChange in entity cache.
+ * The cache model class for representing AnalyticsAssociation in entity cache.
  *
  * @author Brian Wing Shun Chan
  * @generated
  */
-public class AnalyticsAssociationChangeCacheModel
-	implements CacheModel<AnalyticsAssociationChange>, Externalizable,
+public class AnalyticsAssociationCacheModel
+	implements CacheModel<AnalyticsAssociation>, Externalizable,
 			   MVCCModel {
 
 	@Override
@@ -43,18 +43,18 @@ public class AnalyticsAssociationChangeCacheModel
 			return true;
 		}
 
-		if (!(object instanceof AnalyticsAssociationChangeCacheModel)) {
+		if (!(object instanceof AnalyticsAssociationCacheModel)) {
 			return false;
 		}
 
-		AnalyticsAssociationChangeCacheModel
-			analyticsAssociationChangeCacheModel =
-				(AnalyticsAssociationChangeCacheModel)object;
+		AnalyticsAssociationCacheModel
+			analyticsAssociationCacheModel =
+				(AnalyticsAssociationCacheModel)object;
 
-		if ((analyticsAssociationChangeId ==
-				analyticsAssociationChangeCacheModel.
-					analyticsAssociationChangeId) &&
-			(mvccVersion == analyticsAssociationChangeCacheModel.mvccVersion)) {
+		if ((analyticsAssociationId ==
+				analyticsAssociationCacheModel.
+					analyticsAssociationId) &&
+			(mvccVersion == analyticsAssociationCacheModel.mvccVersion)) {
 
 			return true;
 		}
@@ -64,7 +64,7 @@ public class AnalyticsAssociationChangeCacheModel
 
 	@Override
 	public int hashCode() {
-		int hashCode = HashUtil.hash(0, analyticsAssociationChangeId);
+		int hashCode = HashUtil.hash(0, analyticsAssociationId);
 
 		return HashUtil.hash(hashCode, mvccVersion);
 	}
@@ -85,8 +85,8 @@ public class AnalyticsAssociationChangeCacheModel
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
-		sb.append(", analyticsAssociationChangeId=");
-		sb.append(analyticsAssociationChangeId);
+		sb.append(", analyticsAssociationId=");
+		sb.append(analyticsAssociationId);
 		sb.append(", companyId=");
 		sb.append(companyId);
 		sb.append(", createDate=");
@@ -109,62 +109,62 @@ public class AnalyticsAssociationChangeCacheModel
 	}
 
 	@Override
-	public AnalyticsAssociationChange toEntityModel() {
-		AnalyticsAssociationChangeImpl analyticsAssociationChangeImpl =
-			new AnalyticsAssociationChangeImpl();
+	public AnalyticsAssociation toEntityModel() {
+		AnalyticsAssociationImpl analyticsAssociationImpl =
+			new AnalyticsAssociationImpl();
 
-		analyticsAssociationChangeImpl.setMvccVersion(mvccVersion);
-		analyticsAssociationChangeImpl.setAnalyticsAssociationChangeId(
-			analyticsAssociationChangeId);
-		analyticsAssociationChangeImpl.setCompanyId(companyId);
+		analyticsAssociationImpl.setMvccVersion(mvccVersion);
+		analyticsAssociationImpl.setAnalyticsAssociationId(
+			analyticsAssociationId);
+		analyticsAssociationImpl.setCompanyId(companyId);
 
 		if (createDate == Long.MIN_VALUE) {
-			analyticsAssociationChangeImpl.setCreateDate(null);
+			analyticsAssociationImpl.setCreateDate(null);
 		}
 		else {
-			analyticsAssociationChangeImpl.setCreateDate(new Date(createDate));
+			analyticsAssociationImpl.setCreateDate(new Date(createDate));
 		}
 
 		if (modifiedDate == Long.MIN_VALUE) {
-			analyticsAssociationChangeImpl.setModifiedDate(null);
+			analyticsAssociationImpl.setModifiedDate(null);
 		}
 		else {
-			analyticsAssociationChangeImpl.setModifiedDate(
+			analyticsAssociationImpl.setModifiedDate(
 				new Date(modifiedDate));
 		}
 
-		analyticsAssociationChangeImpl.setUserId(userId);
+		analyticsAssociationImpl.setUserId(userId);
 
 		if (associationClassName == null) {
-			analyticsAssociationChangeImpl.setAssociationClassName("");
+			analyticsAssociationImpl.setAssociationClassName("");
 		}
 		else {
-			analyticsAssociationChangeImpl.setAssociationClassName(
+			analyticsAssociationImpl.setAssociationClassName(
 				associationClassName);
 		}
 
-		analyticsAssociationChangeImpl.setAssociationClassPK(
+		analyticsAssociationImpl.setAssociationClassPK(
 			associationClassPK);
 
 		if (className == null) {
-			analyticsAssociationChangeImpl.setClassName("");
+			analyticsAssociationImpl.setClassName("");
 		}
 		else {
-			analyticsAssociationChangeImpl.setClassName(className);
+			analyticsAssociationImpl.setClassName(className);
 		}
 
-		analyticsAssociationChangeImpl.setClassPK(classPK);
+		analyticsAssociationImpl.setClassPK(classPK);
 
-		analyticsAssociationChangeImpl.resetOriginalValues();
+		analyticsAssociationImpl.resetOriginalValues();
 
-		return analyticsAssociationChangeImpl;
+		return analyticsAssociationImpl;
 	}
 
 	@Override
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		mvccVersion = objectInput.readLong();
 
-		analyticsAssociationChangeId = objectInput.readLong();
+		analyticsAssociationId = objectInput.readLong();
 
 		companyId = objectInput.readLong();
 		createDate = objectInput.readLong();
@@ -183,7 +183,7 @@ public class AnalyticsAssociationChangeCacheModel
 	public void writeExternal(ObjectOutput objectOutput) throws IOException {
 		objectOutput.writeLong(mvccVersion);
 
-		objectOutput.writeLong(analyticsAssociationChangeId);
+		objectOutput.writeLong(analyticsAssociationId);
 
 		objectOutput.writeLong(companyId);
 		objectOutput.writeLong(createDate);
@@ -211,7 +211,7 @@ public class AnalyticsAssociationChangeCacheModel
 	}
 
 	public long mvccVersion;
-	public long analyticsAssociationChangeId;
+	public long analyticsAssociationId;
 	public long companyId;
 	public long createDate;
 	public long modifiedDate;

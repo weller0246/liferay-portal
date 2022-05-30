@@ -14,7 +14,7 @@
 
 package com.liferay.analytics.message.storage.service.persistence;
 
-import com.liferay.analytics.message.storage.model.AnalyticsAssociationChange;
+import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
@@ -27,17 +27,17 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The persistence utility for the analytics association change service. This utility wraps <code>com.liferay.analytics.message.storage.service.persistence.impl.AnalyticsAssociationChangePersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the analytics association change service. This utility wraps <code>com.liferay.analytics.message.storage.service.persistence.impl.AnalyticsAssociationPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChangePersistence
+ * @see AnalyticsAssociationPersistence
  * @generated
  */
-public class AnalyticsAssociationChangeUtil {
+public class AnalyticsAssociationUtil {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
@@ -56,9 +56,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
 	public static void clearCache(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+		AnalyticsAssociation analyticsAssociation) {
 
-		getPersistence().clearCache(analyticsAssociationChange);
+		getPersistence().clearCache(analyticsAssociation);
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
 	 */
-	public static Map<Serializable, AnalyticsAssociationChange>
+	public static Map<Serializable, AnalyticsAssociation>
 		fetchByPrimaryKeys(Set<Serializable> primaryKeys) {
 
 		return getPersistence().fetchByPrimaryKeys(primaryKeys);
@@ -80,7 +80,7 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery)
 	 */
-	public static List<AnalyticsAssociationChange> findWithDynamicQuery(
+	public static List<AnalyticsAssociation> findWithDynamicQuery(
 		DynamicQuery dynamicQuery) {
 
 		return getPersistence().findWithDynamicQuery(dynamicQuery);
@@ -89,7 +89,7 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int)
 	 */
-	public static List<AnalyticsAssociationChange> findWithDynamicQuery(
+	public static List<AnalyticsAssociation> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end) {
 
 		return getPersistence().findWithDynamicQuery(dynamicQuery, start, end);
@@ -98,9 +98,9 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#findWithDynamicQuery(DynamicQuery, int, int, OrderByComparator)
 	 */
-	public static List<AnalyticsAssociationChange> findWithDynamicQuery(
+	public static List<AnalyticsAssociation> findWithDynamicQuery(
 		DynamicQuery dynamicQuery, int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().findWithDynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
@@ -109,21 +109,21 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel)
 	 */
-	public static AnalyticsAssociationChange update(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+	public static AnalyticsAssociation update(
+		AnalyticsAssociation analyticsAssociation) {
 
-		return getPersistence().update(analyticsAssociationChange);
+		return getPersistence().update(analyticsAssociation);
 	}
 
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#update(com.liferay.portal.kernel.model.BaseModel, ServiceContext)
 	 */
-	public static AnalyticsAssociationChange update(
-		AnalyticsAssociationChange analyticsAssociationChange,
+	public static AnalyticsAssociation update(
+		AnalyticsAssociation analyticsAssociation,
 		ServiceContext serviceContext) {
 
 		return getPersistence().update(
-			analyticsAssociationChange, serviceContext);
+			analyticsAssociation, serviceContext);
 	}
 
 	/**
@@ -133,7 +133,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @return the matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A(
+	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName) {
 
 		return getPersistence().findByC_A(companyId, associationClassName);
@@ -143,7 +143,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns a range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -152,7 +152,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param end the upper bound of the range of analytics association changes (not inclusive)
 	 * @return the range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A(
+	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end) {
 
 		return getPersistence().findByC_A(
@@ -163,7 +163,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -173,9 +173,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A(
+	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().findByC_A(
 			companyId, associationClassName, start, end, orderByComparator);
@@ -185,7 +185,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -196,9 +196,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A(
+	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
 		return getPersistence().findByC_A(
@@ -213,13 +213,13 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_A_First(
+	public static AnalyticsAssociation findByC_A_First(
 			long companyId, String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_First(
 			companyId, associationClassName, orderByComparator);
@@ -233,9 +233,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_A_First(
+	public static AnalyticsAssociation fetchByC_A_First(
 		long companyId, String associationClassName,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_A_First(
 			companyId, associationClassName, orderByComparator);
@@ -248,13 +248,13 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_A_Last(
+	public static AnalyticsAssociation findByC_A_Last(
 			long companyId, String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_Last(
 			companyId, associationClassName, orderByComparator);
@@ -268,9 +268,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_A_Last(
+	public static AnalyticsAssociation fetchByC_A_Last(
 		long companyId, String associationClassName,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_A_Last(
 			companyId, associationClassName, orderByComparator);
@@ -279,22 +279,22 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association change
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationChangeException if a analytics association change with the primary key could not be found
+	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange[] findByC_A_PrevAndNext(
-			long analyticsAssociationChangeId, long companyId,
+	public static AnalyticsAssociation[] findByC_A_PrevAndNext(
+			long analyticsAssociationId, long companyId,
 			String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_PrevAndNext(
-			analyticsAssociationChangeId, companyId, associationClassName,
+			analyticsAssociationId, companyId, associationClassName,
 			orderByComparator);
 	}
 
@@ -329,7 +329,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @return the matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_GtM_A(
+	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName) {
 
 		return getPersistence().findByC_GtM_A(
@@ -340,7 +340,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns a range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -350,7 +350,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param end the upper bound of the range of analytics association changes (not inclusive)
 	 * @return the range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_GtM_A(
+	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
 		int start, int end) {
 
@@ -362,7 +362,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -373,10 +373,10 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_GtM_A(
+	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().findByC_GtM_A(
 			companyId, modifiedDate, associationClassName, start, end,
@@ -387,7 +387,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -399,10 +399,10 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_GtM_A(
+	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
 		return getPersistence().findByC_GtM_A(
@@ -418,13 +418,13 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_GtM_A_First(
+	public static AnalyticsAssociation findByC_GtM_A_First(
 			long companyId, Date modifiedDate, String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_GtM_A_First(
 			companyId, modifiedDate, associationClassName, orderByComparator);
@@ -439,9 +439,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_GtM_A_First(
+	public static AnalyticsAssociation fetchByC_GtM_A_First(
 		long companyId, Date modifiedDate, String associationClassName,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_GtM_A_First(
 			companyId, modifiedDate, associationClassName, orderByComparator);
@@ -455,13 +455,13 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_GtM_A_Last(
+	public static AnalyticsAssociation findByC_GtM_A_Last(
 			long companyId, Date modifiedDate, String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_GtM_A_Last(
 			companyId, modifiedDate, associationClassName, orderByComparator);
@@ -476,9 +476,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_GtM_A_Last(
+	public static AnalyticsAssociation fetchByC_GtM_A_Last(
 		long companyId, Date modifiedDate, String associationClassName,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_GtM_A_Last(
 			companyId, modifiedDate, associationClassName, orderByComparator);
@@ -487,23 +487,23 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association change
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationChangeException if a analytics association change with the primary key could not be found
+	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange[] findByC_GtM_A_PrevAndNext(
-			long analyticsAssociationChangeId, long companyId,
+	public static AnalyticsAssociation[] findByC_GtM_A_PrevAndNext(
+			long analyticsAssociationId, long companyId,
 			Date modifiedDate, String associationClassName,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_GtM_A_PrevAndNext(
-			analyticsAssociationChangeId, companyId, modifiedDate,
+			analyticsAssociationId, companyId, modifiedDate,
 			associationClassName, orderByComparator);
 	}
 
@@ -544,7 +544,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassPK the association class pk
 	 * @return the matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A_A(
+	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK) {
 
 		return getPersistence().findByC_A_A(
@@ -555,7 +555,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns a range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -565,7 +565,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param end the upper bound of the range of analytics association changes (not inclusive)
 	 * @return the range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A_A(
+	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
 		int start, int end) {
 
@@ -577,7 +577,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -588,10 +588,10 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A_A(
+	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().findByC_A_A(
 			companyId, associationClassName, associationClassPK, start, end,
@@ -602,7 +602,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param companyId the company ID
@@ -614,10 +614,10 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of matching analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findByC_A_A(
+	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
 		return getPersistence().findByC_A_A(
@@ -633,14 +633,14 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_A_A_First(
+	public static AnalyticsAssociation findByC_A_A_First(
 			long companyId, String associationClassName,
 			long associationClassPK,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_A_First(
 			companyId, associationClassName, associationClassPK,
@@ -656,9 +656,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_A_A_First(
+	public static AnalyticsAssociation fetchByC_A_A_First(
 		long companyId, String associationClassName, long associationClassPK,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_A_A_First(
 			companyId, associationClassName, associationClassPK,
@@ -673,14 +673,14 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationChangeException if a matching analytics association change could not be found
+	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange findByC_A_A_Last(
+	public static AnalyticsAssociation findByC_A_A_Last(
 			long companyId, String associationClassName,
 			long associationClassPK,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_A_Last(
 			companyId, associationClassName, associationClassPK,
@@ -696,9 +696,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByC_A_A_Last(
+	public static AnalyticsAssociation fetchByC_A_A_Last(
 		long companyId, String associationClassName, long associationClassPK,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().fetchByC_A_A_Last(
 			companyId, associationClassName, associationClassPK,
@@ -708,23 +708,23 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association change
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
 	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationChangeException if a analytics association change with the primary key could not be found
+	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange[] findByC_A_A_PrevAndNext(
-			long analyticsAssociationChangeId, long companyId,
+	public static AnalyticsAssociation[] findByC_A_A_PrevAndNext(
+			long analyticsAssociationId, long companyId,
 			String associationClassName, long associationClassPK,
-			OrderByComparator<AnalyticsAssociationChange> orderByComparator)
+			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
 		return getPersistence().findByC_A_A_PrevAndNext(
-			analyticsAssociationChangeId, companyId, associationClassName,
+			analyticsAssociationId, companyId, associationClassName,
 			associationClassPK, orderByComparator);
 	}
 
@@ -760,83 +760,83 @@ public class AnalyticsAssociationChangeUtil {
 	/**
 	 * Caches the analytics association change in the entity cache if it is enabled.
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 */
 	public static void cacheResult(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+		AnalyticsAssociation analyticsAssociation) {
 
-		getPersistence().cacheResult(analyticsAssociationChange);
+		getPersistence().cacheResult(analyticsAssociation);
 	}
 
 	/**
 	 * Caches the analytics association changes in the entity cache if it is enabled.
 	 *
-	 * @param analyticsAssociationChanges the analytics association changes
+	 * @param analyticsAssociations the analytics association changes
 	 */
 	public static void cacheResult(
-		List<AnalyticsAssociationChange> analyticsAssociationChanges) {
+		List<AnalyticsAssociation> analyticsAssociations) {
 
-		getPersistence().cacheResult(analyticsAssociationChanges);
+		getPersistence().cacheResult(analyticsAssociations);
 	}
 
 	/**
 	 * Creates a new analytics association change with the primary key. Does not add the analytics association change to the database.
 	 *
-	 * @param analyticsAssociationChangeId the primary key for the new analytics association change
+	 * @param analyticsAssociationId the primary key for the new analytics association change
 	 * @return the new analytics association change
 	 */
-	public static AnalyticsAssociationChange create(
-		long analyticsAssociationChangeId) {
+	public static AnalyticsAssociation create(
+		long analyticsAssociationId) {
 
-		return getPersistence().create(analyticsAssociationChangeId);
+		return getPersistence().create(analyticsAssociationId);
 	}
 
 	/**
 	 * Removes the analytics association change with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change that was removed
-	 * @throws NoSuchAssociationChangeException if a analytics association change with the primary key could not be found
+	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange remove(
-			long analyticsAssociationChangeId)
+	public static AnalyticsAssociation remove(
+			long analyticsAssociationId)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
-		return getPersistence().remove(analyticsAssociationChangeId);
+		return getPersistence().remove(analyticsAssociationId);
 	}
 
-	public static AnalyticsAssociationChange updateImpl(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+	public static AnalyticsAssociation updateImpl(
+		AnalyticsAssociation analyticsAssociation) {
 
-		return getPersistence().updateImpl(analyticsAssociationChange);
+		return getPersistence().updateImpl(analyticsAssociation);
 	}
 
 	/**
-	 * Returns the analytics association change with the primary key or throws a <code>NoSuchAssociationChangeException</code> if it could not be found.
+	 * Returns the analytics association change with the primary key or throws a <code>NoSuchAssociationException</code> if it could not be found.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change
-	 * @throws NoSuchAssociationChangeException if a analytics association change with the primary key could not be found
+	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange findByPrimaryKey(
-			long analyticsAssociationChangeId)
+	public static AnalyticsAssociation findByPrimaryKey(
+			long analyticsAssociationId)
 		throws com.liferay.analytics.message.storage.exception.
-			NoSuchAssociationChangeException {
+			NoSuchAssociationException {
 
-		return getPersistence().findByPrimaryKey(analyticsAssociationChangeId);
+		return getPersistence().findByPrimaryKey(analyticsAssociationId);
 	}
 
 	/**
 	 * Returns the analytics association change with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change, or <code>null</code> if a analytics association change with the primary key could not be found
 	 */
-	public static AnalyticsAssociationChange fetchByPrimaryKey(
-		long analyticsAssociationChangeId) {
+	public static AnalyticsAssociation fetchByPrimaryKey(
+		long analyticsAssociationId) {
 
-		return getPersistence().fetchByPrimaryKey(analyticsAssociationChangeId);
+		return getPersistence().fetchByPrimaryKey(analyticsAssociationId);
 	}
 
 	/**
@@ -844,7 +844,7 @@ public class AnalyticsAssociationChangeUtil {
 	 *
 	 * @return the analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findAll() {
+	public static List<AnalyticsAssociation> findAll() {
 		return getPersistence().findAll();
 	}
 
@@ -852,14 +852,14 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns a range of all the analytics association changes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics association changes
 	 * @param end the upper bound of the range of analytics association changes (not inclusive)
 	 * @return the range of analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findAll(int start, int end) {
+	public static List<AnalyticsAssociation> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
@@ -867,7 +867,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics association changes
@@ -875,9 +875,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @return the ordered range of analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findAll(
+	public static List<AnalyticsAssociation> findAll(
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator) {
+		OrderByComparator<AnalyticsAssociation> orderByComparator) {
 
 		return getPersistence().findAll(start, end, orderByComparator);
 	}
@@ -886,7 +886,7 @@ public class AnalyticsAssociationChangeUtil {
 	 * Returns an ordered range of all the analytics association changes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics association changes
@@ -895,9 +895,9 @@ public class AnalyticsAssociationChangeUtil {
 	 * @param useFinderCache whether to use the finder cache
 	 * @return the ordered range of analytics association changes
 	 */
-	public static List<AnalyticsAssociationChange> findAll(
+	public static List<AnalyticsAssociation> findAll(
 		int start, int end,
-		OrderByComparator<AnalyticsAssociationChange> orderByComparator,
+		OrderByComparator<AnalyticsAssociation> orderByComparator,
 		boolean useFinderCache) {
 
 		return getPersistence().findAll(
@@ -920,10 +920,10 @@ public class AnalyticsAssociationChangeUtil {
 		return getPersistence().countAll();
 	}
 
-	public static AnalyticsAssociationChangePersistence getPersistence() {
+	public static AnalyticsAssociationPersistence getPersistence() {
 		return _persistence;
 	}
 
-	private static volatile AnalyticsAssociationChangePersistence _persistence;
+	private static volatile AnalyticsAssociationPersistence _persistence;
 
 }

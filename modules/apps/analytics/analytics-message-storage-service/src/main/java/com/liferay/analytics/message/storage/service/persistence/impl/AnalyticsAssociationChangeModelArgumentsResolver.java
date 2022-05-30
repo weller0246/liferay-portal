@@ -14,9 +14,9 @@
 
 package com.liferay.analytics.message.storage.service.persistence.impl;
 
-import com.liferay.analytics.message.storage.model.AnalyticsAssociationChangeTable;
-import com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeImpl;
-import com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl;
+import com.liferay.analytics.message.storage.model.AnalyticsAssociationTable;
+import com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationImpl;
+import com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl;
 import com.liferay.portal.kernel.dao.orm.ArgumentsResolver;
 import com.liferay.portal.kernel.dao.orm.FinderPath;
 import com.liferay.portal.kernel.model.BaseModel;
@@ -27,7 +27,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * The arguments resolver class for retrieving value from AnalyticsAssociationChange.
+ * The arguments resolver class for retrieving value from AnalyticsAssociation.
  *
  * @author Brian Wing Shun Chan
  * @generated
@@ -35,11 +35,11 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	service = {
-		AnalyticsAssociationChangeModelArgumentsResolver.class,
+		AnalyticsAssociationModelArgumentsResolver.class,
 		ArgumentsResolver.class
 	}
 )
-public class AnalyticsAssociationChangeModelArgumentsResolver
+public class AnalyticsAssociationModelArgumentsResolver
 	implements ArgumentsResolver {
 
 	@Override
@@ -57,16 +57,16 @@ public class AnalyticsAssociationChangeModelArgumentsResolver
 			return null;
 		}
 
-		AnalyticsAssociationChangeModelImpl
-			analyticsAssociationChangeModelImpl =
-				(AnalyticsAssociationChangeModelImpl)baseModel;
+		AnalyticsAssociationModelImpl
+			analyticsAssociationModelImpl =
+				(AnalyticsAssociationModelImpl)baseModel;
 
 		long columnBitmask =
-			analyticsAssociationChangeModelImpl.getColumnBitmask();
+			analyticsAssociationModelImpl.getColumnBitmask();
 
 		if (!checkColumn || (columnBitmask == 0)) {
 			return _getValue(
-				analyticsAssociationChangeModelImpl, columnNames, original);
+				analyticsAssociationModelImpl, columnNames, original);
 		}
 
 		Long finderPathColumnBitmask = _finderPathColumnBitmasksCache.get(
@@ -77,7 +77,7 @@ public class AnalyticsAssociationChangeModelArgumentsResolver
 
 			for (String columnName : columnNames) {
 				finderPathColumnBitmask |=
-					analyticsAssociationChangeModelImpl.getColumnBitmask(
+					analyticsAssociationModelImpl.getColumnBitmask(
 						columnName);
 			}
 
@@ -87,7 +87,7 @@ public class AnalyticsAssociationChangeModelArgumentsResolver
 
 		if ((columnBitmask & finderPathColumnBitmask) != 0) {
 			return _getValue(
-				analyticsAssociationChangeModelImpl, columnNames, original);
+				analyticsAssociationModelImpl, columnNames, original);
 		}
 
 		return null;
@@ -95,16 +95,16 @@ public class AnalyticsAssociationChangeModelArgumentsResolver
 
 	@Override
 	public String getClassName() {
-		return AnalyticsAssociationChangeImpl.class.getName();
+		return AnalyticsAssociationImpl.class.getName();
 	}
 
 	@Override
 	public String getTableName() {
-		return AnalyticsAssociationChangeTable.INSTANCE.getTableName();
+		return AnalyticsAssociationTable.INSTANCE.getTableName();
 	}
 
 	private static Object[] _getValue(
-		AnalyticsAssociationChangeModelImpl analyticsAssociationChangeModelImpl,
+		AnalyticsAssociationModelImpl analyticsAssociationModelImpl,
 		String[] columnNames, boolean original) {
 
 		Object[] arguments = new Object[columnNames.length];
@@ -114,12 +114,12 @@ public class AnalyticsAssociationChangeModelArgumentsResolver
 
 			if (original) {
 				arguments[i] =
-					analyticsAssociationChangeModelImpl.getColumnOriginalValue(
+					analyticsAssociationModelImpl.getColumnOriginalValue(
 						columnName);
 			}
 			else {
 				arguments[i] =
-					analyticsAssociationChangeModelImpl.getColumnValue(
+					analyticsAssociationModelImpl.getColumnValue(
 						columnName);
 			}
 		}

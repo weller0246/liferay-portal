@@ -17,8 +17,8 @@ package com.liferay.analytics.batch.exportimport.internal.engine;
 import com.liferay.analytics.batch.exportimport.internal.odata.entity.AnalyticsDXPEntityEntityModel;
 import com.liferay.analytics.dxp.entity.rest.dto.v1_0.DXPEntity;
 import com.liferay.analytics.dxp.entity.rest.dto.v1_0.converter.DXPEntityDTOConverter;
-import com.liferay.analytics.message.storage.model.AnalyticsAssociationChange;
-import com.liferay.analytics.message.storage.service.AnalyticsAssociationChangeLocalService;
+import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
+import com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalService;
 import com.liferay.batch.engine.BaseBatchEngineTaskItemDelegate;
 import com.liferay.batch.engine.BatchEngineTaskItemDelegate;
 import com.liferay.batch.engine.pagination.Page;
@@ -55,7 +55,7 @@ import org.osgi.service.component.annotations.Reference;
 	service = BatchEngineTaskItemDelegate.class
 )
 public class
-	AnalyticsAssociationChangeAnalyticsDXPEntityBatchEngineTaskItemDelegate
+	AnalyticsAssociationAnalyticsDXPEntityBatchEngineTaskItemDelegate
 		extends BaseBatchEngineTaskItemDelegate<DXPEntity> {
 
 	@Override
@@ -71,50 +71,50 @@ public class
 			Map<String, Serializable> parameters, String search)
 		throws Exception {
 
-		List<AnalyticsAssociationChange> analyticsAssociationChanges = null;
+		List<AnalyticsAssociation> analyticsAssociations = null;
 		int totalCount = 0;
 
 		Date modifiedDate = _getModifiedDate(filter);
 
 		if (modifiedDate != null) {
-			analyticsAssociationChanges =
-				_analyticsAssociationChangeLocalService.
-					getAnalyticsAssociationChanges(
+			analyticsAssociations =
+				_analyticsAssociationLocalService.
+					getAnalyticsAssociations(
 						contextCompany.getCompanyId(), modifiedDate,
 						User.class.getName(), pagination.getStartPosition(),
 						pagination.getEndPosition());
 			totalCount =
-				_analyticsAssociationChangeLocalService.
-					getAnalyticsAssociationChangesCount(
+				_analyticsAssociationLocalService.
+					getAnalyticsAssociationsCount(
 						contextCompany.getCompanyId(), modifiedDate,
 						User.class.getName());
 		}
 		else {
-			analyticsAssociationChanges =
-				_analyticsAssociationChangeLocalService.
-					getAnalyticsAssociationChanges(
+			analyticsAssociations =
+				_analyticsAssociationLocalService.
+					getAnalyticsAssociations(
 						contextCompany.getCompanyId(), User.class.getName(),
 						pagination.getStartPosition(),
 						pagination.getEndPosition());
 			totalCount =
-				_analyticsAssociationChangeLocalService.
-					getAnalyticsAssociationChangesCount(
+				_analyticsAssociationLocalService.
+					getAnalyticsAssociationsCount(
 						contextCompany.getCompanyId(), User.class.getName());
 		}
 
-		if (ListUtil.isEmpty(analyticsAssociationChanges)) {
+		if (ListUtil.isEmpty(analyticsAssociations)) {
 			return Page.of(Collections.emptyList());
 		}
 
 		List<DXPEntity> dxpEntities = new ArrayList<>();
 
-		for (AnalyticsAssociationChange analyticsAssociationChange :
-				analyticsAssociationChanges) {
+		for (AnalyticsAssociation analyticsAssociation :
+				analyticsAssociations) {
 
 			User user = _userLocalService.getUser(
-				analyticsAssociationChange.getAssociationClassPK());
+				analyticsAssociation.getAssociationClassPK());
 
-			user.setModifiedDate(analyticsAssociationChange.getModifiedDate());
+			user.setModifiedDate(analyticsAssociation.getModifiedDate());
 
 			dxpEntities.add(_dxpEntityDTOConverter.toDTO(user));
 		}
@@ -147,8 +147,8 @@ public class
 	}
 
 	@Reference
-	private AnalyticsAssociationChangeLocalService
-		_analyticsAssociationChangeLocalService;
+	private AnalyticsAssociationLocalService
+		_analyticsAssociationLocalService;
 
 	@Reference
 	private DXPEntityDTOConverter _dxpEntityDTOConverter;

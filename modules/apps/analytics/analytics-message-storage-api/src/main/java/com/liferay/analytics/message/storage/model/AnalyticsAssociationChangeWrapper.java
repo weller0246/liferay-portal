@@ -23,22 +23,22 @@ import java.util.Map;
 
 /**
  * <p>
- * This class is a wrapper for {@link AnalyticsAssociationChange}.
+ * This class is a wrapper for {@link AnalyticsAssociation}.
  * </p>
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChange
+ * @see AnalyticsAssociation
  * @generated
  */
-public class AnalyticsAssociationChangeWrapper
-	extends BaseModelWrapper<AnalyticsAssociationChange>
-	implements AnalyticsAssociationChange,
-			   ModelWrapper<AnalyticsAssociationChange> {
+public class AnalyticsAssociationWrapper
+	extends BaseModelWrapper<AnalyticsAssociation>
+	implements AnalyticsAssociation,
+			   ModelWrapper<AnalyticsAssociation> {
 
-	public AnalyticsAssociationChangeWrapper(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+	public AnalyticsAssociationWrapper(
+		AnalyticsAssociation analyticsAssociation) {
 
-		super(analyticsAssociationChange);
+		super(analyticsAssociation);
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class AnalyticsAssociationChangeWrapper
 
 		attributes.put("mvccVersion", getMvccVersion());
 		attributes.put(
-			"analyticsAssociationChangeId", getAnalyticsAssociationChangeId());
+			"analyticsAssociationId", getAnalyticsAssociationId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
@@ -68,11 +68,11 @@ public class AnalyticsAssociationChangeWrapper
 			setMvccVersion(mvccVersion);
 		}
 
-		Long analyticsAssociationChangeId = (Long)attributes.get(
-			"analyticsAssociationChangeId");
+		Long analyticsAssociationId = (Long)attributes.get(
+			"analyticsAssociationId");
 
-		if (analyticsAssociationChangeId != null) {
-			setAnalyticsAssociationChangeId(analyticsAssociationChangeId);
+		if (analyticsAssociationId != null) {
+			setAnalyticsAssociationId(analyticsAssociationId);
 		}
 
 		Long companyId = (Long)attributes.get("companyId");
@@ -126,7 +126,7 @@ public class AnalyticsAssociationChangeWrapper
 	}
 
 	@Override
-	public AnalyticsAssociationChange cloneWithOriginalValues() {
+	public AnalyticsAssociation cloneWithOriginalValues() {
 		return wrap(model.cloneWithOriginalValues());
 	}
 
@@ -136,8 +136,8 @@ public class AnalyticsAssociationChangeWrapper
 	 * @return the analytics association change ID of this analytics association change
 	 */
 	@Override
-	public long getAnalyticsAssociationChangeId() {
-		return model.getAnalyticsAssociationChangeId();
+	public long getAnalyticsAssociationId() {
+		return model.getAnalyticsAssociationId();
 	}
 
 	/**
@@ -258,13 +258,13 @@ public class AnalyticsAssociationChangeWrapper
 	/**
 	 * Sets the analytics association change ID of this analytics association change.
 	 *
-	 * @param analyticsAssociationChangeId the analytics association change ID of this analytics association change
+	 * @param analyticsAssociationId the analytics association change ID of this analytics association change
 	 */
 	@Override
-	public void setAnalyticsAssociationChangeId(
-		long analyticsAssociationChangeId) {
+	public void setAnalyticsAssociationId(
+		long analyticsAssociationId) {
 
-		model.setAnalyticsAssociationChangeId(analyticsAssociationChangeId);
+		model.setAnalyticsAssociationId(analyticsAssociationId);
 	}
 
 	/**
@@ -378,11 +378,11 @@ public class AnalyticsAssociationChangeWrapper
 	}
 
 	@Override
-	protected AnalyticsAssociationChangeWrapper wrap(
-		AnalyticsAssociationChange analyticsAssociationChange) {
+	protected AnalyticsAssociationWrapper wrap(
+		AnalyticsAssociation analyticsAssociation) {
 
-		return new AnalyticsAssociationChangeWrapper(
-			analyticsAssociationChange);
+		return new AnalyticsAssociationWrapper(
+			analyticsAssociation);
 	}
 
 }

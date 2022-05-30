@@ -14,7 +14,7 @@
 
 package com.liferay.analytics.message.storage.service;
 
-import com.liferay.analytics.message.storage.model.AnalyticsAssociationChange;
+import com.liferay.analytics.message.storage.model.AnalyticsAssociation;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
 import com.liferay.portal.kernel.dao.orm.DynamicQuery;
@@ -40,13 +40,13 @@ import java.util.List;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * Provides the local service interface for AnalyticsAssociationChange. Methods of this
+ * Provides the local service interface for AnalyticsAssociation. Methods of this
  * service will not have security checks based on the propagated JAAS
  * credentials because this service can only be accessed from within the same
  * VM.
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChangeLocalServiceUtil
+ * @see AnalyticsAssociationLocalServiceUtil
  * @generated
  */
 @ProviderType
@@ -54,30 +54,30 @@ import org.osgi.annotation.versioning.ProviderType;
 	isolation = Isolation.PORTAL,
 	rollbackFor = {PortalException.class, SystemException.class}
 )
-public interface AnalyticsAssociationChangeLocalService
+public interface AnalyticsAssociationLocalService
 	extends BaseLocalService, PersistedModelLocalService {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.analytics.message.storage.service.impl.AnalyticsAssociationChangeLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the analytics association change local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link AnalyticsAssociationChangeLocalServiceUtil} if injection and service tracking are not available.
+	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.analytics.message.storage.service.impl.AnalyticsAssociationLocalServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the analytics association change local service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link AnalyticsAssociationLocalServiceUtil} if injection and service tracking are not available.
 	 */
 
 	/**
 	 * Adds the analytics association change to the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was added
 	 */
 	@Indexable(type = IndexableType.REINDEX)
-	public AnalyticsAssociationChange addAnalyticsAssociationChange(
-		AnalyticsAssociationChange analyticsAssociationChange);
+	public AnalyticsAssociation addAnalyticsAssociation(
+		AnalyticsAssociation analyticsAssociation);
 
-	public AnalyticsAssociationChange addAnalyticsAssociationChange(
+	public AnalyticsAssociation addAnalyticsAssociation(
 		long companyId, Date createDate, long userId,
 		String associationClassName, long associationClassPK, String className,
 		long classPK);
@@ -85,12 +85,12 @@ public interface AnalyticsAssociationChangeLocalService
 	/**
 	 * Creates a new analytics association change with the primary key. Does not add the analytics association change to the database.
 	 *
-	 * @param analyticsAssociationChangeId the primary key for the new analytics association change
+	 * @param analyticsAssociationId the primary key for the new analytics association change
 	 * @return the new analytics association change
 	 */
 	@Transactional(enabled = false)
-	public AnalyticsAssociationChange createAnalyticsAssociationChange(
-		long analyticsAssociationChangeId);
+	public AnalyticsAssociation createAnalyticsAssociation(
+		long analyticsAssociationId);
 
 	/**
 	 * @throws PortalException
@@ -102,33 +102,33 @@ public interface AnalyticsAssociationChangeLocalService
 	 * Deletes the analytics association change from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was removed
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public AnalyticsAssociationChange deleteAnalyticsAssociationChange(
-		AnalyticsAssociationChange analyticsAssociationChange);
+	public AnalyticsAssociation deleteAnalyticsAssociation(
+		AnalyticsAssociation analyticsAssociation);
 
 	/**
 	 * Deletes the analytics association change with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change that was removed
 	 * @throws PortalException if a analytics association change with the primary key could not be found
 	 */
 	@Indexable(type = IndexableType.DELETE)
-	public AnalyticsAssociationChange deleteAnalyticsAssociationChange(
-			long analyticsAssociationChangeId)
+	public AnalyticsAssociation deleteAnalyticsAssociation(
+			long analyticsAssociationId)
 		throws PortalException;
 
-	public void deleteAnalyticsAssociationChanges(
+	public void deleteAnalyticsAssociations(
 		long companyId, String associationClassName, long associationClassPK);
 
 	/**
@@ -160,7 +160,7 @@ public interface AnalyticsAssociationChangeLocalService
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -176,7 +176,7 @@ public interface AnalyticsAssociationChangeLocalService
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -211,8 +211,8 @@ public interface AnalyticsAssociationChangeLocalService
 		DynamicQuery dynamicQuery, Projection projection);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AnalyticsAssociationChange fetchAnalyticsAssociationChange(
-		long analyticsAssociationChangeId);
+	public AnalyticsAssociation fetchAnalyticsAssociation(
+		long analyticsAssociationId);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();
@@ -220,20 +220,20 @@ public interface AnalyticsAssociationChangeLocalService
 	/**
 	 * Returns the analytics association change with the primary key.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change
 	 * @throws PortalException if a analytics association change with the primary key could not be found
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public AnalyticsAssociationChange getAnalyticsAssociationChange(
-			long analyticsAssociationChangeId)
+	public AnalyticsAssociation getAnalyticsAssociation(
+			long analyticsAssociationId)
 		throws PortalException;
 
 	/**
 	 * Returns a range of all the analytics association changes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics association changes
@@ -241,16 +241,16 @@ public interface AnalyticsAssociationChangeLocalService
 	 * @return the range of analytics association changes
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AnalyticsAssociationChange> getAnalyticsAssociationChanges(
+	public List<AnalyticsAssociation> getAnalyticsAssociations(
 		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AnalyticsAssociationChange> getAnalyticsAssociationChanges(
+	public List<AnalyticsAssociation> getAnalyticsAssociations(
 		long companyId, Date modifiedDate, String associationClassName,
 		int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<AnalyticsAssociationChange> getAnalyticsAssociationChanges(
+	public List<AnalyticsAssociation> getAnalyticsAssociations(
 		long companyId, String associationClassName, int start, int end);
 
 	/**
@@ -259,14 +259,14 @@ public interface AnalyticsAssociationChangeLocalService
 	 * @return the number of analytics association changes
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAnalyticsAssociationChangesCount();
+	public int getAnalyticsAssociationsCount();
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAnalyticsAssociationChangesCount(
+	public int getAnalyticsAssociationsCount(
 		long companyId, Date modifiedDate, String associationClassName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public int getAnalyticsAssociationChangesCount(
+	public int getAnalyticsAssociationsCount(
 		long companyId, String associationClassName);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
@@ -291,14 +291,14 @@ public interface AnalyticsAssociationChangeLocalService
 	 * Updates the analytics association change in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was updated
 	 */
 	@Indexable(type = IndexableType.REINDEX)
-	public AnalyticsAssociationChange updateAnalyticsAssociationChange(
-		AnalyticsAssociationChange analyticsAssociationChange);
+	public AnalyticsAssociation updateAnalyticsAssociation(
+		AnalyticsAssociation analyticsAssociation);
 
 }

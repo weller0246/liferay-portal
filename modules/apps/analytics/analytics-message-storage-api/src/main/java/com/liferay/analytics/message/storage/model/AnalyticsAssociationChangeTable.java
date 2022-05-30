@@ -22,53 +22,53 @@ import java.sql.Types;
 import java.util.Date;
 
 /**
- * The table class for the &quot;AnalyticsAssociationChange&quot; database table.
+ * The table class for the &quot;AnalyticsAssociation&quot; database table.
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChange
+ * @see AnalyticsAssociation
  * @generated
  */
-public class AnalyticsAssociationChangeTable
-	extends BaseTable<AnalyticsAssociationChangeTable> {
+public class AnalyticsAssociationTable
+	extends BaseTable<AnalyticsAssociationTable> {
 
-	public static final AnalyticsAssociationChangeTable INSTANCE =
-		new AnalyticsAssociationChangeTable();
+	public static final AnalyticsAssociationTable INSTANCE =
+		new AnalyticsAssociationTable();
 
-	public final Column<AnalyticsAssociationChangeTable, Long> mvccVersion =
+	public final Column<AnalyticsAssociationTable, Long> mvccVersion =
 		createColumn(
 			"mvccVersion", Long.class, Types.BIGINT, Column.FLAG_NULLITY);
-	public final Column<AnalyticsAssociationChangeTable, Long>
-		analyticsAssociationChangeId = createColumn(
-			"analyticsAssociationChangeId", Long.class, Types.BIGINT,
+	public final Column<AnalyticsAssociationTable, Long>
+		analyticsAssociationId = createColumn(
+			"analyticsAssociationId", Long.class, Types.BIGINT,
 			Column.FLAG_PRIMARY);
-	public final Column<AnalyticsAssociationChangeTable, Long> companyId =
+	public final Column<AnalyticsAssociationTable, Long> companyId =
 		createColumn(
 			"companyId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, Date> createDate =
+	public final Column<AnalyticsAssociationTable, Date> createDate =
 		createColumn(
 			"createDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, Date> modifiedDate =
+	public final Column<AnalyticsAssociationTable, Date> modifiedDate =
 		createColumn(
 			"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, Long> userId =
+	public final Column<AnalyticsAssociationTable, Long> userId =
 		createColumn("userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, String>
+	public final Column<AnalyticsAssociationTable, String>
 		associationClassName = createColumn(
 			"associationClassName", String.class, Types.VARCHAR,
 			Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, Long>
+	public final Column<AnalyticsAssociationTable, Long>
 		associationClassPK = createColumn(
 			"associationClassPK", Long.class, Types.BIGINT,
 			Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, String> className =
+	public final Column<AnalyticsAssociationTable, String> className =
 		createColumn(
 			"className", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationChangeTable, Long> classPK =
+	public final Column<AnalyticsAssociationTable, Long> classPK =
 		createColumn("classPK", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 
-	private AnalyticsAssociationChangeTable() {
+	private AnalyticsAssociationTable() {
 		super(
-			"AnalyticsAssociationChange", AnalyticsAssociationChangeTable::new);
+			"AnalyticsAssociation", AnalyticsAssociationTable::new);
 	}
 
 }

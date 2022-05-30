@@ -21,34 +21,34 @@ import com.liferay.portal.kernel.util.Accessor;
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
- * The extended model interface for the AnalyticsAssociationChange service. Represents a row in the &quot;AnalyticsAssociationChange&quot; database table, with each column mapped to a property of this class.
+ * The extended model interface for the AnalyticsAssociation service. Represents a row in the &quot;AnalyticsAssociation&quot; database table, with each column mapped to a property of this class.
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChangeModel
+ * @see AnalyticsAssociationModel
  * @generated
  */
 @ImplementationClassName(
-	"com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeImpl"
+	"com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationImpl"
 )
 @ProviderType
-public interface AnalyticsAssociationChange
-	extends AnalyticsAssociationChangeModel, PersistedModel {
+public interface AnalyticsAssociation
+	extends AnalyticsAssociationModel, PersistedModel {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify this interface directly. Add methods to <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
+	 * Never modify this interface directly. Add methods to <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
-	public static final Accessor<AnalyticsAssociationChange, Long>
+	public static final Accessor<AnalyticsAssociation, Long>
 		ANALYTICS_ASSOCIATION_CHANGE_ID_ACCESSOR =
-			new Accessor<AnalyticsAssociationChange, Long>() {
+			new Accessor<AnalyticsAssociation, Long>() {
 
 				@Override
 				public Long get(
-					AnalyticsAssociationChange analyticsAssociationChange) {
+					AnalyticsAssociation analyticsAssociation) {
 
-					return analyticsAssociationChange.
-						getAnalyticsAssociationChangeId();
+					return analyticsAssociation.
+						getAnalyticsAssociationId();
 				}
 
 				@Override
@@ -57,8 +57,8 @@ public interface AnalyticsAssociationChange
 				}
 
 				@Override
-				public Class<AnalyticsAssociationChange> getTypeClass() {
-					return AnalyticsAssociationChange.class;
+				public Class<AnalyticsAssociation> getTypeClass() {
+					return AnalyticsAssociation.class;
 				}
 
 			};

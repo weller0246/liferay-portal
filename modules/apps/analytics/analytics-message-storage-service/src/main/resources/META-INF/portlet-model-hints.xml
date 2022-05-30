@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 
 <model-hints>
-	<model name="com.liferay.analytics.message.storage.model.AnalyticsAssociationChange">
+	<model name="com.liferay.analytics.message.storage.model.AnalyticsAssociation">
 		<field name="mvccVersion" type="long" />
-		<field name="analyticsAssociationChangeId" type="long" />
+		<field name="analyticsAssociationId" type="long" />
 		<field name="companyId" type="long" />
 		<field name="createDate" type="Date" />
 		<field name="modifiedDate" type="Date" />

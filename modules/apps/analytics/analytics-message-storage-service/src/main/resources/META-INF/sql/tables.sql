@@ -1,6 +1,6 @@
-create table AnalyticsAssociationChange (
+create table AnalyticsAssociation (
 	mvccVersion LONG default 0 not null,
-	analyticsAssociationChangeId LONG not null primary key,
+	analyticsAssociationId LONG not null primary key,
 	companyId LONG,
 	createDate DATE null,
 	modifiedDate DATE null,

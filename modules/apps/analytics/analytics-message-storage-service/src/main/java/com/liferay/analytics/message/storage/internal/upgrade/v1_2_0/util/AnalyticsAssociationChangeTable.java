@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
  * @generated
  * @see com.liferay.portal.tools.upgrade.table.builder.UpgradeTableBuilder
  */
-public class AnalyticsAssociationChangeTable {
+public class AnalyticsAssociationTable {
 
 	public static UpgradeProcess create() {
 		return new UpgradeProcess() {
@@ -36,9 +36,9 @@ public class AnalyticsAssociationChangeTable {
 		};
 	}
 
-	private static final String _TABLE_NAME = "AnalyticsAssociationChange";
+	private static final String _TABLE_NAME = "AnalyticsAssociation";
 
 	private static final String _TABLE_SQL_CREATE =
-		"create table AnalyticsAssociationChange (mvccVersion LONG default 0 not null,analyticsAssociationChangeId LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,userId LONG,associationClassName VARCHAR(75) null,associationClassPK LONG,className VARCHAR(75) null,classPK LONG)";
+		"create table AnalyticsAssociation (mvccVersion LONG default 0 not null,analyticsAssociationId LONG not null primary key,companyId LONG,createDate DATE null,modifiedDate DATE null,userId LONG,associationClassName VARCHAR(75) null,associationClassPK LONG,className VARCHAR(75) null,classPK LONG)";
 
 }

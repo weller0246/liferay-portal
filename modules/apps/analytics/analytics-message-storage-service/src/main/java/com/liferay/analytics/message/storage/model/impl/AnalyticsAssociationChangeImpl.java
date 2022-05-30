@@ -17,6 +17,6 @@ package com.liferay.analytics.message.storage.model.impl;
 /**
  * @author Brian Wing Shun Chan
  */
-public class AnalyticsAssociationChangeImpl
-	extends AnalyticsAssociationChangeBaseImpl {
+public class AnalyticsAssociationImpl
+	extends AnalyticsAssociationBaseImpl {
 }

@@ -17,59 +17,59 @@ package com.liferay.analytics.message.storage.service;
 import com.liferay.portal.kernel.service.ServiceWrapper;
 
 /**
- * Provides a wrapper for {@link AnalyticsAssociationChangeLocalService}.
+ * Provides a wrapper for {@link AnalyticsAssociationLocalService}.
  *
  * @author Brian Wing Shun Chan
- * @see AnalyticsAssociationChangeLocalService
+ * @see AnalyticsAssociationLocalService
  * @generated
  */
-public class AnalyticsAssociationChangeLocalServiceWrapper
-	implements AnalyticsAssociationChangeLocalService,
-			   ServiceWrapper<AnalyticsAssociationChangeLocalService> {
+public class AnalyticsAssociationLocalServiceWrapper
+	implements AnalyticsAssociationLocalService,
+			   ServiceWrapper<AnalyticsAssociationLocalService> {
 
-	public AnalyticsAssociationChangeLocalServiceWrapper() {
+	public AnalyticsAssociationLocalServiceWrapper() {
 		this(null);
 	}
 
-	public AnalyticsAssociationChangeLocalServiceWrapper(
-		AnalyticsAssociationChangeLocalService
-			analyticsAssociationChangeLocalService) {
+	public AnalyticsAssociationLocalServiceWrapper(
+		AnalyticsAssociationLocalService
+			analyticsAssociationLocalService) {
 
-		_analyticsAssociationChangeLocalService =
-			analyticsAssociationChangeLocalService;
+		_analyticsAssociationLocalService =
+			analyticsAssociationLocalService;
 	}
 
 	/**
 	 * Adds the analytics association change to the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was added
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			addAnalyticsAssociationChange(
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			addAnalyticsAssociation(
 				com.liferay.analytics.message.storage.model.
-					AnalyticsAssociationChange analyticsAssociationChange) {
+					AnalyticsAssociation analyticsAssociation) {
 
-		return _analyticsAssociationChangeLocalService.
-			addAnalyticsAssociationChange(analyticsAssociationChange);
+		return _analyticsAssociationLocalService.
+			addAnalyticsAssociation(analyticsAssociation);
 	}
 
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			addAnalyticsAssociationChange(
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			addAnalyticsAssociation(
 				long companyId, java.util.Date createDate, long userId,
 				String associationClassName, long associationClassPK,
 				String className, long classPK) {
 
-		return _analyticsAssociationChangeLocalService.
-			addAnalyticsAssociationChange(
+		return _analyticsAssociationLocalService.
+			addAnalyticsAssociation(
 				companyId, createDate, userId, associationClassName,
 				associationClassPK, className, classPK);
 	}
@@ -77,17 +77,17 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	/**
 	 * Creates a new analytics association change with the primary key. Does not add the analytics association change to the database.
 	 *
-	 * @param analyticsAssociationChangeId the primary key for the new analytics association change
+	 * @param analyticsAssociationId the primary key for the new analytics association change
 	 * @return the new analytics association change
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			createAnalyticsAssociationChange(
-				long analyticsAssociationChangeId) {
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			createAnalyticsAssociation(
+				long analyticsAssociationId) {
 
-		return _analyticsAssociationChangeLocalService.
-			createAnalyticsAssociationChange(analyticsAssociationChangeId);
+		return _analyticsAssociationLocalService.
+			createAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	/**
@@ -98,7 +98,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 			java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _analyticsAssociationChangeLocalService.createPersistedModel(
+		return _analyticsAssociationLocalService.createPersistedModel(
 			primaryKeyObj);
 	}
 
@@ -106,51 +106,51 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 * Deletes the analytics association change from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was removed
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			deleteAnalyticsAssociationChange(
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			deleteAnalyticsAssociation(
 				com.liferay.analytics.message.storage.model.
-					AnalyticsAssociationChange analyticsAssociationChange) {
+					AnalyticsAssociation analyticsAssociation) {
 
-		return _analyticsAssociationChangeLocalService.
-			deleteAnalyticsAssociationChange(analyticsAssociationChange);
+		return _analyticsAssociationLocalService.
+			deleteAnalyticsAssociation(analyticsAssociation);
 	}
 
 	/**
 	 * Deletes the analytics association change with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change that was removed
 	 * @throws PortalException if a analytics association change with the primary key could not be found
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-				deleteAnalyticsAssociationChange(
-					long analyticsAssociationChangeId)
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+				deleteAnalyticsAssociation(
+					long analyticsAssociationId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _analyticsAssociationChangeLocalService.
-			deleteAnalyticsAssociationChange(analyticsAssociationChangeId);
+		return _analyticsAssociationLocalService.
+			deleteAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	@Override
-	public void deleteAnalyticsAssociationChanges(
+	public void deleteAnalyticsAssociations(
 		long companyId, String associationClassName, long associationClassPK) {
 
-		_analyticsAssociationChangeLocalService.
-			deleteAnalyticsAssociationChanges(
+		_analyticsAssociationLocalService.
+			deleteAnalyticsAssociations(
 				companyId, associationClassName, associationClassPK);
 	}
 
@@ -162,25 +162,25 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 			com.liferay.portal.kernel.model.PersistedModel persistedModel)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _analyticsAssociationChangeLocalService.deletePersistedModel(
+		return _analyticsAssociationLocalService.deletePersistedModel(
 			persistedModel);
 	}
 
 	@Override
 	public <T> T dslQuery(com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
-		return _analyticsAssociationChangeLocalService.dslQuery(dslQuery);
+		return _analyticsAssociationLocalService.dslQuery(dslQuery);
 	}
 
 	@Override
 	public int dslQueryCount(
 		com.liferay.petra.sql.dsl.query.DSLQuery dslQuery) {
 
-		return _analyticsAssociationChangeLocalService.dslQueryCount(dslQuery);
+		return _analyticsAssociationLocalService.dslQueryCount(dslQuery);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery() {
-		return _analyticsAssociationChangeLocalService.dynamicQuery();
+		return _analyticsAssociationLocalService.dynamicQuery();
 	}
 
 	/**
@@ -193,7 +193,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	public <T> java.util.List<T> dynamicQuery(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 
-		return _analyticsAssociationChangeLocalService.dynamicQuery(
+		return _analyticsAssociationLocalService.dynamicQuery(
 			dynamicQuery);
 	}
 
@@ -201,7 +201,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 * Performs a dynamic query on the database and returns a range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -214,7 +214,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery, int start,
 		int end) {
 
-		return _analyticsAssociationChangeLocalService.dynamicQuery(
+		return _analyticsAssociationLocalService.dynamicQuery(
 			dynamicQuery, start, end);
 	}
 
@@ -222,7 +222,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 * Performs a dynamic query on the database and returns an ordered range of the matching rows.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param dynamicQuery the dynamic query
@@ -237,7 +237,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 		int end,
 		com.liferay.portal.kernel.util.OrderByComparator<T> orderByComparator) {
 
-		return _analyticsAssociationChangeLocalService.dynamicQuery(
+		return _analyticsAssociationLocalService.dynamicQuery(
 			dynamicQuery, start, end, orderByComparator);
 	}
 
@@ -251,7 +251,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	public long dynamicQueryCount(
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery) {
 
-		return _analyticsAssociationChangeLocalService.dynamicQueryCount(
+		return _analyticsAssociationLocalService.dynamicQueryCount(
 			dynamicQuery);
 	}
 
@@ -267,49 +267,49 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 		com.liferay.portal.kernel.dao.orm.DynamicQuery dynamicQuery,
 		com.liferay.portal.kernel.dao.orm.Projection projection) {
 
-		return _analyticsAssociationChangeLocalService.dynamicQueryCount(
+		return _analyticsAssociationLocalService.dynamicQueryCount(
 			dynamicQuery, projection);
 	}
 
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			fetchAnalyticsAssociationChange(long analyticsAssociationChangeId) {
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			fetchAnalyticsAssociation(long analyticsAssociationId) {
 
-		return _analyticsAssociationChangeLocalService.
-			fetchAnalyticsAssociationChange(analyticsAssociationChangeId);
+		return _analyticsAssociationLocalService.
+			fetchAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	@Override
 	public com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
 		getActionableDynamicQuery() {
 
-		return _analyticsAssociationChangeLocalService.
+		return _analyticsAssociationLocalService.
 			getActionableDynamicQuery();
 	}
 
 	/**
 	 * Returns the analytics association change with the primary key.
 	 *
-	 * @param analyticsAssociationChangeId the primary key of the analytics association change
+	 * @param analyticsAssociationId the primary key of the analytics association change
 	 * @return the analytics association change
 	 * @throws PortalException if a analytics association change with the primary key could not be found
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-				getAnalyticsAssociationChange(long analyticsAssociationChangeId)
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+				getAnalyticsAssociation(long analyticsAssociationId)
 			throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChange(analyticsAssociationChangeId);
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	/**
 	 * Returns a range of all the analytics association changes.
 	 *
 	 * <p>
-	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationChangeModelImpl</code>.
+	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
 	 * @param start the lower bound of the range of analytics association changes
@@ -318,34 +318,34 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 */
 	@Override
 	public java.util.List
-		<com.liferay.analytics.message.storage.model.AnalyticsAssociationChange>
-			getAnalyticsAssociationChanges(int start, int end) {
+		<com.liferay.analytics.message.storage.model.AnalyticsAssociation>
+			getAnalyticsAssociations(int start, int end) {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChanges(start, end);
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociations(start, end);
 	}
 
 	@Override
 	public java.util.List
-		<com.liferay.analytics.message.storage.model.AnalyticsAssociationChange>
-			getAnalyticsAssociationChanges(
+		<com.liferay.analytics.message.storage.model.AnalyticsAssociation>
+			getAnalyticsAssociations(
 				long companyId, java.util.Date modifiedDate,
 				String associationClassName, int start, int end) {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChanges(
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociations(
 				companyId, modifiedDate, associationClassName, start, end);
 	}
 
 	@Override
 	public java.util.List
-		<com.liferay.analytics.message.storage.model.AnalyticsAssociationChange>
-			getAnalyticsAssociationChanges(
+		<com.liferay.analytics.message.storage.model.AnalyticsAssociation>
+			getAnalyticsAssociations(
 				long companyId, String associationClassName, int start,
 				int end) {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChanges(
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociations(
 				companyId, associationClassName, start, end);
 	}
 
@@ -355,27 +355,27 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 * @return the number of analytics association changes
 	 */
 	@Override
-	public int getAnalyticsAssociationChangesCount() {
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChangesCount();
+	public int getAnalyticsAssociationsCount() {
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociationsCount();
 	}
 
 	@Override
-	public int getAnalyticsAssociationChangesCount(
+	public int getAnalyticsAssociationsCount(
 		long companyId, java.util.Date modifiedDate,
 		String associationClassName) {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChangesCount(
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociationsCount(
 				companyId, modifiedDate, associationClassName);
 	}
 
 	@Override
-	public int getAnalyticsAssociationChangesCount(
+	public int getAnalyticsAssociationsCount(
 		long companyId, String associationClassName) {
 
-		return _analyticsAssociationChangeLocalService.
-			getAnalyticsAssociationChangesCount(
+		return _analyticsAssociationLocalService.
+			getAnalyticsAssociationsCount(
 				companyId, associationClassName);
 	}
 
@@ -383,7 +383,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	public com.liferay.portal.kernel.dao.orm.IndexableActionableDynamicQuery
 		getIndexableActionableDynamicQuery() {
 
-		return _analyticsAssociationChangeLocalService.
+		return _analyticsAssociationLocalService.
 			getIndexableActionableDynamicQuery();
 	}
 
@@ -394,7 +394,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 */
 	@Override
 	public String getOSGiServiceIdentifier() {
-		return _analyticsAssociationChangeLocalService.
+		return _analyticsAssociationLocalService.
 			getOSGiServiceIdentifier();
 	}
 
@@ -406,7 +406,7 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 			java.io.Serializable primaryKeyObj)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
-		return _analyticsAssociationChangeLocalService.getPersistedModel(
+		return _analyticsAssociationLocalService.getPersistedModel(
 			primaryKeyObj);
 	}
 
@@ -414,38 +414,38 @@ public class AnalyticsAssociationChangeLocalServiceWrapper
 	 * Updates the analytics association change in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
-	 * <strong>Important:</strong> Inspect AnalyticsAssociationChangeLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
+	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationChange the analytics association change
+	 * @param analyticsAssociation the analytics association change
 	 * @return the analytics association change that was updated
 	 */
 	@Override
 	public
-		com.liferay.analytics.message.storage.model.AnalyticsAssociationChange
-			updateAnalyticsAssociationChange(
+		com.liferay.analytics.message.storage.model.AnalyticsAssociation
+			updateAnalyticsAssociation(
 				com.liferay.analytics.message.storage.model.
-					AnalyticsAssociationChange analyticsAssociationChange) {
+					AnalyticsAssociation analyticsAssociation) {
 
-		return _analyticsAssociationChangeLocalService.
-			updateAnalyticsAssociationChange(analyticsAssociationChange);
+		return _analyticsAssociationLocalService.
+			updateAnalyticsAssociation(analyticsAssociation);
 	}
 
 	@Override
-	public AnalyticsAssociationChangeLocalService getWrappedService() {
-		return _analyticsAssociationChangeLocalService;
+	public AnalyticsAssociationLocalService getWrappedService() {
+		return _analyticsAssociationLocalService;
 	}
 
 	@Override
 	public void setWrappedService(
-		AnalyticsAssociationChangeLocalService
-			analyticsAssociationChangeLocalService) {
+		AnalyticsAssociationLocalService
+			analyticsAssociationLocalService) {
 
-		_analyticsAssociationChangeLocalService =
-			analyticsAssociationChangeLocalService;
+		_analyticsAssociationLocalService =
+			analyticsAssociationLocalService;
 	}
 
-	private AnalyticsAssociationChangeLocalService
-		_analyticsAssociationChangeLocalService;
+	private AnalyticsAssociationLocalService
+		_analyticsAssociationLocalService;
 
 }

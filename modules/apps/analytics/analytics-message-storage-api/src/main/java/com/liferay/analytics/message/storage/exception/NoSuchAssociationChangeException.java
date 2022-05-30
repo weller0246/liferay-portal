@@ -19,20 +19,20 @@ import com.liferay.portal.kernel.exception.NoSuchModelException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class NoSuchAssociationChangeException extends NoSuchModelException {
+public class NoSuchAssociationException extends NoSuchModelException {
 
-	public NoSuchAssociationChangeException() {
+	public NoSuchAssociationException() {
 	}
 
-	public NoSuchAssociationChangeException(String msg) {
+	public NoSuchAssociationException(String msg) {
 		super(msg);
 	}
 
-	public NoSuchAssociationChangeException(String msg, Throwable throwable) {
+	public NoSuchAssociationException(String msg, Throwable throwable) {
 		super(msg, throwable);
 	}
 
-	public NoSuchAssociationChangeException(Throwable throwable) {
+	public NoSuchAssociationException(Throwable throwable) {
 		super(throwable);
 	}
 

@@ -14,7 +14,7 @@
 
 package com.liferay.analytics.batch.exportimport.model.listener;
 
-import com.liferay.analytics.message.storage.service.AnalyticsAssociationChangeLocalService;
+import com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalService;
 import com.liferay.analytics.message.storage.service.AnalyticsDeleteMessageLocalService;
 import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
 import com.liferay.analytics.settings.configuration.AnalyticsConfigurationTracker;
@@ -53,7 +53,7 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 			Object associationClassPK)
 		throws ModelListenerException {
 
-		_addAnalyticsAssociationChange(
+		_addAnalyticsAssociation(
 			associationClassName, associationClassPK, classPK);
 	}
 
@@ -61,8 +61,8 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 	public void onAfterRemove(T model) throws ModelListenerException {
 		ShardedModel shardedModel = (ShardedModel)model;
 
-		analyticsAssociationChangeLocalService.
-			deleteAnalyticsAssociationChanges(
+		analyticsAssociationLocalService.
+			deleteAnalyticsAssociations(
 				shardedModel.getCompanyId(), model.getModelClassName(),
 				(long)model.getPrimaryKeyObj());
 	}
@@ -73,7 +73,7 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 			Object associationClassPK)
 		throws ModelListenerException {
 
-		_addAnalyticsAssociationChange(
+		_addAnalyticsAssociation(
 			associationClassName, associationClassPK, classPK);
 	}
 
@@ -170,8 +170,8 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 	}
 
 	@Reference
-	protected AnalyticsAssociationChangeLocalService
-		analyticsAssociationChangeLocalService;
+	protected AnalyticsAssociationLocalService
+		analyticsAssociationLocalService;
 
 	@Reference
 	protected AnalyticsConfigurationTracker analyticsConfigurationTracker;
@@ -189,7 +189,7 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 	@Reference
 	protected UserLocalService userLocalService;
 
-	private void _addAnalyticsAssociationChange(
+	private void _addAnalyticsAssociation(
 		String associationClassName, Object associationClassPK,
 		Object classPK) {
 
@@ -212,8 +212,8 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 
 			Class<?> modelClass = getModelClass();
 
-			analyticsAssociationChangeLocalService.
-				addAnalyticsAssociationChange(
+			analyticsAssociationLocalService.
+				addAnalyticsAssociation(
 					companyId, new Date(),
 					userLocalService.getDefaultUserId(companyId),
 					associationClassName, (long)associationClassPK,

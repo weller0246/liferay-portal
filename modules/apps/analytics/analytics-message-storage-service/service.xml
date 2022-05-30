@@ -3,11 +3,11 @@
 
 <service-builder auto-import-default-references="false" auto-namespace-tables="false" dependency-injector="ds" mvcc-enabled="true" package-path="com.liferay.analytics.message.storage">
 	<namespace>Analytics</namespace>
-	<entity local-service="true" name="AnalyticsAssociationChange" remote-service="false">
+	<entity local-service="true" name="AnalyticsAssociation" remote-service="false">
 
 		<!-- PK fields -->
 
-		<column name="analyticsAssociationChangeId" primary="true" type="long" />
+		<column name="analyticsAssociationId" primary="true" type="long" />
 
 		<!-- Audit fields -->
 

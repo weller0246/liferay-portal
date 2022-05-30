@@ -24,12 +24,12 @@ import org.osgi.service.component.annotations.Component;
 @Component(
 	immediate = true,
 	property = {
-		"dispatch.task.executor.name=" + AnalyticsAssociationChangeDXPEntityExportDispatchTaskExecutor.KEY,
-		"dispatch.task.executor.type=" + AnalyticsAssociationChangeDXPEntityExportDispatchTaskExecutor.KEY
+		"dispatch.task.executor.name=" + AnalyticsAssociationDXPEntityExportDispatchTaskExecutor.KEY,
+		"dispatch.task.executor.type=" + AnalyticsAssociationDXPEntityExportDispatchTaskExecutor.KEY
 	},
 	service = DispatchTaskExecutor.class
 )
-public class AnalyticsAssociationChangeDXPEntityExportDispatchTaskExecutor
+public class AnalyticsAssociationDXPEntityExportDispatchTaskExecutor
 	extends BaseAnalyticsDXPEntityExportDispatchTaskExecutor {
 
 	public static final String KEY =
