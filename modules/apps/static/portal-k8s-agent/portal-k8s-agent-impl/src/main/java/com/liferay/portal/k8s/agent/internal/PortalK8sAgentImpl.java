@@ -302,7 +302,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		for (Map.Entry<String, String> entry : data.entrySet()) {
 			try {
 				_processConfigMapConfigJSONResource(
-					entry.getKey(), entry.getValue(), configMap);
+					configMap, entry.getKey(), entry.getValue());
 			}
 			catch (Exception exception) {
 				_log.error(exception);
@@ -477,17 +477,16 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	}
 
 	private void _processConfigMapConfigJSONResource(
-			final String configName, String configurationContent,
-			ConfigMap configMap)
+			ConfigMap configMap, String fileName, String json)
 		throws Exception {
 
-		if (!configName.endsWith(_FILE_JSON_EXT)) {
-			throw new IllegalArgumentException("Invalid file " + configName);
+		if (!fileName.endsWith(_FILE_JSON_EXT)) {
+			throw new IllegalArgumentException("Invalid file " + fileName);
 		}
 
-		URL url = new URL("file", null, configName);
+		URL url = new URL("file", null, fileName);
 
-		final JSONUtil.Report report = new JSONUtil.Report();
+		JSONUtil.Report report = new JSONUtil.Report();
 
 		BinaryManager binaryManager = new BinaryManager(
 			new BinUtil.ResourceProvider() {
@@ -511,23 +510,22 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 				@Override
 				public String getIdentifier() {
-					return configName;
+					return fileName;
 				}
 
 			},
 			report);
 
 		ConfigurationFile configurationFile = JSONUtil.readJSON(
-			binaryManager, configName, url, _bundle.getBundleId(),
-			configurationContent, report);
+			binaryManager, fileName, url, _bundle.getBundleId(), json, report);
 
-		for (final String warning : report.warnings) {
+		for (String warning : report.warnings) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(warning);
 			}
 		}
 
-		for (final String error : report.errors) {
+		for (String error : report.errors) {
 			_log.error(error);
 		}
 
@@ -564,7 +562,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			for (Map.Entry<String, String> entry : data.entrySet()) {
 				try {
 					_processConfigMapConfigJSONResource(
-						entry.getKey(), entry.getValue(), newConfigMap);
+						newConfigMap, entry.getKey(), entry.getValue());
 				}
 				catch (Exception exception) {
 					_log.error(exception);
