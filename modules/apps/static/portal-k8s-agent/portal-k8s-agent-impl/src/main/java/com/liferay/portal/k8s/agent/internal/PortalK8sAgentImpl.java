@@ -400,20 +400,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			Dictionary<String, Object> properties =
 				configuration.getProperties();
 
-			String existingResourceVersion = (String)properties.get(
-				".k8s.config.resource.version");
-
 			if (Objects.equals(
-					objectMeta.getResourceVersion(), existingResourceVersion)) {
+					properties.get(".k8s.config.resource.version"),
+					objectMeta.getResourceVersion())) {
 
 				if (_log.isDebugEnabled()) {
 					_log.debug(
-						StringBundler.concat(
-							"The resourceVersion of the configuration (",
-							existingResourceVersion,
-							") is same as that of Kubernetes (",
-							objectMeta.getResourceVersion(),
-							") so this action will be ignored"));
+						"Configuration and Kubernetes resource versions are " +
+							"identical");
 				}
 
 				return;
@@ -433,7 +427,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				Configuration.ConfigurationAttribute.READ_ONLY);
 		}
 
-		Dictionary<String, Object> dictionary = config.getProperties();
+		Dictionary<String, Object> properties = config.getProperties();
 
 		for (PortalK8sConfigurationPropertiesMutator
 				portalK8sConfigurationPropertiesMutator :
@@ -442,19 +436,19 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			portalK8sConfigurationPropertiesMutator.
 				mutateConfigurationProperties(
 					objectMeta.getAnnotations(), objectMeta.getLabels(),
-					dictionary);
+					properties);
 		}
 
-		dictionary.put(".k8s.config.key", config.getPid());
-		dictionary.put(".k8s.config.uid", objectMeta.getUid());
-		dictionary.put(
+		properties.put(".k8s.config.key", config.getPid());
+		properties.put(".k8s.config.uid", objectMeta.getUid());
+		properties.put(
 			".k8s.config.resource.version", objectMeta.getResourceVersion());
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Created Configuration " + dictionary);
+			_log.debug("Created Configuration " + properties);
 		}
 
-		configuration.updateIfDifferent(dictionary);
+		configuration.updateIfDifferent(properties);
 
 		configuration.addAttributes(
 			Configuration.ConfigurationAttribute.READ_ONLY);
