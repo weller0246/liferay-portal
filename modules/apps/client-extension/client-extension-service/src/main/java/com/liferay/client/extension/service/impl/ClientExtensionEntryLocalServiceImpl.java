@@ -145,11 +145,17 @@ public class ClientExtensionEntryLocalServiceImpl
 			ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT);
 		clientExtensionEntry.setTypeSettings(
 			UnicodePropertiesBuilder.create(
-				true
+				false
 			).put(
 				"cssURLs", customElementCSSURLs
 			).put(
+				"friendlyURLMapping", friendlyURLMapping
+			).put(
 				"htmlElementName", customElementHTMLElementName
+			).put(
+				"instanceable", instanceable
+			).put(
+				"portletCategoryName", portletCategoryName
 			).put(
 				"urls", customElementURLs
 			).put(
@@ -202,7 +208,13 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setType(ClientExtensionEntryConstants.TYPE_IFRAME);
 		clientExtensionEntry.setTypeSettings(
 			UnicodePropertiesBuilder.create(
-				true
+				false
+			).put(
+				"friendlyURLMapping", friendlyURLMapping
+			).put(
+				"instanceable", instanceable
+			).put(
+				"portletCategoryName", portletCategoryName
 			).put(
 				"url", iFrameURL
 			).buildString());
@@ -410,12 +422,16 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
 		clientExtensionEntry.setTypeSettings(
-			UnicodePropertiesBuilder.create(
-				true
+			UnicodePropertiesBuilder.load(
+				clientExtensionEntry.getTypeSettings()
 			).put(
 				"cssURLs", customElementCSSURLs
 			).put(
+				"friendlyURLMapping", friendlyURLMapping
+			).put(
 				"htmlElementName", customElementHTMLElementName
+			).put(
+				"portletCategoryName", portletCategoryName
 			).put(
 				"urls", customElementURLs
 			).put(
@@ -461,8 +477,12 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
 		clientExtensionEntry.setTypeSettings(
-			UnicodePropertiesBuilder.create(
-				true
+			UnicodePropertiesBuilder.load(
+				clientExtensionEntry.getTypeSettings()
+			).put(
+				"friendlyURLMapping", friendlyURLMapping
+			).put(
+				"portletCategoryName", portletCategoryName
 			).put(
 				"url", iFrameURL
 			).buildString());
