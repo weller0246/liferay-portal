@@ -290,8 +290,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		String pid = config.getPid();
 
-		if (pid.endsWith(_FILE_JSON_EXT)) {
-			pid = pid.substring(0, pid.length() - _FILE_JSON_EXT.length());
+		if (pid.endsWith(_FILE_EXTENSION)) {
+			pid = pid.substring(0, pid.length() - _FILE_EXTENSION.length());
 		}
 
 		int index = pid.indexOf(CharPool.TILDE);
@@ -390,7 +390,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ConfigMap configMap, String fileName, String json)
 		throws Exception {
 
-		if (!fileName.endsWith(_FILE_JSON_EXT)) {
+		if (!fileName.endsWith(_FILE_EXTENSION)) {
 			throw new IllegalArgumentException("Invalid file " + fileName);
 		}
 
@@ -590,7 +590,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		"Configured service account does not have access. Service account " +
 			"may have been revoked.";
 
-	private static final String _FILE_JSON_EXT = ".config.json";
+	private static final String _FILE_EXTENSION = ".config.json";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		PortalK8sAgentImpl.class);
