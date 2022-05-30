@@ -301,7 +301,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		for (Map.Entry<String, String> entry : data.entrySet()) {
 			try {
-				_processConfigMapConfigJSONResource(
+				_processConfigurations(
 					configMap, entry.getKey(), entry.getValue());
 			}
 			catch (Exception exception) {
@@ -405,7 +405,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		return new String[] {pid, null};
 	}
 
-	private void _processConfigMapConfigFileEntry(
+	private void _processConfiguration(
 			String configName, Dictionary<String, Object> dictionary,
 			ObjectMeta objectMeta)
 		throws Exception {
@@ -476,7 +476,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			Configuration.ConfigurationAttribute.READ_ONLY);
 	}
 
-	private void _processConfigMapConfigJSONResource(
+	private void _processConfigurations(
 			ConfigMap configMap, String fileName, String json)
 		throws Exception {
 
@@ -536,7 +536,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				configurationFile.getConfigurations()) {
 
 			try {
-				_processConfigMapConfigFileEntry(
+				_processConfiguration(
 					config.getPid(), config.getProperties(),
 					configMap.getMetadata());
 			}
@@ -560,7 +560,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		if (data != null) {
 			for (Map.Entry<String, String> entry : data.entrySet()) {
 				try {
-					_processConfigMapConfigJSONResource(
+					_processConfigurations(
 						newConfigMap, entry.getKey(), entry.getValue());
 				}
 				catch (Exception exception) {
