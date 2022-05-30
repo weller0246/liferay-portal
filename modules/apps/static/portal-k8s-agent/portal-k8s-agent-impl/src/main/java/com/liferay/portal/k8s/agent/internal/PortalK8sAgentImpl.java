@@ -321,8 +321,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		if (data == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Data is null, skipping: ".concat(configMap.toString()));
+				_log.debug("Data is null for config map " + configMap);
 			}
 
 			return;
