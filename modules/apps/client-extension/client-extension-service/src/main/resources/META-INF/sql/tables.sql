@@ -21,6 +21,7 @@ create table ClientExtensionEntry (
 	properties TEXT null,
 	sourceCodeURL STRING null,
 	type_ VARCHAR(75) null,
+	typeSettings TEXT null,
 	status INTEGER,
 	statusByUserId LONG,
 	statusByUserName VARCHAR(75) null,

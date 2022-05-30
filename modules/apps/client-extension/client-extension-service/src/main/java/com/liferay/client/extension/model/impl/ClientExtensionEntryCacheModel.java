@@ -78,7 +78,7 @@ public class ClientExtensionEntryCacheModel
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(53);
+		StringBundler sb = new StringBundler(55);
 
 		sb.append("{mvccVersion=");
 		sb.append(mvccVersion);
@@ -124,6 +124,8 @@ public class ClientExtensionEntryCacheModel
 		sb.append(sourceCodeURL);
 		sb.append(", type=");
 		sb.append(type);
+		sb.append(", typeSettings=");
+		sb.append(typeSettings);
 		sb.append(", status=");
 		sb.append(status);
 		sb.append(", statusByUserId=");
@@ -269,6 +271,13 @@ public class ClientExtensionEntryCacheModel
 			clientExtensionEntryImpl.setType(type);
 		}
 
+		if (typeSettings == null) {
+			clientExtensionEntryImpl.setTypeSettings("");
+		}
+		else {
+			clientExtensionEntryImpl.setTypeSettings(typeSettings);
+		}
+
 		clientExtensionEntryImpl.setStatus(status);
 		clientExtensionEntryImpl.setStatusByUserId(statusByUserId);
 
@@ -322,6 +331,7 @@ public class ClientExtensionEntryCacheModel
 		properties = (String)objectInput.readObject();
 		sourceCodeURL = objectInput.readUTF();
 		type = objectInput.readUTF();
+		typeSettings = (String)objectInput.readObject();
 
 		status = objectInput.readInt();
 
@@ -445,6 +455,13 @@ public class ClientExtensionEntryCacheModel
 			objectOutput.writeUTF(type);
 		}
 
+		if (typeSettings == null) {
+			objectOutput.writeObject("");
+		}
+		else {
+			objectOutput.writeObject(typeSettings);
+		}
+
 		objectOutput.writeInt(status);
 
 		objectOutput.writeLong(statusByUserId);
@@ -481,6 +498,7 @@ public class ClientExtensionEntryCacheModel
 	public String properties;
 	public String sourceCodeURL;
 	public String type;
+	public String typeSettings;
 	public int status;
 	public long statusByUserId;
 	public String statusByUserName;

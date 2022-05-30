@@ -176,6 +176,8 @@ public class ClientExtensionEntryPersistenceTest {
 
 		newClientExtensionEntry.setType(RandomTestUtil.randomString());
 
+		newClientExtensionEntry.setTypeSettings(RandomTestUtil.randomString());
+
 		newClientExtensionEntry.setStatus(RandomTestUtil.nextInt());
 
 		newClientExtensionEntry.setStatusByUserId(RandomTestUtil.nextLong());
@@ -260,6 +262,9 @@ public class ClientExtensionEntryPersistenceTest {
 		Assert.assertEquals(
 			existingClientExtensionEntry.getType(),
 			newClientExtensionEntry.getType());
+		Assert.assertEquals(
+			existingClientExtensionEntry.getTypeSettings(),
+			newClientExtensionEntry.getTypeSettings());
 		Assert.assertEquals(
 			existingClientExtensionEntry.getStatus(),
 			newClientExtensionEntry.getStatus());
@@ -699,6 +704,8 @@ public class ClientExtensionEntryPersistenceTest {
 		clientExtensionEntry.setSourceCodeURL(RandomTestUtil.randomString());
 
 		clientExtensionEntry.setType(RandomTestUtil.randomString());
+
+		clientExtensionEntry.setTypeSettings(RandomTestUtil.randomString());
 
 		clientExtensionEntry.setStatus(RandomTestUtil.nextInt());
 

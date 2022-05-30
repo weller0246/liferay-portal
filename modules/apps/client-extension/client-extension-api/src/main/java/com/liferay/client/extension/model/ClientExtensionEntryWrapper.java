@@ -68,6 +68,7 @@ public class ClientExtensionEntryWrapper
 		attributes.put("properties", getProperties());
 		attributes.put("sourceCodeURL", getSourceCodeURL());
 		attributes.put("type", getType());
+		attributes.put("typeSettings", getTypeSettings());
 		attributes.put("status", getStatus());
 		attributes.put("statusByUserId", getStatusByUserId());
 		attributes.put("statusByUserName", getStatusByUserName());
@@ -215,6 +216,12 @@ public class ClientExtensionEntryWrapper
 
 		if (type != null) {
 			setType(type);
+		}
+
+		String typeSettings = (String)attributes.get("typeSettings");
+
+		if (typeSettings != null) {
+			setTypeSettings(typeSettings);
 		}
 
 		Integer status = (Integer)attributes.get("status");
@@ -601,6 +608,16 @@ public class ClientExtensionEntryWrapper
 	@Override
 	public String getType() {
 		return model.getType();
+	}
+
+	/**
+	 * Returns the type settings of this client extension entry.
+	 *
+	 * @return the type settings of this client extension entry
+	 */
+	@Override
+	public String getTypeSettings() {
+		return model.getTypeSettings();
 	}
 
 	/**
@@ -1086,6 +1103,16 @@ public class ClientExtensionEntryWrapper
 	@Override
 	public void setType(String type) {
 		model.setType(type);
+	}
+
+	/**
+	 * Sets the type settings of this client extension entry.
+	 *
+	 * @param typeSettings the type settings of this client extension entry
+	 */
+	@Override
+	public void setTypeSettings(String typeSettings) {
+		model.setTypeSettings(typeSettings);
 	}
 
 	/**

@@ -518,6 +518,21 @@ public interface ClientExtensionEntryModel
 	public void setType(String type);
 
 	/**
+	 * Returns the type settings of this client extension entry.
+	 *
+	 * @return the type settings of this client extension entry
+	 */
+	@AutoEscape
+	public String getTypeSettings();
+
+	/**
+	 * Sets the type settings of this client extension entry.
+	 *
+	 * @param typeSettings the type settings of this client extension entry
+	 */
+	public void setTypeSettings(String typeSettings);
+
+	/**
 	 * Returns the status of this client extension entry.
 	 *
 	 * @return the status of this client extension entry

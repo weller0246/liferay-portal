@@ -95,8 +95,9 @@ public class ClientExtensionEntryModelImpl
 		{"instanceable", Types.BOOLEAN}, {"name", Types.VARCHAR},
 		{"portletCategoryName", Types.VARCHAR}, {"properties", Types.CLOB},
 		{"sourceCodeURL", Types.VARCHAR}, {"type_", Types.VARCHAR},
-		{"status", Types.INTEGER}, {"statusByUserId", Types.BIGINT},
-		{"statusByUserName", Types.VARCHAR}, {"statusDate", Types.TIMESTAMP}
+		{"typeSettings", Types.CLOB}, {"status", Types.INTEGER},
+		{"statusByUserId", Types.BIGINT}, {"statusByUserName", Types.VARCHAR},
+		{"statusDate", Types.TIMESTAMP}
 	};
 
 	public static final Map<String, Integer> TABLE_COLUMNS_MAP =
@@ -125,6 +126,7 @@ public class ClientExtensionEntryModelImpl
 		TABLE_COLUMNS_MAP.put("properties", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("sourceCodeURL", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.VARCHAR);
+		TABLE_COLUMNS_MAP.put("typeSettings", Types.CLOB);
 		TABLE_COLUMNS_MAP.put("status", Types.INTEGER);
 		TABLE_COLUMNS_MAP.put("statusByUserId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("statusByUserName", Types.VARCHAR);
@@ -132,7 +134,7 @@ public class ClientExtensionEntryModelImpl
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table ClientExtensionEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,clientExtensionEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,customElementCSSURLs TEXT null,customElementHTMLElementName VARCHAR(255) null,customElementURLs TEXT null,customElementUseESM BOOLEAN,description TEXT null,friendlyURLMapping VARCHAR(75) null,iFrameURL STRING null,instanceable BOOLEAN,name STRING null,portletCategoryName VARCHAR(75) null,properties TEXT null,sourceCodeURL STRING null,type_ VARCHAR(75) null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
+		"create table ClientExtensionEntry (mvccVersion LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,clientExtensionEntryId LONG not null primary key,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,customElementCSSURLs TEXT null,customElementHTMLElementName VARCHAR(255) null,customElementURLs TEXT null,customElementUseESM BOOLEAN,description TEXT null,friendlyURLMapping VARCHAR(75) null,iFrameURL STRING null,instanceable BOOLEAN,name STRING null,portletCategoryName VARCHAR(75) null,properties TEXT null,sourceCodeURL STRING null,type_ VARCHAR(75) null,typeSettings TEXT null,status INTEGER,statusByUserId LONG,statusByUserName VARCHAR(75) null,statusDate DATE null)";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table ClientExtensionEntry";
@@ -422,6 +424,12 @@ public class ClientExtensionEntryModelImpl
 			"type",
 			(BiConsumer<ClientExtensionEntry, String>)
 				ClientExtensionEntry::setType);
+		attributeGetterFunctions.put(
+			"typeSettings", ClientExtensionEntry::getTypeSettings);
+		attributeSetterBiConsumers.put(
+			"typeSettings",
+			(BiConsumer<ClientExtensionEntry, String>)
+				ClientExtensionEntry::setTypeSettings);
 		attributeGetterFunctions.put("status", ClientExtensionEntry::getStatus);
 		attributeSetterBiConsumers.put(
 			"status",
@@ -1005,6 +1013,26 @@ public class ClientExtensionEntryModelImpl
 
 	@JSON
 	@Override
+	public String getTypeSettings() {
+		if (_typeSettings == null) {
+			return "";
+		}
+		else {
+			return _typeSettings;
+		}
+	}
+
+	@Override
+	public void setTypeSettings(String typeSettings) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_typeSettings = typeSettings;
+	}
+
+	@JSON
+	@Override
 	public int getStatus() {
 		return _status;
 	}
@@ -1346,6 +1374,7 @@ public class ClientExtensionEntryModelImpl
 		clientExtensionEntryImpl.setProperties(getProperties());
 		clientExtensionEntryImpl.setSourceCodeURL(getSourceCodeURL());
 		clientExtensionEntryImpl.setType(getType());
+		clientExtensionEntryImpl.setTypeSettings(getTypeSettings());
 		clientExtensionEntryImpl.setStatus(getStatus());
 		clientExtensionEntryImpl.setStatusByUserId(getStatusByUserId());
 		clientExtensionEntryImpl.setStatusByUserName(getStatusByUserName());
@@ -1406,6 +1435,8 @@ public class ClientExtensionEntryModelImpl
 			this.<String>getColumnOriginalValue("sourceCodeURL"));
 		clientExtensionEntryImpl.setType(
 			this.<String>getColumnOriginalValue("type_"));
+		clientExtensionEntryImpl.setTypeSettings(
+			this.<String>getColumnOriginalValue("typeSettings"));
 		clientExtensionEntryImpl.setStatus(
 			this.<Integer>getColumnOriginalValue("status"));
 		clientExtensionEntryImpl.setStatusByUserId(
@@ -1660,6 +1691,14 @@ public class ClientExtensionEntryModelImpl
 			clientExtensionEntryCacheModel.type = null;
 		}
 
+		clientExtensionEntryCacheModel.typeSettings = getTypeSettings();
+
+		String typeSettings = clientExtensionEntryCacheModel.typeSettings;
+
+		if ((typeSettings != null) && (typeSettings.length() == 0)) {
+			clientExtensionEntryCacheModel.typeSettings = null;
+		}
+
 		clientExtensionEntryCacheModel.status = getStatus();
 
 		clientExtensionEntryCacheModel.statusByUserId = getStatusByUserId();
@@ -1800,6 +1839,7 @@ public class ClientExtensionEntryModelImpl
 	private String _properties;
 	private String _sourceCodeURL;
 	private String _type;
+	private String _typeSettings;
 	private int _status;
 	private long _statusByUserId;
 	private String _statusByUserName;
@@ -1860,6 +1900,7 @@ public class ClientExtensionEntryModelImpl
 		_columnOriginalValues.put("properties", _properties);
 		_columnOriginalValues.put("sourceCodeURL", _sourceCodeURL);
 		_columnOriginalValues.put("type_", _type);
+		_columnOriginalValues.put("typeSettings", _typeSettings);
 		_columnOriginalValues.put("status", _status);
 		_columnOriginalValues.put("statusByUserId", _statusByUserId);
 		_columnOriginalValues.put("statusByUserName", _statusByUserName);
@@ -1932,13 +1973,15 @@ public class ClientExtensionEntryModelImpl
 
 		columnBitmasks.put("type_", 2097152L);
 
-		columnBitmasks.put("status", 4194304L);
+		columnBitmasks.put("typeSettings", 4194304L);
 
-		columnBitmasks.put("statusByUserId", 8388608L);
+		columnBitmasks.put("status", 8388608L);
 
-		columnBitmasks.put("statusByUserName", 16777216L);
+		columnBitmasks.put("statusByUserId", 16777216L);
 
-		columnBitmasks.put("statusDate", 33554432L);
+		columnBitmasks.put("statusByUserName", 33554432L);
+
+		columnBitmasks.put("statusDate", 67108864L);
 
 		_columnBitmasks = Collections.unmodifiableMap(columnBitmasks);
 	}
