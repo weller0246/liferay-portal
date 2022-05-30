@@ -406,9 +406,11 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	}
 
 	private void _processConfiguration(
-			String configName, Dictionary<String, Object> dictionary,
+			org.apache.felix.configurator.impl.model.Config config,
 			ObjectMeta objectMeta)
 		throws Exception {
+
+		String configName = config.getPid();
 
 		String[] pid = _parsePid(configName);
 
@@ -450,6 +452,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			configuration.removeAttributes(
 				Configuration.ConfigurationAttribute.READ_ONLY);
 		}
+
+		Dictionary<String, Object> dictionary = config.getProperties();
 
 		for (PortalK8sConfigurationPropertiesMutator
 				portalK8sConfigurationPropertiesMutator :
@@ -536,9 +540,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				configurationFile.getConfigurations()) {
 
 			try {
-				_processConfiguration(
-					config.getPid(), config.getProperties(),
-					configMap.getMetadata());
+				_processConfiguration(config, configMap.getMetadata());
 			}
 			catch (Exception exception) {
 				_log.error(exception);
