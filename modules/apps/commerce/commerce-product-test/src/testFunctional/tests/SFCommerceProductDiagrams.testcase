@@ -891,19 +891,6 @@ definition {
 
 		task ("Given the Minium site with two buyer users, and an account group with the buyer A") {
 			CommerceEntry.addAccountEntryUser(
-				accountName = "Commerce Account 1",
-				accountType = "Business",
-				agreeToTermsAndAnswerReminderQuery = "true",
-				createNewAccount = "true",
-				requireReset = "false",
-				userEmailAddress = "buyera@liferay.com",
-				userFirstName = "Buyer",
-				userLastName = "User",
-				userRole = "Buyer",
-				userScreenName = "buyeruser",
-				userSiteMembership = "Minium");
-
-			CommerceEntry.addAccountEntryUser(
 				accountName = "Commerce Account 2",
 				accountType = "Business",
 				agreeToTermsAndAnswerReminderQuery = "true",
@@ -924,7 +911,7 @@ definition {
 
 			AccountGroups.addAssignee(
 				accountGroupName = "Account Group",
-				assigneeNames = "Commerce Account 1",
+				assigneeNames = "Commerce Account",
 				assigneeType = "Accounts");
 		}
 
@@ -1010,7 +997,7 @@ definition {
 			CommerceLogin.miniumLogin(
 				password = "test",
 				urlAppend = "web/minium",
-				userEmailAddress = "buyera@liferay.com");
+				userEmailAddress = "buyer@liferay.com");
 
 			CommerceNavigator.gotoMiniumSidebarItem(menuItem = "Catalog");
 
