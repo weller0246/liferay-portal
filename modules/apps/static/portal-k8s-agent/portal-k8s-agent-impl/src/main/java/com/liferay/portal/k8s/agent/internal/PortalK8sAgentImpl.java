@@ -560,9 +560,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		ObjectMeta objectMeta = newConfigMap.getMetadata();
 
 		if (data != null) {
-			Set<Map.Entry<String, String>> entrySet = data.entrySet();
-
-			for (Map.Entry<String, String> entry : entrySet) {
+			for (Map.Entry<String, String> entry : data.entrySet()) {
 				String configName = entry.getKey();
 
 				try {
