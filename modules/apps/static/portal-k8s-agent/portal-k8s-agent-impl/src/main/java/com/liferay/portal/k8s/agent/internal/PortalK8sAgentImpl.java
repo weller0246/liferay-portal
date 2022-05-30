@@ -410,11 +410,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ObjectMeta objectMeta)
 		throws Exception {
 
-		String configName = config.getPid();
+		String[] pid = _parsePid(config.getPid());
 
-		String[] pid = _parsePid(configName);
-
-		Configuration configuration = _findExistingConfiguration(configName);
+		Configuration configuration = _findExistingConfiguration(
+			config.getPid());
 
 		if (configuration == null) {
 			configuration = _getConfiguration(pid[0], pid[1]);
@@ -465,7 +464,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					dictionary);
 		}
 
-		dictionary.put(".k8s.config.key", configName);
+		dictionary.put(".k8s.config.key", config.getPid());
 		dictionary.put(".k8s.config.uid", objectMeta.getUid());
 		dictionary.put(
 			".k8s.config.resource.version", objectMeta.getResourceVersion());
