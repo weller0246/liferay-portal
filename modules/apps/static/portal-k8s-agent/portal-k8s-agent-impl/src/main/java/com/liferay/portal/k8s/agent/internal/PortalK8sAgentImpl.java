@@ -370,20 +370,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			org.apache.felix.configurator.impl.model.Config config)
 		throws Exception {
 
-		String[] pidArray = _parsePid(config.getPid());
+		String path = config.getPid();
 
-		String pid = pidArray[0];
-		String name = pidArray[1];
-
-		if (name != null) {
-			return _configurationAdmin.getFactoryConfiguration(
-				pid, name, StringPool.QUESTION);
-		}
-
-		return _configurationAdmin.getConfiguration(pid, StringPool.QUESTION);
-	}
-
-	private String[] _parsePid(String path) {
 		String pid = path;
 
 		if (path.endsWith(_FILE_JSON_EXT)) {
@@ -400,15 +388,20 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			}
 		}
 
+		String name = null;
+
 		if (index > 0) {
-			String name = pid.substring(index + 1);
+			name = pid.substring(index + 1);
 
 			pid = pid.substring(0, index);
-
-			return new String[] {pid, name};
 		}
 
-		return new String[] {pid, null};
+		if (name != null) {
+			return _configurationAdmin.getFactoryConfiguration(
+				pid, name, StringPool.QUESTION);
+		}
+
+		return _configurationAdmin.getConfiguration(pid, StringPool.QUESTION);
 	}
 
 	private void _processConfiguration(
