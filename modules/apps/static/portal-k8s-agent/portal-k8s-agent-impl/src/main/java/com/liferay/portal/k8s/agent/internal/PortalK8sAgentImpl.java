@@ -393,10 +393,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat("(.k8s.config.key=", config.getPid(), ")"));
 
-		if ((configurations == null) || (configurations.length == 0)) {
-			configuration = _getConfiguration(config);
-		}
-		else {
+		if ((configurations != null) && (configurations.length > 0)) {
 			configuration = configurations[0];
 
 			Dictionary<String, Object> properties =
@@ -420,6 +417,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 				return;
 			}
+		}
+		else {
+			configuration = _getConfiguration(config);
 		}
 
 		Set<Configuration.ConfigurationAttribute> configurationAttributes =
