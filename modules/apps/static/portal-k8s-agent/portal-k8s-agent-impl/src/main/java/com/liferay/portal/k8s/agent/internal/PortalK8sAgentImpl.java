@@ -276,6 +276,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		}
 
 		_sharedIndexInformer.close();
+
 		_kubernetesClient.close();
 
 		if (_log.isDebugEnabled()) {
