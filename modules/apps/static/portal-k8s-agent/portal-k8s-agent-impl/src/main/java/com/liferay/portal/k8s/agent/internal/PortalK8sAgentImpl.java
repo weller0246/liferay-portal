@@ -388,15 +388,11 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			}
 		}
 
-		String name = null;
-
 		if (index > 0) {
-			name = pid.substring(index + 1);
+			String name = pid.substring(index + 1);
 
 			pid = pid.substring(0, index);
-		}
 
-		if (name != null) {
 			return _configurationAdmin.getFactoryConfiguration(
 				pid, name, StringPool.QUESTION);
 		}
