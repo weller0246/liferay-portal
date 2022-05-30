@@ -99,80 +99,15 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			portalK8sConfigurationPropertiesMutators;
 
 		_bundle = bundleContext.getBundle();
+
 		_portalK8sAgentConfiguration = ConfigurableUtil.createConfigurable(
 			PortalK8sAgentConfiguration.class, properties);
 
-		Config config = Config.empty();
+		_kubernetesClient = new DefaultKubernetesClient(
+			_toConfig(_portalK8sAgentConfiguration));
 
-		Map<Integer, String> errorMessages = config.getErrorMessages();
-
-		errorMessages.put(401, _ERROR_MESSAGE);
-		errorMessages.put(403, _ERROR_MESSAGE);
-
-		config.setCaCertData(_portalK8sAgentConfiguration.caCertData());
-
-		String protocol = Http.HTTP;
-
-		if (_portalK8sAgentConfiguration.apiServerSSL()) {
-			protocol = Http.HTTPS;
-		}
-
-		config.setMasterUrl(
-			StringBundler.concat(
-				protocol, Http.PROTOCOL_DELIMITER,
-				_portalK8sAgentConfiguration.apiServerHost(), StringPool.COLON,
-				_portalK8sAgentConfiguration.apiServerPort(),
-				StringPool.SLASH));
-
-		config.setNamespace(_portalK8sAgentConfiguration.namespace());
-		config.setOauthToken(_portalK8sAgentConfiguration.saToken());
-
-		Config.configFromSysPropsOrEnvVars(config);
-
-		_kubernetesClient = new DefaultKubernetesClient(config);
-
-		SharedInformerFactory sharedInformerFactory =
-			_kubernetesClient.informers();
-
-		sharedInformerFactory.addSharedInformerEventListener(
-			new SharedInformerEventListener() {
-
-				@Override
-				public void onException(Exception exception) {
-					_log.error(exception);
-				}
-
-			});
-
-		_sharedIndexInformer = _kubernetesClient.configMaps(
-		).inNamespace(
-			_portalK8sAgentConfiguration.namespace()
-		).withLabel(
-			_portalK8sAgentConfiguration.labelSelector()
-		).inform(
-			new ResourceEventHandler<ConfigMap>() {
-
-				@Override
-				public void onAdd(ConfigMap configMap) {
-					_add(configMap);
-				}
-
-				@Override
-				public void onDelete(
-					ConfigMap configMap, boolean deletedFinalStateUnknown) {
-
-					_delete(configMap);
-				}
-
-				@Override
-				public void onUpdate(
-					ConfigMap oldConfigMap, ConfigMap newConfigMap) {
-
-					_update(oldConfigMap, newConfigMap);
-				}
-
-			}
-		);
+		_sharedIndexInformer = _toSharedIndexInformer(
+			_kubernetesClient, _portalK8sAgentConfiguration);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Initialized K8s agent");
@@ -517,6 +452,86 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				_log.error(exception);
 			}
 		}
+	}
+
+	private Config _toConfig(
+		PortalK8sAgentConfiguration portalK8sAgentConfiguration) {
+
+		Config config = Config.empty();
+
+		Map<Integer, String> errorMessages = config.getErrorMessages();
+
+		errorMessages.put(401, _ERROR_MESSAGE);
+		errorMessages.put(403, _ERROR_MESSAGE);
+
+		config.setCaCertData(portalK8sAgentConfiguration.caCertData());
+
+		String protocol = Http.HTTP;
+
+		if (portalK8sAgentConfiguration.apiServerSSL()) {
+			protocol = Http.HTTPS;
+		}
+
+		config.setMasterUrl(
+			StringBundler.concat(
+				protocol, Http.PROTOCOL_DELIMITER,
+				portalK8sAgentConfiguration.apiServerHost(), StringPool.COLON,
+				portalK8sAgentConfiguration.apiServerPort(), StringPool.SLASH));
+
+		config.setNamespace(portalK8sAgentConfiguration.namespace());
+		config.setOauthToken(portalK8sAgentConfiguration.saToken());
+
+		Config.configFromSysPropsOrEnvVars(config);
+
+		return config;
+	}
+
+	private SharedIndexInformer _toSharedIndexInformer(
+		KubernetesClient kubernetesClient,
+		PortalK8sAgentConfiguration portalK8sAgentConfiguration) {
+
+		SharedInformerFactory sharedInformerFactory =
+			kubernetesClient.informers();
+
+		sharedInformerFactory.addSharedInformerEventListener(
+			new SharedInformerEventListener() {
+
+				@Override
+				public void onException(Exception exception) {
+					_log.error(exception);
+				}
+
+			});
+
+		return kubernetesClient.configMaps(
+		).inNamespace(
+			portalK8sAgentConfiguration.namespace()
+		).withLabel(
+			portalK8sAgentConfiguration.labelSelector()
+		).inform(
+			new ResourceEventHandler<ConfigMap>() {
+
+				@Override
+				public void onAdd(ConfigMap configMap) {
+					_add(configMap);
+				}
+
+				@Override
+				public void onDelete(
+					ConfigMap configMap, boolean deletedFinalStateUnknown) {
+
+					_delete(configMap);
+				}
+
+				@Override
+				public void onUpdate(
+					ConfigMap oldConfigMap, ConfigMap newConfigMap) {
+
+					_update(oldConfigMap, newConfigMap);
+				}
+
+			}
+		);
 	}
 
 	private void _update(ConfigMap oldConfigMap, ConfigMap newConfigMap) {
