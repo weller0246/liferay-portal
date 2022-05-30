@@ -46,14 +46,12 @@ public class AnalyticsAssociationLocalServiceImpl
 		analyticsAssociation.setCreateDate(createDate);
 		analyticsAssociation.setModifiedDate(createDate);
 		analyticsAssociation.setUserId(userId);
-		analyticsAssociation.setAssociationClassName(
-			associationClassName);
+		analyticsAssociation.setAssociationClassName(associationClassName);
 		analyticsAssociation.setAssociationClassPK(associationClassPK);
 		analyticsAssociation.setClassName(className);
 		analyticsAssociation.setClassPK(classPK);
 
-		return analyticsAssociationPersistence.update(
-			analyticsAssociation);
+		return analyticsAssociationPersistence.update(analyticsAssociation);
 	}
 
 	@Override

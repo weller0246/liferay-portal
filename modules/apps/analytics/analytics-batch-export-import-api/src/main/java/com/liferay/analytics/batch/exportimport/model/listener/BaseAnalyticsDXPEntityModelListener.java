@@ -61,10 +61,9 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 	public void onAfterRemove(T model) throws ModelListenerException {
 		ShardedModel shardedModel = (ShardedModel)model;
 
-		analyticsAssociationLocalService.
-			deleteAnalyticsAssociations(
-				shardedModel.getCompanyId(), model.getModelClassName(),
-				(long)model.getPrimaryKeyObj());
+		analyticsAssociationLocalService.deleteAnalyticsAssociations(
+			shardedModel.getCompanyId(), model.getModelClassName(),
+			(long)model.getPrimaryKeyObj());
 	}
 
 	@Override
@@ -170,8 +169,7 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 	}
 
 	@Reference
-	protected AnalyticsAssociationLocalService
-		analyticsAssociationLocalService;
+	protected AnalyticsAssociationLocalService analyticsAssociationLocalService;
 
 	@Reference
 	protected AnalyticsConfigurationTracker analyticsConfigurationTracker;
@@ -212,12 +210,11 @@ public abstract class BaseAnalyticsDXPEntityModelListener
 
 			Class<?> modelClass = getModelClass();
 
-			analyticsAssociationLocalService.
-				addAnalyticsAssociation(
-					companyId, new Date(),
-					userLocalService.getDefaultUserId(companyId),
-					associationClassName, (long)associationClassPK,
-					modelClass.getName(), (long)classPK);
+			analyticsAssociationLocalService.addAnalyticsAssociation(
+				companyId, new Date(),
+				userLocalService.getDefaultUserId(companyId),
+				associationClassName, (long)associationClassPK,
+				modelClass.getName(), (long)classPK);
 		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {

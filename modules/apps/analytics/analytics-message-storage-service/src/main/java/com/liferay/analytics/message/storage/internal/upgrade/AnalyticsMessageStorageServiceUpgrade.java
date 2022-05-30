@@ -32,8 +32,7 @@ public class AnalyticsMessageStorageServiceUpgrade
 		registry.register(
 			"1.0.0", "1.1.0", AnalyticsDeleteMessageTable.create());
 
-		registry.register(
-			"1.1.0", "1.2.0", AnalyticsAssociationTable.create());
+		registry.register("1.1.0", "1.2.0", AnalyticsAssociationTable.create());
 	}
 
 }

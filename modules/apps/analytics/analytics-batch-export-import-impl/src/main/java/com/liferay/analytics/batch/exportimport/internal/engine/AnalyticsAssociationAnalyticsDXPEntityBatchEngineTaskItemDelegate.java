@@ -54,9 +54,8 @@ import org.osgi.service.component.annotations.Reference;
 	property = "batch.engine.task.item.delegate.name=analytics-association-change-analytics-dxp-entities",
 	service = BatchEngineTaskItemDelegate.class
 )
-public class
-	AnalyticsAssociationAnalyticsDXPEntityBatchEngineTaskItemDelegate
-		extends BaseBatchEngineTaskItemDelegate<DXPEntity> {
+public class AnalyticsAssociationAnalyticsDXPEntityBatchEngineTaskItemDelegate
+	extends BaseBatchEngineTaskItemDelegate<DXPEntity> {
 
 	@Override
 	public EntityModel getEntityModel(Map<String, List<String>> multivaluedMap)
@@ -78,28 +77,23 @@ public class
 
 		if (modifiedDate != null) {
 			analyticsAssociations =
-				_analyticsAssociationLocalService.
-					getAnalyticsAssociations(
-						contextCompany.getCompanyId(), modifiedDate,
-						User.class.getName(), pagination.getStartPosition(),
-						pagination.getEndPosition());
+				_analyticsAssociationLocalService.getAnalyticsAssociations(
+					contextCompany.getCompanyId(), modifiedDate,
+					User.class.getName(), pagination.getStartPosition(),
+					pagination.getEndPosition());
 			totalCount =
-				_analyticsAssociationLocalService.
-					getAnalyticsAssociationsCount(
-						contextCompany.getCompanyId(), modifiedDate,
-						User.class.getName());
+				_analyticsAssociationLocalService.getAnalyticsAssociationsCount(
+					contextCompany.getCompanyId(), modifiedDate,
+					User.class.getName());
 		}
 		else {
 			analyticsAssociations =
-				_analyticsAssociationLocalService.
-					getAnalyticsAssociations(
-						contextCompany.getCompanyId(), User.class.getName(),
-						pagination.getStartPosition(),
-						pagination.getEndPosition());
+				_analyticsAssociationLocalService.getAnalyticsAssociations(
+					contextCompany.getCompanyId(), User.class.getName(),
+					pagination.getStartPosition(), pagination.getEndPosition());
 			totalCount =
-				_analyticsAssociationLocalService.
-					getAnalyticsAssociationsCount(
-						contextCompany.getCompanyId(), User.class.getName());
+				_analyticsAssociationLocalService.getAnalyticsAssociationsCount(
+					contextCompany.getCompanyId(), User.class.getName());
 		}
 
 		if (ListUtil.isEmpty(analyticsAssociations)) {
@@ -147,8 +141,7 @@ public class
 	}
 
 	@Reference
-	private AnalyticsAssociationLocalService
-		_analyticsAssociationLocalService;
+	private AnalyticsAssociationLocalService _analyticsAssociationLocalService;
 
 	@Reference
 	private DXPEntityDTOConverter _dxpEntityDTOConverter;
