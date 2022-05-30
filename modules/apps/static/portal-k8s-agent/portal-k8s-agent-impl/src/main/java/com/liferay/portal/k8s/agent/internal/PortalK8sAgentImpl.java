@@ -416,8 +416,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ObjectMeta objectMeta)
 		throws Exception {
 
-		String resourceVersion = objectMeta.getResourceVersion();
-
 		String[] pid = _parsePid(configName);
 
 		Configuration configuration = _findExistingConfiguration(configName);
@@ -432,14 +430,16 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			String existingResourceVersion = (String)properties.get(
 				".k8s.config.resource.version");
 
-			if (Objects.equals(resourceVersion, existingResourceVersion)) {
+			if (Objects.equals(
+					objectMeta.getResourceVersion(), existingResourceVersion)) {
+
 				if (_log.isDebugEnabled()) {
 					_log.debug(
 						StringBundler.concat(
 							"The resourceVersion of the configuration (",
 							existingResourceVersion,
 							") is same as that of Kubernetes (",
-							resourceVersion,
+							objectMeta.getResourceVersion(),
 							") so this action will be ignored"));
 				}
 
@@ -469,7 +469,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		dictionary.put(".k8s.config.key", configName);
 		dictionary.put(".k8s.config.uid", objectMeta.getUid());
-		dictionary.put(".k8s.config.resource.version", resourceVersion);
+		dictionary.put(
+			".k8s.config.resource.version", objectMeta.getResourceVersion());
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Created Configuration " + dictionary);
