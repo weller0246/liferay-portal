@@ -366,8 +366,14 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		return null;
 	}
 
-	private Configuration _getConfiguration(String pid, String name)
+	private Configuration _getConfiguration(
+			org.apache.felix.configurator.impl.model.Config config)
 		throws Exception {
+
+		String[] pidArray = _parsePid(config.getPid());
+
+		String pid = pidArray[0];
+		String name = pidArray[1];
 
 		if (name != null) {
 			return _configurationAdmin.getFactoryConfiguration(
@@ -414,9 +420,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			config.getPid());
 
 		if (configuration == null) {
-			String[] pid = _parsePid(config.getPid());
-
-			configuration = _getConfiguration(pid[0], pid[1]);
+			configuration = _getConfiguration(config);
 		}
 		else {
 			Dictionary<String, Object> properties =
