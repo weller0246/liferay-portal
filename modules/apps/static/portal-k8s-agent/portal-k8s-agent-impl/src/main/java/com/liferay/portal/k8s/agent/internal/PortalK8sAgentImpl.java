@@ -71,7 +71,7 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 @Component(
 	configurationPid = "com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
-	property = "k8sConfiguratPropertiesMutators.cardinality.minimum:Integer=3",
+	property = "portalK8sConfigurationPropertiesMutators.cardinality.minimum:Integer=3",
 	service = PortalK8sConfigMapModifier.class
 )
 public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
@@ -81,17 +81,18 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			BundleContext bundleContext,
 			@Reference ConfigurationAdmin configurationAdmin,
 			@Reference(
-				name = "k8sConfiguratPropertiesMutators",
+				name = "portalK8sConfigurationPropertiesMutators",
 				policyOption = ReferencePolicyOption.GREEDY
 			)
 			List
 				<PortalK8sConfigurationPropertiesMutator>
-					k8sConfiguratPropertiesMutators,
+					portalK8sConfigurationPropertiesMutators,
 			Map<String, Object> properties)
 		throws Exception {
 
 		_configurationAdmin = configurationAdmin;
-		_k8sConfiguratPropertiesMutators = k8sConfiguratPropertiesMutators;
+		_portalK8sConfigurationPropertiesMutators =
+			portalK8sConfigurationPropertiesMutators;
 
 		_portalK8sAgentConfiguration = ConfigurableUtil.createConfigurable(
 			PortalK8sAgentConfiguration.class, properties);
@@ -431,7 +432,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		for (PortalK8sConfigurationPropertiesMutator
 				portalK8sConfigurationPropertiesMutator :
-					_k8sConfiguratPropertiesMutators) {
+					_portalK8sConfigurationPropertiesMutators) {
 
 			portalK8sConfigurationPropertiesMutator.
 				mutateConfigurationProperties(
@@ -585,10 +586,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	private final Bundle _bundle;
 	private final ConfigurationAdmin _configurationAdmin;
-	private final List<PortalK8sConfigurationPropertiesMutator>
-		_k8sConfiguratPropertiesMutators;
 	private final KubernetesClient _kubernetesClient;
 	private final PortalK8sAgentConfiguration _portalK8sAgentConfiguration;
+	private final List<PortalK8sConfigurationPropertiesMutator>
+		_portalK8sConfigurationPropertiesMutators;
 	private final SharedIndexInformer<ConfigMap> _sharedIndexInformer;
 
 }
