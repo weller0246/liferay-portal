@@ -557,7 +557,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		}
 
 		Map<String, String> data = newConfigMap.getData();
-		ObjectMeta metadata = newConfigMap.getMetadata();
+		ObjectMeta objectMeta = newConfigMap.getMetadata();
 
 		if (data != null) {
 			Set<Map.Entry<String, String>> entrySet = data.entrySet();
@@ -585,7 +585,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			Configuration[] configurations =
 				_configurationAdmin.listConfigurations(
 					StringBundler.concat(
-						"(&(.k8s.config.uid=", metadata.getUid(),
+						"(&(.k8s.config.uid=", objectMeta.getUid(),
 						")(.k8s.config.resource.version=",
 						oldMetadata.getResourceVersion(), "))"));
 
