@@ -54,6 +54,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.SetUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
@@ -142,6 +143,18 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
 		clientExtensionEntry.setType(
 			ClientExtensionConstants.TYPE_CUSTOM_ELEMENT);
+		clientExtensionEntry.setTypeSettings(
+			UnicodePropertiesBuilder.create(
+				true
+			).put(
+				"cssURLs", customElementCSSURLs
+			).put(
+				"htmlElementName", customElementHTMLElementName
+			).put(
+				"urls", customElementURLs
+			).put(
+				"useESM", customElementUseESM
+			).buildString());
 		clientExtensionEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		clientExtensionEntry.setStatusByUserId(userId);
 		clientExtensionEntry.setStatusDate(new Date());
@@ -187,6 +200,12 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
 		clientExtensionEntry.setType(ClientExtensionConstants.TYPE_IFRAME);
+		clientExtensionEntry.setTypeSettings(
+			UnicodePropertiesBuilder.create(
+				true
+			).put(
+				"url", iFrameURL
+			).buildString());
 		clientExtensionEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		clientExtensionEntry.setStatusByUserId(userId);
 		clientExtensionEntry.setStatusDate(new Date());
@@ -390,6 +409,18 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setPortletCategoryName(portletCategoryName);
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
+		clientExtensionEntry.setTypeSettings(
+			UnicodePropertiesBuilder.create(
+				true
+			).put(
+				"cssURLs", customElementCSSURLs
+			).put(
+				"htmlElementName", customElementHTMLElementName
+			).put(
+				"urls", customElementURLs
+			).put(
+				"useESM", customElementUseESM
+			).buildString());
 		clientExtensionEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		clientExtensionEntry.setStatusByUserId(userId);
 		clientExtensionEntry.setStatusDate(new Date());
@@ -429,6 +460,12 @@ public class ClientExtensionEntryLocalServiceImpl
 		clientExtensionEntry.setPortletCategoryName(portletCategoryName);
 		clientExtensionEntry.setProperties(properties);
 		clientExtensionEntry.setSourceCodeURL(sourceCodeURL);
+		clientExtensionEntry.setTypeSettings(
+			UnicodePropertiesBuilder.create(
+				true
+			).put(
+				"url", iFrameURL
+			).buildString());
 		clientExtensionEntry.setStatus(WorkflowConstants.STATUS_DRAFT);
 		clientExtensionEntry.setStatusByUserId(userId);
 		clientExtensionEntry.setStatusDate(new Date());
