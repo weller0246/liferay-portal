@@ -21,25 +21,9 @@ import java.util.function.Consumer;
  * @author Raymond Augé
  */
 @FunctionalInterface
-public interface PortalK8sExtensionConfigMapModifier {
+public interface PortalK8sConfigMapModifier {
 
-	/**
-	 * Modify the data of an extension's service config map.
-	 * <p>
-	 * An update which adds data to an extension's service config map which does
-	 * not exists results in the creation of the config map. An update which
-	 * results in a config map which has no data results in the deletion of the
-	 * config map.
-	 *
-	 * @param  configMapDataConsumer a consumer that receives the config map's
-	 *         data, must not be {@code null}
-	 * @param  serviceId the service id of the extension to be modified, must
-	 *         not be {@code null}
-	 * @return a {@link Result} indicating the outcome of the update
-	 * @throws NullPointerException if {@code configMapDataConsumer} or {@code
-	 *         serviceId} are {@code null}
-	 */
-	public Result modifyExtensionConfigMap(
+	public Result modifyConfigMap(
 		Consumer<Map<String, String>> configMapDataConsumer, String serviceId);
 
 	public enum Result {

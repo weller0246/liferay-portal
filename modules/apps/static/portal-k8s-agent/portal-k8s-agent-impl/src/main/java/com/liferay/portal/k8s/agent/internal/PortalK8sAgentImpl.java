@@ -20,7 +20,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.file.install.properties.ConfigurationProperties;
 import com.liferay.portal.file.install.properties.ConfigurationPropertiesFactory;
-import com.liferay.portal.k8s.agent.PortalK8sExtensionConfigMapModifier;
+import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
 import com.liferay.portal.k8s.agent.constants.PortalK8sAgentConstants;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
@@ -78,9 +78,9 @@ import org.osgi.service.component.annotations.ReferencePolicyOption;
 	configurationPid = "com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	property = "k8sConfiguratPropertiesMutators.cardinality.minimum:Integer=3",
-	service = PortalK8sExtensionConfigMapModifier.class
+	service = PortalK8sConfigMapModifier.class
 )
-public class PortalK8sAgentImpl implements PortalK8sExtensionConfigMapModifier {
+public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	@Activate
 	public PortalK8sAgentImpl(
@@ -194,7 +194,7 @@ public class PortalK8sAgentImpl implements PortalK8sExtensionConfigMapModifier {
 	}
 
 	@Override
-	public Result modifyExtensionConfigMap(
+	public Result modifyConfigMap(
 		Consumer<Map<String, String>> configMapDataConsumer, String serviceId) {
 
 		Objects.requireNonNull(configMapDataConsumer, "must not be null");
