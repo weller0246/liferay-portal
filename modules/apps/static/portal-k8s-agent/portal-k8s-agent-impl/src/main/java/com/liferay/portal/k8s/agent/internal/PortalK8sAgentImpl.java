@@ -300,13 +300,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		}
 
 		for (Map.Entry<String, String> entry : data.entrySet()) {
-			String configName = entry.getKey();
-
 			try {
-				if (configName.endsWith(_FILE_JSON_EXT)) {
-					_processConfigMapConfigJSONResource(
-						configName, entry.getValue(), configMap);
-				}
+				_processConfigMapConfigJSONResource(
+					entry.getKey(), entry.getValue(), configMap);
 			}
 			catch (Exception exception) {
 				_log.error(exception);
@@ -485,6 +481,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ConfigMap configMap)
 		throws Exception {
 
+		if (!configName.endsWith(_FILE_JSON_EXT)) {
+			throw new IllegalArgumentException("Invalid file " + configName);
+		}
+
 		URL url = new URL("file", null, configName);
 
 		final JSONUtil.Report report = new JSONUtil.Report();
@@ -553,7 +553,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"Updating config map ", oldConfigMap, " to ", newConfigMap));
+					"Updating config map ", oldConfigMap, " to ",
+					newConfigMap));
 		}
 
 		Map<String, String> data = newConfigMap.getData();
@@ -561,13 +562,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		if (data != null) {
 			for (Map.Entry<String, String> entry : data.entrySet()) {
-				String configName = entry.getKey();
-
 				try {
-					if (configName.endsWith(_FILE_JSON_EXT)) {
-						_processConfigMapConfigJSONResource(
-							configName, entry.getValue(), newConfigMap);
-					}
+					_processConfigMapConfigJSONResource(
+						entry.getKey(), entry.getValue(), newConfigMap);
 				}
 				catch (Exception exception) {
 					_log.error(exception);
