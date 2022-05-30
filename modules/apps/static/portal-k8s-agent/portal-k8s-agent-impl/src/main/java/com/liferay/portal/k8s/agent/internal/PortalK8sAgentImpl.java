@@ -577,11 +577,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			}
 		}
 
-		// Remove left over configurations which were deleted from the ConfigMap
-
-		ObjectMeta oldObjectMeta = oldConfigMap.getMetadata();
-
 		try {
+			ObjectMeta oldObjectMeta = oldConfigMap.getMetadata();
+
 			Configuration[] configurations =
 				_configurationAdmin.listConfigurations(
 					StringBundler.concat(
