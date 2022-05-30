@@ -553,7 +553,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 	private void _update(ConfigMap oldConfigMap, ConfigMap newConfigMap) {
 		if (_log.isDebugEnabled()) {
-			_log.debug("Updating: " + newConfigMap);
+			_log.debug(
+				StringBundler.concat(
+					"Update ", oldConfigMap, " to ", newConfigMap));
 		}
 
 		Map<String, String> data = newConfigMap.getData();
