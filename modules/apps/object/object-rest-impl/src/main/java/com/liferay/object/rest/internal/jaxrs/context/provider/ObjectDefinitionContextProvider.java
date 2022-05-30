@@ -50,6 +50,7 @@ public class ObjectDefinitionContextProvider
 			"org.apache.cxf.message.Message.BASE_PATH");
 
 		restContextPath = restContextPath.substring(restContextPath.indexOf("/o/"));
+
 		restContextPath = StringUtil.removeFirst(restContextPath, "/o");
 		restContextPath = StringUtil.replaceLast(restContextPath, '/', "");
 
