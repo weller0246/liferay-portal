@@ -127,8 +127,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		Map<Integer, String> errorMessages = config.getErrorMessages();
 
-		errorMessages.put(401, "Unauthorized! ".concat(_ERROR_MESSAGE));
-		errorMessages.put(403, "Forbidden!".concat(_ERROR_MESSAGE));
+		errorMessages.put(401, _ERROR_MESSAGE);
+		errorMessages.put(403, _ERROR_MESSAGE);
 
 		Config.configFromSysPropsOrEnvVars(config);
 
