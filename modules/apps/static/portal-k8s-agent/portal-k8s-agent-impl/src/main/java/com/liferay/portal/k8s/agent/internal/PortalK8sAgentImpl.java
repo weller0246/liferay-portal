@@ -18,8 +18,6 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.file.install.properties.ConfigurationProperties;
-import com.liferay.portal.file.install.properties.ConfigurationPropertiesFactory;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
 import com.liferay.portal.k8s.agent.constants.PortalK8sAgentConstants;
@@ -27,7 +25,6 @@ import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMuta
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.util.PropsValues;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
 import io.fabric8.kubernetes.api.model.ConfigMapBuilder;
@@ -40,14 +37,11 @@ import io.fabric8.kubernetes.client.informers.SharedIndexInformer;
 import io.fabric8.kubernetes.client.informers.SharedInformerEventListener;
 import io.fabric8.kubernetes.client.informers.SharedInformerFactory;
 
-import java.io.IOException;
-
 import java.net.URL;
 
 import java.util.Collections;
 import java.util.Dictionary;
 import java.util.Enumeration;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -316,14 +310,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			String configName = entry.getKey();
 
 			try {
-				if (configName.endsWith(PortalK8sAgentConstants.FILE_EXT)) {
-					_processConfigMapConfigFileEntry(
-						configName,
-						_fromStringContent(configName, entry.getValue()),
-						configMap.getMetadata());
-				}
-				else if (configName.endsWith(
-							PortalK8sAgentConstants.FILE_JSON_EXT)) {
+				if (configName.endsWith(
+						PortalK8sAgentConstants.FILE_JSON_EXT)) {
 
 					_processConfigMapConfigJSONResource(
 						configName, entry.getValue(), configMap);
@@ -393,24 +381,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		return null;
 	}
 
-	private Dictionary<String, Object> _fromStringContent(
-			String configName, String configurationContent)
-		throws IOException {
-
-		Dictionary<String, Object> dictionary = new Hashtable<>();
-
-		ConfigurationProperties configurationProperties =
-			ConfigurationPropertiesFactory.create(
-				configName, configurationContent,
-				PropsValues.MODULE_FRAMEWORK_FILE_INSTALL_CONFIG_ENCODING);
-
-		for (String key : configurationProperties.keySet()) {
-			dictionary.put(key, configurationProperties.get(key));
-		}
-
-		return dictionary;
-	}
-
 	private Configuration _getConfiguration(String pid, String name)
 		throws Exception {
 
@@ -425,11 +395,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	private String[] _parsePid(String path) {
 		String pid = path;
 
-		if (path.endsWith(PortalK8sAgentConstants.FILE_EXT)) {
-			pid = path.substring(
-				0, path.length() - PortalK8sAgentConstants.FILE_EXT.length());
-		}
-		else if (path.endsWith(PortalK8sAgentConstants.FILE_JSON_EXT)) {
+		if (path.endsWith(PortalK8sAgentConstants.FILE_JSON_EXT)) {
 			pid = path.substring(
 				0,
 				path.length() - PortalK8sAgentConstants.FILE_JSON_EXT.length());
@@ -613,14 +579,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				String configName = entry.getKey();
 
 				try {
-					if (configName.endsWith(PortalK8sAgentConstants.FILE_EXT)) {
-						_processConfigMapConfigFileEntry(
-							configName,
-							_fromStringContent(configName, entry.getValue()),
-							metadata);
-					}
-					else if (configName.endsWith(
-								PortalK8sAgentConstants.FILE_JSON_EXT)) {
+					if (configName.endsWith(
+							PortalK8sAgentConstants.FILE_JSON_EXT)) {
 
 						_processConfigMapConfigJSONResource(
 							configName, entry.getValue(), newConfigMap);

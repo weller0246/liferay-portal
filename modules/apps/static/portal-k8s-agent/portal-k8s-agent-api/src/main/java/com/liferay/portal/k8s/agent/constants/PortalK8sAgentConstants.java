@@ -24,8 +24,6 @@ public class PortalK8sAgentConstants {
 	public static final String CONTEXT_ANNOTATION =
 		"cloud.liferay.com/context-data";
 
-	public static final String FILE_EXT = ".config";
-
 	public static final String FILE_JSON_EXT = ".config.json";
 
 	public static final String K8S_CONFIG_KEY = ".k8s.config.key";
