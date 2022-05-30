@@ -410,12 +410,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			ObjectMeta objectMeta)
 		throws Exception {
 
-		String[] pid = _parsePid(config.getPid());
-
 		Configuration configuration = _findExistingConfiguration(
 			config.getPid());
 
 		if (configuration == null) {
+			String[] pid = _parsePid(config.getPid());
+
 			configuration = _getConfiguration(pid[0], pid[1]);
 		}
 		else {
