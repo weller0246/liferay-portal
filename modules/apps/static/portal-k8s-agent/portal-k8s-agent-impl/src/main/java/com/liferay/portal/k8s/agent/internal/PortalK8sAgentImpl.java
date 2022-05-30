@@ -342,8 +342,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		ObjectMeta metadata = configMap.getMetadata();
 
 		String configurationFilter = StringBundler.concat(
-			StringPool.OPEN_PARENTHESIS, PortalK8sAgentConstants.K8S_CONFIG_UID,
-			StringPool.EQUAL, metadata.getUid(), StringPool.CLOSE_PARENTHESIS);
+			"(.k8s.config.uid=", metadata.getUid(),
+			StringPool.CLOSE_PARENTHESIS);
 
 		try {
 			Configuration[] configurations =
@@ -370,9 +370,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat(
-				StringPool.OPEN_PARENTHESIS,
-				PortalK8sAgentConstants.K8S_CONFIG_KEY, StringPool.EQUAL,
-				fileName, StringPool.CLOSE_PARENTHESIS));
+				"(.k8s.config.key=", fileName, StringPool.CLOSE_PARENTHESIS));
 
 		if ((configurations != null) && (configurations.length > 0)) {
 			return configurations[0];
@@ -441,7 +439,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				configuration.getProperties();
 
 			String existingResourceVersion = (String)properties.get(
-				PortalK8sAgentConstants.K8S_CONFIG_RESOURCE_VERSION);
+				".k8s.config.resource.version");
 
 			if (Objects.equals(resourceVersion, existingResourceVersion)) {
 				if (_log.isDebugEnabled()) {
@@ -478,12 +476,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					dictionary);
 		}
 
-		dictionary.put(PortalK8sAgentConstants.K8S_CONFIG_KEY, configName);
-		dictionary.put(
-			PortalK8sAgentConstants.K8S_CONFIG_UID, metadata.getUid());
-		dictionary.put(
-			PortalK8sAgentConstants.K8S_CONFIG_RESOURCE_VERSION,
-			resourceVersion);
+		dictionary.put(".k8s.config.key", configName);
+		dictionary.put(".k8s.config.uid", metadata.getUid());
+		dictionary.put(".k8s.config.resource.version", resourceVersion);
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Created Configuration " + dictionary);
@@ -596,18 +591,13 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		ObjectMeta oldMetadata = oldConfigMap.getMetadata();
 
-		String configurationFilter = StringBundler.concat(
-			StringPool.OPEN_PARENTHESIS, StringPool.AMPERSAND,
-			StringPool.OPEN_PARENTHESIS, PortalK8sAgentConstants.K8S_CONFIG_UID,
-			StringPool.EQUAL, metadata.getUid(), StringPool.CLOSE_PARENTHESIS,
-			StringPool.OPEN_PARENTHESIS,
-			PortalK8sAgentConstants.K8S_CONFIG_RESOURCE_VERSION,
-			StringPool.EQUAL, oldMetadata.getResourceVersion(),
-			StringPool.CLOSE_PARENTHESIS, StringPool.CLOSE_PARENTHESIS);
-
 		try {
 			Configuration[] configurations =
-				_configurationAdmin.listConfigurations(configurationFilter);
+				_configurationAdmin.listConfigurations(
+					StringBundler.concat(
+						"(&(.k8s.config.uid=", metadata.getUid(),
+						")(.k8s.config.resource.version=",
+						oldMetadata.getResourceVersion(), "))"));
 
 			if (configurations != null) {
 				for (Configuration configuration : configurations) {

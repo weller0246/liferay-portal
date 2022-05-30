@@ -53,7 +53,7 @@ public class PortalK8sAnnotationsMutator
 			JsonFactory factory = mapper.getFactory();
 
 			JsonParser parser = factory.createParser(
-				annotations.get(PortalK8sAgentConstants.CONTEXT_ANNOTATION));
+				annotations.get("cloud.liferay.com/context-data"));
 
 			JsonNode jsonNode = mapper.readTree(parser);
 
