@@ -484,8 +484,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			throw new IllegalArgumentException("Invalid file " + fileName);
 		}
 
-		URL url = new URL("file", null, fileName);
-
 		JSONUtil.Report report = new JSONUtil.Report();
 
 		BinaryManager binaryManager = new BinaryManager(
@@ -517,7 +515,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			report);
 
 		ConfigurationFile configurationFile = JSONUtil.readJSON(
-			binaryManager, fileName, url, _bundle.getBundleId(), json, report);
+			binaryManager, fileName, new URL("file", null, fileName),
+			_bundle.getBundleId(), json, report);
 
 		for (String warning : report.warnings) {
 			if (_log.isWarnEnabled()) {
