@@ -21,52 +21,32 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration",
-	localization = "content/Language", name = "k8s-agent-configuration-name"
+	id = "com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration"
 )
 public interface PortalK8sAgentConfiguration {
 
-	@Meta.AD(
-		description = "api-server-host-description", name = "api-server-host",
-		type = Meta.Type.String
-	)
+	@Meta.AD(type = Meta.Type.String)
 	public String apiServerHost();
 
-	@Meta.AD(
-		description = "api-server-port-description", name = "api-server-port",
-		type = Meta.Type.String
-	)
+	@Meta.AD(type = Meta.Type.String)
 	public int apiServerPort();
 
-	@Meta.AD(
-		deflt = "true", description = "api-server-ssl-description",
-		name = "api-server-ssl", required = false, type = Meta.Type.String
-	)
+	@Meta.AD(deflt = "true", required = false, type = Meta.Type.String)
 	public boolean apiServerSSL();
 
-	@Meta.AD(
-		description = "ca-cert-data-description", name = "ca-cert-data",
-		type = Meta.Type.String
-	)
+	@Meta.AD(type = Meta.Type.String)
 	public String caCertData();
 
 	@Meta.AD(
-		deflt = "dxp.liferay.com/configs=true",
-		description = "label-selector-description", name = "label-selector",
-		required = false, type = Meta.Type.String
+		deflt = "dxp.liferay.com/configs=true", required = false,
+		type = Meta.Type.String
 	)
 	public String labelSelector();
 
-	@Meta.AD(
-		description = "namespace-description", name = "namespace",
-		type = Meta.Type.String
-	)
+	@Meta.AD(type = Meta.Type.String)
 	public String namespace();
 
-	@Meta.AD(
-		description = "sa-token-description", name = "sa-token",
-		type = Meta.Type.String
-	)
+	@Meta.AD(type = Meta.Type.String)
 	public String saToken();
 
 }
