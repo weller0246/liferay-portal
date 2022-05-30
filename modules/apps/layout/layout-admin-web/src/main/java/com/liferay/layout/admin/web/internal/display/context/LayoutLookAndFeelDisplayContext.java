@@ -152,10 +152,8 @@ public class LayoutLookAndFeelDisplayContext {
 		Layout selLayout = _layoutsAdminDisplayContext.getSelLayout();
 
 		if (selLayout.getFaviconFileEntryId() > 0) {
-			FileEntry fileEntry;
-
 			try {
-				fileEntry = DLAppLocalServiceUtil.getFileEntry(
+				FileEntry fileEntry = DLAppLocalServiceUtil.getFileEntry(
 					selLayout.getFaviconFileEntryId());
 
 				return fileEntry.getTitle();
