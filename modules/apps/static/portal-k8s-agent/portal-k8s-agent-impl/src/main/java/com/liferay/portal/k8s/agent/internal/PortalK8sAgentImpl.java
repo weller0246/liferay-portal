@@ -585,9 +585,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			Configuration[] configurations =
 				_configurationAdmin.listConfigurations(
 					StringBundler.concat(
-						"(&(.k8s.config.uid=", objectMeta.getUid(),
-						")(.k8s.config.resource.version=",
-						oldMetadata.getResourceVersion(), "))"));
+						"(&(.k8s.config.resource.version=",
+						oldMetadata.getResourceVersion(), ")(.k8s.config.uid=",
+						objectMeta.getUid(), "))"));
 
 			if (configurations != null) {
 				for (Configuration configuration : configurations) {
