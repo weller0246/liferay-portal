@@ -23,6 +23,7 @@ import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Http;
 
 import io.fabric8.kubernetes.api.model.ConfigMap;
@@ -393,7 +394,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		Configuration[] configurations = _configurationAdmin.listConfigurations(
 			StringBundler.concat("(.k8s.config.key=", config.getPid(), ")"));
 
-		if ((configurations != null) && (configurations.length > 0)) {
+		if (ArrayUtil.isNotEmpty(configurations)) {
 			configuration = configurations[0];
 
 			Dictionary<String, Object> properties =
