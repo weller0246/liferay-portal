@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.ArrayUtil;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -54,40 +55,48 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutator
 				jsonFactory.createParser(
 					annotations.get("cloud.liferay.com/context-data")));
 
-			JsonNode environmentJsonNode = jsonNode.get("environment");
+			String[] domains = _getDomains(jsonNode);
 
-			String environment = "default";
+			properties.put("com.liferay.lxc.ext.domains", domains);
 
-			if (environmentJsonNode != null) {
-				environment = environmentJsonNode.textValue();
+			if (ArrayUtil.isNotEmpty(domains)) {
+				properties.put(
+					"com.liferay.lxc.ext.mainDomain", "https://" + domains[0]);
 			}
 
-			properties.put("k8s.lxc.environment", environment);
-
-			List<String> domains = new ArrayList<>();
-
-			JsonNode domainsJsonNode = jsonNode.get("domains");
-
-			if ((domainsJsonNode != null) && domainsJsonNode.isArray()) {
-				for (int i = 0; i < domainsJsonNode.size(); i++) {
-					JsonNode entryJsonNode = domainsJsonNode.get(i);
-
-					domains.add(entryJsonNode.textValue());
-
-					if (i == 0) {
-						properties.put(
-							"com.liferay.lxc.ext.mainDomain",
-							"https://" + entryJsonNode.textValue());
-					}
-				}
-			}
-
-			properties.put(
-				"com.liferay.lxc.ext.domains", domains.toArray(new String[0]));
+			properties.put("k8s.lxc.environment", _getEnvironment(jsonNode));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
 		}
+	}
+
+	private String[] _getDomains(JsonNode jsonNode) {
+		JsonNode domainsJsonNode = jsonNode.get("domains");
+
+		if ((domainsJsonNode == null) || !domainsJsonNode.isArray()) {
+			return new String[0];
+		}
+
+		List<String> domains = new ArrayList<>();
+
+		for (int i = 0; i < domainsJsonNode.size(); i++) {
+			JsonNode entryJsonNode = domainsJsonNode.get(i);
+
+			domains.add(entryJsonNode.textValue());
+		}
+
+		return domains.toArray(new String[0]);
+	}
+
+	private String _getEnvironment(JsonNode jsonNode) {
+		JsonNode environmentJsonNode = jsonNode.get("environment");
+
+		if (environmentJsonNode != null) {
+			return environmentJsonNode.textValue();
+		}
+
+		return "default";
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
