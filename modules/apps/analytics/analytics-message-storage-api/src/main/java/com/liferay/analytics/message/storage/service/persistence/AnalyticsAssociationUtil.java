@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * The persistence utility for the analytics association change service. This utility wraps <code>com.liferay.analytics.message.storage.service.persistence.impl.AnalyticsAssociationPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
+ * The persistence utility for the analytics association service. This utility wraps <code>com.liferay.analytics.message.storage.service.persistence.impl.AnalyticsAssociationPersistenceImpl</code> and provides direct access to the database for CRUD operations. This utility should only be used by the service layer, as it must operate within a transaction. Never access this utility in a JSP, controller, model, or other front-end class.
  *
  * <p>
  * Caching information and settings can be found in <code>portal.properties</code>
@@ -55,9 +55,7 @@ public class AnalyticsAssociationUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#clearCache(com.liferay.portal.kernel.model.BaseModel)
 	 */
-	public static void clearCache(
-		AnalyticsAssociation analyticsAssociation) {
-
+	public static void clearCache(AnalyticsAssociation analyticsAssociation) {
 		getPersistence().clearCache(analyticsAssociation);
 	}
 
@@ -71,8 +69,8 @@ public class AnalyticsAssociationUtil {
 	/**
 	 * @see com.liferay.portal.kernel.service.persistence.BasePersistence#fetchByPrimaryKeys(Set)
 	 */
-	public static Map<Serializable, AnalyticsAssociation>
-		fetchByPrimaryKeys(Set<Serializable> primaryKeys) {
+	public static Map<Serializable, AnalyticsAssociation> fetchByPrimaryKeys(
+		Set<Serializable> primaryKeys) {
 
 		return getPersistence().fetchByPrimaryKeys(primaryKeys);
 	}
@@ -122,16 +120,15 @@ public class AnalyticsAssociationUtil {
 		AnalyticsAssociation analyticsAssociation,
 		ServiceContext serviceContext) {
 
-		return getPersistence().update(
-			analyticsAssociation, serviceContext);
+		return getPersistence().update(analyticsAssociation, serviceContext);
 	}
 
 	/**
-	 * Returns all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
+	 * Returns all the analytics associations where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
-	 * @return the matching analytics association changes
+	 * @return the matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName) {
@@ -140,7 +137,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns a range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
+	 * Returns a range of all the analytics associations where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -148,9 +145,9 @@ public class AnalyticsAssociationUtil {
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
-	 * @return the range of matching analytics association changes
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
+	 * @return the range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end) {
@@ -160,7 +157,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -168,10 +165,10 @@ public class AnalyticsAssociationUtil {
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end,
@@ -182,7 +179,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -190,11 +187,11 @@ public class AnalyticsAssociationUtil {
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A(
 		long companyId, String associationClassName, int start, int end,
@@ -207,13 +204,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the first matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_A_First(
 			long companyId, String associationClassName,
@@ -226,12 +223,12 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the first matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_A_First(
 		long companyId, String associationClassName,
@@ -242,13 +239,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the last matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_A_Last(
 			long companyId, String associationClassName,
@@ -261,12 +258,12 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the last matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_A_Last(
 		long companyId, String associationClassName,
@@ -277,14 +274,14 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the analytics associations before and after the current analytics association in the ordered set where companyId = &#63; and associationClassName = &#63;.
 	 *
-	 * @param analyticsAssociationId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
+	 * @return the previous, current, and next analytics association
+	 * @throws NoSuchAssociationException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation[] findByC_A_PrevAndNext(
 			long analyticsAssociationId, long companyId,
@@ -299,7 +296,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Removes all the analytics association changes where companyId = &#63; and associationClassName = &#63; from the database.
+	 * Removes all the analytics associations where companyId = &#63; and associationClassName = &#63; from the database.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
@@ -311,23 +308,23 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the number of analytics association changes where companyId = &#63; and associationClassName = &#63;.
+	 * Returns the number of analytics associations where companyId = &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
-	 * @return the number of matching analytics association changes
+	 * @return the number of matching analytics associations
 	 */
 	public static int countByC_A(long companyId, String associationClassName) {
 		return getPersistence().countByC_A(companyId, associationClassName);
 	}
 
 	/**
-	 * Returns all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
-	 * @return the matching analytics association changes
+	 * @return the matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName) {
@@ -337,7 +334,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns a range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns a range of all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -346,9 +343,9 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
-	 * @return the range of matching analytics association changes
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
+	 * @return the range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
@@ -359,7 +356,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -368,10 +365,10 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
@@ -384,7 +381,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -393,11 +390,11 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName,
@@ -411,14 +408,14 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the first matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_GtM_A_First(
 			long companyId, Date modifiedDate, String associationClassName,
@@ -431,13 +428,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the first matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_GtM_A_First(
 		long companyId, Date modifiedDate, String associationClassName,
@@ -448,14 +445,14 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the last matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_GtM_A_Last(
 			long companyId, Date modifiedDate, String associationClassName,
@@ -468,13 +465,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the last matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_GtM_A_Last(
 		long companyId, Date modifiedDate, String associationClassName,
@@ -485,19 +482,19 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the analytics associations before and after the current analytics association in the ordered set where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
-	 * @param analyticsAssociationId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
+	 * @return the previous, current, and next analytics association
+	 * @throws NoSuchAssociationException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation[] findByC_GtM_A_PrevAndNext(
-			long analyticsAssociationId, long companyId,
-			Date modifiedDate, String associationClassName,
+			long analyticsAssociationId, long companyId, Date modifiedDate,
+			String associationClassName,
 			OrderByComparator<AnalyticsAssociation> orderByComparator)
 		throws com.liferay.analytics.message.storage.exception.
 			NoSuchAssociationException {
@@ -508,7 +505,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Removes all the analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63; from the database.
+	 * Removes all the analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63; from the database.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
@@ -522,12 +519,12 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the number of analytics association changes where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
+	 * Returns the number of analytics associations where companyId = &#63; and modifiedDate &gt; &#63; and associationClassName = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param modifiedDate the modified date
 	 * @param associationClassName the association class name
-	 * @return the number of matching analytics association changes
+	 * @return the number of matching analytics associations
 	 */
 	public static int countByC_GtM_A(
 		long companyId, Date modifiedDate, String associationClassName) {
@@ -537,12 +534,12 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
-	 * @return the matching analytics association changes
+	 * @return the matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK) {
@@ -552,7 +549,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns a range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns a range of all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -561,9 +558,9 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
-	 * @return the range of matching analytics association changes
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
+	 * @return the range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
@@ -574,7 +571,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -583,10 +580,10 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
@@ -599,7 +596,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns an ordered range of all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
@@ -608,11 +605,11 @@ public class AnalyticsAssociationUtil {
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of matching analytics association changes
+	 * @return the ordered range of matching analytics associations
 	 */
 	public static List<AnalyticsAssociation> findByC_A_A(
 		long companyId, String associationClassName, long associationClassPK,
@@ -626,14 +623,14 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the first matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_A_A_First(
 			long companyId, String associationClassName,
@@ -648,13 +645,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the first analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the first analytics association in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the first matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the first matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_A_A_First(
 		long companyId, String associationClassName, long associationClassPK,
@@ -666,14 +663,14 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change
-	 * @throws NoSuchAssociationException if a matching analytics association change could not be found
+	 * @return the last matching analytics association
+	 * @throws NoSuchAssociationException if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation findByC_A_A_Last(
 			long companyId, String associationClassName,
@@ -688,13 +685,13 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the last analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the last analytics association in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the last matching analytics association change, or <code>null</code> if a matching analytics association change could not be found
+	 * @return the last matching analytics association, or <code>null</code> if a matching analytics association could not be found
 	 */
 	public static AnalyticsAssociation fetchByC_A_A_Last(
 		long companyId, String associationClassName, long associationClassPK,
@@ -706,15 +703,15 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the analytics association changes before and after the current analytics association change in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the analytics associations before and after the current analytics association in the ordered set where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
-	 * @param analyticsAssociationId the primary key of the current analytics association change
+	 * @param analyticsAssociationId the primary key of the current analytics association
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
 	 * @param orderByComparator the comparator to order the set by (optionally <code>null</code>)
-	 * @return the previous, current, and next analytics association change
-	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
+	 * @return the previous, current, and next analytics association
+	 * @throws NoSuchAssociationException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation[] findByC_A_A_PrevAndNext(
 			long analyticsAssociationId, long companyId,
@@ -729,7 +726,7 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Removes all the analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63; from the database.
+	 * Removes all the analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63; from the database.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
@@ -743,12 +740,12 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the number of analytics association changes where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
+	 * Returns the number of analytics associations where companyId = &#63; and associationClassName = &#63; and associationClassPK = &#63;.
 	 *
 	 * @param companyId the company ID
 	 * @param associationClassName the association class name
 	 * @param associationClassPK the association class pk
-	 * @return the number of matching analytics association changes
+	 * @return the number of matching analytics associations
 	 */
 	public static int countByC_A_A(
 		long companyId, String associationClassName, long associationClassPK) {
@@ -758,20 +755,18 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Caches the analytics association change in the entity cache if it is enabled.
+	 * Caches the analytics association in the entity cache if it is enabled.
 	 *
-	 * @param analyticsAssociation the analytics association change
+	 * @param analyticsAssociation the analytics association
 	 */
-	public static void cacheResult(
-		AnalyticsAssociation analyticsAssociation) {
-
+	public static void cacheResult(AnalyticsAssociation analyticsAssociation) {
 		getPersistence().cacheResult(analyticsAssociation);
 	}
 
 	/**
-	 * Caches the analytics association changes in the entity cache if it is enabled.
+	 * Caches the analytics associations in the entity cache if it is enabled.
 	 *
-	 * @param analyticsAssociations the analytics association changes
+	 * @param analyticsAssociations the analytics associations
 	 */
 	public static void cacheResult(
 		List<AnalyticsAssociation> analyticsAssociations) {
@@ -780,26 +775,23 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Creates a new analytics association change with the primary key. Does not add the analytics association change to the database.
+	 * Creates a new analytics association with the primary key. Does not add the analytics association to the database.
 	 *
-	 * @param analyticsAssociationId the primary key for the new analytics association change
-	 * @return the new analytics association change
+	 * @param analyticsAssociationId the primary key for the new analytics association
+	 * @return the new analytics association
 	 */
-	public static AnalyticsAssociation create(
-		long analyticsAssociationId) {
-
+	public static AnalyticsAssociation create(long analyticsAssociationId) {
 		return getPersistence().create(analyticsAssociationId);
 	}
 
 	/**
-	 * Removes the analytics association change with the primary key from the database. Also notifies the appropriate model listeners.
+	 * Removes the analytics association with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
-	 * @param analyticsAssociationId the primary key of the analytics association change
-	 * @return the analytics association change that was removed
-	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
+	 * @param analyticsAssociationId the primary key of the analytics association
+	 * @return the analytics association that was removed
+	 * @throws NoSuchAssociationException if a analytics association with the primary key could not be found
 	 */
-	public static AnalyticsAssociation remove(
-			long analyticsAssociationId)
+	public static AnalyticsAssociation remove(long analyticsAssociationId)
 		throws com.liferay.analytics.message.storage.exception.
 			NoSuchAssociationException {
 
@@ -813,11 +805,11 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the analytics association change with the primary key or throws a <code>NoSuchAssociationException</code> if it could not be found.
+	 * Returns the analytics association with the primary key or throws a <code>NoSuchAssociationException</code> if it could not be found.
 	 *
-	 * @param analyticsAssociationId the primary key of the analytics association change
-	 * @return the analytics association change
-	 * @throws NoSuchAssociationException if a analytics association change with the primary key could not be found
+	 * @param analyticsAssociationId the primary key of the analytics association
+	 * @return the analytics association
+	 * @throws NoSuchAssociationException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation findByPrimaryKey(
 			long analyticsAssociationId)
@@ -828,10 +820,10 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns the analytics association change with the primary key or returns <code>null</code> if it could not be found.
+	 * Returns the analytics association with the primary key or returns <code>null</code> if it could not be found.
 	 *
-	 * @param analyticsAssociationId the primary key of the analytics association change
-	 * @return the analytics association change, or <code>null</code> if a analytics association change with the primary key could not be found
+	 * @param analyticsAssociationId the primary key of the analytics association
+	 * @return the analytics association, or <code>null</code> if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation fetchByPrimaryKey(
 		long analyticsAssociationId) {
@@ -840,40 +832,40 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns all the analytics association changes.
+	 * Returns all the analytics associations.
 	 *
-	 * @return the analytics association changes
+	 * @return the analytics associations
 	 */
 	public static List<AnalyticsAssociation> findAll() {
 		return getPersistence().findAll();
 	}
 
 	/**
-	 * Returns a range of all the analytics association changes.
+	 * Returns a range of all the analytics associations.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
-	 * @return the range of analytics association changes
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
+	 * @return the range of analytics associations
 	 */
 	public static List<AnalyticsAssociation> findAll(int start, int end) {
 		return getPersistence().findAll(start, end);
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes.
+	 * Returns an ordered range of all the analytics associations.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
-	 * @return the ordered range of analytics association changes
+	 * @return the ordered range of analytics associations
 	 */
 	public static List<AnalyticsAssociation> findAll(
 		int start, int end,
@@ -883,17 +875,17 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Returns an ordered range of all the analytics association changes.
+	 * Returns an ordered range of all the analytics associations.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
 	 * @param orderByComparator the comparator to order the results by (optionally <code>null</code>)
 	 * @param useFinderCache whether to use the finder cache
-	 * @return the ordered range of analytics association changes
+	 * @return the ordered range of analytics associations
 	 */
 	public static List<AnalyticsAssociation> findAll(
 		int start, int end,
@@ -905,16 +897,16 @@ public class AnalyticsAssociationUtil {
 	}
 
 	/**
-	 * Removes all the analytics association changes from the database.
+	 * Removes all the analytics associations from the database.
 	 */
 	public static void removeAll() {
 		getPersistence().removeAll();
 	}
 
 	/**
-	 * Returns the number of analytics association changes.
+	 * Returns the number of analytics associations.
 	 *
-	 * @return the number of analytics association changes
+	 * @return the number of analytics associations
 	 */
 	public static int countAll() {
 		return getPersistence().countAll();

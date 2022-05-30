@@ -40,15 +40,12 @@ public interface AnalyticsAssociation
 	 * Never modify this interface directly. Add methods to <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface.
 	 */
 	public static final Accessor<AnalyticsAssociation, Long>
-		ANALYTICS_ASSOCIATION_CHANGE_ID_ACCESSOR =
+		ANALYTICS_ASSOCIATION_ID_ACCESSOR =
 			new Accessor<AnalyticsAssociation, Long>() {
 
 				@Override
-				public Long get(
-					AnalyticsAssociation analyticsAssociation) {
-
-					return analyticsAssociation.
-						getAnalyticsAssociationId();
+				public Long get(AnalyticsAssociation analyticsAssociation) {
+					return analyticsAssociation.getAnalyticsAssociationId();
 				}
 
 				@Override

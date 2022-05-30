@@ -50,25 +50,24 @@ public class AnalyticsAssociationTable
 	public final Column<AnalyticsAssociationTable, Date> modifiedDate =
 		createColumn(
 			"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationTable, Long> userId =
-		createColumn("userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<AnalyticsAssociationTable, Long> userId = createColumn(
+		"userId", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 	public final Column<AnalyticsAssociationTable, String>
 		associationClassName = createColumn(
 			"associationClassName", String.class, Types.VARCHAR,
 			Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationTable, Long>
-		associationClassPK = createColumn(
+	public final Column<AnalyticsAssociationTable, Long> associationClassPK =
+		createColumn(
 			"associationClassPK", Long.class, Types.BIGINT,
 			Column.FLAG_DEFAULT);
 	public final Column<AnalyticsAssociationTable, String> className =
 		createColumn(
 			"className", String.class, Types.VARCHAR, Column.FLAG_DEFAULT);
-	public final Column<AnalyticsAssociationTable, Long> classPK =
-		createColumn("classPK", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<AnalyticsAssociationTable, Long> classPK = createColumn(
+		"classPK", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
 
 	private AnalyticsAssociationTable() {
-		super(
-			"AnalyticsAssociation", AnalyticsAssociationTable::new);
+		super("AnalyticsAssociation", AnalyticsAssociationTable::new);
 	}
 
 }

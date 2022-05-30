@@ -41,181 +41,180 @@ public interface AnalyticsAssociationModel
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this interface directly. All methods that expect a analytics association change model instance should use the {@link AnalyticsAssociation} interface instead.
+	 * Never modify or reference this interface directly. All methods that expect a analytics association model instance should use the {@link AnalyticsAssociation} interface instead.
 	 */
 
 	/**
-	 * Returns the primary key of this analytics association change.
+	 * Returns the primary key of this analytics association.
 	 *
-	 * @return the primary key of this analytics association change
+	 * @return the primary key of this analytics association
 	 */
 	public long getPrimaryKey();
 
 	/**
-	 * Sets the primary key of this analytics association change.
+	 * Sets the primary key of this analytics association.
 	 *
-	 * @param primaryKey the primary key of this analytics association change
+	 * @param primaryKey the primary key of this analytics association
 	 */
 	public void setPrimaryKey(long primaryKey);
 
 	/**
-	 * Returns the mvcc version of this analytics association change.
+	 * Returns the mvcc version of this analytics association.
 	 *
-	 * @return the mvcc version of this analytics association change
+	 * @return the mvcc version of this analytics association
 	 */
 	@Override
 	public long getMvccVersion();
 
 	/**
-	 * Sets the mvcc version of this analytics association change.
+	 * Sets the mvcc version of this analytics association.
 	 *
-	 * @param mvccVersion the mvcc version of this analytics association change
+	 * @param mvccVersion the mvcc version of this analytics association
 	 */
 	@Override
 	public void setMvccVersion(long mvccVersion);
 
 	/**
-	 * Returns the analytics association change ID of this analytics association change.
+	 * Returns the analytics association ID of this analytics association.
 	 *
-	 * @return the analytics association change ID of this analytics association change
+	 * @return the analytics association ID of this analytics association
 	 */
 	public long getAnalyticsAssociationId();
 
 	/**
-	 * Sets the analytics association change ID of this analytics association change.
+	 * Sets the analytics association ID of this analytics association.
 	 *
-	 * @param analyticsAssociationId the analytics association change ID of this analytics association change
+	 * @param analyticsAssociationId the analytics association ID of this analytics association
 	 */
-	public void setAnalyticsAssociationId(
-		long analyticsAssociationId);
+	public void setAnalyticsAssociationId(long analyticsAssociationId);
 
 	/**
-	 * Returns the company ID of this analytics association change.
+	 * Returns the company ID of this analytics association.
 	 *
-	 * @return the company ID of this analytics association change
+	 * @return the company ID of this analytics association
 	 */
 	@Override
 	public long getCompanyId();
 
 	/**
-	 * Sets the company ID of this analytics association change.
+	 * Sets the company ID of this analytics association.
 	 *
-	 * @param companyId the company ID of this analytics association change
+	 * @param companyId the company ID of this analytics association
 	 */
 	@Override
 	public void setCompanyId(long companyId);
 
 	/**
-	 * Returns the create date of this analytics association change.
+	 * Returns the create date of this analytics association.
 	 *
-	 * @return the create date of this analytics association change
+	 * @return the create date of this analytics association
 	 */
 	public Date getCreateDate();
 
 	/**
-	 * Sets the create date of this analytics association change.
+	 * Sets the create date of this analytics association.
 	 *
-	 * @param createDate the create date of this analytics association change
+	 * @param createDate the create date of this analytics association
 	 */
 	public void setCreateDate(Date createDate);
 
 	/**
-	 * Returns the modified date of this analytics association change.
+	 * Returns the modified date of this analytics association.
 	 *
-	 * @return the modified date of this analytics association change
+	 * @return the modified date of this analytics association
 	 */
 	public Date getModifiedDate();
 
 	/**
-	 * Sets the modified date of this analytics association change.
+	 * Sets the modified date of this analytics association.
 	 *
-	 * @param modifiedDate the modified date of this analytics association change
+	 * @param modifiedDate the modified date of this analytics association
 	 */
 	public void setModifiedDate(Date modifiedDate);
 
 	/**
-	 * Returns the user ID of this analytics association change.
+	 * Returns the user ID of this analytics association.
 	 *
-	 * @return the user ID of this analytics association change
+	 * @return the user ID of this analytics association
 	 */
 	public long getUserId();
 
 	/**
-	 * Sets the user ID of this analytics association change.
+	 * Sets the user ID of this analytics association.
 	 *
-	 * @param userId the user ID of this analytics association change
+	 * @param userId the user ID of this analytics association
 	 */
 	public void setUserId(long userId);
 
 	/**
-	 * Returns the user uuid of this analytics association change.
+	 * Returns the user uuid of this analytics association.
 	 *
-	 * @return the user uuid of this analytics association change
+	 * @return the user uuid of this analytics association
 	 */
 	public String getUserUuid();
 
 	/**
-	 * Sets the user uuid of this analytics association change.
+	 * Sets the user uuid of this analytics association.
 	 *
-	 * @param userUuid the user uuid of this analytics association change
+	 * @param userUuid the user uuid of this analytics association
 	 */
 	public void setUserUuid(String userUuid);
 
 	/**
-	 * Returns the association class name of this analytics association change.
+	 * Returns the association class name of this analytics association.
 	 *
-	 * @return the association class name of this analytics association change
+	 * @return the association class name of this analytics association
 	 */
 	@AutoEscape
 	public String getAssociationClassName();
 
 	/**
-	 * Sets the association class name of this analytics association change.
+	 * Sets the association class name of this analytics association.
 	 *
-	 * @param associationClassName the association class name of this analytics association change
+	 * @param associationClassName the association class name of this analytics association
 	 */
 	public void setAssociationClassName(String associationClassName);
 
 	/**
-	 * Returns the association class pk of this analytics association change.
+	 * Returns the association class pk of this analytics association.
 	 *
-	 * @return the association class pk of this analytics association change
+	 * @return the association class pk of this analytics association
 	 */
 	public long getAssociationClassPK();
 
 	/**
-	 * Sets the association class pk of this analytics association change.
+	 * Sets the association class pk of this analytics association.
 	 *
-	 * @param associationClassPK the association class pk of this analytics association change
+	 * @param associationClassPK the association class pk of this analytics association
 	 */
 	public void setAssociationClassPK(long associationClassPK);
 
 	/**
-	 * Returns the class name of this analytics association change.
+	 * Returns the class name of this analytics association.
 	 *
-	 * @return the class name of this analytics association change
+	 * @return the class name of this analytics association
 	 */
 	@AutoEscape
 	public String getClassName();
 
 	/**
-	 * Sets the class name of this analytics association change.
+	 * Sets the class name of this analytics association.
 	 *
-	 * @param className the class name of this analytics association change
+	 * @param className the class name of this analytics association
 	 */
 	public void setClassName(String className);
 
 	/**
-	 * Returns the class pk of this analytics association change.
+	 * Returns the class pk of this analytics association.
 	 *
-	 * @return the class pk of this analytics association change
+	 * @return the class pk of this analytics association
 	 */
 	public long getClassPK();
 
 	/**
-	 * Sets the class pk of this analytics association change.
+	 * Sets the class pk of this analytics association.
 	 *
-	 * @param classPK the class pk of this analytics association change
+	 * @param classPK the class pk of this analytics association
 	 */
 	public void setClassPK(long classPK);
 

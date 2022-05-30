@@ -65,13 +65,12 @@ public class AnalyticsAssociationModelImpl
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a analytics association change model instance should use the <code>AnalyticsAssociation</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a analytics association model instance should use the <code>AnalyticsAssociation</code> interface instead.
 	 */
 	public static final String TABLE_NAME = "AnalyticsAssociation";
 
 	public static final Object[][] TABLE_COLUMNS = {
-		{"mvccVersion", Types.BIGINT},
-		{"analyticsAssociationId", Types.BIGINT},
+		{"mvccVersion", Types.BIGINT}, {"analyticsAssociationId", Types.BIGINT},
 		{"companyId", Types.BIGINT}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"userId", Types.BIGINT},
 		{"associationClassName", Types.VARCHAR},
@@ -142,7 +141,7 @@ public class AnalyticsAssociationModelImpl
 	 *		#getColumnBitmask(String)}
 	 */
 	@Deprecated
-	public static final long ANALYTICSASSOCIATIONCHANGEID_COLUMN_BITMASK = 16L;
+	public static final long ANALYTICSASSOCIATIONID_COLUMN_BITMASK = 16L;
 
 	/**
 	 * @deprecated As of Athanasius (7.3.x), with no direct replacement
@@ -198,17 +197,16 @@ public class AnalyticsAssociationModelImpl
 		Map<String, Function<AnalyticsAssociation, Object>>
 			attributeGetterFunctions = getAttributeGetterFunctions();
 
-		for (Map.Entry<String, Function<AnalyticsAssociation, Object>>
-				entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AnalyticsAssociation, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
 
 			String attributeName = entry.getKey();
-			Function<AnalyticsAssociation, Object>
-				attributeGetterFunction = entry.getValue();
+			Function<AnalyticsAssociation, Object> attributeGetterFunction =
+				entry.getValue();
 
 			attributes.put(
 				attributeName,
-				attributeGetterFunction.apply(
-					(AnalyticsAssociation)this));
+				attributeGetterFunction.apply((AnalyticsAssociation)this));
 		}
 
 		return attributes;
@@ -222,9 +220,8 @@ public class AnalyticsAssociationModelImpl
 		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
 			String attributeName = entry.getKey();
 
-			BiConsumer<AnalyticsAssociation, Object>
-				attributeSetterBiConsumer = attributeSetterBiConsumers.get(
-					attributeName);
+			BiConsumer<AnalyticsAssociation, Object> attributeSetterBiConsumer =
+				attributeSetterBiConsumers.get(attributeName);
 
 			if (attributeSetterBiConsumer != null) {
 				attributeSetterBiConsumer.accept(
@@ -245,12 +242,10 @@ public class AnalyticsAssociationModelImpl
 		return _attributeSetterBiConsumers;
 	}
 
-	private static final Map
-		<String, Function<AnalyticsAssociation, Object>>
-			_attributeGetterFunctions;
-	private static final Map
-		<String, BiConsumer<AnalyticsAssociation, Object>>
-			_attributeSetterBiConsumers;
+	private static final Map<String, Function<AnalyticsAssociation, Object>>
+		_attributeGetterFunctions;
+	private static final Map<String, BiConsumer<AnalyticsAssociation, Object>>
+		_attributeSetterBiConsumers;
 
 	static {
 		Map<String, Function<AnalyticsAssociation, Object>>
@@ -293,8 +288,7 @@ public class AnalyticsAssociationModelImpl
 			"modifiedDate",
 			(BiConsumer<AnalyticsAssociation, Date>)
 				AnalyticsAssociation::setModifiedDate);
-		attributeGetterFunctions.put(
-			"userId", AnalyticsAssociation::getUserId);
+		attributeGetterFunctions.put("userId", AnalyticsAssociation::getUserId);
 		attributeSetterBiConsumers.put(
 			"userId",
 			(BiConsumer<AnalyticsAssociation, Long>)
@@ -307,8 +301,7 @@ public class AnalyticsAssociationModelImpl
 			(BiConsumer<AnalyticsAssociation, String>)
 				AnalyticsAssociation::setAssociationClassName);
 		attributeGetterFunctions.put(
-			"associationClassPK",
-			AnalyticsAssociation::getAssociationClassPK);
+			"associationClassPK", AnalyticsAssociation::getAssociationClassPK);
 		attributeSetterBiConsumers.put(
 			"associationClassPK",
 			(BiConsumer<AnalyticsAssociation, Long>)
@@ -352,9 +345,7 @@ public class AnalyticsAssociationModelImpl
 	}
 
 	@Override
-	public void setAnalyticsAssociationId(
-		long analyticsAssociationId) {
-
+	public void setAnalyticsAssociationId(long analyticsAssociationId) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -611,8 +602,7 @@ public class AnalyticsAssociationModelImpl
 		analyticsAssociationImpl.setUserId(getUserId());
 		analyticsAssociationImpl.setAssociationClassName(
 			getAssociationClassName());
-		analyticsAssociationImpl.setAssociationClassPK(
-			getAssociationClassPK());
+		analyticsAssociationImpl.setAssociationClassPK(getAssociationClassPK());
 		analyticsAssociationImpl.setClassName(getClassName());
 		analyticsAssociationImpl.setClassPK(getClassPK());
 
@@ -651,9 +641,7 @@ public class AnalyticsAssociationModelImpl
 	}
 
 	@Override
-	public int compareTo(
-		AnalyticsAssociation analyticsAssociation) {
-
+	public int compareTo(AnalyticsAssociation analyticsAssociation) {
 		long primaryKey = analyticsAssociation.getPrimaryKey();
 
 		if (getPrimaryKey() < primaryKey) {
@@ -724,9 +712,8 @@ public class AnalyticsAssociationModelImpl
 
 	@Override
 	public CacheModel<AnalyticsAssociation> toCacheModel() {
-		AnalyticsAssociationCacheModel
-			analyticsAssociationCacheModel =
-				new AnalyticsAssociationCacheModel();
+		AnalyticsAssociationCacheModel analyticsAssociationCacheModel =
+			new AnalyticsAssociationCacheModel();
 
 		analyticsAssociationCacheModel.mvccVersion = getMvccVersion();
 
@@ -738,8 +725,7 @@ public class AnalyticsAssociationModelImpl
 		Date createDate = getCreateDate();
 
 		if (createDate != null) {
-			analyticsAssociationCacheModel.createDate =
-				createDate.getTime();
+			analyticsAssociationCacheModel.createDate = createDate.getTime();
 		}
 		else {
 			analyticsAssociationCacheModel.createDate = Long.MIN_VALUE;
@@ -795,12 +781,12 @@ public class AnalyticsAssociationModelImpl
 
 		sb.append("{");
 
-		for (Map.Entry<String, Function<AnalyticsAssociation, Object>>
-				entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AnalyticsAssociation, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
 
 			String attributeName = entry.getKey();
-			Function<AnalyticsAssociation, Object>
-				attributeGetterFunction = entry.getValue();
+			Function<AnalyticsAssociation, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("\"");
 			sb.append(attributeName);
@@ -847,19 +833,18 @@ public class AnalyticsAssociationModelImpl
 		sb.append(getModelClassName());
 		sb.append("</model-name>");
 
-		for (Map.Entry<String, Function<AnalyticsAssociation, Object>>
-				entry : attributeGetterFunctions.entrySet()) {
+		for (Map.Entry<String, Function<AnalyticsAssociation, Object>> entry :
+				attributeGetterFunctions.entrySet()) {
 
 			String attributeName = entry.getKey();
-			Function<AnalyticsAssociation, Object>
-				attributeGetterFunction = entry.getValue();
+			Function<AnalyticsAssociation, Object> attributeGetterFunction =
+				entry.getValue();
 
 			sb.append("<column><column-name>");
 			sb.append(attributeName);
 			sb.append("</column-name><column-value><![CDATA[");
 			sb.append(
-				attributeGetterFunction.apply(
-					(AnalyticsAssociation)this));
+				attributeGetterFunction.apply((AnalyticsAssociation)this));
 			sb.append("]]></column-value></column>");
 		}
 
@@ -870,11 +855,10 @@ public class AnalyticsAssociationModelImpl
 
 	private static class EscapedModelProxyProviderFunctionHolder {
 
-		private static final Function
-			<InvocationHandler, AnalyticsAssociation>
-				_escapedModelProxyProviderFunction =
-					ProxyUtil.getProxyProviderFunction(
-						AnalyticsAssociation.class, ModelWrapper.class);
+		private static final Function<InvocationHandler, AnalyticsAssociation>
+			_escapedModelProxyProviderFunction =
+				ProxyUtil.getProxyProviderFunction(
+					AnalyticsAssociation.class, ModelWrapper.class);
 
 	}
 

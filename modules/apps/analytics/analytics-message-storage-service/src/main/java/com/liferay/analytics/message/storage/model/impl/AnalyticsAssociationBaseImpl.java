@@ -30,23 +30,21 @@ import com.liferay.analytics.message.storage.service.AnalyticsAssociationLocalSe
  * @generated
  */
 public abstract class AnalyticsAssociationBaseImpl
-	extends AnalyticsAssociationModelImpl
-	implements AnalyticsAssociation {
+	extends AnalyticsAssociationModelImpl implements AnalyticsAssociation {
 
 	/*
 	 * NOTE FOR DEVELOPERS:
 	 *
-	 * Never modify or reference this class directly. All methods that expect a analytics association change model instance should use the <code>AnalyticsAssociation</code> interface instead.
+	 * Never modify or reference this class directly. All methods that expect a analytics association model instance should use the <code>AnalyticsAssociation</code> interface instead.
 	 */
 	@Override
 	public void persist() {
 		if (this.isNew()) {
-			AnalyticsAssociationLocalServiceUtil.
-				addAnalyticsAssociation(this);
+			AnalyticsAssociationLocalServiceUtil.addAnalyticsAssociation(this);
 		}
 		else {
-			AnalyticsAssociationLocalServiceUtil.
-				updateAnalyticsAssociation(this);
+			AnalyticsAssociationLocalServiceUtil.updateAnalyticsAssociation(
+				this);
 		}
 	}
 

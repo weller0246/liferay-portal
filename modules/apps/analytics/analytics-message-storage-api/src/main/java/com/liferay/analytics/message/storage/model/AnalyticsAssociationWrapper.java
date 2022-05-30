@@ -32,8 +32,7 @@ import java.util.Map;
  */
 public class AnalyticsAssociationWrapper
 	extends BaseModelWrapper<AnalyticsAssociation>
-	implements AnalyticsAssociation,
-			   ModelWrapper<AnalyticsAssociation> {
+	implements AnalyticsAssociation, ModelWrapper<AnalyticsAssociation> {
 
 	public AnalyticsAssociationWrapper(
 		AnalyticsAssociation analyticsAssociation) {
@@ -46,8 +45,7 @@ public class AnalyticsAssociationWrapper
 		Map<String, Object> attributes = new HashMap<String, Object>();
 
 		attributes.put("mvccVersion", getMvccVersion());
-		attributes.put(
-			"analyticsAssociationId", getAnalyticsAssociationId());
+		attributes.put("analyticsAssociationId", getAnalyticsAssociationId());
 		attributes.put("companyId", getCompanyId());
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
@@ -131,9 +129,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the analytics association change ID of this analytics association change.
+	 * Returns the analytics association ID of this analytics association.
 	 *
-	 * @return the analytics association change ID of this analytics association change
+	 * @return the analytics association ID of this analytics association
 	 */
 	@Override
 	public long getAnalyticsAssociationId() {
@@ -141,9 +139,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the association class name of this analytics association change.
+	 * Returns the association class name of this analytics association.
 	 *
-	 * @return the association class name of this analytics association change
+	 * @return the association class name of this analytics association
 	 */
 	@Override
 	public String getAssociationClassName() {
@@ -151,9 +149,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the association class pk of this analytics association change.
+	 * Returns the association class pk of this analytics association.
 	 *
-	 * @return the association class pk of this analytics association change
+	 * @return the association class pk of this analytics association
 	 */
 	@Override
 	public long getAssociationClassPK() {
@@ -161,9 +159,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the class name of this analytics association change.
+	 * Returns the class name of this analytics association.
 	 *
-	 * @return the class name of this analytics association change
+	 * @return the class name of this analytics association
 	 */
 	@Override
 	public String getClassName() {
@@ -171,9 +169,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the class pk of this analytics association change.
+	 * Returns the class pk of this analytics association.
 	 *
-	 * @return the class pk of this analytics association change
+	 * @return the class pk of this analytics association
 	 */
 	@Override
 	public long getClassPK() {
@@ -181,9 +179,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the company ID of this analytics association change.
+	 * Returns the company ID of this analytics association.
 	 *
-	 * @return the company ID of this analytics association change
+	 * @return the company ID of this analytics association
 	 */
 	@Override
 	public long getCompanyId() {
@@ -191,9 +189,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the create date of this analytics association change.
+	 * Returns the create date of this analytics association.
 	 *
-	 * @return the create date of this analytics association change
+	 * @return the create date of this analytics association
 	 */
 	@Override
 	public Date getCreateDate() {
@@ -201,9 +199,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the modified date of this analytics association change.
+	 * Returns the modified date of this analytics association.
 	 *
-	 * @return the modified date of this analytics association change
+	 * @return the modified date of this analytics association
 	 */
 	@Override
 	public Date getModifiedDate() {
@@ -211,9 +209,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the mvcc version of this analytics association change.
+	 * Returns the mvcc version of this analytics association.
 	 *
-	 * @return the mvcc version of this analytics association change
+	 * @return the mvcc version of this analytics association
 	 */
 	@Override
 	public long getMvccVersion() {
@@ -221,9 +219,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the primary key of this analytics association change.
+	 * Returns the primary key of this analytics association.
 	 *
-	 * @return the primary key of this analytics association change
+	 * @return the primary key of this analytics association
 	 */
 	@Override
 	public long getPrimaryKey() {
@@ -231,9 +229,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the user ID of this analytics association change.
+	 * Returns the user ID of this analytics association.
 	 *
-	 * @return the user ID of this analytics association change
+	 * @return the user ID of this analytics association
 	 */
 	@Override
 	public long getUserId() {
@@ -241,9 +239,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Returns the user uuid of this analytics association change.
+	 * Returns the user uuid of this analytics association.
 	 *
-	 * @return the user uuid of this analytics association change
+	 * @return the user uuid of this analytics association
 	 */
 	@Override
 	public String getUserUuid() {
@@ -256,21 +254,19 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the analytics association change ID of this analytics association change.
+	 * Sets the analytics association ID of this analytics association.
 	 *
-	 * @param analyticsAssociationId the analytics association change ID of this analytics association change
+	 * @param analyticsAssociationId the analytics association ID of this analytics association
 	 */
 	@Override
-	public void setAnalyticsAssociationId(
-		long analyticsAssociationId) {
-
+	public void setAnalyticsAssociationId(long analyticsAssociationId) {
 		model.setAnalyticsAssociationId(analyticsAssociationId);
 	}
 
 	/**
-	 * Sets the association class name of this analytics association change.
+	 * Sets the association class name of this analytics association.
 	 *
-	 * @param associationClassName the association class name of this analytics association change
+	 * @param associationClassName the association class name of this analytics association
 	 */
 	@Override
 	public void setAssociationClassName(String associationClassName) {
@@ -278,9 +274,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the association class pk of this analytics association change.
+	 * Sets the association class pk of this analytics association.
 	 *
-	 * @param associationClassPK the association class pk of this analytics association change
+	 * @param associationClassPK the association class pk of this analytics association
 	 */
 	@Override
 	public void setAssociationClassPK(long associationClassPK) {
@@ -288,9 +284,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the class name of this analytics association change.
+	 * Sets the class name of this analytics association.
 	 *
-	 * @param className the class name of this analytics association change
+	 * @param className the class name of this analytics association
 	 */
 	@Override
 	public void setClassName(String className) {
@@ -298,9 +294,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the class pk of this analytics association change.
+	 * Sets the class pk of this analytics association.
 	 *
-	 * @param classPK the class pk of this analytics association change
+	 * @param classPK the class pk of this analytics association
 	 */
 	@Override
 	public void setClassPK(long classPK) {
@@ -308,9 +304,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the company ID of this analytics association change.
+	 * Sets the company ID of this analytics association.
 	 *
-	 * @param companyId the company ID of this analytics association change
+	 * @param companyId the company ID of this analytics association
 	 */
 	@Override
 	public void setCompanyId(long companyId) {
@@ -318,9 +314,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the create date of this analytics association change.
+	 * Sets the create date of this analytics association.
 	 *
-	 * @param createDate the create date of this analytics association change
+	 * @param createDate the create date of this analytics association
 	 */
 	@Override
 	public void setCreateDate(Date createDate) {
@@ -328,9 +324,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the modified date of this analytics association change.
+	 * Sets the modified date of this analytics association.
 	 *
-	 * @param modifiedDate the modified date of this analytics association change
+	 * @param modifiedDate the modified date of this analytics association
 	 */
 	@Override
 	public void setModifiedDate(Date modifiedDate) {
@@ -338,9 +334,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the mvcc version of this analytics association change.
+	 * Sets the mvcc version of this analytics association.
 	 *
-	 * @param mvccVersion the mvcc version of this analytics association change
+	 * @param mvccVersion the mvcc version of this analytics association
 	 */
 	@Override
 	public void setMvccVersion(long mvccVersion) {
@@ -348,9 +344,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the primary key of this analytics association change.
+	 * Sets the primary key of this analytics association.
 	 *
-	 * @param primaryKey the primary key of this analytics association change
+	 * @param primaryKey the primary key of this analytics association
 	 */
 	@Override
 	public void setPrimaryKey(long primaryKey) {
@@ -358,9 +354,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the user ID of this analytics association change.
+	 * Sets the user ID of this analytics association.
 	 *
-	 * @param userId the user ID of this analytics association change
+	 * @param userId the user ID of this analytics association
 	 */
 	@Override
 	public void setUserId(long userId) {
@@ -368,9 +364,9 @@ public class AnalyticsAssociationWrapper
 	}
 
 	/**
-	 * Sets the user uuid of this analytics association change.
+	 * Sets the user uuid of this analytics association.
 	 *
-	 * @param userUuid the user uuid of this analytics association change
+	 * @param userUuid the user uuid of this analytics association
 	 */
 	@Override
 	public void setUserUuid(String userUuid) {
@@ -381,8 +377,7 @@ public class AnalyticsAssociationWrapper
 	protected AnalyticsAssociationWrapper wrap(
 		AnalyticsAssociation analyticsAssociation) {
 
-		return new AnalyticsAssociationWrapper(
-			analyticsAssociation);
+		return new AnalyticsAssociationWrapper(analyticsAssociation);
 	}
 
 }

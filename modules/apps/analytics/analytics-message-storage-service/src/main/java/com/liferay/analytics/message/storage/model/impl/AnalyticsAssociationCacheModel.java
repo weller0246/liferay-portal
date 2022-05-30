@@ -34,8 +34,7 @@ import java.util.Date;
  * @generated
  */
 public class AnalyticsAssociationCacheModel
-	implements CacheModel<AnalyticsAssociation>, Externalizable,
-			   MVCCModel {
+	implements CacheModel<AnalyticsAssociation>, Externalizable, MVCCModel {
 
 	@Override
 	public boolean equals(Object object) {
@@ -47,13 +46,11 @@ public class AnalyticsAssociationCacheModel
 			return false;
 		}
 
-		AnalyticsAssociationCacheModel
-			analyticsAssociationCacheModel =
-				(AnalyticsAssociationCacheModel)object;
+		AnalyticsAssociationCacheModel analyticsAssociationCacheModel =
+			(AnalyticsAssociationCacheModel)object;
 
 		if ((analyticsAssociationId ==
-				analyticsAssociationCacheModel.
-					analyticsAssociationId) &&
+				analyticsAssociationCacheModel.analyticsAssociationId) &&
 			(mvccVersion == analyticsAssociationCacheModel.mvccVersion)) {
 
 			return true;
@@ -129,8 +126,7 @@ public class AnalyticsAssociationCacheModel
 			analyticsAssociationImpl.setModifiedDate(null);
 		}
 		else {
-			analyticsAssociationImpl.setModifiedDate(
-				new Date(modifiedDate));
+			analyticsAssociationImpl.setModifiedDate(new Date(modifiedDate));
 		}
 
 		analyticsAssociationImpl.setUserId(userId);
@@ -143,8 +139,7 @@ public class AnalyticsAssociationCacheModel
 				associationClassName);
 		}
 
-		analyticsAssociationImpl.setAssociationClassPK(
-			associationClassPK);
+		analyticsAssociationImpl.setAssociationClassPK(associationClassPK);
 
 		if (className == null) {
 			analyticsAssociationImpl.setClassName("");

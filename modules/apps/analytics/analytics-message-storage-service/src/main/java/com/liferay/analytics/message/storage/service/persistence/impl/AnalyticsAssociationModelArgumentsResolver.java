@@ -57,12 +57,10 @@ public class AnalyticsAssociationModelArgumentsResolver
 			return null;
 		}
 
-		AnalyticsAssociationModelImpl
-			analyticsAssociationModelImpl =
-				(AnalyticsAssociationModelImpl)baseModel;
+		AnalyticsAssociationModelImpl analyticsAssociationModelImpl =
+			(AnalyticsAssociationModelImpl)baseModel;
 
-		long columnBitmask =
-			analyticsAssociationModelImpl.getColumnBitmask();
+		long columnBitmask = analyticsAssociationModelImpl.getColumnBitmask();
 
 		if (!checkColumn || (columnBitmask == 0)) {
 			return _getValue(
@@ -77,8 +75,7 @@ public class AnalyticsAssociationModelArgumentsResolver
 
 			for (String columnName : columnNames) {
 				finderPathColumnBitmask |=
-					analyticsAssociationModelImpl.getColumnBitmask(
-						columnName);
+					analyticsAssociationModelImpl.getColumnBitmask(columnName);
 			}
 
 			_finderPathColumnBitmasksCache.put(
@@ -118,9 +115,8 @@ public class AnalyticsAssociationModelArgumentsResolver
 						columnName);
 			}
 			else {
-				arguments[i] =
-					analyticsAssociationModelImpl.getColumnValue(
-						columnName);
+				arguments[i] = analyticsAssociationModelImpl.getColumnValue(
+					columnName);
 			}
 		}
 

@@ -46,20 +46,19 @@ public class AnalyticsAssociationLocalServiceUtil {
 	 */
 
 	/**
-	 * Adds the analytics association change to the database. Also notifies the appropriate model listeners.
+	 * Adds the analytics association to the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
 	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociation the analytics association change
-	 * @return the analytics association change that was added
+	 * @param analyticsAssociation the analytics association
+	 * @return the analytics association that was added
 	 */
 	public static AnalyticsAssociation addAnalyticsAssociation(
 		AnalyticsAssociation analyticsAssociation) {
 
-		return getService().addAnalyticsAssociation(
-			analyticsAssociation);
+		return getService().addAnalyticsAssociation(analyticsAssociation);
 	}
 
 	public static AnalyticsAssociation addAnalyticsAssociation(
@@ -73,16 +72,15 @@ public class AnalyticsAssociationLocalServiceUtil {
 	}
 
 	/**
-	 * Creates a new analytics association change with the primary key. Does not add the analytics association change to the database.
+	 * Creates a new analytics association with the primary key. Does not add the analytics association to the database.
 	 *
-	 * @param analyticsAssociationId the primary key for the new analytics association change
-	 * @return the new analytics association change
+	 * @param analyticsAssociationId the primary key for the new analytics association
+	 * @return the new analytics association
 	 */
 	public static AnalyticsAssociation createAnalyticsAssociation(
 		long analyticsAssociationId) {
 
-		return getService().createAnalyticsAssociation(
-			analyticsAssociationId);
+		return getService().createAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	/**
@@ -96,39 +94,37 @@ public class AnalyticsAssociationLocalServiceUtil {
 	}
 
 	/**
-	 * Deletes the analytics association change from the database. Also notifies the appropriate model listeners.
+	 * Deletes the analytics association from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
 	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociation the analytics association change
-	 * @return the analytics association change that was removed
+	 * @param analyticsAssociation the analytics association
+	 * @return the analytics association that was removed
 	 */
 	public static AnalyticsAssociation deleteAnalyticsAssociation(
 		AnalyticsAssociation analyticsAssociation) {
 
-		return getService().deleteAnalyticsAssociation(
-			analyticsAssociation);
+		return getService().deleteAnalyticsAssociation(analyticsAssociation);
 	}
 
 	/**
-	 * Deletes the analytics association change with the primary key from the database. Also notifies the appropriate model listeners.
+	 * Deletes the analytics association with the primary key from the database. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
 	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociationId the primary key of the analytics association change
-	 * @return the analytics association change that was removed
-	 * @throws PortalException if a analytics association change with the primary key could not be found
+	 * @param analyticsAssociationId the primary key of the analytics association
+	 * @return the analytics association that was removed
+	 * @throws PortalException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation deleteAnalyticsAssociation(
 			long analyticsAssociationId)
 		throws PortalException {
 
-		return getService().deleteAnalyticsAssociation(
-			analyticsAssociationId);
+		return getService().deleteAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	public static void deleteAnalyticsAssociations(
@@ -236,8 +232,7 @@ public class AnalyticsAssociationLocalServiceUtil {
 	public static AnalyticsAssociation fetchAnalyticsAssociation(
 		long analyticsAssociationId) {
 
-		return getService().fetchAnalyticsAssociation(
-			analyticsAssociationId);
+		return getService().fetchAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	public static com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery
@@ -247,58 +242,55 @@ public class AnalyticsAssociationLocalServiceUtil {
 	}
 
 	/**
-	 * Returns the analytics association change with the primary key.
+	 * Returns the analytics association with the primary key.
 	 *
-	 * @param analyticsAssociationId the primary key of the analytics association change
-	 * @return the analytics association change
-	 * @throws PortalException if a analytics association change with the primary key could not be found
+	 * @param analyticsAssociationId the primary key of the analytics association
+	 * @return the analytics association
+	 * @throws PortalException if a analytics association with the primary key could not be found
 	 */
 	public static AnalyticsAssociation getAnalyticsAssociation(
 			long analyticsAssociationId)
 		throws PortalException {
 
-		return getService().getAnalyticsAssociation(
-			analyticsAssociationId);
+		return getService().getAnalyticsAssociation(analyticsAssociationId);
 	}
 
 	/**
-	 * Returns a range of all the analytics association changes.
+	 * Returns a range of all the analytics associations.
 	 *
 	 * <p>
 	 * Useful when paginating results. Returns a maximum of <code>end - start</code> instances. <code>start</code> and <code>end</code> are not primary keys, they are indexes in the result set. Thus, <code>0</code> refers to the first result in the set. Setting both <code>start</code> and <code>end</code> to <code>com.liferay.portal.kernel.dao.orm.QueryUtil#ALL_POS</code> will return the full result set. If <code>orderByComparator</code> is specified, then the query will include the given ORDER BY logic. If <code>orderByComparator</code> is absent, then the query will include the default ORDER BY logic from <code>com.liferay.analytics.message.storage.model.impl.AnalyticsAssociationModelImpl</code>.
 	 * </p>
 	 *
-	 * @param start the lower bound of the range of analytics association changes
-	 * @param end the upper bound of the range of analytics association changes (not inclusive)
-	 * @return the range of analytics association changes
+	 * @param start the lower bound of the range of analytics associations
+	 * @param end the upper bound of the range of analytics associations (not inclusive)
+	 * @return the range of analytics associations
 	 */
-	public static List<AnalyticsAssociation>
-		getAnalyticsAssociations(int start, int end) {
+	public static List<AnalyticsAssociation> getAnalyticsAssociations(
+		int start, int end) {
 
 		return getService().getAnalyticsAssociations(start, end);
 	}
 
-	public static List<AnalyticsAssociation>
-		getAnalyticsAssociations(
-			long companyId, java.util.Date modifiedDate,
-			String associationClassName, int start, int end) {
+	public static List<AnalyticsAssociation> getAnalyticsAssociations(
+		long companyId, java.util.Date modifiedDate,
+		String associationClassName, int start, int end) {
 
 		return getService().getAnalyticsAssociations(
 			companyId, modifiedDate, associationClassName, start, end);
 	}
 
-	public static List<AnalyticsAssociation>
-		getAnalyticsAssociations(
-			long companyId, String associationClassName, int start, int end) {
+	public static List<AnalyticsAssociation> getAnalyticsAssociations(
+		long companyId, String associationClassName, int start, int end) {
 
 		return getService().getAnalyticsAssociations(
 			companyId, associationClassName, start, end);
 	}
 
 	/**
-	 * Returns the number of analytics association changes.
+	 * Returns the number of analytics associations.
 	 *
-	 * @return the number of analytics association changes
+	 * @return the number of analytics associations
 	 */
 	public static int getAnalyticsAssociationsCount() {
 		return getService().getAnalyticsAssociationsCount();
@@ -345,20 +337,19 @@ public class AnalyticsAssociationLocalServiceUtil {
 	}
 
 	/**
-	 * Updates the analytics association change in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
+	 * Updates the analytics association in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
 	 * <p>
 	 * <strong>Important:</strong> Inspect AnalyticsAssociationLocalServiceImpl for overloaded versions of the method. If provided, use these entry points to the API, as the implementation logic may require the additional parameters defined there.
 	 * </p>
 	 *
-	 * @param analyticsAssociation the analytics association change
-	 * @return the analytics association change that was updated
+	 * @param analyticsAssociation the analytics association
+	 * @return the analytics association that was updated
 	 */
 	public static AnalyticsAssociation updateAnalyticsAssociation(
 		AnalyticsAssociation analyticsAssociation) {
 
-		return getService().updateAnalyticsAssociation(
-			analyticsAssociation);
+		return getService().updateAnalyticsAssociation(analyticsAssociation);
 	}
 
 	public static AnalyticsAssociationLocalService getService() {
