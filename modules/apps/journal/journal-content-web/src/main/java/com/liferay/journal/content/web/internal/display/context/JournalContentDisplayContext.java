@@ -1011,14 +1011,14 @@ public class JournalContentDisplayContext {
 		_ddmTemplateModelResourcePermission =
 			ddmTemplateModelResourcePermission;
 
-		if (Validator.isNull(getPortletResource()) && !isShowArticle()) {
-			portletRequest.setAttribute(
-				WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
-		}
-
 		if (isShowArticle()) {
 			portletRequest.setAttribute(
 				WebKeys.LAYOUT_ASSET_ENTRY, _getAssetEntry());
+		}
+
+		if (Validator.isNull(getPortletResource()) && !isShowArticle()) {
+			portletRequest.setAttribute(
+				WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
 		}
 	}
 
