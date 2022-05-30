@@ -188,8 +188,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	public Result modifyConfigMap(
 		Consumer<Map<String, String>> configMapDataConsumer, String serviceId) {
 
-		Objects.requireNonNull(configMapDataConsumer, "must not be null");
-		Objects.requireNonNull(serviceId, "must not be null");
+		Objects.requireNonNull(
+			configMapDataConsumer, "Config map data consumer is null");
+		Objects.requireNonNull(serviceId, "Service ID is null");
 
 		String configMapName = serviceId.concat("-lxc-ext-init-metadata");
 
