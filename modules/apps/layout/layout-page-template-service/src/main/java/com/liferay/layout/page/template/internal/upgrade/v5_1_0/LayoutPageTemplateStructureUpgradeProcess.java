@@ -75,7 +75,7 @@ public class LayoutPageTemplateStructureUpgradeProcess extends UpgradeProcess {
 
 		if (layout == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Layout not found, classPK: " + classPK);
+				_log.debug("No layout found with PLID " + classPK);
 			}
 
 			return;
