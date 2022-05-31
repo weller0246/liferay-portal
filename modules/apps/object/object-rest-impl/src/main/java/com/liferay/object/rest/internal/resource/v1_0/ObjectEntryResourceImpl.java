@@ -156,7 +156,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			_objectEntryManagerServicesTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
-		Page<ObjectEntry> objectEntryPage =
+		Page<ObjectEntry> page =
 			objectEntryManager.getObjectEntryRelatedObjectEntries(
 				_getDTOConverterContext(currentObjectEntryId),
 				_objectDefinition, currentObjectEntryId, objectRelationshipName,
@@ -171,17 +171,17 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		for (ObjectEntry item : objectEntryPage.getItems()) {
-			Map<String, Map<String, String>> itemActions = item.getActions();
+		for (ObjectEntry item : page.getItems()) {
+			Map<String, Map<String, String>> actions = item.getActions();
 
 			for (Map.Entry<String, Map<String, String>> entry :
-					itemActions.entrySet()) {
+					actions.entrySet()) {
 
-				Map<String, String> itemActionMap = entry.getValue();
+				Map<String, String> map = entry.getValue();
 
-				String href = itemActionMap.get("href");
+				String href = map.get("href");
 
-				itemActionMap.put(
+				map.put(
 					"href",
 					StringUtil.replace(
 						href,
@@ -194,7 +194,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			}
 		}
 
-		return objectEntryPage;
+		return page;
 	}
 
 	@Override
