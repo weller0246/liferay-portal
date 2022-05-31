@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.k8s.agent.test;
+package com.liferay.portal.k8s.agent.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringUtil;
@@ -44,7 +44,7 @@ import org.osgi.util.tracker.ServiceTracker;
  * @author Raymond Augé
  */
 @RunWith(Arquillian.class)
-public class PortalK8sAgentInitTest {
+public class PortalK8sAgentImplTest {
 
 	@ClassRule
 	@Rule
@@ -58,7 +58,7 @@ public class PortalK8sAgentInitTest {
 
 	@Before
 	public void setUp() {
-		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentInitTest.class);
+		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
 
 		_bundleContext = bundle.getBundleContext();
 	}

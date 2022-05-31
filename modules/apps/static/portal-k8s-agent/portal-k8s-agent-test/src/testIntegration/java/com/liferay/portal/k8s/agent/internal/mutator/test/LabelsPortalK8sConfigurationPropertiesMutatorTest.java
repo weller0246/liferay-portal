@@ -12,7 +12,16 @@
  * details.
  */
 
-package com.liferay.portal.k8s.agent.test;
+package com.liferay.portal.k8s.agent.internal.mutator.test;
+
+
+import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.k8s.agent.internal.test.PortalK8sAgentImplTest;
+import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
+import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.HashMapDictionary;
+import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
 import java.util.Dictionary;
 import java.util.HashMap;
@@ -23,23 +32,17 @@ import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
-import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
-import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.util.HashMapDictionary;
-import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-
 /**
  * @author Raymond Augé
  */
 @RunWith(Arquillian.class)
-public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
+public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 
 	@ClassRule
 	@Rule
@@ -48,7 +51,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 
 	@Before
 	public void setUp() {
-		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentInitTest.class);
+		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
 
 		_bundleContext = bundle.getBundleContext();
 	}
@@ -59,10 +62,11 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 			"(&(objectClass=",
 			PortalK8sConfigurationPropertiesMutator.class.getName(),
 			")(component.name=",
-			"*.AnnotationsPortalK8sConfigurationPropertiesMutator))");
+			"*.LabelsPortalK8sConfigurationPropertiesMutator))");
 
-		ServiceTracker<PortalK8sConfigurationPropertiesMutator,
-			PortalK8sConfigurationPropertiesMutator> mutatorTracker =
+		ServiceTracker
+			<PortalK8sConfigurationPropertiesMutator,
+			 PortalK8sConfigurationPropertiesMutator> mutatorTracker =
 				new ServiceTracker<>(
 					_bundleContext, FrameworkUtil.createFilter(filterString),
 					null);
@@ -73,25 +77,23 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 			PortalK8sConfigurationPropertiesMutator mutator =
 				mutatorTracker.waitForService(4000);
 
-			HashMap<String,String> annotations = new HashMap<String, String>();
+			HashMap<String, String> annotations = new HashMap<>();
+			HashMap<String, String> labels = new HashMap<>();
 
-			annotations.put(
-				"cloud.liferay.com/context-data",
-				StringBundler.concat(
-					"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"));
+			labels.put("cloud.liferay.com/serviceId", "customrestservice");
+			labels.put("dxp.liferay.com/configs", "true");
 
-			HashMap<String,String> labels = new HashMap<String, String>();
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 			mutator.mutateConfigurationProperties(
 				annotations, labels, properties);
 
-			Assert.assertArrayEquals(
-				new String[] {"foo"},
-				(String[])properties.get("com.liferay.lxc.ext.domains"));
+			Assert.assertEquals(
+				"customrestservice",
+				(String)properties.get("k8s.cloud.liferay.com.serviceId"));
 
 			Assert.assertEquals(
-				"uat", (String)properties.get("k8s.lxc.environment"));
+				"true", (String)properties.get("k8s.dxp.liferay.com.configs"));
 		}
 		finally {
 			mutatorTracker.close();
