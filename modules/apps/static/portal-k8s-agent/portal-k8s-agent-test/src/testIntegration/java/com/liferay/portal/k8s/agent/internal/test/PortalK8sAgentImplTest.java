@@ -83,8 +83,6 @@ public class PortalK8sAgentImplTest {
 			configuration = _configurationAdmin.getConfiguration(
 				PortalK8sAgentConfiguration.class.getName(), "?");
 
-			String caCertData = StringUtil.read(classLoader, "ca.crt");
-
 			configuration.update(
 				HashMapDictionaryBuilder.<String, Object>put(
 					"apiServerHost", kubernetesMockServer.getHostName()
@@ -93,7 +91,7 @@ public class PortalK8sAgentImplTest {
 				).put(
 					"apiServerSSL", Boolean.FALSE
 				).put(
-					"caCertData", caCertData
+					"caCertData", StringUtil.read(classLoader, "ca.crt")
 				).put(
 					"namespace", "default"
 				).put(
