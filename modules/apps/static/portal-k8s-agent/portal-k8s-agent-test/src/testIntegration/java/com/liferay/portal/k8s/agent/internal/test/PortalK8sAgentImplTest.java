@@ -59,17 +59,17 @@ public class PortalK8sAgentImplTest {
 		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
 
 		ServiceTracker<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>
-			portalK8sConfigMapModifierTracker = new ServiceTracker<>(
+			serviceTracker = new ServiceTracker<>(
 				bundle.getBundleContext(), PortalK8sConfigMapModifier.class,
 				null);
 
 		Configuration configuration = null;
 
 		try {
-			portalK8sConfigMapModifierTracker.open();
+			serviceTracker.open();
 
 			PortalK8sConfigMapModifier portalK8sConfigMapModifier =
-				portalK8sConfigMapModifierTracker.waitForService(2000);
+				serviceTracker.waitForService(2000);
 
 			Assert.assertNull(portalK8sConfigMapModifier);
 
@@ -100,13 +100,12 @@ public class PortalK8sAgentImplTest {
 					"saToken", "saToken"
 				).build());
 
-			portalK8sConfigMapModifier =
-				portalK8sConfigMapModifierTracker.waitForService(2000);
+			portalK8sConfigMapModifier = serviceTracker.waitForService(2000);
 
 			Assert.assertNotNull(portalK8sConfigMapModifier);
 		}
 		finally {
-			portalK8sConfigMapModifierTracker.close();
+			serviceTracker.close();
 
 			if (configuration != null) {
 				configuration.delete();
