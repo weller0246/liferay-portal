@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.k8s.agent.internal.test.PortalK8sAgentImplTest;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -58,10 +59,9 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 	@Test
 	public void testAnnotationsMutator() throws Exception {
 		String filterString = StringBundler.concat(
-			"(&(objectClass=",
-			PortalK8sConfigurationPropertiesMutator.class.getName(),
-			")(component.name=",
-			"*.AnnotationsPortalK8sConfigurationPropertiesMutator))");
+			"(&(component.name=*.",
+			"AnnotationsPortalK8sConfigurationPropertiesMutator)(objectClass=",
+			PortalK8sConfigurationPropertiesMutator.class.getName(), "))");
 
 		ServiceTracker
 			<PortalK8sConfigurationPropertiesMutator,
@@ -76,18 +76,14 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 			PortalK8sConfigurationPropertiesMutator mutator =
 				mutatorTracker.waitForService(4000);
 
-			HashMap<String, String> annotations = new HashMap<>();
-
-			annotations.put(
-				"cloud.liferay.com/context-data",
-				StringBundler.concat(
-					"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"));
-
-			HashMap<String, String> labels = new HashMap<>();
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 			mutator.mutateConfigurationProperties(
-				annotations, labels, properties);
+				HashMapBuilder.put(
+					"cloud.liferay.com/context-data",
+					"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"
+				).build(),
+				new HashMap<>(), properties);
 
 			Assert.assertArrayEquals(
 				new String[] {"foo"},

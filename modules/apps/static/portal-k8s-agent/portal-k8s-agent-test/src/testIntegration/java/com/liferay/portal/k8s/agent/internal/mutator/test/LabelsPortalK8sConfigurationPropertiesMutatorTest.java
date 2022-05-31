@@ -14,12 +14,12 @@
 
 package com.liferay.portal.k8s.agent.internal.mutator.test;
 
-
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.k8s.agent.internal.test.PortalK8sAgentImplTest;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -59,10 +59,9 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 	@Test
 	public void testAnnotationsMutator() throws Exception {
 		String filterString = StringBundler.concat(
-			"(&(objectClass=",
-			PortalK8sConfigurationPropertiesMutator.class.getName(),
-			")(component.name=",
-			"*.LabelsPortalK8sConfigurationPropertiesMutator))");
+			"(&(component.name=*.LabelsPortalK8sConfigurationPropertiesMutator",
+			")(objectClass=",
+			PortalK8sConfigurationPropertiesMutator.class.getName(), "))");
 
 		ServiceTracker
 			<PortalK8sConfigurationPropertiesMutator,
@@ -77,16 +76,16 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 			PortalK8sConfigurationPropertiesMutator mutator =
 				mutatorTracker.waitForService(4000);
 
-			HashMap<String, String> annotations = new HashMap<>();
-			HashMap<String, String> labels = new HashMap<>();
-
-			labels.put("cloud.liferay.com/serviceId", "customrestservice");
-			labels.put("dxp.liferay.com/configs", "true");
-
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 			mutator.mutateConfigurationProperties(
-				annotations, labels, properties);
+				new HashMap<>(),
+				HashMapBuilder.put(
+					"cloud.liferay.com/serviceId", "customrestservice"
+				).put(
+					"dxp.liferay.com/configs", "true"
+				).build(),
+				properties);
 
 			Assert.assertEquals(
 				"customrestservice",
