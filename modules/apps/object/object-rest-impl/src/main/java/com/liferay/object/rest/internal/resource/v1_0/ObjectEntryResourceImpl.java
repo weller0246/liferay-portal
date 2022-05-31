@@ -159,7 +159,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		Page<ObjectEntry> objectEntryPage =
 			objectEntryManager.getObjectEntryRelatedObjectEntries(
 				_getDTOConverterContext(currentObjectEntryId),
-				currentObjectEntryId, _objectDefinition, objectRelationshipName,
+				_objectDefinition, currentObjectEntryId, objectRelationshipName,
 				pagination);
 
 		ObjectRelationship objectRelationship =

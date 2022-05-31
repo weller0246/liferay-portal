@@ -428,9 +428,9 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	@Override
 	public Page<ObjectEntry> getObjectEntryRelatedObjectEntries(
-			DTOConverterContext dtoConverterContext, Long objectEntryId,
-			ObjectDefinition objectDefinition, String objectRelationshipName,
-			Pagination pagination)
+			DTOConverterContext dtoConverterContext,
+			ObjectDefinition objectDefinition, Long objectEntryId,
+			String objectRelationshipName, Pagination pagination)
 		throws Exception {
 
 		ObjectRelationship objectRelationship =
