@@ -17,6 +17,7 @@ package com.liferay.object.service.test;
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.constants.ObjectLayoutBoxConstants;
 import com.liferay.object.exception.DefaultObjectLayoutException;
+import com.liferay.object.exception.ObjectLayoutBoxCategorizationTypeException;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectLayout;
@@ -227,10 +228,12 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
+		catch (ObjectLayoutBoxCategorizationTypeException
+					objectLayoutBoxCategorizationTypeException) {
+
 			Assert.assertEquals(
 				"Categorization layout box must not have layout rows",
-				exception.getMessage());
+				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
 
 		try {
@@ -267,10 +270,12 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
+		catch (ObjectLayoutBoxCategorizationTypeException
+					objectLayoutBoxCategorizationTypeException) {
+
 			Assert.assertEquals(
 				"There can only be one categorization layout box per layout",
-				exception.getMessage());
+				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
 
 		try {
@@ -293,9 +298,12 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
+		catch (ObjectLayoutBoxCategorizationTypeException
+					objectLayoutBoxCategorizationTypeException) {
+
 			Assert.assertEquals(
-				"Object layout box must have a type", exception.getMessage());
+				"Object layout box must have a type",
+				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
 
 		objectLayout = _addObjectLayout();
@@ -367,9 +375,7 @@ public class ObjectLayoutLocalServiceTest {
 		return _addObjectLayoutBox(ObjectLayoutBoxConstants.TYPE_REGULAR);
 	}
 
-	private ObjectLayoutBox _addObjectLayoutBox(String type)
-		throws Exception {
-
+	private ObjectLayoutBox _addObjectLayoutBox(String type) throws Exception {
 		ObjectLayoutBox objectLayoutBox = _objectLayoutBoxPersistence.create(0);
 
 		objectLayoutBox.setCollapsable(false);
