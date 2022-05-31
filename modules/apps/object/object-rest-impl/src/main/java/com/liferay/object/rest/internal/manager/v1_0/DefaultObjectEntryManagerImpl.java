@@ -645,19 +645,16 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			List<com.liferay.object.model.ObjectEntry> objectEntries)
 		throws Exception {
 
-		List<ObjectEntry> finalObjectEntries = new ArrayList<>();
+		return TransformUtil.transform(
+			objectEntries,
+			objectEntry -> {
+				ObjectDefinition objectDefinition =
+					_objectDefinitionLocalService.getObjectDefinition(
+						objectEntry.getObjectDefinitionId());
 
-		for (com.liferay.object.model.ObjectEntry objectEntry : objectEntries) {
-			ObjectDefinition objectDefinition =
-				_objectDefinitionLocalService.getObjectDefinition(
-					objectEntry.getObjectDefinitionId());
-
-			finalObjectEntries.add(
-				_toObjectEntry(
-					dtoConverterContext, objectDefinition, objectEntry));
-		}
-
-		return finalObjectEntries;
+				return _toObjectEntry(
+					dtoConverterContext, objectDefinition, objectEntry);
+			});
 	}
 
 	private ObjectEntry _toObjectEntry(
