@@ -90,7 +90,6 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 			Assert.assertArrayEquals(
 				new String[] {"foo"},
 				(String[])properties.get("com.liferay.lxc.ext.domains"));
-
 			Assert.assertEquals(
 				"uat", (String)properties.get("k8s.lxc.environment"));
 		}

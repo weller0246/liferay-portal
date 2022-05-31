@@ -92,7 +92,6 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 			Assert.assertEquals(
 				"customrestservice",
 				(String)properties.get("k8s.cloud.liferay.com.serviceId"));
-
 			Assert.assertEquals(
 				"true", (String)properties.get("k8s.dxp.liferay.com.configs"));
 		}
