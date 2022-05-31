@@ -65,25 +65,27 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 
 		ServiceTracker
 			<PortalK8sConfigurationPropertiesMutator,
-			 PortalK8sConfigurationPropertiesMutator> mutatorTracker =
+			 PortalK8sConfigurationPropertiesMutator> serviceTracker =
 				new ServiceTracker<>(
 					_bundleContext, FrameworkUtil.createFilter(filterString),
 					null);
 
 		try {
-			mutatorTracker.open();
+			serviceTracker.open();
 
-			PortalK8sConfigurationPropertiesMutator mutator =
-				mutatorTracker.waitForService(4000);
+			PortalK8sConfigurationPropertiesMutator
+				portalK8sConfigurationPropertiesMutator =
+					serviceTracker.waitForService(4000);
 
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-			mutator.mutateConfigurationProperties(
-				HashMapBuilder.put(
-					"cloud.liferay.com/context-data",
-					"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"
-				).build(),
-				new HashMap<>(), properties);
+			portalK8sConfigurationPropertiesMutator.
+				mutateConfigurationProperties(
+					HashMapBuilder.put(
+						"cloud.liferay.com/context-data",
+						"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"
+					).build(),
+					new HashMap<>(), properties);
 
 			Assert.assertArrayEquals(
 				new String[] {"foo"},
@@ -93,7 +95,7 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 				"uat", (String)properties.get("k8s.lxc.environment"));
 		}
 		finally {
-			mutatorTracker.close();
+			serviceTracker.close();
 		}
 	}
 

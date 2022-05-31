@@ -65,27 +65,29 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 
 		ServiceTracker
 			<PortalK8sConfigurationPropertiesMutator,
-			 PortalK8sConfigurationPropertiesMutator> mutatorTracker =
+			 PortalK8sConfigurationPropertiesMutator> serviceTracker =
 				new ServiceTracker<>(
 					_bundleContext, FrameworkUtil.createFilter(filterString),
 					null);
 
 		try {
-			mutatorTracker.open();
+			serviceTracker.open();
 
-			PortalK8sConfigurationPropertiesMutator mutator =
-				mutatorTracker.waitForService(4000);
+			PortalK8sConfigurationPropertiesMutator
+				portalK8sConfigurationPropertiesMutator =
+					serviceTracker.waitForService(4000);
 
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
-			mutator.mutateConfigurationProperties(
-				new HashMap<>(),
-				HashMapBuilder.put(
-					"cloud.liferay.com/serviceId", "customrestservice"
-				).put(
-					"dxp.liferay.com/configs", "true"
-				).build(),
-				properties);
+			portalK8sConfigurationPropertiesMutator.
+				mutateConfigurationProperties(
+					new HashMap<>(),
+					HashMapBuilder.put(
+						"cloud.liferay.com/serviceId", "customrestservice"
+					).put(
+						"dxp.liferay.com/configs", "true"
+					).build(),
+					properties);
 
 			Assert.assertEquals(
 				"customrestservice",
@@ -95,7 +97,7 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 				"true", (String)properties.get("k8s.dxp.liferay.com.configs"));
 		}
 		finally {
-			mutatorTracker.close();
+			serviceTracker.close();
 		}
 	}
 
