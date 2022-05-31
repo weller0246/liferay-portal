@@ -57,7 +57,7 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 	}
 
 	@Test
-	public void testAnnotationsMutator() throws Exception {
+	public void testMutateConfigurationProperties() throws Exception {
 		String filterString = StringBundler.concat(
 			"(&(component.name=*.LabelsPortalK8sConfigurationPropertiesMutator",
 			")(objectClass=",
