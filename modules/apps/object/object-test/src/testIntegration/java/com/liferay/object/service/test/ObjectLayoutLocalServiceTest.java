@@ -152,6 +152,7 @@ public class ObjectLayoutLocalServiceTest {
 		}
 
 		_deleteObjectFields();
+
 		_objectLayoutLocalService.deleteObjectLayout(
 			objectLayout.getObjectLayoutId());
 
@@ -342,6 +343,7 @@ public class ObjectLayoutLocalServiceTest {
 		_assertObjectLayout(objectLayout);
 
 		_deleteObjectFields();
+
 		_objectLayoutLocalService.deleteObjectLayout(
 			objectLayout.getObjectLayoutId());
 
