@@ -191,13 +191,12 @@ public class OpenAPIResourceImpl {
 		ObjectRelationship objectRelationship, PathItem pathItem,
 		ObjectDefinition relatedObjectDefinition) {
 
-		Map<PathItem.HttpMethod, Operation>
-			relationshipHttpMethodOperationsMap = pathItem.readOperationsMap();
+		Map<PathItem.HttpMethod, Operation> operations =
+			pathItem.readOperationsMap();
 
-		Operation relationshipOperation =
-			relationshipHttpMethodOperationsMap.get(PathItem.HttpMethod.GET);
+		Operation operation = operations.get(PathItem.HttpMethod.GET);
 
-		if (relationshipOperation != null) {
+		if (operation != null) {
 			PathItem customPathItem = new PathItem();
 
 			customPathItem.get(
@@ -208,10 +207,9 @@ public class OpenAPIResourceImpl {
 			return customPathItem;
 		}
 
-		relationshipOperation = relationshipHttpMethodOperationsMap.get(
-			PathItem.HttpMethod.PUT);
+		operation = operations.get(PathItem.HttpMethod.PUT);
 
-		if (relationshipOperation != null) {
+		if (operation != null) {
 			PathItem customPathItem = new PathItem();
 
 			customPathItem.put(
