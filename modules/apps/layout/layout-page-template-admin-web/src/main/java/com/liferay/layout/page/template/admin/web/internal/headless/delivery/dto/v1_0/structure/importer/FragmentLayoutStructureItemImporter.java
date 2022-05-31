@@ -226,6 +226,24 @@ public class FragmentLayoutStructureItemImporter
 		}
 
 		long fragmentEntryId = 0;
+
+		if (fragmentEntry != null) {
+			fragmentEntryId = fragmentEntry.getFragmentEntryId();
+		}
+
+		long segmentsExperienceId =
+			layoutStructureItemImporterContext.getSegmentsExperienceId();
+
+		SegmentsExperience segmentsExperience =
+			_segmentsExperienceLocalService.fetchSegmentsExperience(
+				segmentsExperienceId);
+
+		if (segmentsExperience == null) {
+			segmentsExperienceId =
+				_segmentsExperienceLocalService.
+					fetchDefaultSegmentsExperienceId(layout.getPlid());
+		}
+
 		String html = StringPool.BLANK;
 		String js = StringPool.BLANK;
 		String css = StringPool.BLANK;
@@ -235,7 +253,6 @@ public class FragmentLayoutStructureItemImporter
 			JSONFactoryUtil.createJSONObject();
 
 		if (fragmentEntry != null) {
-			fragmentEntryId = fragmentEntry.getFragmentEntryId();
 			html = fragmentEntry.getHtml();
 			js = fragmentEntry.getJs();
 			css = fragmentEntry.getCss();
@@ -302,19 +319,6 @@ public class FragmentLayoutStructureItemImporter
 		JSONObject jsonObject = _deepMerge(
 			defaultEditableValuesJSONObject,
 			fragmentEntryProcessorValuesJSONObject);
-
-		long segmentsExperienceId =
-			layoutStructureItemImporterContext.getSegmentsExperienceId();
-
-		SegmentsExperience segmentsExperience =
-			_segmentsExperienceLocalService.fetchSegmentsExperience(
-				segmentsExperienceId);
-
-		if (segmentsExperience == null) {
-			segmentsExperienceId =
-				_segmentsExperienceLocalService.
-					fetchDefaultSegmentsExperienceId(layout.getPlid());
-		}
 
 		FragmentEntryLink fragmentEntryLink =
 			_fragmentEntryLinkLocalService.addFragmentEntryLink(
