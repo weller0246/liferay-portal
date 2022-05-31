@@ -34,11 +34,9 @@ public class AccountGroupUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		String accountGroupSQL =
-			"select * from AccountGroup order by accountGroupId asc";
-
-		try (Statement selectStatement = connection.createStatement()) {
-			ResultSet resultSet = selectStatement.executeQuery(accountGroupSQL);
+		try (Statement statement = connection.createStatement()) {
+			ResultSet resultSet = statement.executeQuery(
+				"select * from AccountGroup order by accountGroupId asc");
 
 			while (resultSet.next()) {
 				_resourceLocalService.addResources(
