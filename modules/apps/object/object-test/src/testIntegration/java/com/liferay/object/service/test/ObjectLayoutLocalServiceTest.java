@@ -166,53 +166,6 @@ public class ObjectLayoutLocalServiceTest {
 				LocalizedMapUtil.getLocalizedMap(
 					RandomTestUtil.randomString()));
 			objectLayoutTab.setPriority(0);
-			objectLayoutTab.setObjectLayoutBoxes(
-				Arrays.asList(_addObjectLayoutBox(), _addObjectLayoutBox()));
-
-			List<ObjectLayoutBox> objectLayoutBoxes =
-				objectLayoutTab.getObjectLayoutBoxes();
-
-			ObjectLayoutBox objectLayoutBox = objectLayoutBoxes.get(0);
-
-			List<ObjectLayoutRow> objectLayoutRows =
-				objectLayoutBox.getObjectLayoutRows();
-
-			ObjectLayoutRow objectLayoutRow = objectLayoutRows.get(0);
-
-			List<ObjectLayoutColumn> objectLayoutColumns =
-				objectLayoutRow.getObjectLayoutColumns();
-
-			ObjectLayoutColumn objectLayoutColumn = objectLayoutColumns.get(0);
-
-			objectLayoutColumn.setSize(13);
-
-			_objectLayoutLocalService.addObjectLayout(
-				TestPropsValues.getUserId(),
-				_objectDefinition.getObjectDefinitionId(), false,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				Collections.singletonList(objectLayoutTab));
-
-			Assert.fail();
-		}
-		catch (ObjectLayoutColumnSizeException
-					objectLayoutColumnSizeException) {
-
-			String message = objectLayoutColumnSizeException.getMessage();
-
-			Assert.assertTrue(
-				message.contains(
-					"Object layout column size must be more than 0 and less " +
-						"than 12"));
-		}
-
-		try {
-			ObjectLayoutTab objectLayoutTab =
-				_objectLayoutTabPersistence.create(0);
-
-			objectLayoutTab.setNameMap(
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
-			objectLayoutTab.setPriority(0);
 
 			ObjectLayoutBox objectLayoutBox = _addObjectLayoutBox(
 				ObjectLayoutBoxConstants.TYPE_CATEGORIZATION);
@@ -236,6 +189,34 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.assertEquals(
 				"Categorization layout box must not have layout rows",
+				objectLayoutBoxCategorizationTypeException.getMessage());
+		}
+
+		try {
+			ObjectLayoutTab objectLayoutTab =
+				_objectLayoutTabPersistence.create(0);
+
+			objectLayoutTab.setNameMap(
+				LocalizedMapUtil.getLocalizedMap(
+					RandomTestUtil.randomString()));
+			objectLayoutTab.setPriority(0);
+			objectLayoutTab.setObjectLayoutBoxes(
+				Arrays.asList(
+					_addObjectLayoutBox(), _addObjectLayoutBox(null)));
+
+			_objectLayoutLocalService.addObjectLayout(
+				TestPropsValues.getUserId(),
+				_objectDefinition.getObjectDefinitionId(), false,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				Collections.singletonList(objectLayoutTab));
+
+			Assert.fail();
+		}
+		catch (ObjectLayoutBoxCategorizationTypeException
+					objectLayoutBoxCategorizationTypeException) {
+
+			Assert.assertEquals(
+				"Object layout box must have a type",
 				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
 
@@ -290,8 +271,24 @@ public class ObjectLayoutLocalServiceTest {
 					RandomTestUtil.randomString()));
 			objectLayoutTab.setPriority(0);
 			objectLayoutTab.setObjectLayoutBoxes(
-				Arrays.asList(
-					_addObjectLayoutBox(), _addObjectLayoutBox(null)));
+				Arrays.asList(_addObjectLayoutBox(), _addObjectLayoutBox()));
+
+			List<ObjectLayoutBox> objectLayoutBoxes =
+				objectLayoutTab.getObjectLayoutBoxes();
+
+			ObjectLayoutBox objectLayoutBox = objectLayoutBoxes.get(0);
+
+			List<ObjectLayoutRow> objectLayoutRows =
+				objectLayoutBox.getObjectLayoutRows();
+
+			ObjectLayoutRow objectLayoutRow = objectLayoutRows.get(0);
+
+			List<ObjectLayoutColumn> objectLayoutColumns =
+				objectLayoutRow.getObjectLayoutColumns();
+
+			ObjectLayoutColumn objectLayoutColumn = objectLayoutColumns.get(0);
+
+			objectLayoutColumn.setSize(13);
 
 			_objectLayoutLocalService.addObjectLayout(
 				TestPropsValues.getUserId(),
@@ -301,12 +298,15 @@ public class ObjectLayoutLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (ObjectLayoutBoxCategorizationTypeException
-					objectLayoutBoxCategorizationTypeException) {
+		catch (ObjectLayoutColumnSizeException
+					objectLayoutColumnSizeException) {
 
-			Assert.assertEquals(
-				"Object layout box must have a type",
-				objectLayoutBoxCategorizationTypeException.getMessage());
+			String message = objectLayoutColumnSizeException.getMessage();
+
+			Assert.assertTrue(
+				message.contains(
+					"Object layout column size must be more than 0 and less " +
+						"than 12"));
 		}
 
 		objectLayout = _addObjectLayout();
