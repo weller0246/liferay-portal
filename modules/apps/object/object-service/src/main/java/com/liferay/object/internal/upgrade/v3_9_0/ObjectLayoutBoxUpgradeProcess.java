@@ -17,8 +17,6 @@ package com.liferay.object.internal.upgrade.v3_9_0;
 import com.liferay.object.constants.ObjectLayoutBoxConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
-import java.sql.PreparedStatement;
-
 /**
  * @author Selton Guedes
  */
@@ -32,14 +30,9 @@ public class ObjectLayoutBoxUpgradeProcess extends UpgradeProcess {
 
 		alterTableAddColumn("ObjectLayoutBox", "type_", "VARCHAR(75) null");
 
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"update ObjectLayoutBox set type_ = ?")) {
-
-			preparedStatement.setString(
-				1, ObjectLayoutBoxConstants.TYPE_REGULAR);
-
-			preparedStatement.execute();
-		}
+		runSQL(
+			"update ObjectLayoutBox set type_ = '" +
+				ObjectLayoutBoxConstants.TYPE_REGULAR + "'");
 	}
 
 }
