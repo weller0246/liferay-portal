@@ -93,12 +93,14 @@ public class SVGUtil {
 		for (FrontendIconsResourcePack frontendIconsResourcePack :
 				frontendIconsResourcePacks) {
 
-			if (frontendIconsResourcePack != null) {
-				for (FrontendIconsResource frontendIconsResource :
-						frontendIconsResourcePack.getFrontendIconsResources()) {
+			if (frontendIconsResourcePack == null) {
+				continue;
+			}
 
-					sb.append(frontendIconsResource.asSymbol());
-				}
+			for (FrontendIconsResource frontendIconsResource :
+					frontendIconsResourcePack.getFrontendIconsResources()) {
+
+				sb.append(frontendIconsResource.asSymbol());
 			}
 		}
 
