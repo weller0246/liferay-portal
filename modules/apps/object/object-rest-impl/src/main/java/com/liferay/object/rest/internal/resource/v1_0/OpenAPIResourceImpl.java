@@ -133,9 +133,8 @@ public class OpenAPIResourceImpl {
 	}
 
 	private Operation _createCustomRelationshipOperation(
-		String httpMethod, Operation operation,
-		ObjectDefinition relatedObjectDefinition,
-		ObjectRelationship objectRelationship) {
+		String httpMethod, ObjectRelationship objectRelationship,
+		ObjectDefinition relatedObjectDefinition, Operation operation) {
 
 		Map<String, Parameter> parameters = new HashMap<>();
 
@@ -203,8 +202,8 @@ public class OpenAPIResourceImpl {
 
 			customPathItem.get(
 				_createCustomRelationshipOperation(
-					"get", pathItem.getGet(), relatedObjectDefinition,
-					objectRelationship));
+					"get", objectRelationship, relatedObjectDefinition,
+					pathItem.getGet()));
 
 			return customPathItem;
 		}
@@ -217,8 +216,8 @@ public class OpenAPIResourceImpl {
 
 			customPathItem.put(
 				_createCustomRelationshipOperation(
-					"put", pathItem.getPut(), relatedObjectDefinition,
-					objectRelationship));
+					"put", objectRelationship, relatedObjectDefinition,
+					pathItem.getPut()));
 
 			return customPathItem;
 		}
