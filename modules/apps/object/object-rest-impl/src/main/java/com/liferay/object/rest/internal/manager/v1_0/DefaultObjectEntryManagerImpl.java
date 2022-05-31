@@ -445,17 +445,17 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 		if (Objects.equals(
 				objectRelationship.getType(),
-				ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-			objectEntries = _getManyToManyRelationshipObjectEntries(
+			objectEntries = _getOneToManyRelationshipObjectEntries(
 				dtoConverterContext, objectRelationship, objectEntry,
 				pagination);
 		}
 		else if (Objects.equals(
 					objectRelationship.getType(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
-			objectEntries = _getOneToManyRelationshipObjectEntries(
+			objectEntries = _getManyToManyRelationshipObjectEntries(
 				dtoConverterContext, objectRelationship, objectEntry,
 				pagination);
 		}
