@@ -448,7 +448,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
 			objectEntries = _getOneToManyRelationshipObjectEntries(
-				dtoConverterContext, objectRelationship, objectEntry,
+				dtoConverterContext, objectEntry, objectRelationship,
 				pagination);
 		}
 		else if (Objects.equals(
@@ -456,7 +456,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
 			objectEntries = _getManyToManyRelationshipObjectEntries(
-				dtoConverterContext, objectRelationship, objectEntry,
+				dtoConverterContext, objectEntry, objectRelationship,
 				pagination);
 		}
 
@@ -535,9 +535,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	private List<ObjectEntry> _getManyToManyRelationshipObjectEntries(
 			DTOConverterContext dtoConverterContext,
-			ObjectRelationship objectRelationship,
 			com.liferay.object.model.ObjectEntry objectEntry,
-			Pagination pagination)
+			ObjectRelationship objectRelationship, Pagination pagination)
 		throws Exception {
 
 		boolean reverse = objectRelationship.isReverse();
@@ -570,9 +569,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 	private List<ObjectEntry> _getOneToManyRelationshipObjectEntries(
 			DTOConverterContext dtoConverterContext,
-			ObjectRelationship objectRelationship,
 			com.liferay.object.model.ObjectEntry objectEntry,
-			Pagination pagination)
+			ObjectRelationship objectRelationship, Pagination pagination)
 		throws Exception {
 
 		List<com.liferay.object.model.ObjectEntry>
