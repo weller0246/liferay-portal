@@ -189,15 +189,14 @@ public class EditClientExtensionEntryDisplayContext {
 	public List<SelectOption> getPortletCategoryNameSelectOptions() {
 		List<SelectOption> selectOptions = new ArrayList<>();
 
+		boolean found = false;
+		String portletCategoryName = getPortletCategoryName();
+
 		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		PortletCategory rootPortletCategory = (PortletCategory)WebAppPool.get(
 			themeDisplay.getCompanyId(), WebKeys.PORTLET_CATEGORY);
-
-		String portletCategoryName = getPortletCategoryName();
-
-		boolean found = false;
 
 		for (PortletCategory portletCategory :
 				rootPortletCategory.getCategories()) {
