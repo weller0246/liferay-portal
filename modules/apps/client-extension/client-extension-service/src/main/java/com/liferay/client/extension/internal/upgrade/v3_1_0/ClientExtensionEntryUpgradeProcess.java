@@ -39,7 +39,7 @@ public class ClientExtensionEntryUpgradeProcess extends UpgradeProcess {
 			return;
 		}
 
-		alterTableAddColumn("ClientExtensionEntry", "typeSettings", "TEXT");
+		alterTableAddColumn("ClientExtensionEntry", "typeSettings", "TEXT null");
 
 		String selectSQL = StringBundler.concat(
 			"select clientExtensionEntryId, customElementCSSURLs, ",
