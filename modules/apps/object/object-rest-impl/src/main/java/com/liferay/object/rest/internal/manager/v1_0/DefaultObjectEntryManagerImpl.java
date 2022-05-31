@@ -447,17 +447,36 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 				objectRelationship.getType(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
-			objectEntries = _getOneToManyRelationshipObjectEntries(
-				dtoConverterContext, objectEntry, objectRelationship,
-				pagination);
+			objectEntries = _toObjectEntries(
+				dtoConverterContext,
+				_objectEntryLocalService.getOneToManyRelatedObjectEntries(
+					objectEntry.getGroupId(),
+					objectRelationship.getObjectRelationshipId(),
+					objectEntry.getObjectEntryId(),
+					pagination.getStartPosition(),
+					pagination.getEndPosition()));
 		}
 		else if (Objects.equals(
 					objectRelationship.getType(),
 					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
-			objectEntries = _getManyToManyRelationshipObjectEntries(
-				dtoConverterContext, objectEntry, objectRelationship,
-				pagination);
+			boolean reverse = objectRelationship.isReverse();
+
+			if (reverse) {
+				objectRelationship =
+					_objectRelationshipLocalService.
+						fetchReverseObjectRelationship(
+							objectRelationship, false);
+			}
+
+			objectEntries = _toObjectEntries(
+				dtoConverterContext,
+				_objectEntryLocalService.getManyToManyRelatedObjectEntries(
+					objectEntry.getGroupId(),
+					objectRelationship.getObjectRelationshipId(),
+					objectEntry.getObjectEntryId(), reverse,
+					pagination.getStartPosition(),
+					pagination.getEndPosition()));
 		}
 
 		return Page.of(
@@ -533,56 +552,12 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		return 0;
 	}
 
-	private List<ObjectEntry> _getManyToManyRelationshipObjectEntries(
-			DTOConverterContext dtoConverterContext,
-			com.liferay.object.model.ObjectEntry objectEntry,
-			ObjectRelationship objectRelationship, Pagination pagination)
-		throws Exception {
-
-		boolean reverse = objectRelationship.isReverse();
-
-		if (reverse) {
-			objectRelationship =
-				_objectRelationshipLocalService.fetchReverseObjectRelationship(
-					objectRelationship, false);
-		}
-
-		List<com.liferay.object.model.ObjectEntry>
-			manyToManyRelatedObjectEntries =
-				_objectEntryLocalService.getManyToManyRelatedObjectEntries(
-					objectEntry.getGroupId(),
-					objectRelationship.getObjectRelationshipId(),
-					objectEntry.getObjectEntryId(), reverse,
-					pagination.getStartPosition(), pagination.getEndPosition());
-
-		return _toObjectEntries(
-			dtoConverterContext, manyToManyRelatedObjectEntries);
-	}
-
 	private String _getObjectEntriesPermissionName(long objectDefinitionId) {
 		return ObjectConstants.RESOURCE_NAME + "#" + objectDefinitionId;
 	}
 
 	private String _getObjectEntryPermissionName(long objectDefinitionId) {
 		return ObjectDefinition.class.getName() + "#" + objectDefinitionId;
-	}
-
-	private List<ObjectEntry> _getOneToManyRelationshipObjectEntries(
-			DTOConverterContext dtoConverterContext,
-			com.liferay.object.model.ObjectEntry objectEntry,
-			ObjectRelationship objectRelationship, Pagination pagination)
-		throws Exception {
-
-		List<com.liferay.object.model.ObjectEntry>
-			oneToManyRelatedObjectEntries =
-				_objectEntryLocalService.getOneToManyRelatedObjectEntries(
-					objectEntry.getGroupId(),
-					objectRelationship.getObjectRelationshipId(),
-					objectEntry.getObjectEntryId(),
-					pagination.getStartPosition(), pagination.getEndPosition());
-
-		return _toObjectEntries(
-			dtoConverterContext, oneToManyRelatedObjectEntries);
 	}
 
 	private void _processVulcanAggregation(
