@@ -16,7 +16,6 @@ package com.liferay.portal.k8s.agent.internal.mutator.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.k8s.agent.internal.test.PortalK8sAgentImplTest;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -27,14 +26,12 @@ import java.util.Dictionary;
 import java.util.HashMap;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.util.tracker.ServiceTracker;
 
@@ -49,15 +46,10 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() {
-		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
-
-		_bundleContext = bundle.getBundleContext();
-	}
-
 	@Test
 	public void testMutateConfigurationProperties() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(
+			LabelsPortalK8sConfigurationPropertiesMutatorTest.class);
 		String filterString = StringBundler.concat(
 			"(&(component.name=*.LabelsPortalK8sConfigurationPropertiesMutator",
 			")(objectClass=",
@@ -67,8 +59,8 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 			<PortalK8sConfigurationPropertiesMutator,
 			 PortalK8sConfigurationPropertiesMutator> serviceTracker =
 				new ServiceTracker<>(
-					_bundleContext, FrameworkUtil.createFilter(filterString),
-					null);
+					bundle.getBundleContext(),
+					FrameworkUtil.createFilter(filterString), null);
 
 		try {
 			serviceTracker.open();
@@ -99,7 +91,5 @@ public class LabelsPortalK8sConfigurationPropertiesMutatorTest {
 			serviceTracker.close();
 		}
 	}
-
-	private BundleContext _bundleContext;
 
 }

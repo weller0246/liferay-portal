@@ -27,14 +27,12 @@ import io.fabric8.kubernetes.client.server.mock.KubernetesMockServer;
 import io.fabric8.kubernetes.client.server.mock.KubernetesServer;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -56,18 +54,14 @@ public class PortalK8sAgentImplTest {
 	public static final KubernetesServer kubernetesServer =
 		new KubernetesServer(false, true);
 
-	@Before
-	public void setUp() {
-		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
-
-		_bundleContext = bundle.getBundleContext();
-	}
-
 	@Test
 	public void testK8sAgentInitialization() throws Exception {
+		Bundle bundle = FrameworkUtil.getBundle(PortalK8sAgentImplTest.class);
+
 		ServiceTracker<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>
 			portalK8sConfigMapModifierTracker = new ServiceTracker<>(
-				_bundleContext, PortalK8sConfigMapModifier.class, null);
+				bundle.getBundleContext(), PortalK8sConfigMapModifier.class,
+				null);
 
 		Configuration configuration = null;
 
@@ -122,7 +116,5 @@ public class PortalK8sAgentImplTest {
 
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
-
-	private BundleContext _bundleContext;
 
 }
