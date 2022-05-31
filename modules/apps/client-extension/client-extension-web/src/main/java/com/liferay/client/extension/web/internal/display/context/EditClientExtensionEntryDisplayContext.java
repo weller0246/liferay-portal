@@ -272,9 +272,9 @@ public class EditClientExtensionEntryDisplayContext {
 	public String[] getThemeJSURLs() {
 		CETThemeJS cetThemeJS = _getCETThemeJS();
 
-		String themeJSURLsString = cetThemeJS.getURLs();
+		String urlsString = cetThemeJS.getURLs();
 
-		String[] themeJSURLs = themeJSURLsString.split(StringPool.NEW_LINE);
+		String[] themeJSURLs = urlsString.split(StringPool.NEW_LINE);
 
 		themeJSURLs = ParamUtil.getStringValues(
 			_portletRequest, "themeJSURLs", themeJSURLs);
