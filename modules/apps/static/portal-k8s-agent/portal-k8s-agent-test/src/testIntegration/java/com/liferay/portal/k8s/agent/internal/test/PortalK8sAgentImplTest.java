@@ -15,11 +15,11 @@
 package com.liferay.portal.k8s.agent.internal.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
-import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -88,12 +88,8 @@ public class PortalK8sAgentImplTest {
 					"apiServerSSL", Boolean.FALSE
 				).put(
 					"caCertData",
-					() -> {
-						Class<?> clazz = getClass();
-
-						return StringUtil.read(
-							clazz.getClassLoader(), "ca.crt");
-					}
+					StringUtil.read(
+						PortalK8sAgentImplTest.class, "dependencies/ca.crt")
 				).put(
 					"namespace", "default"
 				).put(
