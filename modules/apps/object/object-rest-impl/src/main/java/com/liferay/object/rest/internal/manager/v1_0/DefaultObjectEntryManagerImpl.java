@@ -433,15 +433,15 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			String objectRelationshipName, Pagination pagination)
 		throws Exception {
 
-		ObjectRelationship objectRelationship =
-			_objectRelationshipService.getObjectRelationship(
-				objectDefinition.getObjectDefinitionId(),
-				objectRelationshipName);
-
 		com.liferay.object.model.ObjectEntry objectEntry =
 			_objectEntryService.getObjectEntry(objectEntryId);
 
 		List<ObjectEntry> objectEntries = new ArrayList<>();
+
+		ObjectRelationship objectRelationship =
+			_objectRelationshipService.getObjectRelationship(
+				objectDefinition.getObjectDefinitionId(),
+				objectRelationshipName);
 
 		if (Objects.equals(
 				objectRelationship.getType(),
