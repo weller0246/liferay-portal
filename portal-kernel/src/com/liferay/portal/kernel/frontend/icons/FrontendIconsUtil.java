@@ -27,9 +27,7 @@ import com.liferay.portal.kernel.util.StringBundler;
 public class FrontendIconsUtil {
 
 	public static String getBasePath() {
-		String pathContext = PortalUtil.getPathContext();
-
-		return pathContext + _ICONS_BASE_PATH;
+		return PortalUtil.getPathContext() + _ICONS_BASE_PATH;
 	}
 
 	public static String getSpritemap(long siteId) {
