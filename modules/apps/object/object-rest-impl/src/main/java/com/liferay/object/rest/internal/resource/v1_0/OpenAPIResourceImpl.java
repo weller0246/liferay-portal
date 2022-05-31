@@ -197,27 +197,27 @@ public class OpenAPIResourceImpl {
 		Operation operation = operations.get(PathItem.HttpMethod.GET);
 
 		if (operation != null) {
-			PathItem customPathItem = new PathItem();
-
-			customPathItem.get(
-				_createCustomRelationshipOperation(
-					"get", objectRelationship, relatedObjectDefinition,
-					pathItem.getGet()));
-
-			return customPathItem;
+			return new PathItem() {
+				{
+					get(
+						_createCustomRelationshipOperation(
+							"get", objectRelationship, relatedObjectDefinition,
+							pathItem.getGet()));
+				}
+			};
 		}
 
 		operation = operations.get(PathItem.HttpMethod.PUT);
 
 		if (operation != null) {
-			PathItem customPathItem = new PathItem();
-
-			customPathItem.put(
-				_createCustomRelationshipOperation(
-					"put", objectRelationship, relatedObjectDefinition,
-					pathItem.getPut()));
-
-			return customPathItem;
+			return new PathItem() {
+				{
+					put(
+						_createCustomRelationshipOperation(
+							"put", objectRelationship, relatedObjectDefinition,
+							pathItem.getPut()));
+				}
+			};
 		}
 
 		return new PathItem();
