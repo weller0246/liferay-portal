@@ -7,5 +7,5 @@ dependencies {
 	testIntegrationCompile project(":apps:static:portal-k8s-agent:portal-k8s-agent-api")
 	testIntegrationCompile project(":test:arquillian-extension-junit-bridge")
 
-	testModules project(":apps:static:portal-k8s-agent:portal-k8s-agent-testing-dependency")
+	testModules project(":apps:static:portal-k8s-agent:portal-k8s-agent-test-dependencies")
 }
