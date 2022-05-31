@@ -53,8 +53,8 @@ public class PortalK8sAgentImplTest {
 
 	@ClassRule
 	@Rule
-	public static final KubernetesServer server = new KubernetesServer(
-		false, true);
+	public static final KubernetesServer kubernetesServer =
+		new KubernetesServer(false, true);
 
 	@Before
 	public void setUp() {
@@ -84,7 +84,7 @@ public class PortalK8sAgentImplTest {
 			ClassLoader classLoader = clazz.getClassLoader();
 
 			KubernetesMockServer kubernetesMockServer =
-				server.getKubernetesMockServer();
+				kubernetesServer.getKubernetesMockServer();
 
 			configuration = _configurationAdmin.getConfiguration(
 				PortalK8sAgentConfiguration.class.getName(), "?");
