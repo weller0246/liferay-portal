@@ -274,46 +274,6 @@ public class ObjectLayoutLocalServiceTest {
 		}
 
 		try {
-			ObjectLayoutTab objectLayoutTab1 =
-				_objectLayoutTabPersistence.create(0);
-
-			objectLayoutTab1.setNameMap(
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
-			objectLayoutTab1.setPriority(0);
-			objectLayoutTab1.setObjectLayoutBoxes(
-				Arrays.asList(
-					_addObjectLayoutBox(),
-					_addObjectLayoutBox(
-						ObjectLayoutBoxConstants.TYPE_CATEGORIZATION)));
-
-			ObjectLayoutTab objectLayoutTab2 =
-				_objectLayoutTabPersistence.create(0);
-
-			objectLayoutTab2.setNameMap(
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
-			objectLayoutTab2.setObjectLayoutBoxes(
-				Arrays.asList(
-					_addObjectLayoutBox(),
-					_addObjectLayoutBox(
-						ObjectLayoutBoxConstants.TYPE_CATEGORIZATION)));
-
-			_objectLayoutLocalService.addObjectLayout(
-				TestPropsValues.getUserId(),
-				_objectDefinition.getObjectDefinitionId(), false,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				Arrays.asList(objectLayoutTab1, objectLayoutTab2));
-
-			Assert.fail();
-		}
-		catch (Exception exception) {
-			Assert.assertEquals(
-				"There can only be one categorization layout box per layout",
-				exception.getMessage());
-		}
-
-		try {
 			ObjectLayoutTab objectLayoutTab =
 				_objectLayoutTabPersistence.create(0);
 
