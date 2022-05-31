@@ -405,7 +405,7 @@ public class ObjectLayoutLocalServiceTest {
 		return _addObjectLayoutBox(ObjectLayoutBoxConstants.TYPE_REGULAR);
 	}
 
-	private ObjectLayoutBox _addObjectLayoutBox(String objectLayoutBoxType)
+	private ObjectLayoutBox _addObjectLayoutBox(String type)
 		throws Exception {
 
 		ObjectLayoutBox objectLayoutBox = _objectLayoutBoxPersistence.create(0);
@@ -414,11 +414,10 @@ public class ObjectLayoutLocalServiceTest {
 		objectLayoutBox.setNameMap(
 			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()));
 		objectLayoutBox.setPriority(0);
-		objectLayoutBox.setType(objectLayoutBoxType);
+		objectLayoutBox.setType(type);
 
 		if (!StringUtil.equals(
-				objectLayoutBoxType,
-				ObjectLayoutBoxConstants.TYPE_CATEGORIZATION)) {
+				type, ObjectLayoutBoxConstants.TYPE_CATEGORIZATION)) {
 
 			objectLayoutBox.setObjectLayoutRows(
 				Arrays.asList(
