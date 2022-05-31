@@ -73,15 +73,11 @@ public class PortalK8sAgentImplTest {
 
 			Assert.assertNull(portalK8sConfigMapModifier);
 
-			Class<?> clazz = getClass();
-
-			ClassLoader classLoader = clazz.getClassLoader();
+			configuration = _configurationAdmin.getConfiguration(
+				PortalK8sAgentConfiguration.class.getName(), "?");
 
 			KubernetesMockServer kubernetesMockServer =
 				kubernetesServer.getKubernetesMockServer();
-
-			configuration = _configurationAdmin.getConfiguration(
-				PortalK8sAgentConfiguration.class.getName(), "?");
 
 			configuration.update(
 				HashMapDictionaryBuilder.<String, Object>put(
@@ -91,7 +87,13 @@ public class PortalK8sAgentImplTest {
 				).put(
 					"apiServerSSL", Boolean.FALSE
 				).put(
-					"caCertData", StringUtil.read(classLoader, "ca.crt")
+					"caCertData",
+					() -> {
+						Class<?> clazz = getClass();
+
+						return StringUtil.read(
+							clazz.getClassLoader(), "ca.crt");
+					}
 				).put(
 					"namespace", "default"
 				).put(
