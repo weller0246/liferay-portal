@@ -18,6 +18,7 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.k8s.agent.internal.test.PortalK8sAgentImplTest;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.HashMapDictionary;
@@ -83,7 +84,11 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 				mutateConfigurationProperties(
 					HashMapBuilder.put(
 						"cloud.liferay.com/context-data",
-						"{\"domains\": [\"foo\"], \"environment\": \"uat\"}"
+						JSONUtil.put(
+							"domains", JSONUtil.putAll("foo")
+						).put(
+							"environment", "uat"
+						).toString()
 					).build(),
 					new HashMap<>(), properties);
 
