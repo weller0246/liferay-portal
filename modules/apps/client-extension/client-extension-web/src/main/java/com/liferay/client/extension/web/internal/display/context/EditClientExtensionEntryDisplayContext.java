@@ -78,9 +78,9 @@ public class EditClientExtensionEntryDisplayContext {
 	}
 
 	public String[] getCustomElementCSSURLs() {
-		CETCustomElement cetCustomElement = _getCETCustomElement();
-
 		String[] customElementCSSURLs = StringPool.EMPTY_ARRAY;
+
+		CETCustomElement cetCustomElement = _getCETCustomElement();
 
 		if (cetCustomElement != null) {
 			String cssURLsString = cetCustomElement.getCSSURLs();
@@ -107,9 +107,9 @@ public class EditClientExtensionEntryDisplayContext {
 	}
 
 	public String[] getCustomElementURLs() {
-		CETCustomElement cetCustomElement = _getCETCustomElement();
-
 		String[] customElementURLs = StringPool.EMPTY_ARRAY;
+
+		CETCustomElement cetCustomElement = _getCETCustomElement();
 
 		if (cetCustomElement != null) {
 			String urlsString = cetCustomElement.getURLs();
