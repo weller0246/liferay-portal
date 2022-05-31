@@ -52,34 +52,10 @@ public interface ClientExtensionEntryService extends BaseService {
 	 *
 	 * Never modify this interface directly. Add custom service methods to <code>com.liferay.client.extension.service.impl.ClientExtensionEntryServiceImpl</code> and rerun ServiceBuilder to automatically copy the method declarations to this interface. Consume the client extension entry remote service via injection or a <code>org.osgi.util.tracker.ServiceTracker</code>. Use {@link ClientExtensionEntryServiceUtil} if injection and service tracking are not available.
 	 */
-	public ClientExtensionEntry addCustomElementClientExtensionEntry(
-			String externalReferenceCode, String customElementCSSURLs,
-			String customElementHTMLElementName, String customElementURLs,
-			boolean customElementUseESM, String description,
-			String friendlyURLMapping, boolean instanceable,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry addIFrameClientExtensionEntry(
-			String description, String friendlyURLMapping, String iFrameURL,
-			boolean instanceable, Map<Locale, String> nameMap,
-			String portletCategoryName, String properties, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry addThemeCSSClientExtensionEntry(
-			String clayURL, String description, String mainURL,
-			Map<Locale, String> nameMap, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry addThemeFaviconClientExtensionEntry(
-			String description, Map<Locale, String> nameMap,
-			String sourceCodeURL, String url)
-		throws PortalException;
-
-	public ClientExtensionEntry addThemeJSClientExtensionEntry(
-			String description, Map<Locale, String> nameMap,
-			String sourceCodeURL, String urls)
+	public ClientExtensionEntry addClientExtensionEntry(
+			String externalReferenceCode, String description,
+			Map<Locale, String> nameMap, String properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException;
 
 	public ClientExtensionEntry deleteClientExtensionEntry(
@@ -98,34 +74,10 @@ public interface ClientExtensionEntryService extends BaseService {
 	 */
 	public String getOSGiServiceIdentifier();
 
-	public ClientExtensionEntry updateCustomElementClientExtensionEntry(
-			long clientExtensionEntryId, String customElementCSSURLs,
-			String customElementHTMLElementName, String customElementURLs,
-			boolean customElementUseESM, String description,
-			String friendlyURLMapping, Map<Locale, String> nameMap,
-			String portletCategoryName, String properties, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry updateIFrameClientExtensionEntry(
+	public ClientExtensionEntry updateClientExtensionEntry(
 			long clientExtensionEntryId, String description,
-			String friendlyURLMapping, String iFrameURL,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry updateThemeCSSClientExtensionEntry(
-			long clientExtensionEntryId, String clayURL, String description,
-			String mainURL, Map<Locale, String> nameMap, String sourceCodeURL)
-		throws PortalException;
-
-	public ClientExtensionEntry updateThemeFaviconClientExtensionEntry(
-			long clientExtensionEntryId, String description,
-			Map<Locale, String> nameMap, String sourceCodeURL, String url)
-		throws PortalException;
-
-	public ClientExtensionEntry updateThemeJSClientExtensionEntry(
-			long clientExtensionEntryId, String description,
-			Map<Locale, String> nameMap, String sourceCodeURL, String urls)
+			Map<Locale, String> nameMap, String properties,
+			String sourceCodeURL, String typeSettings)
 		throws PortalException;
 
 }

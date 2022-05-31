@@ -85,48 +85,17 @@ public interface ClientExtensionEntryLocalService
 		ClientExtensionEntry clientExtensionEntry);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addCustomElementClientExtensionEntry(
-			String externalReferenceCode, long userId,
-			String customElementCSSURLs, String customElementHTMLElementName,
-			String customElementURLs, boolean customElementUseESM,
-			String description, String friendlyURLMapping, boolean instanceable,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
+	public ClientExtensionEntry addClientExtensionEntry(
+			String externalReferenceCode, long userId, String description,
+			Map<Locale, String> nameMap, String properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addIFrameClientExtensionEntry(
-			long userId, String description, String friendlyURLMapping,
-			String iFrameURL, boolean instanceable, Map<Locale, String> nameMap,
-			String portletCategoryName, String properties, String sourceCodeURL)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addOrUpdateCustomElementClientExtensionEntry(
-			String externalReferenceCode, long userId,
-			String customElementCSSURLs, String customElementHTMLElementName,
-			String customElementURLs, boolean customElementUseESM,
-			String description, String friendlyURLMapping, boolean instanceable,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addThemeCSSClientExtensionEntry(
-			long userId, String clayURL, String description, String mainURL,
-			Map<Locale, String> nameMap, String sourceCodeURL)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addThemeFaviconClientExtensionEntry(
-			long userId, String description, Map<Locale, String> nameMap,
-			String sourceCodeURL, String url)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry addThemeJSClientExtensionEntry(
-			long userId, String description, Map<Locale, String> nameMap,
-			String sourceCodeURL, String urls)
+	public ClientExtensionEntry addOrUpdateClientExtensionEntry(
+			String externalReferenceCode, long userId, String description,
+			Map<Locale, String> nameMap, String properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException;
 
 	/**
@@ -410,45 +379,15 @@ public interface ClientExtensionEntryLocalService
 		ClientExtensionEntry clientExtensionEntry);
 
 	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry updateCustomElementClientExtensionEntry(
-			long userId, long clientExtensionEntryId,
-			String customElementCSSURLs, String customElementHTMLElementName,
-			String customElementURLs, boolean customElementUseESM,
-			String description, String friendlyURLMapping,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry updateIFrameClientExtensionEntry(
+	public ClientExtensionEntry updateClientExtensionEntry(
 			long userId, long clientExtensionEntryId, String description,
-			String friendlyURLMapping, String iFrameURL,
-			Map<Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
+			Map<Locale, String> nameMap, String properties,
+			String sourceCodeURL, String typeSettings)
 		throws PortalException;
 
 	@Indexable(type = IndexableType.REINDEX)
 	public ClientExtensionEntry updateStatus(
 			long userId, long clientExtensionEntryId, int status)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry updateThemeCSSClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String clayURL,
-			String description, String mainURL, Map<Locale, String> nameMap,
-			String sourceCodeURL)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry updateThemeFaviconClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String description,
-			Map<Locale, String> nameMap, String sourceCodeURL, String url)
-		throws PortalException;
-
-	@Indexable(type = IndexableType.REINDEX)
-	public ClientExtensionEntry updateThemeJSClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String description,
-			Map<Locale, String> nameMap, String sourceCodeURL, String urls)
 		throws PortalException;
 
 }

@@ -62,80 +62,26 @@ public class ClientExtensionEntryLocalServiceUtil {
 		return getService().addClientExtensionEntry(clientExtensionEntry);
 	}
 
-	public static ClientExtensionEntry addCustomElementClientExtensionEntry(
-			String externalReferenceCode, long userId,
-			String customElementCSSURLs, String customElementHTMLElementName,
-			String customElementURLs, boolean customElementUseESM,
-			String description, String friendlyURLMapping, boolean instanceable,
-			Map<java.util.Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
+	public static ClientExtensionEntry addClientExtensionEntry(
+			String externalReferenceCode, long userId, String description,
+			Map<java.util.Locale, String> nameMap, String properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException {
 
-		return getService().addCustomElementClientExtensionEntry(
-			externalReferenceCode, userId, customElementCSSURLs,
-			customElementHTMLElementName, customElementURLs,
-			customElementUseESM, description, friendlyURLMapping, instanceable,
-			nameMap, portletCategoryName, properties, sourceCodeURL);
+		return getService().addClientExtensionEntry(
+			externalReferenceCode, userId, description, nameMap, properties,
+			sourceCodeURL, type, typeSettings);
 	}
 
-	public static ClientExtensionEntry addIFrameClientExtensionEntry(
-			long userId, String description, String friendlyURLMapping,
-			String iFrameURL, boolean instanceable,
-			Map<java.util.Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
+	public static ClientExtensionEntry addOrUpdateClientExtensionEntry(
+			String externalReferenceCode, long userId, String description,
+			Map<java.util.Locale, String> nameMap, String properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException {
 
-		return getService().addIFrameClientExtensionEntry(
-			userId, description, friendlyURLMapping, iFrameURL, instanceable,
-			nameMap, portletCategoryName, properties, sourceCodeURL);
-	}
-
-	public static ClientExtensionEntry
-			addOrUpdateCustomElementClientExtensionEntry(
-				String externalReferenceCode, long userId,
-				String customElementCSSURLs,
-				String customElementHTMLElementName, String customElementURLs,
-				boolean customElementUseESM, String description,
-				String friendlyURLMapping, boolean instanceable,
-				Map<java.util.Locale, String> nameMap,
-				String portletCategoryName, String properties,
-				String sourceCodeURL)
-		throws PortalException {
-
-		return getService().addOrUpdateCustomElementClientExtensionEntry(
-			externalReferenceCode, userId, customElementCSSURLs,
-			customElementHTMLElementName, customElementURLs,
-			customElementUseESM, description, friendlyURLMapping, instanceable,
-			nameMap, portletCategoryName, properties, sourceCodeURL);
-	}
-
-	public static ClientExtensionEntry addThemeCSSClientExtensionEntry(
-			long userId, String clayURL, String description, String mainURL,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL)
-		throws PortalException {
-
-		return getService().addThemeCSSClientExtensionEntry(
-			userId, clayURL, description, mainURL, nameMap, sourceCodeURL);
-	}
-
-	public static ClientExtensionEntry addThemeFaviconClientExtensionEntry(
-			long userId, String description,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL,
-			String url)
-		throws PortalException {
-
-		return getService().addThemeFaviconClientExtensionEntry(
-			userId, description, nameMap, sourceCodeURL, url);
-	}
-
-	public static ClientExtensionEntry addThemeJSClientExtensionEntry(
-			long userId, String description,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL,
-			String urls)
-		throws PortalException {
-
-		return getService().addThemeJSClientExtensionEntry(
-			userId, description, nameMap, sourceCodeURL, urls);
+		return getService().addOrUpdateClientExtensionEntry(
+			externalReferenceCode, userId, description, nameMap, properties,
+			sourceCodeURL, type, typeSettings);
 	}
 
 	/**
@@ -493,32 +439,15 @@ public class ClientExtensionEntryLocalServiceUtil {
 		return getService().updateClientExtensionEntry(clientExtensionEntry);
 	}
 
-	public static ClientExtensionEntry updateCustomElementClientExtensionEntry(
-			long userId, long clientExtensionEntryId,
-			String customElementCSSURLs, String customElementHTMLElementName,
-			String customElementURLs, boolean customElementUseESM,
-			String description, String friendlyURLMapping,
-			Map<java.util.Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
-		throws PortalException {
-
-		return getService().updateCustomElementClientExtensionEntry(
-			userId, clientExtensionEntryId, customElementCSSURLs,
-			customElementHTMLElementName, customElementURLs,
-			customElementUseESM, description, friendlyURLMapping, nameMap,
-			portletCategoryName, properties, sourceCodeURL);
-	}
-
-	public static ClientExtensionEntry updateIFrameClientExtensionEntry(
+	public static ClientExtensionEntry updateClientExtensionEntry(
 			long userId, long clientExtensionEntryId, String description,
-			String friendlyURLMapping, String iFrameURL,
-			Map<java.util.Locale, String> nameMap, String portletCategoryName,
-			String properties, String sourceCodeURL)
+			Map<java.util.Locale, String> nameMap, String properties,
+			String sourceCodeURL, String typeSettings)
 		throws PortalException {
 
-		return getService().updateIFrameClientExtensionEntry(
-			userId, clientExtensionEntryId, description, friendlyURLMapping,
-			iFrameURL, nameMap, portletCategoryName, properties, sourceCodeURL);
+		return getService().updateClientExtensionEntry(
+			userId, clientExtensionEntryId, description, nameMap, properties,
+			sourceCodeURL, typeSettings);
 	}
 
 	public static ClientExtensionEntry updateStatus(
@@ -527,39 +456,6 @@ public class ClientExtensionEntryLocalServiceUtil {
 
 		return getService().updateStatus(
 			userId, clientExtensionEntryId, status);
-	}
-
-	public static ClientExtensionEntry updateThemeCSSClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String clayURL,
-			String description, String mainURL,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL)
-		throws PortalException {
-
-		return getService().updateThemeCSSClientExtensionEntry(
-			userId, clientExtensionEntryId, clayURL, description, mainURL,
-			nameMap, sourceCodeURL);
-	}
-
-	public static ClientExtensionEntry updateThemeFaviconClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String description,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL,
-			String url)
-		throws PortalException {
-
-		return getService().updateThemeFaviconClientExtensionEntry(
-			userId, clientExtensionEntryId, description, nameMap, sourceCodeURL,
-			url);
-	}
-
-	public static ClientExtensionEntry updateThemeJSClientExtensionEntry(
-			long userId, long clientExtensionEntryId, String description,
-			Map<java.util.Locale, String> nameMap, String sourceCodeURL,
-			String urls)
-		throws PortalException {
-
-		return getService().updateThemeJSClientExtensionEntry(
-			userId, clientExtensionEntryId, description, nameMap, sourceCodeURL,
-			urls);
 	}
 
 	public static ClientExtensionEntryLocalService getService() {
