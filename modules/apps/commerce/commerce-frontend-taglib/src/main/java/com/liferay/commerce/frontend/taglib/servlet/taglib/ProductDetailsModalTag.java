@@ -41,6 +41,7 @@ public class ProductDetailsModalTag extends ComponentRendererTag {
 				"/243817358+w+h+q80+re0+cr1+ar0+st0" +
 					"/006-fully-built-engine-by-the-experts.jpg");
 		putValue("settings", null);
+		putValue("sku", "AR351184");
 
 		HttpServletRequest httpServletRequest = getRequest();
 
@@ -49,8 +50,6 @@ public class ProductDetailsModalTag extends ComponentRendererTag {
 				WebKeys.THEME_DISPLAY);
 
 		putValue("spritemap", FrontendIconsUtil.getSpritemap(themeDisplay));
-
-		putValue("sku", "AR351184");
 
 		setTemplateNamespace("ProductDetailsModal.render");
 
