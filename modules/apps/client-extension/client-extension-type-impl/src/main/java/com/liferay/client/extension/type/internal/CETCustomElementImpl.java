@@ -16,6 +16,12 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETCustomElement;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+
+import javax.portlet.PortletRequest;
 
 /**
  * @author Brian Wing Shun Chan
@@ -27,6 +33,48 @@ public class CETCustomElementImpl
 		super(clientExtensionEntry);
 	}
 
+	public CETCustomElementImpl(PortletRequest portletRequest) {
+
+		// TODO Remove customElement* prefix
+
+		this(
+			UnicodePropertiesBuilder.create(
+				false
+			).put(
+				"cssURLs",
+				StringUtil.merge(
+					ParamUtil.getStringValues(
+						portletRequest, "customElementCSSURLs"),
+					StringPool.NEW_LINE)
+			).put(
+				"friendlyURLMapping",
+				ParamUtil.getString(portletRequest, "friendlyURLMapping")
+			).put(
+				"htmlElementName",
+				ParamUtil.getString(
+					portletRequest, "customElementHTMLElementName")
+			).put(
+				"instanceable",
+				ParamUtil.getBoolean(portletRequest, "instanceable")
+			).put(
+				"portletCategoryName",
+				ParamUtil.getString(portletRequest, "portletCategoryName")
+			).put(
+				"urls",
+				StringUtil.merge(
+					ParamUtil.getStringValues(
+						portletRequest, "customElementURLs"),
+					StringPool.NEW_LINE)
+			).put(
+				"useESM",
+				ParamUtil.getBoolean(portletRequest, "customElementUseESM")
+			).buildString());
+	}
+
+	public CETCustomElementImpl(String typeSettings) {
+		super(typeSettings);
+	}
+
 	public String getCSSURLs() {
 		return getString("cssURLs");
 	}
@@ -36,7 +84,7 @@ public class CETCustomElementImpl
 	}
 
 	public String getHTMLElementName() {
-		return getString("friendlyURLMapping");
+		return getString("htmlElementName");
 	}
 
 	public String getPortletCategoryName() {

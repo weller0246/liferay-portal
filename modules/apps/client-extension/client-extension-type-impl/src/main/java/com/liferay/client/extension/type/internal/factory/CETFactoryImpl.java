@@ -14,6 +14,8 @@
 
 package com.liferay.client.extension.type.internal.factory;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
+import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.client.extension.type.CETIFrame;
@@ -26,6 +28,9 @@ import com.liferay.client.extension.type.internal.CETIFrameImpl;
 import com.liferay.client.extension.type.internal.CETThemeCSSImpl;
 import com.liferay.client.extension.type.internal.CETThemeFaviconImpl;
 import com.liferay.client.extension.type.internal.CETThemeJSImpl;
+import com.liferay.portal.kernel.exception.PortalException;
+
+import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -43,13 +48,28 @@ public class CETFactoryImpl implements CETFactory {
 	}
 
 	@Override
+	public CETCustomElement customElement(PortletRequest portletRequest) {
+		return new CETCustomElementImpl(portletRequest);
+	}
+
+	@Override
 	public CETIFrame iFrame(ClientExtensionEntry clientExtensionEntry) {
 		return new CETIFrameImpl(clientExtensionEntry);
 	}
 
 	@Override
+	public CETIFrame iFrame(PortletRequest portletRequest) {
+		return new CETIFrameImpl(portletRequest);
+	}
+
+	@Override
 	public CETThemeCSS themeCSS(ClientExtensionEntry clientExtensionEntry) {
 		return new CETThemeCSSImpl(clientExtensionEntry);
+	}
+
+	@Override
+	public CETThemeCSS themeCSS(PortletRequest portletRequest) {
+		return new CETThemeCSSImpl(portletRequest);
 	}
 
 	@Override
@@ -60,8 +80,43 @@ public class CETFactoryImpl implements CETFactory {
 	}
 
 	@Override
+	public CETThemeFavicon themeFavicon(PortletRequest portletRequest) {
+		return new CETThemeFaviconImpl(portletRequest);
+	}
+
+	@Override
 	public CETThemeJS themeJS(ClientExtensionEntry clientExtensionEntry) {
 		return new CETThemeJSImpl(clientExtensionEntry);
+	}
+
+	@Override
+	public CETThemeJS themeJS(PortletRequest portletRequest) {
+		return new CETThemeJSImpl(portletRequest);
+	}
+
+	@Override
+	public String typeSettings(PortletRequest portletRequest, String type)
+		throws PortalException {
+
+		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+			return String.valueOf(customElement(portletRequest));
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+			return String.valueOf(iFrame(portletRequest));
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+			return String.valueOf(themeCSS(portletRequest));
+		}
+		else if (type.equals(
+					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
+
+			return String.valueOf(themeFavicon(portletRequest));
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+			return String.valueOf(themeJS(portletRequest));
+		}
+
+		throw new ClientExtensionEntryTypeException("Invalid type " + type);
 	}
 
 }

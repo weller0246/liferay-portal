@@ -25,14 +25,20 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 public abstract class BaseCETImpl {
 
 	public BaseCETImpl(ClientExtensionEntry clientExtensionEntry) {
-		if (clientExtensionEntry == null) {
-			_unicodeProperties = new UnicodeProperties();
-		}
-		else {
-			_unicodeProperties = UnicodePropertiesBuilder.load(
-				clientExtensionEntry.getTypeSettings()
-			).build();
-		}
+		this(
+			(clientExtensionEntry == null) ? null :
+				clientExtensionEntry.getTypeSettings());
+	}
+
+	public BaseCETImpl(String typeSettings) {
+		_unicodeProperties = UnicodePropertiesBuilder.load(
+			GetterUtil.getString(typeSettings)
+		).build();
+	}
+
+	@Override
+	public String toString() {
+		return _unicodeProperties.toString();
 	}
 
 	protected boolean getBoolean(String key) {

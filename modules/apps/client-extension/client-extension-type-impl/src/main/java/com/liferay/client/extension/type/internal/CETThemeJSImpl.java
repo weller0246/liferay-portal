@@ -16,6 +16,12 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeJS;
+import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+
+import javax.portlet.PortletRequest;
 
 /**
  * @author Iván Zaera Avellón
@@ -24,6 +30,25 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 
 	public CETThemeJSImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
+	}
+
+	public CETThemeJSImpl(PortletRequest portletRequest) {
+
+		// TODO Remove themeJS* prefix
+
+		this(
+			UnicodePropertiesBuilder.create(
+				false
+			).put(
+				"urls",
+				StringUtil.merge(
+					ParamUtil.getStringValues(portletRequest, "themeJSURLs"),
+					StringPool.NEW_LINE)
+			).buildString());
+	}
+
+	public CETThemeJSImpl(String typeSettings) {
+		super(typeSettings);
 	}
 
 	@Override

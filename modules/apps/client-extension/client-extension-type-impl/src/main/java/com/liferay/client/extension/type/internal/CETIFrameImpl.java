@@ -16,6 +16,10 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETIFrame;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+
+import javax.portlet.PortletRequest;
 
 /**
  * @author Brian Wing Shun Chan
@@ -24,6 +28,31 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 
 	public CETIFrameImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
+	}
+
+	public CETIFrameImpl(PortletRequest portletRequest) {
+
+		// TODO Remove iFrame* prefix
+
+		this(
+			UnicodePropertiesBuilder.create(
+				false
+			).put(
+				"friendlyURLMapping",
+				ParamUtil.getString(portletRequest, "friendlyURLMapping")
+			).put(
+				"instanceable",
+				ParamUtil.getBoolean(portletRequest, "instanceable")
+			).put(
+				"portletCategoryName",
+				ParamUtil.getString(portletRequest, "portletCategoryName")
+			).put(
+				"url", ParamUtil.getString(portletRequest, "iFrameURL")
+			).buildString());
+	}
+
+	public CETIFrameImpl(String typeSettings) {
+		super(typeSettings);
 	}
 
 	public String getFriendlyURLMapping() {

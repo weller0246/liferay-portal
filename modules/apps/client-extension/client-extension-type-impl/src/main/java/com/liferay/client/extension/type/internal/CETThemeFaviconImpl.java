@@ -16,6 +16,10 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeFavicon;
+import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+
+import javax.portlet.PortletRequest;
 
 /**
  * @author Iván Zaera Avellón
@@ -25,6 +29,22 @@ public class CETThemeFaviconImpl
 
 	public CETThemeFaviconImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
+	}
+
+	public CETThemeFaviconImpl(PortletRequest portletRequest) {
+
+		// TODO Remove themeFavicon* prefix
+
+		this(
+			UnicodePropertiesBuilder.create(
+				false
+			).put(
+				"url", ParamUtil.getString(portletRequest, "themeFaviconURL")
+			).buildString());
+	}
+
+	public CETThemeFaviconImpl(String typeSettings) {
+		super(typeSettings);
 	}
 
 	@Override
