@@ -132,7 +132,7 @@ public class OpenAPIResourceImpl {
 		return response;
 	}
 
-	private Operation _createCustomRelationshipOperation(
+	private Operation _createOperation(
 		String httpMethod, ObjectRelationship objectRelationship,
 		ObjectDefinition relatedObjectDefinition, Operation operation) {
 
@@ -200,7 +200,7 @@ public class OpenAPIResourceImpl {
 			return new PathItem() {
 				{
 					get(
-						_createCustomRelationshipOperation(
+						_createOperation(
 							"get", objectRelationship, relatedObjectDefinition,
 							pathItem.getGet()));
 				}
@@ -213,7 +213,7 @@ public class OpenAPIResourceImpl {
 			return new PathItem() {
 				{
 					put(
-						_createCustomRelationshipOperation(
+						_createOperation(
 							"put", objectRelationship, relatedObjectDefinition,
 							pathItem.getPut()));
 				}
