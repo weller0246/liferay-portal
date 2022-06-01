@@ -1328,8 +1328,8 @@ definition {
 			nodePosition = "0,-200");
 
 		ProcessBuilderKaleoDesignerReact.viewNodeInfo(
+			defaultIdValue = "true",
 			descriptionValue = "Execute conditional logic.",
-			idValue = "item_2",
 			labelValue = "Condition",
 			nodeType = "condition",
 			scriptValue = '''returnValue = "Transition Name"''');
@@ -1337,8 +1337,8 @@ definition {
 		ProcessBuilderKaleoDesignerReact.hideSidebarFields(property = "Information");
 
 		ProcessBuilderKaleoDesignerReact.viewNodeInfoNotVisible(
+			defaultIdValue = "true",
 			descriptionValue = "Execute conditional logic.",
-			idValue = "item_2",
 			labelValue = "Condition",
 			nodeType = "condition",
 			scriptValue = '''returnValue = "Transition Name"''');
@@ -1474,11 +1474,15 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
+		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "start");
+
+		var nodeIdValue = selenium.getElementValue("ProcessBuilderKaleoDesignerReact#NODE_ID_GETTER");
+
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "end");
 
 		ProcessBuilderKaleoDesignerReact.editNodeInformationField(
 			infoOption = "Id",
-			infoValue = "item_0");
+			infoValue = "${nodeIdValue}");
 
 		ProcessBuilderKaleoDesignerReact.viewSidebarFeedback(sidebarMessage = "A node with that ID already exists. Enter a unique ID.");
 
@@ -1747,9 +1751,7 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Title");
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "-20,-100");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "start");
 
@@ -2323,12 +2325,10 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "20,-100");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.viewNodeInfo(
-			idValue = "item_2",
+			defaultIdValue = "true",
 			labelValue = "Task",
 			nodeType = "task");
 	}
@@ -2522,7 +2522,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
 			nodeLabel = "Join",
-			nodePosition = "-80,-40");
+			nodePosition = "-0,-300");
 
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "join");
 
@@ -2534,7 +2534,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
 			nodeLabel = "Join XOR",
-			nodePosition = "-40,-200");
+			nodePosition = "-0,-200");
 
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "join-xor");
 
@@ -2546,7 +2546,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
 			nodeLabel = "State",
-			nodePosition = "50,-420");
+			nodePosition = "0,100");
 
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "state");
 
@@ -2556,9 +2556,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.backArrowOnSidebar();
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "20,-500");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "task");
 
@@ -2808,9 +2806,7 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "-20,-40");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.addConnector(
 			connectorIn = "end",
@@ -2872,11 +2868,15 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
+		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "start");
+
+		var nodeIdValue = selenium.getElementValue("ProcessBuilderKaleoDesignerReact#NODE_ID_GETTER");
+
 		ProcessBuilderKaleoDesignerReact.selectNode(nodeType = "end");
 
 		ProcessBuilderKaleoDesignerReact.editNodeInformationField(
 			infoOption = "Id",
-			infoValue = "item_0");
+			infoValue = "${nodeIdValue}");
 
 		ProcessBuilderKaleoDesignerReact.viewSidebarFeedback(sidebarMessage = "A node with that ID already exists. Enter a unique ID.");
 	}
@@ -2939,9 +2939,7 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "-20,-40");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.addConnector(
 			connectorIn = "task",
