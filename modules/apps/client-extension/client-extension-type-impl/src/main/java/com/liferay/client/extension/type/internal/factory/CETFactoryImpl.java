@@ -31,6 +31,8 @@ import com.liferay.client.extension.type.internal.CETThemeFaviconImpl;
 import com.liferay.client.extension.type.internal.CETThemeJSImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 
+import java.util.Objects;
+
 import javax.portlet.PortletRequest;
 
 import org.osgi.service.component.annotations.Component;
@@ -47,25 +49,34 @@ public class CETFactoryImpl implements CETFactory {
 
 		String type = clientExtensionEntry.getType();
 
-		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (Objects.equals(
+				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+
 			return cetCustomElement(clientExtensionEntry);
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
+
 			return cetIFrame(clientExtensionEntry);
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+
 			return cetThemeCSS(clientExtensionEntry);
 		}
-		else if (type.equals(
-					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
 			return cetThemeFavicon(clientExtensionEntry);
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+
 			return cetThemeJS(clientExtensionEntry);
 		}
-
-		throw new ClientExtensionEntryTypeException("Invalid type " + type);
+		else {
+			throw new ClientExtensionEntryTypeException("Invalid type " + type);
+		}
 	}
 
 	@Override
@@ -126,25 +137,34 @@ public class CETFactoryImpl implements CETFactory {
 	public String typeSettings(PortletRequest portletRequest, String type)
 		throws PortalException {
 
-		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (Objects.equals(
+				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+
 			return String.valueOf(cetCustomElement(portletRequest));
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
+
 			return String.valueOf(cetIFrame(portletRequest));
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+
 			return String.valueOf(cetThemeCSS(portletRequest));
 		}
-		else if (type.equals(
-					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
 			return String.valueOf(cetThemeFavicon(portletRequest));
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+
 			return String.valueOf(cetThemeJS(portletRequest));
 		}
-
-		throw new ClientExtensionEntryTypeException("Invalid type " + type);
+		else {
+			throw new ClientExtensionEntryTypeException("Invalid type " + type);
+		}
 	}
 
 }

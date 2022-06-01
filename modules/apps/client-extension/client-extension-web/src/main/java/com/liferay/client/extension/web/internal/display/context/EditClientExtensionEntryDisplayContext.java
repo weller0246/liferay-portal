@@ -138,12 +138,16 @@ public class EditClientExtensionEntryDisplayContext {
 
 		String type = getType();
 
-		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (Objects.equals(
+				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+
 			CETCustomElement cetCustomElement = _getCETCustomElement();
 
 			friendlyURLMapping = cetCustomElement.getFriendlyURLMapping();
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
+
 			CETIFrame cetiFrame = _getCETIFrame();
 
 			friendlyURLMapping = cetiFrame.getFriendlyURLMapping();
@@ -168,12 +172,16 @@ public class EditClientExtensionEntryDisplayContext {
 
 		String type = getType();
 
-		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (Objects.equals(
+				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+
 			CETCustomElement cetCustomElement = _getCETCustomElement();
 
 			portletCategoryName = cetCustomElement.getPortletCategoryName();
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
+
 			CETIFrame cetiFrame = _getCETIFrame();
 
 			portletCategoryName = cetiFrame.getPortletCategoryName();
@@ -345,7 +353,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	public boolean isEditingClientExtensionEntryType(String... types) {
 		for (String type : types) {
-			if (type.equals(_getClientExtensionEntryType())) {
+			if (Objects.equals(type, _getClientExtensionEntryType())) {
 				return true;
 			}
 		}
@@ -358,12 +366,16 @@ public class EditClientExtensionEntryDisplayContext {
 
 		String type = getType();
 
-		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+		if (Objects.equals(
+				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+
 			CETCustomElement cetCustomElement = _getCETCustomElement();
 
 			instanceable = cetCustomElement.isInstanceable();
 		}
-		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+		else if (Objects.equals(
+					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
+
 			CETIFrame cetiFrame = _getCETIFrame();
 
 			instanceable = cetiFrame.isInstanceable();

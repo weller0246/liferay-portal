@@ -51,6 +51,15 @@ public class CETThemeCSSImpl extends BaseCETImpl implements CETThemeCSS {
 		super(typeSettings);
 	}
 
+	public CETThemeCSSImpl(
+		String baseURL, long companyId, String description, String name,
+		String primaryKey, String sourceCodeURL, String typeSettings) {
+
+		super(
+			baseURL, companyId, description, name, primaryKey, sourceCodeURL,
+			typeSettings);
+	}
+
 	@Override
 	public String getClayURL() {
 		return getString("clayURL");

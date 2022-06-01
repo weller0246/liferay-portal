@@ -52,6 +52,15 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 		super(typeSettings);
 	}
 
+	public CETThemeJSImpl(
+		String baseURL, long companyId, String description, String name,
+		String primaryKey, String sourceCodeURL, String typeSettings) {
+
+		super(
+			baseURL, companyId, description, name, primaryKey, sourceCodeURL,
+			typeSettings);
+	}
+
 	@Override
 	public String getType() {
 		return ClientExtensionEntryConstants.TYPE_THEME_JS;

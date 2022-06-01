@@ -33,9 +33,13 @@ public abstract class BaseCETImpl implements CET {
 				clientExtensionEntry.getTypeSettings());
 
 		if (clientExtensionEntry != null) {
-			_id = clientExtensionEntry.getClientExtensionEntryId();
+			_companyId = clientExtensionEntry.getCompanyId();
+			_description = clientExtensionEntry.getDescription();
 			_name = clientExtensionEntry.getName(
 				LocaleUtil.getMostRelevantLocale());
+			_primaryKey = String.valueOf(
+				clientExtensionEntry.getClientExtensionEntryId());
+			_sourceCodeURL = clientExtensionEntry.getSourceCodeURL();
 			_status = clientExtensionEntry.getStatus();
 		}
 	}
@@ -46,14 +50,48 @@ public abstract class BaseCETImpl implements CET {
 		).build();
 	}
 
+	public BaseCETImpl(
+		String baseURL, long companyId, String description, String name,
+		String primaryKey, String sourceCodeURL, String typeSettings) {
+
+		this(typeSettings);
+
+		_baseURL = baseURL;
+		_companyId = companyId;
+		_description = description;
+		_name = name;
+		_primaryKey = primaryKey;
+		_sourceCodeURL = sourceCodeURL;
+	}
+
 	@Override
-	public long getId() {
-		return _id;
+	public String getBaseURL() {
+		return _baseURL;
+	}
+
+	@Override
+	public long getCompanyId() {
+		return _companyId;
+	}
+
+	@Override
+	public String getDescription() {
+		return _description;
 	}
 
 	@Override
 	public String getName() {
 		return _name;
+	}
+
+	@Override
+	public String getPrimaryKey() {
+		return _primaryKey;
+	}
+
+	@Override
+	public String getSourceCodeURL() {
+		return _sourceCodeURL;
 	}
 
 	@Override
@@ -74,8 +112,12 @@ public abstract class BaseCETImpl implements CET {
 		return GetterUtil.getString(_unicodeProperties.getProperty(key));
 	}
 
-	private long _id;
+	private String _baseURL = StringPool.BLANK;
+	private long _companyId;
+	private String _description = StringPool.BLANK;
 	private String _name = StringPool.BLANK;
+	private String _primaryKey = StringPool.BLANK;
+	private String _sourceCodeURL = StringPool.BLANK;
 	private int _status;
 	private final UnicodeProperties _unicodeProperties;
 

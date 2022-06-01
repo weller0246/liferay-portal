@@ -26,6 +26,14 @@ import java.util.List;
  */
 public interface CETManager {
 
+	public CET addCET(
+			String baseURL, long companyId, String description, String name,
+			String primaryKey, String sourceCodeURL, String type,
+			String typeSettings)
+		throws PortalException;
+
+	public void deleteCET(CET cet);
+
 	public List<CET> getCETs(
 			long companyId, String keywords, Pagination pagination, Sort sort)
 		throws PortalException;

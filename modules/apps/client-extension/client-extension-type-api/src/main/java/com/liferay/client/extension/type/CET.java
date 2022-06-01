@@ -22,9 +22,17 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface CET {
 
-	public long getId();
+	public String getBaseURL();
+
+	public long getCompanyId();
+
+	public String getDescription();
 
 	public String getName();
+
+	public String getPrimaryKey();
+
+	public String getSourceCodeURL();
 
 	public int getStatus();
 
