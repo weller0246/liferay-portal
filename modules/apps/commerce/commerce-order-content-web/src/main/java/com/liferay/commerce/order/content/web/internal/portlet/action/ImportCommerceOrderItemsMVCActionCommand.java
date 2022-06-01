@@ -75,7 +75,7 @@ public class ImportCommerceOrderItemsMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		int[] importedRowsCount = new int[2];
+		int[] counts = new int[2];
 
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
@@ -101,7 +101,7 @@ public class ImportCommerceOrderItemsMVCActionCommand
 
 				_importRows(
 					actionRequest, commerceOrder, commerceOrderImporterTypeKey,
-					importedRowsCount);
+					counts);
 			}
 		}
 		catch (Exception exception) {
@@ -142,14 +142,12 @@ public class ImportCommerceOrderItemsMVCActionCommand
 		hideDefaultErrorMessage(actionRequest);
 		hideDefaultSuccessMessage(actionRequest);
 
-		if (importedRowsCount[0] > 0) {
-			SessionMessages.add(
-				actionRequest, "importedRowsCount", importedRowsCount[0]);
+		if (counts[0] > 0) {
+			SessionMessages.add(actionRequest, "counts", counts[0]);
 		}
 
-		if (importedRowsCount[1] > 0) {
-			SessionErrors.add(
-				actionRequest, "notImportedRowsCount", importedRowsCount[1]);
+		if (counts[1] > 0) {
+			SessionErrors.add(actionRequest, "notImportedRowsCount", counts[1]);
 		}
 
 		sendRedirect(
@@ -176,7 +174,7 @@ public class ImportCommerceOrderItemsMVCActionCommand
 
 	private void _importRows(
 			ActionRequest actionRequest, CommerceOrder commerceOrder,
-			String commerceOrderImporterTypeKey, int[] importedRowsCount)
+			String commerceOrderImporterTypeKey, int[] counts)
 		throws Exception {
 
 		CommerceOrderImporterDateFormatConfiguration
@@ -206,7 +204,7 @@ public class ImportCommerceOrderItemsMVCActionCommand
 				commerceOrderImporterItems) {
 
 			if (commerceOrderImporterItem.getQuantity() < 1) {
-				importedRowsCount[1]++;
+				counts[1]++;
 
 				continue;
 			}
@@ -238,14 +236,14 @@ public class ImportCommerceOrderItemsMVCActionCommand
 				catch (IllegalArgumentException | ParseException exception) {
 				}
 
-				importedRowsCount[0]++;
+				counts[0]++;
 			}
 			catch (Exception exception) {
 				if (exception instanceof CommerceOrderImporterTypeException ||
 					exception instanceof NoSuchCPInstanceException ||
 					exception instanceof PrincipalException) {
 
-					importedRowsCount[1]++;
+					counts[1]++;
 				}
 			}
 		}
