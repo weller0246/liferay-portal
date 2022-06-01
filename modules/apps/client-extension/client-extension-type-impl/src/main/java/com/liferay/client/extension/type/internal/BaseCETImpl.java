@@ -61,8 +61,9 @@ public abstract class BaseCETImpl implements CET {
 		_description = description;
 		_name = name;
 		_primaryKey = primaryKey;
-		_readOnly = true;
 		_sourceCodeURL = sourceCodeURL;
+
+		_readOnly = true;
 	}
 
 	@Override
