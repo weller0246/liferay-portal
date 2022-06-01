@@ -1448,6 +1448,50 @@ definition {
 		}
 	}
 
+	@description = "Verify users can download a report of the rows that had warnings or were not imported."
+	@priority = "3"
+	test CanViewImportErrorReport {
+		property portal.acceptance = "true";
+
+		task ("Given a failed account import due to an invalid account type in the second row") {
+			ImportExport.openImportExportAdmin();
+
+			ImportExport.gotoImport();
+
+			ImportExport.configureImport(
+				entityType = "admin.user.dto.v1_0.Account",
+				fieldMappings = "name:Account Name,type:Account Type,description:Account Description,externalReferenceCode:External Reference Code",
+				fileName = "csv_account_import_error.csv",
+				stopImportOnError = "true");
+
+			Button.click(button = "Next");
+
+			Button.click(button = "Start Import");
+
+			WaitForElementPresent(locator1 = "Message#ERROR_FORM_FIELD_REQUIRED");
+		}
+
+		task ("When the user goes to the Import/Export Center and clicks on the ellipses for the import execution") {
+			ImportExport.openImportExportAdmin();
+
+			Click.waitForMenuToggleJSClick(locator1 = "Icon#BODY_VERTICAL_ELLIPSIS");
+		}
+
+		task ("And the user clicks on the Download Error Report menu item") {
+			MenuItem.click(menuItem = "Download Error Report");
+		}
+
+		task ("Then an error report is downloaded which indicates an invalid type in the second row") {
+			DownloadTempFile();
+
+			var errorReportDownloadName = TestCase.getDownloadedTempFileName(fileNamePattern = "*.csv");
+
+			ImportExport.assertFileContent(
+				comparisonFileName = "account_import_error_report.csv",
+				fileName = "${errorReportDownloadName}");
+		}
+	}
+
 	@description = "Verify users receive a notification when an import is triggered."
 	@priority = "3"
 	test CanViewImportNotifications {
