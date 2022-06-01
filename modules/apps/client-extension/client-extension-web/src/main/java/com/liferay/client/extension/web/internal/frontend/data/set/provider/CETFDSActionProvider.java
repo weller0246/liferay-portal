@@ -61,16 +61,16 @@ public class CETFDSActionProvider implements FDSActionProvider {
 
 		return DropdownItemListBuilder.add(
 			dropdownItem -> _buildEditClientExtensionEntryAction(
-				dropdownItem, httpServletRequest, cetFDSEntry)
+				cetFDSEntry, dropdownItem, httpServletRequest)
 		).add(
 			dropdownItem -> _buildDeleteClientExtensionEntryAction(
-				dropdownItem, httpServletRequest, cetFDSEntry)
+				cetFDSEntry, dropdownItem, httpServletRequest)
 		).build();
 	}
 
 	private void _buildDeleteClientExtensionEntryAction(
-		DropdownItem dropdownItem, HttpServletRequest httpServletRequest,
-		CETFDSEntry cetFDSEntry) {
+		CETFDSEntry cetFDSEntry, DropdownItem dropdownItem,
+		HttpServletRequest httpServletRequest) {
 
 		dropdownItem.setHref(
 			PortletURLBuilder.create(
@@ -87,8 +87,8 @@ public class CETFDSActionProvider implements FDSActionProvider {
 	}
 
 	private void _buildEditClientExtensionEntryAction(
-		DropdownItem dropdownItem, HttpServletRequest httpServletRequest,
-		CETFDSEntry cetFDSEntry) {
+		CETFDSEntry cetFDSEntry, DropdownItem dropdownItem,
+		HttpServletRequest httpServletRequest) {
 
 		PortletURL editClientExtensionEntryURL = PortletURLBuilder.create(
 			_getRenderURL(httpServletRequest)
