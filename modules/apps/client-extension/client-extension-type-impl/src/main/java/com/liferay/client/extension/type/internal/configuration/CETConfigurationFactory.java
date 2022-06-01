@@ -27,6 +27,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;
+import java.util.Properties;
 
 import org.osgi.framework.Constants;
 import org.osgi.service.component.ComponentConstants;
@@ -54,10 +55,7 @@ public class CETConfigurationFactory {
 		_cet = _cetManager.addCET(
 			cetConfiguration.baseURL(), _getCompanyId(properties),
 			cetConfiguration.description(), cetConfiguration.name(),
-			_getPrimaryKey(properties),
-			PropertiesUtil.load(
-				StringUtil.merge(
-					cetConfiguration.properties(), StringPool.NEW_LINE)),
+			_getPrimaryKey(properties), _loadProperties(cetConfiguration),
 			cetConfiguration.sourceCodeURL(), cetConfiguration.type(),
 			StringUtil.merge(
 				cetConfiguration.typeSettings(), StringPool.NEW_LINE));
@@ -101,6 +99,19 @@ public class CETConfigurationFactory {
 		}
 
 		return "LXC:" + pid;
+	}
+
+	private Properties _loadProperties(CETConfiguration cetConfiguration)
+		throws Exception {
+
+		String[] properties = cetConfiguration.properties();
+
+		if (properties == null) {
+			return new Properties();
+		}
+
+		return PropertiesUtil.load(
+			StringUtil.merge(properties, StringPool.NEW_LINE));
 	}
 
 	private CET _cet;
