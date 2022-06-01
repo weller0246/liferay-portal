@@ -137,7 +137,7 @@ export default function CSSExtensionConfiguration({
 				</ClayTable>
 			) : (
 				<p className="text-secondary">
-					{Liferay.Language.get('no-css-extensions-loaded')}
+					{Liferay.Language.get('no-css-extensions-were-loaded')}
 				</p>
 			)}
 		</>
