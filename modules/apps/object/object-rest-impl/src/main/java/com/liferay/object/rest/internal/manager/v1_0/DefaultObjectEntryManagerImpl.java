@@ -377,7 +377,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 			TransformUtil.transform(
 				_objectEntryLocalService.getValuesList(
 					objectDefinition.getObjectDefinitionId(), groupId,
-					predicate, search, accountEntryIds,
+					accountEntryIds, predicate, search,
 					pagination.getStartPosition(), pagination.getEndPosition()),
 				values -> getObjectEntry(
 					dtoConverterContext, objectDefinition,
@@ -385,8 +385,8 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 						values.get(objectDefinition.getPKObjectFieldName())))),
 			pagination,
 			_objectEntryLocalService.getValuesListCount(
-				objectDefinition.getObjectDefinitionId(), groupId, predicate,
-				search, accountEntryIds));
+				objectDefinition.getObjectDefinitionId(), groupId,
+				accountEntryIds, predicate, search));
 	}
 
 	@Override

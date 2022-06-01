@@ -664,8 +664,8 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public List<Map<String, Serializable>> getValuesList(
-			long objectDefinitionId, long groupId, Predicate predicate,
-			String search, long[] accountEntryIds, int start, int end)
+			long objectDefinitionId, long groupId, long[] accountEntryIds,
+			Predicate predicate, String search, int start, int end)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
@@ -704,6 +704,9 @@ public class ObjectEntryLocalServiceImpl
 						return ObjectEntryTable.INSTANCE.groupId.eq(groupId);
 					}
 				).and(
+					_fillAccountEntriesPredicate(
+						objectDefinitionId, accountEntryIds)
+				).and(
 					_fillPredicate(objectDefinitionId, predicate, search)
 				).and(
 					() -> {
@@ -717,9 +720,6 @@ public class ObjectEntryLocalServiceImpl
 							dynamicObjectDefinitionTable.getName(),
 							dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 					}
-				).and(
-					_fillAccountEntriesPredicate(
-						objectDefinitionId, accountEntryIds)
 				)
 			).limit(
 				start, end
@@ -738,8 +738,8 @@ public class ObjectEntryLocalServiceImpl
 
 	@Override
 	public int getValuesListCount(
-			long objectDefinitionId, long groupId, Predicate predicate,
-			String search, long[] accountEntryIds)
+			long objectDefinitionId, long groupId, long[] accountEntryIds,
+			Predicate predicate, String search)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
@@ -773,6 +773,9 @@ public class ObjectEntryLocalServiceImpl
 					return ObjectEntryTable.INSTANCE.groupId.eq(groupId);
 				}
 			).and(
+				_fillAccountEntriesPredicate(
+					objectDefinitionId, accountEntryIds)
+			).and(
 				_fillPredicate(objectDefinitionId, predicate, search)
 			).and(
 				() -> {
@@ -784,9 +787,6 @@ public class ObjectEntryLocalServiceImpl
 						dynamicObjectDefinitionTable.getName(),
 						dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 				}
-			).and(
-				_fillAccountEntriesPredicate(
-					objectDefinitionId, accountEntryIds)
 			)
 		);
 
