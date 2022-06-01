@@ -339,7 +339,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 		long[] accountEntryIds = null;
 
-		if (objectDefinition.isAccountEntryRestriction()) {
+		if (objectDefinition.isAccountEntryRestricted()) {
 			List<AccountEntry> accountEntries =
 				_accountEntryLocalService.getUserAccountEntries(
 					dtoConverterContext.getUserId(),
