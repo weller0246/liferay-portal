@@ -75,8 +75,6 @@ public class ImportCommerceOrderItemsMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		int[] counts = new int[2];
-
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
 		long commerceOrderId = ParamUtil.getLong(
@@ -87,6 +85,8 @@ public class ImportCommerceOrderItemsMVCActionCommand
 
 		String commerceOrderImporterTypeKey = ParamUtil.getString(
 			actionRequest, "commerceOrderImporterTypeKey");
+
+		int[] counts = new int[2];
 
 		boolean indexReadOnly = IndexStatusManagerThreadLocal.isIndexReadOnly();
 
