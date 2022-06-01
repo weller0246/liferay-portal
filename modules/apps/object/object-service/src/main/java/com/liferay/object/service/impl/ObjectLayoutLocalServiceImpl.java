@@ -359,7 +359,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutRow> objectLayoutRows)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return TransformUtil.unsafeTransform(
 			objectLayoutRows,
 			objectLayoutRow -> _addObjectLayoutRow(
 				user, objectDefinitionId, objectLayoutBoxId,
@@ -399,7 +399,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutTab> objectLayoutTabs)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return TransformUtil.unsafeTransform(
 			objectLayoutTabs,
 			objectLayoutTab -> _addObjectLayoutTab(
 				user, objectDefinitionId, objectLayoutId,
