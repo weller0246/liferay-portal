@@ -168,8 +168,9 @@ public class ClientExtensionEntryLocalServiceWrapper
 
 	@Override
 	public void deployClientExtensionEntry(
-		com.liferay.client.extension.model.ClientExtensionEntry
-			clientExtensionEntry) {
+			com.liferay.client.extension.model.ClientExtensionEntry
+				clientExtensionEntry)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_clientExtensionEntryLocalService.deployClientExtensionEntry(
 			clientExtensionEntry);

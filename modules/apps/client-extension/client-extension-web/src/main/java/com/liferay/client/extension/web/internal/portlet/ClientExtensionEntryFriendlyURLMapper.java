@@ -14,7 +14,6 @@
 
 package com.liferay.client.extension.web.internal.portlet;
 
-import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper;
@@ -35,9 +34,7 @@ import javax.portlet.WindowState;
 public class ClientExtensionEntryFriendlyURLMapper
 	extends DefaultFriendlyURLMapper implements FriendlyURLMapper {
 
-	public ClientExtensionEntryFriendlyURLMapper(
-		ClientExtensionEntry clientExtensionEntry, String friendlyURLMapping) {
-
+	public ClientExtensionEntryFriendlyURLMapper(String friendlyURLMapping) {
 		_mapping = friendlyURLMapping;
 
 		Router router = new RouterImpl();

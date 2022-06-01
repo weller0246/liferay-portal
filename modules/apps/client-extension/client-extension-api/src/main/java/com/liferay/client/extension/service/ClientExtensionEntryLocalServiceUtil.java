@@ -153,7 +153,8 @@ public class ClientExtensionEntryLocalServiceUtil {
 	}
 
 	public static void deployClientExtensionEntry(
-		ClientExtensionEntry clientExtensionEntry) {
+			ClientExtensionEntry clientExtensionEntry)
+		throws PortalException {
 
 		getService().deployClientExtensionEntry(clientExtensionEntry);
 	}

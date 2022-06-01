@@ -12,9 +12,9 @@
  * details.
  */
 
-package com.liferay.client.extension.deployer;
+package com.liferay.client.extension.type.deployer;
 
-import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.client.extension.type.CET;
 
 import java.util.List;
 
@@ -23,9 +23,8 @@ import org.osgi.framework.ServiceRegistration;
 /**
  * @author Brian Wing Shun Chan
  */
-public interface ClientExtensionEntryDeployer {
+public interface CETDeployer {
 
-	public List<ServiceRegistration<?>> deploy(
-		ClientExtensionEntry clientExtensionEntry);
+	public List<ServiceRegistration<?>> deploy(CET cet);
 
 }

@@ -156,7 +156,8 @@ public interface ClientExtensionEntryLocalService
 
 	@Clusterable
 	public void deployClientExtensionEntry(
-		ClientExtensionEntry clientExtensionEntry);
+			ClientExtensionEntry clientExtensionEntry)
+		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public <T> T dslQuery(DSLQuery dslQuery);

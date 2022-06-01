@@ -15,7 +15,6 @@
 package com.liferay.client.extension.service.impl;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.deployer.ClientExtensionEntryDeployer;
 import com.liferay.client.extension.exception.DuplicateClientExtensionEntryExternalReferenceCodeException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.base.ClientExtensionEntryLocalServiceBaseImpl;
@@ -24,8 +23,10 @@ import com.liferay.client.extension.type.CETIFrame;
 import com.liferay.client.extension.type.CETThemeCSS;
 import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.client.extension.type.CETThemeJS;
+import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
 import com.liferay.client.extension.type.validator.CETValidator;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
@@ -192,13 +193,14 @@ public class ClientExtensionEntryLocalServiceImpl
 	@Clusterable
 	@Override
 	public void deployClientExtensionEntry(
-		ClientExtensionEntry clientExtensionEntry) {
+			ClientExtensionEntry clientExtensionEntry)
+		throws PortalException {
 
 		undeployClientExtensionEntry(clientExtensionEntry);
 
 		_serviceRegistrationsMaps.put(
 			clientExtensionEntry.getClientExtensionEntryId(),
-			_clientExtensionEntryDeployer.deploy(clientExtensionEntry));
+			_cetDeployer.deploy(_cetFactory.cet(clientExtensionEntry)));
 	}
 
 	@Override
@@ -264,7 +266,12 @@ public class ClientExtensionEntryLocalServiceImpl
 		for (ClientExtensionEntry clientExtensionEntry :
 				clientExtensionEntries) {
 
-			deployClientExtensionEntry(clientExtensionEntry);
+			try {
+				deployClientExtensionEntry(clientExtensionEntry);
+			}
+			catch (PortalException portalException) {
+				ReflectionUtil.throwException(portalException);
+			}
 		}
 	}
 
@@ -532,13 +539,13 @@ public class ClientExtensionEntryLocalServiceImpl
 	private BundleContext _bundleContext;
 
 	@Reference
+	private CETDeployer _cetDeployer;
+
+	@Reference
 	private CETFactory _cetFactory;
 
 	@Reference
 	private CETValidator _cetValidator;
-
-	@Reference
-	private ClientExtensionEntryDeployer _clientExtensionEntryDeployer;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
