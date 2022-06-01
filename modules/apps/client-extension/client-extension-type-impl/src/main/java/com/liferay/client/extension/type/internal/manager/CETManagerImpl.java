@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
 import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.type.CET;
+import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
 import com.liferay.client.extension.type.internal.CETCustomElementImpl;
 import com.liferay.client.extension.type.internal.CETIFrameImpl;
@@ -36,7 +37,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 
 /**
@@ -97,7 +100,7 @@ public class CETManagerImpl implements CETManager {
 
 		cetsMap.put(primaryKey, cet);
 
-		// TODO Deploy CET
+		_serviceRegistrationsMaps.put(primaryKey, _cetDeployer.deploy(cet));
 
 		return cet;
 	}
@@ -108,8 +111,7 @@ public class CETManagerImpl implements CETManager {
 
 		cetsMap.remove(cet.getPrimaryKey());
 
-		// TODO Undeploy CET
-
+		_undeployCET(cet);
 	}
 
 	@Override
@@ -144,6 +146,19 @@ public class CETManagerImpl implements CETManager {
 		return cetsMap.size() + count;
 	}
 
+	@Deactivate
+	protected void deactivate() {
+		for (Map.Entry<Long, Map<String, CET>> entry1 : _cetsMaps.entrySet()) {
+			Map<String, CET> cetsMap = entry1.getValue();
+
+			for (Map.Entry<String, CET> entry2 : cetsMap.entrySet()) {
+				CET cet = entry2.getValue();
+
+				_undeployCET(cet);
+			}
+		}
+	}
+
 	private Map<String, CET> _getCETsMap(long companyId) {
 		Map<String, CET> cetsMap = _cetsMaps.get(companyId);
 
@@ -156,6 +171,22 @@ public class CETManagerImpl implements CETManager {
 		return cetsMap;
 	}
 
+	private void _undeployCET(CET cet) {
+		List<ServiceRegistration<?>> serviceRegistrations =
+			_serviceRegistrationsMaps.remove(cet.getPrimaryKey());
+
+		if (serviceRegistrations != null) {
+			for (ServiceRegistration<?> serviceRegistration :
+					serviceRegistrations) {
+
+				serviceRegistration.unregister();
+			}
+		}
+	}
+
+	@Reference
+	private CETDeployer _cetDeployer;
+
 	@Reference
 	private CETFactory _cetFactory;
 
@@ -164,5 +195,8 @@ public class CETManagerImpl implements CETManager {
 
 	@Reference
 	private ClientExtensionEntryLocalService _clientExtensionEntryLocalService;
+
+	private final Map<String, List<ServiceRegistration<?>>>
+		_serviceRegistrationsMaps = new ConcurrentHashMap<>();
 
 }
