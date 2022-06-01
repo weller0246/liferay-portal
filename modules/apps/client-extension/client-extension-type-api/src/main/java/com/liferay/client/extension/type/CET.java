@@ -20,14 +20,5 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public interface CETIFrame extends CET {
-
-	public String getFriendlyURLMapping();
-
-	public String getPortletCategoryName();
-
-	public String getURL();
-
-	public boolean isInstanceable();
-
+public interface CET {
 }

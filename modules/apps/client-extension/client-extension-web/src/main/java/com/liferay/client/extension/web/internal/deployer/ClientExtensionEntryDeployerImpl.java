@@ -83,7 +83,8 @@ public class ClientExtensionEntryDeployerImpl
 				clientExtensionEntry.getType(),
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
-			cetCustomElement = _cetFactory.customElement(clientExtensionEntry);
+			cetCustomElement = _cetFactory.cetCustomElement(
+				clientExtensionEntry);
 
 			friendlyURLMapping = cetCustomElement.getFriendlyURLMapping();
 			instanceable = cetCustomElement.isInstanceable();
@@ -93,7 +94,7 @@ public class ClientExtensionEntryDeployerImpl
 					clientExtensionEntry.getType(),
 					ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
-			cetIFrame = _cetFactory.iFrame(clientExtensionEntry);
+			cetIFrame = _cetFactory.cetIFrame(clientExtensionEntry);
 
 			friendlyURLMapping = cetIFrame.getFriendlyURLMapping();
 			instanceable = cetIFrame.isInstanceable();

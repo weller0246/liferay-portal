@@ -12,22 +12,22 @@
  * details.
  */
 
-package com.liferay.client.extension.type;
+package com.liferay.client.extension.type.manager;
 
-import org.osgi.annotation.versioning.ProviderType;
+import com.liferay.client.extension.type.CET;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.vulcan.pagination.Pagination;
+
+import java.util.List;
 
 /**
  * @author Brian Wing Shun Chan
  */
-@ProviderType
-public interface CETIFrame extends CET {
+public interface CETManager {
 
-	public String getFriendlyURLMapping();
-
-	public String getPortletCategoryName();
-
-	public String getURL();
-
-	public boolean isInstanceable();
+	public List<CET> getCETs(
+			long companyId, String keywords, Pagination pagination, Sort sort)
+		throws PortalException;
 
 }

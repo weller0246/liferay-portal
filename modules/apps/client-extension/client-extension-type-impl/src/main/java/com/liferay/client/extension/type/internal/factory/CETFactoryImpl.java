@@ -17,6 +17,7 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.client.extension.type.CET;
 import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.client.extension.type.CETIFrame;
 import com.liferay.client.extension.type.CETThemeCSS;
@@ -41,56 +42,61 @@ import org.osgi.service.component.annotations.Component;
 public class CETFactoryImpl implements CETFactory {
 
 	@Override
-	public CETCustomElement customElement(
+	public CET cet(ClientExtensionEntry clientExtensionEntry) {
+		return null;
+	}
+
+	@Override
+	public CETCustomElement cetCustomElement(
 		ClientExtensionEntry clientExtensionEntry) {
 
 		return new CETCustomElementImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETCustomElement customElement(PortletRequest portletRequest) {
+	public CETCustomElement cetCustomElement(PortletRequest portletRequest) {
 		return new CETCustomElementImpl(portletRequest);
 	}
 
 	@Override
-	public CETIFrame iFrame(ClientExtensionEntry clientExtensionEntry) {
+	public CETIFrame cetIFrame(ClientExtensionEntry clientExtensionEntry) {
 		return new CETIFrameImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETIFrame iFrame(PortletRequest portletRequest) {
+	public CETIFrame cetIFrame(PortletRequest portletRequest) {
 		return new CETIFrameImpl(portletRequest);
 	}
 
 	@Override
-	public CETThemeCSS themeCSS(ClientExtensionEntry clientExtensionEntry) {
+	public CETThemeCSS cetThemeCSS(ClientExtensionEntry clientExtensionEntry) {
 		return new CETThemeCSSImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETThemeCSS themeCSS(PortletRequest portletRequest) {
+	public CETThemeCSS cetThemeCSS(PortletRequest portletRequest) {
 		return new CETThemeCSSImpl(portletRequest);
 	}
 
 	@Override
-	public CETThemeFavicon themeFavicon(
+	public CETThemeFavicon cetThemeFavicon(
 		ClientExtensionEntry clientExtensionEntry) {
 
 		return new CETThemeFaviconImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETThemeFavicon themeFavicon(PortletRequest portletRequest) {
+	public CETThemeFavicon cetThemeFavicon(PortletRequest portletRequest) {
 		return new CETThemeFaviconImpl(portletRequest);
 	}
 
 	@Override
-	public CETThemeJS themeJS(ClientExtensionEntry clientExtensionEntry) {
+	public CETThemeJS cetThemeJS(ClientExtensionEntry clientExtensionEntry) {
 		return new CETThemeJSImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETThemeJS themeJS(PortletRequest portletRequest) {
+	public CETThemeJS cetThemeJS(PortletRequest portletRequest) {
 		return new CETThemeJSImpl(portletRequest);
 	}
 
@@ -99,21 +105,21 @@ public class CETFactoryImpl implements CETFactory {
 		throws PortalException {
 
 		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
-			return String.valueOf(customElement(portletRequest));
+			return String.valueOf(cetCustomElement(portletRequest));
 		}
 		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
-			return String.valueOf(iFrame(portletRequest));
+			return String.valueOf(cetIFrame(portletRequest));
 		}
 		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
-			return String.valueOf(themeCSS(portletRequest));
+			return String.valueOf(cetThemeCSS(portletRequest));
 		}
 		else if (type.equals(
 					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
-			return String.valueOf(themeFavicon(portletRequest));
+			return String.valueOf(cetThemeFavicon(portletRequest));
 		}
 		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_JS)) {
-			return String.valueOf(themeJS(portletRequest));
+			return String.valueOf(cetThemeJS(portletRequest));
 		}
 
 		throw new ClientExtensionEntryTypeException("Invalid type " + type);

@@ -15,6 +15,7 @@
 package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.client.extension.type.CET;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -22,7 +23,7 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 /**
  * @author Brian Wing Shun Chan
  */
-public abstract class BaseCETImpl {
+public abstract class BaseCETImpl implements CET {
 
 	public BaseCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		this(

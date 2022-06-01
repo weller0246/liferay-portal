@@ -15,6 +15,7 @@
 package com.liferay.client.extension.type.factory;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.client.extension.type.CET;
 import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.client.extension.type.CETIFrame;
 import com.liferay.client.extension.type.CETThemeCSS;
@@ -29,27 +30,29 @@ import javax.portlet.PortletRequest;
  */
 public interface CETFactory {
 
-	public CETCustomElement customElement(
+	public CET cet(ClientExtensionEntry clientExtensionEntry);
+
+	public CETCustomElement cetCustomElement(
 		ClientExtensionEntry clientExtensionEntry);
 
-	public CETCustomElement customElement(PortletRequest portletRequest);
+	public CETCustomElement cetCustomElement(PortletRequest portletRequest);
 
-	public CETIFrame iFrame(ClientExtensionEntry clientExtensionEntry);
+	public CETIFrame cetIFrame(ClientExtensionEntry clientExtensionEntry);
 
-	public CETIFrame iFrame(PortletRequest portletRequest);
+	public CETIFrame cetIFrame(PortletRequest portletRequest);
 
-	public CETThemeCSS themeCSS(ClientExtensionEntry clientExtensionEntry);
+	public CETThemeCSS cetThemeCSS(ClientExtensionEntry clientExtensionEntry);
 
-	public CETThemeCSS themeCSS(PortletRequest portletRequest);
+	public CETThemeCSS cetThemeCSS(PortletRequest portletRequest);
 
-	public CETThemeFavicon themeFavicon(
+	public CETThemeFavicon cetThemeFavicon(
 		ClientExtensionEntry clientExtensionEntry);
 
-	public CETThemeFavicon themeFavicon(PortletRequest portletRequest);
+	public CETThemeFavicon cetThemeFavicon(PortletRequest portletRequest);
 
-	public CETThemeJS themeJS(ClientExtensionEntry clientExtensionEntry);
+	public CETThemeJS cetThemeJS(ClientExtensionEntry clientExtensionEntry);
 
-	public CETThemeJS themeJS(PortletRequest portletRequest);
+	public CETThemeJS cetThemeJS(PortletRequest portletRequest);
 
 	public String typeSettings(PortletRequest portletRequest, String type)
 		throws PortalException;

@@ -20,7 +20,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Iván Zaera Avellón
  */
 @ProviderType
-public interface CETThemeJS {
+public interface CETThemeJS extends CET {
 
 	public String getURLs();
 

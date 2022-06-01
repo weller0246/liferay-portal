@@ -391,7 +391,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	private CETCustomElement _getCETCustomElement() {
 		if (_cetCustomElement == null) {
-			_cetCustomElement = _cetFactory.customElement(
+			_cetCustomElement = _cetFactory.cetCustomElement(
 				_clientExtensionEntry);
 		}
 
@@ -400,7 +400,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	private CETIFrame _getCETIFrame() {
 		if (_cetIFrame == null) {
-			_cetIFrame = _cetFactory.iFrame(_clientExtensionEntry);
+			_cetIFrame = _cetFactory.cetIFrame(_clientExtensionEntry);
 		}
 
 		return _cetIFrame;
@@ -408,7 +408,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	private CETThemeCSS _getCETThemeCSS() {
 		if (_cetThemeCSS == null) {
-			_cetThemeCSS = _cetFactory.themeCSS(_clientExtensionEntry);
+			_cetThemeCSS = _cetFactory.cetThemeCSS(_clientExtensionEntry);
 		}
 
 		return _cetThemeCSS;
@@ -416,7 +416,8 @@ public class EditClientExtensionEntryDisplayContext {
 
 	private CETThemeFavicon _getCETThemeFavicon() {
 		if (_cetThemeFavicon == null) {
-			_cetThemeFavicon = _cetFactory.themeFavicon(_clientExtensionEntry);
+			_cetThemeFavicon = _cetFactory.cetThemeFavicon(
+				_clientExtensionEntry);
 		}
 
 		return _cetThemeFavicon;
@@ -424,7 +425,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	private CETThemeJS _getCETThemeJS() {
 		if (_cetThemeJS == null) {
-			_cetThemeJS = _cetFactory.themeJS(_clientExtensionEntry);
+			_cetThemeJS = _cetFactory.cetThemeJS(_clientExtensionEntry);
 		}
 
 		return _cetThemeJS;

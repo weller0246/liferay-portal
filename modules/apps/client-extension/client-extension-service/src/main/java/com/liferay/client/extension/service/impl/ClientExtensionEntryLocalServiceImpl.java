@@ -442,7 +442,7 @@ public class ClientExtensionEntryLocalServiceImpl
 				clientExtensionEntry.getType(),
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
-			CETCustomElement cetCustomElement = _cetFactory.customElement(
+			CETCustomElement cetCustomElement = _cetFactory.cetCustomElement(
 				clientExtensionEntry);
 
 			workflowContext = Collections.singletonMap(
@@ -452,7 +452,7 @@ public class ClientExtensionEntryLocalServiceImpl
 					clientExtensionEntry.getType(),
 					ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
-			CETIFrame cetIFrame = _cetFactory.iFrame(clientExtensionEntry);
+			CETIFrame cetIFrame = _cetFactory.cetIFrame(clientExtensionEntry);
 
 			workflowContext = Collections.singletonMap(
 				WorkflowConstants.CONTEXT_URL, cetIFrame.getURL());
@@ -461,7 +461,7 @@ public class ClientExtensionEntryLocalServiceImpl
 					clientExtensionEntry.getType(),
 					ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
 
-			CETThemeCSS cetThemeCSS = _cetFactory.themeCSS(
+			CETThemeCSS cetThemeCSS = _cetFactory.cetThemeCSS(
 				clientExtensionEntry);
 
 			workflowContext = Collections.singletonMap(
@@ -474,7 +474,7 @@ public class ClientExtensionEntryLocalServiceImpl
 					clientExtensionEntry.getType(),
 					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
-			CETThemeFavicon cetThemeFavicon = _cetFactory.themeFavicon(
+			CETThemeFavicon cetThemeFavicon = _cetFactory.cetThemeFavicon(
 				clientExtensionEntry);
 
 			workflowContext = Collections.singletonMap(
@@ -484,7 +484,8 @@ public class ClientExtensionEntryLocalServiceImpl
 					clientExtensionEntry.getType(),
 					ClientExtensionEntryConstants.TYPE_THEME_JS)) {
 
-			CETThemeJS cetThemeJS = _cetFactory.themeJS(clientExtensionEntry);
+			CETThemeJS cetThemeJS = _cetFactory.cetThemeJS(
+				clientExtensionEntry);
 
 			workflowContext = Collections.singletonMap(
 				WorkflowConstants.CONTEXT_URL, cetThemeJS.getURLs());

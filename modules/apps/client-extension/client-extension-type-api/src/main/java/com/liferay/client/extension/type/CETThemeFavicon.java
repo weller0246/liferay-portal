@@ -20,7 +20,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Iván Zaera Avellón
  */
 @ProviderType
-public interface CETThemeFavicon {
+public interface CETThemeFavicon extends CET {
 
 	public String getURL();
 

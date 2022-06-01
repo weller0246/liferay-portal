@@ -20,7 +20,7 @@ import org.osgi.annotation.versioning.ProviderType;
  * @author Brian Wing Shun Chan
  */
 @ProviderType
-public interface CETCustomElement {
+public interface CETCustomElement extends CET {
 
 	public String getCSSURLs();
 
