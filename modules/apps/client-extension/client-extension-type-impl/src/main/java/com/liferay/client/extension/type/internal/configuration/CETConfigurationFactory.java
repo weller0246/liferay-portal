@@ -47,7 +47,7 @@ import org.osgi.service.component.annotations.Reference;
 public class CETConfigurationFactory {
 
 	@Activate
-	public void activate(Map<String, Object> properties)
+	protected void activate(Map<String, Object> properties)
 		throws PortalException {
 
 		CETConfiguration cetConfiguration = ConfigurableUtil.createConfigurable(
