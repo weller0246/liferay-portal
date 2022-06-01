@@ -92,7 +92,7 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 	private List<DSDocument> _getDSDocuments(ResourceRequest resourceRequest)
 		throws Exception {
 
-		return TransformUtil.transformToList(
+		return TransformUtil.unsafeTransformToList(
 			ArrayUtil.toLongArray(
 				ParamUtil.getLongValues(resourceRequest, "fileEntryIds")),
 			fileEntryId -> {
