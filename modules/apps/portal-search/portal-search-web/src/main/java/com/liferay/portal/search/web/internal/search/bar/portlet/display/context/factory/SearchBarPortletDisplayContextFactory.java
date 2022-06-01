@@ -203,14 +203,11 @@ public class SearchBarPortletDisplayContextFactory {
 								suggestionsContributorConfigurations(),
 							StringPool.COMMA),
 						StringPool.CLOSE_BRACKET));
-
 			searchBarPortletDisplayContext.setSuggestionsDisplayThreshold(
 				searchBarPortletInstanceConfiguration.
 					suggestionsDisplayThreshold());
-
 			searchBarPortletDisplayContext.setSuggestionsEnabled(
 				searchBarPortletPreferences.isSuggestionsEnabled());
-
 			searchBarPortletDisplayContext.setSuggestionsURL(
 				"/o/portal-search-rest/v1.0/suggestions");
 		}
