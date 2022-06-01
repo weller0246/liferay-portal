@@ -23,8 +23,8 @@ ClientExtensionAdminDisplayContext clientExtensionAdminDisplayContext = (ClientE
 <frontend-data-set:classic-display
 	actionParameterName="clientExtensionEntryId"
 	creationMenu="<%= clientExtensionAdminDisplayContext.getCreationMenu() %>"
-	dataProviderKey="<%= ClientExtensionAdminFDSNames.CLIENT_EXTENSION_ENTRIES %>"
-	id="<%= ClientExtensionAdminFDSNames.CLIENT_EXTENSION_ENTRIES %>"
+	dataProviderKey="<%= ClientExtensionAdminFDSNames.CLIENT_EXTENSION_TYPES %>"
+	id="<%= ClientExtensionAdminFDSNames.CLIENT_EXTENSION_TYPES %>"
 	itemsPerPage="<%= 10 %>"
 	selectedItemsKey="clientExtensionEntryId"
 	style="fluid"
