@@ -128,16 +128,6 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				uploadPortletRequest, "masterLayoutPlid",
 				layout.getMasterLayoutPlid());
 
-			long faviconClientExtensionEntryId = ParamUtil.getLong(
-				uploadPortletRequest, "faviconClientExtensionEntryId");
-			String faviconClientExtensionEntryType = ParamUtil.getString(
-				uploadPortletRequest, "faviconClientExtensionEntryType");
-
-			long themeCSSExtensionEntryId = ParamUtil.getLong(
-				actionRequest, "themeCSSExtensionEntryId");
-			String themeCSSExtensionEntryType = ParamUtil.getString(
-				actionRequest, "themeCSSExtensionEntryType");
-
 			ServiceContext serviceContext = ServiceContextFactory.getInstance(
 				Layout.class.getName(), actionRequest);
 
@@ -172,6 +162,11 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 				friendlyURLMap, !deleteLogo, iconBytes, styleBookEntryId,
 				faviconFileEntryId, masterLayoutPlid, serviceContext);
 
+			long faviconClientExtensionEntryId = ParamUtil.getLong(
+				uploadPortletRequest, "faviconClientExtensionEntryId");
+			String faviconClientExtensionEntryType = ParamUtil.getString(
+				uploadPortletRequest, "faviconClientExtensionEntryType");
+
 			if (faviconClientExtensionEntryId > 0) {
 				_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
 					themeDisplay.getUserId(),
@@ -179,6 +174,11 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 					faviconClientExtensionEntryId,
 					faviconClientExtensionEntryType);
 			}
+
+			long themeCSSExtensionEntryId = ParamUtil.getLong(
+				actionRequest, "themeCSSExtensionEntryId");
+			String themeCSSExtensionEntryType = ParamUtil.getString(
+				actionRequest, "themeCSSExtensionEntryType");
 
 			if (themeCSSExtensionEntryId > 0) {
 				_clientExtensionEntryRelLocalService.addClientExtensionEntryRel(
