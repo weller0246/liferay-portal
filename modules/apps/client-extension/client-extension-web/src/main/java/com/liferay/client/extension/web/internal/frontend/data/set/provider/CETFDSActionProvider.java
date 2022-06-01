@@ -81,7 +81,6 @@ public class CETFDSActionProvider implements FDSActionProvider {
 				"clientExtensionEntryId",
 				cetFDSEntry.getClientExtensionEntryId()
 			).buildString());
-
 		dropdownItem.setIcon("times-circle");
 		dropdownItem.setLabel(_getMessage(httpServletRequest, "delete"));
 	}
@@ -105,6 +104,7 @@ public class CETFDSActionProvider implements FDSActionProvider {
 		editClientExtensionEntryURL.setParameter("redirect", currentURL);
 
 		dropdownItem.setHref(editClientExtensionEntryURL);
+		
 		dropdownItem.setLabel(_getMessage(httpServletRequest, "edit"));
 	}
 
