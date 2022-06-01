@@ -524,11 +524,10 @@ public class LayoutsAdminDisplayContext {
 			clientExtensionItemSelectorCriterion =
 				new ClientExtensionItemSelectorCriterion();
 
-		clientExtensionItemSelectorCriterion.setType(
-			ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
-
 		clientExtensionItemSelectorCriterion.setDesiredItemSelectorReturnTypes(
 			new ClientExtensionItemSelectorReturnType());
+		clientExtensionItemSelectorCriterion.setType(
+			ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
 
 		PortletURL itemSelectorURL = _itemSelector.getItemSelectorURL(
 			RequestBackedPortletURLFactoryUtil.create(httpServletRequest),
