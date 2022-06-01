@@ -92,23 +92,10 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 	private List<DSDocument> _getDSDocuments(ResourceRequest resourceRequest)
 		throws Exception {
 
-		return TransformUtil.unsafeTransformToList(
+		return TransformUtil.transformToList(
 			ArrayUtil.toLongArray(
 				ParamUtil.getLongValues(resourceRequest, "fileEntryIds")),
-			fileEntryId -> {
-				FileEntry fileEntry = _dlAppLocalService.getFileEntry(
-					fileEntryId);
-
-				return new DSDocument() {
-					{
-						data = Base64.encode(
-							FileUtil.getBytes(fileEntry.getContentStream()));
-						dsDocumentId = String.valueOf(fileEntryId);
-						fileExtension = fileEntry.getExtension();
-						name = fileEntry.getFileName();
-					}
-				};
-			});
+			fileEntryId -> _toDSDocument(fileEntryId));
 	}
 
 	private List<DSRecipient> _getDSRecipients(ResourceRequest resourceRequest)
@@ -126,6 +113,20 @@ public class AddDSEnvelopeMVCResourceCommand extends BaseMVCResourceCommand {
 					name = recipientJSONObject.getString("fullName");
 				}
 			});
+	}
+
+	private DSDocument _toDSDocument(long fileEntryId) throws Exception {
+		FileEntry fileEntry = _dlAppLocalService.getFileEntry(fileEntryId);
+
+		return new DSDocument() {
+			{
+				data = Base64.encode(
+					FileUtil.getBytes(fileEntry.getContentStream()));
+				dsDocumentId = String.valueOf(fileEntryId);
+				fileExtension = fileEntry.getExtension();
+				name = fileEntry.getFileName();
+			}
+		};
 	}
 
 	@Reference
