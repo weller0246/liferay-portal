@@ -340,7 +340,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 		long[] accountEntryIds = null;
 
 		if (objectDefinition.isAccountEntryRestriction()) {
-			List<AccountEntry> userAccountEntries =
+			List<AccountEntry> accountEntries =
 				_accountEntryLocalService.getUserAccountEntries(
 					dtoConverterContext.getUserId(),
 					AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT, null,
@@ -352,7 +352,7 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 					QueryUtil.ALL_POS);
 
 			accountEntryIds = ListUtil.toLongArray(
-				userAccountEntries, AccountEntry::getAccountEntryId);
+				accountEntries, AccountEntry::getAccountEntryId);
 		}
 
 		return Page.of(

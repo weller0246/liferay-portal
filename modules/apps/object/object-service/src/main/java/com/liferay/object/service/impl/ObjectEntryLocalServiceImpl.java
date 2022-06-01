@@ -1164,14 +1164,14 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
-		if (!objectDefinition.isAccountEntryRestriction() ||
+		if (!objectDefinition.isAccountEntryRestricted() ||
 			(accountEntryIds == null)) {
 
 			return null;
 		}
 
 		ObjectField objectField = _objectFieldLocalService.getObjectField(
-			objectDefinition.getAccountEntryRestrictionObjectFieldId());
+			objectDefinition.getAccountEntryRestrictedObjectFieldId());
 
 		Table<?> table = _objectFieldLocalService.getTable(
 			objectDefinition.getObjectDefinitionId(), objectField.getName());

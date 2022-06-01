@@ -28,9 +28,9 @@ public class ObjectDefinitionUpgradeProcess extends UpgradeProcess {
 				"ObjectDefinition", "accountERObjectFieldId", "LONG");
 		}
 
-		if (!hasColumn("ObjectDefinition", "accountEntryRestriction")) {
+		if (!hasColumn("ObjectDefinition", "accountEntryRestricted")) {
 			alterTableAddColumn(
-				"ObjectDefinition", "accountEntryRestriction", "BOOLEAN");
+				"ObjectDefinition", "accountEntryRestricted", "BOOLEAN");
 		}
 	}
 
