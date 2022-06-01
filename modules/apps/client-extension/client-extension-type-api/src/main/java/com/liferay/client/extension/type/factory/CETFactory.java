@@ -30,7 +30,8 @@ import javax.portlet.PortletRequest;
  */
 public interface CETFactory {
 
-	public CET cet(ClientExtensionEntry clientExtensionEntry);
+	public CET cet(ClientExtensionEntry clientExtensionEntry)
+		throws PortalException;
 
 	public CETCustomElement cetCustomElement(
 		ClientExtensionEntry clientExtensionEntry);

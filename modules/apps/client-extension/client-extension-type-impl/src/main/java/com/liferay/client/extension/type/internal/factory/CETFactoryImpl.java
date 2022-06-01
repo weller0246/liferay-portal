@@ -42,8 +42,30 @@ import org.osgi.service.component.annotations.Component;
 public class CETFactoryImpl implements CETFactory {
 
 	@Override
-	public CET cet(ClientExtensionEntry clientExtensionEntry) {
-		return null;
+	public CET cet(ClientExtensionEntry clientExtensionEntry)
+		throws PortalException {
+
+		String type = clientExtensionEntry.getType();
+
+		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
+			return cetCustomElement(clientExtensionEntry);
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_IFRAME)) {
+			return cetIFrame(clientExtensionEntry);
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
+			return cetThemeCSS(clientExtensionEntry);
+		}
+		else if (type.equals(
+					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
+
+			return cetThemeFavicon(clientExtensionEntry);
+		}
+		else if (type.equals(ClientExtensionEntryConstants.TYPE_THEME_JS)) {
+			return cetThemeJS(clientExtensionEntry);
+		}
+
+		throw new ClientExtensionEntryTypeException("Invalid type " + type);
 	}
 
 	@Override
