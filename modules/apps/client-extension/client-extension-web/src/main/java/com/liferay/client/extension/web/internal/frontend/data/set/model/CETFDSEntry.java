@@ -37,7 +37,7 @@ public class CETFDSEntry {
 	}
 
 	public String getName() {
-		return _cet.getName();
+		return _cet.getName(_locale);
 	}
 
 	public StatusInfo getStatus() {

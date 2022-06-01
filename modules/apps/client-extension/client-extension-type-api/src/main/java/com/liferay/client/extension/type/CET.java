@@ -14,6 +14,9 @@
 
 package com.liferay.client.extension.type;
 
+import java.util.Locale;
+import java.util.Properties;
+
 import org.osgi.annotation.versioning.ProviderType;
 
 /**
@@ -28,9 +31,11 @@ public interface CET {
 
 	public String getDescription();
 
-	public String getName();
+	public String getName(Locale locale);
 
 	public String getPrimaryKey();
+
+	public Properties getProperties();
 
 	public String getSourceCodeURL();
 

@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.List;
+import java.util.Properties;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,8 +29,8 @@ public interface CETManager {
 
 	public CET addCET(
 			String baseURL, long companyId, String description, String name,
-			String primaryKey, String sourceCodeURL, String type,
-			String typeSettings)
+			String primaryKey, Properties properties, String sourceCodeURL,
+			String type, String typeSettings)
 		throws PortalException;
 
 	public void deleteCET(CET cet);

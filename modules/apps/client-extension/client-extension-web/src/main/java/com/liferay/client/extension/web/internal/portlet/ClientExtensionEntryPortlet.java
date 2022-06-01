@@ -31,15 +31,13 @@ import com.liferay.portal.kernel.servlet.taglib.aui.ScriptData;
 import com.liferay.portal.kernel.servlet.taglib.util.OutputData;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-
-import java.nio.charset.StandardCharsets;
 
 import java.util.Map;
 import java.util.Properties;
@@ -97,24 +95,16 @@ public class ClientExtensionEntryPortlet extends MVCPortlet {
 	private Properties _getProperties(RenderRequest renderRequest)
 		throws IOException {
 
-		Properties properties = new Properties();
-
-		_loadProperties(properties, _clientExtensionEntry.getProperties());
+		Properties properties = PropertiesUtil.load(
+			_clientExtensionEntry.getProperties());
 
 		PortletPreferences portletPreferences = renderRequest.getPreferences();
 
-		_loadProperties(
+		PropertiesUtil.load(
 			properties,
 			portletPreferences.getValue("properties", StringPool.BLANK));
 
 		return properties;
-	}
-
-	private void _loadProperties(Properties properties, String string)
-		throws IOException {
-
-		properties.load(
-			new ByteArrayInputStream(string.getBytes(StandardCharsets.UTF_8)));
 	}
 
 	private void _renderCustomElement(

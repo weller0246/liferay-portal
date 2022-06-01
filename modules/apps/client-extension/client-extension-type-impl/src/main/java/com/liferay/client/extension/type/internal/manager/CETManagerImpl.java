@@ -33,6 +33,7 @@ import com.liferay.portal.vulcan.util.TransformUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.service.component.annotations.Component;
@@ -47,8 +48,8 @@ public class CETManagerImpl implements CETManager {
 	@Override
 	public CET addCET(
 			String baseURL, long companyId, String description, String name,
-			String primaryKey, String sourceCodeURL, String type,
-			String typeSettings)
+			String primaryKey, Properties properties, String sourceCodeURL,
+			String type, String typeSettings)
 		throws PortalException {
 
 		CET cet = null;
@@ -57,35 +58,35 @@ public class CETManagerImpl implements CETManager {
 				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			cet = new CETCustomElementImpl(
-				baseURL, companyId, description, name, primaryKey,
+				baseURL, companyId, description, name, primaryKey, properties,
 				sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			cet = new CETIFrameImpl(
-				baseURL, companyId, description, name, primaryKey,
+				baseURL, companyId, description, name, primaryKey, properties,
 				sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
 
 			cet = new CETThemeCSSImpl(
-				baseURL, companyId, description, name, primaryKey,
+				baseURL, companyId, description, name, primaryKey, properties,
 				sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
 			cet = new CETThemeFaviconImpl(
-				baseURL, companyId, description, name, primaryKey,
+				baseURL, companyId, description, name, primaryKey, properties,
 				sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_JS)) {
 
 			cet = new CETThemeJSImpl(
-				baseURL, companyId, description, name, primaryKey,
+				baseURL, companyId, description, name, primaryKey, properties,
 				sourceCodeURL, typeSettings);
 		}
 		else {

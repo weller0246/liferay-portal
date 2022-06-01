@@ -19,10 +19,10 @@ import com.liferay.client.extension.type.configuration.CETConfiguration;
 import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsValues;
 
@@ -47,23 +47,24 @@ import org.osgi.service.component.annotations.Reference;
 public class CETConfigurationFactory {
 
 	@Activate
-	protected void activate(Map<String, Object> properties)
-		throws PortalException {
-
+	protected void activate(Map<String, Object> properties) throws Exception {
 		CETConfiguration cetConfiguration = ConfigurableUtil.createConfigurable(
 			CETConfiguration.class, properties);
 
 		_cet = _cetManager.addCET(
 			cetConfiguration.baseURL(), _getCompanyId(properties),
 			cetConfiguration.description(), cetConfiguration.name(),
-			_getPrimaryKey(properties), cetConfiguration.sourceCodeURL(),
-			cetConfiguration.type(),
+			_getPrimaryKey(properties),
+			PropertiesUtil.load(
+				StringUtil.merge(
+					cetConfiguration.properties(), StringPool.NEW_LINE)),
+			cetConfiguration.sourceCodeURL(), cetConfiguration.type(),
 			StringUtil.merge(
 				cetConfiguration.typeSettings(), StringPool.NEW_LINE));
 	}
 
 	@Deactivate
-	protected void deactivate(Integer reason) throws PortalException {
+	protected void deactivate(Integer reason) throws Exception {
 		if (reason ==
 				ComponentConstants.DEACTIVATION_REASON_CONFIGURATION_DELETED) {
 
@@ -72,7 +73,7 @@ public class CETConfigurationFactory {
 	}
 
 	private long _getCompanyId(Map<String, Object> properties)
-		throws PortalException {
+		throws Exception {
 
 		long companyId = GetterUtil.getLong(properties.get("companyId"));
 

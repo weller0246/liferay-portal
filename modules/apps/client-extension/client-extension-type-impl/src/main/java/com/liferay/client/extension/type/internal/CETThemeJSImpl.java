@@ -22,6 +22,8 @@ import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
+import java.util.Properties;
+
 import javax.portlet.PortletRequest;
 
 /**
@@ -54,11 +56,12 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 
 	public CETThemeJSImpl(
 		String baseURL, long companyId, String description, String name,
-		String primaryKey, String sourceCodeURL, String typeSettings) {
+		String primaryKey, Properties properties, String sourceCodeURL,
+		String typeSettings) {
 
 		super(
-			baseURL, companyId, description, name, primaryKey, sourceCodeURL,
-			typeSettings);
+			baseURL, companyId, description, name, primaryKey, properties,
+			sourceCodeURL, typeSettings);
 	}
 
 	@Override

@@ -40,6 +40,9 @@ public interface CETConfiguration {
 	public String name();
 
 	@Meta.AD(required = false, type = Meta.Type.String)
+	public String[] properties();
+
+	@Meta.AD(required = false, type = Meta.Type.String)
 	public String sourceCodeURL();
 
 	@Meta.AD(type = Meta.Type.String)
