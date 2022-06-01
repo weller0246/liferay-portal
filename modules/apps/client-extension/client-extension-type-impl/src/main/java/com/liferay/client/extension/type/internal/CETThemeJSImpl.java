@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeJS;
 import com.liferay.petra.string.StringPool;
@@ -49,6 +50,11 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 
 	public CETThemeJSImpl(String typeSettings) {
 		super(typeSettings);
+	}
+
+	@Override
+	public String getType() {
+		return ClientExtensionEntryConstants.TYPE_THEME_JS;
 	}
 
 	@Override

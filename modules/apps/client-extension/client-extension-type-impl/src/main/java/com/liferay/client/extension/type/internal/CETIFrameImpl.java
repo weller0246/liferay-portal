@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETIFrame;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -61,6 +62,11 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 
 	public String getPortletCategoryName() {
 		return getString("portletCategoryName");
+	}
+
+	@Override
+	public String getType() {
+		return ClientExtensionEntryConstants.TYPE_IFRAME;
 	}
 
 	public String getURL() {

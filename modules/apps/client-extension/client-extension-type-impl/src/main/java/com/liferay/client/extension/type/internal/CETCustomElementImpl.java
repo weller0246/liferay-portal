@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.petra.string.StringPool;
@@ -89,6 +90,11 @@ public class CETCustomElementImpl
 
 	public String getPortletCategoryName() {
 		return getString("portletCategoryName");
+	}
+
+	@Override
+	public String getType() {
+		return ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT;
 	}
 
 	public String getURLs() {

@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeCSS;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -58,6 +59,11 @@ public class CETThemeCSSImpl extends BaseCETImpl implements CETThemeCSS {
 	@Override
 	public String getMainURL() {
 		return getString("mainURL");
+	}
+
+	@Override
+	public String getType() {
+		return ClientExtensionEntryConstants.TYPE_THEME_CSS;
 	}
 
 }

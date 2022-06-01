@@ -16,7 +16,9 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
@@ -29,12 +31,34 @@ public abstract class BaseCETImpl implements CET {
 		this(
 			(clientExtensionEntry == null) ? null :
 				clientExtensionEntry.getTypeSettings());
+
+		if (clientExtensionEntry != null) {
+			_id = clientExtensionEntry.getClientExtensionEntryId();
+			_name = clientExtensionEntry.getName(
+				LocaleUtil.getMostRelevantLocale());
+			_status = clientExtensionEntry.getStatus();
+		}
 	}
 
 	public BaseCETImpl(String typeSettings) {
 		_unicodeProperties = UnicodePropertiesBuilder.load(
 			GetterUtil.getString(typeSettings)
 		).build();
+	}
+
+	@Override
+	public long getId() {
+		return _id;
+	}
+
+	@Override
+	public String getName() {
+		return _name;
+	}
+
+	@Override
+	public int getStatus() {
+		return _status;
 	}
 
 	@Override
@@ -50,6 +74,9 @@ public abstract class BaseCETImpl implements CET {
 		return GetterUtil.getString(_unicodeProperties.getProperty(key));
 	}
 
+	private long _id;
+	private String _name = StringPool.BLANK;
+	private int _status;
 	private final UnicodeProperties _unicodeProperties;
 
 }

@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.portal.kernel.util.ParamUtil;
@@ -45,6 +46,11 @@ public class CETThemeFaviconImpl
 
 	public CETThemeFaviconImpl(String typeSettings) {
 		super(typeSettings);
+	}
+
+	@Override
+	public String getType() {
+		return ClientExtensionEntryConstants.TYPE_THEME_FAVICON;
 	}
 
 	@Override
