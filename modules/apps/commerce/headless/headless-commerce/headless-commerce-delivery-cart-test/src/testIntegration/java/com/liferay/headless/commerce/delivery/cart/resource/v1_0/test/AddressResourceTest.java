@@ -217,26 +217,18 @@ public class AddressResourceTest extends BaseAddressResourceTestCase {
 	private Address _toAddress(CommerceAddress commerceAddress)
 		throws Exception {
 
+		Country country1 = commerceAddress.getCountry();
+		Region region1 = commerceAddress.getRegion();
+
 		return new Address() {
 			{
 				city = commerceAddress.getCity();
-
-				Country country1 = commerceAddress.getCountry();
-
 				country = country1.getName();
-
 				description = commerceAddress.getDescription();
-
 				id = commerceAddress.getCommerceAddressId();
-
 				name = commerceAddress.getName();
-
 				phoneNumber = commerceAddress.getPhoneNumber();
-
-				Region region1 = commerceAddress.getRegion();
-
 				region = region1.getName();
-
 				zip = commerceAddress.getZip();
 			}
 		};
