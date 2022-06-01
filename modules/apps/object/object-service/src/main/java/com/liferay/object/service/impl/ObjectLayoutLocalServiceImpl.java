@@ -269,7 +269,7 @@ public class ObjectLayoutLocalServiceImpl
 			List<ObjectLayoutBox> objectLayoutBoxes)
 		throws PortalException {
 
-		return TransformUtil.transform(
+		return TransformUtil.unsafeTransform(
 			objectLayoutBoxes,
 			objectLayoutBox -> _addObjectLayoutBox(
 				user, objectDefinitionId, objectLayoutTabId, objectLayoutBox));
