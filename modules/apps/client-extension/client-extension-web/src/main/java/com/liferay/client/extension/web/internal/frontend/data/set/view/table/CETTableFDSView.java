@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 	property = "frontend.data.set.name=" + ClientExtensionAdminFDSNames.CLIENT_EXTENSION_TYPES,
 	service = FDSView.class
 )
-public class ClientExtensionEntryTableFDSView extends BaseTableFDSView {
+public class CETTableFDSView extends BaseTableFDSView {
 
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {

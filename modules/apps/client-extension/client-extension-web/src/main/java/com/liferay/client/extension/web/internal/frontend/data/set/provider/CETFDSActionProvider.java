@@ -15,7 +15,7 @@
 package com.liferay.client.extension.web.internal.frontend.data.set.provider;
 
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminFDSNames;
-import com.liferay.client.extension.web.internal.frontend.data.set.model.ClientExtensionFDSEntry;
+import com.liferay.client.extension.web.internal.frontend.data.set.model.CETFDSEntry;
 import com.liferay.frontend.data.set.provider.FDSActionProvider;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItem;
 import com.liferay.frontend.taglib.clay.servlet.taglib.util.DropdownItemListBuilder;
@@ -50,29 +50,27 @@ import org.osgi.service.component.annotations.Reference;
 	property = "fds.data.provider.key=" + ClientExtensionAdminFDSNames.CLIENT_EXTENSION_TYPES,
 	service = FDSActionProvider.class
 )
-public class ClientExtensionEntryFDSActionProvider
-	implements FDSActionProvider {
+public class CETFDSActionProvider implements FDSActionProvider {
 
 	@Override
 	public List<DropdownItem> getDropdownItems(
 			long groupId, HttpServletRequest httpServletRequest, Object model)
 		throws PortalException {
 
-		ClientExtensionFDSEntry clientExtensionFDSEntry =
-			(ClientExtensionFDSEntry)model;
+		CETFDSEntry cetFDSEntry = (CETFDSEntry)model;
 
 		return DropdownItemListBuilder.add(
 			dropdownItem -> _buildEditClientExtensionEntryAction(
-				dropdownItem, httpServletRequest, clientExtensionFDSEntry)
+				dropdownItem, httpServletRequest, cetFDSEntry)
 		).add(
 			dropdownItem -> _buildDeleteClientExtensionEntryAction(
-				dropdownItem, httpServletRequest, clientExtensionFDSEntry)
+				dropdownItem, httpServletRequest, cetFDSEntry)
 		).build();
 	}
 
 	private void _buildDeleteClientExtensionEntryAction(
 		DropdownItem dropdownItem, HttpServletRequest httpServletRequest,
-		ClientExtensionFDSEntry clientExtensionFDSEntry) {
+		CETFDSEntry cetFDSEntry) {
 
 		dropdownItem.setHref(
 			PortletURLBuilder.create(
@@ -81,7 +79,7 @@ public class ClientExtensionEntryFDSActionProvider
 				"/client_extension_admin/delete_client_extension_entry"
 			).setParameter(
 				"clientExtensionEntryId",
-				clientExtensionFDSEntry.getClientExtensionEntryId()
+				cetFDSEntry.getClientExtensionEntryId()
 			).buildString());
 
 		dropdownItem.setIcon("times-circle");
@@ -90,15 +88,14 @@ public class ClientExtensionEntryFDSActionProvider
 
 	private void _buildEditClientExtensionEntryAction(
 		DropdownItem dropdownItem, HttpServletRequest httpServletRequest,
-		ClientExtensionFDSEntry clientExtensionFDSEntry) {
+		CETFDSEntry cetFDSEntry) {
 
 		PortletURL editClientExtensionEntryURL = PortletURLBuilder.create(
 			_getRenderURL(httpServletRequest)
 		).setMVCRenderCommandName(
 			"/client_extension_admin/edit_client_extension_entry"
 		).setParameter(
-			"clientExtensionEntryId",
-			clientExtensionFDSEntry.getClientExtensionEntryId()
+			"clientExtensionEntryId", cetFDSEntry.getClientExtensionEntryId()
 		).buildPortletURL();
 
 		String currentURL = ParamUtil.getString(

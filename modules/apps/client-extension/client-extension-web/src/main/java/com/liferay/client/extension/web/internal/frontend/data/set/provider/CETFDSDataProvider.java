@@ -17,7 +17,7 @@ package com.liferay.client.extension.web.internal.frontend.data.set.provider;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminFDSNames;
-import com.liferay.client.extension.web.internal.frontend.data.set.model.ClientExtensionFDSEntry;
+import com.liferay.client.extension.web.internal.frontend.data.set.model.CETFDSEntry;
 import com.liferay.frontend.data.set.provider.FDSDataProvider;
 import com.liferay.frontend.data.set.provider.search.FDSKeywords;
 import com.liferay.frontend.data.set.provider.search.FDSPagination;
@@ -43,11 +43,10 @@ import org.osgi.service.component.annotations.Reference;
 	property = "fds.data.provider.key=" + ClientExtensionAdminFDSNames.CLIENT_EXTENSION_TYPES,
 	service = FDSDataProvider.class
 )
-public class ClientExtensionEntryFDSDataProvider
-	implements FDSDataProvider<ClientExtensionFDSEntry> {
+public class CETFDSDataProvider implements FDSDataProvider<CETFDSEntry> {
 
 	@Override
-	public List<ClientExtensionFDSEntry> getItems(
+	public List<CETFDSEntry> getItems(
 			FDSKeywords fdsKeywords, FDSPagination fdsPagination,
 			HttpServletRequest httpServletRequest, Sort sort)
 		throws PortalException {
@@ -65,7 +64,7 @@ public class ClientExtensionEntryFDSDataProvider
 		Stream<ClientExtensionEntry> stream = clientExtensionEntries.stream();
 
 		return stream.map(
-			clientExtensionEntry -> new ClientExtensionFDSEntry(
+			clientExtensionEntry -> new CETFDSEntry(
 				clientExtensionEntry, themeDisplay.getLocale())
 		).collect(
 			Collectors.toList()

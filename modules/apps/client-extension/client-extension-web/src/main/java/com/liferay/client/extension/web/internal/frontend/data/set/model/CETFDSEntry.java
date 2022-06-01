@@ -24,9 +24,9 @@ import java.util.Locale;
 /**
  * @author Bruno Basto
  */
-public class ClientExtensionFDSEntry {
+public class CETFDSEntry {
 
-	public ClientExtensionFDSEntry(
+	public CETFDSEntry(
 		ClientExtensionEntry clientExtensionEntry, Locale locale) {
 
 		_clientExtensionEntry = clientExtensionEntry;
