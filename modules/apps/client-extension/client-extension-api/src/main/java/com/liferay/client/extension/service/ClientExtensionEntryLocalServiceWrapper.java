@@ -361,6 +361,16 @@ public class ClientExtensionEntryLocalServiceWrapper
 			start, end);
 	}
 
+	@Override
+	public java.util.List
+		<com.liferay.client.extension.model.ClientExtensionEntry>
+			getClientExtensionEntries(
+				long companyId, String type, int start, int end) {
+
+		return _clientExtensionEntryLocalService.getClientExtensionEntries(
+			companyId, type, start, end);
+	}
+
 	/**
 	 * Returns the number of client extension entries.
 	 *
@@ -370,6 +380,12 @@ public class ClientExtensionEntryLocalServiceWrapper
 	public int getClientExtensionEntriesCount() {
 		return _clientExtensionEntryLocalService.
 			getClientExtensionEntriesCount();
+	}
+
+	@Override
+	public int getClientExtensionEntriesCount(long companyId, String type) {
+		return _clientExtensionEntryLocalService.getClientExtensionEntriesCount(
+			companyId, type);
 	}
 
 	/**

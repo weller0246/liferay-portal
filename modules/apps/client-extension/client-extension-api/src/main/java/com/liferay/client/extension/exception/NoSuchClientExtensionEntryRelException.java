@@ -11,20 +11,28 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+package com.liferay.client.extension.exception;
 
-package com.liferay.client.extension.uad.constants;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
-public class ClientExtensionUADConstants {
+public class NoSuchClientExtensionEntryRelException extends NoSuchModelException {
 
-	public static final String[] USER_ID_FIELD_NAMES_CLIENT_EXTENSION_ENTRY = {
-		"userId", "statusByUserId"
-	};
+	public NoSuchClientExtensionEntryRelException() {
+	}
 
-	public static final String[]
-		USER_ID_FIELD_NAMES_CLIENT_EXTENSION_ENTRY_REL = {"userId"};
+	public NoSuchClientExtensionEntryRelException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchClientExtensionEntryRelException(String msg, Throwable throwable) {
+		super(msg, throwable);
+	}
+
+	public NoSuchClientExtensionEntryRelException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

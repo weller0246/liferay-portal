@@ -283,6 +283,10 @@ public interface ClientExtensionEntryLocalService
 	public List<ClientExtensionEntry> getClientExtensionEntries(
 		int start, int end);
 
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public List<ClientExtensionEntry> getClientExtensionEntries(
+		long companyId, String type, int start, int end);
+
 	/**
 	 * Returns the number of client extension entries.
 	 *
@@ -290,6 +294,9 @@ public interface ClientExtensionEntryLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public int getClientExtensionEntriesCount();
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public int getClientExtensionEntriesCount(long companyId, String type);
 
 	/**
 	 * Returns the client extension entry with the primary key.
