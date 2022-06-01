@@ -30,4 +30,7 @@ public interface CETManager {
 			long companyId, String keywords, Pagination pagination, Sort sort)
 		throws PortalException;
 
+	public int getCETsCount(long companyId, String keywords)
+		throws PortalException;
+
 }

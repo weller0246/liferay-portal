@@ -14,8 +14,7 @@
 
 package com.liferay.client.extension.web.internal.frontend.data.set.provider;
 
-import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
+import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.client.extension.web.internal.constants.ClientExtensionAdminFDSNames;
 import com.liferay.client.extension.web.internal.frontend.data.set.model.CETFDSEntry;
 import com.liferay.frontend.data.set.provider.FDSDataProvider;
@@ -25,10 +24,10 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,20 +54,13 @@ public class CETFDSDataProvider implements FDSDataProvider<CETFDSEntry> {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		List<ClientExtensionEntry> clientExtensionEntries =
-			_clientExtensionEntryLocalService.search(
+		return TransformUtil.transform(
+			_cetManager.getCETs(
 				themeDisplay.getCompanyId(), fdsKeywords.getKeywords(),
-				fdsPagination.getStartPosition(),
-				fdsPagination.getEndPosition(), sort);
-
-		Stream<ClientExtensionEntry> stream = clientExtensionEntries.stream();
-
-		return stream.map(
-			clientExtensionEntry -> new CETFDSEntry(
-				clientExtensionEntry, themeDisplay.getLocale())
-		).collect(
-			Collectors.toList()
-		);
+				Pagination.of(
+					fdsPagination.getPage(), fdsPagination.getPageSize()),
+				sort),
+			cet -> new CETFDSEntry(cet, themeDisplay.getLocale()));
 	}
 
 	@Override
@@ -80,11 +72,11 @@ public class CETFDSDataProvider implements FDSDataProvider<CETFDSEntry> {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		return _clientExtensionEntryLocalService.searchCount(
+		return _cetManager.getCETsCount(
 			themeDisplay.getCompanyId(), fdsKeywords.getKeywords());
 	}
 
 	@Reference
-	private ClientExtensionEntryLocalService _clientExtensionEntryLocalService;
+	private CETManager _cetManager;
 
 }

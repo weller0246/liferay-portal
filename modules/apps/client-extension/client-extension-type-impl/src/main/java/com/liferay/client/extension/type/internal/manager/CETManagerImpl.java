@@ -34,6 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(immediate = true, service = CETManager.class)
 public class CETManagerImpl implements CETManager {
 
+	@Override
 	public List<CET> getCETs(
 			long companyId, String keywords, Pagination pagination, Sort sort)
 		throws PortalException {
@@ -43,6 +44,14 @@ public class CETManagerImpl implements CETManager {
 				companyId, keywords, pagination.getStartPosition(),
 				pagination.getEndPosition(), sort),
 			clientExtensionEntry -> _cetFactory.cet(clientExtensionEntry));
+	}
+
+	@Override
+	public int getCETsCount(long companyId, String keywords)
+		throws PortalException {
+
+		return _clientExtensionEntryLocalService.searchCount(
+			companyId, keywords);
 	}
 
 	@Reference

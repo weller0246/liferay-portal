@@ -104,7 +104,7 @@ public class CETFDSActionProvider implements FDSActionProvider {
 		editClientExtensionEntryURL.setParameter("redirect", currentURL);
 
 		dropdownItem.setHref(editClientExtensionEntryURL);
-		
+
 		dropdownItem.setLabel(_getMessage(httpServletRequest, "edit"));
 	}
 

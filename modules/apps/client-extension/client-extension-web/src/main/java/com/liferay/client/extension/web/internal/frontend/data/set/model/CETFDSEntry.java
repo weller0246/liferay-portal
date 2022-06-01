@@ -15,7 +15,7 @@
 package com.liferay.client.extension.web.internal.frontend.data.set.model;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.model.ClientExtensionEntry;
+import com.liferay.client.extension.type.CET;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
@@ -26,30 +26,27 @@ import java.util.Locale;
  */
 public class CETFDSEntry {
 
-	public CETFDSEntry(
-		ClientExtensionEntry clientExtensionEntry, Locale locale) {
-
-		_clientExtensionEntry = clientExtensionEntry;
+	public CETFDSEntry(CET cet, Locale locale) {
+		_cet = cet;
 		_locale = locale;
 	}
 
 	public long getClientExtensionEntryId() {
-		return _clientExtensionEntry.getClientExtensionEntryId();
+		return _cet.getId();
 	}
 
 	public String getName() {
-		return _clientExtensionEntry.getName(_locale);
+		return _cet.getName();
 	}
 
 	public StatusInfo getStatus() {
-		String label = WorkflowConstants.getStatusLabel(
-			_clientExtensionEntry.getStatus());
+		String label = WorkflowConstants.getStatusLabel(_cet.getStatus());
 
 		return new StatusInfo(label, LanguageUtil.get(_locale, label));
 	}
 
 	public String getType() {
-		String type = _clientExtensionEntry.getType();
+		String type = _cet.getType();
 
 		if (type.equals(ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 			return LanguageUtil.get(_locale, "custom-element");
@@ -72,7 +69,7 @@ public class CETFDSEntry {
 		return type;
 	}
 
-	private final ClientExtensionEntry _clientExtensionEntry;
+	private final CET _cet;
 	private final Locale _locale;
 
 }
