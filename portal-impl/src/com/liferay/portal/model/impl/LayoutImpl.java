@@ -539,12 +539,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 			return _favicon;
 		}
 
-		if (getFaviconFileEntryId() == 0) {
-			_favicon = _getInheritedFavicon();
-
-			return _favicon;
-		}
-
 		String favicon = _getFavicon(getFaviconFileEntryId());
 
 		if (favicon != null) {
@@ -552,8 +546,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 
 			return _favicon;
 		}
-
-		_favicon = _getInheritedFavicon();
 
 		return _favicon;
 	}
@@ -1475,24 +1467,6 @@ public class LayoutImpl extends LayoutBaseImpl {
 		}
 
 		return null;
-	}
-
-	private String _getInheritedFavicon() {
-		Layout masterLayout = _getMasterLayout();
-
-		if ((masterLayout != null) &&
-			(masterLayout.getFaviconFileEntryId() > 0)) {
-
-			String favicon = _getFavicon(masterLayout.getFaviconFileEntryId());
-
-			if (Validator.isNotNull(favicon)) {
-				return favicon;
-			}
-		}
-
-		LayoutSet layoutSet = getLayoutSet();
-
-		return layoutSet.getFavicon();
 	}
 
 	private Set<String> _getLayoutPortletIds() {
