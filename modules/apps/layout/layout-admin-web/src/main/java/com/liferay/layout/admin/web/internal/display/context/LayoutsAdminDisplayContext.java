@@ -1230,12 +1230,11 @@ public class LayoutsAdminDisplayContext {
 					clientExtensionItemSelectorCriterion =
 						new ClientExtensionItemSelectorCriterion();
 
-				clientExtensionItemSelectorCriterion.setType(
-					ClientExtensionEntryConstants.TYPE_THEME_CSS);
-
 				clientExtensionItemSelectorCriterion.
 					setDesiredItemSelectorReturnTypes(
 						new ClientExtensionItemSelectorReturnType());
+				clientExtensionItemSelectorCriterion.setType(
+					ClientExtensionEntryConstants.TYPE_THEME_CSS);
 
 				PortletURL itemSelectorURL = _itemSelector.getItemSelectorURL(
 					RequestBackedPortletURLFactoryUtil.create(
