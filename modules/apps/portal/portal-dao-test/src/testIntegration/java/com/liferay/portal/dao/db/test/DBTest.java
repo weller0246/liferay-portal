@@ -261,9 +261,9 @@ public class DBTest {
 
 		Assert.assertTrue(_dbInspector.hasTable("DBTest2"));
 
-		Assert.assertFalse(_dbInspector.hasTable(_TABLE_NAME));
-
 		_db.runSQL("DROP_TABLE_IF_EXISTS(DBTest2)");
+
+		Assert.assertFalse(_dbInspector.hasTable(_TABLE_NAME));
 	}
 
 	private void _addIndex(String[] columnNames) {
