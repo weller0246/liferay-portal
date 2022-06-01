@@ -303,6 +303,24 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 		long groupId = _getGroupId(objectDefinition, scopeKey);
 
+		long[] accountEntryIds = null;
+
+		if (objectDefinition.isAccountEntryRestricted()) {
+			List<AccountEntry> accountEntries =
+				_accountEntryLocalService.getUserAccountEntries(
+					dtoConverterContext.getUserId(),
+					AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT, null,
+					new String[] {
+						AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS,
+						AccountConstants.ACCOUNT_ENTRY_TYPE_PERSON
+					},
+					WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
+					QueryUtil.ALL_POS);
+
+			accountEntryIds = ListUtil.toLongArray(
+				accountEntries, AccountEntry::getAccountEntryId);
+		}
+
 		List<Facet> facets = new ArrayList<>();
 
 		if ((aggregation != null) &&
@@ -335,24 +353,6 @@ public class DefaultObjectEntryManagerImpl implements ObjectEntryManager {
 
 				facets.add(new Facet(entry1.getKey(), facetValues));
 			}
-		}
-
-		long[] accountEntryIds = null;
-
-		if (objectDefinition.isAccountEntryRestricted()) {
-			List<AccountEntry> accountEntries =
-				_accountEntryLocalService.getUserAccountEntries(
-					dtoConverterContext.getUserId(),
-					AccountConstants.PARENT_ACCOUNT_ENTRY_ID_DEFAULT, null,
-					new String[] {
-						AccountConstants.ACCOUNT_ENTRY_TYPE_BUSINESS,
-						AccountConstants.ACCOUNT_ENTRY_TYPE_PERSON
-					},
-					WorkflowConstants.STATUS_APPROVED, QueryUtil.ALL_POS,
-					QueryUtil.ALL_POS);
-
-			accountEntryIds = ListUtil.toLongArray(
-				accountEntries, AccountEntry::getAccountEntryId);
 		}
 
 		return Page.of(
