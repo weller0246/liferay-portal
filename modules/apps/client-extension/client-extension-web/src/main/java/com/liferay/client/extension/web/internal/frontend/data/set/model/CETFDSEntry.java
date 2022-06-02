@@ -33,7 +33,7 @@ public class CETFDSEntry {
 	}
 
 	public String getClientExtensionEntryId() {
-		return _cet.getPrimaryKey();
+		return _cet.getExternalReferenceCode();
 	}
 
 	public String getName() {

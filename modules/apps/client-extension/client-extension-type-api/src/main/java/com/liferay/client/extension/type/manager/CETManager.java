@@ -32,16 +32,16 @@ public interface CETManager {
 		throws PortalException;
 
 	public CET addCET(
-			String baseURL, long companyId, String description, String name,
-			String primaryKey, Properties properties, String sourceCodeURL,
-			String type, String typeSettings)
+			String baseURL, long companyId, String description,
+			String externalReferenceCode, String name, Properties properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException;
 
 	public void deleteCET(CET cet);
 
 	public void deleteCET(ClientExtensionEntry clientExtensionEntry);
 
-	public CET getCET(long companyId, String primaryKey);
+	public CET getCET(long companyId, String externalReferenceCode);
 
 	public List<CET> getCETs(
 		long companyId, String keywords, String type, Pagination pagination,

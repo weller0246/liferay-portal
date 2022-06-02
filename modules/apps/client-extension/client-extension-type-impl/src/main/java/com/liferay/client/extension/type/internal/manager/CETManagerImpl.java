@@ -65,9 +65,9 @@ public class CETManagerImpl implements CETManager {
 
 	@Override
 	public CET addCET(
-			String baseURL, long companyId, String description, String name,
-			String primaryKey, Properties properties, String sourceCodeURL,
-			String type, String typeSettings)
+			String baseURL, long companyId, String description,
+			String externalReferenceCode, String name, Properties properties,
+			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException {
 
 		CET cet = null;
@@ -76,50 +76,50 @@ public class CETManagerImpl implements CETManager {
 				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			cet = new CETCustomElementImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_GLOBAL_CSS)) {
 
 			cet = new CETGlobalCSSImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_GLOBAL_JS)) {
 
 			cet = new CETGlobalJSImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			cet = new CETIFrameImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
 
 			cet = new CETThemeCSSImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
 			cet = new CETThemeFaviconImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_JS)) {
 
 			cet = new CETThemeJSImpl(
-				baseURL, companyId, description, name, primaryKey, properties,
-				sourceCodeURL, typeSettings);
+				baseURL, companyId, description, externalReferenceCode, name,
+				properties, sourceCodeURL, typeSettings);
 		}
 		else {
 			throw new ClientExtensionEntryTypeException("Invalid type " + type);
@@ -127,7 +127,8 @@ public class CETManagerImpl implements CETManager {
 
 		_addCET(cet);
 
-		_serviceRegistrationsMaps.put(primaryKey, _cetDeployer.deploy(cet));
+		_serviceRegistrationsMaps.put(
+			externalReferenceCode, _cetDeployer.deploy(cet));
 
 		return cet;
 	}
@@ -136,7 +137,7 @@ public class CETManagerImpl implements CETManager {
 	public void deleteCET(CET cet) {
 		Map<String, CET> cetsMap = _getCETsMap(cet.getCompanyId());
 
-		cetsMap.remove(cet.getPrimaryKey());
+		cetsMap.remove(cet.getExternalReferenceCode());
 
 		_undeployCET(cet);
 	}
@@ -151,10 +152,10 @@ public class CETManagerImpl implements CETManager {
 	}
 
 	@Override
-	public CET getCET(long companyId, String primaryKey) {
+	public CET getCET(long companyId, String externalReferenceCode) {
 		Map<String, CET> cetsMap = _getCETsMap(companyId);
 
-		return cetsMap.get(primaryKey);
+		return cetsMap.get(externalReferenceCode);
 	}
 
 	@Override
@@ -192,7 +193,7 @@ public class CETManagerImpl implements CETManager {
 	private void _addCET(CET cet) {
 		Map<String, CET> cetsMap = _getCETsMap(cet.getCompanyId());
 
-		cetsMap.put(cet.getPrimaryKey(), cet);
+		cetsMap.put(cet.getExternalReferenceCode(), cet);
 	}
 
 	private List<CET> _getCETs(long companyId, String keywords, String type) {
@@ -245,7 +246,7 @@ public class CETManagerImpl implements CETManager {
 		}
 
 		List<ServiceRegistration<?>> serviceRegistrations =
-			_serviceRegistrationsMaps.remove(cet.getPrimaryKey());
+			_serviceRegistrationsMaps.remove(cet.getExternalReferenceCode());
 
 		if (serviceRegistrations != null) {
 			for (ServiceRegistration<?> serviceRegistration :

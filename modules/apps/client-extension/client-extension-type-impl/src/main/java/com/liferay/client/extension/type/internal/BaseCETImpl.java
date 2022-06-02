@@ -43,7 +43,7 @@ public abstract class BaseCETImpl implements CET {
 		if (clientExtensionEntry != null) {
 			_companyId = clientExtensionEntry.getCompanyId();
 			_description = clientExtensionEntry.getDescription();
-			_primaryKey = clientExtensionEntry.getUuid();
+			_externalReferenceCode = clientExtensionEntry.getUuid();
 
 			try {
 				_properties = PropertiesUtil.load(
@@ -66,8 +66,8 @@ public abstract class BaseCETImpl implements CET {
 
 	public BaseCETImpl(
 		String baseURL, long companyId, String description, String name,
-		String primaryKey, Properties properties, String sourceCodeURL,
-		String typeSettings) {
+		String externalReferenceCode, Properties properties,
+		String sourceCodeURL, String typeSettings) {
 
 		this(typeSettings);
 
@@ -75,7 +75,7 @@ public abstract class BaseCETImpl implements CET {
 		_companyId = companyId;
 		_description = description;
 		_name = name;
-		_primaryKey = primaryKey;
+		_externalReferenceCode = externalReferenceCode;
 		_properties = properties;
 		_sourceCodeURL = sourceCodeURL;
 
@@ -98,17 +98,17 @@ public abstract class BaseCETImpl implements CET {
 	}
 
 	@Override
+	public String getExternalReferenceCode() {
+		return _externalReferenceCode;
+	}
+
+	@Override
 	public String getName(Locale locale) {
 		if (_clientExtensionEntry != null) {
 			return _clientExtensionEntry.getName(locale);
 		}
 
 		return _name;
-	}
-
-	@Override
-	public String getPrimaryKey() {
-		return _primaryKey;
 	}
 
 	@Override
@@ -150,8 +150,8 @@ public abstract class BaseCETImpl implements CET {
 	private ClientExtensionEntry _clientExtensionEntry;
 	private long _companyId;
 	private String _description = StringPool.BLANK;
+	private String _externalReferenceCode = StringPool.BLANK;
 	private String _name = StringPool.BLANK;
-	private String _primaryKey = StringPool.BLANK;
 	private Properties _properties;
 	private boolean _readOnly;
 	private String _sourceCodeURL = StringPool.BLANK;
