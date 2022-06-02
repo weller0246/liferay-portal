@@ -82,7 +82,6 @@ public class AddObjectEntryObjectActionExecutorImpl
 
 		long classPK = payloadJSONObject.getLong("classPK");
 		long defaultUserId = _userLocalService.getDefaultUserId(companyId);
-
 		ObjectDefinition sourceObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				payloadJSONObject.getLong("objectDefinitionId"));
@@ -105,8 +104,8 @@ public class AddObjectEntryObjectActionExecutorImpl
 		}
 
 		_addObjectRelationshipMappingTableValues(
-			companyId, sourceObjectDefinition, targetObjectDefinition, classPK,
-			objectEntry.getObjectEntryId(), defaultUserId);
+			companyId, classPK, objectEntry.getObjectEntryId(),
+			sourceObjectDefinition, targetObjectDefinition, defaultUserId);
 	}
 
 	@Override
@@ -115,9 +114,9 @@ public class AddObjectEntryObjectActionExecutorImpl
 	}
 
 	private void _addObjectRelationshipMappingTableValues(
-			long companyId, ObjectDefinition sourceObjectDefinition,
-			ObjectDefinition targetObjectDefinition, long primaryKey1,
-			long primaryKey2, long userId)
+			long companyId, long primaryKey1, long primaryKey2,
+			ObjectDefinition sourceObjectDefinition,
+			ObjectDefinition targetObjectDefinition, long userId)
 		throws Exception {
 
 		for (ObjectRelationship objectRelationship :
