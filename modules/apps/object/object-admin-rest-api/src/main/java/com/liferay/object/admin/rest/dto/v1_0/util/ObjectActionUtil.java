@@ -77,7 +77,7 @@ public class ObjectActionUtil {
 			else if (Objects.equals(entry.getKey(), "predefinedValues")) {
 				value = JSONFactoryUtil.looseDeserialize((String)value);
 			}
-			else if (Objects.equals(entry.getKey(), "relateObjectEntries")) {
+			else if (Objects.equals(entry.getKey(), "relatedObjectEntries")) {
 				value = GetterUtil.getBoolean(value);
 			}
 
