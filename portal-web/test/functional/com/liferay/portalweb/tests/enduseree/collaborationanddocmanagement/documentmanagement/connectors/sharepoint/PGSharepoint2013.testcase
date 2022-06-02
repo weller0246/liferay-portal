@@ -10,7 +10,7 @@ definition {
 	property testray.main.component.name = "Sharepoint";
 
 	setUp {
-		TestCase.setUpPortalInstance();
+		TestCase.setUpPortalInstance(authenticationMethod = "By Screen Name");
 
 		var sharepointVmHostName = PropsUtil.get("cmis.repository.vm.host.name");
 
