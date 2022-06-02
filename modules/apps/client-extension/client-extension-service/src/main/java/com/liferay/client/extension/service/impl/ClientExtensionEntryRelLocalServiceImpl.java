@@ -54,7 +54,7 @@ public class ClientExtensionEntryRelLocalServiceImpl
 
 		clientExtensionEntryRel.setClassNameId(classNameId);
 		clientExtensionEntryRel.setClassPK(classPK);
-		clientExtensionEntryRel.setCetPrimaryKey(cetPrimaryKey);
+		clientExtensionEntryRel.setCETPrimaryKey(cetPrimaryKey);
 		clientExtensionEntryRel.setType(type);
 
 		return clientExtensionEntryRelPersistence.update(
