@@ -46,11 +46,9 @@ public class ObjectActionUtil {
 					serviceBuilderObjectAction.getObjectActionExecutorKey();
 				objectActionTriggerKey =
 					serviceBuilderObjectAction.getObjectActionTriggerKey();
-				parameters =
-					ObjectActionDataConverterUtil.
-						convertParametersUnicodeProperties(
-							serviceBuilderObjectAction.
-								getParametersUnicodeProperties());
+				parameters = ObjectActionDataConverterUtil.toParameters(
+					serviceBuilderObjectAction.
+						getParametersUnicodeProperties());
 			}
 		};
 

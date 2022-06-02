@@ -46,7 +46,7 @@ public class GroovyObjectActionExecutorImpl implements ObjectActionExecutor {
 				payloadJSONObject.getLong("objectDefinitionId"));
 
 		_groovyScriptingExecutor.execute(
-			ObjectActionDataConverterUtil.convertPayloadJSONObject(
+			ObjectActionDataConverterUtil.toVariables(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject),
 			new HashSet<>(), parametersUnicodeProperties.get("script"));
 	}

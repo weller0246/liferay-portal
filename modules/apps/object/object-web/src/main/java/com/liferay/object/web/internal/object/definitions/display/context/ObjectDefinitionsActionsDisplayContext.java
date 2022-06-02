@@ -177,7 +177,7 @@ public class ObjectDefinitionsActionsDisplayContext
 			"objectActionTriggerKey", objectAction.getObjectActionTriggerKey()
 		).put(
 			"parameters",
-			ObjectActionDataConverterUtil.convertParametersUnicodeProperties(
+			ObjectActionDataConverterUtil.toParameters(
 				objectAction.getParametersUnicodeProperties())
 		);
 	}

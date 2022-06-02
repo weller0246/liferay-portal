@@ -210,7 +210,7 @@ public class AddObjectEntryObjectActionExecutorImpl
 		Map<String, Serializable> values = new HashMap<>();
 
 		Map<String, Object> variables =
-			ObjectActionDataConverterUtil.convertPayloadJSONObject(
+			ObjectActionDataConverterUtil.toVariables(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray(

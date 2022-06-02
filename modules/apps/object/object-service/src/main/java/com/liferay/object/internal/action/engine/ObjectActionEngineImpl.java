@@ -121,7 +121,7 @@ public class ObjectActionEngineImpl implements ObjectActionEngine {
 		);
 
 		Map<String, Object> variables =
-			ObjectActionDataConverterUtil.convertPayloadJSONObject(
+			ObjectActionDataConverterUtil.toVariables(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
 
 		List<ObjectAction> objectActions =

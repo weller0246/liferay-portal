@@ -120,7 +120,7 @@ public class ObjectActionResourceImpl
 				objectAction.getDescription(), objectAction.getName(),
 				objectAction.getObjectActionExecutorKey(),
 				objectAction.getObjectActionTriggerKey(),
-				ObjectActionDataConverterUtil.convertObjectActionParameters(
+				ObjectActionDataConverterUtil.toParametersUnicodeProperties(
 					objectAction.getParameters())));
 	}
 
@@ -146,7 +146,7 @@ public class ObjectActionResourceImpl
 				objectAction.getDescription(), objectAction.getName(),
 				objectAction.getObjectActionExecutorKey(),
 				objectAction.getObjectActionTriggerKey(),
-				ObjectActionDataConverterUtil.convertObjectActionParameters(
+				ObjectActionDataConverterUtil.toParametersUnicodeProperties(
 					objectAction.getParameters())));
 	}
 

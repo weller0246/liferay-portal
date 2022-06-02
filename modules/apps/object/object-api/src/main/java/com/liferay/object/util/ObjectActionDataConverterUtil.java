@@ -33,15 +33,7 @@ import java.util.Objects;
  */
 public class ObjectActionDataConverterUtil {
 
-	public static UnicodeProperties convertObjectActionParameters(
-		Map<String, ?> parameters) {
-
-		return UnicodePropertiesBuilder.create(
-			_toStringMap(parameters), true
-		).build();
-	}
-
-	public static Map<String, Object> convertParametersUnicodeProperties(
+	public static Map<String, Object> toParameters(
 		UnicodeProperties parametersUnicodeProperties) {
 
 		Map<String, Object> parameters = new HashMap<>();
@@ -67,7 +59,15 @@ public class ObjectActionDataConverterUtil {
 		return parameters;
 	}
 
-	public static Map<String, Object> convertPayloadJSONObject(
+	public static UnicodeProperties toParametersUnicodeProperties(
+		Map<String, ?> parameters) {
+
+		return UnicodePropertiesBuilder.create(
+			_toStringMap(parameters), true
+		).build();
+	}
+
+	public static Map<String, Object> toVariables(
 		DTOConverterRegistry dtoConverterRegistry,
 		ObjectDefinition objectDefinition, JSONObject payloadJSONObject) {
 
