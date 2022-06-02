@@ -65,8 +65,8 @@ public abstract class BaseCETImpl implements CET {
 	}
 
 	public BaseCETImpl(
-		String baseURL, long companyId, String description, String name,
-		String externalReferenceCode, Properties properties,
+		String baseURL, long companyId, String description,
+		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, String typeSettings) {
 
 		this(typeSettings);
@@ -74,8 +74,8 @@ public abstract class BaseCETImpl implements CET {
 		_baseURL = baseURL;
 		_companyId = companyId;
 		_description = description;
-		_name = name;
 		_externalReferenceCode = externalReferenceCode;
+		_name = name;
 		_properties = properties;
 		_sourceCodeURL = sourceCodeURL;
 
