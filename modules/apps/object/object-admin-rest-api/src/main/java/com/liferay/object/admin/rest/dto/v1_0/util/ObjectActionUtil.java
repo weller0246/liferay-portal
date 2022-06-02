@@ -12,12 +12,16 @@
  * details.
  */
 
-package com.liferay.object.admin.rest.internal.dto.v1_0.util;
+package com.liferay.object.admin.rest.dto.v1_0.util;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectAction;
-import com.liferay.object.util.ObjectActionDataConverterUtil;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @author Gabriel Albuquerque
@@ -46,7 +50,7 @@ public class ObjectActionUtil {
 					serviceBuilderObjectAction.getObjectActionExecutorKey();
 				objectActionTriggerKey =
 					serviceBuilderObjectAction.getObjectActionTriggerKey();
-				parameters = ObjectActionDataConverterUtil.toParameters(
+				parameters = toParameters(
 					serviceBuilderObjectAction.
 						getParametersUnicodeProperties());
 			}
@@ -55,6 +59,32 @@ public class ObjectActionUtil {
 		objectAction.setActions(actions);
 
 		return objectAction;
+	}
+
+	public static Map<String, Object> toParameters(
+		UnicodeProperties parametersUnicodeProperties) {
+
+		Map<String, Object> parameters = new HashMap<>();
+
+		for (Map.Entry<String, String> entry :
+				parametersUnicodeProperties.entrySet()) {
+
+			Object value = entry.getValue();
+
+			if (Objects.equals(entry.getKey(), "objectDefinitionId")) {
+				value = GetterUtil.getLong(value);
+			}
+			else if (Objects.equals(entry.getKey(), "predefinedValues")) {
+				value = JSONFactoryUtil.looseDeserialize((String)value);
+			}
+			else if (Objects.equals(entry.getKey(), "relateObjectEntries")) {
+				value = GetterUtil.getBoolean(value);
+			}
+
+			parameters.put(entry.getKey(), value);
+		}
+
+		return parameters;
 	}
 
 }

@@ -20,10 +20,10 @@ import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.action.executor.ObjectActionExecutorRegistry;
 import com.liferay.object.action.trigger.ObjectActionTrigger;
 import com.liferay.object.action.trigger.ObjectActionTriggerRegistry;
+import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.util.ObjectActionDataConverterUtil;
 import com.liferay.object.web.internal.constants.ObjectWebKeys;
 import com.liferay.object.web.internal.object.definitions.display.context.util.ObjectCodeEditorUtil;
 import com.liferay.petra.function.UnsafeConsumer;
@@ -177,7 +177,7 @@ public class ObjectDefinitionsActionsDisplayContext
 			"objectActionTriggerKey", objectAction.getObjectActionTriggerKey()
 		).put(
 			"parameters",
-			ObjectActionDataConverterUtil.toParameters(
+			ObjectActionUtil.toParameters(
 				objectAction.getParametersUnicodeProperties())
 		);
 	}

@@ -15,47 +15,17 @@
 package com.liferay.object.util;
 
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * @author Carolina Barbosa
  */
 public class ObjectActionDataConverterUtil {
-
-	public static Map<String, Object> toParameters(
-		UnicodeProperties parametersUnicodeProperties) {
-
-		Map<String, Object> parameters = new HashMap<>();
-
-		for (Map.Entry<String, String> entry :
-				parametersUnicodeProperties.entrySet()) {
-
-			Object value = entry.getValue();
-
-			if (Objects.equals(entry.getKey(), "objectDefinitionId")) {
-				value = GetterUtil.getLong(value);
-			}
-			else if (Objects.equals(entry.getKey(), "predefinedValues")) {
-				value = JSONFactoryUtil.looseDeserialize((String)value);
-			}
-			else if (Objects.equals(entry.getKey(), "relateObjectEntries")) {
-				value = GetterUtil.getBoolean(value);
-			}
-
-			parameters.put(entry.getKey(), value);
-		}
-
-		return parameters;
-	}
 
 	public static Map<String, Object> toVariables(
 		DTOConverterRegistry dtoConverterRegistry,
