@@ -15,17 +15,14 @@
 package com.liferay.client.extension.internal.events;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
-import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.client.extension.service.ClientExtensionEntryRelLocalService;
+import com.liferay.client.extension.type.CET;
 import com.liferay.client.extension.type.CETThemeCSS;
 import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.client.extension.type.CETThemeJS;
-import com.liferay.client.extension.type.factory.CETFactory;
-import com.liferay.document.library.kernel.service.DLAppService;
+import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.portal.kernel.events.Action;
-import com.liferay.portal.kernel.events.ActionException;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
@@ -52,9 +49,8 @@ public class ClientExtensionsServicePreAction extends Action {
 
 	@Override
 	public void run(
-			HttpServletRequest httpServletRequest,
-			HttpServletResponse httpServletResponse)
-		throws ActionException {
+		HttpServletRequest httpServletRequest,
+		HttpServletResponse httpServletResponse) {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
@@ -82,65 +78,8 @@ public class ClientExtensionsServicePreAction extends Action {
 		}
 	}
 
-	private CETThemeCSS _getCETThemeCSS(Layout layout) {
-		ClientExtensionEntry clientExtensionEntry = _getClientExtensionEntry(
-			_portal.getClassNameId(Layout.class), layout.getPlid(),
-			ClientExtensionEntryConstants.TYPE_THEME_CSS);
-
-		if (clientExtensionEntry == null) {
-			LayoutSet layoutSet = layout.getLayoutSet();
-
-			clientExtensionEntry = _getClientExtensionEntry(
-				_portal.getClassNameId(LayoutSet.class),
-				layoutSet.getLayoutSetId(),
-				ClientExtensionEntryConstants.TYPE_THEME_CSS);
-		}
-
-		if (clientExtensionEntry != null) {
-			return _cetFactory.cetThemeCSS(clientExtensionEntry);
-		}
-
-		return null;
-	}
-
-	private String _getCETThemeFaviconURL(long classNameId, long classPK) {
-		ClientExtensionEntry clientExtensionEntry = _getClientExtensionEntry(
-			classNameId, classPK,
-			ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
-
-		if (clientExtensionEntry == null) {
-			return null;
-		}
-
-		CETThemeFavicon cetThemeFavicon = _cetFactory.cetThemeFavicon(
-			clientExtensionEntry);
-
-		return cetThemeFavicon.getURL();
-	}
-
-	private CETThemeJS _getCETThemeJS(Layout layout) {
-		ClientExtensionEntry clientExtensionEntry = _getClientExtensionEntry(
-			_portal.getClassNameId(Layout.class), layout.getPlid(),
-			ClientExtensionEntryConstants.TYPE_THEME_JS);
-
-		if (clientExtensionEntry == null) {
-			LayoutSet layoutSet = layout.getLayoutSet();
-
-			clientExtensionEntry = _getClientExtensionEntry(
-				_portal.getClassNameId(LayoutSet.class),
-				layoutSet.getLayoutSetId(),
-				ClientExtensionEntryConstants.TYPE_THEME_JS);
-		}
-
-		if (clientExtensionEntry != null) {
-			return _cetFactory.cetThemeJS(clientExtensionEntry);
-		}
-
-		return null;
-	}
-
-	private ClientExtensionEntry _getClientExtensionEntry(
-		long classNameId, long classPK, String type) {
+	private CET _getCET(
+		long classNameId, long classPK, long companyId, String type) {
 
 		ClientExtensionEntryRel clientExtensionEntryRel =
 			_clientExtensionEntryRelLocalService.fetchClientExtensionEntryRel(
@@ -150,13 +89,75 @@ public class ClientExtensionsServicePreAction extends Action {
 			return null;
 		}
 
-		return _clientExtensionEntryLocalService.fetchClientExtensionEntry(
-			clientExtensionEntryRel.getClientExtensionEntryId());
+		return _cetManager.getCET(
+			companyId,
+			String.valueOf(
+				clientExtensionEntryRel.getClientExtensionEntryId()));
+	}
+
+	private CETThemeCSS _getCETThemeCSS(Layout layout) {
+		CET cet = _getCET(
+			_portal.getClassNameId(Layout.class), layout.getPlid(),
+			layout.getCompanyId(),
+			ClientExtensionEntryConstants.TYPE_THEME_CSS);
+
+		if (cet == null) {
+			LayoutSet layoutSet = layout.getLayoutSet();
+
+			cet = _getCET(
+				_portal.getClassNameId(LayoutSet.class),
+				layoutSet.getLayoutSetId(), layout.getCompanyId(),
+				ClientExtensionEntryConstants.TYPE_THEME_CSS);
+		}
+
+		if (cet != null) {
+			return (CETThemeCSS)cet;
+		}
+
+		return null;
+	}
+
+	private String _getCETThemeFaviconURL(
+		long classNameId, long classPK, long companyId) {
+
+		CET cet = _getCET(
+			classNameId, classPK, companyId,
+			ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
+
+		if (cet == null) {
+			return null;
+		}
+
+		CETThemeFavicon cetThemeFavicon = (CETThemeFavicon)cet;
+
+		return cetThemeFavicon.getURL();
+	}
+
+	private CETThemeJS _getCETThemeJS(Layout layout) {
+		CET cet = _getCET(
+			_portal.getClassNameId(Layout.class), layout.getPlid(),
+			layout.getCompanyId(), ClientExtensionEntryConstants.TYPE_THEME_JS);
+
+		if (cet == null) {
+			LayoutSet layoutSet = layout.getLayoutSet();
+
+			cet = _getCET(
+				_portal.getClassNameId(LayoutSet.class),
+				layoutSet.getLayoutSetId(), layout.getCompanyId(),
+				ClientExtensionEntryConstants.TYPE_THEME_JS);
+		}
+
+		if (cet != null) {
+			return (CETThemeJS)cet;
+		}
+
+		return null;
 	}
 
 	private String _getFaviconURL(Layout layout) {
 		String faviconURL = _getCETThemeFaviconURL(
-			_portal.getClassNameId(Layout.class), layout.getPlid());
+			_portal.getClassNameId(Layout.class), layout.getPlid(),
+			layout.getCompanyId());
 
 		if (Validator.isNotNull(faviconURL)) {
 			return faviconURL;
@@ -173,7 +174,8 @@ public class ClientExtensionsServicePreAction extends Action {
 
 		if (masterLayout != null) {
 			faviconURL = _getCETThemeFaviconURL(
-				_portal.getClassNameId(Layout.class), masterLayout.getPlid());
+				_portal.getClassNameId(Layout.class), masterLayout.getPlid(),
+				layout.getCompanyId());
 
 			if (Validator.isNotNull(faviconURL)) {
 				return faviconURL;
@@ -189,8 +191,8 @@ public class ClientExtensionsServicePreAction extends Action {
 		LayoutSet layoutSet = layout.getLayoutSet();
 
 		faviconURL = _getCETThemeFaviconURL(
-			_portal.getClassNameId(LayoutSet.class),
-			layoutSet.getLayoutSetId());
+			_portal.getClassNameId(LayoutSet.class), layoutSet.getLayoutSetId(),
+			layout.getCompanyId());
 
 		if (Validator.isNotNull(faviconURL)) {
 			return faviconURL;
@@ -206,17 +208,11 @@ public class ClientExtensionsServicePreAction extends Action {
 	}
 
 	@Reference
-	private CETFactory _cetFactory;
-
-	@Reference
-	private ClientExtensionEntryLocalService _clientExtensionEntryLocalService;
+	private CETManager _cetManager;
 
 	@Reference
 	private ClientExtensionEntryRelLocalService
 		_clientExtensionEntryRelLocalService;
-
-	@Reference
-	private DLAppService _dlAppService;
 
 	@Reference
 	private LayoutLocalService _layoutLocalService;
