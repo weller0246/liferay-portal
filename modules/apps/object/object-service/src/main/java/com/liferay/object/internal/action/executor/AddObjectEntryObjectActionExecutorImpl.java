@@ -220,12 +220,12 @@ public class AddObjectEntryObjectActionExecutorImpl
 
 		Map<String, Serializable> values = new HashMap<>();
 
-		JSONArray jsonArray = _jsonFactory.createJSONArray(
-			parametersUnicodeProperties.get("predefinedValues"));
-
 		Map<String, Object> variables =
 			ObjectActionDataConverterUtil.convertPayloadJSONObject(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
+
+		JSONArray jsonArray = _jsonFactory.createJSONArray(
+			parametersUnicodeProperties.get("predefinedValues"));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
