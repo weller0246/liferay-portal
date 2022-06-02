@@ -21,11 +21,11 @@ import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.object.action.engine.ObjectActionEngine;
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.action.executor.ObjectActionExecutorRegistry;
+import com.liferay.object.internal.action.util.ObjectActionVariablesUtil;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.util.ObjectActionDataConverterUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -120,9 +120,8 @@ public class ObjectActionEngineImpl implements ObjectActionEngine {
 			"userId", userId
 		);
 
-		Map<String, Object> variables =
-			ObjectActionDataConverterUtil.toVariables(
-				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
+		Map<String, Object> variables = ObjectActionVariablesUtil.toVariables(
+			_dtoConverterRegistry, objectDefinition, payloadJSONObject);
 
 		List<ObjectAction> objectActions =
 			_objectActionLocalService.getObjectActions(

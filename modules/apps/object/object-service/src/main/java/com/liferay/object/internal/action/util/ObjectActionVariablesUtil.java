@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.object.util;
+package com.liferay.object.internal.action.util;
 
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -25,7 +25,7 @@ import java.util.Map;
 /**
  * @author Carolina Barbosa
  */
-public class ObjectActionDataConverterUtil {
+public class ObjectActionVariablesUtil {
 
 	public static Map<String, Object> toVariables(
 		DTOConverterRegistry dtoConverterRegistry,
@@ -51,20 +51,20 @@ public class ObjectActionDataConverterUtil {
 			return modelDTOJSONObject.toMap();
 		}
 
-		Map<String, Object> map = new HashMap<>(
+		Map<String, Object> variables = new HashMap<>(
 			(Map)payloadJSONObject.get("objectEntry"));
 
-		Object values = map.get("values");
+		Object values = variables.get("values");
 
 		if (values != null) {
-			map.putAll((Map<String, Object>)values);
+			variables.putAll((Map<String, Object>)values);
 
-			map.remove("values");
+			variables.remove("values");
 		}
 
-		map.put("currentUserId", payloadJSONObject.getLong("userId"));
+		variables.put("currentUserId", payloadJSONObject.getLong("userId"));
 
-		return map;
+		return variables;
 	}
 
 }

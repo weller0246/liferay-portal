@@ -19,6 +19,7 @@ import com.liferay.dynamic.data.mapping.expression.DDMExpression;
 import com.liferay.dynamic.data.mapping.expression.DDMExpressionFactory;
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
+import com.liferay.object.internal.action.util.ObjectActionVariablesUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.model.ObjectRelationship;
@@ -27,7 +28,6 @@ import com.liferay.object.scope.ObjectScopeProviderRegistry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.object.util.ObjectActionDataConverterUtil;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -209,9 +209,8 @@ public class AddObjectEntryObjectActionExecutorImpl
 
 		Map<String, Serializable> values = new HashMap<>();
 
-		Map<String, Object> variables =
-			ObjectActionDataConverterUtil.toVariables(
-				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
+		Map<String, Object> variables = ObjectActionVariablesUtil.toVariables(
+			_dtoConverterRegistry, objectDefinition, payloadJSONObject);
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray(
 			parametersUnicodeProperties.get("predefinedValues"));

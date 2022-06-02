@@ -16,10 +16,10 @@ package com.liferay.object.internal.action.executor;
 
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
+import com.liferay.object.internal.action.util.ObjectActionVariablesUtil;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.runtime.scripting.executor.GroovyScriptingExecutor;
 import com.liferay.object.service.ObjectDefinitionLocalService;
-import com.liferay.object.util.ObjectActionDataConverterUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
@@ -46,7 +46,7 @@ public class GroovyObjectActionExecutorImpl implements ObjectActionExecutor {
 				payloadJSONObject.getLong("objectDefinitionId"));
 
 		_groovyScriptingExecutor.execute(
-			ObjectActionDataConverterUtil.toVariables(
+			ObjectActionVariablesUtil.toVariables(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject),
 			new HashSet<>(), parametersUnicodeProperties.get("script"));
 	}
