@@ -216,7 +216,6 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 
 		Column<?, Long> companyIdColumn = (Column<?, Long>)_table.getColumn(
 			"companyId");
-
 		ObjectRelationship objectRelationship =
 			_objectRelationshipLocalService.getObjectRelationship(
 				objectRelationshipId);

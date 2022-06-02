@@ -206,7 +206,6 @@ public class SystemObjectDefinitionMetadataPortalInstanceLifecycleListener
 				HashMapDictionaryBuilder.<String, Object>put(
 					"item.selector.view.order", 500
 				).build());
-
 			_bundleContext.registerService(
 				ObjectRelatedModelsProvider.class,
 				new SystemObject1toMObjectRelatedModelsProviderImpl(
