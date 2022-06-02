@@ -69,13 +69,13 @@ public class AddObjectEntryObjectActionExecutorImpl
 			throw new UnsupportedOperationException();
 		}
 
-		ObjectDefinition objectDefinitionTarget =
+		ObjectDefinition targetObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				GetterUtil.getLong(
 					parametersUnicodeProperties.get("objectDefinitionId")));
 
-		if ((objectDefinitionTarget == null) ||
-			objectDefinitionTarget.isSystem()) {
+		if ((targetObjectDefinition == null) ||
+			targetObjectDefinition.isSystem()) {
 
 			return;
 		}
@@ -83,18 +83,18 @@ public class AddObjectEntryObjectActionExecutorImpl
 		long classPK = payloadJSONObject.getLong("classPK");
 		long defaultUserId = _userLocalService.getDefaultUserId(companyId);
 
-		ObjectDefinition objectDefinitionSource =
+		ObjectDefinition sourceObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				payloadJSONObject.getLong("objectDefinitionId"));
 
 		ObjectEntry objectEntry = _objectEntryLocalService.addObjectEntry(
 			defaultUserId,
 			_getGroupId(
-				classPK, companyId, objectDefinitionSource,
-				objectDefinitionTarget),
-			objectDefinitionTarget.getObjectDefinitionId(),
+				classPK, companyId, sourceObjectDefinition,
+				targetObjectDefinition),
+			targetObjectDefinition.getObjectDefinitionId(),
 			_getValues(
-				objectDefinitionSource, parametersUnicodeProperties,
+				sourceObjectDefinition, parametersUnicodeProperties,
 				payloadJSONObject),
 			_getServiceContext(companyId, defaultUserId));
 
@@ -105,7 +105,7 @@ public class AddObjectEntryObjectActionExecutorImpl
 		}
 
 		_addObjectRelationshipMappingTableValues(
-			companyId, objectDefinitionSource, objectDefinitionTarget, classPK,
+			companyId, sourceObjectDefinition, targetObjectDefinition, classPK,
 			objectEntry.getObjectEntryId(), defaultUserId);
 	}
 
@@ -115,18 +115,18 @@ public class AddObjectEntryObjectActionExecutorImpl
 	}
 
 	private void _addObjectRelationshipMappingTableValues(
-			long companyId, ObjectDefinition objectDefinitionSource,
-			ObjectDefinition objectDefinitionTarget, long primaryKey1,
+			long companyId, ObjectDefinition sourceObjectDefinition,
+			ObjectDefinition targetObjectDefinition, long primaryKey1,
 			long primaryKey2, long userId)
 		throws Exception {
 
 		for (ObjectRelationship objectRelationship :
 				_objectRelationshipLocalService.getObjectRelationships(
-					objectDefinitionSource.getObjectDefinitionId())) {
+					sourceObjectDefinition.getObjectDefinitionId())) {
 
 			if (!Objects.equals(
 					objectRelationship.getObjectDefinitionId2(),
-					objectDefinitionTarget.getObjectDefinitionId())) {
+					targetObjectDefinition.getObjectDefinitionId())) {
 
 				continue;
 			}
@@ -156,13 +156,13 @@ public class AddObjectEntryObjectActionExecutorImpl
 
 	private long _getGroupId(
 			long classPK, long companyId,
-			ObjectDefinition objectDefinitionSource,
-			ObjectDefinition objectDefinitionTarget)
+			ObjectDefinition sourceObjectDefinition,
+			ObjectDefinition targetObjectDefinition)
 		throws Exception {
 
 		ObjectScopeProvider objectScopeProviderTarget =
 			_objectScopeProviderRegistry.getObjectScopeProvider(
-				objectDefinitionTarget.getScope());
+				targetObjectDefinition.getScope());
 
 		if (!objectScopeProviderTarget.isGroupAware()) {
 			return 0L;
@@ -170,7 +170,7 @@ public class AddObjectEntryObjectActionExecutorImpl
 
 		ObjectScopeProvider objectScopeProviderSource =
 			_objectScopeProviderRegistry.getObjectScopeProvider(
-				objectDefinitionSource.getScope());
+				sourceObjectDefinition.getScope());
 
 		if (!objectScopeProviderSource.isGroupAware()) {
 			Group companyGroup = _groupLocalService.fetchCompanyGroup(
@@ -179,9 +179,9 @@ public class AddObjectEntryObjectActionExecutorImpl
 			return companyGroup.getGroupId();
 		}
 
-		if (objectDefinitionSource.isSystem()) {
+		if (sourceObjectDefinition.isSystem()) {
 			return _getPersistedModelGroupId(
-				objectDefinitionSource.getClassName(), classPK);
+				sourceObjectDefinition.getClassName(), classPK);
 		}
 
 		ObjectEntry objectEntry = _objectEntryLocalService.getObjectEntry(
