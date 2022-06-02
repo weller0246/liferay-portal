@@ -159,19 +159,19 @@ public class AddObjectEntryObjectActionExecutorImpl
 			ObjectDefinition targetObjectDefinition)
 		throws Exception {
 
-		ObjectScopeProvider objectScopeProviderTarget =
+		ObjectScopeProvider targetObjectScopeProvider =
 			_objectScopeProviderRegistry.getObjectScopeProvider(
 				targetObjectDefinition.getScope());
 
-		if (!objectScopeProviderTarget.isGroupAware()) {
+		if (!targetObjectScopeProvider.isGroupAware()) {
 			return 0L;
 		}
 
-		ObjectScopeProvider objectScopeProviderSource =
+		ObjectScopeProvider sourceObjectScopeProvider =
 			_objectScopeProviderRegistry.getObjectScopeProvider(
 				sourceObjectDefinition.getScope());
 
-		if (!objectScopeProviderSource.isGroupAware()) {
+		if (!sourceObjectScopeProvider.isGroupAware()) {
 			Group companyGroup = _groupLocalService.fetchCompanyGroup(
 				companyId);
 
