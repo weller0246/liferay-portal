@@ -53,7 +53,7 @@ public class CETItemDescriptor
 	@Override
 	public String getPayload() {
 		return JSONUtil.put(
-			"cetPrimaryKey", _cet.getPrimaryKey()
+			"cetExternalReferenceCode", _cet.getPrimaryKey()
 		).put(
 			"name", _cet.getName(LocaleUtil.getMostRelevantLocale())
 		).put(
