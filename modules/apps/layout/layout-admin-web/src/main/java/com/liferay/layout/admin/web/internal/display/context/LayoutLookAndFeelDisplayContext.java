@@ -120,8 +120,6 @@ public class LayoutLookAndFeelDisplayContext {
 	}
 
 	public Map<String, Object> getCSSExtensionConfigurationProps() {
-		String selectCSSClientExtensionsEventName = "selectCSSClientExtensions";
-
 		return HashMapBuilder.<String, Object>put(
 			"cssExtensions", JSONFactoryUtil.createJSONArray()
 		).put(
@@ -129,7 +127,7 @@ public class LayoutLookAndFeelDisplayContext {
 			() -> {
 				PortletURL cetItemSelectorURL =
 					_layoutsAdminDisplayContext.getCETItemSelectorURL(
-						selectCSSClientExtensionsEventName,
+						"selectCSSClientExtensions",
 						ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
 
 				return PortletURLBuilder.create(
@@ -140,7 +138,7 @@ public class LayoutLookAndFeelDisplayContext {
 			}
 		).put(
 			"selectCSSClientExtensionsEventName",
-			selectCSSClientExtensionsEventName
+			"selectCSSClientExtensions"
 		).build();
 	}
 
