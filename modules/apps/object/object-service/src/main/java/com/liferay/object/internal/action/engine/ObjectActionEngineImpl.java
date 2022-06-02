@@ -120,14 +120,14 @@ public class ObjectActionEngineImpl implements ObjectActionEngine {
 			"userId", userId
 		);
 
+		Map<String, Object> variables =
+			ObjectActionDataConverterUtil.convertPayloadJSONObject(
+				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
+
 		List<ObjectAction> objectActions =
 			_objectActionLocalService.getObjectActions(
 				objectDefinition.getObjectDefinitionId(),
 				objectActionTriggerKey);
-
-		Map<String, Object> variables =
-			ObjectActionDataConverterUtil.convertPayloadJSONObject(
-				_dtoConverterRegistry, objectDefinition, payloadJSONObject);
 
 		for (ObjectAction objectAction : objectActions) {
 			if (GetterUtil.getBoolean(
