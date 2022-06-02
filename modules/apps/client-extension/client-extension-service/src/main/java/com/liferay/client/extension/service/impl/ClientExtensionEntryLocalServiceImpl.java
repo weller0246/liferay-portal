@@ -14,24 +14,14 @@
 
 package com.liferay.client.extension.service.impl;
 
-import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.DuplicateClientExtensionEntryExternalReferenceCodeException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.base.ClientExtensionEntryLocalServiceBaseImpl;
-import com.liferay.client.extension.type.CETCustomElement;
-import com.liferay.client.extension.type.CETGlobalCSS;
-import com.liferay.client.extension.type.CETGlobalJS;
-import com.liferay.client.extension.type.CETIFrame;
-import com.liferay.client.extension.type.CETThemeCSS;
-import com.liferay.client.extension.type.CETThemeFavicon;
-import com.liferay.client.extension.type.CETThemeJS;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
 import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.petra.reflect.ReflectionUtil;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.cluster.Clusterable;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
@@ -65,12 +55,11 @@ import com.liferay.portal.kernel.workflow.WorkflowHandlerRegistryUtil;
 import java.io.Serializable;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
@@ -461,88 +450,11 @@ public class ClientExtensionEntryLocalServiceImpl
 		serviceContext.setAddGroupPermissions(true);
 		serviceContext.setAddGuestPermissions(true);
 
-		// TODO Context URL does not seem relevant
-
-		Map<String, Serializable> workflowContext = null;
-
-		if (Objects.equals(
-				clientExtensionEntry.getType(),
-				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
-
-			CETCustomElement cetCustomElement = _cetFactory.cetCustomElement(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetCustomElement.getURLs());
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_GLOBAL_CSS)) {
-
-			CETGlobalCSS cetGlobalCSS = _cetFactory.cetGlobalCSS(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetGlobalCSS.getURL());
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_GLOBAL_JS)) {
-
-			CETGlobalJS cetGlobalJS = _cetFactory.cetGlobalJS(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetGlobalJS.getURL());
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_IFRAME)) {
-
-			CETIFrame cetIFrame = _cetFactory.cetIFrame(clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetIFrame.getURL());
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
-
-			CETThemeCSS cetThemeCSS = _cetFactory.cetThemeCSS(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL,
-				StringBundler.concat(
-					cetThemeCSS.getClayURL(), StringPool.NEW_LINE,
-					cetThemeCSS.getMainURL()));
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
-
-			CETThemeFavicon cetThemeFavicon = _cetFactory.cetThemeFavicon(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetThemeFavicon.getURL());
-		}
-		else if (Objects.equals(
-					clientExtensionEntry.getType(),
-					ClientExtensionEntryConstants.TYPE_THEME_JS)) {
-
-			CETThemeJS cetThemeJS = _cetFactory.cetThemeJS(
-				clientExtensionEntry);
-
-			workflowContext = Collections.singletonMap(
-				WorkflowConstants.CONTEXT_URL, cetThemeJS.getURL());
-		}
-
 		return WorkflowHandlerRegistryUtil.startWorkflowInstance(
 			clientExtensionEntry.getCompanyId(), company.getGroupId(), userId,
 			ClientExtensionEntry.class.getName(),
 			clientExtensionEntry.getClientExtensionEntryId(),
-			clientExtensionEntry, serviceContext, workflowContext);
+			clientExtensionEntry, serviceContext, new HashMap<>());
 	}
 
 	private void _validateExternalReferenceCode(
