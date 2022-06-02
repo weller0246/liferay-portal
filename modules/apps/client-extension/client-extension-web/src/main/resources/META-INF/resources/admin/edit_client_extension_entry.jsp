@@ -47,19 +47,19 @@ renderResponse.setTitle(editClientExtensionEntryDisplayContext.getTitle());
 
 			<%@ include file="/admin/edit_custom_element_fields.jspf" %>
 
-			<%@ include file="/admin/edit_global_css_fields.jspf" %>
+			<%--<%@ include file="/admin/edit_global_css_fields.jspf" %>
 
-			<%@ include file="/admin/edit_global_js_fields.jspf" %>
+			<%@ include file="/admin/edit_global_js_fields.jspf" %>--%>
 
 			<%@ include file="/admin/edit_iframe_fields.jspf" %>
 
 			<%@ include file="/admin/edit_portlet_fields.jspf" %>
 
-			<%@ include file="/admin/edit_theme_css_fields.jspf" %>
+			<%--<%@ include file="/admin/edit_theme_css_fields.jspf" %>
 
 			<%@ include file="/admin/edit_theme_favicon_fields.jspf" %>
 
-			<%@ include file="/admin/edit_theme_js_fields.jspf" %>
+			<%@ include file="/admin/edit_theme_js_fields.jspf" %>--%>
 		</liferay-frontend:fieldset-group>
 	</liferay-frontend:edit-form-body>
 
