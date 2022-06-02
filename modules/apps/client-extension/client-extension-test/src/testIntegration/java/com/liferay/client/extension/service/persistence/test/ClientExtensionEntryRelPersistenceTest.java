@@ -150,7 +150,7 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 		newClientExtensionEntryRel.setClassPK(RandomTestUtil.nextLong());
 
-		newClientExtensionEntryRel.setCetPrimaryKey(
+		newClientExtensionEntryRel.setCETPrimaryKey(
 			RandomTestUtil.randomString());
 
 		newClientExtensionEntryRel.setType(RandomTestUtil.randomString());
@@ -199,8 +199,8 @@ public class ClientExtensionEntryRelPersistenceTest {
 			existingClientExtensionEntryRel.getClassPK(),
 			newClientExtensionEntryRel.getClassPK());
 		Assert.assertEquals(
-			existingClientExtensionEntryRel.getCetPrimaryKey(),
-			newClientExtensionEntryRel.getCetPrimaryKey());
+			existingClientExtensionEntryRel.getCETPrimaryKey(),
+			newClientExtensionEntryRel.getCETPrimaryKey());
 		Assert.assertEquals(
 			existingClientExtensionEntryRel.getType(),
 			newClientExtensionEntryRel.getType());
@@ -622,7 +622,7 @@ public class ClientExtensionEntryRelPersistenceTest {
 
 		clientExtensionEntryRel.setClassPK(RandomTestUtil.nextLong());
 
-		clientExtensionEntryRel.setCetPrimaryKey(RandomTestUtil.randomString());
+		clientExtensionEntryRel.setCETPrimaryKey(RandomTestUtil.randomString());
 
 		clientExtensionEntryRel.setType(RandomTestUtil.randomString());
 

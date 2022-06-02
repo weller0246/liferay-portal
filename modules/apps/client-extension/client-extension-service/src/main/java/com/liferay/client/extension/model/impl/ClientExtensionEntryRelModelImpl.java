@@ -347,11 +347,11 @@ public class ClientExtensionEntryRelModelImpl
 			(BiConsumer<ClientExtensionEntryRel, Long>)
 				ClientExtensionEntryRel::setClassPK);
 		attributeGetterFunctions.put(
-			"cetPrimaryKey", ClientExtensionEntryRel::getCetPrimaryKey);
+			"cetPrimaryKey", ClientExtensionEntryRel::getCETPrimaryKey);
 		attributeSetterBiConsumers.put(
 			"cetPrimaryKey",
 			(BiConsumer<ClientExtensionEntryRel, String>)
-				ClientExtensionEntryRel::setCetPrimaryKey);
+				ClientExtensionEntryRel::setCETPrimaryKey);
 		attributeGetterFunctions.put("type", ClientExtensionEntryRel::getType);
 		attributeSetterBiConsumers.put(
 			"type",
@@ -623,7 +623,7 @@ public class ClientExtensionEntryRelModelImpl
 	}
 
 	@Override
-	public String getCetPrimaryKey() {
+	public String getCETPrimaryKey() {
 		if (_cetPrimaryKey == null) {
 			return "";
 		}
@@ -633,7 +633,7 @@ public class ClientExtensionEntryRelModelImpl
 	}
 
 	@Override
-	public void setCetPrimaryKey(String cetPrimaryKey) {
+	public void setCETPrimaryKey(String cetPrimaryKey) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -771,7 +771,7 @@ public class ClientExtensionEntryRelModelImpl
 		clientExtensionEntryRelImpl.setModifiedDate(getModifiedDate());
 		clientExtensionEntryRelImpl.setClassNameId(getClassNameId());
 		clientExtensionEntryRelImpl.setClassPK(getClassPK());
-		clientExtensionEntryRelImpl.setCetPrimaryKey(getCetPrimaryKey());
+		clientExtensionEntryRelImpl.setCETPrimaryKey(getCETPrimaryKey());
 		clientExtensionEntryRelImpl.setType(getType());
 
 		clientExtensionEntryRelImpl.resetOriginalValues();
@@ -806,7 +806,7 @@ public class ClientExtensionEntryRelModelImpl
 			this.<Long>getColumnOriginalValue("classNameId"));
 		clientExtensionEntryRelImpl.setClassPK(
 			this.<Long>getColumnOriginalValue("classPK"));
-		clientExtensionEntryRelImpl.setCetPrimaryKey(
+		clientExtensionEntryRelImpl.setCETPrimaryKey(
 			this.<String>getColumnOriginalValue("cetPrimaryKey"));
 		clientExtensionEntryRelImpl.setType(
 			this.<String>getColumnOriginalValue("type_"));
@@ -949,7 +949,7 @@ public class ClientExtensionEntryRelModelImpl
 
 		clientExtensionEntryRelCacheModel.classPK = getClassPK();
 
-		clientExtensionEntryRelCacheModel.cetPrimaryKey = getCetPrimaryKey();
+		clientExtensionEntryRelCacheModel.cetPrimaryKey = getCETPrimaryKey();
 
 		String cetPrimaryKey = clientExtensionEntryRelCacheModel.cetPrimaryKey;
 

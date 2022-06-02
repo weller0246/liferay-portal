@@ -57,7 +57,7 @@ public class ClientExtensionEntryRelWrapper
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("classNameId", getClassNameId());
 		attributes.put("classPK", getClassPK());
-		attributes.put("cetPrimaryKey", getCetPrimaryKey());
+		attributes.put("cetPrimaryKey", getCETPrimaryKey());
 		attributes.put("type", getType());
 
 		return attributes;
@@ -136,7 +136,7 @@ public class ClientExtensionEntryRelWrapper
 		String cetPrimaryKey = (String)attributes.get("cetPrimaryKey");
 
 		if (cetPrimaryKey != null) {
-			setCetPrimaryKey(cetPrimaryKey);
+			setCETPrimaryKey(cetPrimaryKey);
 		}
 
 		String type = (String)attributes.get("type");
@@ -157,8 +157,8 @@ public class ClientExtensionEntryRelWrapper
 	 * @return the cet primary key of this client extension entry rel
 	 */
 	@Override
-	public String getCetPrimaryKey() {
-		return model.getCetPrimaryKey();
+	public String getCETPrimaryKey() {
+		return model.getCETPrimaryKey();
 	}
 
 	/**
@@ -352,8 +352,8 @@ public class ClientExtensionEntryRelWrapper
 	 * @param cetPrimaryKey the cet primary key of this client extension entry rel
 	 */
 	@Override
-	public void setCetPrimaryKey(String cetPrimaryKey) {
-		model.setCetPrimaryKey(cetPrimaryKey);
+	public void setCETPrimaryKey(String cetPrimaryKey) {
+		model.setCETPrimaryKey(cetPrimaryKey);
 	}
 
 	@Override

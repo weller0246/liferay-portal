@@ -163,10 +163,10 @@ public class ClientExtensionEntryRelCacheModel
 		clientExtensionEntryRelImpl.setClassPK(classPK);
 
 		if (cetPrimaryKey == null) {
-			clientExtensionEntryRelImpl.setCetPrimaryKey("");
+			clientExtensionEntryRelImpl.setCETPrimaryKey("");
 		}
 		else {
-			clientExtensionEntryRelImpl.setCetPrimaryKey(cetPrimaryKey);
+			clientExtensionEntryRelImpl.setCETPrimaryKey(cetPrimaryKey);
 		}
 
 		if (type == null) {

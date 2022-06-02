@@ -269,14 +269,14 @@ public interface ClientExtensionEntryRelModel
 	 * @return the cet primary key of this client extension entry rel
 	 */
 	@AutoEscape
-	public String getCetPrimaryKey();
+	public String getCETPrimaryKey();
 
 	/**
 	 * Sets the cet primary key of this client extension entry rel.
 	 *
 	 * @param cetPrimaryKey the cet primary key of this client extension entry rel
 	 */
-	public void setCetPrimaryKey(String cetPrimaryKey);
+	public void setCETPrimaryKey(String cetPrimaryKey);
 
 	/**
 	 * Returns the type of this client extension entry rel.
