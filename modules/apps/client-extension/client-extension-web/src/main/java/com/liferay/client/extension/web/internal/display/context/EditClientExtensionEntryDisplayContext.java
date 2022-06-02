@@ -319,21 +319,6 @@ public class EditClientExtensionEntryDisplayContext {
 
 		String type = getType();
 
-		if (true) {
-			return Arrays.asList(
-				new SelectOption(
-					LanguageUtil.get(httpServletRequest, "custom-element"),
-					ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
-					Objects.equals(
-						ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
-						type)),
-				new SelectOption(
-					LanguageUtil.get(httpServletRequest, "iframe"),
-					ClientExtensionEntryConstants.TYPE_IFRAME,
-					Objects.equals(
-						ClientExtensionEntryConstants.TYPE_IFRAME, type)));
-		}
-
 		return Arrays.asList(
 			new SelectOption(
 				LanguageUtil.get(httpServletRequest, "custom-element"),
