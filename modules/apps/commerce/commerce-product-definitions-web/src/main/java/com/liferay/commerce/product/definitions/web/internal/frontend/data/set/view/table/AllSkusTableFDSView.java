@@ -39,7 +39,7 @@ public class AllSkusTableFDSView extends BaseTableFDSView {
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
-			fdsTableSchemaBuilderFactory.create();
+			_fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
 			"sku", "sku",
@@ -61,6 +61,6 @@ public class AllSkusTableFDSView extends BaseTableFDSView {
 	}
 
 	@Reference
-	protected FDSTableSchemaBuilderFactory fdsTableSchemaBuilderFactory;
+	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
 
 }

@@ -40,7 +40,7 @@ public class CommerceProductDefinitionSpecificationTableFDSView
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
-			fdsTableSchemaBuilderFactory.create();
+			_fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
 			"label", "label",
@@ -56,6 +56,6 @@ public class CommerceProductDefinitionSpecificationTableFDSView
 	}
 
 	@Reference
-	protected FDSTableSchemaBuilderFactory fdsTableSchemaBuilderFactory;
+	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
 
 }

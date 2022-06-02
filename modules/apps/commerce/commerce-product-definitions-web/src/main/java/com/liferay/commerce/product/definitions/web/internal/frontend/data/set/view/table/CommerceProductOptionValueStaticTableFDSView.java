@@ -40,7 +40,7 @@ public class CommerceProductOptionValueStaticTableFDSView
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
-			fdsTableSchemaBuilderFactory.create();
+			_fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
 			"name", "name",
@@ -64,6 +64,6 @@ public class CommerceProductOptionValueStaticTableFDSView
 	}
 
 	@Reference
-	protected FDSTableSchemaBuilderFactory fdsTableSchemaBuilderFactory;
+	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
 
 }

@@ -42,7 +42,7 @@ public class CommerceProductMediaTableFDSView extends BaseTableFDSView {
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
-			_fdsTableSchemaBuilderFactory.create();
+			__fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
 			"image", "",
@@ -66,6 +66,6 @@ public class CommerceProductMediaTableFDSView extends BaseTableFDSView {
 	}
 
 	@Reference
-	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
+	private FDSTableSchemaBuilderFactory __fdsTableSchemaBuilderFactory;
 
 }

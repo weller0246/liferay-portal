@@ -40,7 +40,7 @@ public class CommerceProductDefinitionLinkTableFDSView
 	@Override
 	public FDSTableSchema getFDSTableSchema(Locale locale) {
 		FDSTableSchemaBuilder fdsTableSchemaBuilder =
-			_fdsTableSchemaBuilderFactory.create();
+			__fdsTableSchemaBuilderFactory.create();
 
 		return fdsTableSchemaBuilder.add(
 			"image", "",
@@ -60,6 +60,6 @@ public class CommerceProductDefinitionLinkTableFDSView
 	}
 
 	@Reference
-	private FDSTableSchemaBuilderFactory _fdsTableSchemaBuilderFactory;
+	private FDSTableSchemaBuilderFactory __fdsTableSchemaBuilderFactory;
 
 }
