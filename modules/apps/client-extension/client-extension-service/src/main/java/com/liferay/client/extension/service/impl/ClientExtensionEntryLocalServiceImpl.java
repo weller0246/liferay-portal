@@ -25,6 +25,7 @@ import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.client.extension.type.CETThemeJS;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
+import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringBundler;
@@ -198,6 +199,8 @@ public class ClientExtensionEntryLocalServiceImpl
 
 		undeployClientExtensionEntry(clientExtensionEntry);
 
+		_cetManager.addCET(clientExtensionEntry);
+
 		_serviceRegistrationsMaps.put(
 			clientExtensionEntry.getClientExtensionEntryId(),
 			_cetDeployer.deploy(_cetFactory.cet(clientExtensionEntry)));
@@ -279,6 +282,8 @@ public class ClientExtensionEntryLocalServiceImpl
 	@Override
 	public void undeployClientExtensionEntry(
 		ClientExtensionEntry clientExtensionEntry) {
+
+		_cetManager.deleteCET(clientExtensionEntry);
 
 		List<ServiceRegistration<?>> serviceRegistrations =
 			_serviceRegistrationsMaps.remove(
@@ -543,6 +548,9 @@ public class ClientExtensionEntryLocalServiceImpl
 
 	@Reference
 	private CETFactory _cetFactory;
+
+	@Reference
+	private CETManager _cetManager;
 
 	@Reference
 	private CETValidator _cetValidator;

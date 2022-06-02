@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal.manager;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
-import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
+import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
@@ -29,10 +29,12 @@ import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.LocaleUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Pagination;
-import com.liferay.portal.vulcan.util.TransformUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -49,6 +51,15 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = CETManager.class)
 public class CETManagerImpl implements CETManager {
+
+	@Override
+	public void addCET(ClientExtensionEntry clientExtensionEntry)
+		throws PortalException {
+
+		CET cet = _cetFactory.cet(clientExtensionEntry);
+
+		_addCET(cet);
+	}
 
 	@Override
 	public CET addCET(
@@ -98,9 +109,7 @@ public class CETManagerImpl implements CETManager {
 			throw new ClientExtensionEntryTypeException("Invalid type " + type);
 		}
 
-		Map<String, CET> cetsMap = _getCETsMap(cet.getCompanyId());
-
-		cetsMap.put(primaryKey, cet);
+		_addCET(cet);
 
 		_serviceRegistrationsMaps.put(primaryKey, _cetDeployer.deploy(cet));
 
@@ -117,43 +126,31 @@ public class CETManagerImpl implements CETManager {
 	}
 
 	@Override
-	public List<CET> getCETs(
-			long companyId, String keywords, String type, Pagination pagination,
-			Sort sort)
-		throws PortalException {
+	public void deleteCET(ClientExtensionEntry clientExtensionEntry) {
+		Map<String, CET> cetsMap = _getCETsMap(
+			clientExtensionEntry.getCompanyId());
 
-		// TODO Account for pagination
-
-		List<CET> cets = TransformUtil.transform(
-			_clientExtensionEntryLocalService.search(
-				companyId, keywords, pagination.getStartPosition(),
-				pagination.getEndPosition(), sort),
-			clientExtensionEntry -> _cetFactory.cet(clientExtensionEntry));
-
-		Map<String, CET> cetsMap = _getCETsMap(companyId);
-
-		for (Map.Entry<String, CET> entry : cetsMap.entrySet()) {
-			cets.add(0, entry.getValue());
-		}
-
-		if (Validator.isNotNull(type)) {
-			cets = ListUtil.filter(
-				cets, cet -> Objects.equals(type, cet.getType()));
-		}
-
-		return cets;
+		cetsMap.remove(
+			String.valueOf(clientExtensionEntry.getClientExtensionEntryId()));
 	}
 
 	@Override
-	public int getCETsCount(long companyId, String keywords)
-		throws PortalException {
+	public List<CET> getCETs(
+		long companyId, String keywords, String type, Pagination pagination,
+		Sort sort) {
 
-		Map<String, CET> cetsMap = _getCETsMap(companyId);
+		// TODO Sort
 
-		int count = _clientExtensionEntryLocalService.searchCount(
-			companyId, keywords);
+		return ListUtil.subList(
+			_getCETs(companyId, keywords, type), pagination.getStartPosition(),
+			pagination.getEndPosition());
+	}
 
-		return cetsMap.size() + count;
+	@Override
+	public int getCETsCount(long companyId, String keywords, String type) {
+		List<CET> cets = _getCETs(companyId, keywords, type);
+
+		return cets.size();
 	}
 
 	@Deactivate
@@ -169,6 +166,44 @@ public class CETManagerImpl implements CETManager {
 		}
 	}
 
+	private void _addCET(CET cet) {
+		Map<String, CET> cetsMap = _getCETsMap(cet.getCompanyId());
+
+		cetsMap.put(cet.getPrimaryKey(), cet);
+	}
+
+	private List<CET> _getCETs(long companyId, String keywords, String type) {
+		List<CET> cets = new ArrayList<>();
+
+		Map<String, CET> cetsMap = _getCETsMap(companyId);
+
+		for (Map.Entry<String, CET> entry : cetsMap.entrySet()) {
+			CET cet = entry.getValue();
+
+			if (Validator.isNotNull(type) &&
+				!Objects.equals(type, cet.getType())) {
+
+				continue;
+			}
+
+			if (Validator.isNotNull(keywords) &&
+				!StringUtil.containsIgnoreCase(
+					keywords, cet.getDescription()) &&
+				!StringUtil.containsIgnoreCase(
+					keywords,
+					cet.getName(LocaleUtil.getMostRelevantLocale())) &&
+				!StringUtil.containsIgnoreCase(
+					keywords, cet.getSourceCodeURL())) {
+
+				continue;
+			}
+
+			cets.add(cet);
+		}
+
+		return cets;
+	}
+
 	private Map<String, CET> _getCETsMap(long companyId) {
 		Map<String, CET> cetsMap = _cetsMaps.get(companyId);
 
@@ -182,6 +217,10 @@ public class CETManagerImpl implements CETManager {
 	}
 
 	private void _undeployCET(CET cet) {
+		if (!cet.isReadOnly()) {
+			return;
+		}
+
 		List<ServiceRegistration<?>> serviceRegistrations =
 			_serviceRegistrationsMaps.remove(cet.getPrimaryKey());
 
@@ -202,10 +241,6 @@ public class CETManagerImpl implements CETManager {
 
 	private final Map<Long, Map<String, CET>> _cetsMaps =
 		new ConcurrentHashMap<>();
-
-	@Reference
-	private ClientExtensionEntryLocalService _clientExtensionEntryLocalService;
-
 	private final Map<String, List<ServiceRegistration<?>>>
 		_serviceRegistrationsMaps = new ConcurrentHashMap<>();
 
