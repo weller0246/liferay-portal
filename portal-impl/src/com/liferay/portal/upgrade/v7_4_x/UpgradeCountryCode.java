@@ -39,6 +39,7 @@ public class UpgradeCountryCode extends UpgradeProcess {
 		runSQL("update Country set name = 'republic-of-congo' where a2 = 'CG'");
 
 		_upgradeCountry();
+
 		_upgradeRegion("ES", "Navarra", "NA");
 		_upgradeRegion("IT", "Napoli", "NA");
 	}
