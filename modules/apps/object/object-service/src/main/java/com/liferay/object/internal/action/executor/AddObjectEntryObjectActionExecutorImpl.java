@@ -103,22 +103,6 @@ public class AddObjectEntryObjectActionExecutorImpl
 			return;
 		}
 
-		_addObjectRelationshipMappingTableValues(
-			companyId, classPK, objectEntry.getObjectEntryId(),
-			sourceObjectDefinition, targetObjectDefinition, defaultUserId);
-	}
-
-	@Override
-	public String getKey() {
-		return ObjectActionExecutorConstants.KEY_ADD_OBJECT_ENTRY;
-	}
-
-	private void _addObjectRelationshipMappingTableValues(
-			long companyId, long primaryKey1, long primaryKey2,
-			ObjectDefinition sourceObjectDefinition,
-			ObjectDefinition targetObjectDefinition, long userId)
-		throws Exception {
-
 		for (ObjectRelationship objectRelationship :
 				_objectRelationshipLocalService.getObjectRelationships(
 					sourceObjectDefinition.getObjectDefinitionId())) {
@@ -133,9 +117,14 @@ public class AddObjectEntryObjectActionExecutorImpl
 			_objectRelationshipLocalService.
 				addObjectRelationshipMappingTableValues(
 					userId, objectRelationship.getObjectRelationshipId(),
-					primaryKey1, primaryKey2,
+					classPK, objectEntry.getObjectEntryId(),
 					_getServiceContext(companyId, userId));
 		}
+	}
+
+	@Override
+	public String getKey() {
+		return ObjectActionExecutorConstants.KEY_ADD_OBJECT_ENTRY;
 	}
 
 	private Serializable _evaluateExpression(
