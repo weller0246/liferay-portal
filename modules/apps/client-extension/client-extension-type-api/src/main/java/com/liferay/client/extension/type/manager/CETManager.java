@@ -36,7 +36,8 @@ public interface CETManager {
 	public void deleteCET(CET cet);
 
 	public List<CET> getCETs(
-			long companyId, String keywords, Pagination pagination, Sort sort)
+			long companyId, String keywords, String type, Pagination pagination,
+			Sort sort)
 		throws PortalException;
 
 	public int getCETsCount(long companyId, String keywords)

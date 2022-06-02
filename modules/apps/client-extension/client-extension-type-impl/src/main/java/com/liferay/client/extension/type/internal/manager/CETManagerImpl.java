@@ -28,6 +28,8 @@ import com.liferay.client.extension.type.internal.CETThemeJSImpl;
 import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
+import com.liferay.portal.kernel.util.ListUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -116,8 +118,11 @@ public class CETManagerImpl implements CETManager {
 
 	@Override
 	public List<CET> getCETs(
-			long companyId, String keywords, Pagination pagination, Sort sort)
+			long companyId, String keywords, String type, Pagination pagination,
+			Sort sort)
 		throws PortalException {
+
+		// TODO Account for pagination
 
 		List<CET> cets = TransformUtil.transform(
 			_clientExtensionEntryLocalService.search(
@@ -129,6 +134,11 @@ public class CETManagerImpl implements CETManager {
 
 		for (Map.Entry<String, CET> entry : cetsMap.entrySet()) {
 			cets.add(0, entry.getValue());
+		}
+
+		if (Validator.isNotNull(type)) {
+			cets = ListUtil.filter(
+				cets, cet -> Objects.equals(type, cet.getType()));
 		}
 
 		return cets;
