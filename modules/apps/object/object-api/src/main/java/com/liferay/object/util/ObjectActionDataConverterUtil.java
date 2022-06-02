@@ -72,15 +72,24 @@ public class ObjectActionDataConverterUtil {
 		ObjectDefinition objectDefinition, JSONObject payloadJSONObject) {
 
 		if (objectDefinition.isSystem()) {
-			return _convertSystemObjectPayloadJSONObject(
-				dtoConverterRegistry, objectDefinition, payloadJSONObject);
+			DTOConverter<?, ?> dtoConverter =
+				dtoConverterRegistry.getDTOConverter(
+					objectDefinition.getClassName());
+
+			JSONObject modelDTOJSONObject = payloadJSONObject.getJSONObject(
+				"modelDTO" + dtoConverter.getContentType());
+
+			modelDTOJSONObject.put(
+				"companyId", payloadJSONObject.get("companyId")
+			).put(
+				"currentUserId", payloadJSONObject.get("userId")
+			).put(
+				"objectDefinitionId",
+				payloadJSONObject.get("objectDefinitionId")
+			);
+
+			return modelDTOJSONObject.toMap();
 		}
-
-		return _convertObjectEntryPayloadJSONObject(payloadJSONObject);
-	}
-
-	private static Map<String, Object> _convertObjectEntryPayloadJSONObject(
-		JSONObject payloadJSONObject) {
 
 		Map<String, Object> map = new HashMap<>(
 			(Map)payloadJSONObject.get("objectEntry"));
@@ -96,27 +105,6 @@ public class ObjectActionDataConverterUtil {
 		map.put("currentUserId", payloadJSONObject.getLong("userId"));
 
 		return map;
-	}
-
-	private static Map<String, Object> _convertSystemObjectPayloadJSONObject(
-		DTOConverterRegistry dtoConverterRegistry,
-		ObjectDefinition objectDefinition, JSONObject payloadJSONObject) {
-
-		DTOConverter<?, ?> dtoConverter = dtoConverterRegistry.getDTOConverter(
-			objectDefinition.getClassName());
-
-		JSONObject modelDTOJSONObject = payloadJSONObject.getJSONObject(
-			"modelDTO" + dtoConverter.getContentType());
-
-		modelDTOJSONObject.put(
-			"companyId", payloadJSONObject.get("companyId")
-		).put(
-			"currentUserId", payloadJSONObject.get("userId")
-		).put(
-			"objectDefinitionId", payloadJSONObject.get("objectDefinitionId")
-		);
-
-		return modelDTOJSONObject.toMap();
 	}
 
 	private static Map<String, String> _toStringMap(Map<String, ?> map) {
