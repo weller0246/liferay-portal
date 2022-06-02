@@ -20,24 +20,24 @@ package com.liferay.commerce.constants;
 public class CommerceShipmentFDSNames {
 
 	public static final String INVENTORY_WAREHOUSE_ITEM =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-inventoryWarehouseItem";
+		"com_liferay_commerce_shipment-inventoryWarehouseItem";
 
 	public static final String ORDER_SHIPMENTS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-orderShipments";
+		"com_liferay_commerce_shipment-orderShipments";
 
 	public static final String PROCESSING_SHIPMENT_ITEMS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-processingShipmentItems";
+		"com_liferay_commerce_shipment-processingShipmentItems";
 
 	public static final String SHIPMENT_ITEMS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-shipmentItems";
+		"com_liferay_commerce_shipment-shipmentItems";
 
 	public static final String SHIPMENTS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-shipments";
+		"com_liferay_commerce_shipment-shipments";
 
 	public static final String SHIPPABLE_ORDER_ITEMS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-shippableOrderItems";
+		"com_liferay_commerce_shipment-shippableOrderItems";
 
 	public static final String SHIPPED_SHIPMENT_ITEMS =
-		CommerceShipmentConstants.FDS_NAMESPACE + "-shippedShipmentItems";
+		"com_liferay_commerce_shipment-shippedShipmentItems";
 
 }
