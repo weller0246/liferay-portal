@@ -43,8 +43,7 @@ public abstract class BaseCETImpl implements CET {
 		if (clientExtensionEntry != null) {
 			_companyId = clientExtensionEntry.getCompanyId();
 			_description = clientExtensionEntry.getDescription();
-			_primaryKey = String.valueOf(
-				clientExtensionEntry.getClientExtensionEntryId());
+			_primaryKey = clientExtensionEntry.getUuid();
 
 			try {
 				_properties = PropertiesUtil.load(
