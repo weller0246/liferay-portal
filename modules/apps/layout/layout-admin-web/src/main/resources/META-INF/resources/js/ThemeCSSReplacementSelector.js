@@ -24,7 +24,9 @@ export default function ThemeCSSReplacementSelector({
 	themeCSSExtensionName,
 }) {
 	const [extensionName, setExtensionName] = useState(themeCSSExtensionName);
-	const [cetExternalReferenceCode, setCETExternalReferenceCode] = useState('');
+	const [cetExternalReferenceCode, setCETExternalReferenceCode] = useState(
+		''
+	);
 
 	const onClick = () => {
 		openSelectionModal({

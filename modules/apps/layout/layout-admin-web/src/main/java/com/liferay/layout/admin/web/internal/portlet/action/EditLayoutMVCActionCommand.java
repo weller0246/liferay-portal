@@ -212,7 +212,8 @@ public class EditLayoutMVCActionCommand extends BaseMVCActionCommand {
 						addClientExtensionEntryRel(
 							themeDisplay.getUserId(),
 							_portal.getClassNameId(Layout.class),
-							draftLayout.getPlid(), faviconCETExternalReferenceCode,
+							draftLayout.getPlid(),
+							faviconCETExternalReferenceCode,
 							ClientExtensionEntryConstants.TYPE_THEME_FAVICON);
 				}
 
