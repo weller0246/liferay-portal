@@ -171,17 +171,19 @@ public class ClientExtensionsServicePreAction extends Action {
 		Layout masterLayout = _layoutLocalService.fetchLayout(
 			layout.getMasterLayoutPlid());
 
-		faviconURL = _getCETThemeFaviconURL(
-			_portal.getClassNameId(Layout.class), masterLayout.getPlid());
+		if (masterLayout != null) {
+			faviconURL = _getCETThemeFaviconURL(
+				_portal.getClassNameId(Layout.class), masterLayout.getPlid());
 
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
-		}
+			if (Validator.isNotNull(faviconURL)) {
+				return faviconURL;
+			}
 
-		faviconURL = masterLayout.getFavicon();
+			faviconURL = masterLayout.getFavicon();
 
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
+			if (Validator.isNotNull(faviconURL)) {
+				return faviconURL;
+			}
 		}
 
 		LayoutSet layoutSet = layout.getLayoutSet();
