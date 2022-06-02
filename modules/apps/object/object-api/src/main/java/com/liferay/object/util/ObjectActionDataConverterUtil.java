@@ -57,7 +57,7 @@ public class ObjectActionDataConverterUtil {
 			else if (Objects.equals(entry.getKey(), "predefinedValues")) {
 				value = JSONFactoryUtil.looseDeserialize((String)value);
 			}
-			else if (Objects.equals(entry.getKey(), "relateEntries")) {
+			else if (Objects.equals(entry.getKey(), "relateObjectEntries")) {
 				value = GetterUtil.getBoolean(value);
 			}
 

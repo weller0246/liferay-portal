@@ -98,7 +98,7 @@ public class AddObjectEntryObjectActionExecutorImpl
 			_getServiceContext(companyId, defaultUserId));
 
 		if (!GetterUtil.getBoolean(
-				parametersUnicodeProperties.get("relateEntries"))) {
+				parametersUnicodeProperties.get("relateObjectEntries"))) {
 
 			return;
 		}
