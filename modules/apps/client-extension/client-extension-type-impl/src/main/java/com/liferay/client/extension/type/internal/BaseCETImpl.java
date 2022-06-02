@@ -114,7 +114,7 @@ public abstract class BaseCETImpl implements CET {
 
 	@Override
 	public Properties getProperties() {
-		return (Properties) _properties.clone();
+		return (Properties)_properties.clone();
 	}
 
 	@Override
