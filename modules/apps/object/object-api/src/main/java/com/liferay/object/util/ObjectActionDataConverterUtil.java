@@ -19,11 +19,9 @@ import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
-import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,14 +55,6 @@ public class ObjectActionDataConverterUtil {
 		}
 
 		return parameters;
-	}
-
-	public static UnicodeProperties toParametersUnicodeProperties(
-		Map<String, ?> parameters) {
-
-		return UnicodePropertiesBuilder.create(
-			_toStringMap(parameters), true
-		).build();
 	}
 
 	public static Map<String, Object> toVariables(
@@ -105,22 +95,6 @@ public class ObjectActionDataConverterUtil {
 		map.put("currentUserId", payloadJSONObject.getLong("userId"));
 
 		return map;
-	}
-
-	private static Map<String, String> _toStringMap(Map<String, ?> map) {
-		Map<String, String> stringMap = new HashMap<>();
-
-		for (Map.Entry<String, ?> entry : map.entrySet()) {
-			Object value = entry.getValue();
-
-			if (value instanceof ArrayList) {
-				value = JSONFactoryUtil.looseSerialize(value);
-			}
-
-			stringMap.put(entry.getKey(), value.toString());
-		}
-
-		return stringMap;
 	}
 
 }
