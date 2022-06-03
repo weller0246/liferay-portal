@@ -14,7 +14,6 @@
 
 package com.liferay.client.extension.type.manager;
 
-import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
@@ -28,9 +27,6 @@ import java.util.Properties;
  */
 public interface CETManager {
 
-	public void addCET(ClientExtensionEntry clientExtensionEntry)
-		throws PortalException;
-
 	public CET addCET(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
@@ -39,14 +35,14 @@ public interface CETManager {
 
 	public void deleteCET(CET cet);
 
-	public void deleteCET(ClientExtensionEntry clientExtensionEntry);
-
 	public CET getCET(long companyId, String externalReferenceCode);
 
 	public List<CET> getCETs(
-		long companyId, String keywords, String type, Pagination pagination,
-		Sort sort);
+			long companyId, String keywords, String type, Pagination pagination,
+			Sort sort)
+		throws PortalException;
 
-	public int getCETsCount(long companyId, String keywords, String type);
+	public int getCETsCount(long companyId, String keywords, String type)
+		throws PortalException;
 
 }

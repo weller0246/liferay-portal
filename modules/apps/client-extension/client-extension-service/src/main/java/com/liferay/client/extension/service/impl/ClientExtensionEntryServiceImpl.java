@@ -127,7 +127,7 @@ public class ClientExtensionEntryServiceImpl
 
 		return clientExtensionEntryLocalService.updateClientExtensionEntry(
 			getUserId(), clientExtensionEntryId, description, nameMap,
-			properties, sourceCodeURL, status, typeSettings);
+			properties, sourceCodeURL, typeSettings);
 	}
 
 	@Reference(
