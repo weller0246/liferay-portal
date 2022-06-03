@@ -63,7 +63,7 @@ public class LayoutPermissionTest {
 	}
 
 	@Test
-	public void testContainsWithUpdateLayoutAdvancedOptionsPermissions()
+	public void testContainsWithUpdateLayoutAdvancedOptionsPermission()
 		throws Exception {
 
 		PermissionChecker permissionChecker = _getPermissionChecker(
@@ -96,7 +96,7 @@ public class LayoutPermissionTest {
 	}
 
 	@Test
-	public void testContainsWithUpdateLayoutBasicPermissions()
+	public void testContainsWithUpdateLayoutBasicPermission()
 		throws Exception {
 
 		PermissionChecker permissionChecker = _getPermissionChecker(
@@ -128,7 +128,7 @@ public class LayoutPermissionTest {
 	}
 
 	@Test
-	public void testContainsWithUpdateLayoutContentPermissions()
+	public void testContainsWithUpdateLayoutContentPermission()
 		throws Exception {
 
 		PermissionChecker permissionChecker = _getPermissionChecker(
@@ -160,7 +160,7 @@ public class LayoutPermissionTest {
 	}
 
 	@Test
-	public void testContainsWithUpdateLayoutLimitedPermissions()
+	public void testContainsWithUpdateLayoutLimitedPermission()
 		throws Exception {
 
 		PermissionChecker permissionChecker = _getPermissionChecker(
@@ -192,7 +192,7 @@ public class LayoutPermissionTest {
 	}
 
 	@Test
-	public void testContainsWithUpdatePermissions() throws Exception {
+	public void testContainsWithUpdatePermission() throws Exception {
 		PermissionChecker permissionChecker = _getPermissionChecker(
 			ActionKeys.UPDATE);
 
