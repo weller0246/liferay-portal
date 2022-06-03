@@ -32,7 +32,7 @@ public class CETFDSEntry {
 		_locale = locale;
 	}
 
-	public String getClientExtensionEntryId() {
+	public String getExternalReferenceCode() {
 		return _cet.getExternalReferenceCode();
 	}
 

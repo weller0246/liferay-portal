@@ -86,10 +86,12 @@ public class ClientExtensionEntryLocalServiceImpl
 			String sourceCodeURL, String type, String typeSettings)
 		throws PortalException {
 
-		long clientExtensionEntryId = counterLocalService.increment();
+		ClientExtensionEntry clientExtensionEntry =
+			clientExtensionEntryPersistence.create(
+				counterLocalService.increment());
 
 		if (Validator.isBlank(externalReferenceCode)) {
-			externalReferenceCode = String.valueOf(clientExtensionEntryId);
+			externalReferenceCode = clientExtensionEntry.getUuid();
 		}
 
 		User user = _userLocalService.getUser(userId);
@@ -98,9 +100,6 @@ public class ClientExtensionEntryLocalServiceImpl
 			user.getCompanyId(), externalReferenceCode);
 
 		_cetValidator.validate(typeSettings, type);
-
-		ClientExtensionEntry clientExtensionEntry =
-			clientExtensionEntryPersistence.create(clientExtensionEntryId);
 
 		clientExtensionEntry.setExternalReferenceCode(externalReferenceCode);
 		clientExtensionEntry.setCompanyId(user.getCompanyId());
@@ -142,7 +141,8 @@ public class ClientExtensionEntryLocalServiceImpl
 		if (clientExtensionEntry != null) {
 			return clientExtensionEntryLocalService.updateClientExtensionEntry(
 				userId, clientExtensionEntry.getClientExtensionEntryId(),
-				description, nameMap, properties, sourceCodeURL, typeSettings);
+				description, nameMap, properties, sourceCodeURL, status,
+				typeSettings);
 		}
 
 		return addClientExtensionEntry(

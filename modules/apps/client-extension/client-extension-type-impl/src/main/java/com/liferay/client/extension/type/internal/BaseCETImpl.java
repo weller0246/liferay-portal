@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
+import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.IOException;
 
@@ -43,7 +44,8 @@ public abstract class BaseCETImpl implements CET {
 		if (clientExtensionEntry != null) {
 			_companyId = clientExtensionEntry.getCompanyId();
 			_description = clientExtensionEntry.getDescription();
-			_externalReferenceCode = clientExtensionEntry.getUuid();
+			_externalReferenceCode =
+				clientExtensionEntry.getExternalReferenceCode();
 
 			try {
 				_properties = PropertiesUtil.load(
@@ -155,7 +157,7 @@ public abstract class BaseCETImpl implements CET {
 	private Properties _properties;
 	private boolean _readOnly;
 	private String _sourceCodeURL = StringPool.BLANK;
-	private int _status;
+	private int _status = WorkflowConstants.STATUS_APPROVED;
 	private final UnicodeProperties _typeSettingsUnicodeProperties;
 
 }

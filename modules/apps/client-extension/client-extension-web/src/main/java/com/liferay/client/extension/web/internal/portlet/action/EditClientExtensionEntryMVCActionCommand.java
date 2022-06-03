@@ -30,6 +30,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Locale;
@@ -87,7 +88,7 @@ public class EditClientExtensionEntryMVCActionCommand
 				ClientExtensionAdminWebKeys.
 					EDIT_CLIENT_EXTENSION_ENTRY_DISPLAY_CONTEXT,
 				new EditClientExtensionEntryDisplayContext(
-					_cetFactory, _getClientExtensionEntry(actionRequest),
+					_cetFactory, _fetchClientExtensionEntry(actionRequest),
 					actionRequest));
 
 			actionResponse.setRenderParameter(
@@ -109,23 +110,24 @@ public class EditClientExtensionEntryMVCActionCommand
 			type, _cetFactory.typeSettings(actionRequest, type));
 	}
 
-	private ClientExtensionEntry _getClientExtensionEntry(
+	private ClientExtensionEntry _fetchClientExtensionEntry(
 			ActionRequest actionRequest)
 		throws PortalException {
 
-		long clientExtensionEntryId = ParamUtil.getLong(
-			actionRequest, "clientExtensionEntryId");
+		String externalReferenceCode = ParamUtil.getString(
+			actionRequest, "externalReferenceCode");
 
-		if (clientExtensionEntryId != 0) {
-			return _clientExtensionEntryService.getClientExtensionEntry(
-				clientExtensionEntryId);
+		if (Validator.isNull(externalReferenceCode)) {
+			return null;
 		}
 
-		return null;
+		return _clientExtensionEntryService.
+			fetchClientExtensionEntryByExternalReferenceCode(
+				_portal.getCompanyId(actionRequest), externalReferenceCode);
 	}
 
 	private void _update(ActionRequest actionRequest) throws PortalException {
-		ClientExtensionEntry clientExtensionEntry = _getClientExtensionEntry(
+		ClientExtensionEntry clientExtensionEntry = _fetchClientExtensionEntry(
 			actionRequest);
 
 		String description = ParamUtil.getString(actionRequest, "description");
@@ -150,5 +152,8 @@ public class EditClientExtensionEntryMVCActionCommand
 
 	@Reference
 	private ClientExtensionEntryService _clientExtensionEntryService;
+
+	@Reference
+	private Portal _portal;
 
 }
