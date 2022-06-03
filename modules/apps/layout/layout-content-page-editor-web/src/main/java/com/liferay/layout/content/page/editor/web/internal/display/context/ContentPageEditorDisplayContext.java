@@ -1439,13 +1439,17 @@ public class ContentPageEditorDisplayContext {
 					fetchLayoutPageTemplateEntryByPlid(
 						layout.getMasterLayoutPlid());
 
-			fragmentEntryLinks =
-				FragmentEntryLinkLocalServiceUtil.getFragmentEntryLinksByPlid(
-					getGroupId(), masterLayoutPageTemplateEntry.getPlid());
+			if (masterLayoutPageTemplateEntry != null) {
+				fragmentEntryLinks =
+					FragmentEntryLinkLocalServiceUtil.
+						getFragmentEntryLinksByPlid(
+							getGroupId(),
+							masterLayoutPageTemplateEntry.getPlid());
 
-			fragmentEntryLinksMap.putAll(
-				_getFragmentEntryLinksMap(
-					fragmentEntryLinks, true, _getMasterLayoutStructure()));
+				fragmentEntryLinksMap.putAll(
+					_getFragmentEntryLinksMap(
+						fragmentEntryLinks, true, _getMasterLayoutStructure()));
+			}
 		}
 
 		Map<Long, LayoutStructureItem> fragmentLayoutStructureItems =
