@@ -101,7 +101,6 @@ public class EditFragmentEntryMVCActionCommand
 		draftFragmentEntry.setJs(js);
 		draftFragmentEntry.setCacheable(cacheable);
 		draftFragmentEntry.setConfiguration(configuration);
-		draftFragmentEntry.setStatus(status);
 
 		if (draftFragmentEntry.getType() == FragmentConstants.TYPE_INPUT) {
 			String[] fieldTypes = ParamUtil.getStringValues(
@@ -117,6 +116,8 @@ public class EditFragmentEntryMVCActionCommand
 
 			draftFragmentEntry.setTypeOptions(typeOptionsJSONObject.toString());
 		}
+
+		draftFragmentEntry.setStatus(status);
 
 		try {
 			_fragmentEntryService.updateDraft(draftFragmentEntry);
