@@ -45,127 +45,11 @@ public class ColumnValuesExtractor {
 	public ColumnValuesExtractor(
 		Map<String, Field> fieldMap, List<String> fieldNames) {
 
-		List<UnsafeFunction<Object, Object, ReflectiveOperationException>>
-			unsafeFunctions = new ArrayList<>(fieldNames.size());
+		_unsafeFunctions = new ArrayList<>(fieldNames.size());
 
 		for (String fieldName : fieldNames) {
-			Field field = fieldMap.get(fieldName);
-
-			if (field != null) {
-				Class<?> fieldClass = field.getType();
-
-				if (ItemClassIndexUtil.isSingleColumnAdoptableValue(
-						fieldClass)) {
-
-					unsafeFunctions.add(
-						item -> {
-							if (field.get(item) == null) {
-								return StringPool.BLANK;
-							}
-
-							return field.get(item);
-						});
-
-					continue;
-				}
-
-				if (ItemClassIndexUtil.isSingleColumnAdoptableArray(
-						fieldClass)) {
-
-					if (!Objects.equals(
-							fieldClass.getComponentType(), String.class)) {
-
-						unsafeFunctions.add(
-							item -> {
-								if (field.get(item) == null) {
-									return StringPool.BLANK;
-								}
-
-								return CSVUtil.encode(field.get(item));
-							});
-
-						continue;
-					}
-
-					unsafeFunctions.add(
-						item -> {
-							if (field.get(item) == null) {
-								return StringPool.BLANK;
-							}
-
-							ByteArrayOutputStream byteArrayOutputStream =
-								new ByteArrayOutputStream();
-
-							try (CSVPrinter csvPrinter = new CSVPrinter(
-									new OutputStreamWriter(
-										byteArrayOutputStream),
-									CSVFormat.DEFAULT)) {
-
-								csvPrinter.print(
-									StringUtil.merge(
-										(String[])field.get(item),
-										value -> CSVUtil.encode(value),
-										StringPool.COMMA));
-							}
-							catch (IOException ioException) {
-								_log.error(
-									"Unable to export array to column",
-									ioException);
-
-								return StringPool.BLANK;
-							}
-
-							return new String(
-								byteArrayOutputStream.toByteArray());
-						});
-
-					continue;
-				}
-
-				unsafeFunctions.add(item -> StringPool.BLANK);
-
-				continue;
-			}
-
-			int index = fieldName.indexOf(CharPool.UNDERLINE);
-
-			if (index == -1) {
-				throw new IllegalArgumentException(
-					"Invalid field name : " + fieldName);
-			}
-
-			String prefixFieldName = fieldName.substring(0, index);
-
-			Field mapField = fieldMap.get(prefixFieldName);
-
-			if (mapField == null) {
-				throw new IllegalArgumentException(
-					"Invalid field name : " + fieldName);
-			}
-
-			if (mapField.getType() != Map.class) {
-				throw new IllegalArgumentException(
-					"Invalid field name : " + fieldName +
-						", it is not Map type.");
-			}
-
-			String key = fieldName.substring(index + 1);
-
-			unsafeFunctions.add(
-				item -> {
-					Map<?, ?> map = (Map<?, ?>)mapField.get(item);
-
-					Object value = map.get(key);
-
-					if (value == null) {
-						return StringPool.BLANK;
-					}
-
-					return value;
-				});
+			_addUnsafeFunction(fieldMap, fieldName);
 		}
-
-		_unsafeFunctions = unsafeFunctions;
 	}
 
 	public List<Object> extractValues(Object item)
@@ -180,6 +64,118 @@ public class ColumnValuesExtractor {
 		}
 
 		return values;
+	}
+
+	private void _addUnsafeFunction(
+		Map<String, Field> fieldMap, String fieldName) {
+
+		Field field = fieldMap.get(fieldName);
+
+		if (field != null) {
+			Class<?> fieldClass = field.getType();
+
+			if (ItemClassIndexUtil.isSingleColumnAdoptableValue(fieldClass)) {
+				_unsafeFunctions.add(
+					item -> {
+						if (field.get(item) == null) {
+							return StringPool.BLANK;
+						}
+
+						return field.get(item);
+					});
+
+				return;
+			}
+
+			if (ItemClassIndexUtil.isSingleColumnAdoptableArray(fieldClass)) {
+				if (!Objects.equals(
+						fieldClass.getComponentType(), String.class)) {
+
+					_unsafeFunctions.add(
+						item -> {
+							if (field.get(item) == null) {
+								return StringPool.BLANK;
+							}
+
+							return CSVUtil.encode(field.get(item));
+						});
+
+					return;
+				}
+
+				_unsafeFunctions.add(
+					item -> {
+						if (field.get(item) == null) {
+							return StringPool.BLANK;
+						}
+
+						ByteArrayOutputStream byteArrayOutputStream =
+							new ByteArrayOutputStream();
+
+						try (CSVPrinter csvPrinter = new CSVPrinter(
+								new OutputStreamWriter(byteArrayOutputStream),
+								CSVFormat.DEFAULT)) {
+
+							csvPrinter.print(
+								StringUtil.merge(
+									(String[])field.get(item),
+									value -> CSVUtil.encode(value),
+									StringPool.COMMA));
+						}
+						catch (IOException ioException) {
+							_log.error(
+								"Unable to export array to column",
+								ioException);
+
+							return StringPool.BLANK;
+						}
+
+						return new String(byteArrayOutputStream.toByteArray());
+					});
+
+				return;
+			}
+
+			_unsafeFunctions.add(item -> StringPool.BLANK);
+
+			return;
+		}
+
+		int index = fieldName.indexOf(CharPool.UNDERLINE);
+
+		if (index == -1) {
+			throw new IllegalArgumentException(
+				"Invalid field name : " + fieldName);
+		}
+
+		String prefixFieldName = fieldName.substring(0, index);
+
+		Field mapField = fieldMap.get(prefixFieldName);
+
+		if (mapField == null) {
+			throw new IllegalArgumentException(
+				"Invalid field name : " + fieldName);
+		}
+
+		if (mapField.getType() != Map.class) {
+			throw new IllegalArgumentException(
+				"Invalid field name : " + fieldName + ", it is not Map type.");
+		}
+
+		String key = fieldName.substring(index + 1);
+
+		_unsafeFunctions.add(
+			item -> {
+				Map<?, ?> map = (Map<?, ?>)mapField.get(item);
+
+				Object value = map.get(key);
+
+				if (value == null) {
+					return StringPool.BLANK;
+				}
+
+				return value;
+			});
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
