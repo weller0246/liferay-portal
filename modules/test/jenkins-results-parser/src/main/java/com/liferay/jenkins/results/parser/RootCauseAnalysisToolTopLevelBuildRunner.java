@@ -62,12 +62,11 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 		RootCauseAnalysisToolBuild rootCauseAnalysisToolBuild =
 			(RootCauseAnalysisToolBuild)getTopLevelBuild();
 
-		List<BuildData> downstreamBuildDataList = new ArrayList<>(
-			portalTopLevelBuildData.getDownstreamBuildDataList());
-
 		List<PortalBuildData> downstreamPortalBuildDataList = new ArrayList<>();
 
-		for (BuildData downstreamBuildData : downstreamBuildDataList) {
+		for (BuildData downstreamBuildData :
+				portalTopLevelBuildData.getDownstreamBuildDataList()) {
+
 			if (downstreamBuildData instanceof PortalBuildData) {
 				downstreamPortalBuildDataList.add(
 					(PortalBuildData)downstreamBuildData);
@@ -76,6 +75,7 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 
 		rootCauseAnalysisToolBuild.setDownstreamPortalBuildDataList(
 			downstreamPortalBuildDataList);
+
 		rootCauseAnalysisToolBuild.setWorkspaceGitRepository(
 			workspace.getPrimaryWorkspaceGitRepository());
 
