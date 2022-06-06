@@ -23,7 +23,6 @@ import com.liferay.asset.kernel.service.AssetCategoryLocalService;
 import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
 import com.liferay.document.library.kernel.model.DLFileEntry;
 import com.liferay.document.library.kernel.model.DLFileEntryType;
@@ -682,47 +681,42 @@ public class BundleSiteInitializer implements SiteInitializer {
 				}
 			}
 
-			ClientExtensionEntry clientExtensionEntry =
-				_clientExtensionEntryLocalService.
-					addOrUpdateClientExtensionEntry(
-						jsonObject.getString("externalReferenceCode"),
-						serviceContext.getUserId(), StringPool.BLANK,
-						SiteInitializerUtil.toMap(
-							jsonObject.getString("name_i18n")),
-						sb.toString(), StringPool.BLANK,
-						ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
-						UnicodePropertiesBuilder.create(
-							true
-						).put(
-							"cssURLs",
-							StringUtil.replace(
-								StringUtil.merge(
-									JSONUtil.toStringArray(
-										jsonObject.getJSONArray("cssURLs")),
-									StringPool.NEW_LINE),
-								"[$", "$]", documentsStringUtilReplaceValues)
-						).put(
-							"friendlyURLMapping", StringPool.BLANK
-						).put(
-							"htmlElementName",
-							jsonObject.getString("htmlElementName")
-						).put(
-							"instanceable",
-							jsonObject.getBoolean("instanceable")
-						).put(
-							"portletCategoryName",
-							jsonObject.getString("portletCategoryName")
-						).put(
-							"urls",
-							StringUtil.replace(
-								StringUtil.merge(
-									JSONUtil.toStringArray(
-										jsonObject.getJSONArray("elementURLs")),
-									StringPool.NEW_LINE),
-								"[$", "$]", documentsStringUtilReplaceValues)
-						).put(
-							"useESM", false
-						).buildString());
+			_clientExtensionEntryLocalService.addOrUpdateClientExtensionEntry(
+				jsonObject.getString("externalReferenceCode"),
+				serviceContext.getUserId(), StringPool.BLANK,
+				SiteInitializerUtil.toMap(jsonObject.getString("name_i18n")),
+				sb.toString(), StringPool.BLANK,
+				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
+				UnicodePropertiesBuilder.create(
+					true
+				).put(
+					"cssURLs",
+					StringUtil.replace(
+						StringUtil.merge(
+							JSONUtil.toStringArray(
+								jsonObject.getJSONArray("cssURLs")),
+							StringPool.NEW_LINE),
+						"[$", "$]", documentsStringUtilReplaceValues)
+				).put(
+					"friendlyURLMapping", StringPool.BLANK
+				).put(
+					"htmlElementName", jsonObject.getString("htmlElementName")
+				).put(
+					"instanceable", jsonObject.getBoolean("instanceable")
+				).put(
+					"portletCategoryName",
+					jsonObject.getString("portletCategoryName")
+				).put(
+					"urls",
+					StringUtil.replace(
+						StringUtil.merge(
+							JSONUtil.toStringArray(
+								jsonObject.getJSONArray("elementURLs")),
+							StringPool.NEW_LINE),
+						"[$", "$]", documentsStringUtilReplaceValues)
+				).put(
+					"useESM", false
+				).buildString());
 
 			clientExtensionEntryIdsStringUtilReplaceValues.put(
 				"CLIENT_EXTENSION_ENTRY_ID:" +
