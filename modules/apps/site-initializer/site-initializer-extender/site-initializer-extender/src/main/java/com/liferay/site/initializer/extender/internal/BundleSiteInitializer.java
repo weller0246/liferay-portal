@@ -653,7 +653,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		throws Exception {
 
 		String json = SiteInitializerUtil.read(
-			"/site-initializer/remote-app-entries.json", _servletContext);
+			"/site-initializer/client-extension-entries.json", _servletContext);
 
 		if (json == null) {
 			return Collections.emptyMap();
