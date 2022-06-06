@@ -194,10 +194,7 @@ public class ObjectActionLocalServiceImpl
 		}
 
 		if (Validator.isNotNull(conditionExpression)) {
-			throw new ObjectActionConditionExpressionException(
-				"Cannot add a condition expression with " +
-					objectActionTriggerKey +
-						" as the object action trigger key");
+			throw new ObjectActionConditionExpressionException();
 		}
 	}
 
