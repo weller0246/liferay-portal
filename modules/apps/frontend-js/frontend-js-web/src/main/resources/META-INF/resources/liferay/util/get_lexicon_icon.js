@@ -24,7 +24,7 @@ export default function getLexiconIcon(icon, cssClass = '') {
 				focusable="false"
 				role="presentation"
 			>
-				<use href="/o/icons/pack/clay.svg#${iconName}" />
+				<use href="${Liferay.Icons.spritemap}#${iconName}" />
 			</svg>`;
 	}
 

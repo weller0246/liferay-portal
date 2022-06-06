@@ -15,7 +15,7 @@
 export default function getLexiconIconTpl(icon, cssClass = '') {
 	return (
 		`<svg aria-hidden="true" class="lexicon-icon lexicon-icon-${icon} ${cssClass}" focusable="false" role="presentation">` +
-		`<use href="/o/icons/pack/clay.svg#${icon}" />` +
+		`<use href="${Liferay.Icons.spritemap}#${icon}" />` +
 		'</svg>'
 	);
 }
