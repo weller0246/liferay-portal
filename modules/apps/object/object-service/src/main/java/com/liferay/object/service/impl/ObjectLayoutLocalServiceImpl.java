@@ -608,8 +608,8 @@ public class ObjectLayoutLocalServiceImpl
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT)) {
 
 			throw new ObjectLayoutBoxCategorizationTypeException(
-				"Categorization layout box only can be used in definitions " +
-					"with default storage type");
+				"Categorization layout box only can be used in object " +
+					"definitions with default storage type");
 		}
 	}
 

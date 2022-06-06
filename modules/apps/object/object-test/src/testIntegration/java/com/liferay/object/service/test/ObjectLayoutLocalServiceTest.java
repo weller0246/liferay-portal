@@ -223,8 +223,8 @@ public class ObjectLayoutLocalServiceTest {
 					objectLayoutBoxCategorizationTypeException) {
 
 			Assert.assertEquals(
-				"Categorization layout box only can be used in definitions " +
-					"with default storage type",
+				"Categorization layout box only can be used in object " +
+					"definitions with default storage type",
 				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
 
