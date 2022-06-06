@@ -83,7 +83,7 @@ public class DLAMImageCounterTest {
 		throws Exception {
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 
@@ -105,7 +105,7 @@ public class DLAMImageCounterTest {
 			RandomTestUtil.randomString(), ContentTypes.IMAGE_JPEG, true);
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT + 1,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT + 1,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 	}
@@ -115,11 +115,11 @@ public class DLAMImageCounterTest {
 		throws Exception {
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company2.getCompanyId()));
 
@@ -141,11 +141,11 @@ public class DLAMImageCounterTest {
 			RandomTestUtil.randomString(), ContentTypes.IMAGE_JPEG, true);
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT + 1,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT + 1,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company2.getCompanyId()));
 	}
@@ -155,7 +155,7 @@ public class DLAMImageCounterTest {
 		throws Exception {
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 
@@ -170,7 +170,7 @@ public class DLAMImageCounterTest {
 			_getImageBytes(), null, null, serviceContext);
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT + 1,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT + 1,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 
@@ -179,7 +179,7 @@ public class DLAMImageCounterTest {
 			fileEntry.getFileEntryId());
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 	}
@@ -189,7 +189,7 @@ public class DLAMImageCounterTest {
 		throws Exception {
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 
@@ -211,7 +211,7 @@ public class DLAMImageCounterTest {
 			TestDataConstants.TEST_BYTE_ARRAY, null, null, serviceContext);
 
 		Assert.assertEquals(
-			_SITE_INITIALIZER_INITIAL_IMAGE_COUNT + 1,
+			_WELCOME_SITE_INITIALIZER_IMAGES_COUNT + 1,
 			_amImageCounter.countExpectedAMImageEntries(
 				_company1.getCompanyId()));
 	}
@@ -220,7 +220,7 @@ public class DLAMImageCounterTest {
 		return FileUtil.getBytes(DLAMImageCounterTest.class, "image.jpg");
 	}
 
-	private static final int _SITE_INITIALIZER_INITIAL_IMAGE_COUNT = 1;
+	private static final int _WELCOME_SITE_INITIALIZER_IMAGES_COUNT = 1;
 
 	@Inject(
 		filter = "adaptive.media.key=document-library",
