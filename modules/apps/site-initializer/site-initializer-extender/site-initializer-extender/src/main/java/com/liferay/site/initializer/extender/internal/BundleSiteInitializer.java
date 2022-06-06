@@ -692,7 +692,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 						sb.toString(), StringPool.BLANK,
 						ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
 						UnicodePropertiesBuilder.create(
-							false
+							true
 						).put(
 							"cssURLs",
 							StringUtil.replace(
