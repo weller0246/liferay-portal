@@ -466,6 +466,7 @@ public class StructuredContentResourceTest
 		throws Exception {
 
 		_useDepotDDMStructureStructureId = true;
+
 		super.testPutAssetLibraryStructuredContentByExternalReferenceCode();
 	}
 
@@ -551,8 +552,9 @@ public class StructuredContentResourceTest
 				}
 			});
 		structuredContent.setContentStructureId(
-			_useDepotDDMStructureStructureId ? _depotDDMStructure.getStructureId() :
-				_ddmStructure.getStructureId());
+			_useDepotDDMStructureStructureId ?
+				_depotDDMStructure.getStructureId() :
+					_ddmStructure.getStructureId());
 
 		return structuredContent;
 	}
@@ -1095,7 +1097,6 @@ public class StructuredContentResourceTest
 	private DDMTemplate _ddmTemplate;
 	private DDMStructure _depotDDMStructure;
 	private DLFileEntry _dlFileEntry;
-	private boolean _useDepotDDMStructureStructureId;
 	private DDMStructure _irrelevantDDMStructure;
 	private JournalFolder _irrelevantJournalFolder;
 	private JournalFolder _journalFolder;
@@ -1112,6 +1113,8 @@ public class StructuredContentResourceTest
 
 	@Inject
 	private RoleLocalService _roleLocalService;
+
+	private boolean _useDepotDDMStructureStructureId;
 
 	@Inject
 	private UserLocalService _userLocalService;
