@@ -203,13 +203,14 @@ public class ObjectLayoutLocalServiceTest {
 			objectLayoutTab.setNameMap(
 				LocalizedMapUtil.getLocalizedMap(
 					RandomTestUtil.randomString()));
-			objectLayoutTab.setPriority(0);
 
 			ObjectLayoutBox objectLayoutBox = _addObjectLayoutBox(
 				ObjectLayoutBoxConstants.TYPE_CATEGORIZATION);
 
 			objectLayoutTab.setObjectLayoutBoxes(
 				Arrays.asList(_addObjectLayoutBox(), objectLayoutBox));
+
+			objectLayoutTab.setPriority(0);
 
 			_objectLayoutLocalService.addObjectLayout(
 				TestPropsValues.getUserId(),
@@ -227,6 +228,9 @@ public class ObjectLayoutLocalServiceTest {
 					"definitions with default storage type",
 				objectLayoutBoxCategorizationTypeException.getMessage());
 		}
+
+		_objectDefinitionLocalService.deleteObjectDefinition(
+			_objectDefinition.getObjectDefinitionId());
 
 		_objectDefinition = ObjectDefinitionTestUtil.addObjectDefinition(
 			_objectDefinitionLocalService);
