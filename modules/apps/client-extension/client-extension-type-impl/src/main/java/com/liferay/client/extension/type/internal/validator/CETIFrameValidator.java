@@ -18,6 +18,7 @@ import com.liferay.client.extension.exception.ClientExtensionEntryFriendlyURLMap
 import com.liferay.client.extension.exception.ClientExtensionEntryIFrameURLException;
 import com.liferay.client.extension.type.internal.CETIFrameImpl;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.regex.Matcher;
@@ -28,10 +29,13 @@ import java.util.regex.Pattern;
  */
 public class CETIFrameValidator {
 
-	public CETIFrameValidator(String newTypeSettings, String oldTypeSettings)
+	public CETIFrameValidator(
+			UnicodeProperties newTypeSettingsUnicodeProperties,
+			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETIFrameImpl newCETIFrameImpl = new CETIFrameImpl(newTypeSettings);
+		CETIFrameImpl newCETIFrameImpl = new CETIFrameImpl(
+			newTypeSettingsUnicodeProperties);
 
 		String friendlyURLMapping = newCETIFrameImpl.getFriendlyURLMapping();
 
@@ -50,8 +54,9 @@ public class CETIFrameValidator {
 				"Invalid URL " + url);
 		}
 
-		if (oldTypeSettings != null) {
-			CETIFrameImpl oldCETIFrameImpl = new CETIFrameImpl(oldTypeSettings);
+		if (oldTypeSettingsUnicodeProperties != null) {
+			CETIFrameImpl oldCETIFrameImpl = new CETIFrameImpl(
+				oldTypeSettingsUnicodeProperties);
 
 			if (newCETIFrameImpl.isInstanceable() !=
 					oldCETIFrameImpl.isInstanceable()) {

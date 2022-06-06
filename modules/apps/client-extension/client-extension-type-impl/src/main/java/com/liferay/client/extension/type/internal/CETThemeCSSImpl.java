@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeCSS;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.Properties;
@@ -39,28 +40,28 @@ public class CETThemeCSSImpl extends BaseCETImpl implements CETThemeCSS {
 
 		this(
 			UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"clayURL",
 				ParamUtil.getString(portletRequest, "themeCSSClayURL")
 			).put(
 				"mainURL",
 				ParamUtil.getString(portletRequest, "themeCSSMainURL")
-			).buildString());
-	}
-
-	public CETThemeCSSImpl(String typeSettings) {
-		super(typeSettings);
+			).build());
 	}
 
 	public CETThemeCSSImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
-		String sourceCodeURL, String typeSettings) {
+		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(
 			baseURL, companyId, description, externalReferenceCode, name,
-			properties, sourceCodeURL, typeSettings);
+			properties, sourceCodeURL, typeSettingsUnicodeProperties);
+	}
+
+	public CETThemeCSSImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+		super(typeSettingsUnicodeProperties);
 	}
 
 	@Override

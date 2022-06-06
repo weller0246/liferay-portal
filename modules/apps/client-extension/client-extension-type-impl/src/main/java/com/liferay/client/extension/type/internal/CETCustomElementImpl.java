@@ -20,6 +20,7 @@ import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.Properties;
@@ -42,7 +43,7 @@ public class CETCustomElementImpl
 
 		this(
 			UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"cssURLs",
 				StringUtil.merge(
@@ -71,21 +72,23 @@ public class CETCustomElementImpl
 			).put(
 				"useESM",
 				ParamUtil.getBoolean(portletRequest, "customElementUseESM")
-			).buildString());
-	}
-
-	public CETCustomElementImpl(String typeSettings) {
-		super(typeSettings);
+			).build());
 	}
 
 	public CETCustomElementImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
-		String sourceCodeURL, String typeSettings) {
+		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(
 			baseURL, companyId, description, externalReferenceCode, name,
-			properties, sourceCodeURL, typeSettings);
+			properties, sourceCodeURL, typeSettingsUnicodeProperties);
+	}
+
+	public CETCustomElementImpl(
+		UnicodeProperties typeSettingsUnicodeProperties) {
+
+		super(typeSettingsUnicodeProperties);
 	}
 
 	public String getCSSURLs() {

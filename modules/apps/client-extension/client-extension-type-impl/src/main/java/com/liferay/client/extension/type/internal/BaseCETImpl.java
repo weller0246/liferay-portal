@@ -35,10 +35,6 @@ import java.util.Properties;
 public abstract class BaseCETImpl implements CET {
 
 	public BaseCETImpl(ClientExtensionEntry clientExtensionEntry) {
-		this(
-			(clientExtensionEntry == null) ? null :
-				clientExtensionEntry.getTypeSettings());
-
 		_clientExtensionEntry = clientExtensionEntry;
 
 		if (clientExtensionEntry != null) {
@@ -57,21 +53,25 @@ public abstract class BaseCETImpl implements CET {
 
 			_sourceCodeURL = clientExtensionEntry.getSourceCodeURL();
 			_status = clientExtensionEntry.getStatus();
+			_typeSettingsUnicodeProperties = UnicodePropertiesBuilder.create(
+				true
+			).load(
+				clientExtensionEntry.getTypeSettings()
+			).build();
 		}
-	}
-
-	public BaseCETImpl(String typeSettings) {
-		_typeSettingsUnicodeProperties = UnicodePropertiesBuilder.load(
-			GetterUtil.getString(typeSettings)
-		).build();
+		else {
+			_typeSettingsUnicodeProperties = UnicodePropertiesBuilder.create(
+				true
+			).build();
+		}
 	}
 
 	public BaseCETImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
-		String sourceCodeURL, String typeSettings) {
+		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
-		this(typeSettings);
+		this(typeSettingsUnicodeProperties);
 
 		_baseURL = baseURL;
 		_companyId = companyId;
@@ -82,6 +82,10 @@ public abstract class BaseCETImpl implements CET {
 		_sourceCodeURL = sourceCodeURL;
 
 		_readOnly = true;
+	}
+
+	public BaseCETImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+		_typeSettingsUnicodeProperties = typeSettingsUnicodeProperties;
 	}
 
 	@Override

@@ -27,9 +27,12 @@ import com.liferay.portal.kernel.exception.PortalException;
 
 import javax.portlet.PortletRequest;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public interface CETFactory {
 
 	public CET cet(ClientExtensionEntry clientExtensionEntry)

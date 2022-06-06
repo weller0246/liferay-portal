@@ -105,7 +105,7 @@ public class ClientExtensionEntryUpgradeProcess extends UpgradeProcess {
 				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
 			return UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"cssURLs", resultSet.getString("customElementCSSURLs")
 			).put(
@@ -127,7 +127,7 @@ public class ClientExtensionEntryUpgradeProcess extends UpgradeProcess {
 					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			return UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"friendlyURLMapping", friendlyURLMapping
 			).put(

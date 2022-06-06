@@ -35,6 +35,7 @@ import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -60,7 +61,8 @@ public class CETManagerImpl implements CETManager {
 	public CET addCET(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
-			String sourceCodeURL, String type, String typeSettings)
+			String sourceCodeURL, String type,
+			UnicodeProperties typeSettingsUnicodeProperties)
 		throws PortalException {
 
 		CET cet = null;
@@ -70,49 +72,49 @@ public class CETManagerImpl implements CETManager {
 
 			cet = new CETCustomElementImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_GLOBAL_CSS)) {
 
 			cet = new CETGlobalCSSImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_GLOBAL_JS)) {
 
 			cet = new CETGlobalJSImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
 			cet = new CETIFrameImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {
 
 			cet = new CETThemeCSSImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
 			cet = new CETThemeFaviconImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_JS)) {
 
 			cet = new CETThemeJSImpl(
 				baseURL, companyId, description, externalReferenceCode, name,
-				properties, sourceCodeURL, typeSettings);
+				properties, sourceCodeURL, typeSettingsUnicodeProperties);
 		}
 		else {
 			throw new ClientExtensionEntryTypeException("Invalid type " + type);

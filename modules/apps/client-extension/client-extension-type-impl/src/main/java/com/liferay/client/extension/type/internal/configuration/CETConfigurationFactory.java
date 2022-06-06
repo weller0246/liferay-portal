@@ -25,6 +25,8 @@ import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Map;
@@ -59,8 +61,7 @@ public class CETConfigurationFactory {
 			_getExternalReferenceCode(properties), cetConfiguration.name(),
 			_loadProperties(cetConfiguration), cetConfiguration.sourceCodeURL(),
 			cetConfiguration.type(),
-			StringUtil.merge(
-				cetConfiguration.typeSettings(), StringPool.NEW_LINE));
+			_toTypeSettingsUnicodeProperties(cetConfiguration));
 	}
 
 	@Deactivate
@@ -114,6 +115,27 @@ public class CETConfigurationFactory {
 
 		return PropertiesUtil.load(
 			StringUtil.merge(properties, StringPool.NEW_LINE));
+	}
+
+	private UnicodeProperties _toTypeSettingsUnicodeProperties(
+		CETConfiguration cetConfiguration) {
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			UnicodePropertiesBuilder.create(
+				true
+			).build();
+
+		String[] typeSettings = cetConfiguration.typeSettings();
+
+		if (typeSettings == null) {
+			return typeSettingsUnicodeProperties;
+		}
+
+		for (String typeSetting : typeSettings) {
+			typeSettingsUnicodeProperties.put(typeSetting);
+		}
+
+		return typeSettingsUnicodeProperties;
 	}
 
 	private CET _cet;

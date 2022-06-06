@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.Properties;
@@ -40,24 +41,26 @@ public class CETThemeFaviconImpl
 
 		this(
 			UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"url", ParamUtil.getString(portletRequest, "themeFaviconURL")
-			).buildString());
-	}
-
-	public CETThemeFaviconImpl(String typeSettings) {
-		super(typeSettings);
+			).build());
 	}
 
 	public CETThemeFaviconImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
-		String sourceCodeURL, String typeSettings) {
+		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(
 			baseURL, companyId, description, externalReferenceCode, name,
-			properties, sourceCodeURL, typeSettings);
+			properties, sourceCodeURL, typeSettingsUnicodeProperties);
+	}
+
+	public CETThemeFaviconImpl(
+		UnicodeProperties typeSettingsUnicodeProperties) {
+
+		super(typeSettingsUnicodeProperties);
 	}
 
 	@Override

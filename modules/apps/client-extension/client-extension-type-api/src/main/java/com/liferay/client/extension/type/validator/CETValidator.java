@@ -16,9 +16,12 @@ package com.liferay.client.extension.type.validator;
 
 import com.liferay.portal.kernel.exception.PortalException;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Brian Wing Shun Chan
  */
+@ProviderType
 public interface CETValidator {
 
 	public void validate(String newTypeSettings, String type)

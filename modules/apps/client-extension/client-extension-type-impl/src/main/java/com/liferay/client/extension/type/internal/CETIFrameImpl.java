@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETIFrame;
 import com.liferay.portal.kernel.util.ParamUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.Properties;
@@ -39,7 +40,7 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 
 		this(
 			UnicodePropertiesBuilder.create(
-				false
+				true
 			).put(
 				"friendlyURLMapping",
 				ParamUtil.getString(portletRequest, "friendlyURLMapping")
@@ -51,21 +52,21 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 				ParamUtil.getString(portletRequest, "portletCategoryName")
 			).put(
 				"url", ParamUtil.getString(portletRequest, "iFrameURL")
-			).buildString());
-	}
-
-	public CETIFrameImpl(String typeSettings) {
-		super(typeSettings);
+			).build());
 	}
 
 	public CETIFrameImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
-		String sourceCodeURL, String typeSettings) {
+		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(
 			baseURL, companyId, description, externalReferenceCode, name,
-			properties, sourceCodeURL, typeSettings);
+			properties, sourceCodeURL, typeSettingsUnicodeProperties);
+	}
+
+	public CETIFrameImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+		super(typeSettingsUnicodeProperties);
 	}
 
 	public String getFriendlyURLMapping() {

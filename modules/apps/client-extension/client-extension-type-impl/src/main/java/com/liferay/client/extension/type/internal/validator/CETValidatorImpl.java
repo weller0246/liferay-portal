@@ -18,6 +18,8 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
 import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.Objects;
 
@@ -41,10 +43,29 @@ public class CETValidatorImpl implements CETValidator {
 			String newTypeSettings, String oldTypeSettings, String type)
 		throws PortalException {
 
+		UnicodeProperties newTypeSettingsUnicodeProperties =
+			UnicodePropertiesBuilder.create(
+				true
+			).load(
+				newTypeSettings
+			).build();
+
+		UnicodeProperties oldTypeSettingsUnicodeProperties = null;
+
+		if (oldTypeSettings != null) {
+			oldTypeSettingsUnicodeProperties = UnicodePropertiesBuilder.create(
+				true
+			).load(
+				oldTypeSettings
+			).build();
+		}
+
 		if (Objects.equals(
 				type, ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
-			new CETCustomElementValidator(newTypeSettings, oldTypeSettings);
+			new CETCustomElementValidator(
+				newTypeSettingsUnicodeProperties,
+				oldTypeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_GLOBAL_CSS)) {
@@ -55,7 +76,9 @@ public class CETValidatorImpl implements CETValidator {
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
-			new CETIFrameValidator(newTypeSettings, oldTypeSettings);
+			new CETIFrameValidator(
+				newTypeSettingsUnicodeProperties,
+				oldTypeSettingsUnicodeProperties);
 		}
 		else if (Objects.equals(
 					type, ClientExtensionEntryConstants.TYPE_THEME_CSS)) {

@@ -23,6 +23,7 @@ import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Set;
@@ -35,11 +36,12 @@ import java.util.regex.Pattern;
 public class CETCustomElementValidator {
 
 	public CETCustomElementValidator(
-			String newTypeSettings, String oldTypeSettings)
+			UnicodeProperties newTypeSettingsUnicodeProperties,
+			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
 		CETCustomElementImpl newCETCustomElementImpl = new CETCustomElementImpl(
-			newTypeSettings);
+			newTypeSettingsUnicodeProperties);
 
 		String cssURLs = newCETCustomElementImpl.getCSSURLs();
 
@@ -123,9 +125,9 @@ public class CETCustomElementValidator {
 			}
 		}
 
-		if (oldTypeSettings != null) {
+		if (oldTypeSettingsUnicodeProperties != null) {
 			CETCustomElementImpl oldCETCustomElementImpl =
-				new CETCustomElementImpl(oldTypeSettings);
+				new CETCustomElementImpl(oldTypeSettingsUnicodeProperties);
 
 			if (newCETCustomElementImpl.isInstanceable() !=
 					oldCETCustomElementImpl.isInstanceable()) {
