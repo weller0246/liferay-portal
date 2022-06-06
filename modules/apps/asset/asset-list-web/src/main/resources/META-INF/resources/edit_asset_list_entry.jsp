@@ -25,12 +25,12 @@ if (Validator.isNull(redirect)) {
 	redirect = portletURL.toString();
 }
 
+Map data = editAssetListDisplayContext.getData();
+
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(redirect);
 
 renderResponse.setTitle(assetListDisplayContext.getAssetListEntryTitle());
-
-Map data = editAssetListDisplayContext.getData();
 %>
 
 <c:if test='<%= !(boolean)data.get("isSegmentationEnabled") %>'>
@@ -60,7 +60,7 @@ Map data = editAssetListDisplayContext.getData();
 
 				<react:component
 					module="js/components/VariationsNav/index"
-					props="<%= editAssetListDisplayContext.getData() %>"
+					props="<%= data %>"
 				/>
 			</div>
 		</clay:col>
