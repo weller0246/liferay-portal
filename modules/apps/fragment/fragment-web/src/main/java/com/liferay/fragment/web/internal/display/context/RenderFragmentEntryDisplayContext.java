@@ -61,14 +61,9 @@ public class RenderFragmentEntryDisplayContext {
 			FragmentEntryLinkLocalServiceUtil.createFragmentEntryLink(0);
 
 		long fragmentEntryId = 0;
-		String fragmentEntryKey = null;
 
 		if (fragmentEntry != null) {
 			fragmentEntryId = fragmentEntry.getFragmentEntryId();
-		}
-
-		if ((fragmentEntry != null) && (fragmentEntryId == 0)) {
-			fragmentEntryKey = fragmentEntry.getFragmentEntryKey();
 		}
 
 		fragmentEntryLink.setFragmentEntryId(fragmentEntryId);
@@ -77,7 +72,14 @@ public class RenderFragmentEntryDisplayContext {
 		fragmentEntryLink.setHtml(html);
 		fragmentEntryLink.setJs(js);
 		fragmentEntryLink.setConfiguration(configuration);
-		fragmentEntryLink.setRendererKey(fragmentEntryKey);
+
+		String rendererKey = null;
+
+		if ((fragmentEntry != null) && (fragmentEntryId == 0)) {
+			rendererKey = fragmentEntry.getFragmentEntryKey();
+		}
+
+		fragmentEntryLink.setRendererKey(rendererKey);
 
 		DefaultFragmentRendererContext defaultFragmentRendererContext =
 			new DefaultFragmentRendererContext(fragmentEntryLink);
