@@ -260,7 +260,7 @@ public class ObjectEntryDisplayContext {
 		}
 	}
 
-	public ObjectLayoutBox getObjectLayoutBoxCategorization()
+	public ObjectLayoutBox getCategorizationObjectLayoutBox()
 		throws PortalException {
 
 		ObjectDefinition objectDefinition = getObjectDefinition();

@@ -21,9 +21,9 @@ String backURL = ParamUtil.getString(request, "backURL", String.valueOf(renderRe
 
 ObjectEntryDisplayContext objectEntryDisplayContext = (ObjectEntryDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
+ObjectLayoutBox categorizationObjectLayoutBox = objectEntryDisplayContext.getCategorizationObjectLayoutBox();
 ObjectDefinition objectDefinition = objectEntryDisplayContext.getObjectDefinition();
 ObjectEntry objectEntry = objectEntryDisplayContext.getObjectEntry();
-ObjectLayoutBox objectLayoutBoxCategorization = objectEntryDisplayContext.getObjectLayoutBoxCategorization();
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(backURL);
@@ -53,7 +53,7 @@ portletDisplay.setURLBack(backURL);
 			</clay:sheet-section>
 		</liferay-frontend:fieldset-group>
 
-		<c:if test="<%= objectLayoutBoxCategorization != null %>">
+		<c:if test="<%= categorizationObjectLayoutBox != null %>">
 			<liferay-frontend:fieldset-group>
 				<div class="lfr-form-content" id="<portlet:namespace />categorization">
 					<c:choose>
@@ -63,7 +63,7 @@ portletDisplay.setURLBack(backURL);
 							<liferay-asset:asset-tags-error />
 
 							<aui:fieldset-group markupView="lexicon">
-								<aui:fieldset collapsed="<%= objectLayoutBoxCategorization.isCollapsable() %>" collapsible="<%= objectLayoutBoxCategorization.isCollapsable() %>" label="categorization">
+								<aui:fieldset collapsed="<%= categorizationObjectLayoutBox.isCollapsable() %>" collapsible="<%= categorizationObjectLayoutBox.isCollapsable() %>" label="categorization">
 									<liferay-asset:asset-categories-summary
 										className="<%= objectDefinition.getClassName() %>"
 										classPK="<%= (objectEntry == null) ? 0 : GetterUtil.getLong(objectEntry.getExternalReferenceCode()) %>"
@@ -84,7 +84,7 @@ portletDisplay.setURLBack(backURL);
 							<liferay-asset:asset-tags-error />
 
 							<aui:fieldset-group markupView="lexicon">
-								<aui:fieldset collapsed="<%= objectLayoutBoxCategorization.isCollapsable() %>" collapsible="<%= objectLayoutBoxCategorization.isCollapsable() %>" label="categorization">
+								<aui:fieldset collapsed="<%= categorizationObjectLayoutBox.isCollapsable() %>" collapsible="<%= categorizationObjectLayoutBox.isCollapsable() %>" label="categorization">
 									<liferay-asset:asset-categories-selector
 										className="<%= objectDefinition.getClassName() %>"
 										classPK="<%= (objectEntry == null) ? 0 : GetterUtil.getLong(objectEntry.getExternalReferenceCode()) %>"
