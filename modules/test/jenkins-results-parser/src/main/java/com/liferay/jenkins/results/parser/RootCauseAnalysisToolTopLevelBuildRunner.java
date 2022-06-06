@@ -86,12 +86,12 @@ public class RootCauseAnalysisToolTopLevelBuildRunner
 	protected void prepareInvocationBuildDataList() {
 		PortalTopLevelBuildData portalTopLevelBuildData = getBuildData();
 
-		int retestCount = _getRetestCount();
-
 		String downstreamJobName =
 			portalTopLevelBuildData.getJobName() + "-batch";
 
 		for (String portalBranchSHA : _getPortalBranchSHAs()) {
+			int retestCount = _getRetestCount();
+
 			for (int i = 0; i < retestCount; i++) {
 				BatchBuildData batchBuildData =
 					BuildDataFactory.newBatchBuildData(
