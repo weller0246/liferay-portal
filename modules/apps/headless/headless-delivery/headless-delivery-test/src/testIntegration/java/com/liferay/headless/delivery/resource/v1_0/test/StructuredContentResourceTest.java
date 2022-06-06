@@ -143,7 +143,6 @@ public class StructuredContentResourceTest
 		_layout = LayoutTestUtil.addTypeContentLayout(testGroup);
 		_localizedDDMStructure = _addDDMStructure(
 			testGroup, "test-localized-ddm-structure.json");
-		_useDepotDDMStructureStructureId = false;
 	}
 
 	@Override
