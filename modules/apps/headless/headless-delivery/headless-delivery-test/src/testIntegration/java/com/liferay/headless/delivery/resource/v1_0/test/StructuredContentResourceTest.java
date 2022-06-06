@@ -143,7 +143,7 @@ public class StructuredContentResourceTest
 		_layout = LayoutTestUtil.addTypeContentLayout(testGroup);
 		_localizedDDMStructure = _addDDMStructure(
 			testGroup, "test-localized-ddm-structure.json");
-		_insertDepotDDMStructure = false;
+		_useDepotDDMStructureStructureId = false;
 	}
 
 	@Override
@@ -466,7 +466,7 @@ public class StructuredContentResourceTest
 	public void testPutAssetLibraryStructuredContentByExternalReferenceCode()
 		throws Exception {
 
-		_insertDepotDDMStructure = true;
+		_useDepotDDMStructureStructureId = true;
 		super.testPutAssetLibraryStructuredContentByExternalReferenceCode();
 	}
 
@@ -552,7 +552,7 @@ public class StructuredContentResourceTest
 				}
 			});
 		structuredContent.setContentStructureId(
-			_insertDepotDDMStructure ? _depotDDMStructure.getStructureId() :
+			_useDepotDDMStructureStructureId ? _depotDDMStructure.getStructureId() :
 				_ddmStructure.getStructureId());
 
 		return structuredContent;
@@ -632,7 +632,7 @@ public class StructuredContentResourceTest
 			testGraphQLGetAssetLibraryStructuredContentByExternalReferenceCode_addStructuredContent()
 		throws Exception {
 
-		_insertDepotDDMStructure = true;
+		_useDepotDDMStructureStructureId = true;
 
 		return testPostAssetLibraryStructuredContent_addStructuredContent(
 			randomStructuredContent());
@@ -1096,7 +1096,7 @@ public class StructuredContentResourceTest
 	private DDMTemplate _ddmTemplate;
 	private DDMStructure _depotDDMStructure;
 	private DLFileEntry _dlFileEntry;
-	private boolean _insertDepotDDMStructure;
+	private boolean _useDepotDDMStructureStructureId;
 	private DDMStructure _irrelevantDDMStructure;
 	private JournalFolder _irrelevantJournalFolder;
 	private JournalFolder _journalFolder;
