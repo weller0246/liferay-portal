@@ -158,40 +158,6 @@ public class ObjectLayoutLocalServiceTest {
 		_objectLayoutLocalService.deleteObjectLayout(
 			objectLayout.getObjectLayoutId());
 
-		try {
-			ObjectLayoutTab objectLayoutTab =
-				_objectLayoutTabPersistence.create(0);
-
-			objectLayoutTab.setNameMap(
-				LocalizedMapUtil.getLocalizedMap(
-					RandomTestUtil.randomString()));
-			objectLayoutTab.setPriority(0);
-
-			ObjectLayoutBox objectLayoutBox = _addObjectLayoutBox(
-				ObjectLayoutBoxConstants.TYPE_CATEGORIZATION);
-
-			objectLayoutBox.setObjectLayoutRows(
-				Collections.singletonList(_addObjectLayoutRow()));
-
-			objectLayoutTab.setObjectLayoutBoxes(
-				Arrays.asList(_addObjectLayoutBox(), objectLayoutBox));
-
-			_objectLayoutLocalService.addObjectLayout(
-				TestPropsValues.getUserId(),
-				_objectDefinition.getObjectDefinitionId(), false,
-				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-				Collections.singletonList(objectLayoutTab));
-
-			Assert.fail();
-		}
-		catch (ObjectLayoutBoxCategorizationTypeException
-					objectLayoutBoxCategorizationTypeException) {
-
-			Assert.assertEquals(
-				"Categorization layout box must not have layout rows",
-				objectLayoutBoxCategorizationTypeException.getMessage());
-		}
-
 		_objectDefinition.setStorageType(RandomTestUtil.randomString());
 
 		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
@@ -234,6 +200,41 @@ public class ObjectLayoutLocalServiceTest {
 
 		_objectDefinition = ObjectDefinitionTestUtil.addObjectDefinition(
 			_objectDefinitionLocalService);
+
+
+		try {
+			ObjectLayoutTab objectLayoutTab =
+				_objectLayoutTabPersistence.create(0);
+
+			objectLayoutTab.setNameMap(
+				LocalizedMapUtil.getLocalizedMap(
+					RandomTestUtil.randomString()));
+			objectLayoutTab.setPriority(0);
+
+			ObjectLayoutBox objectLayoutBox = _addObjectLayoutBox(
+				ObjectLayoutBoxConstants.TYPE_CATEGORIZATION);
+
+			objectLayoutBox.setObjectLayoutRows(
+				Collections.singletonList(_addObjectLayoutRow()));
+
+			objectLayoutTab.setObjectLayoutBoxes(
+				Arrays.asList(_addObjectLayoutBox(), objectLayoutBox));
+
+			_objectLayoutLocalService.addObjectLayout(
+				TestPropsValues.getUserId(),
+				_objectDefinition.getObjectDefinitionId(), false,
+				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+				Collections.singletonList(objectLayoutTab));
+
+			Assert.fail();
+		}
+		catch (ObjectLayoutBoxCategorizationTypeException
+					objectLayoutBoxCategorizationTypeException) {
+
+			Assert.assertEquals(
+				"Categorization layout box must not have layout rows",
+				objectLayoutBoxCategorizationTypeException.getMessage());
+		}
 
 		try {
 			ObjectLayoutTab objectLayoutTab =
