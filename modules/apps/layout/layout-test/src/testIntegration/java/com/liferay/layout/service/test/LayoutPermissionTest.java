@@ -83,7 +83,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -96,7 +95,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -121,7 +119,6 @@ public class LayoutPermissionTest {
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -134,7 +131,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -161,7 +157,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -174,7 +169,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -201,7 +195,6 @@ public class LayoutPermissionTest {
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -214,7 +207,6 @@ public class LayoutPermissionTest {
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertFalse(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -239,7 +231,6 @@ public class LayoutPermissionTest {
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
@@ -252,7 +243,6 @@ public class LayoutPermissionTest {
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutRestrictedUpdatePermission(
 					permissionChecker, layout));
-
 			Assert.assertTrue(
 				_layoutPermission.containsLayoutUpdatePermission(
 					permissionChecker, layout));
