@@ -17,8 +17,6 @@
 <%@ include file="/designer/init.jsp" %>
 
 <%
-Long accountEntryId = ParamUtil.getLong(liferayPortletRequest, "accountEntryId");
-
 KaleoDefinitionVersion kaleoDefinitionVersion = (KaleoDefinitionVersion)request.getAttribute(KaleoDesignerWebKeys.KALEO_DRAFT_DEFINITION);
 
 portletDisplay.setShowBackIcon(true);
@@ -36,7 +34,7 @@ renderResponse.setTitle((kaleoDefinitionVersion == null) ? LanguageUtil.get(requ
 	module="designer/js/definition-builder/DefinitionBuilder"
 	props='<%=
 		HashMapBuilder.<String, Object>put(
-			"accountEntryId", accountEntryId
+			"accountEntryId", ParamUtil.getLong(liferayPortletRequest, "accountEntryId")
 		).put(
 			"definitionName", (kaleoDefinitionVersion == null) ? null : kaleoDefinitionVersion.getName()
 		).put(
