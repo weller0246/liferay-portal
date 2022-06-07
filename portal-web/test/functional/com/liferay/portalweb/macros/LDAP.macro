@@ -140,11 +140,7 @@ definition {
 
 		LDAP.searchLDAPDatabaseForUsersAndGroups();
 
-		if (AssertConsoleTextNotPresent(value1 = "${userFirstName}")) {
-			LDAP.searchLDAPDatabaseForUsersAndGroups();
-
-			WaitForConsoleTextPresent(value1 = "${userFirstName}");
-		}
+        WaitForConsoleTextPresent(value1 = "[exec] givenName: ${userFirstName}");
 	}
 
 	@description = "Verify that the user is imported on localhost after LDAP sync, after a specified interval time."
