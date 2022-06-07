@@ -32,7 +32,8 @@ import org.osgi.service.component.annotations.Reference;
  * @author Gabriel Albuquerque
  */
 @Component(service = ObjectActionExecutor.class)
-public class NotificationActionExecutorImpl implements ObjectActionExecutor {
+public class NotificationTemplateObjectActionExecutorImpl
+	implements ObjectActionExecutor {
 
 	@Override
 	public void execute(
