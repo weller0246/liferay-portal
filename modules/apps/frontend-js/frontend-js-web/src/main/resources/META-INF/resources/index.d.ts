@@ -769,7 +769,7 @@ export function getCookie(name: string): string | undefined;
 export function setCookie(
 	name: string,
 	value: string,
-	type: string,
+	type: TYPE_VALUES,
 	options: {
 		'domain'?: string;
 		'expires'?: string;
@@ -786,4 +786,10 @@ export function removeCookie(name: string): void;
 /**
  * Object with cookie consent types as keys, for use with {@link setCookie}
  */
-export const COOKIE_TYPES: Object;
+export const TYPES: {[key: string]: TYPE_VALUES};
+
+export type TYPE_VALUES =
+	| 'CONSENT_TYPE_FUNCTIONAL'
+	| 'CONSENT_TYPE_NECESSARY'
+	| 'CONSENT_TYPE_PERFORMANCE'
+	| 'CONSENT_TYPE_PERSONALIZATION';
