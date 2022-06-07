@@ -50,7 +50,6 @@ public class SalesforceClient {
 			Http.Options options = new Http.Options();
 
 			options.addHeader("Authorization", "Bearer " + _getAccessToken());
-
 			options.setLocation(
 				HttpComponentsUtil.addParameter(
 					_instanceUrl + "/services/data/v54.0/query/", "q",
@@ -87,9 +86,6 @@ public class SalesforceClient {
 
 	private JSONObject _autenticate() {
 		try {
-			String tokenUrl =
-				_salesforceConfiguration.url() + "/services/oauth2/token";
-
 			Http.Options options = new Http.Options();
 
 			options.addPart(
@@ -99,8 +95,7 @@ public class SalesforceClient {
 			options.addPart("grant_type", "password");
 			options.addPart("username", _salesforceConfiguration.username());
 			options.addPart("password", _salesforceConfiguration.password());
-
-			options.setLocation(tokenUrl);
+			options.setLocation(_salesforceConfiguration.url() + "/services/oauth2/token");
 			options.setPost(true);
 
 			return _jsonFactory.createJSONObject(_http.URLtoString(options));
