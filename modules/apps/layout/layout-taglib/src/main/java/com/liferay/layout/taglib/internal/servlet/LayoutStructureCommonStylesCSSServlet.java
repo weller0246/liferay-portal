@@ -149,7 +149,6 @@ public class LayoutStructureCommonStylesCSSServlet extends HttpServlet {
 				printWriter.print("@media screen and (max-width: ");
 				printWriter.print(viewportSize.getMaxWidth());
 				printWriter.print("px) {");
-
 				printWriter.print(cssSB);
 				printWriter.print(StringPool.CLOSE_CURLY_BRACE);
 			}
