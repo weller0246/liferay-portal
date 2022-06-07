@@ -310,7 +310,7 @@ public class NotificationQueueEntryLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static void sendNotificationQueueEntries() throws Exception {
+	public static void sendNotificationQueueEntries() throws PortalException {
 		getService().sendNotificationQueueEntries();
 	}
 

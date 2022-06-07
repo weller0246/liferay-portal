@@ -354,7 +354,9 @@ public class NotificationQueueEntryLocalServiceWrapper
 	}
 
 	@Override
-	public void sendNotificationQueueEntries() throws Exception {
+	public void sendNotificationQueueEntries()
+		throws com.liferay.portal.kernel.exception.PortalException {
+
 		_notificationQueueEntryLocalService.sendNotificationQueueEntries();
 	}
 
