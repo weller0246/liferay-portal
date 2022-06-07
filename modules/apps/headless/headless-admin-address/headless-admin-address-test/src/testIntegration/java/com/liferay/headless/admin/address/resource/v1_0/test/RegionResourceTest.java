@@ -165,11 +165,11 @@ public class RegionResourceTest extends BaseRegionResourceTestCase {
 
 		region.setPosition((Double)null);
 
-		Region regionReturn = regionResource.postCountryRegion(
+		Region postRegion = regionResource.postCountryRegion(
 			_country.getCountryId(), region);
 
 		Assert.assertEquals(
-			regionReturn.getPosition(), GetterUtil.DEFAULT_DOUBLE, 0);
+			postRegion.getPosition(), GetterUtil.DEFAULT_DOUBLE, 0);
 	}
 
 	@Override
