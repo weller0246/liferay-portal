@@ -189,7 +189,7 @@ public class NotificationHelperImpl implements NotificationHelper {
 				_definitionTermContributorRegistry.
 					getDefinitionTermContributorsByContributorKey(
 						NotificationTermContributorConstants.
-							RECIPIENT_TERMS));
+							RECIPIENT));
 		}
 
 		definitionTermContributors.addAll(

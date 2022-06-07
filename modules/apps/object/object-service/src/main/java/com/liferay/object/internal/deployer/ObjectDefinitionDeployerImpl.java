@@ -252,7 +252,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				HashMapDictionaryBuilder.<String, Object>put(
 					"definition.term.contributor.key",
 					NotificationTermContributorConstants.
-						BODY_AND_SUBJECT_TERMS
+						BODY_AND_SUBJECT
 				).put(
 					"notification.type.key", objectDefinition.getClassName()
 				).build()),
