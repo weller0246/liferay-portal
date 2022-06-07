@@ -242,6 +242,11 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition.getClassName(),
 					objectDefinition.getShortName()),
 				HashMapDictionaryBuilder.<String, Object>put(
+
+					// TODO Will commerce order need more than one notification
+					// type? Should we rename "notification.type.key" to
+					// "object.definition.class.name"?
+
 					"notification.type.key", objectDefinition.getClassName()
 				).build()),
 			_bundleContext.registerService(
