@@ -93,8 +93,8 @@ public class SalesforceClient {
 			options.addPart(
 				"client_secret", _salesforceConfiguration.consumerSecret());
 			options.addPart("grant_type", "password");
-			options.addPart("username", _salesforceConfiguration.username());
 			options.addPart("password", _salesforceConfiguration.password());
+			options.addPart("username", _salesforceConfiguration.username());
 			options.setLocation(_salesforceConfiguration.url() + "/services/oauth2/token");
 			options.setPost(true);
 
