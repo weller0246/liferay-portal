@@ -117,11 +117,8 @@ public class NotificationQueueEntryLocalServiceImpl
 
 	@Override
 	public void sendNotificationQueueEntries() throws Exception {
-		List<NotificationQueueEntry> notificationQueueEntries =
-			notificationQueueEntryPersistence.findBySent(false);
-
 		for (NotificationQueueEntry notificationQueueEntry :
-				notificationQueueEntries) {
+				notificationQueueEntryPersistence.findBySent(false)) {
 
 			List<InternetAddress> bccInternetAddresses = new ArrayList<>();
 			List<InternetAddress> ccInternetAddresses = new ArrayList<>();
