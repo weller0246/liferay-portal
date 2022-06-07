@@ -95,7 +95,8 @@ public class SalesforceClient {
 			options.addPart("grant_type", "password");
 			options.addPart("password", _salesforceConfiguration.password());
 			options.addPart("username", _salesforceConfiguration.username());
-			options.setLocation(_salesforceConfiguration.url() + "/services/oauth2/token");
+			options.setLocation(
+				_salesforceConfiguration.url() + "/services/oauth2/token");
 			options.setPost(true);
 
 			return _jsonFactory.createJSONObject(_http.URLtoString(options));
