@@ -195,6 +195,30 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"model.class.name", objectDefinition.getClassName()
 				).build()),
 			_bundleContext.registerService(
+				NotificationTermContributor.class,
+				new ObjectDefinitionNotificationTermContributor(
+					objectDefinition, _objectFieldLocalService,
+					_userLocalService),
+				HashMapDictionaryBuilder.<String, Object>put(
+					"notification.term.contributor.key",
+					NotificationTermContributorConstants.BODY_AND_SUBJECT
+				).put(
+					"notification.type.key", objectDefinition.getClassName()
+				).build()),
+			_bundleContext.registerService(
+				NotificationType.class,
+				new ObjectDefinitionNotificationType(
+					objectDefinition.getClassName(),
+					objectDefinition.getShortName()),
+				HashMapDictionaryBuilder.<String, Object>put(
+
+					// TODO Will commerce order need more than one notification
+					// type? Should we rename "notification.type.key" to
+					// "object.definition.class.name"?
+
+					"notification.type.key", objectDefinition.getClassName()
+				).build()),
+			_bundleContext.registerService(
 				ObjectRelatedModelsProvider.class,
 				new ObjectEntry1to1ObjectRelatedModelsProviderImpl(
 					objectDefinition, _objectEntryLocalService,
@@ -235,30 +259,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition, _objectEntryLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"model.class.name", objectDefinition.getClassName()
-				).build()),
-			_bundleContext.registerService(
-				NotificationType.class,
-				new ObjectDefinitionNotificationType(
-					objectDefinition.getClassName(),
-					objectDefinition.getShortName()),
-				HashMapDictionaryBuilder.<String, Object>put(
-
-					// TODO Will commerce order need more than one notification
-					// type? Should we rename "notification.type.key" to
-					// "object.definition.class.name"?
-
-					"notification.type.key", objectDefinition.getClassName()
-				).build()),
-			_bundleContext.registerService(
-				NotificationTermContributor.class,
-				new ObjectDefinitionNotificationTermContributor(
-					objectDefinition, _objectFieldLocalService,
-					_userLocalService),
-				HashMapDictionaryBuilder.<String, Object>put(
-					"notification.term.contributor.key",
-					NotificationTermContributorConstants.BODY_AND_SUBJECT
-				).put(
-					"notification.type.key", objectDefinition.getClassName()
 				).build()),
 			_modelSearchRegistrarHelper.register(
 				objectDefinition.getClassName(), _bundleContext,
