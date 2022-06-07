@@ -32,7 +32,9 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Gustavo Lima
  */
-@Component(immediate = true, service = NotificationTermContributorRegistry.class)
+@Component(
+	immediate = true, service = NotificationTermContributorRegistry.class
+)
 public class NotificationTermContributorRegistryImpl
 	implements NotificationTermContributorRegistry {
 
@@ -86,8 +88,9 @@ public class NotificationTermContributorRegistryImpl
 
 		List
 			<ServiceTrackerCustomizerFactory.ServiceWrapper
-				<NotificationTermContributor>> notificationTermContributorWrappers =
-					serviceTrackerMap.getService(key);
+				<NotificationTermContributor>>
+					notificationTermContributorWrappers =
+						serviceTrackerMap.getService(key);
 
 		if (notificationTermContributorWrappers == null) {
 			return Collections.emptyList();
@@ -97,8 +100,9 @@ public class NotificationTermContributorRegistryImpl
 			new ArrayList<>();
 
 		for (ServiceTrackerCustomizerFactory.ServiceWrapper
-				<NotificationTermContributor> tableActionProviderServiceWrapper :
-					notificationTermContributorWrappers) {
+				<NotificationTermContributor>
+					tableActionProviderServiceWrapper :
+						notificationTermContributorWrappers) {
 
 			notificationTermContributors.add(
 				tableActionProviderServiceWrapper.getService());

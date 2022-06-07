@@ -22,7 +22,7 @@ import com.liferay.notification.type.NotificationType;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider;
 import com.liferay.object.internal.language.ObjectResourceBundle;
-import com.liferay.object.internal.notification.term.contributor.ObjectNotificationTermContributor;
+import com.liferay.object.internal.notification.term.contributor.ObjectDefinitionNotificationTermContributor;
 import com.liferay.object.internal.notification.type.ObjectDefinitionNotificationType;
 import com.liferay.object.internal.related.models.ObjectEntry1to1ObjectRelatedModelsProviderImpl;
 import com.liferay.object.internal.related.models.ObjectEntry1toMObjectRelatedModelsProviderImpl;
@@ -246,13 +246,12 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				).build()),
 			_bundleContext.registerService(
 				NotificationTermContributor.class,
-				new ObjectNotificationTermContributor(
+				new ObjectDefinitionNotificationTermContributor(
 					objectDefinition.getObjectDefinitionId(),
 					_objectFieldLocalService, _userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"notification.term.contributor.key",
-					NotificationTermContributorConstants.
-						BODY_AND_SUBJECT
+					NotificationTermContributorConstants.BODY_AND_SUBJECT
 				).put(
 					"notification.type.key", objectDefinition.getClassName()
 				).build()),

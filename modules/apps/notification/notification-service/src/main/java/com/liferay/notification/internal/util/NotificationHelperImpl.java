@@ -188,8 +188,7 @@ public class NotificationHelperImpl implements NotificationHelper {
 			notificationTermContributors.addAll(
 				_notificationTermContributorRegistry.
 					getNotificationTermContributorsByContributorKey(
-						NotificationTermContributorConstants.
-							RECIPIENT));
+						NotificationTermContributorConstants.RECIPIENT));
 		}
 
 		notificationTermContributors.addAll(
@@ -224,12 +223,12 @@ public class NotificationHelperImpl implements NotificationHelper {
 		"\\[%[^\\[%]+%\\]", Pattern.CASE_INSENSITIVE);
 
 	@Reference
-	private NotificationTermContributorRegistry
-		_notificationTermContributorRegistry;
-
-	@Reference
 	private NotificationQueueEntryLocalService
 		_notificationQueueEntryLocalService;
+
+	@Reference
+	private NotificationTermContributorRegistry
+		_notificationTermContributorRegistry;
 
 	@Reference
 	private NotificationTypeRegistry _notificationTypeRegistry;

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.object.notification.test;
+package com.liferay.object.internal.notification.term.contributor.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.notification.model.NotificationTemplate;
@@ -51,7 +51,7 @@ import org.junit.runner.RunWith;
  * @author Gustavo Lima
  */
 @RunWith(Arquillian.class)
-public class ObjectNotificationTest {
+public class ObjectDefinitionNotificationTermContributorTest {
 
 	@ClassRule
 	@Rule
