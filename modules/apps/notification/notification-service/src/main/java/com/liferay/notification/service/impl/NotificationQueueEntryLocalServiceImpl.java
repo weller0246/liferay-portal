@@ -117,10 +117,10 @@ public class NotificationQueueEntryLocalServiceImpl
 
 	@Override
 	public void sendNotificationQueueEntries() throws PortalException {
-		for (NotificationQueueEntry notificationQueueEntry :
-				notificationQueueEntryPersistence.findBySent(false)) {
+		try {
+			for (NotificationQueueEntry notificationQueueEntry :
+					notificationQueueEntryPersistence.findBySent(false)) {
 
-			try {
 				MailMessage mailMessage = new MailMessage(
 					new InternetAddress(
 						notificationQueueEntry.getFrom(),
@@ -141,16 +141,16 @@ public class NotificationQueueEntryLocalServiceImpl
 				notificationQueueEntryLocalService.updateSent(
 					notificationQueueEntry.getNotificationQueueEntryId(), true);
 			}
-			catch (PortalException portalException) {
-				throw portalException;
+		}
+		catch (PortalException portalException) {
+			throw portalException;
+		}
+		catch (Exception exception) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(exception);
 			}
-			catch (Exception exception) {
-				if (_log.isDebugEnabled()) {
-					_log.debug(exception);
-				}
 
-				throw new PortalException(exception);
-			}
+			throw new PortalException(exception);
 		}
 	}
 
