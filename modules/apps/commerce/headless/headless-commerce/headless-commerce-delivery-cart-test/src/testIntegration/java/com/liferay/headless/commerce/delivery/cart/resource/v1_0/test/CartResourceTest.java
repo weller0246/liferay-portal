@@ -26,7 +26,6 @@ import com.liferay.commerce.test.util.CommerceTestUtil;
 import com.liferay.headless.commerce.delivery.cart.client.dto.v1_0.Cart;
 import com.liferay.headless.commerce.delivery.cart.client.dto.v1_0.CouponCode;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
@@ -109,26 +108,11 @@ public class CartResourceTest extends BaseCartResourceTestCase {
 
 		String callbackURL = RandomTestUtil.randomString();
 
-		StringBundler sb = new StringBundler(8);
-
-		sb.append("http://localhost:8080/o/commerce-payment");
-
-		sb.append("?groupId=");
-
-		sb.append(_commerceChannel.getGroupId());
-
-		sb.append("&uuid=");
-
-		sb.append(cart.getOrderUUID());
-
-		sb.append(StringPool.AMPERSAND);
-
-		sb.append("nextStep=");
-
-		sb.append(callbackURL);
-
 		Assert.assertEquals(
-			sb.toString(),
+			StringBundler.concat(
+				"http://localhost:8080/o/commerce-payment?groupId=",
+				_commerceChannel.getGroupId(), "&uuid=", cart.getOrderUUID(),
+				"&nextStep=", callbackURL),
 			cartResource.getCartPaymentURL(cart.getId(), callbackURL));
 	}
 
