@@ -463,7 +463,7 @@ function FieldTypeSelector({
 					) : (
 						<ClayAlert displayType="info">
 							{Liferay.Language.get(
-								'no-field-type-defined-for-this-fragment'
+								'no-field-type-is-defined-for-this-fragment'
 							)}
 						</ClayAlert>
 					)
