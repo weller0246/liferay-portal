@@ -40,10 +40,11 @@ public class NotificationTermContributorRegistryImpl
 
 	@Override
 	public List<NotificationTermContributor>
-		getNotificationTermContributorsByContributorKey(String key) {
+		getNotificationTermContributorsByNotificationTermContributorKey(
+			String key) {
 
 		return _getNotificationTermContributors(
-			key, _serviceTrackerMapByTermContributorKey);
+			key, _serviceTrackerMapByNotificationTermContributorKey);
 	}
 
 	@Override
@@ -56,26 +57,25 @@ public class NotificationTermContributorRegistryImpl
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMapByNotificationTermContributorKey =
+			ServiceTrackerMapFactory.openMultiValueMap(
+				bundleContext, NotificationTermContributor.class,
+				"notification.term.contributor.key",
+				ServiceTrackerCustomizerFactory.
+					<NotificationTermContributor>serviceWrapper(bundleContext));
 		_serviceTrackerMapByNotificationTypeKey =
 			ServiceTrackerMapFactory.openMultiValueMap(
 				bundleContext, NotificationTermContributor.class,
 				"notification.type.key",
 				ServiceTrackerCustomizerFactory.
 					<NotificationTermContributor>serviceWrapper(bundleContext));
-
-		_serviceTrackerMapByTermContributorKey =
-			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext, NotificationTermContributor.class,
-				"notification.term.contributor.key",
-				ServiceTrackerCustomizerFactory.
-					<NotificationTermContributor>serviceWrapper(bundleContext));
 	}
 
 	@Deactivate
 	protected void deactivate() {
-		_serviceTrackerMapByNotificationTypeKey.close();
+		_serviceTrackerMapByNotificationTermContributorKey.close();
 
-		_serviceTrackerMapByTermContributorKey.close();
+		_serviceTrackerMapByNotificationTypeKey.close();
 	}
 
 	private List<NotificationTermContributor> _getNotificationTermContributors(
@@ -116,12 +116,12 @@ public class NotificationTermContributorRegistryImpl
 		 List
 			 <ServiceTrackerCustomizerFactory.ServiceWrapper
 				 <NotificationTermContributor>>>
-					_serviceTrackerMapByNotificationTypeKey;
+					_serviceTrackerMapByNotificationTermContributorKey;
 	private ServiceTrackerMap
 		<String,
 		 List
 			 <ServiceTrackerCustomizerFactory.ServiceWrapper
 				 <NotificationTermContributor>>>
-					_serviceTrackerMapByTermContributorKey;
+					_serviceTrackerMapByNotificationTypeKey;
 
 }

@@ -187,7 +187,7 @@ public class NotificationHelperImpl implements NotificationHelper {
 		if (fieldType == _TOFIELD) {
 			notificationTermContributors.addAll(
 				_notificationTermContributorRegistry.
-					getNotificationTermContributorsByContributorKey(
+					getNotificationTermContributorsByNotificationTermContributorKey(
 						NotificationTermContributorConstants.RECIPIENT));
 		}
 

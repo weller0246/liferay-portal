@@ -22,7 +22,8 @@ import java.util.List;
 public interface NotificationTermContributorRegistry {
 
 	public List<NotificationTermContributor>
-		getNotificationTermContributorsByContributorKey(String key);
+		getNotificationTermContributorsByNotificationTermContributorKey(
+			String key);
 
 	public List<NotificationTermContributor>
 		getNotificationTermContributorsByNotificationTypeKey(String key);
