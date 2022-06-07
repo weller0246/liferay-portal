@@ -16,7 +16,7 @@ package com.liferay.object.internal.deployer;
 
 import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
-import com.liferay.notification.constants.DefinitionTermConstants;
+import com.liferay.notification.constants.NotificationTermContributorConstants;
 import com.liferay.notification.term.contributor.DefinitionTermContributor;
 import com.liferay.notification.type.NotificationType;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
@@ -251,8 +251,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					_objectFieldLocalService, _userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"definition.term.contributor.key",
-					DefinitionTermConstants.
-						BODY_AND_SUBJECT_DEFINITION_TERMS_CONTRIBUTOR
+					NotificationTermContributorConstants.
+						BODY_AND_SUBJECT_TERMS
 				).put(
 					"notification.type.key", objectDefinition.getClassName()
 				).build()),

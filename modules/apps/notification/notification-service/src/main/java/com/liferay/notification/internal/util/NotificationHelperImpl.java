@@ -14,7 +14,7 @@
 
 package com.liferay.notification.internal.util;
 
-import com.liferay.notification.constants.DefinitionTermConstants;
+import com.liferay.notification.constants.NotificationTermContributorConstants;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationQueueEntryLocalService;
 import com.liferay.notification.term.contributor.DefinitionTermContributor;
@@ -188,8 +188,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 			definitionTermContributors.addAll(
 				_definitionTermContributorRegistry.
 					getDefinitionTermContributorsByContributorKey(
-						DefinitionTermConstants.
-							RECIPIENT_DEFINITION_TERMS_CONTRIBUTOR));
+						NotificationTermContributorConstants.
+							RECIPIENT_TERMS));
 		}
 
 		definitionTermContributors.addAll(

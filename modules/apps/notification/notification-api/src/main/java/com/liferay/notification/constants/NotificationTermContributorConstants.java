@@ -17,12 +17,12 @@ package com.liferay.notification.constants;
 /**
  * @author Gustavo Lima
  */
-public class DefinitionTermConstants {
+public class NotificationTermContributorConstants {
 
-	public static final String BODY_AND_SUBJECT_DEFINITION_TERMS_CONTRIBUTOR =
+	public static final String BODY_AND_SUBJECT_TERMS =
 		"BodyAndSubjectTerms";
 
-	public static final String RECIPIENT_DEFINITION_TERMS_CONTRIBUTOR =
+	public static final String RECIPIENT_TERMS =
 		"RecipientTerms";
 
 }
