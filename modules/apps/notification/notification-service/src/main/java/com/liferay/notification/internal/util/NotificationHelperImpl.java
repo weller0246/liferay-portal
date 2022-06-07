@@ -17,8 +17,8 @@ package com.liferay.notification.internal.util;
 import com.liferay.notification.constants.NotificationTermContributorConstants;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationQueueEntryLocalService;
-import com.liferay.notification.term.contributor.DefinitionTermContributor;
-import com.liferay.notification.term.contributor.DefinitionTermContributorRegistry;
+import com.liferay.notification.term.contributor.NotificationTermContributor;
+import com.liferay.notification.term.contributor.NotificationTermContributorRegistry;
 import com.liferay.notification.type.NotificationType;
 import com.liferay.notification.util.NotificationHelper;
 import com.liferay.notification.util.NotificationTypeRegistry;
@@ -181,29 +181,29 @@ public class NotificationHelperImpl implements NotificationHelper {
 			placeholders.add(matcher.group());
 		}
 
-		List<DefinitionTermContributor> definitionTermContributors =
+		List<NotificationTermContributor> notificationTermContributors =
 			new ArrayList<>();
 
 		if (fieldType == _TOFIELD) {
-			definitionTermContributors.addAll(
-				_definitionTermContributorRegistry.
-					getDefinitionTermContributorsByContributorKey(
+			notificationTermContributors.addAll(
+				_notificationTermContributorRegistry.
+					getNotificationTermContributorsByContributorKey(
 						NotificationTermContributorConstants.
 							RECIPIENT));
 		}
 
-		definitionTermContributors.addAll(
-			_definitionTermContributorRegistry.
-				getDefinitionTermContributorsByNotificationTypeKey(
+		notificationTermContributors.addAll(
+			_notificationTermContributorRegistry.
+				getNotificationTermContributorsByNotificationTypeKey(
 					notificationType.getKey()));
 
-		for (DefinitionTermContributor definitionTermContributor :
-				definitionTermContributors) {
+		for (NotificationTermContributor notificationTermContributor :
+				notificationTermContributors) {
 
 			for (String placeholder : placeholders) {
 				content = StringUtil.replace(
 					content, placeholder,
-					definitionTermContributor.getFilledTerm(
+					notificationTermContributor.getFilledTerm(
 						placeholder, object, locale));
 			}
 		}
@@ -224,8 +224,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 		"\\[%[^\\[%]+%\\]", Pattern.CASE_INSENSITIVE);
 
 	@Reference
-	private DefinitionTermContributorRegistry
-		_definitionTermContributorRegistry;
+	private NotificationTermContributorRegistry
+		_notificationTermContributorRegistry;
 
 	@Reference
 	private NotificationQueueEntryLocalService

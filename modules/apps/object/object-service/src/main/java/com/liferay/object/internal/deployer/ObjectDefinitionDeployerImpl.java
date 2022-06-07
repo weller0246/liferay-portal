@@ -17,12 +17,12 @@ package com.liferay.object.internal.deployer;
 import com.liferay.info.collection.provider.InfoCollectionProvider;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.notification.constants.NotificationTermContributorConstants;
-import com.liferay.notification.term.contributor.DefinitionTermContributor;
+import com.liferay.notification.term.contributor.NotificationTermContributor;
 import com.liferay.notification.type.NotificationType;
 import com.liferay.object.deployer.ObjectDefinitionDeployer;
 import com.liferay.object.internal.info.collection.provider.ObjectEntrySingleFormVariationInfoCollectionProvider;
 import com.liferay.object.internal.language.ObjectResourceBundle;
-import com.liferay.object.internal.notification.term.contributor.ObjectDefinitionTermContributor;
+import com.liferay.object.internal.notification.term.contributor.ObjectNotificationTermContributor;
 import com.liferay.object.internal.notification.type.ObjectDefinitionNotificationType;
 import com.liferay.object.internal.related.models.ObjectEntry1to1ObjectRelatedModelsProviderImpl;
 import com.liferay.object.internal.related.models.ObjectEntry1toMObjectRelatedModelsProviderImpl;
@@ -245,8 +245,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"notification.type.key", objectDefinition.getClassName()
 				).build()),
 			_bundleContext.registerService(
-				DefinitionTermContributor.class,
-				new ObjectDefinitionTermContributor(
+				NotificationTermContributor.class,
+				new ObjectNotificationTermContributor(
 					objectDefinition.getObjectDefinitionId(),
 					_objectFieldLocalService, _userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(

@@ -14,8 +14,8 @@
 
 package com.liferay.notification.internal.term;
 
-import com.liferay.notification.term.contributor.DefinitionTermContributor;
-import com.liferay.notification.term.contributor.DefinitionTermContributorRegistry;
+import com.liferay.notification.term.contributor.NotificationTermContributor;
+import com.liferay.notification.term.contributor.NotificationTermContributorRegistry;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -32,23 +32,23 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Gustavo Lima
  */
-@Component(immediate = true, service = DefinitionTermContributorRegistry.class)
-public class DefinitionTermContributorRegistryImpl
-	implements DefinitionTermContributorRegistry {
+@Component(immediate = true, service = NotificationTermContributorRegistry.class)
+public class NotificationTermContributorRegistryImpl
+	implements NotificationTermContributorRegistry {
 
 	@Override
-	public List<DefinitionTermContributor>
-		getDefinitionTermContributorsByContributorKey(String key) {
+	public List<NotificationTermContributor>
+		getNotificationTermContributorsByContributorKey(String key) {
 
-		return _getDefinitionTermContributors(
+		return _getNotificationTermContributors(
 			key, _serviceTrackerMapByTermContributorKey);
 	}
 
 	@Override
-	public List<DefinitionTermContributor>
-		getDefinitionTermContributorsByNotificationTypeKey(String key) {
+	public List<NotificationTermContributor>
+		getNotificationTermContributorsByNotificationTypeKey(String key) {
 
-		return _getDefinitionTermContributors(
+		return _getNotificationTermContributors(
 			key, _serviceTrackerMapByNotificationTypeKey);
 	}
 
@@ -56,17 +56,17 @@ public class DefinitionTermContributorRegistryImpl
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMapByNotificationTypeKey =
 			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext, DefinitionTermContributor.class,
+				bundleContext, NotificationTermContributor.class,
 				"notification.type.key",
 				ServiceTrackerCustomizerFactory.
-					<DefinitionTermContributor>serviceWrapper(bundleContext));
+					<NotificationTermContributor>serviceWrapper(bundleContext));
 
 		_serviceTrackerMapByTermContributorKey =
 			ServiceTrackerMapFactory.openMultiValueMap(
-				bundleContext, DefinitionTermContributor.class,
+				bundleContext, NotificationTermContributor.class,
 				"notification.term.contributor.key",
 				ServiceTrackerCustomizerFactory.
-					<DefinitionTermContributor>serviceWrapper(bundleContext));
+					<NotificationTermContributor>serviceWrapper(bundleContext));
 	}
 
 	@Deactivate
@@ -76,48 +76,48 @@ public class DefinitionTermContributorRegistryImpl
 		_serviceTrackerMapByTermContributorKey.close();
 	}
 
-	private List<DefinitionTermContributor> _getDefinitionTermContributors(
+	private List<NotificationTermContributor> _getNotificationTermContributors(
 		String key,
 		ServiceTrackerMap
 			<String,
 			 List
 				 <ServiceTrackerCustomizerFactory.ServiceWrapper
-					 <DefinitionTermContributor>>> serviceTrackerMap) {
+					 <NotificationTermContributor>>> serviceTrackerMap) {
 
 		List
 			<ServiceTrackerCustomizerFactory.ServiceWrapper
-				<DefinitionTermContributor>> definitionTermContributorWrappers =
+				<NotificationTermContributor>> notificationTermContributorWrappers =
 					serviceTrackerMap.getService(key);
 
-		if (definitionTermContributorWrappers == null) {
+		if (notificationTermContributorWrappers == null) {
 			return Collections.emptyList();
 		}
 
-		List<DefinitionTermContributor> definitionTermContributors =
+		List<NotificationTermContributor> notificationTermContributors =
 			new ArrayList<>();
 
 		for (ServiceTrackerCustomizerFactory.ServiceWrapper
-				<DefinitionTermContributor> tableActionProviderServiceWrapper :
-					definitionTermContributorWrappers) {
+				<NotificationTermContributor> tableActionProviderServiceWrapper :
+					notificationTermContributorWrappers) {
 
-			definitionTermContributors.add(
+			notificationTermContributors.add(
 				tableActionProviderServiceWrapper.getService());
 		}
 
-		return definitionTermContributors;
+		return notificationTermContributors;
 	}
 
 	private ServiceTrackerMap
 		<String,
 		 List
 			 <ServiceTrackerCustomizerFactory.ServiceWrapper
-				 <DefinitionTermContributor>>>
+				 <NotificationTermContributor>>>
 					_serviceTrackerMapByNotificationTypeKey;
 	private ServiceTrackerMap
 		<String,
 		 List
 			 <ServiceTrackerCustomizerFactory.ServiceWrapper
-				 <DefinitionTermContributor>>>
+				 <NotificationTermContributor>>>
 					_serviceTrackerMapByTermContributorKey;
 
 }

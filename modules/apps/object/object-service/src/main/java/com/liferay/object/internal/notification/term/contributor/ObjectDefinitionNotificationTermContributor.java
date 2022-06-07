@@ -14,7 +14,7 @@
 
 package com.liferay.object.internal.notification.term.contributor;
 
-import com.liferay.notification.term.contributor.DefinitionTermContributor;
+import com.liferay.notification.term.contributor.NotificationTermContributor;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.string.StringBundler;
@@ -35,10 +35,10 @@ import java.util.Map;
 /**
  * @author Gustavo Lima
  */
-public class ObjectDefinitionTermContributor
-	implements DefinitionTermContributor {
+public class ObjectDefinitionNotificationTermContributor
+	implements NotificationTermContributor {
 
-	public ObjectDefinitionTermContributor(
+	public ObjectDefinitionNotificationTermContributor(
 		long objectDefinitionId,
 		ObjectFieldLocalService objectFieldLocalService,
 		UserLocalService userLocalService) {
@@ -118,7 +118,7 @@ public class ObjectDefinitionTermContributor
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectDefinitionTermContributor.class);
+		ObjectDefinitionNotificationTermContributor.class);
 
 	private final Map<String, Long> _objectFieldIds = HashMapBuilder.put(
 		"[%OBJECT_ENTRY_CREATOR%]", 0L

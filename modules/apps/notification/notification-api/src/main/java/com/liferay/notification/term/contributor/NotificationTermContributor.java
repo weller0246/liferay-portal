@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author Gustavo Lima
  */
-public interface DefinitionTermContributor {
+public interface NotificationTermContributor {
 
 	public default Map<String, String> getDefinitionTerms(Locale locale) {
 		Map<String, String> map = new HashMap<>();

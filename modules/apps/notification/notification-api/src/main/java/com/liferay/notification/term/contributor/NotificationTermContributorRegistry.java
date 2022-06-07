@@ -19,12 +19,12 @@ import java.util.List;
 /**
  * @author Gustavo Lima
  */
-public interface DefinitionTermContributorRegistry {
+public interface NotificationTermContributorRegistry {
 
-	public List<DefinitionTermContributor>
-		getDefinitionTermContributorsByContributorKey(String key);
+	public List<NotificationTermContributor>
+		getNotificationTermContributorsByContributorKey(String key);
 
-	public List<DefinitionTermContributor>
-		getDefinitionTermContributorsByNotificationTypeKey(String key);
+	public List<NotificationTermContributor>
+		getNotificationTermContributorsByNotificationTypeKey(String key);
 
 }
