@@ -68,18 +68,10 @@ public class CheckNotificationQueueEntryMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
-
-		// Check unsent notification queue entries
-
 		_notificationQueueEntryLocalService.sendNotificationQueueEntries();
 
-		// Delete old sent notification queue entries
-
-		Date date = new Date(
-			System.currentTimeMillis() - (43200 * Time.MINUTE));
-
 		_notificationQueueEntryLocalService.deleteNotificationQueueEntries(
-			date);
+			new Date(System.currentTimeMillis() - (43200 * Time.MINUTE)));
 	}
 
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED, unbind = "-")
