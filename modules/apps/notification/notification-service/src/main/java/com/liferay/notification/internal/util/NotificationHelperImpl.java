@@ -202,8 +202,8 @@ public class NotificationHelperImpl implements NotificationHelper {
 			for (String placeholder : placeholders) {
 				content = StringUtil.replace(
 					content, placeholder,
-					notificationTermContributor.getFilledTerm(
-						placeholder, object, locale));
+					notificationTermContributor.getTermValue(
+						locale, object, placeholder));
 			}
 		}
 

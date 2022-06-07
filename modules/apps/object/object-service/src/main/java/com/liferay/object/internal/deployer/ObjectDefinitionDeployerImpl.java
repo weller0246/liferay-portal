@@ -247,8 +247,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				NotificationTermContributor.class,
 				new ObjectDefinitionNotificationTermContributor(
-					objectDefinition.getObjectDefinitionId(),
-					_objectFieldLocalService, _userLocalService),
+					objectDefinition, _objectFieldLocalService,
+					_userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"notification.term.contributor.key",
 					NotificationTermContributorConstants.BODY_AND_SUBJECT

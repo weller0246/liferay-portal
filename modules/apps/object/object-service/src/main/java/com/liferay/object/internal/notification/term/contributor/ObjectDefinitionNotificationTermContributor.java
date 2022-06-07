@@ -15,13 +15,12 @@
 package com.liferay.object.internal.notification.term.contributor;
 
 import com.liferay.notification.term.contributor.NotificationTermContributor;
+import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.HashMapBuilder;
@@ -39,7 +38,7 @@ public class ObjectDefinitionNotificationTermContributor
 	implements NotificationTermContributor {
 
 	public ObjectDefinitionNotificationTermContributor(
-		long objectDefinitionId,
+		ObjectDefinition objectDefinition,
 		ObjectFieldLocalService objectFieldLocalService,
 		UserLocalService userLocalService) {
 
@@ -47,78 +46,62 @@ public class ObjectDefinitionNotificationTermContributor
 		_userLocalService = userLocalService;
 
 		List<ObjectField> objectFields =
-			_objectFieldLocalService.getObjectFields(objectDefinitionId);
+			_objectFieldLocalService.getObjectFields(
+				objectDefinition.getObjectDefinitionId());
 
 		for (ObjectField objectField : objectFields) {
-			String dbTableName = objectField.getDBTableName();
+			String termName = StringUtil.toUpperCase(
+				objectDefinition.getShortName() + "_" + objectField.getName());
 
-			dbTableName = dbTableName.replaceAll("[0-9]", "");
+			termName = StringBundler.concat("[%", termName, "%]");
 
-			dbTableName = StringUtil.removeSubstring(dbTableName, "_");
-
-			dbTableName = dbTableName.substring(1);
-
-			String term = StringUtil.toUpperCase(
-				dbTableName + "_" +
-					StringUtil.replace(objectField.getName(), ' ', '_'));
-
-			_objectFieldIds.put(
-				StringBundler.concat("[%", term, "%]"),
-				objectField.getObjectFieldId());
+			_objectFieldIds.put(termName, objectField.getObjectFieldId());
 		}
 	}
 
 	@Override
-	public String getFilledTerm(String term, Object object, Locale locale)
+	public List<String> getTermNames() {
+		return new ArrayList<>(_objectFieldIds.keySet());
+	}
+
+	@Override
+	public String getTermValue(Locale locale, Object object, String termName)
 		throws PortalException {
 
 		if (!(object instanceof Map)) {
-			return term;
+			return termName;
 		}
 
-		Map<String, Object> values = (Map<String, Object>)object;
+		Map<String, Object> termValues = (Map<String, Object>)object;
 
-		if (term.equals("[%OBJECT_ENTRY_CREATOR%]")) {
+		if (termName.equals("[%OBJECT_ENTRY_CREATOR%]")) {
 			User user = _userLocalService.getUser(
-				(long)values.get("currentUserId"));
+				(long)termValues.get("currentUserId"));
 
 			return user.getFullName(true, true);
 		}
 
 		ObjectField objectField = _objectFieldLocalService.fetchObjectField(
-			_objectFieldIds.get(term));
+			_objectFieldIds.get(termName));
 
 		if (objectField == null) {
-			return term;
+			return termName;
 		}
 
-		if (_log.isDebugEnabled()) {
-			_log.debug(
-				"Processing term for object field " + objectField.getName());
-		}
-
-		return String.valueOf(values.get(objectField.getName()));
+		return String.valueOf(termValues.get(objectField.getName()));
 	}
 
 	@Override
-	public String getLabel(String term, Locale locale) {
-		if (term.equals("[%OBJECT_ENTRY_CREATOR%]")) {
+	public String getTermValue(String termName, Locale locale) {
+		if (termName.equals("[%OBJECT_ENTRY_CREATOR%]")) {
 			return LanguageUtil.get(locale, "creator");
 		}
 
 		ObjectField objectField = _objectFieldLocalService.fetchObjectField(
-			_objectFieldIds.get(term));
+			_objectFieldIds.get(termName));
 
 		return objectField.getLabel(locale);
 	}
-
-	@Override
-	public List<String> getTerms() {
-		return new ArrayList<>(_objectFieldIds.keySet());
-	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectDefinitionNotificationTermContributor.class);
 
 	private final Map<String, Long> _objectFieldIds = HashMapBuilder.put(
 		"[%OBJECT_ENTRY_CREATOR%]", 0L

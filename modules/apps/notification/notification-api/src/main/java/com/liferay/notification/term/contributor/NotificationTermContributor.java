@@ -26,23 +26,23 @@ import java.util.Map;
  */
 public interface NotificationTermContributor {
 
-	public default Map<String, String> getDefinitionTerms(Locale locale) {
-		Map<String, String> map = new HashMap<>();
+	public List<String> getTermNames();
 
-		List<String> terms = getTerms();
-
-		for (String term : terms) {
-			map.put(term, getLabel(term, locale));
-		}
-
-		return map;
-	}
-
-	public String getFilledTerm(String term, Object object, Locale locale)
+	public String getTermValue(Locale locale, Object object, String termName)
 		throws PortalException;
 
-	public String getLabel(String term, Locale locale);
+	public String getTermValue(String termName, Locale locale);
 
-	public List<String> getTerms();
+	public default Map<String, String> getTermValues(Locale locale) {
+		Map<String, String> termValues = new HashMap<>();
+
+		List<String> termNames = getTermNames();
+
+		for (String termName : termNames) {
+			termValues.put(termName, getTermValue(termName, locale));
+		}
+
+		return termValues;
+	}
 
 }
