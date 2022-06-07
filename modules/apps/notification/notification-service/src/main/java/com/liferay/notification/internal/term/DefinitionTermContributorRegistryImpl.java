@@ -64,7 +64,7 @@ public class DefinitionTermContributorRegistryImpl
 		_serviceTrackerMapByTermContributorKey =
 			ServiceTrackerMapFactory.openMultiValueMap(
 				bundleContext, DefinitionTermContributor.class,
-				"definition.term.contributor.key",
+				"notification.term.contributor.key",
 				ServiceTrackerCustomizerFactory.
 					<DefinitionTermContributor>serviceWrapper(bundleContext));
 	}

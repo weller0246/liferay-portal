@@ -250,7 +250,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					objectDefinition.getObjectDefinitionId(),
 					_objectFieldLocalService, _userLocalService),
 				HashMapDictionaryBuilder.<String, Object>put(
-					"definition.term.contributor.key",
+					"notification.term.contributor.key",
 					NotificationTermContributorConstants.
 						BODY_AND_SUBJECT
 				).put(
