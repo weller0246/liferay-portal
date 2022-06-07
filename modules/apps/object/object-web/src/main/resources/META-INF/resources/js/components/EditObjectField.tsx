@@ -132,13 +132,21 @@ export default function EditObjectField({
 		<SidePanelForm
 			className="lfr-objects__edit-object-field"
 			onSubmit={handleSubmit}
-			readOnly={isSystemObject ? disabled : readOnly}
+			readOnly={
+				isSystemObject && objectName !== 'AccountEntry'
+					? disabled
+					: readOnly
+			}
 			title={Liferay.Language.get('field')}
 		>
 			<Card title={Liferay.Language.get('basic-info')}>
 				<InputLocalized
 					defaultLanguageId={defaultLanguageId}
-					disabled={isSystemObject ? disabled : readOnly}
+					disabled={
+						isSystemObject && objectName !== 'AccountEntry'
+							? disabled
+							: readOnly
+					}
 					error={errors.label}
 					label={Liferay.Language.get('label')}
 					locales={locales}
@@ -171,7 +179,11 @@ export default function EditObjectField({
 					{(values.businessType === 'Text' ||
 						values.businessType === 'LongText') && (
 						<MaxLengthProperties
-							disabled={isSystemObject ? disabled : readOnly}
+							disabled={
+								isSystemObject && objectName !== 'AccountEntry'
+									? disabled
+									: readOnly
+							}
 							errors={errors}
 							isSystemObject={isSystemObject}
 							objectField={values}
