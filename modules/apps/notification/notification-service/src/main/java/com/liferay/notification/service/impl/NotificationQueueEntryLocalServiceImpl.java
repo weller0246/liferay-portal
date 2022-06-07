@@ -116,52 +116,40 @@ public class NotificationQueueEntryLocalServiceImpl
 	}
 
 	@Override
-	public void sendNotificationQueueEntries() throws Exception {
+	public void sendNotificationQueueEntries() throws PortalException {
 		for (NotificationQueueEntry notificationQueueEntry :
 				notificationQueueEntryPersistence.findBySent(false)) {
 
-			List<InternetAddress> bccInternetAddresses = new ArrayList<>();
-			List<InternetAddress> ccInternetAddresses = new ArrayList<>();
-
-			String[] bccAddresses = StringUtil.split(
-				notificationQueueEntry.getBcc());
-			String[] ccAddresses = StringUtil.split(
-				notificationQueueEntry.getCc());
-
-			for (String bccAddress : bccAddresses) {
-				bccInternetAddresses.add(new InternetAddress(bccAddress));
-			}
-
-			for (String ccAddress : ccAddresses) {
-				ccInternetAddresses.add(new InternetAddress(ccAddress));
-			}
-
-			InternetAddress from = new InternetAddress(
-				notificationQueueEntry.getFrom(),
-				notificationQueueEntry.getFromName());
-			InternetAddress to = new InternetAddress(
-				notificationQueueEntry.getTo(),
-				notificationQueueEntry.getToName());
-
-			MailMessage mailMessage = new MailMessage(
-				from, to, notificationQueueEntry.getSubject(),
-				notificationQueueEntry.getBody(), true);
-
-			mailMessage.setBCC(
-				bccInternetAddresses.toArray(new InternetAddress[0]));
-			mailMessage.setCC(
-				ccInternetAddresses.toArray(new InternetAddress[0]));
-
 			try {
+				MailMessage mailMessage = new MailMessage(
+					new InternetAddress(
+						notificationQueueEntry.getFrom(),
+						notificationQueueEntry.getFromName()),
+					new InternetAddress(
+						notificationQueueEntry.getTo(),
+						notificationQueueEntry.getToName()),
+					notificationQueueEntry.getSubject(),
+					notificationQueueEntry.getBody(), true);
+
+				mailMessage.setBCC(
+					_toInternetAddresses(notificationQueueEntry.getBcc()));
+				mailMessage.setCC(
+					_toInternetAddresses(notificationQueueEntry.getCc()));
+
 				_mailService.sendEmail(mailMessage);
 
 				notificationQueueEntryLocalService.updateSent(
 					notificationQueueEntry.getNotificationQueueEntryId(), true);
 			}
+			catch (PortalException portalException) {
+				throw portalException;
+			}
 			catch (Exception exception) {
 				if (_log.isDebugEnabled()) {
 					_log.debug(exception);
 				}
+
+				throw new PortalException(exception);
 			}
 		}
 	}
@@ -186,6 +174,18 @@ public class NotificationQueueEntryLocalServiceImpl
 		}
 
 		return notificationQueueEntryPersistence.update(notificationQueueEntry);
+	}
+
+	private InternetAddress[] _toInternetAddresses(String string)
+		throws Exception {
+
+		List<InternetAddress> internetAddresses = new ArrayList<>();
+
+		for (String internetAddressString : StringUtil.split(string)) {
+			internetAddresses.add(new InternetAddress(internetAddressString));
+		}
+
+		return internetAddresses.toArray(new InternetAddress[0]);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
