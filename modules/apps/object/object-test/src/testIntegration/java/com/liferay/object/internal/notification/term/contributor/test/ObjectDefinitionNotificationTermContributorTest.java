@@ -23,10 +23,10 @@ import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
-import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
@@ -40,7 +40,6 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 import java.util.Arrays;
 
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,20 +58,20 @@ public class ObjectDefinitionNotificationTermContributorTest {
 			new LiferayIntegrationTestRule(),
 			PermissionCheckerMethodTestRule.INSTANCE);
 
-	@Before
-	public void setUp() throws Exception {
-		_user = UserTestUtil.addUser();
-	}
-
 	@Test
 	public void testEmailAddressRecipient() throws Exception {
-		_user.setEmailAddress("mail@mail.com");
+		User user = UserTestUtil.addUser();
 
-		_userLocalService.updateUser(_user);
+		user.setEmailAddress(
+			StringBundler.concat(
+				RandomTestUtil.randomString(), "@",
+				RandomTestUtil.randomString(), ".com"));
 
-		_notificationTemplate =
+		_userLocalService.updateUser(user);
+
+		NotificationTemplate notificationTemplate =
 			_notificationTemplateLocalService.addNotificationTemplate(
-				_user.getUserId(), RandomTestUtil.randomString(),
+				user.getUserId(), RandomTestUtil.randomString(),
 				RandomTestUtil.randomLocaleStringMap(),
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				RandomTestUtil.randomString(),
@@ -80,7 +79,7 @@ public class ObjectDefinitionNotificationTermContributorTest {
 				RandomTestUtil.randomString(),
 				RandomTestUtil.randomLocaleStringMap(),
 				HashMapBuilder.put(
-					LocaleUtil.getDefault(), _user.getEmailAddress()
+					LocaleUtil.getDefault(), user.getEmailAddress()
 				).build());
 
 		ObjectDefinition objectDefinition =
@@ -97,11 +96,10 @@ public class ObjectDefinitionNotificationTermContributorTest {
 						StringUtil.randomId())));
 
 		_objectDefinitionLocalService.publishCustomObjectDefinition(
-			_user.getUserId(), objectDefinition.getObjectDefinitionId());
+			user.getUserId(), objectDefinition.getObjectDefinitionId());
 
 		_notificationTemplateLocalService.sendNotificationTemplate(
-			_user.getUserId(),
-			_notificationTemplate.getNotificationTemplateId(),
+			user.getUserId(), notificationTemplate.getNotificationTemplateId(),
 			objectDefinition.getClassName(), objectDefinition);
 
 		Assert.assertEquals(
@@ -110,14 +108,9 @@ public class ObjectDefinitionNotificationTermContributorTest {
 				getNotificationQueueEntriesCount());
 	}
 
-	private static User _user;
-
 	@Inject
 	private NotificationQueueEntryLocalService
 		_notificationQueueEntryLocalService;
-
-	@DeleteAfterTestRun
-	private NotificationTemplate _notificationTemplate;
 
 	@Inject
 	private NotificationTemplateLocalService _notificationTemplateLocalService;
