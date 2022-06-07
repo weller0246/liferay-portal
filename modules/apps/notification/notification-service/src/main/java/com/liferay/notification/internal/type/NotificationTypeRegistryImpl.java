@@ -41,7 +41,7 @@ public class NotificationTypeRegistryImpl implements NotificationTypeRegistry {
 
 		if (notificationTypeServiceWrapper == null) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("No NotificationType registered with key " + key);
+				_log.debug("No notification type registered with key " + key);
 			}
 
 			return null;
