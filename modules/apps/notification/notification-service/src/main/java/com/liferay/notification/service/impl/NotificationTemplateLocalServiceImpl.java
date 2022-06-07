@@ -14,27 +14,47 @@
 
 package com.liferay.notification.service.impl;
 
+import com.liferay.notification.constants.NotificationTermContributorConstants;
 import com.liferay.notification.exception.NotificationTemplateFromException;
 import com.liferay.notification.exception.NotificationTemplateNameException;
 import com.liferay.notification.model.NotificationQueueEntry;
 import com.liferay.notification.model.NotificationTemplate;
+import com.liferay.notification.service.NotificationQueueEntryLocalService;
 import com.liferay.notification.service.base.NotificationTemplateLocalServiceBaseImpl;
 import com.liferay.notification.service.persistence.NotificationQueueEntryPersistence;
+import com.liferay.notification.term.contributor.NotificationTermContributor;
+import com.liferay.notification.term.contributor.NotificationTermContributorRegistry;
+import com.liferay.notification.type.NotificationType;
+import com.liferay.notification.util.NotificationTypeRegistry;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.search.Indexable;
 import com.liferay.portal.kernel.search.IndexableType;
+import com.liferay.portal.kernel.security.auth.CompanyThreadLocal;
+import com.liferay.portal.kernel.security.auth.EmailAddressValidator;
 import com.liferay.portal.kernel.service.ResourceLocalService;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.systemevent.SystemEvent;
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
+import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -140,6 +160,122 @@ public class NotificationTemplateLocalServiceImpl
 			long userId, long notificationTemplateId,
 			String notificationTypeKey, Object object)
 		throws PortalException {
+
+		if (Validator.isBlank(notificationTypeKey)) {
+			return;
+		}
+
+		NotificationType notificationType =
+			_notificationTypeRegistry.getNotificationType(notificationTypeKey);
+
+		if (notificationType == null) {
+			return;
+		}
+
+		NotificationTemplate notificationTemplate =
+			notificationTemplatePersistence.findByPrimaryKey(
+				notificationTemplateId);
+
+		String body = _formatContent(
+			notificationTemplate.getBody(user.getLocale()), user.getLocale(),
+			Collections.emptyList(), notificationType, object);
+
+		User user = _userLocalService.getUser(userId);
+
+		Locale siteDefaultLocale = _portal.getSiteDefaultLocale(
+			user.getGroupId());
+
+		if (Validator.isNull(body)) {
+			body = _formatContent(
+				notificationTemplate.getBody(siteDefaultLocale),
+				siteDefaultLocale, Collections.emptyList(), notificationType,
+				object);
+		}
+
+		String fromName = notificationTemplate.getFromName(
+			user.getLanguageId());
+
+		if (Validator.isNull(fromName)) {
+			fromName = notificationTemplate.getFromName(
+				_portal.getSiteDefaultLocale(user.getGroupId()));
+		}
+
+		String subject = _formatContent(
+			notificationTemplate.getSubject(user.getLocale()), user.getLocale(),
+			Collections.emptyList(), notificationType, object);
+
+		if (Validator.isNull(subject)) {
+			subject = _formatContent(
+				notificationTemplate.getSubject(siteDefaultLocale),
+				siteDefaultLocale, Collections.emptyList(), notificationType,
+				object);
+		}
+
+		String to = _formatContent(
+			notificationTemplate.getTo(user.getLocale()), user.getLocale(),
+			_notificationTermContributorRegistry.
+				getNotificationTermContributorsByNotificationTermContributorKey(
+					NotificationTermContributorConstants.RECIPIENT),
+			notificationType, object);
+
+		if (Validator.isNull(to)) {
+			to = _formatContent(
+				notificationTemplate.getTo(siteDefaultLocale),
+				siteDefaultLocale,
+				_notificationTermContributorRegistry.
+					getNotificationTermContributorsByNotificationTermContributorKey(
+						NotificationTermContributorConstants.RECIPIENT),
+				notificationType, object);
+		}
+
+		EmailAddressValidator emailAddressValidator =
+			EmailAddressValidatorFactory.getInstance();
+
+		String[] toUserStrings = StringUtil.split(to);
+
+		for (String toUserString : toUserStrings) {
+			User toUser = _userLocalService.fetchUser(
+				GetterUtil.getLong(toUserString));
+
+			if ((toUser == null) &&
+				emailAddressValidator.validate(
+					user.getCompanyId(), toUserString)) {
+
+				toUser = _userLocalService.fetchUserByEmailAddress(
+					user.getCompanyId(), toUserString);
+
+				if (toUser == null) {
+					if (_log.isInfoEnabled()) {
+						_log.info("No User found with key: " + toUserString);
+					}
+
+					User defaultUser = _userLocalService.getDefaultUser(
+						CompanyThreadLocal.getCompanyId());
+
+					_notificationQueueEntryLocalService.
+						addNotificationQueueEntry(
+							defaultUser.getUserId(),
+							notificationTemplate.getNotificationTemplateId(),
+							notificationTemplate.getBcc(), body,
+							notificationTemplate.getCc(),
+							notificationType.getClassName(object),
+							notificationType.getClassPK(object),
+							notificationTemplate.getFrom(), fromName, 0,
+							subject, toUserString, toUserString);
+
+					continue;
+				}
+			}
+
+			_notificationQueueEntryLocalService.addNotificationQueueEntry(
+				userId, notificationTemplate.getNotificationTemplateId(),
+				notificationTemplate.getBcc(), body,
+				notificationTemplate.getCc(),
+				notificationType.getClassName(object),
+				notificationType.getClassPK(object),
+				notificationTemplate.getFrom(), fromName, 0, subject,
+				toUser.getEmailAddress(), notificationTemplate.getName());
+		}
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -170,6 +306,51 @@ public class NotificationTemplateLocalServiceImpl
 		return notificationTemplatePersistence.update(notificationTemplate);
 	}
 
+	private String _formatContent(
+			String content, Locale locale,
+			List<NotificationTermContributor> notificationTermContributors,
+			NotificationType notificationType, Object object)
+		throws PortalException {
+
+		if (Validator.isNull(content)) {
+			return StringPool.BLANK;
+		}
+
+		Set<String> placeholders = new HashSet<>();
+
+		Matcher matcher = _placeholderPattern.matcher(content);
+
+		while (matcher.find()) {
+			placeholders.add(matcher.group());
+		}
+
+		for (NotificationTermContributor notificationTermContributor :
+				notificationTermContributors) {
+
+			for (String placeholder : placeholders) {
+				content = StringUtil.replace(
+					content, placeholder,
+					notificationTermContributor.getTermValue(
+						locale, object, placeholder));
+			}
+		}
+
+		for (NotificationTermContributor notificationTermContributor :
+				_notificationTermContributorRegistry.
+					getNotificationTermContributorsByNotificationTypeKey(
+						notificationType.getKey())) {
+
+			for (String placeholder : placeholders) {
+				content = StringUtil.replace(
+					content, placeholder,
+					notificationTermContributor.getTermValue(
+						locale, object, placeholder));
+			}
+		}
+
+		return content;
+	}
+
 	private void _validate(String name, String from) throws PortalException {
 		if (Validator.isNull(name)) {
 			throw new NotificationTemplateNameException("Name is null");
@@ -180,9 +361,29 @@ public class NotificationTemplateLocalServiceImpl
 		}
 	}
 
+	private static final Log _log = LogFactoryUtil.getLog(
+		NotificationTemplateLocalServiceImpl.class);
+
+	private static final Pattern _placeholderPattern = Pattern.compile(
+		"\\[%[^\\[%]+%\\]", Pattern.CASE_INSENSITIVE);
+
+	@Reference
+	private NotificationQueueEntryLocalService
+		_notificationQueueEntryLocalService;
+
 	@Reference
 	private NotificationQueueEntryPersistence
 		_notificationQueueEntryPersistence;
+
+	@Reference
+	private NotificationTermContributorRegistry
+		_notificationTermContributorRegistry;
+
+	@Reference
+	private NotificationTypeRegistry _notificationTypeRegistry;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private ResourceLocalService _resourceLocalService;
