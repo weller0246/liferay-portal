@@ -1259,7 +1259,8 @@ public class RootProjectConfigurator implements Plugin<Project> {
 								dirFile,
 								"Dockerfile." + environment + "-" + buildTime));
 
-						createDockerfileAllTask.dependsOn(createDockerfileEnvTask);
+						createDockerfileAllTask.dependsOn(
+							createDockerfileEnvTask);
 					}
 				}
 
