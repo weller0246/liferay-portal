@@ -18,7 +18,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationQueueEntryLocalService;
 import com.liferay.notification.service.NotificationTemplateLocalService;
-import com.liferay.notification.util.NotificationHelper;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.service.ObjectDefinitionLocalService;
@@ -100,8 +99,9 @@ public class ObjectDefinitionNotificationTermContributorTest {
 		_objectDefinitionLocalService.publishCustomObjectDefinition(
 			_user.getUserId(), objectDefinition.getObjectDefinitionId());
 
-		_notificationHelper.sendNotification(
-			_user.getUserId(), _notificationTemplate,
+		_notificationTemplateLocalService.sendNotificationTemplate(
+			_user.getUserId(),
+			_notificationTemplate.getNotificationTemplateId(),
 			objectDefinition.getClassName(), objectDefinition);
 
 		Assert.assertEquals(
@@ -111,9 +111,6 @@ public class ObjectDefinitionNotificationTermContributorTest {
 	}
 
 	private static User _user;
-
-	@Inject
-	private NotificationHelper _notificationHelper;
 
 	@Inject
 	private NotificationQueueEntryLocalService

@@ -14,9 +14,7 @@
 
 package com.liferay.object.internal.action.executor;
 
-import com.liferay.notification.model.NotificationTemplate;
 import com.liferay.notification.service.NotificationTemplateLocalService;
-import com.liferay.notification.util.NotificationHelper;
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.internal.action.util.ObjectActionVariablesUtil;
@@ -42,17 +40,15 @@ public class NotificationActionExecutorImpl implements ObjectActionExecutor {
 			JSONObject payloadJSONObject, long userId)
 		throws Exception {
 
-		NotificationTemplate notificationTemplate =
-			_notificationTemplateLocalService.getNotificationTemplate(
-				GetterUtil.getLong(
-					parametersUnicodeProperties.get("notificationTemplateId")));
-
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				payloadJSONObject.getLong("objectDefinitionId"));
 
-		_notificationHelper.sendNotification(
-			userId, notificationTemplate, objectDefinition.getClassName(),
+		_notificationTemplateLocalService.sendNotificationTemplate(
+			userId,
+			GetterUtil.getLong(
+				parametersUnicodeProperties.get("notificationTemplateId")),
+			objectDefinition.getClassName(),
 			ObjectActionVariablesUtil.toVariables(
 				_dtoConverterRegistry, objectDefinition, payloadJSONObject));
 	}
@@ -64,9 +60,6 @@ public class NotificationActionExecutorImpl implements ObjectActionExecutor {
 
 	@Reference
 	private DTOConverterRegistry _dtoConverterRegistry;
-
-	@Reference
-	private NotificationHelper _notificationHelper;
 
 	@Reference
 	private NotificationTemplateLocalService _notificationTemplateLocalService;
