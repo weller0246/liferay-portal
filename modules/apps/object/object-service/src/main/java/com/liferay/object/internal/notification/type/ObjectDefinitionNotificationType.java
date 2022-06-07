@@ -33,7 +33,8 @@ public class ObjectDefinitionNotificationType implements NotificationType {
 	@Override
 	public String getClassName(Object object) {
 		if (!(object instanceof ObjectEntry)) {
-			return null;
+			throw new IllegalArgumentException(
+				"Object " + object + " is not an object entry");
 		}
 
 		return ObjectEntry.class.getName();
@@ -42,7 +43,8 @@ public class ObjectDefinitionNotificationType implements NotificationType {
 	@Override
 	public long getClassPK(Object object) {
 		if (!(object instanceof ObjectEntry)) {
-			return 0;
+			throw new IllegalArgumentException(
+				"Object " + object + " is not an object entry");
 		}
 
 		ObjectEntry objectEntry = (ObjectEntry)object;
