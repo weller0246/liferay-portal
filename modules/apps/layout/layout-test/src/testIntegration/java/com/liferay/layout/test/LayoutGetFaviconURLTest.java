@@ -186,7 +186,7 @@ public class LayoutGetFaviconURLTest {
 	}
 
 	@Test
-	public void testPageTemplateCreatedFromLayout() throws Exception {
+	public void testLayoutPageTemplateEntryCreatedFromLayout() throws Exception {
 		byte[] expectedBytes = _getExpectedBytes();
 
 		FileEntry fileEntry = _addFileEntry(expectedBytes);
