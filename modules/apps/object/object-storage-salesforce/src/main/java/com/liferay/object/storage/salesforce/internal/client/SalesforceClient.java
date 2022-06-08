@@ -115,6 +115,7 @@ public class SalesforceClient {
 			options.setPost(true);
 
 			String responseJSON = _http.URLtoString(options);
+
 			Http.Response response = options.getResponse();
 
 			if (response.getResponseCode() != HttpURLConnection.HTTP_OK) {
@@ -122,9 +123,8 @@ public class SalesforceClient {
 
 				throw new PortalException(
 					StringBundler.concat(
-						"Unable to authenticate with Salesforce. Unexpected ",
-						"response status ", response.getResponseCode(),
-						" with response message: ", responseJSON));
+						"Response code ", response.getResponseCode(),
+						" and response JSON ", responseJSON));
 			}
 
 			return _jsonFactory.createJSONObject(_http.URLtoString(options));
