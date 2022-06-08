@@ -268,7 +268,6 @@ public class GetPageContentMVCResourceCommandTest {
 		long defaultSegmentsExperienceId =
 			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
 				_layout.getPlid());
-
 		JournalArticle journalArticle = _createJournalArticle();
 
 		ContentLayoutTestUtil.addFragmentEntryLinkToLayout(
@@ -312,7 +311,6 @@ public class GetPageContentMVCResourceCommandTest {
 		long defaultSegmentsExperienceId =
 			_segmentsExperienceLocalService.fetchDefaultSegmentsExperienceId(
 				_layout.getPlid());
-
 		JournalArticle journalArticle = _createJournalArticle();
 
 		ContentLayoutTestUtil.addFragmentEntryLinkToLayout(
