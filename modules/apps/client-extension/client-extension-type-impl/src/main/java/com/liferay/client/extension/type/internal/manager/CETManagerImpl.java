@@ -207,7 +207,7 @@ public class CETManagerImpl implements CETManager {
 
 		if (cetValidator == null) {
 			throw new ClientExtensionEntryTypeException(
-				"No CET type validator registered for type " + type);
+				"No CET validator registered for type " + type);
 		}
 
 		cetValidator.validate(
