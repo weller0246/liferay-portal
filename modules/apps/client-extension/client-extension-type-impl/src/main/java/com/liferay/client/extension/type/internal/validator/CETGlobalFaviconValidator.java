@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
 import com.liferay.client.extension.type.CETThemeFavicon;
 import com.liferay.client.extension.type.internal.CETThemeFaviconImpl;
+import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,9 +30,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "type=" + ClientExtensionEntryConstants.TYPE_THEME_FAVICON,
-	service = CETTypeValidator.class
+	service = CETValidator.class
 )
-public class CETGlobalFaviconValidator implements CETTypeValidator {
+public class CETGlobalFaviconValidator implements CETValidator {
 
 	@Override
 	public void validate(

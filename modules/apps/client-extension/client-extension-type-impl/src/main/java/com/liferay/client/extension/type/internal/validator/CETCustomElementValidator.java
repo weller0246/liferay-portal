@@ -21,6 +21,7 @@ import com.liferay.client.extension.exception.ClientExtensionEntryFriendlyURLMap
 import com.liferay.client.extension.exception.ClientExtensionEntryInstanceableChangedException;
 import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLsException;
 import com.liferay.client.extension.type.internal.CETCustomElementImpl;
+import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -39,9 +40,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "type=" + ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
-	service = CETTypeValidator.class
+	service = CETValidator.class
 )
-public class CETCustomElementValidator implements CETTypeValidator {
+public class CETCustomElementValidator implements CETValidator {
 
 	@Override
 	public void validate(

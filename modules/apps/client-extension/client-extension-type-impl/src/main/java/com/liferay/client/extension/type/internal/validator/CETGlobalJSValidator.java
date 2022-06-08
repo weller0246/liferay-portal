@@ -18,6 +18,7 @@ import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
 import com.liferay.client.extension.type.CETGlobalJS;
 import com.liferay.client.extension.type.internal.CETGlobalJSImpl;
+import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -29,9 +30,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "type=" + ClientExtensionEntryConstants.TYPE_GLOBAL_JS,
-	service = CETTypeValidator.class
+	service = CETValidator.class
 )
-public class CETGlobalJSValidator implements CETTypeValidator {
+public class CETGlobalJSValidator implements CETValidator {
 
 	@Override
 	public void validate(

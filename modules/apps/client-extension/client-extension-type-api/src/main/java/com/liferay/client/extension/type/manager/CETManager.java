@@ -50,4 +50,11 @@ public interface CETManager {
 	public int getCETsCount(long companyId, String keywords, String type)
 		throws PortalException;
 
+	public void validate(String newTypeSettings, String type)
+		throws PortalException;
+
+	public void validate(
+			String newTypeSettings, String oldTypeSettings, String type)
+		throws PortalException;
+
 }

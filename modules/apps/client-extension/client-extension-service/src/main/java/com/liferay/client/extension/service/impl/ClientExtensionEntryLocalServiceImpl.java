@@ -19,7 +19,7 @@ import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.base.ClientExtensionEntryLocalServiceBaseImpl;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
-import com.liferay.client.extension.type.validator.CETValidator;
+import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.cluster.Clusterable;
@@ -98,7 +98,7 @@ public class ClientExtensionEntryLocalServiceImpl
 		_validateExternalReferenceCode(
 			user.getCompanyId(), externalReferenceCode);
 
-		_cetValidator.validate(typeSettings, type);
+		_cetManager.validate(typeSettings, type);
 
 		clientExtensionEntry.setExternalReferenceCode(externalReferenceCode);
 		clientExtensionEntry.setCompanyId(user.getCompanyId());
@@ -311,7 +311,7 @@ public class ClientExtensionEntryLocalServiceImpl
 			clientExtensionEntryPersistence.findByPrimaryKey(
 				clientExtensionEntryId);
 
-		_cetValidator.validate(
+		_cetManager.validate(
 			typeSettings, clientExtensionEntry.getTypeSettings(),
 			clientExtensionEntry.getType());
 
@@ -494,7 +494,7 @@ public class ClientExtensionEntryLocalServiceImpl
 	private CETFactory _cetFactory;
 
 	@Reference
-	private CETValidator _cetValidator;
+	private CETManager _cetManager;
 
 	@Reference
 	private CompanyLocalService _companyLocalService;

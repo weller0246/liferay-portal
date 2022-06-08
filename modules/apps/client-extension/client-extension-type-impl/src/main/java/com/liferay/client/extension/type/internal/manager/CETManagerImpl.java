@@ -29,6 +29,9 @@ import com.liferay.client.extension.type.internal.CETThemeCSSImpl;
 import com.liferay.client.extension.type.internal.CETThemeFaviconImpl;
 import com.liferay.client.extension.type.internal.CETThemeJSImpl;
 import com.liferay.client.extension.type.manager.CETManager;
+import com.liferay.client.extension.type.validator.CETValidator;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
+import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.search.Sort;
@@ -36,6 +39,7 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -46,7 +50,9 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
@@ -168,8 +174,58 @@ public class CETManagerImpl implements CETManager {
 		return cets.size();
 	}
 
+	@Override
+	public void validate(String newTypeSettings, String type)
+		throws PortalException {
+
+		validate(newTypeSettings, null, type);
+	}
+
+	@Override
+	public void validate(
+			String newTypeSettings, String oldTypeSettings, String type)
+		throws PortalException {
+
+		UnicodeProperties newTypeSettingsUnicodeProperties =
+			UnicodePropertiesBuilder.create(
+				true
+			).load(
+				newTypeSettings
+			).build();
+
+		UnicodeProperties oldTypeSettingsUnicodeProperties = null;
+
+		if (oldTypeSettings != null) {
+			oldTypeSettingsUnicodeProperties = UnicodePropertiesBuilder.create(
+				true
+			).load(
+				oldTypeSettings
+			).build();
+		}
+
+		CETValidator cetValidator = _serviceTrackerMap.getService(type);
+
+		if (cetValidator == null) {
+			throw new ClientExtensionEntryTypeException(
+				"No CET type validator registered for type " + type);
+		}
+
+		cetValidator.validate(
+			newTypeSettingsUnicodeProperties, oldTypeSettingsUnicodeProperties);
+	}
+
+	@Activate
+	protected void activate(BundleContext bundleContext) {
+		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
+			bundleContext, CETValidator.class, "type");
+	}
+
 	@Deactivate
 	protected void deactivate() {
+		_serviceTrackerMap.close();
+
+		_serviceTrackerMap = null;
+
 		for (Map.Entry<Long, Map<String, CET>> entry1 : _cetsMaps.entrySet()) {
 			Map<String, CET> cetsMap = entry1.getValue();
 
@@ -277,5 +333,6 @@ public class CETManagerImpl implements CETManager {
 
 	private final Map<String, List<ServiceRegistration<?>>>
 		_serviceRegistrationsMaps = new ConcurrentHashMap<>();
+	private ServiceTrackerMap<String, CETValidator> _serviceTrackerMap;
 
 }

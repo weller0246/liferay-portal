@@ -19,6 +19,7 @@ import com.liferay.client.extension.exception.ClientExtensionEntryFriendlyURLMap
 import com.liferay.client.extension.exception.ClientExtensionEntryInstanceableChangedException;
 import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
 import com.liferay.client.extension.type.internal.CETIFrameImpl;
+import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -33,9 +34,9 @@ import org.osgi.service.component.annotations.Component;
  */
 @Component(
 	property = "type=" + ClientExtensionEntryConstants.TYPE_IFRAME,
-	service = CETTypeValidator.class
+	service = CETValidator.class
 )
-public class CETIFrameValidator implements CETTypeValidator {
+public class CETIFrameValidator implements CETValidator {
 
 	@Override
 	public void validate(
