@@ -131,6 +131,42 @@ public class LayoutGetFaviconURLTest {
 	}
 
 	@Test
+	public void testLayoutPageTemplateEntryCreatedFromLayout()
+		throws Exception {
+
+		byte[] expectedBytes = _getExpectedBytes();
+
+		FileEntry fileEntry = _addFileEntry(expectedBytes);
+
+		_layout.setFaviconFileEntryId(fileEntry.getFileEntryId());
+
+		LayoutPageTemplateCollection layoutPageTemplateCollection =
+			_layoutPageTemplateCollectionLocalService.
+				addLayoutPageTemplateCollection(
+					TestPropsValues.getUserId(), _group.getGroupId(),
+					"Test Page Template Collection", null, _serviceContext);
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			_layoutPageTemplateEntryService.
+				createLayoutPageTemplateEntryFromLayout(
+					SegmentsEntryConstants.ID_DEFAULT, _layout,
+					"Test Page Template",
+					layoutPageTemplateCollection.
+						getLayoutPageTemplateCollectionId(),
+					_serviceContext);
+
+		Layout layoutPageTemplateLayout = _layoutLocalService.fetchLayout(
+			layoutPageTemplateEntry.getPlid());
+
+		Layout layoutPageTemplateDraftLayout =
+			layoutPageTemplateLayout.fetchDraftLayout();
+
+		Assert.assertArrayEquals(
+			expectedBytes,
+			_getBytes(layoutPageTemplateDraftLayout.getFaviconURL()));
+	}
+
+	@Test
 	public void testLayoutWhenSetToLayoutAndLayoutSet() throws Exception {
 		LayoutSet layoutSet = _layout.getLayoutSet();
 
@@ -183,40 +219,6 @@ public class LayoutGetFaviconURLTest {
 
 		Assert.assertArrayEquals(
 			layoutFaviconBytes, _getBytes(_layout.getFaviconURL()));
-	}
-
-	@Test
-	public void testLayoutPageTemplateEntryCreatedFromLayout() throws Exception {
-		byte[] expectedBytes = _getExpectedBytes();
-
-		FileEntry fileEntry = _addFileEntry(expectedBytes);
-
-		_layout.setFaviconFileEntryId(fileEntry.getFileEntryId());
-
-		LayoutPageTemplateCollection layoutPageTemplateCollection =
-			_layoutPageTemplateCollectionLocalService.
-				addLayoutPageTemplateCollection(
-					TestPropsValues.getUserId(), _group.getGroupId(),
-					"Test Page Template Collection", null, _serviceContext);
-
-		LayoutPageTemplateEntry layoutPageTemplateEntry =
-			_layoutPageTemplateEntryService.
-				createLayoutPageTemplateEntryFromLayout(
-					SegmentsEntryConstants.ID_DEFAULT, _layout,
-					"Test Page Template",
-					layoutPageTemplateCollection.
-						getLayoutPageTemplateCollectionId(),
-					_serviceContext);
-
-		Layout layoutPageTemplateLayout = _layoutLocalService.fetchLayout(
-			layoutPageTemplateEntry.getPlid());
-
-		Layout layoutPageTemplateDraftLayout =
-			layoutPageTemplateLayout.fetchDraftLayout();
-
-		Assert.assertArrayEquals(
-			expectedBytes,
-			_getBytes(layoutPageTemplateDraftLayout.getFaviconURL()));
 	}
 
 	private FileEntry _addFileEntry(byte[] bytes) throws Exception {
