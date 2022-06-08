@@ -15,10 +15,6 @@
 package com.liferay.client.extension.web.internal.display.context;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementCSSURLsException;
-import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementHTMLElementNameException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CETCustomElement;
 import com.liferay.client.extension.type.CETGlobalCSS;
@@ -33,7 +29,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.PortletCategory;
-import com.liferay.portal.kernel.servlet.MultiSessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -373,7 +368,7 @@ public class EditClientExtensionEntryDisplayContext {
 
 	public boolean isEditingClientExtensionEntryType(String... types) {
 		for (String type : types) {
-			if (Objects.equals(type, _getClientExtensionEntryType())) {
+			if (Objects.equals(getType(), type)) {
 				return true;
 			}
 		}
@@ -477,42 +472,6 @@ public class EditClientExtensionEntryDisplayContext {
 		}
 
 		return _cetThemeJS;
-	}
-
-	private String _getClientExtensionEntryType() {
-		String errorSection = _getErrorSection();
-
-		if (errorSection != null) {
-			return errorSection;
-		}
-
-		return getType();
-	}
-
-	private String _getErrorSection() {
-		if (MultiSessionErrors.contains(
-				_portletRequest,
-				ClientExtensionEntryInvalidURLException.class.getName())) {
-
-			return ClientExtensionEntryConstants.TYPE_IFRAME;
-		}
-
-		if (MultiSessionErrors.contains(
-				_portletRequest,
-				ClientExtensionEntryCustomElementCSSURLsException.class.
-					getName()) ||
-			MultiSessionErrors.contains(
-				_portletRequest,
-				ClientExtensionEntryCustomElementHTMLElementNameException.class.
-					getName()) ||
-			MultiSessionErrors.contains(
-				_portletRequest,
-				ClientExtensionEntryInvalidURLsException.class.getName())) {
-
-			return ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT;
-		}
-
-		return null;
 	}
 
 	private HttpServletRequest _getHttpServletRequest() {

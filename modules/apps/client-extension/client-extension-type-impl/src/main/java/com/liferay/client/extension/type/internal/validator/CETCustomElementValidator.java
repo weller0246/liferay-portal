@@ -15,11 +15,7 @@
 package com.liferay.client.extension.type.internal.validator;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementCSSURLsException;
-import com.liferay.client.extension.exception.ClientExtensionEntryCustomElementHTMLElementNameException;
-import com.liferay.client.extension.exception.ClientExtensionEntryFriendlyURLMappingException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInstanceableChangedException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLsException;
+import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.type.internal.CETCustomElementImpl;
 import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.petra.string.CharPool;
@@ -58,28 +54,25 @@ public class CETCustomElementValidator implements CETValidator {
 		if (Validator.isNotNull(cssURLs)) {
 			for (String cssURL : cssURLs.split(StringPool.NEW_LINE)) {
 				if (!Validator.isUrl(cssURL, true)) {
-					throw new ClientExtensionEntryCustomElementCSSURLsException(
-						"Invalid custom element CSS URL " + cssURL);
+					throw new ClientExtensionEntryTypeSettingsException(
+						"css-url-x-is-invalid", cssURL);
 				}
 			}
 		}
 
-		String friendlyURLMapping =
-			newCETCustomElementImpl.getFriendlyURLMapping();
-
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			friendlyURLMapping);
+			newCETCustomElementImpl.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
-			throw new ClientExtensionEntryFriendlyURLMappingException(
-				"Invalid friendly URL mapping " + friendlyURLMapping);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-friendly-url-mapping");
 		}
 
 		String htmlElementName = newCETCustomElementImpl.getHTMLElementName();
 
 		if (Validator.isNull(htmlElementName)) {
-			throw new ClientExtensionEntryCustomElementHTMLElementNameException(
-				"Custom element HTML element name is null");
+			throw new ClientExtensionEntryTypeSettingsException(
+				"html-element-name-is-empty");
 		}
 
 		char[] htmlElementNameCharArray = htmlElementName.toCharArray();
@@ -87,9 +80,8 @@ public class CETCustomElementValidator implements CETValidator {
 		if (!Validator.isChar(htmlElementNameCharArray[0]) ||
 			!Character.isLowerCase(htmlElementNameCharArray[0])) {
 
-			throw new ClientExtensionEntryCustomElementHTMLElementNameException(
-				"Custom element HTML element name must start with a " +
-					"lowercase letter");
+			throw new ClientExtensionEntryTypeSettingsException(
+				"html-element-name-must-start-with-a-lowercase-letter");
 		}
 
 		boolean containsDash = false;
@@ -104,34 +96,32 @@ public class CETCustomElementValidator implements CETValidator {
 				(c == CharPool.PERIOD) || (c == CharPool.UNDERLINE)) {
 			}
 			else {
-				throw new ClientExtensionEntryCustomElementHTMLElementNameException(
-					"Custom element HTML element name contains an invalid " +
-						"character");
+				throw new ClientExtensionEntryTypeSettingsException(
+					"html-element-name-contains-invalid-character-x", c);
 			}
 		}
 
 		if (!containsDash) {
-			throw new ClientExtensionEntryCustomElementHTMLElementNameException(
-				"Custom element HTML element name must contain at least one " +
-					"hyphen");
+			throw new ClientExtensionEntryTypeSettingsException(
+				"html-element-name-must-contain-at-least-one-hyphen");
 		}
 
 		if (_reservedHTMLElementNames.contains(htmlElementName)) {
-			throw new ClientExtensionEntryCustomElementHTMLElementNameException(
-				"Reserved custom element HTML element name " + htmlElementName);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"x-is-a-reserved-html-element-name", htmlElementName);
 		}
 
 		String urls = newCETCustomElementImpl.getURLs();
 
 		if (Validator.isNull(urls)) {
-			throw new ClientExtensionEntryInvalidURLsException(
-				"Invalid custom element URLs " + urls);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-at-least-one-url");
 		}
 
 		for (String url : urls.split(StringPool.NEW_LINE)) {
 			if (!Validator.isUrl(url, true)) {
-				throw new ClientExtensionEntryInvalidURLsException(
-					"Invalid custom element URL " + url);
+				throw new ClientExtensionEntryTypeSettingsException(
+					"url-x-is-invalid", url);
 			}
 		}
 
@@ -142,7 +132,8 @@ public class CETCustomElementValidator implements CETValidator {
 			if (newCETCustomElementImpl.isInstanceable() !=
 					oldCETCustomElementImpl.isInstanceable()) {
 
-				throw new ClientExtensionEntryInstanceableChangedException();
+				throw new ClientExtensionEntryTypeSettingsException(
+					"the-instanceable-value-cannot-be-changed");
 			}
 		}
 	}

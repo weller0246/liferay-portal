@@ -19,26 +19,24 @@ import com.liferay.portal.kernel.exception.PortalException;
 /**
  * @author Brian Wing Shun Chan
  */
-public class ClientExtensionEntryInstanceableChangedException
-	extends PortalException {
+public class ClientExtensionEntryTypeSettingsException extends PortalException {
 
-	public ClientExtensionEntryInstanceableChangedException() {
+	public ClientExtensionEntryTypeSettingsException(
+		String messageKey, Object... messageArguments) {
+
+		_messageKey = messageKey;
+		_messageArguments = messageArguments;
 	}
 
-	public ClientExtensionEntryInstanceableChangedException(String msg) {
-		super(msg);
+	public Object[] getMessageArguments() {
+		return _messageArguments;
 	}
 
-	public ClientExtensionEntryInstanceableChangedException(
-		String msg, Throwable throwable) {
-
-		super(msg, throwable);
+	public String getMessageKey() {
+		return _messageKey;
 	}
 
-	public ClientExtensionEntryInstanceableChangedException(
-		Throwable throwable) {
-
-		super(throwable);
-	}
+	private final Object[] _messageArguments;
+	private final String _messageKey;
 
 }

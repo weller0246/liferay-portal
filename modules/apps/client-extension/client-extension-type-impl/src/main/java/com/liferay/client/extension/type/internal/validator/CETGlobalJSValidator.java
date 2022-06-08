@@ -15,7 +15,7 @@
 package com.liferay.client.extension.type.internal.validator;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
+import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.type.CETGlobalJS;
 import com.liferay.client.extension.type.internal.CETGlobalJSImpl;
 import com.liferay.client.extension.type.validator.CETValidator;
@@ -43,11 +43,9 @@ public class CETGlobalJSValidator implements CETValidator {
 		CETGlobalJS newCETGlobalJSImpl = new CETGlobalJSImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String url = newCETGlobalJSImpl.getURL();
-
-		if (!Validator.isUrl(url)) {
-			throw new ClientExtensionEntryInvalidURLException(
-				"Invalid URL " + url);
+		if (!Validator.isUrl(newCETGlobalJSImpl.getURL())) {
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-url");
 		}
 	}
 

@@ -15,9 +15,7 @@
 package com.liferay.client.extension.type.internal.validator;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.exception.ClientExtensionEntryFriendlyURLMappingException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInstanceableChangedException;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
+import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.type.internal.CETIFrameImpl;
 import com.liferay.client.extension.type.validator.CETValidator;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -47,21 +45,17 @@ public class CETIFrameValidator implements CETValidator {
 		CETIFrameImpl newCETIFrameImpl = new CETIFrameImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String friendlyURLMapping = newCETIFrameImpl.getFriendlyURLMapping();
-
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			friendlyURLMapping);
+			newCETIFrameImpl.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
-			throw new ClientExtensionEntryFriendlyURLMappingException(
-				"Invalid friendly URL mapping " + friendlyURLMapping);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-friendly-url-mapping");
 		}
 
-		String url = newCETIFrameImpl.getURL();
-
-		if (!Validator.isUrl(url)) {
-			throw new ClientExtensionEntryInvalidURLException(
-				"Invalid URL " + url);
+		if (!Validator.isUrl(newCETIFrameImpl.getURL())) {
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-url");
 		}
 
 		if (oldTypeSettingsUnicodeProperties != null) {
@@ -71,7 +65,8 @@ public class CETIFrameValidator implements CETValidator {
 			if (newCETIFrameImpl.isInstanceable() !=
 					oldCETIFrameImpl.isInstanceable()) {
 
-				throw new ClientExtensionEntryInstanceableChangedException();
+				throw new ClientExtensionEntryTypeSettingsException(
+					"the-instanceable-value-cannot-be-changed");
 			}
 		}
 	}

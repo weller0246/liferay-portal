@@ -15,7 +15,7 @@
 package com.liferay.client.extension.type.internal.validator;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
-import com.liferay.client.extension.exception.ClientExtensionEntryInvalidURLException;
+import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.type.CETThemeCSS;
 import com.liferay.client.extension.type.internal.CETThemeCSSImpl;
 import com.liferay.client.extension.type.validator.CETValidator;
@@ -46,22 +46,22 @@ public class CETThemeCSSValidator implements CETValidator {
 		String baseURL = newCETThemeCSSImpl.getBaseURL();
 
 		if (!Validator.isBlank(baseURL) && !Validator.isUrl(baseURL, true)) {
-			throw new ClientExtensionEntryInvalidURLException(
-				"Invalid base URL " + baseURL);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-base-url");
 		}
 
 		String clayURL = newCETThemeCSSImpl.getClayURL();
 
 		if (!Validator.isBlank(clayURL) && !Validator.isUrl(clayURL, true)) {
-			throw new ClientExtensionEntryInvalidURLException(
-				"Invalid Clay URL " + clayURL);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-clay-url");
 		}
 
 		String mainURL = newCETThemeCSSImpl.getMainURL();
 
 		if (!Validator.isBlank(mainURL) && !Validator.isUrl(mainURL, true)) {
-			throw new ClientExtensionEntryInvalidURLException(
-				"Invalid Main URL " + mainURL);
+			throw new ClientExtensionEntryTypeSettingsException(
+				"please-enter-a-valid-main-url");
 		}
 	}
 
