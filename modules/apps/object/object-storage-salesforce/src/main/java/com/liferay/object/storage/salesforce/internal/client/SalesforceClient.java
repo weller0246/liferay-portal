@@ -53,13 +53,13 @@ public class SalesforceClient {
 
 			options.addHeader(
 				"Authorization", "Bearer " + _getAccessToken(false));
-
 			options.setLocation(
 				HttpComponentsUtil.addParameter(
 					_instanceUrl + "/services/data/v54.0/query/", "q",
 					queryString));
 
 			String responseJSON = _http.URLtoString(options);
+
 			Http.Response response = options.getResponse();
 
 			if (response.getResponseCode() ==
@@ -69,6 +69,7 @@ public class SalesforceClient {
 					"Authorization", "Bearer " + _getAccessToken(true));
 
 				responseJSON = _http.URLtoString(options);
+
 				response = options.getResponse();
 			}
 

@@ -41,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -209,30 +210,33 @@ public class SalesforceObjectEntryManagerImpl implements ObjectEntryManager {
 	}
 
 	private ObjectEntry _toObjectEntry(JSONObject jsonObject) throws Exception {
-		ObjectEntry objectEntry = new ObjectEntry();
-
-		objectEntry.setActions(Collections.emptyMap());
-
-		objectEntry.setDateCreated(
-			_dateFormat.parse(jsonObject.getString("CreatedDate")));
-		objectEntry.setDateModified(
-			_dateFormat.parse(jsonObject.getString("LastModifiedDate")));
-
-		Status status = new Status();
-
-		status.setCode(0);
-		status.setLabel("approved");
-		status.setLabel_i18n("Approved");
-
-		objectEntry.setStatus(status);
+		ObjectEntry objectEntry = new ObjectEntry() {
+			{
+				actions = Collections.emptyMap();
+				dateCreated = _dateFormat.parse(
+					jsonObject.getString("CreatedDate"));
+				dateModified = _dateFormat.parse(
+					jsonObject.getString("LastModifiedDate"));
+				status = new Status() {
+					{
+						code = 0;
+						label = "approved";
+						label_i18n = "Approved";
+					}
+				};
+			}
+		};
 
 		Iterator<String> iterator = jsonObject.keys();
 
 		while (iterator.hasNext()) {
 			String key = iterator.next();
 
-			if (StringUtil.contains(key, "__c", StringPool.BLANK) &&
-				Validator.isNotNull(jsonObject.get(key))) {
+			if (key.equals("Id")) {
+				objectEntry.setExternalReferenceCode(jsonObject.getString(key));
+			}
+			else if (StringUtil.contains(key, "__c", StringPool.BLANK) &&
+					 Validator.isNotNull(jsonObject.get(key))) {
 
 				String customFieldName = StringUtil.removeLast(key, "__c");
 
@@ -242,13 +246,9 @@ public class SalesforceObjectEntryManagerImpl implements ObjectEntryManager {
 				customFieldName = StringUtil.lowerCaseFirstLetter(
 					customFieldName);
 
-				objectEntry.getProperties(
-				).put(
-					customFieldName, jsonObject.get(key)
-				);
-			}
-			else if (key.equals("Id")) {
-				objectEntry.setExternalReferenceCode(jsonObject.getString(key));
+				Map<String, Object> properties = objectEntry.getProperties();
+
+				properties.put(customFieldName, jsonObject.get(key));
 			}
 		}
 
