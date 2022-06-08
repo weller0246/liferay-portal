@@ -205,17 +205,23 @@ public class SalesforceObjectEntryManagerImpl implements ObjectEntryManager {
 	private List<ObjectEntry> _toObjectEntries(JSONArray jsonArray)
 		throws Exception {
 
+		DateFormat dateFormat = new SimpleDateFormat(
+			"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
 		return JSONUtil.toList(
-			jsonArray, jsonObject -> _toObjectEntry(jsonObject));
+			jsonArray, jsonObject -> _toObjectEntry(dateFormat, jsonObject));
 	}
 
-	private ObjectEntry _toObjectEntry(JSONObject jsonObject) throws Exception {
+	private ObjectEntry _toObjectEntry(
+			DateFormat dateFormat, JSONObject jsonObject)
+		throws Exception {
+
 		ObjectEntry objectEntry = new ObjectEntry() {
 			{
 				actions = Collections.emptyMap();
-				dateCreated = _dateFormat.parse(
+				dateCreated = dateFormat.parse(
 					jsonObject.getString("CreatedDate"));
-				dateModified = _dateFormat.parse(
+				dateModified = dateFormat.parse(
 					jsonObject.getString("LastModifiedDate"));
 				status = new Status() {
 					{
@@ -254,9 +260,6 @@ public class SalesforceObjectEntryManagerImpl implements ObjectEntryManager {
 
 		return objectEntry;
 	}
-
-	private static final DateFormat _dateFormat = new SimpleDateFormat(
-		"yyyy-MM-dd'T'HH:mm:ss.SSSZ");
 
 	@Reference
 	private SalesforceClient _salesforceClient;
