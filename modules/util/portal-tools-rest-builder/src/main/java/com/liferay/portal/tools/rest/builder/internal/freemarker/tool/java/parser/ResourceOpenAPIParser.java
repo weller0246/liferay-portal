@@ -261,8 +261,9 @@ public class ResourceOpenAPIParser {
 		List<JavaMethodSignature> javaMethodSignatures,
 		Map<String, String> properties) {
 
+		Set<String> createStrategies = new HashSet<>();
+
 		Set<String> propertyNames = properties.keySet();
-		Set<String> strategies = new HashSet<>();
 
 		for (JavaMethodSignature javaMethodSignature : javaMethodSignatures) {
 			String methodName = javaMethodSignature.getMethodName();
@@ -274,7 +275,7 @@ public class ResourceOpenAPIParser {
 			}
 
 			if (methodName.equals("post" + parentSchemaName + schemaName)) {
-				strategies.add("INSERT");
+				createStrategies.add("INSERT");
 			}
 			else if (methodName.equals(
 						StringBundler.concat(
@@ -282,31 +283,31 @@ public class ResourceOpenAPIParser {
 							"ByExternalReferenceCode")) &&
 					 propertyNames.contains("externalReferenceCode")) {
 
-				strategies.add("UPSERT");
+				createStrategies.add("UPSERT");
 			}
 		}
 
-		return strategies;
+		return createStrategies;
 	}
 
 	public static Set<String> getVulcanBatchImplementationUpdateStrategies(
 		List<JavaMethodSignature> javaMethodSignatures) {
 
-		Set<String> strategies = new HashSet<>();
+		Set<String> updateStrategies = new HashSet<>();
 
 		for (JavaMethodSignature javaMethodSignature : javaMethodSignatures) {
 			String methodName = javaMethodSignature.getMethodName();
 			String schemaName = javaMethodSignature.getSchemaName();
 
-			if (methodName.equals("put" + schemaName)) {
-				strategies.add("UPDATE");
+			if (methodName.equals("patch" + schemaName)) {
+				updateStrategies.add("PARTIAL_UPDATE");
 			}
-			else if (methodName.equals("patch" + schemaName)) {
-				strategies.add("PARTIAL_UPDATE");
+			else if (methodName.equals("put" + schemaName)) {
+				updateStrategies.add("UPDATE");
 			}
 		}
 
-		return strategies;
+		return updateStrategies;
 	}
 
 	public static boolean hasReadVulcanBatchImplementation(

@@ -440,7 +440,6 @@ public abstract class Base${schemaName}ResourceImpl
 
 		@Override
 		public void delete(java.util.Collection<${javaDataType}> ${schemaVarNames}, Map<String, Serializable> parameters) throws Exception {
-
 			<#if deleteBatchJavaMethodSignature?? && properties?keys?seq_contains("id")>
 				for (${javaDataType} ${schemaVarName} : ${schemaVarNames}) {
 					delete${schemaName}(${schemaVarName}.getId());
@@ -455,7 +454,7 @@ public abstract class Base${schemaName}ResourceImpl
 		public Set<String> getAvailableCreateStrategies() {
 			return SetUtil.fromArray(
 				<#if createStrategies?has_content>
-					"${createStrategies?join("\",\"")}"
+					"${createStrategies?join("\", \"")}"
 				</#if>
 			);
 		}
@@ -463,7 +462,7 @@ public abstract class Base${schemaName}ResourceImpl
 		public Set<String> getAvailableUpdateStrategies() {
 			return SetUtil.fromArray(
 				<#if updateStrategies?has_content>
-					"${updateStrategies?join("\",\"")}"
+					"${updateStrategies?join("\", \"")}"
 				</#if>
 			);
 		}
@@ -549,7 +548,6 @@ public abstract class Base${schemaName}ResourceImpl
 
 		@Override
 		public void update(java.util.Collection<${javaDataType}> ${schemaVarNames}, Map<String, Serializable> parameters) throws Exception {
-
 			<#if updateStrategies?has_content>
 				UnsafeConsumer<${javaDataType}, Exception> ${schemaVarName}UnsafeConsumer = null;
 
