@@ -89,16 +89,16 @@ public class AddContentLayoutMVCActionCommandCopyFaviconTest {
 				WorkflowConstants.STATUS_APPROVED,
 				ServiceContextTestUtil.getServiceContext(_group.getGroupId()));
 
-		Layout pageTemplateLayout = _layoutLocalService.fetchLayout(
+		Layout layout = _layoutLocalService.fetchLayout(
 			_layoutPageTemplateEntry.getPlid());
 
 		_expectedBytes = _getExpectedBytes();
 
 		FileEntry fileEntry = _addFileEntry(_expectedBytes);
 
-		pageTemplateLayout.setFaviconFileEntryId(fileEntry.getFileEntryId());
+		layout.setFaviconFileEntryId(fileEntry.getFileEntryId());
 
-		_layoutLocalService.updateLayout(pageTemplateLayout);
+		_layoutLocalService.updateLayout(layout);
 	}
 
 	@Test
