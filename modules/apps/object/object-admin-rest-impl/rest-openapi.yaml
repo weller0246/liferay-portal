@@ -162,6 +162,8 @@ components:
                     type: string
                 required:
                     type: boolean
+                system:
+                    type: boolean
                 type:
                     deprecated: true
                     enum: [BigDecimal, Boolean, Clob, Date, Double, Integer, Long, String]
