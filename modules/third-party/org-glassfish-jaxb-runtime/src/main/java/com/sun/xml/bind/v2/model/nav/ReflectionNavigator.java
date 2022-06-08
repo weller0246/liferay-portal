@@ -611,6 +611,10 @@ import com.sun.xml.bind.v2.runtime.Location;
         // }
         // to be overrided. Handling this correctly needs a careful implementation
 
+		if ((base == Object.class) || _isSkipOverriding(base.getName())) {
+			return false;
+		}
+
         final String name = method.getName();
         final Class[] params = method.getParameterTypes();
 
@@ -673,4 +677,56 @@ import com.sun.xml.bind.v2.runtime.Location;
 
         return t;
     }
+
+	private boolean _isSkipOverriding(String name) {
+		if (_skipOverridingPackageNames.length == 0) {
+			return false;
+		}
+
+		String packageName = name;
+
+		int index = name.lastIndexOf('.');
+
+		if (index != -1) {
+			packageName = name.substring(0, index);
+		}
+
+		index = Arrays.binarySearch(_skipOverridingPackageNames, packageName);
+
+		if (index >= 0) {
+			return true;
+		}
+
+		index = -index - 1;
+
+		if ((index == 0) ||
+			!packageName.startsWith(_skipOverridingPackageNames[index - 1])) {
+
+			return false;
+		}
+
+		return true;
+	}
+
+	private static final String[] _skipOverridingPackageNames;
+
+	static {
+		String packageNames = System.getProperty(
+			"jaxb-runtime.skip.overriding.packages");
+
+		if ((packageNames == null) || packageNames.isEmpty()) {
+			_skipOverridingPackageNames = new String[0];
+		}
+		else {
+			_skipOverridingPackageNames = packageNames.split(",");
+
+			for (int i = 0; i < _skipOverridingPackageNames.length; i++) {
+				_skipOverridingPackageNames[i] =
+					_skipOverridingPackageNames[i].trim();
+			}
+
+			Arrays.sort(_skipOverridingPackageNames);
+		}
+	}
 }
+/* @generated */
