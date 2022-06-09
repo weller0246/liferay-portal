@@ -79,11 +79,11 @@ public class ContentDashboardFileExtensionItemSelectorViewTest {
 	@Test
 	public void testGetData() throws Exception {
 		_addFileEntry("java");
-		_addFileEntry("png");
 		_addFileEntry("liferay");
 		_addFileEntry("mp3");
 		_addFileEntry("mp4");
 		_addFileEntry("pdf");
+		_addFileEntry("png");
 		_addFileEntry("ppt");
 		_addFileEntry("txt");
 		_addFileEntry("xls");
