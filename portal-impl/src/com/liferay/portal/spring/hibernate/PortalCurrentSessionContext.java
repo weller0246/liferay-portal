@@ -96,7 +96,7 @@ public class PortalCurrentSessionContext implements CurrentSessionContext {
 		}
 
 		throw new HibernateException(
-			"Unable to get Session for current thread");
+			"Unable to get current session for current thread");
 	}
 
 	private final SessionFactoryImplementor _sessionFactoryImplementor;
