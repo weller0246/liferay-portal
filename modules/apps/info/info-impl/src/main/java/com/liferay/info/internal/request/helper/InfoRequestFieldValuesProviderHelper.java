@@ -64,10 +64,10 @@ public class InfoRequestFieldValuesProviderHelper {
 		String className = PortalUtil.getClassName(
 			ParamUtil.getLong(httpServletRequest, "classNameId"));
 
-		Map<String, String[]> parameterMap =
-			httpServletRequest.getParameterMap();
-
 		for (InfoField<?> infoField : _getInfoFields(className)) {
+			Map<String, String[]> parameterMap =
+				httpServletRequest.getParameterMap();
+
 			if (ArrayUtil.isEmpty(parameterMap.get(infoField.getName()))) {
 				continue;
 			}
