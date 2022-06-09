@@ -96,14 +96,69 @@ definition {
 		}
 	}
 
-	@description = "[Please Update]"
-	@ignore = "Test Stub"
-	@priority = "4"
+	@description = "Verify the shipping method selection step is skipped when a buyer without the 'Manage Commerce Order Shipping Options' permission checks out an order."
+	@priority = "3"
 	test UsersWithoutManagePermissionSkipsShippingOptionStepDuringCheckout {
 		property portal.acceptance = "false";
 
-		// TODO COMMERCE-8614 UsersWithoutManagePermissionSkipsShippingOptionStepDuringCheckout pending implementation
+		task ("Given a new Flat Rate shipping option with amount set to 50") {
+			CommerceChannels.openChannelsAdmin();
 
+			CommerceNavigator.gotoEntry(entryName = "Minium Portal");
+
+			CommerceChannels.gotoShippingMethodShippingOptions(shippingMethod = "Flat Rate");
+
+			CommerceChannels.addShippingOption(
+				amount = "50",
+				key = "test-shipping-option",
+				name = "Test Shipping Option");
+		}
+
+		task ("And given Flat Rate / Expedited Delivery is set as the default shipping option for the Commerce Account") {
+			CommerceJSONShippingMethods._setDefaultAccountShippingOption(
+				accountName = "Commerce Account",
+				channelName = "Minium Portal",
+				shippingMethod = "Flat Rate",
+				shippingOption = "Expedited Delivery");
+		}
+
+		task ("And given the Buyer role does not have the 'Manage Commerce Order Shipping Options' permission") {
+			Permissions.removePermissionViaAPI(
+				groupName = "Minium",
+				resourceAction = "MANAGE_COMMERCE_ORDER_SHIPPING_OPTIONS",
+				resourceName = "com.liferay.commerce.order",
+				roleTitle = "Buyer",
+				roleType = "account");
+		}
+
+		task ("When the buyer checks out an order") {
+			User.logoutPG();
+
+			CommerceLogin.miniumLogin(
+				password = "test",
+				urlAppend = "web/minium",
+				userEmailAddress = "buyer@liferay.com");
+
+			FrontStore.addInitializerProductToCart(
+				productName = "U-Joint",
+				productQuantity = "1");
+
+			CommerceCheckout.gotoCheckoutViaMiniCart();
+		}
+
+		task ("Then the shipping method selection step is skipped and the default shipping method is applied") {
+			CommerceCheckout.initializersCheckout(
+				manageShippingOptionsPermission = "false",
+				newAddressAddress = "Test Address",
+				newAddressCity = "Test City",
+				newAddressCountry = "United States",
+				newAddressName = "Address Name",
+				newAddressZipCode = "Test Zip Code",
+				productName = "U-Joint",
+				productQuantity = "1",
+				productUnitPrice = "24",
+				shippingMethod = "Expedited");
+		}
 	}
 
 }
