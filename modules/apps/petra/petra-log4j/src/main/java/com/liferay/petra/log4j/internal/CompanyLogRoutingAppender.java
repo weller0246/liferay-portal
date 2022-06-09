@@ -209,16 +209,19 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 			directWriteRolloverStrategyBuilder.withCompressionLevelStr(
 				String.valueOf(
 					directWriteRolloverStrategy.getCompressionLevel()));
-			directWriteRolloverStrategyBuilder.withMaxFiles(
-				String.valueOf(directWriteRolloverStrategy.getMaxFiles()));
-			directWriteRolloverStrategyBuilder.withStopCustomActionsOnError(
-				directWriteRolloverStrategy.isStopCustomActionsOnError());
+			directWriteRolloverStrategyBuilder.withConfig(
+				loggerContext.getConfiguration());
 
 			List<Action> customActions =
 				directWriteRolloverStrategy.getCustomActions();
 
 			directWriteRolloverStrategyBuilder.withCustomActions(
 				customActions.toArray(new Action[0]));
+
+			directWriteRolloverStrategyBuilder.withMaxFiles(
+				String.valueOf(directWriteRolloverStrategy.getMaxFiles()));
+			directWriteRolloverStrategyBuilder.withStopCustomActionsOnError(
+				directWriteRolloverStrategy.isStopCustomActionsOnError());
 
 			PatternProcessor patternProcessor =
 				directWriteRolloverStrategy.getTempCompressedFilePattern();
@@ -228,9 +231,6 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 					withTempCompressedFilePattern(
 						patternProcessor.getPattern());
 			}
-
-			directWriteRolloverStrategyBuilder.withConfig(
-				loggerContext.getConfiguration());
 
 			builder.withStrategy(directWriteRolloverStrategyBuilder.build());
 		}
