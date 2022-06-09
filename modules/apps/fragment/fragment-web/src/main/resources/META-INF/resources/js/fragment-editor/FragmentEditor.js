@@ -45,6 +45,7 @@ const FragmentEditor = ({
 		},
 		autocompleteTags,
 		cacheable,
+		cacheableEnabled,
 		dataAttributes,
 		fieldTypes: availableFieldTypes,
 		fragmentCollectionId,
@@ -295,6 +296,7 @@ const FragmentEditor = ({
 											<input
 												checked={isCacheable}
 												className="custom-control-input toggle-switch-check"
+												disabled={!cacheableEnabled}
 												name="cacheable"
 												onChange={(event) =>
 													setIsCacheable(
