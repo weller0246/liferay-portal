@@ -71,10 +71,10 @@ public class CommerceAccountRoleUpgradeProcess extends UpgradeProcess {
 				AutoBatchPreparedStatementUtil.autoBatch(
 					connection.prepareStatement(
 						StringBundler.concat(
-							"update Role_ set classNameId = '",
+							"update Role_ set classNameId = ",
 							_classNameLocalService.getClassNameId(
 								AccountRole.class),
-							"',  classPK = ?, type_ = ",
+							",  classPK = ?, type_ = ",
 							RoleConstants.TYPE_ACCOUNT,
 							" where roleId = ?")))) {
 
@@ -185,15 +185,15 @@ public class CommerceAccountRoleUpgradeProcess extends UpgradeProcess {
 				StringBundler.concat(
 					"select count(*) from (select distinct ",
 					"UserGroupRole.groupId from UserGroupRole inner join ",
-					"Group_ on Group_.classNameId != '",
+					"Group_ on Group_.classNameId != ",
 					_classNameLocalService.getClassNameId(AccountEntry.class),
-					"' and Group_.groupId = UserGroupRole.groupId where ",
+					" and Group_.groupId = UserGroupRole.groupId where ",
 					"UserGroupRole.roleId = ", roleId, " union select ",
 					"distinct UserGroupGroupRole.groupId from ",
 					"UserGroupGroupRole inner join Group_ on ",
-					"Group_.classNameId != '",
+					"Group_.classNameId != ",
 					_classNameLocalService.getClassNameId(AccountEntry.class),
-					"' and Group_.groupId = UserGroupGroupRole.groupId where ",
+					" and Group_.groupId = UserGroupGroupRole.groupId where ",
 					"UserGroupGroupRole.roleId = ", roleId, ") as count"))) {
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
