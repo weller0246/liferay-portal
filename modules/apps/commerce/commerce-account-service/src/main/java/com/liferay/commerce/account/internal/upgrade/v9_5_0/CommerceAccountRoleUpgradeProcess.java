@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -57,21 +56,19 @@ public class CommerceAccountRoleUpgradeProcess extends UpgradeProcess {
 		_resourceActionLocalService.checkResourceActions(
 			"com.liferay.commerce.order", actionIds);
 
-		List<String> orderActionIds = Collections.unmodifiableList(actionIds);
-
 		_companyLocalService.forEachCompanyId(
 			companyId -> {
 				_updateCommerceAccountRoles(
 					companyId,
 					CommerceAccountConstants.ROLE_NAME_ACCOUNT_ADMINISTRATOR,
-					"com.liferay.commerce.order", orderActionIds);
+					"com.liferay.commerce.order", actionIds);
 				_updateCommerceAccountRoles(
 					companyId, CommerceAccountConstants.ROLE_NAME_ACCOUNT_BUYER,
-					"com.liferay.commerce.order", orderActionIds);
+					"com.liferay.commerce.order", actionIds);
 				_updateCommerceAccountRoles(
 					companyId,
 					CommerceAccountConstants.ROLE_NAME_ACCOUNT_ORDER_MANAGER,
-					"com.liferay.commerce.order", orderActionIds);
+					"com.liferay.commerce.order", actionIds);
 			});
 	}
 
