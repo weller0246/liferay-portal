@@ -87,8 +87,9 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 			return new CompanyLogRoutingAppender(
 				_advertise, _advertiseUri, _append, _bufferedIo, _bufferSize,
 				_createOnDemand, _fileGroup, _fileName, _fileOwner,
-				_filePattern, _filePermissions, _immediateFlush, _locking,
-				_policy, _strategy, getName(), getLayout(), getFilter());
+				_filePattern, _filePermissions, getFilter(), _immediateFlush,
+				getLayout(), _locking, getName(), _rolloverStrategy,
+				_triggeringPolicy);
 		}
 
 		@PluginBuilderAttribute("advertise")
@@ -131,12 +132,12 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		@PluginBuilderAttribute("locking")
 		private boolean _locking;
 
+		@PluginElement("Strategy")
+		private RolloverStrategy _rolloverStrategy;
+
 		@PluginElement("Policy")
 		@Required
-		private TriggeringPolicy _policy;
-
-		@PluginElement("Strategy")
-		private RolloverStrategy _strategy;
+		private TriggeringPolicy _triggeringPolicy;
 
 	}
 
@@ -144,9 +145,9 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		boolean advertise, String advertiseUri, boolean append,
 		boolean bufferedIo, int bufferSize, boolean createOnDemand,
 		String fileGroup, String fileName, String fileOwner, String filePattern,
-		String filePermissions, boolean immediateFlush, boolean locking,
-		TriggeringPolicy triggeringPolicy, RolloverStrategy rolloverStrategy,
-		String name, Layout<? extends Serializable> layout, Filter filter) {
+		String filePermissions, Filter filter, boolean immediateFlush,
+		Layout<? extends Serializable> layout, boolean locking, String name,
+		RolloverStrategy rolloverStrategy, TriggeringPolicy triggeringPolicy) {
 
 		super(name, filter, layout, true, null);
 
@@ -163,8 +164,8 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		_filePermissions = filePermissions;
 		_immediateFlush = immediateFlush;
 		_locking = locking;
-		_triggeringPolicy = triggeringPolicy;
 		_rolloverStrategy = rolloverStrategy;
+		_triggeringPolicy = triggeringPolicy;
 	}
 
 	private Appender _createAppender(long companyId) {
