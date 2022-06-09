@@ -174,13 +174,13 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 		LoggerContext loggerContext = (LoggerContext)LogManager.getContext();
 
 		builder.setConfiguration(loggerContext.getConfiguration());
+		builder.setIgnoreExceptions(ignoreExceptions());
+		builder.setLayout(getLayout());
 
 		String name = companyId + StringPool.DASH + getName();
 
 		builder.setName(name);
 
-		builder.setIgnoreExceptions(ignoreExceptions());
-		builder.setLayout(getLayout());
 		builder.withAdvertise(_advertise);
 		builder.withAdvertiseUri(_advertiseUri);
 		builder.withAppend(_append);
