@@ -289,10 +289,10 @@
 		<Logger level="WARN" name="portal-web.docroot.errors.404.jsp" />
 
 		<Root level="INFO">
+			<AppenderRef ref="COMPANY_LOG_ROUTING_TEXT_FILE" />
 			<AppenderRef ref="CONSOLE" />
 			<AppenderRef ref="TEXT_FILE" />
 			<AppenderRef ref="XML_FILE" />
-			<AppenderRef ref="COMPANY_LOG_ROUTING_TEXT_FILE" />
 		</Root>
 	</Loggers>
 </Configuration>
