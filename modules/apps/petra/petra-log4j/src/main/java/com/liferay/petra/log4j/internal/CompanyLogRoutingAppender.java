@@ -206,11 +206,11 @@ public final class CompanyLogRoutingAppender extends AbstractAppender {
 				directWriteRolloverStrategyBuilder =
 					DirectWriteRolloverStrategy.newBuilder();
 
-			directWriteRolloverStrategyBuilder.withMaxFiles(
-				String.valueOf(directWriteRolloverStrategy.getMaxFiles()));
 			directWriteRolloverStrategyBuilder.withCompressionLevelStr(
 				String.valueOf(
 					directWriteRolloverStrategy.getCompressionLevel()));
+			directWriteRolloverStrategyBuilder.withMaxFiles(
+				String.valueOf(directWriteRolloverStrategy.getMaxFiles()));
 			directWriteRolloverStrategyBuilder.withStopCustomActionsOnError(
 				directWriteRolloverStrategy.isStopCustomActionsOnError());
 
