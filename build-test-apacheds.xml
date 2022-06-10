@@ -18,7 +18,7 @@
 
 			<exec dir="${liferay.ldap.dependency.dir}" executable="/bin/bash">
 				<arg value="-c" />
-				<arg value="ldapsearch -x -b dc=example,dc=com -H ldap://0.0.0.0:10389" />
+				<arg value="ldapsearch -x -b dc=example,dc=com -H ldap://0.0.0.0:10389 >> ${project.dir}/LDAPSearchResult.txt" />
 			</exec>
 		</sequential>
 	</macrodef>
