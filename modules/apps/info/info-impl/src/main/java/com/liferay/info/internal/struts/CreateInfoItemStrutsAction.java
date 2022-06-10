@@ -66,8 +66,7 @@ public class CreateInfoItemStrutsAction implements StrutsAction {
 		}
 		catch (InfoFormValidationException infoFormValidationException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Info item validation failed", infoFormValidationException);
+				_log.debug(infoFormValidationException);
 			}
 
 			SessionErrors.add(
