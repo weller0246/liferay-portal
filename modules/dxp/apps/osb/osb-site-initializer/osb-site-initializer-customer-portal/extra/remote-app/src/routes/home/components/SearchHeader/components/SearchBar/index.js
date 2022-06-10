@@ -27,7 +27,7 @@ const SearchBar = ({onSearchSubmit}) => {
 	return (
 		<div className="position-relative">
 			<ClayInput
-				className="cp-search-project font-weight-semi-bold h5 rounded-pill shadow-lg"
+				className="border-brand-primary-lighten-4 cp-search-project font-weight-semi-bold h5 rounded-pill shadow-lg"
 				onChange={(event) => setTerm(event.target.value)}
 				placeholder={i18n.translate('find-a-project')}
 				type="text"
