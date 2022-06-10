@@ -2150,7 +2150,7 @@ public class ContentPageEditorDisplayContext {
 	private boolean _isSegmentationEnabled() {
 		try {
 			return _segmentsConfigurationProvider.isSegmentationEnabled(
-				themeDisplay.getCompanyGroupId());
+				themeDisplay.getCompanyId());
 		}
 		catch (ConfigurationException configurationException) {
 			if (_log.isDebugEnabled()) {
