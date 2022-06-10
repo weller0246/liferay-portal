@@ -116,7 +116,7 @@ export default function CSSClassSelectorField({
 
 				<div className="mt-1 small text-secondary" id={helpTextId}>
 					{Liferay.Language.get(
-						'use-a-space-enter-or-comma-to-add-multiple-classes'
+						'use-a-comma,-line-break,-or-space-to-add-multiple-classes'
 					)}
 				</div>
 			</ClayForm.Group>
