@@ -23,10 +23,10 @@ import com.liferay.portal.kernel.util.Validator;
  */
 public class FrontendIconsPackValidator {
 
-	/**
-	 * We allow only alphanumeric characters, underscores, and dashes.
-	 */
 	public static boolean isValidName(String name) {
+
+		// Only alphanumeric characters, dashes, and underscores are allowed
+
 		String trimmedName = name.trim();
 
 		if (trimmedName.length() != name.length()) {
