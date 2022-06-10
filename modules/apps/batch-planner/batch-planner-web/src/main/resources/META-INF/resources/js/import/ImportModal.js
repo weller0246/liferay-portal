@@ -61,7 +61,7 @@ const ImportModal = ({closeModal, formDataQuerySelector, formImportURL}) => {
 	else {
 		modalStatus = 'info';
 		title = Liferay.Language.get(
-			'data-is-being-imported-you-can-close-dialog'
+			'data-is-importing.-you-can-safely-close-the-dialog'
 		);
 		labelType = 'warning';
 		label = Liferay.Language.get('running');
