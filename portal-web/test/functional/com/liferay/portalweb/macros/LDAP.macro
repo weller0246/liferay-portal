@@ -140,7 +140,18 @@ definition {
 
 		LDAP.searchLDAPDatabaseForUsersAndGroups();
 
-        WaitForConsoleTextPresent(value1 = "${userFirstName}");
+		var projectDir = PropsUtil.get("project.dir");
+
+		var result = FileUtil.read("${projectDir}/LDAPSearchResult.txt");
+
+		if (!(contains("${result}", "${userFirstName}"))) {
+			echo("${result}");
+
+			fail("Failed to find LDAP contact in LDAP database");
+		}
+		else {
+			echo("Contact found in LDAP database.");
+		}
 	}
 
 	@description = "Verify that the user is imported on localhost after LDAP sync, after a specified interval time."
