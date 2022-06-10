@@ -453,11 +453,11 @@ definition {
 
 			Navigator.gotoAccountSettings();
 
-			User.editUserInformation(userFirstNameEdit = "changedFirstName");
+			User.editUserInformation(userFirstNameEdit = "changedfirstname");
 		}
 
 		task ("Then: The new user information will be present in the LDAP database") {
-			LDAP.verifyUserFirstNameIsChangedInLDAP(userFirstName = "changedFirstName");
+			LDAP.verifyUserFirstNameIsChangedInLDAP(userFirstName = "changedfirstname");
 		}
 	}
 
