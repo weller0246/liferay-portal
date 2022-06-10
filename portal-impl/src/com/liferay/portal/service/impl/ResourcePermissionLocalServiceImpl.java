@@ -120,10 +120,10 @@ public class ResourcePermissionLocalServiceImpl
 		else if (serviceContext.isAddGroupPermissions() ||
 				 serviceContext.isAddGuestPermissions()) {
 
+			long groupId = 0;
+
 			boolean addGroupPermissions =
 				serviceContext.isAddGroupPermissions();
-
-			long groupId = 0;
 
 			if (addGroupPermissions) {
 				groupId = getGroupId(auditedModel);
