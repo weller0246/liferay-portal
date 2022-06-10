@@ -119,7 +119,7 @@ export default function EditNotificationTemplate({
 		if (response.ok) {
 			openToast({
 				message: Liferay.Language.get(
-					'notification-template-saved-successfully'
+					'notification-template-was-saved-successfully'
 				),
 				type: 'success',
 			});
