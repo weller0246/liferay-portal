@@ -130,7 +130,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldUtil.createObjectField(
 					0, ObjectFieldConstants.BUSINESS_TYPE_LARGE_FILE, null,
 					ObjectFieldConstants.DB_TYPE_BLOB, true, false, "", "",
-					"able", false));
+					"able", false, true));
 
 			Assert.fail();
 		}
@@ -221,7 +221,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldUtil.createObjectField(
 					0, ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER, null,
 					ObjectFieldConstants.DB_TYPE_LONG, true, false, "en_US", "",
-					"able", false));
+					"able", false, true));
 
 			Assert.fail();
 		}
@@ -237,7 +237,7 @@ public class ObjectFieldLocalServiceTest {
 				ObjectFieldUtil.createObjectField(
 					0, ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER, null,
 					ObjectFieldConstants.DB_TYPE_LONG, true, true, "en_US", "",
-					"able", false));
+					"able", false, true));
 
 			Assert.fail();
 		}
@@ -256,7 +256,7 @@ public class ObjectFieldLocalServiceTest {
 					"", 0, "able",
 					_getObjectFieldSettings(
 						ObjectFieldConstants.BUSINESS_TYPE_TEXT),
-					false));
+					false, true));
 
 			Assert.fail();
 		}
