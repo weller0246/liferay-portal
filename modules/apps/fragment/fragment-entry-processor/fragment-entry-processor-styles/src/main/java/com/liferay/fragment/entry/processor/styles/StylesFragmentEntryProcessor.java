@@ -106,7 +106,6 @@ public class StylesFragmentEntryProcessor implements FragmentEntryProcessor {
 		String layoutStructureItemUniqueCssClass =
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
 				layoutStructureItem);
-
 		String styledLayoutStructureItemCssClasses =
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
 				(StyledLayoutStructureItem)layoutStructureItem);
