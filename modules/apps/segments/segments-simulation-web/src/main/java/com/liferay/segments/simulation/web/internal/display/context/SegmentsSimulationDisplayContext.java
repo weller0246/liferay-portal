@@ -47,14 +47,14 @@ public class SegmentsSimulationDisplayContext {
 		HttpServletRequest httpServletRequest,
 		SegmentsConfigurationProvider segmentsConfigurationProvider) {
 
+		_segmentsConfigurationProvider = segmentsConfigurationProvider;
+
 		RenderResponse renderResponse =
 			(RenderResponse)httpServletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_RESPONSE);
 
 		_liferayPortletResponse = PortalUtil.getLiferayPortletResponse(
 			renderResponse);
-
-		_segmentsConfigurationProvider = segmentsConfigurationProvider;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
