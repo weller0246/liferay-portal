@@ -556,6 +556,12 @@ public class ObjectEntryLocalServiceImpl
 			return new HashMap<>();
 		}
 
+		Map<String, Object> baseModelAttributes = new HashMap<>();
+
+		PersistedModelLocalService persistedModelLocalService =
+			_persistedModelLocalServiceRegistry.getPersistedModelLocalService(
+				objectDefinition.getClassName());
+
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
 			_getDynamicObjectDefinitionTable(
 				objectDefinition.getObjectDefinitionId());
@@ -563,21 +569,13 @@ public class ObjectEntryLocalServiceImpl
 		Column<DynamicObjectDefinitionTable, Long> primaryKeyColumn =
 			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
 
-		DSLQuery dslQuery = DSLQueryFactoryUtil.select(
-		).from(
-			dynamicObjectDefinitionTable
-		).where(
-			primaryKeyColumn.eq(objectEntryId)
-		);
-
-		PersistedModelLocalService persistedModelLocalService =
-			_persistedModelLocalServiceRegistry.getPersistedModelLocalService(
-				objectDefinition.getClassName());
-
 		List<BaseModel<?>> baseModels = persistedModelLocalService.dslQuery(
-			dslQuery);
-
-		Map<String, Object> baseModelAttributes = new HashMap<>();
+			DSLQueryFactoryUtil.select(
+			).from(
+				dynamicObjectDefinitionTable
+			).where(
+				primaryKeyColumn.eq(objectEntryId)
+			));
 
 		if (!baseModels.isEmpty()) {
 			BaseModel<?> baseModel = baseModels.get(0);
