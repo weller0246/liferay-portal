@@ -76,6 +76,7 @@ public class FragmentCompositionLocalServiceImpl
 			fragmentCompositionKey);
 
 		validateFragmentCompositionKey(groupId, fragmentCompositionKey);
+
 		validateName(name);
 		validateDescription(description);
 
@@ -329,27 +330,6 @@ public class FragmentCompositionLocalServiceImpl
 		return fragmentCompositionPersistence.update(fragmentComposition);
 	}
 
-	protected void validateName(String name) throws PortalException {
-		if (Validator.isNull(name)) {
-			throw new FragmentCompositionNameException("Name must not be null");
-		}
-
-		if (name.contains(StringPool.PERIOD) ||
-			name.contains(StringPool.SLASH)) {
-
-			throw new FragmentCompositionNameException(
-				"Name contains invalid characters");
-		}
-
-		int nameMaxLength = ModelHintsUtil.getMaxLength(
-			FragmentComposition.class.getName(), "name");
-
-		if (name.length() > nameMaxLength) {
-			throw new FragmentCompositionNameException(
-				"Maximum length of name exceeded");
-		}
-	}
-
 	protected void validateDescription(String description)
 		throws PortalException {
 
@@ -379,6 +359,27 @@ public class FragmentCompositionLocalServiceImpl
 
 		if (fragmentComposition != null) {
 			throw new DuplicateFragmentCompositionKeyException();
+		}
+	}
+
+	protected void validateName(String name) throws PortalException {
+		if (Validator.isNull(name)) {
+			throw new FragmentCompositionNameException("Name must not be null");
+		}
+
+		if (name.contains(StringPool.PERIOD) ||
+			name.contains(StringPool.SLASH)) {
+
+			throw new FragmentCompositionNameException(
+				"Name contains invalid characters");
+		}
+
+		int nameMaxLength = ModelHintsUtil.getMaxLength(
+			FragmentComposition.class.getName(), "name");
+
+		if (name.length() > nameMaxLength) {
+			throw new FragmentCompositionNameException(
+				"Maximum length of name exceeded");
 		}
 	}
 
