@@ -521,7 +521,7 @@ public class WabProcessor {
 			Constants.CDIANNOTATIONS, "*;discover=" + discover);
 
 		_appendProperty(
-			analyzer, Constants.REQUIRE_CAPABILITY, _CDI_REQUIREMENTS);
+			analyzer, Constants.REQUIRE_CAPABILITY, _REQUIRE_CAPABILITY_CDI);
 	}
 
 	private void _processBundleClasspath(Analyzer analyzer) throws IOException {
@@ -1053,7 +1053,7 @@ public class WabProcessor {
 		if (resources.count() != 0) {
 			_appendProperty(
 				analyzer, Constants.REQUIRE_CAPABILITY,
-				_OSGI_CONFIGURATOR_REQUIREMENTS);
+				_REQUIRE_CAPABILITY_OSGI_CONFIGURATOR);
 		}
 	}
 
@@ -1518,7 +1518,7 @@ public class WabProcessor {
 
 	private static final Version _CDI_ARCHIVE_VERSION = new Version(1, 1, 0);
 
-	private static final String _CDI_REQUIREMENTS = StringBundler.concat(
+	private static final String _REQUIRE_CAPABILITY_CDI = StringBundler.concat(
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=aries.cdi.http)',",
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=aries.cdi.el.jsp)',",
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=",
@@ -1528,7 +1528,7 @@ public class WabProcessor {
 		"jdbc.driverClassName"
 	};
 
-	private static final String _OSGI_CONFIGURATOR_REQUIREMENTS =
+	private static final String _REQUIRE_CAPABILITY_OSGI_CONFIGURATOR =
 		"osgi.extender;filter:=\"(&(osgi.extender=osgi.configurator)" +
 			"(version>=1.0)(!(version>=2.0)))\"";
 
