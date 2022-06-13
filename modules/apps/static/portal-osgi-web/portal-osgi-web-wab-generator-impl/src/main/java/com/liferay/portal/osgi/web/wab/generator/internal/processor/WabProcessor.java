@@ -316,6 +316,16 @@ public class WabProcessor {
 		return clientExtensionBundlePath.toFile();
 	}
 
+	private Path _createPath(Path parentPath, String pathString)
+		throws IOException {
+
+		Path path = parentPath.resolve(pathString);
+
+		Files.createDirectories(path);
+
+		return path;
+	}
+
 	private Discover _findDiscoveryMode(Document document) {
 		if (!document.hasContent()) {
 			return Discover.all;
@@ -877,6 +887,17 @@ public class WabProcessor {
 		_formatDocument(file, document);
 	}
 
+	private void _processOSGiConfigurator(Jar jar, Builder analyzer) {
+		Stream<Resource> resources = jar.getResources(
+			resourceName -> resourceName.startsWith("OSGI-INF/configurator/"));
+
+		if (resources.count() != 0) {
+			_appendProperty(
+				analyzer, Constants.REQUIRE_CAPABILITY,
+				_REQUIRE_CAPABILITY_OSGI_CONFIGURATOR);
+		}
+	}
+
 	private void _processPackageNames(Analyzer analyzer) {
 		_processExportPackageNames(analyzer);
 		_processImportPackageNames(analyzer);
@@ -1043,17 +1064,6 @@ public class WabProcessor {
 		}
 
 		analyzer.setProperty(Constants.REQUIRE_BUNDLE, sb.toString());
-	}
-
-	private void _processOSGiConfigurator(Jar jar, Builder analyzer) {
-		Stream<Resource> resources = jar.getResources(
-			resourceName -> resourceName.startsWith("OSGI-INF/configurator/"));
-
-		if (resources.count() != 0) {
-			_appendProperty(
-				analyzer, Constants.REQUIRE_CAPABILITY,
-				_REQUIRE_CAPABILITY_OSGI_CONFIGURATOR);
-		}
 	}
 
 	private void _processResourceActionXML() throws IOException {
@@ -1345,16 +1355,6 @@ public class WabProcessor {
 		}
 	}
 
-	private Path _createPath(Path parentPath, String pathString)
-		throws IOException {
-
-		Path path = parentPath.resolve(pathString);
-
-		Files.createDirectories(path);
-
-		return path;
-	}
-
 	private File _transformToOSGiBundle(Jar jar) throws IOException {
 		try (Builder analyzer = new Builder()) {
 			analyzer.setBase(_pluginDir);
@@ -1519,15 +1519,15 @@ public class WabProcessor {
 
 	private static final Version _CDI_ARCHIVE_VERSION = new Version(1, 1, 0);
 
+	private static final String[] _KNOWN_PROPERTY_KEYS = {
+		"jdbc.driverClassName"
+	};
+
 	private static final String _REQUIRE_CAPABILITY_CDI = StringBundler.concat(
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=aries.cdi.http)',",
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=aries.cdi.el.jsp)',",
 		"osgi.cdi.extension;filter:='(osgi.cdi.extension=",
 		"com.liferay.bean.portlet.cdi.extension)'");
-
-	private static final String[] _KNOWN_PROPERTY_KEYS = {
-		"jdbc.driverClassName"
-	};
 
 	private static final String _REQUIRE_CAPABILITY_OSGI_CONFIGURATOR =
 		"osgi.extender;filter:=\"(&(osgi.extender=osgi.configurator)" +
