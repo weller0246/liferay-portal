@@ -350,10 +350,9 @@ public class FunctionalBatchTestClassGroup extends BatchTestClassGroup {
 
 		StringBuilder sb = new StringBuilder();
 
-		Set<File> modifiedFilesList = new HashSet<>(
-			portalGitWorkingDirectory.getModifiedFilesList());
+		for (File modifiedFile :
+				portalGitWorkingDirectory.getModifiedFilesList()) {
 
-		for (File modifiedFile : modifiedFilesList) {
 			String testBatchPQL = _concatPQL(modifiedFile, "");
 
 			if (JenkinsResultsParserUtil.isNullOrEmpty(testBatchPQL) ||
