@@ -287,10 +287,9 @@ public class WabProcessor {
 
 				if (zipEntry.isDirectory()) {
 					if (name.startsWith("static/")) {
-						Path destPath = metatInfResourcesPath.resolve(
-							name.replaceAll("^static/", ""));
-
-						Files.createDirectories(destPath);
+						Files.createDirectories(
+							metatInfResourcesPath.resolve(
+								name.replaceAll("^static/", "")));
 					}
 				}
 				else {
@@ -302,10 +301,10 @@ public class WabProcessor {
 							osgiInfConfiguratorPath.resolve(name));
 					}
 					else if (name.startsWith("static/")) {
-						Path destPath = metatInfResourcesPath.resolve(
-							name.replaceAll("^static/", ""));
-
-						Files.copy(zipFile.getInputStream(zipEntry), destPath);
+						Files.copy(
+							zipFile.getInputStream(zipEntry),
+							metatInfResourcesPath.resolve(
+								name.replaceAll("^static/", "")));
 					}
 				}
 			}
