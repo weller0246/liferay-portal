@@ -40,12 +40,11 @@ import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.io.Serializable;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import javax.ws.rs.NotFoundException;
@@ -173,13 +172,11 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
 
-		List<ObjectEntry> objectEntries = new ArrayList<>();
-
-		for (ObjectEntry item : page.getItems()) {
-			objectEntries.add(_getRelatedObjectEntry(objectDefinition2, item));
-		}
-
-		return Page.of(page.getActions(), objectEntries);
+		return Page.of(
+			page.getActions(),
+			TransformUtil.transform(
+				page.getItems(),
+				item -> _getRelatedObjectEntry(objectDefinition2, item)));
 	}
 
 	@Override
