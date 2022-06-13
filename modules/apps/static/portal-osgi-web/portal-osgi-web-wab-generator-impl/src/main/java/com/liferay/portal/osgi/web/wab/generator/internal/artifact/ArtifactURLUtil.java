@@ -78,7 +78,7 @@ public class ArtifactURLUtil {
 			StringBundler.concat(
 				artifact.getPath(), "?", Constants.BUNDLE_SYMBOLICNAME, "=",
 				symbolicName, "&Web-ContextPath=/", contextName,
-				"&protocol=file&fileExtension=", fileExtension));
+				"&fileExtension=", fileExtension, "&protocol=file"));
 	}
 
 	private static String _readServletContextName(Jar jar) throws Exception {
