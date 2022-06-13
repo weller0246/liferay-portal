@@ -120,7 +120,7 @@ public class WarArtifactUrlTransformer implements FileInstaller {
 
 				String name = zipEntry.getName();
 
-				if (name.endsWith("config.json") && (name.indexOf("/") == -1)) {
+				if (name.endsWith(".config.json") && (name.indexOf("/") == -1)) {
 					hasConfigJSONFile = true;
 				}
 				else if (name.startsWith("static/")) {
