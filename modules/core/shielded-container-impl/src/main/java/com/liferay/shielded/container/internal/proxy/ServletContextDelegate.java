@@ -44,7 +44,7 @@ public class ServletContextDelegate {
 
 		ServletContextDelegate servletContextDelegate =
 			new ServletContextDelegate(
-				proxyFactory, servletContext, classLoader);
+				classLoader, proxyFactory, servletContext);
 
 		servletContext = proxyFactory.createASMWrapper(
 			classLoader, ServletContext.class, servletContextDelegate,
@@ -242,12 +242,12 @@ public class ServletContextDelegate {
 	}
 
 	private ServletContextDelegate(
-		ProxyFactory proxyFactory, ServletContext servletContext,
-		ClassLoader classLoader) {
+		ClassLoader classLoader, ProxyFactory proxyFactory,
+		ServletContext servletContext) {
 
+		_classLoader = classLoader;
 		_proxyFactory = proxyFactory;
 		_servletContext = servletContext;
-		_classLoader = classLoader;
 	}
 
 	private String _decodeName(String name) {
