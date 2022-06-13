@@ -100,7 +100,9 @@ public class WarArtifactUrlTransformer implements FileInstaller {
 			}
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to check resources in " + artifact, ioException);
+			_log.error(
+				"Unable to check if  " + artifact + " has resources",
+				ioException);
 		}
 
 		return false;
@@ -133,7 +135,9 @@ public class WarArtifactUrlTransformer implements FileInstaller {
 			return false;
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to check resources in " + artifact, ioException);
+			_log.error(
+				"Unable to check if " + artifact + " is a client extension",
+				ioException);
 		}
 
 		return false;
