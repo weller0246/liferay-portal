@@ -54,22 +54,21 @@ public class CommerceShippingAddressCommerceQualifierMetadata
 
 	@Override
 	public Predicate getFilterPredicate() {
-		ListType accountEntryAddressTypeShippingListType =
-			_listTypeLocalService.getListType(
-				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_SHIPPING,
-				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
-
 		ListType accountEntryAddressTypeBillingAndShippingListType =
 			_listTypeLocalService.getListType(
 				AccountListTypeConstants.
 					ACCOUNT_ENTRY_ADDRESS_TYPE_BILLING_AND_SHIPPING,
 				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
+		ListType accountEntryAddressTypeShippingListType =
+			_listTypeLocalService.getListType(
+				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_SHIPPING,
+				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
 
 		return AddressTable.INSTANCE.typeId.in(
 			new Long[] {
-				accountEntryAddressTypeShippingListType.getListTypeId(),
 				accountEntryAddressTypeBillingAndShippingListType.
-					getListTypeId()
+					getListTypeId(),
+				accountEntryAddressTypeShippingListType.getListTypeId()
 			});
 	}
 
