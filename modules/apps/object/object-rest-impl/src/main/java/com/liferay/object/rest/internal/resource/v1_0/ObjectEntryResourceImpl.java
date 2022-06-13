@@ -176,7 +176,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			page.getActions(),
 			TransformUtil.transform(
 				page.getItems(),
-				item -> _getRelatedObjectEntry(objectDefinition2, item)));
+				objectEntry ->
+				_getRelatedObjectEntry(objectDefinition2, objectEntry)));
 	}
 
 	@Override
