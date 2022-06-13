@@ -76,8 +76,7 @@ public class FragmentCompositionLocalServiceImpl
 			fragmentCompositionKey);
 
 		validateFragmentCompositionKey(groupId, fragmentCompositionKey);
-
-		validate(name);
+		validateName(name);
 		validateDescription(description);
 
 		long fragmentCompositionId = counterLocalService.increment();
@@ -295,7 +294,7 @@ public class FragmentCompositionLocalServiceImpl
 			fragmentCompositionPersistence.findByPrimaryKey(
 				fragmentCompositionId);
 
-		validate(name);
+		validateName(name);
 		validateDescription(description);
 
 		User user = _userLocalService.getUser(userId);
@@ -323,14 +322,14 @@ public class FragmentCompositionLocalServiceImpl
 			fragmentCompositionPersistence.findByPrimaryKey(
 				fragmentCompositionId);
 
-		validate(name);
+		validateName(name);
 
 		fragmentComposition.setName(name);
 
 		return fragmentCompositionPersistence.update(fragmentComposition);
 	}
 
-	protected void validate(String name) throws PortalException {
+	protected void validateName(String name) throws PortalException {
 		if (Validator.isNull(name)) {
 			throw new FragmentCompositionNameException("Name must not be null");
 		}
