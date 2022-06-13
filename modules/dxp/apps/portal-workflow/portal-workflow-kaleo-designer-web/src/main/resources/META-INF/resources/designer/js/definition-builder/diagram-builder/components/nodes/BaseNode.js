@@ -27,7 +27,6 @@ let handleConnect = false;
 export default function BaseNode({
 	actions,
 	assignments,
-	className,
 	description,
 	descriptionSidebar,
 	dragHandle,
@@ -157,7 +156,7 @@ export default function BaseNode({
 	}
 
 	return (
-		<div className={`base-node ${className}`}>
+		<div className="base-node">
 			{displayBorderArea && (
 				<div className={`node-border-area ${borderAreaColor}`} />
 			)}
@@ -255,7 +254,6 @@ export default function BaseNode({
 }
 
 BaseNode.propTypes = {
-	className: PropTypes.string,
 	description: PropTypes.string,
 	descriptionSidebar: PropTypes.string,
 	icon: PropTypes.string.isRequired,
