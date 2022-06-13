@@ -1046,7 +1046,7 @@ public class WabProcessor {
 		analyzer.setProperty(Constants.REQUIRE_BUNDLE, sb.toString());
 	}
 
-	private void _processRequireOsgiConfigurator(Jar jar, Builder analyzer) {
+	private void _processOSGiConfigurator(Jar jar, Builder analyzer) {
 		Stream<Resource> resources = jar.getResources(
 			resourceName -> resourceName.startsWith("OSGI-INF/configurator/"));
 
@@ -1431,7 +1431,7 @@ public class WabProcessor {
 
 			_processBeans(analyzer);
 
-			_processRequireOsgiConfigurator(jar, analyzer);
+			_processOSGiConfigurator(jar, analyzer);
 
 			try {
 				jar = analyzer.build();
