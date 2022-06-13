@@ -49,9 +49,8 @@ public class DDMFormFieldInfoFieldConverterImpl
 
 	@Override
 	public InfoField convert(DDMFormField ddmFormField) {
-		LocalizedValue label = ddmFormField.getLabel();
-
 		InfoFieldType infoFieldType = _getInfoFieldType(ddmFormField);
+		LocalizedValue label = ddmFormField.getLabel();
 
 		return _addAttributes(
 			ddmFormField,
