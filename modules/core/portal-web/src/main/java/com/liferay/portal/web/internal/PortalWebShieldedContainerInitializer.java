@@ -205,7 +205,6 @@ public class PortalWebShieldedContainerInitializer
 						initParamElement -> dynamic.setInitParameter(
 							_getChildText(initParamElement, "param-name"),
 							_getChildText(initParamElement, "param-value")));
-
 					_forEachChildElement(
 						servletElement, "multipart-config",
 						multipartConfigElement -> dynamic.setMultipartConfig(
