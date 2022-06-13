@@ -23,7 +23,9 @@ public class FragmentCompositionUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (hasColumn("FragmentComposition", "description")) {
+		if (hasColumnType(
+				"FragmentComposition", "description", "STRING null")) {
+
 			alterColumnType(
 				"FragmentComposition", "description", "STRING null");
 		}
