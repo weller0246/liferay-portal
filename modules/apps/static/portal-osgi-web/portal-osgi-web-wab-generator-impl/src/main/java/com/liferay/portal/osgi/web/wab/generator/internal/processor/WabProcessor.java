@@ -273,9 +273,9 @@ public class WabProcessor {
 			clientExtensionBundlePath = Files.createTempDirectory(
 				"clientextension");
 
-			Path metatInfResourcesPath = _takePath(
+			Path metatInfResourcesPath = _createPath(
 				clientExtensionBundlePath, "META-INF/resources");
-			Path osgiInfConfiguratorPath = _takePath(
+			Path osgiInfConfiguratorPath = _createPath(
 				clientExtensionBundlePath, "OSGI-INF/configurator");
 
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
@@ -1346,8 +1346,10 @@ public class WabProcessor {
 		}
 	}
 
-	private Path _takePath(Path parentPath, String take) throws IOException {
-		Path path = parentPath.resolve(take);
+	private Path _createPath(Path parentPath, String pathString)
+		throws IOException {
+
+		Path path = parentPath.resolve(pathString);
 
 		Files.createDirectories(path);
 
