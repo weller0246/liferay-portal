@@ -1048,7 +1048,7 @@ public class WabProcessor {
 
 	private void _processRequireOsgiConfigurator(Jar jar, Builder analyzer) {
 		Stream<Resource> resources = jar.getResources(
-			res -> res.startsWith("OSGI-INF/configurator/"));
+			resourceName -> resourceName.startsWith("OSGI-INF/configurator/"));
 
 		if (resources.count() != 0) {
 			_appendProperty(
