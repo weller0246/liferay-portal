@@ -317,14 +317,14 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			Long relatedObjectEntryId)
 		throws Exception {
 
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
-				_objectDefinition.getStorageType());
-
 		ObjectRelationship objectRelationship =
 			_objectRelationshipService.getObjectRelationship(
 				_objectDefinition.getObjectDefinitionId(),
 				objectRelationshipName);
+
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerServicesTracker.getObjectEntryManager(
+				_objectDefinition.getStorageType());
 
 		return _getRelatedObjectEntry(
 			_objectDefinitionLocalService.getObjectDefinition(
