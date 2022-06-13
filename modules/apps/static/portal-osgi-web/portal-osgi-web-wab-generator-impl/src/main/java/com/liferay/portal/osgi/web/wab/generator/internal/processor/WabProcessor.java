@@ -294,7 +294,9 @@ public class WabProcessor {
 					}
 				}
 				else {
-					if (!name.contains("/") && name.endsWith(".client-extension-config.json")) {
+					if (!name.contains("/") &&
+						name.endsWith(".client-extension-config.json")) {
+
 						Files.copy(
 							zipFile.getInputStream(zipEntry),
 							osgiInfConfiguratorPath.resolve(name));
