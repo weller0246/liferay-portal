@@ -110,25 +110,25 @@ public class WarArtifactUrlTransformer implements FileInstaller {
 		try (ZipFile zipFile = new ZipFile(artifact)) {
 			Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
 
-			boolean foundConfigJson = false;
-			boolean foundStatic = false;
+			boolean hasConfigJSONFile = false;
+			boolean hasStaticDirectory = false;
 
 			while (enumeration.hasMoreElements() &&
-				   (!foundConfigJson || !foundStatic)) {
+				   (!hasConfigJSONFile || !hasStaticDirectory)) {
 
 				ZipEntry zipEntry = enumeration.nextElement();
 
 				String name = zipEntry.getName();
 
 				if (name.endsWith("config.json") && (name.indexOf("/") == -1)) {
-					foundConfigJson = true;
+					hasConfigJSONFile = true;
 				}
 				else if (name.startsWith("static/")) {
-					foundStatic = true;
+					hasStaticDirectory = true;
 				}
 			}
 
-			if (foundConfigJson && foundStatic) {
+			if (hasConfigJSONFile && hasStaticDirectory) {
 				return true;
 			}
 
