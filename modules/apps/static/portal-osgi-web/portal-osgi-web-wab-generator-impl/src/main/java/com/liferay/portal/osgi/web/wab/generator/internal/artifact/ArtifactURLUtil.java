@@ -46,7 +46,6 @@ public class ArtifactURLUtil {
 		int y = path.lastIndexOf(CharPool.PERIOD);
 
 		String symbolicName = path.substring(x + 1, y);
-		String fileExtension = path.substring(y + 1);
 
 		Matcher matcher = _pattern.matcher(symbolicName);
 
@@ -55,6 +54,8 @@ public class ArtifactURLUtil {
 		}
 
 		String contextName = null;
+
+		String fileExtension = path.substring(y + 1);
 
 		if (fileExtension.equals("war")) {
 			try (Jar jar = new Jar("WAR", artifact.openStream())) {
