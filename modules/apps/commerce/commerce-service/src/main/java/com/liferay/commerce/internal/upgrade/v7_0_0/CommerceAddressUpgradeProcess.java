@@ -74,7 +74,7 @@ public class CommerceAddressUpgradeProcess extends UpgradeProcess {
 				address.setClassPK(resultSet.getLong("classPK"));
 				address.setCountryId(resultSet.getLong("countryId"));
 				address.setRegionId(resultSet.getLong("regionId"));
-				address.setTypeId(_getTypeId(resultSet.getInt("type_")));
+				address.setTypeId(_getListTypeId(resultSet.getInt("type_")));
 				address.setCity(resultSet.getString("city"));
 				address.setDescription(resultSet.getString("description"));
 				address.setLatitude(resultSet.getDouble("latitude"));
@@ -98,33 +98,31 @@ public class CommerceAddressUpgradeProcess extends UpgradeProcess {
 		}
 	}
 
-	private long _getTypeId(int commerceAddressType) {
-		String typeName;
+	private long _getListTypeId(int commerceAddressType) {
+		String name = null;
 
 		if (CommerceAddressConstants.ADDRESS_TYPE_BILLING ==
 				commerceAddressType) {
 
-			typeName =
-				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_BILLING;
+			name = AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_BILLING;
 		}
 		else if (CommerceAddressConstants.ADDRESS_TYPE_SHIPPING ==
 					commerceAddressType) {
 
-			typeName =
-				AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_SHIPPING;
+			name = AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS_TYPE_SHIPPING;
 		}
 		else {
-			typeName =
+			name =
 				AccountListTypeConstants.
 					ACCOUNT_ENTRY_ADDRESS_TYPE_BILLING_AND_SHIPPING;
 		}
 
 		ListType listType = _listTypeLocalService.getListType(
-			typeName, AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
+			name, AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
 
 		if (listType == null) {
 			listType = _listTypeLocalService.addListType(
-				typeName, AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
+				name, AccountListTypeConstants.ACCOUNT_ENTRY_ADDRESS);
 		}
 
 		return listType.getListTypeId();
