@@ -38,6 +38,7 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.hits.SearchHit;
 import com.liferay.portal.search.hits.SearchHits;
@@ -270,6 +271,17 @@ public class SXPBlueprintSuggestionsContributor
 		return searchRequestBuilder.build();
 	}
 
+	private AssetRenderer<?> _getAssetRenderer(AssetRendererFactory<?> assetRendererFactory, long entryClassPK) {
+		try {
+			return assetRendererFactory.getAssetRenderer(entryClassPK);
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			return null;
+		}
+	}
+
 	private Suggestion _getSuggestion(
 		String[] fields, boolean includeAssetSearchSummary,
 		boolean includeAssetURL, Layout layout, LiferayPortletRequest liferayPortletRequest,
@@ -292,49 +304,48 @@ public class SXPBlueprintSuggestionsContributor
 				_getFields(document, fields, searchContext.getLocale()));
 		}
 
-		if (includeAssetSearchSummary || includeAssetURL || useAssetTitle) {
-			String entryClassName = document.getString(Field.ENTRY_CLASS_NAME);
+		if (!includeAssetSearchSummary && !includeAssetURL && !useAssetTitle) {
+			return suggestionBuilder.build();
+		}
 
-			try {
-				AssetRendererFactory<?> assetRendererFactory =
-					AssetRendererFactoryRegistryUtil.
-						getAssetRendererFactoryByClassName(entryClassName);
+		String entryClassName = document.getString(Field.ENTRY_CLASS_NAME);
 
-				if (assetRendererFactory == null) {
-					return null;
-				}
+		AssetRendererFactory<?> assetRendererFactory =
+			AssetRendererFactoryRegistryUtil.
+				getAssetRendererFactoryByClassName(entryClassName);
 
-				long entryClassPK = document.getLong(Field.ENTRY_CLASS_PK);
+		if (assetRendererFactory == null) {
+			return suggestionBuilder.build();
+		}
 
-				AssetRenderer<?> assetRenderer =
-					assetRendererFactory.getAssetRenderer(entryClassPK);
+		long entryClassPK = document.getLong(Field.ENTRY_CLASS_PK);
 
-				if (assetRenderer != null) {
-					if (includeAssetSearchSummary) {
-						suggestionBuilder.attribute(
-							"assetSearchSummary",
-							assetRenderer.getSearchSummary(
-								searchContext.getLocale()));
-					}
+		AssetRenderer<?> assetRenderer = _getAssetRenderer(
+			assetRendererFactory, entryClassPK);
 
-					if (includeAssetURL) {
-						suggestionBuilder.attribute(
-							"assetURL",
-							_getAssetURL(
-								assetRenderer, assetRendererFactory,
-								entryClassName, entryClassPK, layout,
-								liferayPortletRequest, liferayPortletResponse));
-					}
+		if (assetRenderer == null) {
+			return suggestionBuilder.build();
+		}
 
-					if (useAssetTitle) {
-						suggestionBuilder.text(
-							assetRenderer.getTitle(searchContext.getLocale()));
-					}
-				}
-			}
-			catch (Exception exception) {
-				_log.error(exception);
-			}
+		if (includeAssetSearchSummary) {
+			suggestionBuilder.attribute(
+				"assetSearchSummary",
+				assetRenderer.getSearchSummary(
+					searchContext.getLocale()));
+		}
+
+		if (includeAssetURL) {
+			suggestionBuilder.attribute(
+				"assetURL",
+				_getAssetURL(
+					assetRenderer, assetRendererFactory,
+					entryClassName, entryClassPK, layout,
+					liferayPortletRequest, liferayPortletResponse));
+		}
+
+		if (useAssetTitle) {
+			suggestionBuilder.text(
+				assetRenderer.getTitle(searchContext.getLocale()));
 		}
 
 		return suggestionBuilder.build();
