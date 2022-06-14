@@ -97,7 +97,8 @@ public class SXPBlueprintSuggestionsContributor
 		if ((attributes == null) || !attributes.containsKey("sxpBlueprintId")) {
 			if (_log.isDebugEnabled()) {
 				_log.debug(
-					"Blueprint ID not found in contributor configuration");
+					"Attributes do not contain search experiences blueprint " +
+						"ID");
 			}
 		}
 
