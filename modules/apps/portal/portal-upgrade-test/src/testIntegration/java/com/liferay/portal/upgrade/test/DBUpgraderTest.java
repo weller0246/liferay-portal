@@ -58,7 +58,16 @@ public class DBUpgraderTest {
 	}
 
 	@Test
-	public void testUpgradeWithErrorDoesNotSupportRetry() throws Exception {
+	public void testUpgrade() throws Exception {
+		_updateRelease(
+			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
+			ReleaseConstants.STATE_GOOD);
+
+		DBUpgrader.upgrade();
+	}
+
+	@Test
+	public void testUpgradeWithFailureDoesNotSupportRetry() throws Exception {
 		_updateRelease(
 			ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER,
 			ReleaseConstants.STATE_UPGRADE_FAILURE);
@@ -73,21 +82,10 @@ public class DBUpgraderTest {
 	}
 
 	@Test
-	public void testUpgradeWithErrorSupportsRetry() throws Exception {
+	public void testUpgradeWithFailureSupportsRetry() throws Exception {
 		_updateRelease(
 			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
 			ReleaseConstants.STATE_UPGRADE_FAILURE);
-
-		DBUpgrader.upgrade();
-	}
-
-	@Test
-	public void testUpgradeWithoutErrorSchemaVersionInitialized()
-		throws Exception {
-
-		_updateRelease(
-			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
-			ReleaseConstants.STATE_GOOD);
 
 		DBUpgrader.upgrade();
 	}
