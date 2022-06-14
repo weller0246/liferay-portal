@@ -54,15 +54,14 @@ public class DBUpgraderTest {
 
 	@After
 	public void tearDown() throws Exception {
-		_updateReleaseBuild(_currentBuildNumber);
-		_updateReleaseState(_currentState);
+		_updateRelease(_currentBuildNumber, _currentState);
 	}
 
 	@Test
 	public void testUpgradeWithErrorDoesNotSupportRetry() throws Exception {
-		_updateReleaseState(ReleaseConstants.STATE_UPGRADE_FAILURE);
-
-		_updateReleaseBuild(ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER);
+		_updateRelease(
+			ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER,
+			ReleaseConstants.STATE_UPGRADE_FAILURE);
 
 		try {
 			DBUpgrader.upgrade();
@@ -75,9 +74,9 @@ public class DBUpgraderTest {
 
 	@Test
 	public void testUpgradeWithErrorSupportsRetry() throws Exception {
-		_updateReleaseState(ReleaseConstants.STATE_UPGRADE_FAILURE);
-
-		_updateReleaseBuild(ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER);
+		_updateRelease(
+			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
+			ReleaseConstants.STATE_UPGRADE_FAILURE);
 
 		DBUpgrader.upgrade();
 	}
@@ -86,9 +85,9 @@ public class DBUpgraderTest {
 	public void testUpgradeWithoutErrorSchemaVersionInitialized()
 		throws Exception {
 
-		_updateReleaseState(ReleaseConstants.STATE_GOOD);
-
-		_updateReleaseBuild(ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER);
+		_updateRelease(
+			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
+			ReleaseConstants.STATE_GOOD);
 
 		DBUpgrader.upgrade();
 	}
@@ -99,25 +98,15 @@ public class DBUpgraderTest {
 			new Class<?>[] {String.class}, columnName);
 	}
 
-	private void _updateReleaseBuild(int buildNumber) throws Exception {
+	private void _updateRelease(int buildNumber, int state) throws Exception {
 		try (Connection connection = DataAccess.getConnection();
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"update Release_ set buildNumber = ? where releaseId = ?")) {
+				"update Release_ set buildNumber = ?, state_ = ? where " +
+					"releaseId = ?")) {
 
 			preparedStatement.setInt(1, buildNumber);
-			preparedStatement.setLong(2, ReleaseConstants.DEFAULT_ID);
-
-			preparedStatement.executeUpdate();
-		}
-	}
-
-	private void _updateReleaseState(int state) throws Exception {
-		try (Connection connection = DataAccess.getConnection();
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"update Release_ set state_ = ? where releaseId = ?")) {
-
-			preparedStatement.setInt(1, state);
-			preparedStatement.setLong(2, ReleaseConstants.DEFAULT_ID);
+			preparedStatement.setInt(2, state);
+			preparedStatement.setLong(3, ReleaseConstants.DEFAULT_ID);
 
 			preparedStatement.executeUpdate();
 		}
