@@ -22,14 +22,14 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * @author Iván Zaera Avellón
  */
-@CETType(description = "This is a themeCSS description", name = "themeCSS")
+@CETType(description = "This is a description.", name = "themeCSS")
 @ProviderType
 public interface CETThemeCSS extends CET {
 
-	@CETProperty(defaultValue = "clay.css", name = "clayURL", type = "string")
+	@CETProperty(defaultValue = "", name = "clayURL", type = "string")
 	public String getClayURL();
 
-	@CETProperty(defaultValue = "main.css", name = "mainURL", type = "string")
+	@CETProperty(defaultValue = "", name = "mainURL", type = "string")
 	public String getMainURL();
 
 }

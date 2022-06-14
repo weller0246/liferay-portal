@@ -22,11 +22,11 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * @author Iván Zaera Avellón
  */
-@CETType(description = "This is a themeJS description", name = "themeJS")
+@CETType(description = "This is a description.", name = "themeJS")
 @ProviderType
 public interface CETThemeJS extends CET {
 
-	@CETProperty(defaultValue = "theme.js", name = "url", type = "string")
+	@CETProperty(defaultValue = "", name = "url", type = "string")
 	public String getURL();
 
 }

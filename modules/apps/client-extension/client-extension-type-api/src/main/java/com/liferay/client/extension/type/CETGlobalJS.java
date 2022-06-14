@@ -22,11 +22,11 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * @author Eudaldo Alonso
  */
-@CETType(description = "This is a globalJS description", name = "globalJS")
+@CETType(description = "This is a description.", name = "globalJS")
 @ProviderType
 public interface CETGlobalJS extends CET {
 
-	@CETProperty(defaultValue = "global.js", name = "url", type = "string")
+	@CETProperty(defaultValue = "", name = "url", type = "string")
 	public String getURL();
 
 }

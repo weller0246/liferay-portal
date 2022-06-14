@@ -1,6 +1,6 @@
 [
 	{
-		"description": "This is a customElement description",
+		"description": "This is a description.",
 		"name": "customElement",
 		"properties": [
 			{
@@ -21,28 +21,23 @@
 				"type": "string"
 			},
 			{
-				"default": "custom-element.css",
-				"name": "cssURLs",
+				"default": "\", name = ",
 				"type": "list"
 			},
 			{
-				"default": "custom-element",
-				"name": "friendlyURLMapping",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "custom-element",
-				"name": "htmlElementName",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "category.remote-apps",
-				"name": "portletCategoryName",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "index.js",
-				"name": "urls",
+				"default": "\", name = ",
 				"type": "list"
 			},
 			{
@@ -58,7 +53,7 @@
 		]
 	},
 	{
-		"description": "This is a globalCSS description",
+		"description": "This is a description.",
 		"name": "globalCSS",
 		"properties": [
 			{
@@ -79,14 +74,13 @@
 				"type": "string"
 			},
 			{
-				"default": "global.css",
-				"name": "url",
+				"default": "\", name = ",
 				"type": "string"
 			}
 		]
 	},
 	{
-		"description": "This is a globalJS description",
+		"description": "This is a description.",
 		"name": "globalJS",
 		"properties": [
 			{
@@ -107,14 +101,13 @@
 				"type": "string"
 			},
 			{
-				"default": "global.js",
-				"name": "url",
+				"default": "\", name = ",
 				"type": "string"
 			}
 		]
 	},
 	{
-		"description": "This is a iframe description",
+		"description": "This is a description.",
 		"name": "iframe",
 		"properties": [
 			{
@@ -135,18 +128,15 @@
 				"type": "string"
 			},
 			{
-				"default": "iframe",
-				"name": "friendlyURLMapping",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "category.remote-apps",
-				"name": "portletCategoryName",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "https://example.com",
-				"name": "url",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
@@ -157,7 +147,7 @@
 		]
 	},
 	{
-		"description": "This is a themeCSS description",
+		"description": "This is a description.",
 		"name": "themeCSS",
 		"properties": [
 			{
@@ -178,19 +168,17 @@
 				"type": "string"
 			},
 			{
-				"default": "clay.css",
-				"name": "clayURL",
+				"default": "\", name = ",
 				"type": "string"
 			},
 			{
-				"default": "main.css",
-				"name": "mainURL",
+				"default": "\", name = ",
 				"type": "string"
 			}
 		]
 	},
 	{
-		"description": "This is a themeFavicon description",
+		"description": "This is a description.",
 		"name": "themeFavicon",
 		"properties": [
 			{
@@ -211,14 +199,13 @@
 				"type": "string"
 			},
 			{
-				"default": "favicon.ico",
-				"name": "url",
+				"default": "\", name = ",
 				"type": "string"
 			}
 		]
 	},
 	{
-		"description": "This is a themeJS description",
+		"description": "This is a description.",
 		"name": "themeJS",
 		"properties": [
 			{
@@ -239,8 +226,7 @@
 				"type": "string"
 			},
 			{
-				"default": "theme.js",
-				"name": "url",
+				"default": "\", name = ",
 				"type": "string"
 			}
 		]

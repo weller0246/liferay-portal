@@ -22,24 +22,21 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * @author Brian Wing Shun Chan
  */
-@CETType(description = "This is a iframe description", name = "iframe")
+@CETType(description = "This is a description.", name = "iframe")
 @ProviderType
 public interface CETIFrame extends CET {
 
 	@CETProperty(
-		defaultValue = "iframe", name = "friendlyURLMapping", type = "string"
+		defaultValue = "", name = "friendlyURLMapping", type = "string"
 	)
 	public String getFriendlyURLMapping();
 
 	@CETProperty(
-		defaultValue = "category.remote-apps", name = "portletCategoryName",
-		type = "string"
+		defaultValue = "", name = "portletCategoryName", type = "string"
 	)
 	public String getPortletCategoryName();
 
-	@CETProperty(
-		defaultValue = "https://example.com", name = "url", type = "string"
-	)
+	@CETProperty(defaultValue = "", name = "url", type = "string")
 	public String getURL();
 
 	@CETProperty(

@@ -22,36 +22,27 @@ import org.osgi.annotation.versioning.ProviderType;
 /**
  * @author Brian Wing Shun Chan
  */
-@CETType(
-	description = "This is a customElement description", name = "customElement"
-)
+@CETType(description = "This is a description.", name = "customElement")
 @ProviderType
 public interface CETCustomElement extends CET {
 
-	@CETProperty(
-		defaultValue = "custom-element.css", name = "cssURLs", type = "list"
-	)
+	@CETProperty(defaultValue = "", name = "cssURLs", type = "list")
 	public String getCSSURLs();
 
 	@CETProperty(
-		defaultValue = "custom-element", name = "friendlyURLMapping",
-		type = "string"
+		defaultValue = "", name = "friendlyURLMapping", type = "string"
 	)
 	public String getFriendlyURLMapping();
 
-	@CETProperty(
-		defaultValue = "custom-element", name = "htmlElementName",
-		type = "string"
-	)
+	@CETProperty(defaultValue = "", name = "htmlElementName", type = "string")
 	public String getHTMLElementName();
 
 	@CETProperty(
-		defaultValue = "category.remote-apps", name = "portletCategoryName",
-		type = "string"
+		defaultValue = "", name = "portletCategoryName", type = "string"
 	)
 	public String getPortletCategoryName();
 
-	@CETProperty(defaultValue = "index.js", name = "urls", type = "list")
+	@CETProperty(defaultValue = "", name = "urls", type = "list")
 	public String getURLs();
 
 	@CETProperty(
