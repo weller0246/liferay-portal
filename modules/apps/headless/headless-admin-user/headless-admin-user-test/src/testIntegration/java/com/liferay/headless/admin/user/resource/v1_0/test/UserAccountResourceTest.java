@@ -550,14 +550,14 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		_setUpTestUserAccountResource();
 
 		_assertProblem(
+			UserPasswordException.MustMatchCurrentPassword.class,
 			() -> _regularUserAccountResource.patchUserAccountHttpResponse(
 				_regularUserAccount.getId(),
 				new UserAccount() {
 					{
 						password = newPassword;
 					}
-				}),
-			UserPasswordException.MustMatchCurrentPassword.class);
+				}));
 
 		_assertAuthenticationResult(
 			Authenticator.FAILURE, _regularUserAccount.getEmailAddress(),
@@ -805,9 +805,9 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		_regularUserAccount.setPassword(newPassword);
 
 		_assertProblem(
+			UserPasswordException.MustMatchCurrentPassword.class,
 			() -> _regularUserAccountResource.putUserAccountHttpResponse(
-				_regularUserAccount.getId(), _regularUserAccount),
-			UserPasswordException.MustMatchCurrentPassword.class);
+				_regularUserAccount.getId(), _regularUserAccount));
 
 		_assertAuthenticationResult(
 			Authenticator.FAILURE, _regularUserAccount.getEmailAddress(),
@@ -861,12 +861,12 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 		_regularUserAccount.setPassword(newPassword);
 
 		_assertProblem(
+			UserPasswordException.MustMatchCurrentPassword.class,
 			() ->
 				_regularUserAccountResource.
 					putUserAccountByExternalReferenceCodeHttpResponse(
 						_regularUserAccount.getExternalReferenceCode(),
-						_regularUserAccount),
-			UserPasswordException.MustMatchCurrentPassword.class);
+						_regularUserAccount));
 
 		_assertAuthenticationResult(
 			Authenticator.FAILURE, _regularUserAccount.getEmailAddress(),
@@ -1193,9 +1193,9 @@ public class UserAccountResourceTest extends BaseUserAccountResourceTestCase {
 	}
 
 	private <T extends Exception> void _assertProblem(
+			Class<T> exceptionClass,
 			UnsafeSupplier<HttpInvoker.HttpResponse, Exception>
-				httpResponseUnsafeSupplier,
-			Class<T> exceptionClass)
+				httpResponseUnsafeSupplier)
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(

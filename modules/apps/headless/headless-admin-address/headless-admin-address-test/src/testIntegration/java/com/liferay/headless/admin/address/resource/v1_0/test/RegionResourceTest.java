@@ -361,9 +361,9 @@ public class RegionResourceTest extends BaseRegionResourceTestCase {
 	}
 
 	private <T extends Exception> void _assertProblem(
+			Class<T> exceptionClass,
 			UnsafeSupplier<HttpInvoker.HttpResponse, Exception>
-				httpResponseUnsafeSupplier,
-			Class<T> exceptionClass)
+				httpResponseUnsafeSupplier)
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
@@ -391,9 +391,9 @@ public class RegionResourceTest extends BaseRegionResourceTestCase {
 		throws Exception {
 
 		_assertProblem(
+			exceptionClass,
 			() -> regionResource.postCountryRegionHttpResponse(
-				_country.getCountryId(), region),
-			exceptionClass);
+				_country.getCountryId(), region));
 	}
 
 	private <T extends Exception> void _testPutRegionProblem(
@@ -401,8 +401,8 @@ public class RegionResourceTest extends BaseRegionResourceTestCase {
 		throws Exception {
 
 		_assertProblem(
-			() -> regionResource.putRegionHttpResponse(regionId, region),
-			exceptionClass);
+			exceptionClass,
+			() -> regionResource.putRegionHttpResponse(regionId, region));
 	}
 
 	@DeleteAfterTestRun
