@@ -60,7 +60,7 @@ public class AbsoluteRedirectsFilter
 
 		//response.setContentType(ContentTypes.TEXT_HTML_UTF8);
 
-		// Company id needs to always be called here so that it's properly set
+		// Company ID needs to always be called here so that it is properly set
 		// in subsequent calls
 
 		try {
