@@ -221,15 +221,15 @@ public class SXPBlueprintSuggestionsContributor
 	private Map<String, Object> _getFieldValues(
 		Document document, String[] fieldNames, Locale locale) {
 
-		Map<String, Object> map = new HashMap<>();
+		Map<String, Object> fieldValues = new HashMap<>();
 
 		for (String fieldName : fieldNames) {
 			fieldName = _replaceLanguageId(locale, fieldName);
 
-			map.put(fieldName, document.getValue(fieldName));
+			fieldValues.put(fieldName, document.getValue(fieldName));
 		}
 
-		return map;
+		return fieldValues;
 	}
 
 	private String[] _getNestedFieldValue(Document document, String fieldName) {
