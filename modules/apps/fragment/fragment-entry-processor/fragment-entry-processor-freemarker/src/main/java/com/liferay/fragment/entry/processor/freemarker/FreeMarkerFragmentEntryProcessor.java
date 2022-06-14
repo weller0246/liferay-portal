@@ -345,6 +345,10 @@ public class FreeMarkerFragmentEntryProcessor
 		HttpServletRequest httpServletRequest,
 		Optional<InfoForm> infoFormOptional, Locale locale) {
 
+		String dataType = StringPool.BLANK;
+
+		String errorMessage = StringPool.BLANK;
+
 		InfoField infoField = null;
 
 		InfoForm infoForm = infoFormOptional.orElse(null);
@@ -360,13 +364,24 @@ public class FreeMarkerFragmentEntryProcessor
 			infoField = infoForm.getInfoField(fieldName);
 		}
 
+		if ((infoField != null) &&
+			SessionErrors.contains(
+				httpServletRequest, infoField.getUniqueId())) {
+
+			InfoFormValidationException infoFormValidationException =
+				(InfoFormValidationException)SessionErrors.get(
+					httpServletRequest, infoField.getUniqueId());
+
+			errorMessage = infoFormValidationException.getLocalizedMessage(
+				locale);
+		}
+
 		String inputHelpText = GetterUtil.getString(
 			_fragmentEntryConfigurationParser.getFieldValue(
 				fragmentEntryLink.getEditableValues(),
 				new FragmentConfigurationField(
 					"inputHelpText", "string", "", true, "text"),
 				locale));
-
 		String inputLabel = GetterUtil.getString(
 			_fragmentEntryConfigurationParser.getFieldValue(
 				fragmentEntryLink.getEditableValues(),
@@ -384,14 +399,14 @@ public class FreeMarkerFragmentEntryProcessor
 
 		boolean required = false;
 
-		boolean inputRequired = GetterUtil.getBoolean(
-			_fragmentEntryConfigurationParser.getFieldValue(
-				fragmentEntryLink.getEditableValues(),
-				new FragmentConfigurationField(
-					"inputRequired", "boolean", "false", false, "checkbox"),
-				locale));
+		if (((infoField != null) && infoField.isRequired()) ||
+			GetterUtil.getBoolean(
+				_fragmentEntryConfigurationParser.getFieldValue(
+					fragmentEntryLink.getEditableValues(),
+					new FragmentConfigurationField(
+						"inputRequired", "boolean", "false", false, "checkbox"),
+					locale))) {
 
-		if (((infoField != null) && infoField.isRequired()) || inputRequired) {
 			required = true;
 		}
 
@@ -410,7 +425,6 @@ public class FreeMarkerFragmentEntryProcessor
 				locale));
 
 		String type = "type";
-		String dataType = StringPool.BLANK;
 
 		if (infoField != null) {
 			InfoFieldType infoFieldType = infoField.getInfoFieldType();
@@ -429,20 +443,6 @@ public class FreeMarkerFragmentEntryProcessor
 					dataType = "decimal";
 				}
 			}
-		}
-
-		String errorMessage = StringPool.BLANK;
-
-		if ((infoField != null) &&
-			SessionErrors.contains(
-				httpServletRequest, infoField.getUniqueId())) {
-
-			InfoFormValidationException infoFormValidationException =
-				(InfoFormValidationException)SessionErrors.get(
-					httpServletRequest, infoField.getUniqueId());
-
-			errorMessage = infoFormValidationException.getLocalizedMessage(
-				locale);
 		}
 
 		InputTemplateNode inputTemplateNode = new InputTemplateNode(
