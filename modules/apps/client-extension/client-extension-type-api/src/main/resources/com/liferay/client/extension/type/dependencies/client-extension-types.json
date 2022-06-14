@@ -21,23 +21,28 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "cssURLs",
 				"type": "list"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "friendlyURLMapping",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "htmlElementName",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "portletCategoryName",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "urls",
 				"type": "list"
 			},
 			{
@@ -74,7 +79,8 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "url",
 				"type": "string"
 			}
 		]
@@ -101,7 +107,8 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "url",
 				"type": "string"
 			}
 		]
@@ -128,15 +135,18 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "friendlyURLMapping",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "portletCategoryName",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "url",
 				"type": "string"
 			},
 			{
@@ -168,11 +178,13 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "clayURL",
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "mainURL",
 				"type": "string"
 			}
 		]
@@ -199,7 +211,8 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "url",
 				"type": "string"
 			}
 		]
@@ -226,7 +239,8 @@
 				"type": "string"
 			},
 			{
-				"default": "\", name = ",
+				"default": "x",
+				"name": "url",
 				"type": "string"
 			}
 		]
