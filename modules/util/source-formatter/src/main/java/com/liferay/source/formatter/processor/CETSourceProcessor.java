@@ -54,7 +54,7 @@ public class CETSourceProcessor extends BaseSourceProcessor {
 		File jsonFile = new File(
 			getPortalDir(),
 			"modules/apps/client-extension/client-extension-type-api/src/main" +
-				"/resources/com/liferay/client/extension/type/" +
+				"/resources/com/liferay/client/extension/type/dependencies/" +
 					shortFileName);
 
 		String newContent = CETUtil.getJSONContent(fileNames);
