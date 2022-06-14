@@ -77,7 +77,7 @@ String xRequestWith = request.getHeader(HttpHeaders.X_REQUESTED_WITH);
 				<meta content="1; url=<%= HtmlUtil.escapeAttribute(redirect) %>" http-equiv="refresh" />
 			</head>
 
-			<body onload="javascript:location.replace('<%= HtmlUtil.escapeJS(redirect) %>')">
+			<body onload="javascript:location.replace('<%= HtmlUtil.escapeJS(redirect) %>');">
 
 				<!--
 				The numbers below are used to fill up space so that this works properly in IE.
