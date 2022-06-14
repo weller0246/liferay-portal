@@ -52,7 +52,7 @@ definition {
 
 		if (isSet(waitOSGIConfigDeploy)) {
 
-			// Wait for CI only, takes some time to process OSGI config files. Needed for LPS-156012.
+			// Wait for CI only, takes some time to process OSGi config files. Needed for LPS-156012.
 
 			Pause(locator1 = "5000");
 		}
