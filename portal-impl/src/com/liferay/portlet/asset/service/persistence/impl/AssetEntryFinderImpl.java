@@ -836,27 +836,27 @@ public class AssetEntryFinderImpl
 	}
 
 	private String _getLinkedAssetEntryIdsSQL(AssetEntryQuery entryQuery) {
-		if (ArrayUtil.isNotEmpty(entryQuery.getLinkedAssetEntryIds())) {
-			long[] linkedAssetEntryIds = entryQuery.getLinkedAssetEntryIds();
-
-			StringBundler linkedAssetEntryIdsSQLSB = new StringBundler();
-
-			linkedAssetEntryIdsSQLSB.append(" (");
-
-			for (int i = 0; i < linkedAssetEntryIds.length; i++) {
-				if (i > 0) {
-					linkedAssetEntryIdsSQLSB.append(StringPool.COMMA);
-				}
-
-				linkedAssetEntryIdsSQLSB.append(linkedAssetEntryIds[i]);
-			}
-
-			linkedAssetEntryIdsSQLSB.append(") ");
-
-			return linkedAssetEntryIdsSQLSB.toString();
+		if (ArrayUtil.isEmpty(entryQuery.getLinkedAssetEntryIds())) {
+			return null;
 		}
 
-		return null;
+		long[] linkedAssetEntryIds = entryQuery.getLinkedAssetEntryIds();
+
+		StringBundler linkedAssetEntryIdsSQLSB = new StringBundler();
+
+		linkedAssetEntryIdsSQLSB.append(" (");
+
+		for (int i = 0; i < linkedAssetEntryIds.length; i++) {
+			if (i > 0) {
+				linkedAssetEntryIdsSQLSB.append(StringPool.COMMA);
+			}
+
+			linkedAssetEntryIdsSQLSB.append(linkedAssetEntryIds[i]);
+		}
+
+		linkedAssetEntryIdsSQLSB.append(") ");
+
+		return linkedAssetEntryIdsSQLSB.toString();
 	}
 
 }
