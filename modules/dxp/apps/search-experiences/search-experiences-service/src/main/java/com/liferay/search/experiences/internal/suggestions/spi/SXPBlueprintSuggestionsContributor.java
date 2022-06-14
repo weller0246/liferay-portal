@@ -22,6 +22,7 @@ import com.liferay.asset.kernel.service.AssetEntryLocalService;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -38,7 +39,6 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.search.document.Document;
 import com.liferay.portal.search.hits.SearchHit;
 import com.liferay.portal.search.hits.SearchHits;
@@ -121,9 +121,8 @@ public class SXPBlueprintSuggestionsContributor
 			suggestionsContributorConfiguration.getDisplayGroupName()
 		).suggestions(
 			_getSuggestions(
-				attributes,
-				liferayPortletRequest, liferayPortletResponse, searchContext,
-				searchHits.getSearchHits())
+				attributes, liferayPortletRequest, liferayPortletResponse,
+				searchContext, searchHits.getSearchHits())
 		).build();
 	}
 
@@ -139,10 +138,24 @@ public class SXPBlueprintSuggestionsContributor
 			groupId, true, friendlyURL);
 	}
 
+	private AssetRenderer<?> _getAssetRenderer(
+		AssetRendererFactory<?> assetRendererFactory, long entryClassPK) {
+
+		try {
+			return assetRendererFactory.getAssetRenderer(entryClassPK);
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			return null;
+		}
+	}
+
 	private String _getAssetURL(
 		AssetRenderer<?> assetRenderer,
 		AssetRendererFactory<?> assetRendererFactory, String entryClassName,
-		long entryClassPK, Layout layout, LiferayPortletRequest liferayPortletRequest,
+		long entryClassPK, Layout layout,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse) {
 
 		try {
@@ -271,23 +284,13 @@ public class SXPBlueprintSuggestionsContributor
 		return searchRequestBuilder.build();
 	}
 
-	private AssetRenderer<?> _getAssetRenderer(AssetRendererFactory<?> assetRendererFactory, long entryClassPK) {
-		try {
-			return assetRendererFactory.getAssetRenderer(entryClassPK);
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-
-			return null;
-		}
-	}
-
 	private Suggestion _getSuggestion(
 		String[] fields, boolean includeAssetSearchSummary,
-		boolean includeAssetURL, Layout layout, LiferayPortletRequest liferayPortletRequest,
+		boolean includeAssetURL, Layout layout,
+		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		SearchContext searchContext, SearchHit searchHit,
-		String text, boolean useAssetTitle) {
+		SearchContext searchContext, SearchHit searchHit, String text,
+		boolean useAssetTitle) {
 
 		SuggestionBuilder suggestionBuilder = _suggestionBuilderFactory.builder(
 		).score(
@@ -311,8 +314,8 @@ public class SXPBlueprintSuggestionsContributor
 		String entryClassName = document.getString(Field.ENTRY_CLASS_NAME);
 
 		AssetRendererFactory<?> assetRendererFactory =
-			AssetRendererFactoryRegistryUtil.
-				getAssetRendererFactoryByClassName(entryClassName);
+			AssetRendererFactoryRegistryUtil.getAssetRendererFactoryByClassName(
+				entryClassName);
 
 		if (assetRendererFactory == null) {
 			return suggestionBuilder.build();
@@ -330,17 +333,16 @@ public class SXPBlueprintSuggestionsContributor
 		if (includeAssetSearchSummary) {
 			suggestionBuilder.attribute(
 				"assetSearchSummary",
-				assetRenderer.getSearchSummary(
-					searchContext.getLocale()));
+				assetRenderer.getSearchSummary(searchContext.getLocale()));
 		}
 
 		if (includeAssetURL) {
 			suggestionBuilder.attribute(
 				"assetURL",
 				_getAssetURL(
-					assetRenderer, assetRendererFactory,
-					entryClassName, entryClassPK, layout,
-					liferayPortletRequest, liferayPortletResponse));
+					assetRenderer, assetRendererFactory, entryClassName,
+					entryClassPK, layout, liferayPortletRequest,
+					liferayPortletResponse));
 		}
 
 		if (useAssetTitle) {
@@ -349,19 +351,6 @@ public class SXPBlueprintSuggestionsContributor
 		}
 
 		return suggestionBuilder.build();
-	}
-
-	private List<String> _getTexts(Document document, String field) {
-		if (StringUtil.contains(field, ".")) {
-			return Arrays.asList(_getNestedFieldValue(document, field));
-		}
-
-		return document.getStrings(field);
-	}
-
-	private String _replaceLanguageId(Locale locale, String field) {
-		return StringUtil.replace(
-			field, "${language_id}", LocaleUtil.toLanguageId(locale));
 	}
 
 	private List<Suggestion> _getSuggestions(
@@ -399,16 +388,14 @@ public class SXPBlueprintSuggestionsContributor
 					_getSuggestion(
 						fields, includeAssetSearchSummary, includeAssetURL,
 						layout, liferayPortletRequest, liferayPortletResponse,
-						searchContext, searchHit,  null,
-						true));
+						searchContext, searchHit, null, true));
 
 				continue;
 			}
 
 			List<String> texts = _getTexts(
 				document,
-				_replaceLanguageId(
-					searchContext.getLocale(), textField));
+				_replaceLanguageId(searchContext.getLocale(), textField));
 
 			for (String text : texts) {
 				if (!Validator.isBlank(fieldValueSeparator)) {
@@ -421,22 +408,34 @@ public class SXPBlueprintSuggestionsContributor
 								fields, includeAssetSearchSummary,
 								includeAssetURL, layout, liferayPortletRequest,
 								liferayPortletResponse, searchContext,
-								searchHit, textPart,
-								false));
+								searchHit, textPart, false));
 					}
 				}
 				else {
 					suggestions.add(
 						_getSuggestion(
-							fields, includeAssetSearchSummary,
-							includeAssetURL, layout, liferayPortletRequest,
-							liferayPortletResponse, searchContext,
-							searchHit, text, false));
+							fields, includeAssetSearchSummary, includeAssetURL,
+							layout, liferayPortletRequest,
+							liferayPortletResponse, searchContext, searchHit,
+							text, false));
 				}
 			}
-		};
+		}
 
-		return suggestions;		
+		return suggestions;
+	}
+
+	private List<String> _getTexts(Document document, String field) {
+		if (StringUtil.contains(field, ".")) {
+			return Arrays.asList(_getNestedFieldValue(document, field));
+		}
+
+		return document.getStrings(field);
+	}
+
+	private String _replaceLanguageId(Locale locale, String field) {
+		return StringUtil.replace(
+			field, "${language_id}", LocaleUtil.toLanguageId(locale));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
