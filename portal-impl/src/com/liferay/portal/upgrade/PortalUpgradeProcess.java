@@ -232,11 +232,11 @@ public class PortalUpgradeProcess extends UpgradeProcess {
 
 	private void _initializeRelease(Connection connection) throws Exception {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				"update Release_ set buildNumber = ?, schemaVersion = ? " +
+				"update Release_ set schemaVersion = ?, buildNumber = ? " +
 					"where servletContextName = ? and buildNumber < ?")) {
 
-			preparedStatement.setInt(1, ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER);
-			preparedStatement.setString(2, _initialSchemaVersion.toString());
+			preparedStatement.setString(1, _initialSchemaVersion.toString());
+			preparedStatement.setInt(2, ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER);
 			preparedStatement.setString(
 				3, ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 			preparedStatement.setInt(4, ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER);
