@@ -205,14 +205,11 @@ public class SXPBlueprintSuggestionsContributor
 
 		Map<String, Object> map = new HashMap<>();
 
-		List<String> fieldList = Arrays.asList(fields);
+		for (String fieldName : fields) {
+			fieldName = _replaceLanguageId(locale, fieldName);
 
-		fieldList.forEach(
-			additionalField -> {
-				String fieldName = _replaceLanguageId(locale, additionalField);
-
-				map.put(fieldName, document.getValue(fieldName));
-			});
+			map.put(fieldName, document.getValue(fieldName));
+		}
 
 		return map;
 	}
