@@ -163,6 +163,8 @@ public class SXPBlueprintSuggestionsContributor
 				return StringPool.BLANK;
 			}
 
+			String viewURL = null;
+
 			PortletURL viewContentURL =
 				PortletURLBuilder.createLiferayPortletURL(
 					liferayPortletResponse, layout.getPlid(),
@@ -187,8 +189,6 @@ public class SXPBlueprintSuggestionsContributor
 
 			mutableRenderParameters.setValue(
 				"type", assetRendererFactory.getType());
-
-			String viewURL = null;
 
 			if (assetRenderer != null) {
 				viewURL = assetRenderer.getURLViewInContext(
