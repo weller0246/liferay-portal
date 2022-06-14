@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.batch.planner.rest.internal.helper;
+package com.liferay.batch.planner.rest.internal.provider;
 
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ListUtil;
@@ -37,8 +37,8 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Matija Petanjek
  */
-@Component(service = FieldHelper.class)
-public class FieldHelper {
+@Component(service = FieldProvider.class)
+public class FieldProvider {
 
 	public List<Field> filter(
 		List<Field> fields, Field.AccessType ignoredAccessType) {

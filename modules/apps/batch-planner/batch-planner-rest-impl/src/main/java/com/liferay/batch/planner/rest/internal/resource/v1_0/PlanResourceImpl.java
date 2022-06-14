@@ -20,7 +20,7 @@ import com.liferay.batch.planner.model.BatchPlannerPolicy;
 import com.liferay.batch.planner.rest.dto.v1_0.Mapping;
 import com.liferay.batch.planner.rest.dto.v1_0.Plan;
 import com.liferay.batch.planner.rest.dto.v1_0.Policy;
-import com.liferay.batch.planner.rest.internal.helper.FieldHelper;
+import com.liferay.batch.planner.rest.internal.provider.FieldProvider;
 import com.liferay.batch.planner.rest.resource.v1_0.PlanResource;
 import com.liferay.batch.planner.service.BatchPlannerMappingService;
 import com.liferay.batch.planner.service.BatchPlannerPlanService;
@@ -79,7 +79,7 @@ public class PlanResourceImpl extends BasePlanResourceImpl {
 		return _getResponse(
 			internalClassName.substring(
 				internalClassName.lastIndexOf(StringPool.PERIOD) + 1),
-			_fieldHelper.getFields(internalClassName));
+			_fieldProvider.getFields(internalClassName));
 	}
 
 	@Override
@@ -146,7 +146,7 @@ public class PlanResourceImpl extends BasePlanResourceImpl {
 	}
 
 	private Response _getResponse(String dtoEntityName, List<Field> fields) {
-		fields = _fieldHelper.filter(fields, Field.AccessType.READ);
+		fields = _fieldProvider.filter(fields, Field.AccessType.READ);
 
 		Iterator<Field> iterator = fields.iterator();
 
@@ -248,6 +248,6 @@ public class PlanResourceImpl extends BasePlanResourceImpl {
 	private BatchPlannerPolicyService _batchPlannerPolicyService;
 
 	@Reference
-	private FieldHelper _fieldHelper;
+	private FieldProvider _fieldProvider;
 
 }

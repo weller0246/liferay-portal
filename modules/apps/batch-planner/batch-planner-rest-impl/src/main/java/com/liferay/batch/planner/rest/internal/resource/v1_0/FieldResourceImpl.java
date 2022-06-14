@@ -15,7 +15,7 @@
 package com.liferay.batch.planner.rest.internal.resource.v1_0;
 
 import com.liferay.batch.planner.rest.dto.v1_0.Field;
-import com.liferay.batch.planner.rest.internal.helper.FieldHelper;
+import com.liferay.batch.planner.rest.internal.provider.FieldProvider;
 import com.liferay.batch.planner.rest.resource.v1_0.FieldResource;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -42,15 +42,15 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 		throws Exception {
 
 		List<com.liferay.portal.vulcan.batch.engine.Field> fields =
-			_fieldHelper.getFields(internalClassName);
+			_fieldProvider.getFields(internalClassName);
 
 		if (GetterUtil.getBoolean(export)) {
-			fields = _fieldHelper.filter(
+			fields = _fieldProvider.filter(
 				fields,
 				com.liferay.portal.vulcan.batch.engine.Field.AccessType.WRITE);
 		}
 		else {
-			fields = _fieldHelper.filter(
+			fields = _fieldProvider.filter(
 				fields,
 				com.liferay.portal.vulcan.batch.engine.Field.AccessType.READ);
 		}
@@ -72,6 +72,6 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 	}
 
 	@Reference
-	private FieldHelper _fieldHelper;
+	private FieldProvider _fieldProvider;
 
 }
