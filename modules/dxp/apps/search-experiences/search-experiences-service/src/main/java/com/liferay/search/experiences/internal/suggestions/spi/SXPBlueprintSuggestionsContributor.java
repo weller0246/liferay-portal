@@ -137,17 +137,17 @@ public class SXPBlueprintSuggestionsContributor
 	private String _getAssetURL(
 		AssetRenderer<?> assetRenderer,
 		AssetRendererFactory<?> assetRendererFactory, String entryClassName,
-		long entryClassPK, LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse, Layout searchLayout) {
+		long entryClassPK, Layout layout, LiferayPortletRequest liferayPortletRequest,
+		LiferayPortletResponse liferayPortletResponse) {
 
 		try {
-			if (searchLayout == null) {
+			if (layout == null) {
 				return StringPool.BLANK;
 			}
 
 			PortletURL viewContentURL =
 				PortletURLBuilder.createLiferayPortletURL(
-					liferayPortletResponse, searchLayout.getPlid(),
+					liferayPortletResponse, layout.getPlid(),
 					SearchResultsPortletKeys.SEARCH_RESULTS,
 					PortletRequest.RENDER_PHASE
 				).setPortletMode(
@@ -268,9 +268,9 @@ public class SXPBlueprintSuggestionsContributor
 
 	private Suggestion _getSuggestion(
 		String[] fields, boolean includeAssetSearchSummary,
-		boolean includeAssetURL, LiferayPortletRequest liferayPortletRequest,
+		boolean includeAssetURL, Layout layout, LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
-		SearchContext searchContext, SearchHit searchHit, Layout searchLayout,
+		SearchContext searchContext, SearchHit searchHit,
 		String text, boolean useAssetTitle) {
 
 		SuggestionBuilder suggestionBuilder = _suggestionBuilderFactory.builder(
@@ -318,9 +318,8 @@ public class SXPBlueprintSuggestionsContributor
 							"assetURL",
 							_getAssetURL(
 								assetRenderer, assetRendererFactory,
-								entryClassName, entryClassPK,
-								liferayPortletRequest, liferayPortletResponse,
-								searchLayout));
+								entryClassName, entryClassPK, layout,
+								liferayPortletRequest, liferayPortletResponse));
 					}
 
 					if (useAssetTitle) {
@@ -357,23 +356,19 @@ public class SXPBlueprintSuggestionsContributor
 		SearchContext searchContext, List<SearchHit> searchHits) {
 
 		String[] fields = GetterUtil.getStringValues(attributes.get("fields"));
-
 		String fieldValueSeparator = MapUtil.getString(
 			attributes, "fieldValueSeparator");
-
 		boolean includeAssetSearchSummary = MapUtil.getBoolean(
 			attributes, "includeAssetSearchSummary", true);
-
 		boolean includeAssetURL = MapUtil.getBoolean(
 			attributes, "includeAssetURL", true);
-
 		String textField = MapUtil.getString(attributes, "textField");
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)liferayPortletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		Layout searchLayout = _fetchLayoutByFriendlyURL(
+		Layout layout = _fetchLayoutByFriendlyURL(
 			themeDisplay.getScopeGroupId(),
 			GetterUtil.getString(
 				searchContext.getAttribute(
@@ -388,8 +383,8 @@ public class SXPBlueprintSuggestionsContributor
 				suggestions.add(
 					_getSuggestion(
 						fields, includeAssetSearchSummary, includeAssetURL,
-						liferayPortletRequest, liferayPortletResponse,
-						searchContext, searchHit, searchLayout, null,
+						layout, liferayPortletRequest, liferayPortletResponse,
+						searchContext, searchHit,  null,
 						true));
 
 				continue;
@@ -409,9 +404,9 @@ public class SXPBlueprintSuggestionsContributor
 						suggestions.add(
 							_getSuggestion(
 								fields, includeAssetSearchSummary,
-								includeAssetURL, liferayPortletRequest,
+								includeAssetURL, layout, liferayPortletRequest,
 								liferayPortletResponse, searchContext,
-								searchHit, searchLayout, textPart,
+								searchHit, textPart,
 								false));
 					}
 				}
@@ -419,9 +414,9 @@ public class SXPBlueprintSuggestionsContributor
 					suggestions.add(
 						_getSuggestion(
 							fields, includeAssetSearchSummary,
-							includeAssetURL, liferayPortletRequest,
+							includeAssetURL, layout, liferayPortletRequest,
 							liferayPortletResponse, searchContext,
-							searchHit, searchLayout, text, false));
+							searchHit, text, false));
 				}
 			}
 		};
