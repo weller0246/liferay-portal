@@ -53,7 +53,7 @@ public class PortalUpgradeProcessTest {
 		new LiferayIntegrationTestRule();
 
 	@BeforeClass
-	public static void setUpClass() throws SQLException {
+	public static void setUpClass() throws Exception {
 		try (Connection connection = DataAccess.getConnection()) {
 			_currentSchemaVersion =
 				PortalUpgradeProcess.getCurrentSchemaVersion(connection);
@@ -61,7 +61,7 @@ public class PortalUpgradeProcessTest {
 	}
 
 	@Before
-	public void setUp() throws SQLException {
+	public void setUp() throws Exception {
 		_innerPortalUpgradeProcess = new InnerPortalUpgradeProcess();
 	}
 
@@ -185,17 +185,17 @@ public class PortalUpgradeProcessTest {
 	}
 
 	@Test
-	public void testRetryUpgradeFrom6210IsNotSupported() throws SQLException {
+	public void testRetryUpgradeFrom6210IsNotSupported() throws Exception {
 		_supportsRetryUpgrade(6210);
 	}
 
 	@Test
-	public void testRetryUpgradeFrom7010IsNotSupported() throws SQLException {
+	public void testRetryUpgradeFrom7010IsNotSupported() throws Exception {
 		_supportsRetryUpgrade(7010);
 	}
 
 	@Test
-	public void testRetryUpgradeIsSupported() throws SQLException {
+	public void testRetryUpgradeIsSupported() throws Exception {
 		try (Connection connection = DataAccess.getConnection()) {
 			Assert.assertTrue(PortalUpgradeProcess.supportsRetry(connection));
 		}
@@ -291,9 +291,7 @@ public class PortalUpgradeProcessTest {
 	}
 
 	@Test
-	public void testValidateCoreIsInRequiredSchemaVersion()
-		throws SQLException {
-
+	public void testValidateCoreIsInRequiredSchemaVersion() throws Exception {
 		try (Connection connection = DataAccess.getConnection()) {
 			Assert.assertTrue(
 				"You must first upgrade the portal to the required schema " +
@@ -303,7 +301,7 @@ public class PortalUpgradeProcessTest {
 		}
 	}
 
-	private void _supportsRetryUpgrade(int buildNumber) throws SQLException {
+	private void _supportsRetryUpgrade(int buildNumber) throws Exception {
 		Release release = _releaseLocalService.fetchRelease(
 			ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
