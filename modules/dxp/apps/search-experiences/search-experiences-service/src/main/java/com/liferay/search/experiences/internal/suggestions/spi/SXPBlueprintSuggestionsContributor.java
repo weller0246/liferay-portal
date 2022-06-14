@@ -218,12 +218,12 @@ public class SXPBlueprintSuggestionsContributor
 		return StringPool.BLANK;
 	}
 
-	private Map<String, Object> _getFields(
-		Document document, String[] fields, Locale locale) {
+	private Map<String, Object> _getFieldValues(
+		Document document, String[] fieldNames, Locale locale) {
 
 		Map<String, Object> map = new HashMap<>();
 
-		for (String fieldName : fields) {
+		for (String fieldName : fieldNames) {
 			fieldName = _replaceLanguageId(locale, fieldName);
 
 			map.put(fieldName, document.getValue(fieldName));
@@ -285,7 +285,7 @@ public class SXPBlueprintSuggestionsContributor
 	}
 
 	private Suggestion _getSuggestion(
-		String[] fields, boolean includeAssetSearchSummary,
+		String[] fieldNames, boolean includeAssetSearchSummary,
 		boolean includeAssetURL, Layout layout,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
@@ -301,10 +301,11 @@ public class SXPBlueprintSuggestionsContributor
 
 		Document document = searchHit.getDocument();
 
-		if (fields.length > 0) {
+		if (fieldNames.length > 0) {
 			suggestionBuilder.attribute(
 				"fields",
-				_getFields(document, fields, searchContext.getLocale()));
+				_getFieldValues(
+					document, fieldNames, searchContext.getLocale()));
 		}
 
 		if (!includeAssetSearchSummary && !includeAssetURL && !useAssetTitle) {
@@ -361,7 +362,8 @@ public class SXPBlueprintSuggestionsContributor
 
 		List<Suggestion> suggestions = new ArrayList<>();
 
-		String[] fields = GetterUtil.getStringValues(attributes.get("fields"));
+		String[] fieldNames = GetterUtil.getStringValues(
+			attributes.get("fields"));
 		String fieldValueSeparator = MapUtil.getString(
 			attributes, "fieldValueSeparator");
 		boolean includeAssetSearchSummary = MapUtil.getBoolean(
@@ -386,7 +388,7 @@ public class SXPBlueprintSuggestionsContributor
 			if (Validator.isBlank(textField)) {
 				suggestions.add(
 					_getSuggestion(
-						fields, includeAssetSearchSummary, includeAssetURL,
+						fieldNames, includeAssetSearchSummary, includeAssetURL,
 						layout, liferayPortletRequest, liferayPortletResponse,
 						searchContext, searchHit, null, true));
 
@@ -405,7 +407,7 @@ public class SXPBlueprintSuggestionsContributor
 					for (String textPart : textParts) {
 						suggestions.add(
 							_getSuggestion(
-								fields, includeAssetSearchSummary,
+								fieldNames, includeAssetSearchSummary,
 								includeAssetURL, layout, liferayPortletRequest,
 								liferayPortletResponse, searchContext,
 								searchHit, textPart, false));
@@ -414,8 +416,8 @@ public class SXPBlueprintSuggestionsContributor
 				else {
 					suggestions.add(
 						_getSuggestion(
-							fields, includeAssetSearchSummary, includeAssetURL,
-							layout, liferayPortletRequest,
+							fieldNames, includeAssetSearchSummary,
+							includeAssetURL, layout, liferayPortletRequest,
 							liferayPortletResponse, searchContext, searchHit,
 							text, false));
 				}
@@ -425,17 +427,17 @@ public class SXPBlueprintSuggestionsContributor
 		return suggestions;
 	}
 
-	private List<String> _getTexts(Document document, String field) {
-		if (StringUtil.contains(field, ".")) {
-			return Arrays.asList(_getNestedFieldValue(document, field));
+	private List<String> _getTexts(Document document, String fieldName) {
+		if (StringUtil.contains(fieldName, ".")) {
+			return Arrays.asList(_getNestedFieldValue(document, fieldName));
 		}
 
-		return document.getStrings(field);
+		return document.getStrings(fieldName);
 	}
 
-	private String _replaceLanguageId(Locale locale, String field) {
+	private String _replaceLanguageId(Locale locale, String fieldName) {
 		return StringUtil.replace(
-			field, "${language_id}", LocaleUtil.toLanguageId(locale));
+			fieldName, "${language_id}", LocaleUtil.toLanguageId(locale));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
