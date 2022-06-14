@@ -840,23 +840,23 @@ public class AssetEntryFinderImpl
 			return null;
 		}
 
+		StringBundler sb = new StringBundler();
+
+		sb.append(" (");
+
 		long[] linkedAssetEntryIds = entryQuery.getLinkedAssetEntryIds();
-
-		StringBundler linkedAssetEntryIdsSQLSB = new StringBundler();
-
-		linkedAssetEntryIdsSQLSB.append(" (");
 
 		for (int i = 0; i < linkedAssetEntryIds.length; i++) {
 			if (i > 0) {
-				linkedAssetEntryIdsSQLSB.append(StringPool.COMMA);
+				sb.append(StringPool.COMMA);
 			}
 
-			linkedAssetEntryIdsSQLSB.append(linkedAssetEntryIds[i]);
+			sb.append(linkedAssetEntryIds[i]);
 		}
 
-		linkedAssetEntryIdsSQLSB.append(") ");
+		sb.append(") ");
 
-		return linkedAssetEntryIdsSQLSB.toString();
+		return sb.toString();
 	}
 
 }
