@@ -99,7 +99,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			if (objectEntryUnsafeConsumer == null) {
 				throw new NotSupportedException(
 					"Create strategy \"" + createStrategy +
-						"\" is not supported for ObjectEntry");
+						"\" is not supported for object entry");
 			}
 
 			contextBatchUnsafeConsumer.accept(
