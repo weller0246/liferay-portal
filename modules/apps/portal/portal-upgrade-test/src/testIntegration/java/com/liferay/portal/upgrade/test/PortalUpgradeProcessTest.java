@@ -233,15 +233,8 @@ public class PortalUpgradeProcessTest {
 		try (Connection connection = DataAccess.getConnection()) {
 			Assert.assertTrue(PortalUpgradeProcess.supportsRetry(connection));
 		}
-	}
 
-	@Test
-	public void testSupportsRetry_6210() throws Exception {
 		_testSupportsRetry(6210);
-	}
-
-	@Test
-	public void testSupportsRetry_7010() throws Exception {
 		_testSupportsRetry(7010);
 	}
 
