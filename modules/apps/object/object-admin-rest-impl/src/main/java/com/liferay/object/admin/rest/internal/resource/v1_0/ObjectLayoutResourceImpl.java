@@ -22,6 +22,8 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectLayoutTab;
 import com.liferay.object.admin.rest.internal.dto.v1_0.util.ObjectLayoutUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectLayoutResource;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectField;
+import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectLayoutService;
 import com.liferay.object.service.persistence.ObjectLayoutBoxPersistence;
 import com.liferay.object.service.persistence.ObjectLayoutColumnPersistence;
@@ -31,6 +33,9 @@ import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.vulcan.fields.NestedField;
+import com.liferay.portal.vulcan.fields.NestedFieldSupport;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
@@ -45,15 +50,21 @@ import org.osgi.service.component.annotations.ServiceScope;
  */
 @Component(
 	properties = "OSGI-INF/liferay/rest/v1_0/object-layout.properties",
-	scope = ServiceScope.PROTOTYPE, service = ObjectLayoutResource.class
+	scope = ServiceScope.PROTOTYPE,
+	service = {NestedFieldSupport.class, ObjectLayoutResource.class}
 )
-public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
+public class ObjectLayoutResourceImpl
+	extends BaseObjectLayoutResourceImpl implements NestedFieldSupport {
 
 	@Override
 	public void deleteObjectLayout(Long objectLayoutId) throws Exception {
 		_objectLayoutService.deleteObjectLayout(objectLayoutId);
 	}
 
+	@NestedField(
+		parentClass = com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition.class,
+		value = "objectLayouts"
+	)
 	@Override
 	public Page<ObjectLayout> getObjectDefinitionObjectLayoutsPage(
 			Long objectDefinitionId, String search, Pagination pagination)
@@ -112,7 +123,8 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 				LocalizedMapUtil.getLocalizedMap(objectLayout.getName()),
 				transformToList(
 					objectLayout.getObjectLayoutTabs(),
-					this::_toObjectLayoutTab)));
+					objectLayoutTab -> _toObjectLayoutTab(
+						objectDefinitionId, objectLayoutTab))));
 	}
 
 	@Override
@@ -126,7 +138,9 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 				LocalizedMapUtil.getLocalizedMap(objectLayout.getName()),
 				transformToList(
 					objectLayout.getObjectLayoutTabs(),
-					this::_toObjectLayoutTab)));
+					objectLayoutTab -> _toObjectLayoutTab(
+						objectLayout.getObjectDefinitionId(),
+						objectLayoutTab))));
 	}
 
 	private ObjectLayout _toObjectLayout(
@@ -156,7 +170,7 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 	}
 
 	private com.liferay.object.model.ObjectLayoutBox _toObjectLayoutBox(
-		ObjectLayoutBox objectLayoutBox) {
+		long objectDefinitionId, ObjectLayoutBox objectLayoutBox) {
 
 		com.liferay.object.model.ObjectLayoutBox serviceBuilderObjectLayoutBox =
 			_objectLayoutBoxPersistence.create(0L);
@@ -168,7 +182,8 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 		serviceBuilderObjectLayoutBox.setObjectLayoutRows(
 			transformToList(
 				objectLayoutBox.getObjectLayoutRows(),
-				this::_toObjectLayoutRow));
+				objectLayoutRow -> _toObjectLayoutRow(
+					objectDefinitionId, objectLayoutRow)));
 		serviceBuilderObjectLayoutBox.setPriority(
 			objectLayoutBox.getPriority());
 		serviceBuilderObjectLayoutBox.setType(
@@ -178,14 +193,18 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 	}
 
 	private com.liferay.object.model.ObjectLayoutColumn _toObjectLayoutColumn(
-		ObjectLayoutColumn objectLayoutColumn) {
+		long objectDefinitionId, ObjectLayoutColumn objectLayoutColumn) {
 
 		com.liferay.object.model.ObjectLayoutColumn
 			serviceBuilderObjectLayoutColumn =
 				_objectLayoutColumnPersistence.create(0L);
 
+		ObjectField objectField = _objectFieldLocalService.fetchObjectField(
+			objectDefinitionId, objectLayoutColumn.getObjectFieldName());
+
 		serviceBuilderObjectLayoutColumn.setObjectFieldId(
-			objectLayoutColumn.getObjectFieldId());
+			objectField.getObjectFieldId());
+
 		serviceBuilderObjectLayoutColumn.setPriority(
 			objectLayoutColumn.getPriority());
 		serviceBuilderObjectLayoutColumn.setSize(
@@ -195,7 +214,7 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 	}
 
 	private com.liferay.object.model.ObjectLayoutRow _toObjectLayoutRow(
-		ObjectLayoutRow objectLayoutRow) {
+		long objectDefinitionId, ObjectLayoutRow objectLayoutRow) {
 
 		com.liferay.object.model.ObjectLayoutRow serviceBuilderObjectLayoutRow =
 			_objectLayoutRowPersistence.create(0L);
@@ -203,7 +222,8 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 		serviceBuilderObjectLayoutRow.setObjectLayoutColumns(
 			transformToList(
 				objectLayoutRow.getObjectLayoutColumns(),
-				this::_toObjectLayoutColumn));
+				objectLayoutColumn -> _toObjectLayoutColumn(
+					objectDefinitionId, objectLayoutColumn)));
 		serviceBuilderObjectLayoutRow.setPriority(
 			objectLayoutRow.getPriority());
 
@@ -211,7 +231,7 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 	}
 
 	private com.liferay.object.model.ObjectLayoutTab _toObjectLayoutTab(
-		ObjectLayoutTab objectLayoutTab) {
+		long objectDefinitionId, ObjectLayoutTab objectLayoutTab) {
 
 		com.liferay.object.model.ObjectLayoutTab serviceBuilderObjectLayoutTab =
 			_objectLayoutTabPersistence.create(0L);
@@ -221,7 +241,8 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 		serviceBuilderObjectLayoutTab.setObjectLayoutBoxes(
 			transformToList(
 				objectLayoutTab.getObjectLayoutBoxes(),
-				this::_toObjectLayoutBox));
+				objectLayoutBox -> _toObjectLayoutBox(
+					objectDefinitionId, objectLayoutBox)));
 		serviceBuilderObjectLayoutTab.setObjectRelationshipId(
 			GetterUtil.getLong(objectLayoutTab.getObjectRelationshipId()));
 		serviceBuilderObjectLayoutTab.setPriority(
@@ -229,6 +250,9 @@ public class ObjectLayoutResourceImpl extends BaseObjectLayoutResourceImpl {
 
 		return serviceBuilderObjectLayoutTab;
 	}
+
+	@Reference
+	private ObjectFieldLocalService _objectFieldLocalService;
 
 	@Reference
 	private ObjectLayoutBoxPersistence _objectLayoutBoxPersistence;
