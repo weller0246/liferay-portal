@@ -117,7 +117,6 @@ public class DBUpgraderTest {
 				"update Release_ set state_ = ? where releaseId = ?")) {
 
 			preparedStatement.setInt(1, state);
-
 			preparedStatement.setLong(2, ReleaseConstants.DEFAULT_ID);
 
 			preparedStatement.executeUpdate();
