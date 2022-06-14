@@ -19,22 +19,22 @@ import com.liferay.petra.string.StringPool;
 /**
  * @author Carolina Barbosa
  */
-public class ObjectActionStatusConstants {
+public class ObjectActionConstants {
 
-	public static final int FAILED = 2;
+	public static final int STATUS_FAILED = 2;
 
-	public static final int NEVER_RAN = 0;
+	public static final int STATUS_NEVER_RAN = 0;
 
-	public static final int SUCCESS = 1;
+	public static final int STATUS_SUCCESS = 1;
 
 	public static String getStatusLabel(int status) {
-		if (status == FAILED) {
+		if (status == STATUS_FAILED) {
 			return "failed";
 		}
-		else if (status == NEVER_RAN) {
+		else if (status == STATUS_NEVER_RAN) {
 			return "never-ran";
 		}
-		else if (status == SUCCESS) {
+		else if (status == STATUS_SUCCESS) {
 			return "success";
 		}
 

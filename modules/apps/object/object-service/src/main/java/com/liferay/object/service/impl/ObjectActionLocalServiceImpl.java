@@ -15,7 +15,7 @@
 package com.liferay.object.service.impl;
 
 import com.liferay.object.action.executor.ObjectActionExecutorRegistry;
-import com.liferay.object.constants.ObjectActionStatusConstants;
+import com.liferay.object.constants.ObjectActionConstants;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.exception.ObjectActionConditionExpressionException;
 import com.liferay.object.exception.ObjectActionExecutorKeyException;
@@ -87,7 +87,7 @@ public class ObjectActionLocalServiceImpl
 		objectAction.setObjectActionExecutorKey(objectActionExecutorKey);
 		objectAction.setObjectActionTriggerKey(objectActionTriggerKey);
 		objectAction.setParameters(parametersUnicodeProperties.toString());
-		objectAction.setStatus(ObjectActionStatusConstants.NEVER_RAN);
+		objectAction.setStatus(ObjectActionConstants.STATUS_NEVER_RAN);
 
 		return objectActionPersistence.update(objectAction);
 	}
@@ -159,7 +159,7 @@ public class ObjectActionLocalServiceImpl
 		objectAction.setObjectActionExecutorKey(objectActionExecutorKey);
 		objectAction.setObjectActionTriggerKey(objectActionTriggerKey);
 		objectAction.setParameters(parametersUnicodeProperties.toString());
-		objectAction.setStatus(ObjectActionStatusConstants.NEVER_RAN);
+		objectAction.setStatus(ObjectActionConstants.STATUS_NEVER_RAN);
 
 		return objectActionPersistence.update(objectAction);
 	}

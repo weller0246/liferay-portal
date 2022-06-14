@@ -16,8 +16,8 @@ package com.liferay.object.service.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.object.action.executor.ObjectActionExecutorRegistry;
+import com.liferay.object.constants.ObjectActionConstants;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
-import com.liferay.object.constants.ObjectActionStatusConstants;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.model.ObjectAction;
 import com.liferay.object.model.ObjectDefinition;
@@ -440,7 +440,7 @@ public class ObjectActionLocalServiceTest {
 			).build(),
 			objectAction.getParametersUnicodeProperties());
 		Assert.assertEquals(
-			ObjectActionStatusConstants.NEVER_RAN, objectAction.getStatus());
+			ObjectActionConstants.STATUS_NEVER_RAN, objectAction.getStatus());
 
 		objectAction = _objectActionLocalService.updateObjectAction(
 			objectAction.getObjectActionId(), false,
@@ -469,7 +469,7 @@ public class ObjectActionLocalServiceTest {
 			).build(),
 			objectAction.getParametersUnicodeProperties());
 		Assert.assertEquals(
-			ObjectActionStatusConstants.NEVER_RAN, objectAction.getStatus());
+			ObjectActionConstants.STATUS_NEVER_RAN, objectAction.getStatus());
 	}
 
 	private Object _getAndSetFieldValue(

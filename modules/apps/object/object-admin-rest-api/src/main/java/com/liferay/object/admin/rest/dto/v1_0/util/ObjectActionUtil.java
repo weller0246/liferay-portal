@@ -16,7 +16,7 @@ package com.liferay.object.admin.rest.dto.v1_0.util;
 
 import com.liferay.object.admin.rest.dto.v1_0.ObjectAction;
 import com.liferay.object.admin.rest.dto.v1_0.Status;
-import com.liferay.object.constants.ObjectActionStatusConstants;
+import com.liferay.object.constants.ObjectActionConstants;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
@@ -65,11 +65,11 @@ public class ObjectActionUtil {
 					status = new Status() {
 						{
 							code = serviceBuilderObjectAction.getStatus();
-							label = ObjectActionStatusConstants.getStatusLabel(
+							label = ObjectActionConstants.getStatusLabel(
 								serviceBuilderObjectAction.getStatus());
 							label_i18n = LanguageUtil.get(
 								locale,
-								ObjectActionStatusConstants.getStatusLabel(
+								ObjectActionConstants.getStatusLabel(
 									serviceBuilderObjectAction.getStatus()));
 						}
 					};
