@@ -115,11 +115,15 @@ public class SXPBlueprintSuggestionsContributor
 			return null;
 		}
 
-		return _toSuggestionsContributorResults(
-			attributes,
-			suggestionsContributorConfiguration.getDisplayGroupName(),
-			liferayPortletRequest, liferayPortletResponse, searchContext,
-			searchHits.getSearchHits());
+		return _suggestionsContributorResultsBuilderFactory.builder(
+		).displayGroupName(
+			suggestionsContributorConfiguration.getDisplayGroupName()
+		).suggestions(
+			_getSuggestions(
+				attributes,
+				liferayPortletRequest, liferayPortletResponse, searchContext,
+				searchHits.getSearchHits())
+		).build();
 	}
 
 	private Layout _fetchLayoutByFriendlyURL(long groupId, String friendlyURL) {
@@ -349,11 +353,13 @@ public class SXPBlueprintSuggestionsContributor
 			field, "${language_id}", LocaleUtil.toLanguageId(locale));
 	}
 
-	private SuggestionsContributorResults _toSuggestionsContributorResults(
-		Map<String, Object> attributes, String displayGroupName,
+	private List<Suggestion> _getSuggestions(
+		Map<String, Object> attributes,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,
 		SearchContext searchContext, List<SearchHit> searchHits) {
+
+		List<Suggestion> suggestions = new ArrayList<>();
 
 		String[] fields = GetterUtil.getStringValues(attributes.get("fields"));
 		String fieldValueSeparator = MapUtil.getString(
@@ -373,8 +379,6 @@ public class SXPBlueprintSuggestionsContributor
 			GetterUtil.getString(
 				searchContext.getAttribute(
 					"search.suggestions.destination.friendly.url")));
-
-		List<Suggestion> suggestions = new ArrayList<>();
 
 		for (SearchHit searchHit : searchHits) {
 			Document document = searchHit.getDocument();
@@ -421,12 +425,7 @@ public class SXPBlueprintSuggestionsContributor
 			}
 		};
 
-		return _suggestionsContributorResultsBuilderFactory.builder(
-		).displayGroupName(
-			displayGroupName
-		).suggestions(
-			suggestions
-		).build();
+		return suggestions;		
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
