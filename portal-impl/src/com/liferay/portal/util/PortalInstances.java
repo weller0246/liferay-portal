@@ -473,7 +473,7 @@ public class PortalInstances {
 	}
 
 	private static long _getCompanyIdByHost(
-		HttpServletRequest httpServletRequest, String host) {
+		String host, HttpServletRequest httpServletRequest) {
 
 		if (Validator.isNull(host)) {
 			return 0;
@@ -547,7 +547,7 @@ public class PortalInstances {
 			return 0;
 		}
 
-		long companyId = _getCompanyIdByHost(httpServletRequest, host);
+		long companyId = _getCompanyIdByHost(host, httpServletRequest);
 
 		if (strict && (companyId == 0)) {
 			throw new NoSuchVirtualHostException(host);
