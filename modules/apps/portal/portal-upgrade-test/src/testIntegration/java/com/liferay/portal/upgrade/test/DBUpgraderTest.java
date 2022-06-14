@@ -55,7 +55,6 @@ public class DBUpgraderTest {
 	@After
 	public void tearDown() throws Exception {
 		_updateReleaseBuild(_currentBuildNumber);
-
 		_updateReleaseState(_currentState);
 	}
 
