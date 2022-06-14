@@ -251,7 +251,13 @@ public class SXPBlueprintSuggestionsContributor
 		SearchRequestBuilder searchRequestBuilder =
 			_searchRequestBuilderFactory.builder();
 
-		searchRequestBuilder.withSearchContext(
+		searchRequestBuilder.from(
+			0
+		).queryString(
+			searchContext1.getKeywords()
+		).size(
+			size
+		).withSearchContext(
 			searchContext2 -> {
 				searchContext2.setAttribute(
 					"search.experiences.blueprint.id", sxpBlueprintId);
@@ -271,14 +277,7 @@ public class SXPBlueprintSuggestionsContributor
 				searchContext2.setLocale(searchContext1.getLocale());
 				searchContext2.setTimeZone(searchContext1.getTimeZone());
 				searchContext2.setUserId(searchContext1.getUserId());
-			});
-
-		searchRequestBuilder.size(
-			size
-		).queryString(
-			searchContext1.getKeywords()
-		).from(
-			0
+			}
 		);
 
 		return searchRequestBuilder.build();
