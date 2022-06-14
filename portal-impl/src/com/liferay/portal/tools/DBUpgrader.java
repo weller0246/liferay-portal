@@ -78,8 +78,7 @@ public class DBUpgrader {
 		if (StartupHelperUtil.isUpgrading()) {
 			try (Connection connection = DataAccess.getConnection()) {
 				if (PortalUpgradeProcess.supportsRetry(connection)) {
-					System.out.println(
-						"Previous upgrade attempt failed, trying it again");
+					System.out.println("Retrying upgrade");
 
 					return;
 				}
