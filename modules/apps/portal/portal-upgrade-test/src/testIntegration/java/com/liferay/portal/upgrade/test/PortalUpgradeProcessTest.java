@@ -185,23 +185,6 @@ public class PortalUpgradeProcessTest {
 	}
 
 	@Test
-	public void testRetryUpgradeFrom6210IsNotSupported() throws Exception {
-		_supportsRetryUpgrade(6210);
-	}
-
-	@Test
-	public void testRetryUpgradeFrom7010IsNotSupported() throws Exception {
-		_supportsRetryUpgrade(7010);
-	}
-
-	@Test
-	public void testRetryUpgradeIsSupported() throws Exception {
-		try (Connection connection = DataAccess.getConnection()) {
-			Assert.assertTrue(PortalUpgradeProcess.supportsRetry(connection));
-		}
-	}
-
-	@Test
 	public void testRevertCodeToPreviousMajorSchemaVersion() throws Exception {
 		Version nextMajorSchemaVersion = new Version(
 			_currentSchemaVersion.getMajor() + 1, 0, 0);
@@ -243,6 +226,23 @@ public class PortalUpgradeProcessTest {
 				"Minor schema version changes must be revertible",
 				PortalUpgradeProcess.isInRequiredSchemaVersion(connection));
 		}
+	}
+
+	@Test
+	public void testSupportsRetry() throws Exception {
+		try (Connection connection = DataAccess.getConnection()) {
+			Assert.assertTrue(PortalUpgradeProcess.supportsRetry(connection));
+		}
+	}
+
+	@Test
+	public void testSupportsRetry_6210() throws Exception {
+		_testSupportsRetry(6210);
+	}
+
+	@Test
+	public void testSupportsRetry_7010() throws Exception {
+		_testSupportsRetry(7010);
 	}
 
 	@Test
@@ -301,7 +301,7 @@ public class PortalUpgradeProcessTest {
 		}
 	}
 
-	private void _supportsRetryUpgrade(int buildNumber) throws Exception {
+	private void _testSupportsRetry(int buildNumber) throws Exception {
 		Release release = _releaseLocalService.fetchRelease(
 			ReleaseConstants.DEFAULT_SERVLET_CONTEXT_NAME);
 
