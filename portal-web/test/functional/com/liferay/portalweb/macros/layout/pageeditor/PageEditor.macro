@@ -2446,7 +2446,7 @@ definition {
 
 			PageEditor.waitForAutoSave();
 		}
-		else {
+		else if ("${markAsRequired}" == "false") {
 			Uncheck.uncheckNotVisible(
 				checkboxName = "Mark as Required",
 				locator1 = "Checkbox#ANY_CHECKBOX");
@@ -2461,7 +2461,7 @@ definition {
 
 			PageEditor.waitForAutoSave();
 		}
-		else {
+		else if ("${hideLabel}" == "false") {
 			Check.checkToggleSwitch(
 				key_toggleSwitchLabel = "Show Label",
 				locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
@@ -2489,7 +2489,7 @@ definition {
 
 			PageEditor.waitForAutoSave();
 		}
-		else {
+		else if ("${hideHelpText}" == "false") {
 			Check.checkToggleSwitch(
 				key_toggleSwitchLabel = "Show Help Text",
 				locator1 = "ToggleSwitch#ANY_TOGGLE_SWITCH");
