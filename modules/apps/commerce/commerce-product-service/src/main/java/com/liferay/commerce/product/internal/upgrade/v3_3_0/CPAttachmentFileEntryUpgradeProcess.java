@@ -12,21 +12,20 @@
  * details.
  */
 
-package com.liferay.commerce.product.internal.upgrade.v3_8_1;
+package com.liferay.commerce.product.internal.upgrade.v3_3_0;
 
 import com.liferay.commerce.product.internal.upgrade.base.BaseCommerceProductServiceUpgradeProcess;
 
 /**
  * @author Andrea Sbarra
  */
-public class CPAttachmentFileEntryCDNUpgradeProcess
+public class CPAttachmentFileEntryUpgradeProcess
 	extends BaseCommerceProductServiceUpgradeProcess {
 
 	@Override
 	public void doUpgrade() throws Exception {
-		if (hasColumnType("CPAttachmentFileEntry", "cdnURL", "VARCHAR(255)")) {
-			alterColumnType("CPAttachmentFileEntry", "cdnURL", "STRING null");
-		}
+		addColumn("CPAttachmentFileEntry", "cdnEnabled", "BOOLEAN");
+		addColumn("CPAttachmentFileEntry", "cdnURL", "VARCHAR(255)");
 	}
 
 }
