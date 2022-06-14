@@ -712,7 +712,7 @@ import com.sun.xml.bind.v2.runtime.Location;
 
 	static {
 		String packageNames = System.getProperty(
-			"jaxb-runtime.skip.overriding.packages");
+			"javax.xml.bind.runtime.glassfish.skip.overriding.packages");
 
 		if ((packageNames == null) || packageNames.isEmpty()) {
 			_skipOverridingPackageNames = new String[0];

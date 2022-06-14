@@ -52,7 +52,7 @@ index a5f91ba8d170..eb40e048b1eb 100644
 +
 +	static {
 +		String packageNames = System.getProperty(
-+			"jaxb-runtime.skip.overriding.packages");
++			"javax.xml.bind.runtime.glassfish.skip.overriding.packages");
 +
 +		if ((packageNames == null) || packageNames.isEmpty()) {
 +			_skipOverridingPackageNames = new String[0];
