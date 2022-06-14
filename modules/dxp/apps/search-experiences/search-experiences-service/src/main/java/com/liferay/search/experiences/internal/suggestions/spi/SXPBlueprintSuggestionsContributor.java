@@ -384,44 +384,45 @@ public class SXPBlueprintSuggestionsContributor
 		for (SearchHit searchHit : searchHits) {
 			Document document = searchHit.getDocument();
 
-			if (!Validator.isBlank(textField)) {
-				List<String> texts = _getTexts(
-					document,
-					_replaceLanguageId(
-						searchContext.getLocale(), textField));
-
-				for (String text : texts) {
-					if (!Validator.isBlank(fieldValueSeparator)) {
-						String[] textParts = StringUtil.split(
-							text, fieldValueSeparator);
-
-						for (String textPart : textParts) {
-							suggestions.add(
-								_getSuggestion(
-									fields, includeAssetSearchSummary,
-									includeAssetURL, liferayPortletRequest,
-									liferayPortletResponse, searchContext,
-									searchHit, searchLayout, textPart,
-									false));
-						}
-					}
-					else {
-						suggestions.add(
-							_getSuggestion(
-								fields, includeAssetSearchSummary,
-								includeAssetURL, liferayPortletRequest,
-								liferayPortletResponse, searchContext,
-								searchHit, searchLayout, text, false));
-					}
-				}
-			}
-			else {
+			if (Validator.isBlank(textField)) {
 				suggestions.add(
 					_getSuggestion(
 						fields, includeAssetSearchSummary, includeAssetURL,
 						liferayPortletRequest, liferayPortletResponse,
 						searchContext, searchHit, searchLayout, null,
 						true));
+
+				continue;
+			}
+
+			List<String> texts = _getTexts(
+				document,
+				_replaceLanguageId(
+					searchContext.getLocale(), textField));
+
+			for (String text : texts) {
+				if (!Validator.isBlank(fieldValueSeparator)) {
+					String[] textParts = StringUtil.split(
+						text, fieldValueSeparator);
+
+					for (String textPart : textParts) {
+						suggestions.add(
+							_getSuggestion(
+								fields, includeAssetSearchSummary,
+								includeAssetURL, liferayPortletRequest,
+								liferayPortletResponse, searchContext,
+								searchHit, searchLayout, textPart,
+								false));
+					}
+				}
+				else {
+					suggestions.add(
+						_getSuggestion(
+							fields, includeAssetSearchSummary,
+							includeAssetURL, liferayPortletRequest,
+							liferayPortletResponse, searchContext,
+							searchHit, searchLayout, text, false));
+				}
 			}
 		};
 
