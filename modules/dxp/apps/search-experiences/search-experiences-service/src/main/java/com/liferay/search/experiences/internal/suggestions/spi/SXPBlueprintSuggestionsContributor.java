@@ -370,7 +370,7 @@ public class SXPBlueprintSuggestionsContributor
 			attributes, "includeAssetSearchSummary", true);
 		boolean includeAssetURL = MapUtil.getBoolean(
 			attributes, "includeAssetURL", true);
-		String textField = MapUtil.getString(attributes, "textField");
+		String textFieldName = MapUtil.getString(attributes, "textField");
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)liferayPortletRequest.getAttribute(
@@ -385,7 +385,7 @@ public class SXPBlueprintSuggestionsContributor
 		for (SearchHit searchHit : searchHits) {
 			Document document = searchHit.getDocument();
 
-			if (Validator.isBlank(textField)) {
+			if (Validator.isBlank(textFieldName)) {
 				suggestions.add(
 					_getSuggestion(
 						fieldNames, includeAssetSearchSummary, includeAssetURL,
@@ -397,7 +397,7 @@ public class SXPBlueprintSuggestionsContributor
 
 			List<String> texts = _getTexts(
 				document,
-				_replaceLanguageId(searchContext.getLocale(), textField));
+				_replaceLanguageId(searchContext.getLocale(), textFieldName));
 
 			for (String text : texts) {
 				if (!Validator.isBlank(fieldValueSeparator)) {
