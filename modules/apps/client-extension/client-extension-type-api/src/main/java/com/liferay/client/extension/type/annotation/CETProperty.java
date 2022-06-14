@@ -25,9 +25,9 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface CETProperty {
 
-	String name() default "";
-
 	String defaultValue() default "";
+
+	String name() default "";
 
 	String type() default "";
 

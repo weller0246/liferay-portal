@@ -25,8 +25,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface CETType {
 
-	String name();
-
 	String description();
+
+	String name();
 
 }
