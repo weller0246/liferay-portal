@@ -95,13 +95,12 @@ public class CETUtil {
 	}
 
 	private static CET _getCET(
-			JavaClass javaClass, List<CETProperty> defaultCETProperties)
+			List<CETProperty> defaultCETProperties, JavaClass javaClass)
 		throws IOException {
 
-		String cetDescription = null;
-		String cetName = null;
-
 		List<CETProperty> cetProperties = new ArrayList<>(defaultCETProperties);
+		String description = null;
+		String name = null;
 
 		List<String> annotationsBlocks = SourceUtil.getAnnotationsBlocks(
 			javaClass.getContent());
@@ -119,19 +118,18 @@ public class CETUtil {
 				if (annotation.startsWith("@CETProperty")) {
 					cetProperties.add(
 						new CETProperty(
+							annotationMemberValuePair.get("defaultValue"),
 							annotationMemberValuePair.get("name"),
-							annotationMemberValuePair.get("type"),
-							annotationMemberValuePair.get("defaultValue")));
+							annotationMemberValuePair.get("type")));
 				}
 				else if (annotation.startsWith("@CETType")) {
-					cetDescription = annotationMemberValuePair.get(
-						"description");
-					cetName = annotationMemberValuePair.get("name");
+					description = annotationMemberValuePair.get("description");
+					name = annotationMemberValuePair.get("name");
 				}
 			}
 		}
 
-		return new CET(cetName, cetDescription, cetProperties);
+		return new CET(cetProperties, description, name);
 	}
 
 	private static List<CET> _getCETs(List<String> fileNames)
@@ -163,7 +161,7 @@ public class CETUtil {
 		List<CETProperty> defaultCETProperties = new ArrayList<>();
 
 		if (baseCETJavaClass != null) {
-			CET cet = _getCET(baseCETJavaClass, Collections.emptyList());
+			CET cet = _getCET(Collections.emptyList(), baseCETJavaClass);
 
 			defaultCETProperties.addAll(cet.getCETProperties());
 		}
@@ -171,7 +169,7 @@ public class CETUtil {
 		List<CET> cets = new ArrayList<>();
 
 		for (JavaClass cetJavaClass : cetJavaClasses) {
-			cets.add(_getCET(cetJavaClass, defaultCETProperties));
+			cets.add(_getCET(defaultCETProperties, cetJavaClass));
 		}
 
 		Collections.sort(
@@ -194,11 +192,11 @@ public class CETUtil {
 	private static class CET {
 
 		public CET(
-			String name, String description, List<CETProperty> cetProperties) {
+			List<CETProperty> cetProperties, String description, String name) {
 
-			_name = name;
-			_description = description;
 			_cetProperties = cetProperties;
+			_description = description;
+			_name = name;
 		}
 
 		public List<CETProperty> getCETProperties() {
@@ -221,10 +219,10 @@ public class CETUtil {
 
 	private static class CETProperty {
 
-		public CETProperty(String name, String type, String defaultValue) {
+		public CETProperty(String defaultValue, String name, String type) {
+			_defaultValue = defaultValue;
 			_name = name;
 			_type = type;
-			_defaultValue = defaultValue;
 		}
 
 		public String getDefaultValue() {
