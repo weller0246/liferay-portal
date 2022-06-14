@@ -235,14 +235,14 @@ public class SXPBlueprintSuggestionsContributor
 	private String[] _getNestedFieldValue(Document document, String fieldName) {
 		String[] parts = StringUtil.split(fieldName, "\\.");
 
-		Map<String, Field> nestedFieldMap =
+		Map<String, Field> nestedFields =
 			(Map<String, Field>)document.getValue(parts[0]);
 
-		if (nestedFieldMap == null) {
+		if (nestedFields == null) {
 			return null;
 		}
 
-		return GetterUtil.getStringValues(nestedFieldMap.get(parts[1]));
+		return GetterUtil.getStringValues(nestedFields.get(parts[1]));
 	}
 
 	private SearchRequest _getSearchRequest(
