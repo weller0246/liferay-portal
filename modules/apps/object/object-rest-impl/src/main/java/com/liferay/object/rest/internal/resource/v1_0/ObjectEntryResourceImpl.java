@@ -84,12 +84,12 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			String createStrategy = (String)parameters.getOrDefault(
 				"createStrategy", "INSERT");
 
-			if ("INSERT".equalsIgnoreCase(createStrategy)) {
+			if (StringUtil.equalsIgnoreCase(createStrategy, "INSERT")) {
 				objectEntryUnsafeConsumer = objectEntry -> postScopeScopeKey(
 					(String)parameters.get("scopeKey"), objectEntry);
 			}
 
-			if ("UPSERT".equalsIgnoreCase(createStrategy)) {
+			if (StringUtil.equalsIgnoreCase(createStrategy, "UPSERT")) {
 				objectEntryUnsafeConsumer =
 					objectEntry -> putScopeScopeKeyByExternalReferenceCode(
 						(String)parameters.get("scopeKey"),
