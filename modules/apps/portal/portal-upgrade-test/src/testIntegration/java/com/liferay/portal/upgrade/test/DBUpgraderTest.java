@@ -49,7 +49,6 @@ public class DBUpgraderTest {
 	@BeforeClass
 	public static void setUpClass() throws SQLException {
 		_currentBuildNumber = _getReleaseColumnValue("buildNumber");
-
 		_currentState = _getReleaseColumnValue("state_");
 	}
 
