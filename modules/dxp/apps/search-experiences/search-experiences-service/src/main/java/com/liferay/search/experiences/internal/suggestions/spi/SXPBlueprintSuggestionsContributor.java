@@ -401,16 +401,16 @@ public class SXPBlueprintSuggestionsContributor
 
 			for (String text : texts) {
 				if (!Validator.isBlank(fieldValueSeparator)) {
-					String[] textParts = StringUtil.split(
+					String[] parts = StringUtil.split(
 						text, fieldValueSeparator);
 
-					for (String textPart : textParts) {
+					for (String part : parts) {
 						suggestions.add(
 							_getSuggestion(
 								fieldNames, includeAssetSearchSummary,
 								includeAssetURL, layout, liferayPortletRequest,
 								liferayPortletResponse, searchContext,
-								searchHit, textPart, false));
+								searchHit, part, false));
 					}
 				}
 				else {
