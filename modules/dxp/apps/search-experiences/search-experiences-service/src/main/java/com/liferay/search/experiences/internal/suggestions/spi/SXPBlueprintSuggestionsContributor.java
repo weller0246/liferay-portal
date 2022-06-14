@@ -337,17 +337,17 @@ public class SXPBlueprintSuggestionsContributor
 		return suggestionBuilder.build();
 	}
 
-	private List<String> _getTexts(Document document, String textField) {
-		if (StringUtil.contains(textField, ".")) {
-			return Arrays.asList(_getNestedFieldValue(document, textField));
+	private List<String> _getTexts(Document document, String field) {
+		if (StringUtil.contains(field, ".")) {
+			return Arrays.asList(_getNestedFieldValue(document, field));
 		}
 
-		return document.getStrings(textField);
+		return document.getStrings(field);
 	}
 
-	private String _replaceLanguageId(Locale locale, String textField) {
+	private String _replaceLanguageId(Locale locale, String field) {
 		return StringUtil.replace(
-			textField, "${language_id}", LocaleUtil.toLanguageId(locale));
+			field, "${language_id}", LocaleUtil.toLanguageId(locale));
 	}
 
 	private SuggestionsContributorResults _toSuggestionsContributorResults(
@@ -386,23 +386,24 @@ public class SXPBlueprintSuggestionsContributor
 				Document document = searchHit.getDocument();
 
 				if (!Validator.isBlank(textField)) {
-					String field = _replaceLanguageId(
-						searchContext.getLocale(), textField);
-
-					List<String> texts = _getTexts(document, field);
+					List<String> texts = _getTexts(
+						document,
+						_replaceLanguageId(
+							searchContext.getLocale(), textField));
 
 					for (String text : texts) {
 						if (!Validator.isBlank(fieldValueSeparator)) {
-							String[] parts = StringUtil.split(
+							String[] textParts = StringUtil.split(
 								text, fieldValueSeparator);
 
-							for (String s : parts) {
+							for (String textPart : textParts) {
 								suggestions.add(
 									_getSuggestion(
 										fields, includeAssetSearchSummary,
 										includeAssetURL, liferayPortletRequest,
 										liferayPortletResponse, searchContext,
-										searchHit, searchLayout, s, false));
+										searchHit, searchLayout, textPart,
+										false));
 							}
 						}
 						else {
