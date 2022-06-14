@@ -128,9 +128,9 @@ public class JournalFolderLocalServiceImpl
 		JournalFolder folder = journalFolderPersistence.create(folderId);
 
 		folder.setUuid(serviceContext.getUuid());
+		folder.setExternalReferenceCode(externalReferenceCode);
 		folder.setGroupId(groupId);
 		folder.setCompanyId(user.getCompanyId());
-		folder.setExternalReferenceCode(externalReferenceCode);
 		folder.setUserId(user.getUserId());
 		folder.setUserName(user.getFullName());
 		folder.setParentFolderId(parentFolderId);
