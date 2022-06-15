@@ -42,8 +42,8 @@ LayoutLookAndFeelDisplayContext layoutLookAndFeelDisplayContext = new LayoutLook
 %>
 
 <aui:input name="devices" type="hidden" value="regular" />
-<aui:input name="themeFaviconCETExternalReferenceCode" type="hidden" value="<%= layoutLookAndFeelDisplayContext.getThemeFaviconCETExternalReferenceCode() %>" />
 <aui:input name="faviconFileEntryId" type="hidden" value="<%= selLayout.getFaviconFileEntryId() %>" />
+<aui:input name="themeFaviconCETExternalReferenceCode" type="hidden" value="<%= layoutLookAndFeelDisplayContext.getThemeFaviconCETExternalReferenceCode() %>" />
 
 <clay:sheet-section>
 	<h3 class="sheet-subtitle"><liferay-ui:message key="favicon" /></h3>
