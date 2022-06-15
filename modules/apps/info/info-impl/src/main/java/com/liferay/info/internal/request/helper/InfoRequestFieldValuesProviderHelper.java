@@ -66,7 +66,6 @@ public class InfoRequestFieldValuesProviderHelper {
 
 		String className = PortalUtil.getClassName(
 			ParamUtil.getLong(httpServletRequest, "classNameId"));
-
 		String classTypeId = ParamUtil.getString(
 			httpServletRequest, "classTypeId");
 
