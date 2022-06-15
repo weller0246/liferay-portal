@@ -194,9 +194,9 @@ export function FormInputGeneralPanel({item}) {
 
 						if (
 							fragmentEntryType === FRAGMENT_ENTRY_TYPES.input &&
-							editableValues[FREEMARKER_FRAGMENT_ENTRY_PROCESSOR][
-								FIELD_ID_CONFIGURATION_KEY
-							]
+							editableValues[
+								FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
+							]?.[FIELD_ID_CONFIGURATION_KEY]
 						) {
 							selectedFields.push(
 								editableValues[
