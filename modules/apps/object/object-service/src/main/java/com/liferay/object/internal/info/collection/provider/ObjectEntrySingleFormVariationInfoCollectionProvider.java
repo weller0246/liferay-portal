@@ -171,7 +171,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		).infoFieldSetEntries(
 			_getInfoFieldSetEntries()
 		).infoFieldSetEntry(
-			_getAssetTagsInfoField()
+			_getInfoField()
 		).infoFieldSetEntry(
 			InfoFieldSet.builder(
 			).infoFieldSetEntry(
@@ -382,7 +382,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return fieldSetEntries;
 	}
 
-	private InfoField<?> _getAssetTagsInfoField() {
+	private InfoField<?> _getInfoField() {
 		if (!StringUtil.equals(
 				_objectDefinition.getStorageType(),
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
