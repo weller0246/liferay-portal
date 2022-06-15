@@ -48,7 +48,7 @@ public class CommercePaymentMethodGroupRelUpgradeProcess
 			Arrays.asList(_OWNER_PERMISSIONS), true);
 
 		String selectCommercePaymentMethodGroupRelSQL =
-			"select companyId, groupId, userId, CPaymentMethodGroupRelId " +
+			"select CPaymentMethodGroupRelId, companyId, groupId, userId " +
 				"from CommercePaymentMethodGroupRel";
 
 		try (Statement s = connection.createStatement();
