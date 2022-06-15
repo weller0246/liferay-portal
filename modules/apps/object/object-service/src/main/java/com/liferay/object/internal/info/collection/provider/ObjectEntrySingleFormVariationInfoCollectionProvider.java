@@ -437,7 +437,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		if (!StringUtil.equals(
 				_objectDefinition.getStorageType(),
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
-			!_hasCategorizationLayoutBox()) {
+			!_hasCategorizationObjectLayoutBox()) {
 
 			return null;
 		}
@@ -503,7 +503,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		if (!StringUtil.equals(
 				_objectDefinition.getStorageType(),
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
-			!_hasCategorizationLayoutBox()) {
+			!_hasCategorizationObjectLayoutBox()) {
 
 			return Collections.emptyList();
 		}
@@ -607,7 +607,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return options;
 	}
 
-	private boolean _hasCategorizationLayoutBox() {
+	private boolean _hasCategorizationObjectLayoutBox() {
 		ObjectLayout objectLayout = null;
 
 		try {
