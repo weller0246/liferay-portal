@@ -27,8 +27,8 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 		<b><liferay-ui:message key="favicon-name" />:</b> <span id="<portlet:namespace />faviconTitle"><%= layoutsAdminDisplayContext.getFaviconTitle() %></span>
 	</p>
 
-	<aui:input name="themeFaviconCETExternalReferenceCode" type="hidden" value="<%= layoutsAdminDisplayContext.getThemeFaviconCETExternalReferenceCode() %>" />
 	<aui:input name="faviconFileEntryId" type="hidden" value="<%= selLayoutSet.getFaviconFileEntryId() %>" />
+	<aui:input name="themeFaviconCETExternalReferenceCode" type="hidden" value="<%= layoutsAdminDisplayContext.getThemeFaviconCETExternalReferenceCode() %>" />
 
 	<aui:button name="selectFaviconButton" value="change-favicon" />
 
@@ -37,9 +37,6 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 	<aui:script sandbox="<%= true %>">
 		const clearFaviconButton = document.getElementById(
 			'<portlet:namespace />clearFaviconButton'
-		);
-		const themeFaviconCETExternalReferenceCode = document.getElementById(
-			'<portlet:namespace />themeFaviconCETExternalReferenceCode'
 		);
 		const faviconFileEntryId = document.getElementById(
 			'<portlet:namespace />faviconFileEntryId'
@@ -53,6 +50,9 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 		const selectLayoutButton = document.getElementById(
 			'<portlet:namespace />selectFaviconButton'
 		);
+		const themeFaviconCETExternalReferenceCode = document.getElementById(
+			'<portlet:namespace />themeFaviconCETExternalReferenceCode'
+		);
 
 		selectLayoutButton.addEventListener('click', (event) => {
 			event.preventDefault();
@@ -60,12 +60,12 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 			Liferay.Util.openSelectionModal({
 				onSelect: function (selectedItem) {
 					if (
-						themeFaviconCETExternalReferenceCode &&
 						faviconFileEntryId &&
 						faviconImage &&
 						faviconTitle &&
 						selectedItem &&
-						selectedItem.value
+						selectedItem.value &&
+						themeFaviconCETExternalReferenceCode
 					) {
 						const itemValue = JSON.parse(selectedItem.value);
 
@@ -73,13 +73,13 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 							selectedItem.returnType ===
 							'<%= CETItemSelectorReturnType.class.getName() %>'
 						) {
+							faviconFileEntryId.value = 0;
 							themeFaviconCETExternalReferenceCode.value =
 								itemValue.cetExternalReferenceCode;
-							faviconFileEntryId.value = 0;
 						}
 						else {
-							themeFaviconCETExternalReferenceCode.value = '';
 							faviconFileEntryId.value = itemValue.fileEntryId;
+							themeFaviconCETExternalReferenceCode.value = '';
 						}
 
 						if (itemValue.url) {
@@ -100,18 +100,18 @@ LayoutSet selLayoutSet = layoutsAdminDisplayContext.getSelLayoutSet();
 		});
 
 		if (
-			themeFaviconCETExternalReferenceCode &&
 			clearFaviconButton &&
 			faviconFileEntryId &&
 			faviconImage &&
-			faviconTitle
+			faviconTitle &&
+			themeFaviconCETExternalReferenceCode
 		) {
 			clearFaviconButton.addEventListener('click', (event) => {
-				themeFaviconCETExternalReferenceCode.value = '';
 				faviconFileEntryId.value = 0;
 				faviconImage.classList.add('d-none');
 				faviconTitle.innerHTML =
 					'<liferay-ui:message key="favicon-from-theme" />';
+				themeFaviconCETExternalReferenceCode.value = '';
 			});
 		}
 	</aui:script>
