@@ -506,14 +506,11 @@ public class CommercePaymentEngineImpl implements CommercePaymentEngine {
 		List<CommercePaymentMethodGroupRel> commercePaymentMethodGroupRels,
 		long commerceOrderTypeId, boolean subscriptionOrder) {
 
+		List<CommercePaymentMethod> commercePaymentMethods = new LinkedList<>();
+
 		ListUtil.sort(
 			commercePaymentMethodGroupRels,
 			new CommercePaymentMethodPriorityComparator());
-
-		List<CommercePaymentMethod> commercePaymentMethods = new LinkedList<>();
-
-		PermissionChecker permissionChecker =
-			PermissionThreadLocal.getPermissionChecker();
 
 		for (CommercePaymentMethodGroupRel commercePaymentMethodGroupRel :
 				commercePaymentMethodGroupRels) {
@@ -539,6 +536,9 @@ public class CommercePaymentEngineImpl implements CommercePaymentEngine {
 
 				continue;
 			}
+
+			PermissionChecker permissionChecker =
+				PermissionThreadLocal.getPermissionChecker();
 
 			CommercePaymentMethod commercePaymentMethod =
 				_commercePaymentMethodRegistry.getCommercePaymentMethod(
