@@ -22,6 +22,7 @@ import com.liferay.info.item.InfoItemFieldValues;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.creator.InfoItemCreator;
+import com.liferay.portal.kernel.captcha.CaptchaException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -78,6 +79,18 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 				).infoItemReference(
 					new InfoItemReference(className, 0)
 				).build());
+		}
+		catch (CaptchaException captchaException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(captchaException);
+			}
+
+			String formItemId = ParamUtil.getString(
+				httpServletRequest, "formItemId");
+
+			SessionErrors.add(
+				originalHttpServletRequest, formItemId,
+				new InfoFormValidationException.InvalidCaptcha());
 		}
 		catch (InfoFormValidationException infoFormValidationException) {
 			if (_log.isDebugEnabled()) {
