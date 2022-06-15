@@ -450,10 +450,10 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 	private List<AssetVocabulary> _getAssetVocabularies(
 		ServiceContext serviceContext) {
 
-		List<AssetVocabulary> vocabularies = new ArrayList<>();
+		List<AssetVocabulary> assetVocabularies = new ArrayList<>();
 
 		try {
-			vocabularies.addAll(
+			assetVocabularies.addAll(
 				_assetVocabularyLocalService.getGroupVocabularies(
 					SiteConnectedGroupGroupProviderUtil.
 						getCurrentAndAncestorSiteAndDepotGroupIds(
@@ -466,7 +466,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		}
 
 		return ListUtil.filter(
-			vocabularies,
+			assetVocabularies,
 			assetVocabulary ->
 				assetVocabulary.isAssociatedToClassNameIdAndClassTypePK(
 					PortalUtil.getClassNameId(_objectDefinition.getClassName()),
