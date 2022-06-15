@@ -55,46 +55,7 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 
 				_indexesMap.computeIfAbsent(
 					getIndexName(companyId),
-					indexName -> {
-						IndicesExistsIndexResponse indicesExistsIndexResponse =
-							searchEngineAdapter.execute(
-								new IndicesExistsIndexRequest(indexName));
-
-						if (indicesExistsIndexResponse.isExists()) {
-							return indexName;
-						}
-
-						try {
-							CreateIndexRequest createIndexRequest =
-								new CreateIndexRequest(indexName);
-
-							createIndexRequest.setSource(
-								JSONUtil.put(
-									"mappings",
-									JSONUtil.put(
-										getIndexType(),
-										() -> {
-											JSONObject jsonObject =
-												_readJSONObject(
-													"mappings.json");
-
-											return jsonObject.get(
-												getIndexType());
-										})
-								).put(
-									"settings", _readJSONObject("settings.json")
-								).toString());
-
-							searchEngineAdapter.execute(createIndexRequest);
-
-							return indexName;
-						}
-						catch (Exception exception) {
-							_log.error(exception);
-						}
-
-						return null;
-					});
+					indexName -> _createIndex(indexName));
 			});
 	}
 
@@ -141,6 +102,45 @@ public abstract class BaseWorkflowMetricsIndex implements WorkflowMetricsIndex {
 
 	@Reference
 	protected WorkflowMetricsPortalExecutor workflowMetricsPortalExecutor;
+
+	private String _createIndex(String indexName) {
+		IndicesExistsIndexResponse indicesExistsIndexResponse =
+			searchEngineAdapter.execute(
+				new IndicesExistsIndexRequest(indexName));
+
+		if (indicesExistsIndexResponse.isExists()) {
+			return indexName;
+		}
+
+		try {
+			CreateIndexRequest createIndexRequest = new CreateIndexRequest(
+				indexName);
+
+			createIndexRequest.setSource(
+				JSONUtil.put(
+					"mappings",
+					JSONUtil.put(
+						getIndexType(),
+						() -> {
+							JSONObject jsonObject = _readJSONObject(
+								"mappings.json");
+
+							return jsonObject.get(getIndexType());
+						})
+				).put(
+					"settings", _readJSONObject("settings.json")
+				).toString());
+
+			searchEngineAdapter.execute(createIndexRequest);
+
+			return indexName;
+		}
+		catch (Exception exception) {
+			_log.error(exception);
+		}
+
+		return null;
+	}
 
 	private JSONObject _readJSONObject(String fileName) throws JSONException {
 		return JSONFactoryUtil.createJSONObject(
