@@ -323,62 +323,114 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return searchContext;
 	}
 
-	private List<InfoFieldSetEntry> _getInfoFieldSetEntries() {
-		if (!StringUtil.equals(
-				_objectDefinition.getStorageType(),
-				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
-			!_hasCategorizationLayoutBox()) {
+	private List<AssetVocabulary> _getAssetVocabularies(
+		ServiceContext serviceContext) {
 
-			return Collections.emptyList();
+		List<AssetVocabulary> assetVocabularies = new ArrayList<>();
+
+		try {
+			assetVocabularies.addAll(
+				_assetVocabularyLocalService.getGroupVocabularies(
+					SiteConnectedGroupGroupProviderUtil.
+						getCurrentAndAncestorSiteAndDepotGroupIds(
+							serviceContext.getScopeGroupId())));
+		}
+		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
 		}
 
-		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
+		return ListUtil.filter(
+			assetVocabularies,
+			assetVocabulary ->
+				assetVocabulary.isAssociatedToClassNameIdAndClassTypePK(
+					PortalUtil.getClassNameId(_objectDefinition.getClassName()),
+					AssetCategoryConstants.ALL_CLASS_TYPE_PK));
+	}
+
+	private BooleanClause[] _getBooleanClauses(CollectionQuery collectionQuery)
+		throws ParseException {
+
+		BooleanQuery booleanQuery = new BooleanQueryImpl();
+
+		List<ObjectField> objectFields =
+			_objectFieldLocalService.getObjectFields(
+				_objectDefinition.getObjectDefinitionId());
+
+		Optional<Map<String, String[]>> configurationOptional =
+			collectionQuery.getConfigurationOptional();
+
+		Map<String, String[]> configuration = configurationOptional.orElse(
+			Collections.emptyMap());
+
+		for (Map.Entry<String, String[]> entry : configuration.entrySet()) {
+			String[] values = entry.getValue();
+
+			if ((values == null) || (values.length == 0) ||
+				values[0].isEmpty()) {
+
+				continue;
+			}
+
+			ObjectField objectField = _getObjectField(
+				entry.getKey(), objectFields);
+
+			if (objectField == null) {
+				continue;
+			}
+
+			BooleanQuery nestedBooleanQuery = new BooleanQueryImpl();
+
+			nestedBooleanQuery.add(
+				new TermQueryImpl(
+					_getFieldName(objectField), entry.getValue()[0]),
+				BooleanClauseOccur.MUST);
+			nestedBooleanQuery.add(
+				new TermQueryImpl("nestedFieldArray.fieldName", entry.getKey()),
+				BooleanClauseOccur.MUST);
+
+			booleanQuery.add(
+				new NestedQuery("nestedFieldArray", nestedBooleanQuery),
+				BooleanClauseOccur.MUST);
+		}
+
+		return new BooleanClause[] {
+			BooleanClauseFactoryUtil.create(
+				booleanQuery, BooleanClauseOccur.MUST.getName())
+		};
+	}
+
+	private String _getFieldName(ObjectField objectField) {
+		if (Objects.equals(
+				objectField.getDBType(),
+				ObjectFieldConstants.DB_TYPE_BOOLEAN)) {
+
+			return "nestedFieldArray.value_boolean";
+		}
+		else if (Objects.equals(
+					objectField.getDBType(),
+					ObjectFieldConstants.DB_TYPE_STRING)) {
+
+			return "nestedFieldArray.value_keyword_lowercase";
+		}
+
+		return "";
+	}
+
+	private long _getGroupId() throws PortalException {
+		ObjectScopeProvider objectScopeProvider =
+			_objectScopeProviderRegistry.getObjectScopeProvider(
+				_objectDefinition.getScope());
+
+		if (!objectScopeProvider.isGroupAware()) {
+			return 0;
+		}
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		for (AssetVocabulary assetVocabulary :
-				_getAssetVocabularies(serviceContext)) {
-
-			List<SelectInfoFieldType.Option> options =
-				new ArrayList<>();
-
-			for (AssetCategory assetCategory :
-					_assetCategoryLocalService.getVocabularyCategories(
-						assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
-						QueryUtil.ALL_POS, null)) {
-
-				options.add(
-					new SelectInfoFieldType.Option(
-						new SingleValueInfoLocalizedValue<>(
-							assetCategory.getName()),
-						String.valueOf(assetCategory.getCategoryId())));
-			}
-
-			if (!options.isEmpty()) {
-				fieldSetEntries.add(
-					InfoField.builder(
-					).infoFieldType(
-						SelectInfoFieldType.INSTANCE
-					).namespace(
-						StringPool.BLANK
-					).name(
-						String.valueOf(assetVocabulary.getVocabularyId())
-					).attribute(
-						SelectInfoFieldType.MULTIPLE, true
-					).attribute(
-						SelectInfoFieldType.OPTIONS, options
-					).labelInfoLocalizedValue(
-						InfoLocalizedValue.singleValue(
-							assetVocabulary.getTitle(
-								serviceContext.getLocale()))
-					).localizable(
-						true
-					).build());
-			}
-		}
-
-		return fieldSetEntries;
+		return objectScopeProvider.getGroupId(serviceContext.getRequest());
 	}
 
 	private InfoField<?> _getInfoField() {
@@ -447,113 +499,61 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return finalStep.build();
 	}
 
-	private List<AssetVocabulary> _getAssetVocabularies(
-		ServiceContext serviceContext) {
+	private List<InfoFieldSetEntry> _getInfoFieldSetEntries() {
+		if (!StringUtil.equals(
+				_objectDefinition.getStorageType(),
+				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
+			!_hasCategorizationLayoutBox()) {
 
-		List<AssetVocabulary> assetVocabularies = new ArrayList<>();
-
-		try {
-			assetVocabularies.addAll(
-				_assetVocabularyLocalService.getGroupVocabularies(
-					SiteConnectedGroupGroupProviderUtil.
-						getCurrentAndAncestorSiteAndDepotGroupIds(
-							serviceContext.getScopeGroupId())));
-		}
-		catch (PortalException portalException) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(portalException);
-			}
+			return Collections.emptyList();
 		}
 
-		return ListUtil.filter(
-			assetVocabularies,
-			assetVocabulary ->
-				assetVocabulary.isAssociatedToClassNameIdAndClassTypePK(
-					PortalUtil.getClassNameId(_objectDefinition.getClassName()),
-					AssetCategoryConstants.ALL_CLASS_TYPE_PK));
-	}
-
-	private BooleanClause[] _getBooleanClauses(CollectionQuery collectionQuery)
-		throws ParseException {
-
-		BooleanQuery booleanQuery = new BooleanQueryImpl();
-
-		List<ObjectField> objectFields =
-			_objectFieldLocalService.getObjectFields(
-				_objectDefinition.getObjectDefinitionId());
-
-		Optional<Map<String, String[]>> configurationOptional =
-			collectionQuery.getConfigurationOptional();
-
-		Map<String, String[]> configuration = configurationOptional.orElse(
-			Collections.emptyMap());
-
-		for (Map.Entry<String, String[]> entry : configuration.entrySet()) {
-			String[] values = entry.getValue();
-
-			if ((values == null) || (values.length == 0) ||
-				values[0].isEmpty()) {
-
-				continue;
-			}
-
-			ObjectField objectField = _getObjectField(
-				entry.getKey(), objectFields);
-
-			if (objectField == null) {
-				continue;
-			}
-
-			BooleanQuery nestedBooleanQuery = new BooleanQueryImpl();
-
-			nestedBooleanQuery.add(
-				new TermQueryImpl(_getFieldName(objectField), entry.getValue()[0]),
-				BooleanClauseOccur.MUST);
-			nestedBooleanQuery.add(
-				new TermQueryImpl("nestedFieldArray.fieldName", entry.getKey()),
-				BooleanClauseOccur.MUST);
-
-			booleanQuery.add(
-				new NestedQuery("nestedFieldArray", nestedBooleanQuery),
-				BooleanClauseOccur.MUST);
-		}
-
-		return new BooleanClause[] {
-			BooleanClauseFactoryUtil.create(
-				booleanQuery, BooleanClauseOccur.MUST.getName())
-		};
-	}
-
-	private String _getFieldName(ObjectField objectField) {
-		if (Objects.equals(
-				objectField.getDBType(),
-				ObjectFieldConstants.DB_TYPE_BOOLEAN)) {
-
-			return "nestedFieldArray.value_boolean";
-		}
-		else if (Objects.equals(
-					objectField.getDBType(),
-					ObjectFieldConstants.DB_TYPE_STRING)) {
-
-			return "nestedFieldArray.value_keyword_lowercase";
-		}
-
-		return "";
-	}
-
-	private long _getGroupId() throws PortalException {
-		ObjectScopeProvider objectScopeProvider =
-			_objectScopeProviderRegistry.getObjectScopeProvider(
-				_objectDefinition.getScope());
-
-		if (!objectScopeProvider.isGroupAware()) {
-			return 0;
-		}
+		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
 
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
 
-		return objectScopeProvider.getGroupId(serviceContext.getRequest());
+		for (AssetVocabulary assetVocabulary :
+				_getAssetVocabularies(serviceContext)) {
+
+			List<SelectInfoFieldType.Option> options = new ArrayList<>();
+
+			for (AssetCategory assetCategory :
+					_assetCategoryLocalService.getVocabularyCategories(
+						assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
+						QueryUtil.ALL_POS, null)) {
+
+				options.add(
+					new SelectInfoFieldType.Option(
+						new SingleValueInfoLocalizedValue<>(
+							assetCategory.getName()),
+						String.valueOf(assetCategory.getCategoryId())));
+			}
+
+			if (!options.isEmpty()) {
+				fieldSetEntries.add(
+					InfoField.builder(
+					).infoFieldType(
+						SelectInfoFieldType.INSTANCE
+					).namespace(
+						StringPool.BLANK
+					).name(
+						String.valueOf(assetVocabulary.getVocabularyId())
+					).attribute(
+						SelectInfoFieldType.MULTIPLE, true
+					).attribute(
+						SelectInfoFieldType.OPTIONS, options
+					).labelInfoLocalizedValue(
+						InfoLocalizedValue.singleValue(
+							assetVocabulary.getTitle(
+								serviceContext.getLocale()))
+					).localizable(
+						true
+					).build());
+			}
+		}
+
+		return fieldSetEntries;
 	}
 
 	private ObjectField _getObjectField(
