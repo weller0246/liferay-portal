@@ -614,20 +614,20 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		}
 		catch (PortalException portalException) {
 			_log.error(portalException);
+
+			return false;
 		}
 
-		if (objectLayout != null) {
-			for (ObjectLayoutTab objectLayoutTab :
-					objectLayout.getObjectLayoutTabs()) {
+		for (ObjectLayoutTab objectLayoutTab :
+				objectLayout.getObjectLayoutTabs()) {
 
-				if (ListUtil.exists(
-						objectLayoutTab.getObjectLayoutBoxes(),
-						objectLayoutBox -> StringUtil.equals(
-							objectLayoutBox.getType(),
-							ObjectLayoutBoxConstants.TYPE_CATEGORIZATION))) {
+			if (ListUtil.exists(
+					objectLayoutTab.getObjectLayoutBoxes(),
+					objectLayoutBox -> StringUtil.equals(
+						objectLayoutBox.getType(),
+						ObjectLayoutBoxConstants.TYPE_CATEGORIZATION))) {
 
-					return true;
-				}
+				return true;
 			}
 		}
 
