@@ -99,7 +99,7 @@ public class OpenIdConnectUserInfoProcessorImpl
 		String jobTitle = StringPool.BLANK;
 		long[] groupIds = null;
 		long[] organizationIds = null;
-		long[] roleIds = null;
+		long[] roleIds = _getRoleIds(companyId);
 		long[] userGroupIds = null;
 		boolean sendEmail = false;
 
@@ -107,33 +107,6 @@ public class OpenIdConnectUserInfoProcessorImpl
 
 		serviceContext.setPathMain(mainPath);
 		serviceContext.setPortalURL(portalURL);
-
-		String roleName = _props.get(
-			"default.portal.regular.role.name.for.oidc");
-
-		if (Validator.isNotNull(roleName)) {
-			try {
-				Role role = _roleLocalService.getRole(
-					company.getCompanyId(), roleName);
-
-				int roleType = role.getType();
-
-				if (roleType == RoleConstants.TYPE_REGULAR) {
-					roleIds = new long[] {role.getRoleId()};
-				}
-				else {
-					if (_log.isInfoEnabled()) {
-						_log.info(
-							"Role name is not a Regular role: " + roleName);
-					}
-				}
-			}
-			catch (PortalException portalException) {
-				_log.error(
-					"Invalid configuration of role name: " + roleName,
-					portalException);
-			}
-		}
 
 		user = _userLocalService.addUser(
 			creatorUserId, companyId, autoPassword, password1, password2,
@@ -162,6 +135,34 @@ public class OpenIdConnectUserInfoProcessorImpl
 			throw new UserEmailAddressException.MustNotUseCompanyMx(
 				emailAddress);
 		}
+	}
+
+	private long[] _getRoleIds(long companyId) {
+		String roleName = _props.get(
+			"default.portal.regular.role.name.for.oidc");
+
+		if (Validator.isNotNull(roleName)) {
+			try {
+				Role role = _roleLocalService.getRole(companyId, roleName);
+
+				int roleType = role.getType();
+
+				if (roleType == RoleConstants.TYPE_REGULAR) {
+					return new long[] {role.getRoleId()};
+				}
+
+				if (_log.isInfoEnabled()) {
+					_log.info("Role name is not a Regular role: " + roleName);
+				}
+			}
+			catch (PortalException portalException) {
+				_log.error(
+					"Invalid configuration of role name: " + roleName,
+					portalException);
+			}
+		}
+
+		return null;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
