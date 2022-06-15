@@ -119,21 +119,17 @@ public class CommercePaymentMethodGroupRelLocalServiceImpl
 			commercePaymentMethodGroupRelPersistence.update(
 				commercePaymentMethodGroupRel);
 
-		// Image
+		resourceLocalService.addResources(
+			user.getCompanyId(), groupId, user.getUserId(),
+			CommercePaymentMethodGroupRel.class.getName(),
+			commercePaymentMethodGroupRel.getCommercePaymentMethodGroupRelId(),
+			false, true, true);
 
 		if (imageFile != null) {
 			_imageLocalService.updateImage(
 				commercePaymentMethodGroupRel.getCompanyId(),
 				commercePaymentMethodGroupRel.getImageId(), imageFile);
 		}
-
-		// Resources
-
-		resourceLocalService.addResources(
-			user.getCompanyId(), groupId, user.getUserId(),
-			CommercePaymentMethodGroupRel.class.getName(),
-			commercePaymentMethodGroupRel.getCommercePaymentMethodGroupRelId(),
-			false, true, true);
 
 		return commercePaymentMethodGroupRel;
 	}
