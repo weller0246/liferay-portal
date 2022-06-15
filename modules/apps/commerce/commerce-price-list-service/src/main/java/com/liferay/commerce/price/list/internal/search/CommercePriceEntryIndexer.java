@@ -94,11 +94,11 @@ public class CommercePriceEntryIndexer extends BaseIndexer<CommercePriceEntry> {
 		addSearchTerm(
 			searchQuery, searchContext, FIELD_EXTERNAL_REFERENCE_CODE, false);
 
+		addSearchLocalizedTerm(
+			searchQuery, searchContext, "cpDefinitionName", false);
 		addSearchTerm(searchQuery, searchContext, "sku", false);
 		addSearchTerm(
 			searchQuery, searchContext, "skuExternalReferenceCode", false);
-		addSearchLocalizedTerm(
-			searchQuery, searchContext, "cpDefinitionName", false);
 
 		LinkedHashMap<String, Object> params =
 			(LinkedHashMap<String, Object>)searchContext.getAttribute("params");

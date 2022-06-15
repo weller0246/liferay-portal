@@ -31,10 +31,10 @@ public class PriceEntryEntityModel implements EntityModel {
 
 	public PriceEntryEntityModel() {
 		_entityFieldsMap = Stream.of(
+			new IntegerEntityField("skuId", locale -> "cpInstanceId"),
 			new StringEntityField(
 				"skuExternalReferenceCode",
-				locale -> "skuExternalReferenceCode"),
-			new IntegerEntityField("skuId", locale -> "cpInstanceId")
+				locale -> "skuExternalReferenceCode")
 		).collect(
 			Collectors.toMap(EntityField::getName, Function.identity())
 		);
