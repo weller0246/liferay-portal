@@ -255,13 +255,16 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 
 		SearchContext searchContext = new SearchContext();
 
+		List<String> assetCategoryIds = new ArrayList<>();
+
 		Optional<Map<String, String[]>> configurationOptional =
 			collectionQuery.getConfigurationOptional();
 
 		Map<String, String[]> configuration = configurationOptional.orElse(
 			Collections.emptyMap());
 
-		List<String> assetCategoryIds = new ArrayList<>();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
 		for (AssetVocabulary assetVocabulary :
 				_getAssetVocabularies(serviceContext)) {
@@ -292,10 +295,6 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		searchContext.setAttribute(
 			"objectDefinitionId", _objectDefinition.getObjectDefinitionId());
 		searchContext.setBooleanClauses(_getBooleanClauses(collectionQuery));
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
 		searchContext.setCompanyId(serviceContext.getCompanyId());
 
 		Pagination pagination = collectionQuery.getPagination();
