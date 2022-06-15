@@ -1669,7 +1669,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
 			nodeLabel = "Fork",
-			nodePosition = "600,-400");
+			nodePosition = "100,-300");
 
 		ProcessBuilderKaleoDesignerReact.backArrowOnSidebar();
 
@@ -1681,18 +1681,16 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
 			nodeLabel = "State",
-			nodePosition = "60,100");
+			nodePosition = "60,-500");
 
 		ProcessBuilderKaleoDesignerReact.backArrowOnSidebar();
 
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Join",
-			nodePosition = "-40,20");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Join");
 
 		ProcessBuilderKaleoDesignerReact.backArrowOnSidebar();
 
 		ProcessBuilderKaleoDesignerReact.addConnector(
-			connectorIn = "fork",
+			connectorIn = "task",
 			connectorLabel = "Connector",
 			connectorOut = "start",
 			key_direction = "right");
@@ -1711,7 +1709,7 @@ definition {
 			connectorIn = "state",
 			connectorLabel = "Connector",
 			connectorOut = "fork",
-			key_direction = "right");
+			key_direction = "left");
 
 		ProcessBuilderKaleoDesignerReact.backArrowOnSidebar();
 
@@ -1748,12 +1746,10 @@ definition {
 	@priority = "5"
 	test CanPublishWithJoinNode {
 		property test.name.skip.portal.instance = "ProcessBuilderKaleoDesignerReact#CanPublishWithJoinNode";
-		
-			
 
 		Workflow.openWorkflowListView();
 
-		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition with Join");
 
 		ProcessBuilderKaleoDesignerReact.uploadDefinition(workflowDefinitionFile = "process-with-join-node-workflow-definition.xml");
 
@@ -1763,11 +1759,11 @@ definition {
 
 		PortletEntry.publish();
 
-
 		Alert.viewSuccessMessageText(successMessage = "Workflow published successfully.");
 
+		Workflow.openWorkflowListView();
 
-
+		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "New Workflow Definition with Join");
 	}
 
 	@description = "Verify that the user can publish a definition with Join XOR node "
@@ -1924,37 +1920,25 @@ definition {
 	test CanRestorePreviousVersionAtRevisionHistoryTab {
 		property test.name.skip.portal.instance = "ProcessBuilderKaleoDesignerReact#CanRestorePreviousVersionAtRevisionHistoryTab";
 
-        Workflow.openWorkflowListView();
+		Workflow.openWorkflowListView();
 
-        Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
+		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
-        ProcessBuilderKaleoDesignerReact.addConnector(
-            connectorIn = "end",
-            connectorLabel = "Start-End Connector",
-            connectorOut = "start",
-            key_direction = "bottom");
+		Workflow.saveDefinition(newKaleoDesigner = "True");
 
-        PortletEntry.publish();
-
-        Alert.viewSuccessMessageText(successMessage = "Workflow published successfully.");
-
-		ProcessBuilderKaleoDesignerReact.deleteNodeOrConnection(title = "Delete Transition");
-
-		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(
-			nodeLabel = "Task",
-			nodePosition = "0,0");
+		ProcessBuilderKaleoDesignerReact.dragSidebarNodeAndMove(nodeLabel = "Task");
 
 		ProcessBuilderKaleoDesignerReact.addConnector(
-            connectorIn = "task",
-            connectorLabel = "Start-Task Connector",
-            connectorOut = "start",
-            key_direction = "bottom");
+			connectorIn = "task",
+			connectorLabel = "Start-Task Connector",
+			connectorOut = "start",
+			key_direction = "bottom");
 
 		ProcessBuilderKaleoDesignerReact.addConnector(
-            connectorIn = "end",
-            connectorLabel = "Task-End Connector",
-            connectorOut = "task",
-            key_direction = "bottom");
+			connectorIn = "end",
+			connectorLabel = "Task-End Connector",
+			connectorOut = "task",
+			key_direction = "bottom");
 
 		Button.click(button = "Update");
 
@@ -1971,8 +1955,6 @@ definition {
 		ProcessBuilderKaleoDesignerReact.viewConnectorNotPresent(connectorLabel = "START-TASK CONNECTOR");
 
 		ProcessBuilderKaleoDesignerReact.viewConnectorNotPresent(connectorLabel = "TASK-END CONNECTOR");
-
-
 	}
 
 	@description = "Verify that user can Save workflow as Draft"
@@ -2374,28 +2356,17 @@ definition {
 
 		Workflow.addNewDefinition(workflowDefinitionTitle = "New Workflow Definition");
 
-		ProcessBuilderKaleoDesignerReact.addConnector(
-			connectorIn = "end",
-			connectorLabel = "Start-End Connector",
-			connectorOut = "start",
-			key_direction = "bottom");
-
-		PortletEntry.publish();
-
-		Alert.viewSuccessMessageText(successMessage = "Workflow published successfully.");
-
-		Workflow.openWorkflowListView();
-
-		Workflow.viewDefinitionPublished(workflowDefinitionTitle = "New Workflow Definition");
-
-		Workflow.gotoEditWorkflowDefinition(workflowDefinitionTitle = "New Workflow Definition");
+		Workflow.saveDefinition(newKaleoDesigner = "True");
 
 		ProcessBuilderKaleoDesignerReact.gotoInfoWorkflowDefinition();
 
 		Navigator.gotoNavTab(navTab = "Revision History");
-		
+
+		ProcessBuilderKaleoDesignerReact.viewRevisionHistoryFieldsPresent();
 
 		Navigator.gotoNavTab(navTab = "Details");
+
+		ProcessBuilderKaleoDesignerReact.viewDetailsFieldsPresent();
 	}
 
 	@description = "Verify that the user can turn on the Timers recurrence mode"
@@ -3063,7 +3034,7 @@ definition {
 
 		ProcessBuilderKaleoDesignerReact.viewXMLSourceNodeCoordinate(
 			coordinateX = "390",
-			coordinateY = "149",
+			coordinateY = "150",
 			lineX = "15",
 			lineY = "16",
 			nodeLabel = "Start");
