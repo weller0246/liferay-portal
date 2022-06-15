@@ -255,33 +255,6 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 
 		SearchContext searchContext = new SearchContext();
 
-		searchContext.setAttribute(
-			Field.STATUS, WorkflowConstants.STATUS_APPROVED);
-		searchContext.setAttribute(
-			"objectDefinitionId", _objectDefinition.getObjectDefinitionId());
-		searchContext.setBooleanClauses(_getBooleanClauses(collectionQuery));
-
-		ServiceContext serviceContext =
-			ServiceContextThreadLocal.getServiceContext();
-
-		searchContext.setCompanyId(serviceContext.getCompanyId());
-
-		Pagination pagination = collectionQuery.getPagination();
-
-		searchContext.setEnd(pagination.getEnd());
-
-		searchContext.setGroupIds(new long[] {_getGroupId()});
-
-		Optional<KeywordsInfoFilter> keywordsInfoFilterOptional =
-			collectionQuery.getInfoFilterOptional(KeywordsInfoFilter.class);
-
-		if (keywordsInfoFilterOptional.isPresent()) {
-			KeywordsInfoFilter keywordsInfoFilter =
-				keywordsInfoFilterOptional.get();
-
-			searchContext.setKeywords(keywordsInfoFilter.getKeywords());
-		}
-
 		Optional<Map<String, String[]>> configurationOptional =
 			collectionQuery.getConfigurationOptional();
 
@@ -312,6 +285,33 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 			Validator.isNotNull(assetTagNames[0])) {
 
 			searchContext.setAssetTagNames(assetTagNames);
+		}
+
+		searchContext.setAttribute(
+			Field.STATUS, WorkflowConstants.STATUS_APPROVED);
+		searchContext.setAttribute(
+			"objectDefinitionId", _objectDefinition.getObjectDefinitionId());
+		searchContext.setBooleanClauses(_getBooleanClauses(collectionQuery));
+
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
+
+		searchContext.setCompanyId(serviceContext.getCompanyId());
+
+		Pagination pagination = collectionQuery.getPagination();
+
+		searchContext.setEnd(pagination.getEnd());
+
+		searchContext.setGroupIds(new long[] {_getGroupId()});
+
+		Optional<KeywordsInfoFilter> keywordsInfoFilterOptional =
+			collectionQuery.getInfoFilterOptional(KeywordsInfoFilter.class);
+
+		if (keywordsInfoFilterOptional.isPresent()) {
+			KeywordsInfoFilter keywordsInfoFilter =
+				keywordsInfoFilterOptional.get();
+
+			searchContext.setKeywords(keywordsInfoFilter.getKeywords());
 		}
 
 		searchContext.setStart(pagination.getStart());
