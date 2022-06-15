@@ -333,10 +333,10 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 			return Collections.emptyList();
 		}
 
+		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
+
 		ServiceContext serviceContext =
 			ServiceContextThreadLocal.getServiceContext();
-
-		List<InfoFieldSetEntry> fieldSetEntries = new ArrayList<>();
 
 		for (AssetVocabulary assetVocabulary :
 				_getAssetVocabularies(serviceContext)) {
