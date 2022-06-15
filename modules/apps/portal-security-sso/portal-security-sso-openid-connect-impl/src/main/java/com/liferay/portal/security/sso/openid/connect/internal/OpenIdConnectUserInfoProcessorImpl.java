@@ -141,25 +141,23 @@ public class OpenIdConnectUserInfoProcessorImpl
 		String roleName = _props.get(
 			"default.portal.regular.role.name.for.oidc");
 
-		if (Validator.isNotNull(roleName)) {
-			try {
-				Role role = _roleLocalService.getRole(companyId, roleName);
+		if (Validator.isNull(roleName)) {
+			return null;
+		}
 
-				int roleType = role.getType();
+		try {
+			Role role = _roleLocalService.getRole(companyId, roleName);
 
-				if (roleType == RoleConstants.TYPE_REGULAR) {
-					return new long[] {role.getRoleId()};
-				}
-
-				if (_log.isInfoEnabled()) {
-					_log.info("Role name is not a Regular role: " + roleName);
-				}
+			if (role.getType() == RoleConstants.TYPE_REGULAR) {
+				return new long[] {role.getRoleId()};
 			}
-			catch (PortalException portalException) {
-				_log.error(
-					"Invalid configuration of role name: " + roleName,
-					portalException);
+
+			if (_log.isInfoEnabled()) {
+				_log.info("Role " + roleName + " is not a regular role");
 			}
+		}
+		catch (PortalException portalException) {
+			_log.error("Unable to get role " + roleName, portalException);
 		}
 
 		return null;
