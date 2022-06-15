@@ -17,14 +17,17 @@ package com.liferay.fragment.internal.upgrade.v2_9_3;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
- * @author Jürgen Kappler
+ * @author Diego Hu
  */
-public class FragmentEntryUpgradeProcess extends UpgradeProcess {
+public class FragmentCompositionUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (!hasColumn("FragmentEntryVersion", "typeOptions")) {
-			alterTableAddColumn("FragmentEntryVersion", "typeOptions", "TEXT");
+		if (hasColumnType(
+				"FragmentComposition", "description", "STRING null")) {
+
+			alterColumnType(
+				"FragmentComposition", "description", "STRING null");
 		}
 	}
 

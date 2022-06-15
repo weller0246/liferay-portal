@@ -155,12 +155,12 @@ public class FragmentServiceUpgrade implements UpgradeStepRegistrator {
 		registry.register(
 			"2.9.1", "2.9.2",
 			new com.liferay.fragment.internal.upgrade.v2_9_2.
-				FragmentCompositionUpgradeProcess());
+				FragmentEntryVersionUpgradeProcess());
 
 		registry.register(
 			"2.9.2", "2.9.3",
 			new com.liferay.fragment.internal.upgrade.v2_9_3.
-				FragmentEntryUpgradeProcess());
+				FragmentCompositionUpgradeProcess());
 	}
 
 	@Reference
