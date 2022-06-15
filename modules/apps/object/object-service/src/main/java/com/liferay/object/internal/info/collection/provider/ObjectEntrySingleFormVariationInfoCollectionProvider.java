@@ -169,7 +169,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 	public InfoForm getConfigurationInfoForm() {
 		return InfoForm.builder(
 		).infoFieldSetEntries(
-			_getAssetCategoryInfoFields()
+			_getInfoFieldSetEntries()
 		).infoFieldSetEntry(
 			_getAssetTagsInfoField()
 		).infoFieldSetEntry(
@@ -324,7 +324,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		return searchContext;
 	}
 
-	private List<InfoFieldSetEntry> _getAssetCategoryInfoFields() {
+	private List<InfoFieldSetEntry> _getInfoFieldSetEntries() {
 		if (!StringUtil.equals(
 				_objectDefinition.getStorageType(),
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT) ||
