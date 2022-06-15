@@ -341,7 +341,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		for (AssetVocabulary assetVocabulary :
 				_getAssetVocabularies(serviceContext)) {
 
-			List<SelectInfoFieldType.Option> selectInfoFieldTypeOptions =
+			List<SelectInfoFieldType.Option> options =
 				new ArrayList<>();
 
 			for (AssetCategory assetCategory :
@@ -349,14 +349,14 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 						assetVocabulary.getVocabularyId(), QueryUtil.ALL_POS,
 						QueryUtil.ALL_POS, null)) {
 
-				selectInfoFieldTypeOptions.add(
+				options.add(
 					new SelectInfoFieldType.Option(
 						new SingleValueInfoLocalizedValue<>(
 							assetCategory.getName()),
 						String.valueOf(assetCategory.getCategoryId())));
 			}
 
-			if (!selectInfoFieldTypeOptions.isEmpty()) {
+			if (!options.isEmpty()) {
 				fieldSetEntries.add(
 					InfoField.builder(
 					).infoFieldType(
@@ -368,7 +368,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 					).attribute(
 						SelectInfoFieldType.MULTIPLE, true
 					).attribute(
-						SelectInfoFieldType.OPTIONS, selectInfoFieldTypeOptions
+						SelectInfoFieldType.OPTIONS, options
 					).labelInfoLocalizedValue(
 						InfoLocalizedValue.singleValue(
 							assetVocabulary.getTitle(
