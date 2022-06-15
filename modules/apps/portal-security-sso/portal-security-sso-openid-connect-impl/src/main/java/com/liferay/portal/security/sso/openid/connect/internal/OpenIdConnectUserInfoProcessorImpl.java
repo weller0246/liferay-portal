@@ -139,7 +139,7 @@ public class OpenIdConnectUserInfoProcessorImpl
 
 	private long[] _getRoleIds(long companyId) {
 		String roleName = _props.get(
-			"default.portal.regular.role.name.for.oidc");
+			"open.id.connect.user.info.processor.impl.regular.role");
 
 		if (Validator.isNull(roleName)) {
 			return null;
