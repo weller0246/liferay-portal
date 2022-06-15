@@ -293,13 +293,13 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		for (AssetVocabulary assetVocabulary :
 				_getAssetVocabularies(serviceContext)) {
 
-			String[] categoryIds = configuration.get(
+			String[] assetCategoryIdsArray = configuration.get(
 				String.valueOf(assetVocabulary.getVocabularyId()));
 
-			if ((categoryIds != null) &&
-				!StringUtil.equals(categoryIds[0], "null")) {
+			if ((assetCategoryIdsArray != null) &&
+				!StringUtil.equals(assetCategoryIdsArray[0], "null")) {
 
-				Collections.addAll(assetCategoryIds, categoryIds);
+				Collections.addAll(assetCategoryIds, assetCategoryIdsArray);
 			}
 		}
 
