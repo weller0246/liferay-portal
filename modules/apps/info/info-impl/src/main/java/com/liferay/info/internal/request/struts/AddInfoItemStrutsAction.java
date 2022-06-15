@@ -129,7 +129,7 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
-				_log.debug("Unable to add info item", exception);
+				_log.debug(exception);
 			}
 
 			InfoFormException infoFormException = new InfoFormException();
