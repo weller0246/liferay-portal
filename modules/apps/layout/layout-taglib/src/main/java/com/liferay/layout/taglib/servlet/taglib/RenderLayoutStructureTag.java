@@ -1189,6 +1189,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				jspWriter.write(
 					LayoutStructureItemCSSUtil.getFragmentEntryLinkCssClass(
 						fragmentEntryLink));
+				jspWriter.write(StringPool.SPACE);
 				jspWriter.write(
 					LayoutStructureItemCSSUtil.
 						getLayoutStructureItemUniqueCssClass(
