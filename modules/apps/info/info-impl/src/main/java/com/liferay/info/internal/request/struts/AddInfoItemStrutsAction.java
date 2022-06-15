@@ -32,6 +32,7 @@ import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.struts.StrutsAction;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -105,6 +106,15 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			SessionErrors.add(
 				originalHttpServletRequest, formItemId,
 				infoFormValidationException);
+
+			if (Validator.isNotNull(
+					infoFormValidationException.getInfoFieldUniqueId())) {
+
+				SessionErrors.add(
+					originalHttpServletRequest,
+					infoFormValidationException.getInfoFieldUniqueId(),
+					infoFormValidationException);
+			}
 		}
 		catch (InfoFormException infoFormException) {
 			if (_log.isDebugEnabled()) {
