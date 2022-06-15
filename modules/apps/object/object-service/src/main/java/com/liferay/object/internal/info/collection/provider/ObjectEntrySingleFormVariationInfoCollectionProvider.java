@@ -507,7 +507,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 			BooleanQuery nestedBooleanQuery = new BooleanQueryImpl();
 
 			nestedBooleanQuery.add(
-				new TermQueryImpl(_getField(objectField), entry.getValue()[0]),
+				new TermQueryImpl(_getFieldName(objectField), entry.getValue()[0]),
 				BooleanClauseOccur.MUST);
 			nestedBooleanQuery.add(
 				new TermQueryImpl("nestedFieldArray.fieldName", entry.getKey()),
@@ -524,7 +524,7 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		};
 	}
 
-	private String _getField(ObjectField objectField) {
+	private String _getFieldName(ObjectField objectField) {
 		if (Objects.equals(
 				objectField.getDBType(),
 				ObjectFieldConstants.DB_TYPE_BOOLEAN)) {
