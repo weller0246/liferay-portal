@@ -439,9 +439,7 @@ public class FreeMarkerFragmentEntryProcessor
 				Optional<Boolean> decimalOptional =
 					infoField.getAttributeOptional(NumberInfoFieldType.DECIMAL);
 
-				boolean decimal = decimalOptional.orElse(false);
-
-				if (decimal) {
+				if (decimalOptional.orElse(false)) {
 					dataType = "decimal";
 				}
 			}
