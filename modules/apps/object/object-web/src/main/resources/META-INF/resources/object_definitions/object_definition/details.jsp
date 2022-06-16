@@ -259,6 +259,27 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 </liferay-frontend:edit-form>
 
 <script>
+	var accountEntryRestrictionToggleState =
+		'<%= objectDefinition.isAccountEntryRestricted() %>' === 'true';
+
+	function <portlet:namespace />handleAccountEntryRestrictionToggleChange() {
+		const accountEntryRestrictionSelectElement = document.getElementById(
+			'<portlet:namespace />accountEntryRestrictedObjectFieldId'
+		);
+
+		accountEntryRestrictionToggleState = !accountEntryRestrictionToggleState;
+
+		if (accountEntryRestrictionToggleState) {
+			accountEntryRestrictionSelectElement.removeAttribute('disabled');
+			accountEntryRestrictionSelectElement.className = 'form-control';
+		}
+		else {
+			accountEntryRestrictionSelectElement.setAttribute('disabled', '');
+			accountEntryRestrictionSelectElement.className = 'form-control disabled';
+			accountEntryRestrictionSelectElement.value = '0';
+		}
+	}
+
 	function <portlet:namespace />selectScope() {
 		const scope = document.getElementById('<portlet:namespace />scope');
 
@@ -284,26 +305,5 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 		}
 
 		submitForm(form);
-	}
-
-	var accountEntryRestrictionToggleState =
-		'<%= objectDefinition.isAccountEntryRestricted() %>' === 'true';
-
-	function <portlet:namespace />handleAccountEntryRestrictionToggleChange() {
-		const accountEntryRestrictionSelectElement = document.getElementById(
-			'<portlet:namespace />accountEntryRestrictedObjectFieldId'
-		);
-
-		accountEntryRestrictionToggleState = !accountEntryRestrictionToggleState;
-
-		if (accountEntryRestrictionToggleState) {
-			accountEntryRestrictionSelectElement.removeAttribute('disabled');
-			accountEntryRestrictionSelectElement.className = 'form-control';
-		}
-		else {
-			accountEntryRestrictionSelectElement.setAttribute('disabled', '');
-			accountEntryRestrictionSelectElement.className = 'form-control disabled';
-			accountEntryRestrictionSelectElement.value = '0';
-		}
 	}
 </script>
