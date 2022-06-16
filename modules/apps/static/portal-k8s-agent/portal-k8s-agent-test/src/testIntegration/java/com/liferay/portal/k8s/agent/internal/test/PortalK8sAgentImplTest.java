@@ -224,7 +224,7 @@ public class PortalK8sAgentImplTest {
 					ServiceRegistration<ManagedService> serviceRegistration =
 						bundleContext.registerService(
 							ManagedService.class,
-							props -> countDownLatch.countDown(),
+							properties -> countDownLatch.countDown(),
 							HashMapDictionaryBuilder.<String, Object>put(
 								Constants.SERVICE_PID, pid
 							).build());
