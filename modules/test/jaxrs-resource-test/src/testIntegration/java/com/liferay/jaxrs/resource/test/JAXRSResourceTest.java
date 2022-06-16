@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.jaxrs.service.hierarchy.test;
+package com.liferay.jaxrs.resource.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringBundler;
@@ -31,12 +31,11 @@ import org.osgi.framework.ServiceReference;
  * @author Shuyang Zhou
  */
 @RunWith(Arquillian.class)
-public class JAXRSServiceHierarchyTest {
+public class JAXRSResourceTest {
 
 	@Test
-	public void testJAXRSServiceHierarchy() throws InvalidSyntaxException {
-		Bundle bundle = FrameworkUtil.getBundle(
-			JAXRSServiceHierarchyTest.class);
+	public void testInterfaces() throws InvalidSyntaxException {
+		Bundle bundle = FrameworkUtil.getBundle(JAXRSResourceTest.class);
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
