@@ -157,15 +157,7 @@ public class PortalK8sAgentImplTest {
 			NamespacedKubernetesClient kubernetesClient =
 				kubernetesMockServer.createClient();
 
-			String projectId = RandomTestUtil.randomString();
-
 			String serviceId = RandomTestUtil.randomString();
-
-			String virtualInstanceId = TestPropsValues.COMPANY_WEB_ID;
-
-			String configMapName = StringBundler.concat(
-				serviceId, "-", virtualInstanceId,
-				"-lxc-ext-provision-metadata");
 
 			String mainDomain = serviceId.concat("-extproject.lfr.sh");
 
@@ -173,16 +165,20 @@ public class PortalK8sAgentImplTest {
 			).createOrReplace(
 				new ConfigMapBuilder().withNewMetadata(
 				).withName(
-					configMapName
+					StringBundler.concat(
+						serviceId, "-", TestPropsValues.COMPANY_WEB_ID,
+						"-lxc-ext-provision-metadata")
 				).addToAnnotations(
 					"ext.lxc.liferay.com/mainDomain", mainDomain
 				).addToAnnotations(
 					"ext.lxc.liferay.com/domains",
 					serviceId.concat("-extproject.lfr.sh")
 				).addToLabels(
-					"dxp.lxc.liferay.com/virtualInstanceId", virtualInstanceId
+					"dxp.lxc.liferay.com/virtualInstanceId",
+					TestPropsValues.COMPANY_WEB_ID
 				).addToLabels(
-					"ext.lxc.liferay.com/projectId", projectId
+					"ext.lxc.liferay.com/projectId",
+					RandomTestUtil.randomString()
 				).addToLabels(
 					"ext.lxc.liferay.com/serviceId", serviceId
 				).addToLabels(
