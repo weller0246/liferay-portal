@@ -1011,13 +1011,13 @@ public class ObjectDefinitionLocalServiceImpl
 
 		boolean originalActive = objectDefinition.isActive();
 
+		_validateAccountEntryRestrictedObjectFieldId(
+			accountEntryRestrictedObjectFieldId, accountEntryRestricted);
 		_validateObjectFieldId(objectDefinition, descriptionObjectFieldId);
 		_validateObjectFieldId(objectDefinition, titleObjectFieldId);
 		_validateActive(objectDefinition, active);
 		_validateLabel(labelMap);
 		_validatePluralLabel(pluralLabelMap);
-		_validateAccountEntryRestrictedObjectFieldId(
-			accountEntryRestrictedObjectFieldId, accountEntryRestricted);
 
 		if (accountEntryRestricted) {
 			if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
