@@ -26,7 +26,6 @@ import com.liferay.portal.util.PropsValues;
 import java.util.Dictionary;
 import java.util.Objects;
 
-import org.osgi.framework.Constants;
 import org.osgi.framework.ServiceReference;
 import org.osgi.service.cm.ConfigurationPlugin;
 import org.osgi.service.component.annotations.Component;
@@ -58,11 +57,9 @@ public class WebIdToCompanyConfigurationPluginImpl
 			return;
 		}
 
-		if (Objects.equals("default", webId)) {
+		if (Objects.equals(webId, "default")) {
 			webId = PropsValues.COMPANY_DEFAULT_WEB_ID;
 		}
-
-		Object pid = properties.get(Constants.SERVICE_PID);
 
 		Company company = null;
 
@@ -70,12 +67,12 @@ public class WebIdToCompanyConfigurationPluginImpl
 			company = _companyLocalService.getCompanyByWebId(webId);
 		}
 		catch (PortalException portalException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(portalException);
+			}
+
 			if (_log.isWarnEnabled()) {
-				_log.warn(
-					StringBundler.concat(
-						"No company matching {webId=", webId,
-						"}. Skipping the injection of companyId for ", pid),
-					portalException);
+				_log.warn("Skip web ID " + webId);
 			}
 
 			return;
@@ -86,8 +83,8 @@ public class WebIdToCompanyConfigurationPluginImpl
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				StringBundler.concat(
-					"Injected {companyId=", company.getCompanyId(),
-					"} for {webId=", webId, "} into ", pid));
+					"Injected company ID ", company.getCompanyId(),
+					" for web ID ", webId));
 		}
 	}
 
