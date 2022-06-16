@@ -1019,24 +1019,15 @@ public class ObjectDefinitionLocalServiceImpl
 		_validateLabel(labelMap);
 		_validatePluralLabel(pluralLabelMap);
 
-		if (accountEntryRestricted) {
-			if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
-					0) {
-
-				_objectFieldLocalService.updateRequired(
-					objectDefinition.getAccountEntryRestrictedObjectFieldId(),
-					false);
-			}
-
-			_objectFieldLocalService.updateRequired(
-				accountEntryRestrictedObjectFieldId, true);
-		}
-		else if (objectDefinition.getAccountEntryRestrictedObjectFieldId() !=
-					0) {
-
+		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() != 0) {
 			_objectFieldLocalService.updateRequired(
 				objectDefinition.getAccountEntryRestrictedObjectFieldId(),
 				false);
+		}
+
+		if (accountEntryRestricted) {
+			_objectFieldLocalService.updateRequired(
+				accountEntryRestrictedObjectFieldId, true);
 		}
 
 		objectDefinition.setAccountEntryRestrictedObjectFieldId(
