@@ -517,7 +517,8 @@ public class LayoutsAdminDisplayContext {
 			return faviconURL;
 		}
 
-		return getThemeFavicon();
+		return themeDisplay.getPathThemeImages() + "/" +
+			PropsUtil.get(PropsKeys.THEME_SHORTCUT_ICON);
 	}
 
 	public String getFileEntryItemSelectorURL() {
@@ -1239,11 +1240,6 @@ public class LayoutsAdminDisplayContext {
 					selectThemeCSSClientExtensionEventName,
 					ClientExtensionEntryConstants.TYPE_THEME_CSS))
 		).build();
-	}
-
-	public String getThemeFavicon() {
-		return themeDisplay.getPathThemeImages() + "/" +
-			PropsUtil.get(PropsKeys.THEME_SHORTCUT_ICON);
 	}
 
 	public String getThemeFaviconCETExternalReferenceCode() {
