@@ -169,10 +169,10 @@ public class PortalK8sAgentImplTest {
 						serviceId, "-", TestPropsValues.COMPANY_WEB_ID,
 						"-lxc-ext-provision-metadata")
 				).addToAnnotations(
-					"ext.lxc.liferay.com/mainDomain", mainDomain
-				).addToAnnotations(
 					"ext.lxc.liferay.com/domains",
 					serviceId.concat("-extproject.lfr.sh")
+				).addToAnnotations(
+					"ext.lxc.liferay.com/mainDomain", mainDomain
 				).addToLabels(
 					"dxp.lxc.liferay.com/virtualInstanceId",
 					TestPropsValues.COMPANY_WEB_ID
