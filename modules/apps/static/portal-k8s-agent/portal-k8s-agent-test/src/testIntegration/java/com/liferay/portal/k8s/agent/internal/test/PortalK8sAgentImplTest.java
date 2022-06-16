@@ -264,13 +264,17 @@ public class PortalK8sAgentImplTest {
 		}
 
 		public Dictionary<String, Object> getProperties() throws Exception {
-			return get().getProcessedProperties(null);
+			Configuration configuration = get();
+
+			return configuration.getProcessedProperties(null);
 		}
 
 		public void update(Dictionary<String, Object> properties)
 			throws Exception {
 
-			get().update(properties);
+			Configuration configuration = get();
+
+			configuration.update(properties);
 		}
 
 	}
@@ -311,7 +315,11 @@ public class PortalK8sAgentImplTest {
 		public PortalK8sConfigMapModifier waitForService(long timeout)
 			throws Exception {
 
-			return get().waitForService(timeout);
+			ServiceTracker
+				<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>
+					serviceTracker = get();
+
+			return serviceTracker.waitForService(timeout);
 		}
 
 	}
