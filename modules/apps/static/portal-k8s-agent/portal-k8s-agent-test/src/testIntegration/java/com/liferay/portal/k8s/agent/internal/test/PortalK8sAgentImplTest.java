@@ -79,14 +79,14 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testInitialization() throws Exception {
-		try (PortalK8sConfigMapModifierHolder modifierHolder =
+		try (PortalK8sConfigMapModifierHolder portalK8sConfigMapModifierHolder =
 				new PortalK8sConfigMapModifierHolder(_bundleContext);
 			ConfigurationHolder configurationHolder =
 				new CreatingConfigurationHolder(
 					PortalK8sAgentConfiguration.class.getName())) {
 
 			PortalK8sConfigMapModifier portalK8sConfigMapModifier =
-				modifierHolder.waitForService(2000);
+				portalK8sConfigMapModifierHolder.waitForService(2000);
 
 			Assert.assertNull(portalK8sConfigMapModifier);
 
@@ -110,7 +110,8 @@ public class PortalK8sAgentImplTest {
 					"saToken", "saToken"
 				).build());
 
-			portalK8sConfigMapModifier = modifierHolder.waitForService(2000);
+			portalK8sConfigMapModifier =
+				portalK8sConfigMapModifierHolder.waitForService(2000);
 
 			Assert.assertNotNull(portalK8sConfigMapModifier);
 		}
@@ -118,7 +119,7 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testListenForExtProvisionMetadata() throws Exception {
-		try (PortalK8sConfigMapModifierHolder modifierHolder =
+		try (PortalK8sConfigMapModifierHolder portalK8sConfigMapModifierHolder =
 				new PortalK8sConfigMapModifierHolder(_bundleContext);
 			ConfigurationHolder configurationHolder =
 				new CreatingConfigurationHolder(
@@ -145,7 +146,7 @@ public class PortalK8sAgentImplTest {
 				).build());
 
 			PortalK8sConfigMapModifier portalK8sConfigMapModifier =
-				modifierHolder.waitForService(2000);
+				portalK8sConfigMapModifierHolder.waitForService(2000);
 
 			Assert.assertNotNull(portalK8sConfigMapModifier);
 
