@@ -48,7 +48,7 @@ public class JAXRSServiceHierarchyTest {
 
 			Object service = bundleContext.getService(serviceReference);
 
-			_scanHierarchy(sb, service.getClass());
+			_scanInterfaces(sb, service.getClass());
 
 			bundleContext.ungetService(serviceReference);
 		}
@@ -56,19 +56,17 @@ public class JAXRSServiceHierarchyTest {
 		Assert.assertEquals(sb.toString(), 0, sb.index());
 	}
 
-	private void _scanHierarchy(StringBundler sb, Class<?> serviceClass) {
+	private void _scanInterfaces(StringBundler sb, Class<?> serviceClass) {
 		Class<?> superClass = serviceClass.getSuperclass();
 
 		for (Class<?> interfaceClass : serviceClass.getInterfaces()) {
 			if (interfaceClass.isAssignableFrom(superClass)) {
-				sb.append("{");
-				sb.append(serviceClass);
+				sb.append(serviceClass.getName());
 				sb.append(" should not directly implement interface ");
-				sb.append(interfaceClass);
+				sb.append(interfaceClass.getName());
 				sb.append(
-					" which has already been implemented by super class ");
-				sb.append(superClass);
-				sb.append("}\n");
+					" because it is already implemented by the super class ");
+				sb.append(superClass.getName());
 			}
 		}
 	}
