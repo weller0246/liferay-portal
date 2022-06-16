@@ -270,12 +270,12 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 		accountEntryRestrictionToggleState = !accountEntryRestrictionToggleState;
 
 		if (accountEntryRestrictionToggleState) {
-			accountEntryRestrictionSelectElement.removeAttribute('disabled');
 			accountEntryRestrictionSelectElement.className = 'form-control';
+			accountEntryRestrictionSelectElement.removeAttribute('disabled');
 		}
 		else {
-			accountEntryRestrictionSelectElement.setAttribute('disabled', '');
 			accountEntryRestrictionSelectElement.className = 'form-control disabled';
+			accountEntryRestrictionSelectElement.setAttribute('disabled', '');
 			accountEntryRestrictionSelectElement.value = '0';
 		}
 	}
