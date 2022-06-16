@@ -195,17 +195,16 @@ public class PortalK8sAgentImplTest {
 						_bundleContext, "test.pid", 5000,
 						TimeUnit.MILLISECONDS)) {
 
-				Dictionary<String, Object> configurationProperties =
+				Dictionary<String, Object> properties =
 					testConfigurationHolder.getProperties();
 
 				Assert.assertEquals(
 					Http.HTTPS_WITH_SLASH.concat(mainDomain),
-					configurationProperties.get("baseURL"));
+					properties.get("baseURL"));
 				Assert.assertEquals(
 					TestPropsValues.getCompanyId(),
-					(long)configurationProperties.get("companyId"));
-				Assert.assertEquals(
-					"test.value", configurationProperties.get("test.key"));
+					(long)properties.get("companyId"));
+				Assert.assertEquals("test.value", properties.get("test.key"));
 			}
 		}
 	}
