@@ -1025,7 +1025,9 @@ public class ObjectDefinitionLocalServiceImpl
 				false);
 		}
 
-		if (accountEntryRestricted) {
+		if (accountEntryRestricted &&
+			(accountEntryRestrictedObjectFieldId > 0)) {
+
 			_objectFieldLocalService.updateRequired(
 				accountEntryRestrictedObjectFieldId, true);
 		}
