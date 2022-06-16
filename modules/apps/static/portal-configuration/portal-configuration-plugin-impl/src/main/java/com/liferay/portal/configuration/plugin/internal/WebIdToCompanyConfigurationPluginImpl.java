@@ -42,7 +42,7 @@ import org.osgi.service.component.annotations.Reference;
 	immediate = true,
 	property = {
 		ConfigurationPlugin.CM_RANKING + ":Integer=400",
-		"config.plugin.id=com.liferay.portal.configuration.plugin.web.id.to.company"
+		"config.plugin.id=com.liferay.portal.configuration.plugin.internal.WebIdToCompanyConfigurationPluginImpl"
 	},
 	service = ConfigurationPlugin.class
 )
