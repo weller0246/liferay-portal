@@ -260,7 +260,8 @@ public class PortalK8sAgentImplTest {
 				UnsafeSupplier<Configuration, Exception> onInitUnsafeSupplier)
 			throws Exception {
 
-			super(configuration -> configuration.delete(), onInitUnsafeSupplier);
+			super(
+				configuration -> configuration.delete(), onInitUnsafeSupplier);
 		}
 
 		public Dictionary<String, Object> getProperties() throws Exception {
