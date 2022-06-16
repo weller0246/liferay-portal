@@ -29,13 +29,12 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 public class BatchEngineTaskExecutorUtil {
 
 	public static void execute(
-			long batchEngineTaskCompanyId,
 			UnsafeRunnable<Throwable> unsafeRunnable, User user)
 		throws Throwable {
 
 		long companyId = CompanyThreadLocal.getCompanyId();
 
-		CompanyThreadLocal.setCompanyId(batchEngineTaskCompanyId);
+		CompanyThreadLocal.setCompanyId(user.getCompanyId());
 
 		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();

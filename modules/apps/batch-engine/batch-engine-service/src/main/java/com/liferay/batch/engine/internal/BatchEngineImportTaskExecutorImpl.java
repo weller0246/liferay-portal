@@ -85,7 +85,6 @@ public class BatchEngineImportTaskExecutorImpl
 				batchEngineImportTask);
 
 			BatchEngineTaskExecutorUtil.execute(
-				batchEngineImportTask.getCompanyId(),
 				() -> _importItems(batchEngineImportTask),
 				_userLocalService.getUser(batchEngineImportTask.getUserId()));
 
