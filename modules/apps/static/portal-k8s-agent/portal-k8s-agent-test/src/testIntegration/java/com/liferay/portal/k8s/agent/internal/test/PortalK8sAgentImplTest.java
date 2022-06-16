@@ -121,7 +121,7 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testListenForExtProvisionMetadata() throws Exception {
-		try (ConfigurationHolder configurationHolder =
+		try (ConfigurationHolder configurationHolder1 =
 				new CreatingConfigurationHolder(
 					PortalK8sAgentConfiguration.class.getName());
 			PortalK8sConfigMapModifierClosableHolder
@@ -132,7 +132,7 @@ public class PortalK8sAgentImplTest {
 			KubernetesMockServer kubernetesMockServer =
 				kubernetesServer.getKubernetesMockServer();
 
-			configurationHolder.update(
+			configurationHolder1.update(
 				HashMapDictionaryBuilder.<String, Object>put(
 					"apiServerHost", kubernetesMockServer.getHostName()
 				).put(
@@ -190,13 +190,13 @@ public class PortalK8sAgentImplTest {
 				).build()
 			);
 
-			try (ConfigurationHolder testConfigurationHolder =
+			try (ConfigurationHolder configurationHolder2 =
 					new AwaitingConfigurationHolder(
 						_bundleContext, "test.pid", 5000,
 						TimeUnit.MILLISECONDS)) {
 
 				Dictionary<String, Object> properties =
-					testConfigurationHolder.getProperties();
+					configurationHolder2.getProperties();
 
 				Assert.assertEquals(
 					Http.HTTPS_WITH_SLASH.concat(mainDomain),
