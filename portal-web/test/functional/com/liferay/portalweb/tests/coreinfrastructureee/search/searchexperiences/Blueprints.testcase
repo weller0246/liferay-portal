@@ -1035,7 +1035,7 @@ definition {
 
 		PortletEntry.save();
 
-		Blueprints.viewCopiedContent(text = "clauses");
+		SearchPortlets.viewCopiedContent(text = "clauses");
 	}
 
 	test CopyElementJSONViaEditElementPreview {
@@ -1057,7 +1057,7 @@ definition {
 
 		Click.javaScriptClick(locator1 = "Button#COPY");
 
-		Blueprints.viewCopiedContent(text = "queryConfiguration");
+		SearchPortlets.viewCopiedContent(text = "queryConfiguration");
 	}
 
 	test CopyRawResponseViaBlueprintsPreview {
@@ -1075,7 +1075,7 @@ definition {
 
 		Click.javaScriptClick(locator1 = "Button#COPY");
 
-		Blueprints.viewCopiedContent(text = "hits");
+		SearchPortlets.viewCopiedContent(text = "hits");
 	}
 
 	test CopyScoreExplanationViaBlueprintsPreview {
@@ -1093,7 +1093,7 @@ definition {
 
 		Click.javaScriptClick(locator1 = "Button#COPY");
 
-		Blueprints.viewCopiedContent(text = "PerFieldSimilarity");
+		SearchPortlets.viewCopiedContent(text = "PerFieldSimilarity");
 	}
 
 	test CreateBlueprint {
