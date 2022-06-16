@@ -530,12 +530,10 @@ public class LayoutStagedModelDataHandler
 
 		boolean privateLayout = false;
 
-		boolean contentPageTemplate = GetterUtil.getBoolean(
-			layoutElement.attributeValue("content-page-template"));
-
 		if ((portletDataContext.isPrivateLayout() &&
 			 !layout.isTypeAssetDisplay()) ||
-			contentPageTemplate) {
+			GetterUtil.getBoolean(
+				layoutElement.attributeValue("content-page-template"))) {
 
 			privateLayout = true;
 		}
