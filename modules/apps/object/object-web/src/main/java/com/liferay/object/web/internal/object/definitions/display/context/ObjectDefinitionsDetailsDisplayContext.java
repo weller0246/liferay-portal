@@ -70,7 +70,7 @@ public class ObjectDefinitionsDetailsDisplayContext
 		_panelCategoryRegistry = panelCategoryRegistry;
 	}
 
-	public List<ObjectField> getAccountRelationshipObjectFields()
+	public List<ObjectField> getAccountEntryRelationshipObjectFields()
 		throws PortalException {
 
 		ObjectDefinition accountEntryObjectDefinition =

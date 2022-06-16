@@ -23,7 +23,7 @@ ObjectDefinitionsDetailsDisplayContext objectDefinitionsDetailsDisplayContext = 
 
 ObjectDefinition objectDefinition = objectDefinitionsDetailsDisplayContext.getObjectDefinition();
 
-List<ObjectField> accountRelationshipObjectFields = objectDefinitionsDetailsDisplayContext.getAccountRelationshipObjectFields();
+List<ObjectField> accountEntryRelationshipObjectFields = objectDefinitionsDetailsDisplayContext.getAccountEntryRelationshipObjectFields();
 List<ObjectField> nonrelationshipObjectFields = objectDefinitionsDetailsDisplayContext.getNonrelationshipObjectFields();
 
 portletDisplay.setShowBackIcon(true);
@@ -192,18 +192,18 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 				</h3>
 
 				<aui:field-wrapper cssClass="form-group lfr-input-text-container">
-					<aui:input disabled="<%= ListUtil.isEmpty(accountRelationshipObjectFields) %>" label="" labelOff='<%= LanguageUtil.get(request, "inactive") %>' labelOn='<%= LanguageUtil.get(request, "active") %>' name="accountEntryRestricted" onChange='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "handleAccountRestrictionToggleChange();" %>' type="toggle-switch" value="<%= objectDefinition.isAccountEntryRestricted() %>" />
+					<aui:input disabled="<%= ListUtil.isEmpty(accountEntryRelationshipObjectFields) %>" label="" labelOff='<%= LanguageUtil.get(request, "inactive") %>' labelOn='<%= LanguageUtil.get(request, "active") %>' name="accountEntryRestricted" onChange='<%= "event.preventDefault(); " + liferayPortletResponse.getNamespace() + "handleAccountRestrictionToggleChange();" %>' type="toggle-switch" value="<%= objectDefinition.isAccountEntryRestricted() %>" />
 				</aui:field-wrapper>
 
 				<clay:row>
 					<clay:col
 						md="11"
 					>
-						<aui:select disabled="<%= ListUtil.isEmpty(accountRelationshipObjectFields) || !objectDefinition.isAccountEntryRestricted() %>" name="accountEntryRestrictedObjectFieldId" showEmptyOption="<%= false %>">
+						<aui:select disabled="<%= ListUtil.isEmpty(accountEntryRelationshipObjectFields) || !objectDefinition.isAccountEntryRestricted() %>" name="accountEntryRestrictedObjectFieldId" showEmptyOption="<%= false %>">
 							<aui:option label='<%= LanguageUtil.get(request, "choose-an-option") %>' selected="<%= true %>" value="0" />
 
 							<%
-							for (ObjectField objectAccountRelationshipField : accountRelationshipObjectFields) {
+							for (ObjectField objectAccountRelationshipField : accountEntryRelationshipObjectFields) {
 							%>
 
 								<aui:option label="<%= objectAccountRelationshipField.getLabel(locale) %>" selected="<%= Objects.equals(objectAccountRelationshipField.getObjectFieldId(), objectDefinition.getTitleObjectFieldId()) %>" value="<%= objectAccountRelationshipField.getObjectFieldId() %>" />
