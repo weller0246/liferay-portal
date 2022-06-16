@@ -203,10 +203,10 @@ renderResponse.setTitle(LanguageUtil.format(request, "edit-x", objectDefinition.
 							<aui:option label='<%= LanguageUtil.get(request, "choose-an-option") %>' selected="<%= true %>" value="0" />
 
 							<%
-							for (ObjectField objectAccountRelationshipField : accountEntryRelationshipObjectFields) {
+							for (ObjectField accountEntryRelationshipObjectField : accountEntryRelationshipObjectFields) {
 							%>
 
-								<aui:option label="<%= objectAccountRelationshipField.getLabel(locale) %>" selected="<%= Objects.equals(objectAccountRelationshipField.getObjectFieldId(), objectDefinition.getTitleObjectFieldId()) %>" value="<%= objectAccountRelationshipField.getObjectFieldId() %>" />
+								<aui:option label="<%= accountEntryRelationshipObjectField.getLabel(locale) %>" selected="<%= Objects.equals(accountEntryRelationshipObjectField.getObjectFieldId(), objectDefinition.getTitleObjectFieldId()) %>" value="<%= accountEntryRelationshipObjectField.getObjectFieldId() %>" />
 
 							<%
 							}
