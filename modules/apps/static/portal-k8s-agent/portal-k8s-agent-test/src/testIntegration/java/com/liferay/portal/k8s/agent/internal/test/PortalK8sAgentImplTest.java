@@ -79,13 +79,13 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testInitialization() throws Exception {
-		try (PortalK8sConfigMapModifierClosableHolder
+		try (ConfigurationHolder configurationHolder =
+				new CreatingConfigurationHolder(
+					PortalK8sAgentConfiguration.class.getName());
+			PortalK8sConfigMapModifierClosableHolder
 				portalK8sConfigMapModifierHolder =
 					new PortalK8sConfigMapModifierClosableHolder(
-						_bundleContext);
-			ConfigurationHolder configurationHolder =
-				new CreatingConfigurationHolder(
-					PortalK8sAgentConfiguration.class.getName())) {
+						_bundleContext)) {
 
 			PortalK8sConfigMapModifier portalK8sConfigMapModifier =
 				portalK8sConfigMapModifierHolder.waitForService(2000);
@@ -121,13 +121,13 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testListenForExtProvisionMetadata() throws Exception {
-		try (PortalK8sConfigMapModifierClosableHolder
+		try (ConfigurationHolder configurationHolder =
+				new CreatingConfigurationHolder(
+					PortalK8sAgentConfiguration.class.getName());
+			PortalK8sConfigMapModifierClosableHolder
 				portalK8sConfigMapModifierHolder =
 					new PortalK8sConfigMapModifierClosableHolder(
-						_bundleContext);
-			ConfigurationHolder configurationHolder =
-				new CreatingConfigurationHolder(
-					PortalK8sAgentConfiguration.class.getName())) {
+						_bundleContext)) {
 
 			KubernetesMockServer kubernetesMockServer =
 				kubernetesServer.getKubernetesMockServer();
