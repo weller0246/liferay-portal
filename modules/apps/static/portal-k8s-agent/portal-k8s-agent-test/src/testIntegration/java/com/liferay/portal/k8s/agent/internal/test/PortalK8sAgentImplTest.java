@@ -79,8 +79,10 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testInitialization() throws Exception {
-		try (PortalK8sConfigMapModifierHolder portalK8sConfigMapModifierHolder =
-				new PortalK8sConfigMapModifierHolder(_bundleContext);
+		try (PortalK8sConfigMapModifierClosableHolder
+				portalK8sConfigMapModifierHolder =
+					new PortalK8sConfigMapModifierClosableHolder(
+						_bundleContext);
 			ConfigurationHolder configurationHolder =
 				new CreatingConfigurationHolder(
 					PortalK8sAgentConfiguration.class.getName())) {
@@ -119,8 +121,10 @@ public class PortalK8sAgentImplTest {
 
 	@Test
 	public void testListenForExtProvisionMetadata() throws Exception {
-		try (PortalK8sConfigMapModifierHolder portalK8sConfigMapModifierHolder =
-				new PortalK8sConfigMapModifierHolder(_bundleContext);
+		try (PortalK8sConfigMapModifierClosableHolder
+				portalK8sConfigMapModifierHolder =
+					new PortalK8sConfigMapModifierClosableHolder(
+						_bundleContext);
 			ConfigurationHolder configurationHolder =
 				new CreatingConfigurationHolder(
 					PortalK8sAgentConfiguration.class.getName())) {
@@ -285,12 +289,13 @@ public class PortalK8sAgentImplTest {
 
 	}
 
-	public static class PortalK8sConfigMapModifierHolder
+	public static class PortalK8sConfigMapModifierClosableHolder
 		extends ClosableHolder
 			<ServiceTracker
 				<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>> {
 
-		public PortalK8sConfigMapModifierHolder(BundleContext bundleContext)
+		public PortalK8sConfigMapModifierClosableHolder(
+				BundleContext bundleContext)
 			throws Exception {
 
 			super(
