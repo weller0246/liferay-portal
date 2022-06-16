@@ -15,9 +15,7 @@
 package com.liferay.portal.configuration.plugin.internal;
 
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.Property;
-import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Company;
@@ -26,7 +24,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
 
 import java.util.Dictionary;
-import java.util.List;
 import java.util.Objects;
 
 import org.osgi.framework.Constants;
@@ -67,27 +64,22 @@ public class WebIdToCompanyConfigurationPluginImpl
 
 		Object pid = properties.get(Constants.SERVICE_PID);
 
-		DynamicQuery dynamicQuery = _companyLocalService.dynamicQuery();
+		Company company = null;
 
-		Property property = PropertyFactoryUtil.forName("webId");
-
-		dynamicQuery.add(property.eq(companyWebId));
-
-		List<Company> companies = _companyLocalService.dynamicQuery(
-			dynamicQuery);
-
-		if (companies.isEmpty()) {
+		try {
+			company = _companyLocalService.getCompanyByWebId(companyWebId);
+		}
+		catch (PortalException portalException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
 						"No company matching {webId=", companyWebId,
-						"}. Skipping the injection of companyId for ", pid));
+						"}. Skipping the injection of companyId for ", pid),
+					portalException);
 			}
 
 			return;
 		}
-
-		Company company = companies.get(0);
 
 		properties.put("companyId", company.getCompanyId());
 
