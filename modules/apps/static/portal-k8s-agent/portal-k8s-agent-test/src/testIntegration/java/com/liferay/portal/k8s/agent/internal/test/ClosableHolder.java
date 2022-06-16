@@ -24,8 +24,8 @@ public class ClosableHolder<T>
 	implements AutoCloseable, UnsafeSupplier<T, Exception> {
 
 	public ClosableHolder(
-			UnsafeSupplier<T, Exception> onInit,
-			UnsafeConsumer<T, Exception> onClose)
+			UnsafeConsumer<T, Exception> onClose,
+			UnsafeSupplier<T, Exception> onInit)
 		throws Exception {
 
 		_onClose = onClose;

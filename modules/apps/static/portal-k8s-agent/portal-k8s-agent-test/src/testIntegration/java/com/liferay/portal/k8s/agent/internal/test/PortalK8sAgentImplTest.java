@@ -260,7 +260,7 @@ public class PortalK8sAgentImplTest {
 				UnsafeSupplier<Configuration, Exception> onInit)
 			throws Exception {
 
-			super(onInit, configuration -> configuration.delete());
+			super(configuration -> configuration.delete(), onInit);
 		}
 
 		public Dictionary<String, Object> getProperties() throws Exception {
@@ -293,6 +293,7 @@ public class PortalK8sAgentImplTest {
 			throws Exception {
 
 			super(
+				serviceTracker -> serviceTracker.close(),
 				() -> {
 					ServiceTracker
 						<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>
@@ -303,8 +304,7 @@ public class PortalK8sAgentImplTest {
 					serviceTracker.open();
 
 					return serviceTracker;
-				},
-				serviceTracker -> serviceTracker.close());
+				});
 		}
 
 		public PortalK8sConfigMapModifier waitForService(long timeout)
