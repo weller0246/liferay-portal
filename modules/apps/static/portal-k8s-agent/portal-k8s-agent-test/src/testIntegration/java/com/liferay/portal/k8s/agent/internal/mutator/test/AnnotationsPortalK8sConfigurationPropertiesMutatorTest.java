@@ -71,10 +71,8 @@ public class AnnotationsPortalK8sConfigurationPropertiesMutatorTest {
 				portalK8sConfigurationPropertiesMutator =
 					serviceTracker.waitForService(4000);
 
-			String mainDomain = RandomTestUtil.randomString();
-
 			String[] domains = {"ext.domain.example", "other.domain.example"};
-
+			String mainDomain = RandomTestUtil.randomString();
 			Dictionary<String, Object> properties = new HashMapDictionary<>();
 
 			portalK8sConfigurationPropertiesMutator.
