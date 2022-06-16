@@ -199,13 +199,13 @@ public class PortalK8sAgentImplTest {
 					testConfigurationHolder.getProperties();
 
 				Assert.assertEquals(
-					"test.value", configurationProperties.get("test.key"));
-				Assert.assertEquals(
 					Http.HTTPS_WITH_SLASH.concat(mainDomain),
 					configurationProperties.get("baseURL"));
 				Assert.assertEquals(
 					TestPropsValues.getCompanyId(),
 					(long)configurationProperties.get("companyId"));
+				Assert.assertEquals(
+					"test.value", configurationProperties.get("test.key"));
 			}
 		}
 	}
