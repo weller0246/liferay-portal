@@ -1,9 +1,5 @@
 {
 	"cpu": 0.1,
-	"id": "__CLIENT_EXTENSION_ID__",
-	"kind": "Deployment",
-	"memory": 50,
-	"scale": 1,
 	"environments": {
 		"dev": {
 			"loadBalancer": {
@@ -15,8 +11,12 @@
 			"deploy": false
 		}
 	},
+	"id": "__CLIENT_EXTENSION_ID__",
+	"kind": "Deployment",
 	"loadBalancer": {
 		"cdn": true,
 		"targetPort": 80
-	}
+	},
+	"memory": 50,
+	"scale": 1
 }
