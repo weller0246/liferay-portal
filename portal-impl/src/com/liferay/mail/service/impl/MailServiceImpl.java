@@ -197,43 +197,38 @@ public class MailServiceImpl implements IdentifiableOSGiService, MailService {
 		PortletPreferences systemPortletPreferences =
 			PrefsPropsUtil.getPreferences();
 
-		Function<String, String> getPreferenceFunction =
+		Function<String, String> function =
 			(String key) -> companyPortletPreferences.getValue(
 				key,
 				systemPortletPreferences.getValue(key, PropsUtil.get(key)));
 
 		if (!GetterUtil.getBoolean(
-				getPreferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL))) {
+				function.apply(PropsKeys.MAIL_SESSION_MAIL))) {
 
 			_sessions.put(companyId, session);
 
 			return session;
 		}
 
-		String advancedPropertiesString = getPreferenceFunction.apply(
+		String advancedPropertiesString = function.apply(
 			PropsKeys.MAIL_SESSION_MAIL_ADVANCED_PROPERTIES);
-		String pop3Host = getPreferenceFunction.apply(
-			PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
-		String pop3Password = getPreferenceFunction.apply(
+		String pop3Host = function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_HOST);
+		String pop3Password = function.apply(
 			PropsKeys.MAIL_SESSION_MAIL_POP3_PASSWORD);
 		int pop3Port = GetterUtil.getInteger(
-			getPreferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT));
-		String pop3User = getPreferenceFunction.apply(
-			PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
-		String smtpHost = getPreferenceFunction.apply(
-			PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
-		String smtpPassword = getPreferenceFunction.apply(
+			function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_PORT));
+		String pop3User = function.apply(PropsKeys.MAIL_SESSION_MAIL_POP3_USER);
+		String smtpHost = function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_HOST);
+		String smtpPassword = function.apply(
 			PropsKeys.MAIL_SESSION_MAIL_SMTP_PASSWORD);
 		int smtpPort = GetterUtil.getInteger(
-			getPreferenceFunction.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT));
+			function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_PORT));
 		boolean smtpStartTLSEnable = GetterUtil.getBoolean(
-			getPreferenceFunction.apply(
-				PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE));
-		String smtpUser = getPreferenceFunction.apply(
-			PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
-		String storeProtocol = getPreferenceFunction.apply(
+			function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_STARTTLS_ENABLE));
+		String smtpUser = function.apply(PropsKeys.MAIL_SESSION_MAIL_SMTP_USER);
+		String storeProtocol = function.apply(
 			PropsKeys.MAIL_SESSION_MAIL_STORE_PROTOCOL);
-		String transportProtocol = getPreferenceFunction.apply(
+		String transportProtocol = function.apply(
 			PropsKeys.MAIL_SESSION_MAIL_TRANSPORT_PROTOCOL);
 
 		Properties properties = session.getProperties();
