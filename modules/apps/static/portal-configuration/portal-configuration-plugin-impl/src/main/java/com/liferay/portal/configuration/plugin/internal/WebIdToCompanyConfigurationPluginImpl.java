@@ -51,15 +51,15 @@ public class WebIdToCompanyConfigurationPluginImpl
 		ServiceReference<?> serviceReference,
 		Dictionary<String, Object> properties) {
 
-		String companyWebId = (String)properties.get(
+		String webId = (String)properties.get(
 			"dxp.lxc.liferay.com.virtualInstanceId");
 
-		if (Validator.isNull(companyWebId)) {
+		if (Validator.isNull(webId)) {
 			return;
 		}
 
-		if (Objects.equals("default", companyWebId)) {
-			companyWebId = PropsValues.COMPANY_DEFAULT_WEB_ID;
+		if (Objects.equals("default", webId)) {
+			webId = PropsValues.COMPANY_DEFAULT_WEB_ID;
 		}
 
 		Object pid = properties.get(Constants.SERVICE_PID);
@@ -67,13 +67,13 @@ public class WebIdToCompanyConfigurationPluginImpl
 		Company company = null;
 
 		try {
-			company = _companyLocalService.getCompanyByWebId(companyWebId);
+			company = _companyLocalService.getCompanyByWebId(webId);
 		}
 		catch (PortalException portalException) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
-						"No company matching {webId=", companyWebId,
+						"No company matching {webId=", webId,
 						"}. Skipping the injection of companyId for ", pid),
 					portalException);
 			}
@@ -87,7 +87,7 @@ public class WebIdToCompanyConfigurationPluginImpl
 			_log.info(
 				StringBundler.concat(
 					"Injected {companyId=", company.getCompanyId(),
-					"} for {webId=", companyWebId, "} into ", pid));
+					"} for {webId=", webId, "} into ", pid));
 		}
 	}
 
