@@ -257,10 +257,10 @@ public class PortalK8sAgentImplTest {
 		extends ClosableHolder<Configuration> {
 
 		public ConfigurationHolder(
-				UnsafeSupplier<Configuration, Exception> onInit)
+				UnsafeSupplier<Configuration, Exception> onInitUnsafeSupplier)
 			throws Exception {
 
-			super(configuration -> configuration.delete(), onInit);
+			super(configuration -> configuration.delete(), onInitUnsafeSupplier);
 		}
 
 		public Dictionary<String, Object> getProperties() throws Exception {

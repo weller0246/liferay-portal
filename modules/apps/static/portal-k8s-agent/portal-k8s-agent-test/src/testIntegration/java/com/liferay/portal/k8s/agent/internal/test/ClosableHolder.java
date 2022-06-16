@@ -24,19 +24,19 @@ public class ClosableHolder<T>
 	implements AutoCloseable, UnsafeSupplier<T, Exception> {
 
 	public ClosableHolder(
-			UnsafeConsumer<T, Exception> onClose,
-			UnsafeSupplier<T, Exception> onInit)
+			UnsafeConsumer<T, Exception> onCloseUnsafeConsumer,
+			UnsafeSupplier<T, Exception> onInitUnsafeSupplier)
 		throws Exception {
 
-		_onClose = onClose;
+		_onCloseUnsafeConsumer = onCloseUnsafeConsumer;
 
-		_t = onInit.get();
+		_t = onInitUnsafeSupplier.get();
 	}
 
 	@Override
 	public void close() throws Exception {
 		if (_t != null) {
-			_onClose.accept(_t);
+			_onCloseUnsafeConsumer.accept(_t);
 		}
 	}
 
@@ -45,7 +45,7 @@ public class ClosableHolder<T>
 		return _t;
 	}
 
-	private final UnsafeConsumer<T, Exception> _onClose;
+	private final UnsafeConsumer<T, Exception> _onCloseUnsafeConsumer;
 	private final T _t;
 
 }
