@@ -30,6 +30,7 @@ IFrameCET iFrameCET = editClientExtensionEntryPartDisplayContext.getCET();
 	</c:when>
 	<c:otherwise>
 		<aui:input disabled="<%= true %>" label="instanceable" name="instanceable-disabled" type="checkbox" value="<%= iFrameCET.isInstanceable() %>" />
+
 		<aui:input name="instanceable" type="hidden" value="<%= iFrameCET.isInstanceable() %>" />
 	</c:otherwise>
 </c:choose>
