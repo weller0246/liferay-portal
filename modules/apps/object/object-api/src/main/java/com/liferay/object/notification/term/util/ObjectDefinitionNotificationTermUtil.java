@@ -25,10 +25,11 @@ public class ObjectDefinitionNotificationTermUtil {
 	public static String getObjectFieldTermName(
 		String objectDefinitionShortName, String objectFieldName) {
 
-		String termName = StringUtil.toUpperCase(
-			objectDefinitionShortName + "_" + objectFieldName);
-
-		return StringBundler.concat("[%", termName, "%]");
+		return StringBundler.concat(
+            "[%",
+            StringUtil.toUpperCase(
+                objectDefinitionShortName + "_" + objectFieldName),
+            "%]");
 	}
 
 }
