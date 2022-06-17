@@ -919,10 +919,9 @@ public class ObjectFieldLocalServiceTest {
 		Assert.assertEquals("able", objectField.getName());
 		Assert.assertFalse(objectField.isRequired());
 
+		String externalReferenceCode = RandomTestUtil.randomString();
 		String indexedLanguageId = LanguageUtil.getLanguageId(
 			LocaleUtil.getDefault());
-
-		String externalReferenceCode = RandomTestUtil.randomString();
 
 		objectField = _objectFieldLocalService.updateCustomObjectField(
 			objectField.getObjectFieldId(), externalReferenceCode, 0,
