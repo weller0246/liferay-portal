@@ -77,6 +77,7 @@ import com.liferay.layout.util.LayoutCopyHelper;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectDefinition;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectRelationship;
+import com.liferay.object.admin.rest.dto.v1_0.util.ObjectActionUtil;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectDefinitionResource;
 import com.liferay.object.admin.rest.resource.v1_0.ObjectRelationshipResource;
 import com.liferay.object.constants.ObjectDefinitionConstants;
@@ -2032,6 +2033,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+				JSONObject parametersJSONObject = jsonObject.getJSONObject(
+					"parameters");
+
 				_objectActionLocalService.addObjectAction(
 					serviceContext.getUserId(), objectDefinition.getId(),
 					jsonObject.getBoolean("active"),
@@ -2040,8 +2044,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getString("name"),
 					jsonObject.getString("objectActionExecutorKey"),
 					jsonObject.getString("objectActionTriggerKey"),
-					_toParametersUnicodeProperties(
-						jsonObject.getJSONObject("parameters")));
+					ObjectActionUtil.toParametersUnicodeProperties(
+						parametersJSONObject.toMap()));
 			}
 		}
 
@@ -3418,26 +3422,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		return t;
-	}
-
-	private UnicodeProperties _toParametersUnicodeProperties(
-		JSONObject parametersJSONObject) {
-
-		Map<String, String> map = new HashMap<>();
-
-		for (String key : parametersJSONObject.keySet()) {
-			Object value = parametersJSONObject.get(key);
-
-			if (value instanceof JSONArray) {
-				value = JSONFactoryUtil.looseSerialize(value);
-			}
-
-			map.put(key, value.toString());
-		}
-
-		return UnicodePropertiesBuilder.create(
-			map, true
-		).build();
 	}
 
 	private Layout _updateDraftLayout(

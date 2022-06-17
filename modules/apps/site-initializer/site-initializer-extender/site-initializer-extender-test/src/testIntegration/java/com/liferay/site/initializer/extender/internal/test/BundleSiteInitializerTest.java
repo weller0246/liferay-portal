@@ -897,8 +897,15 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals("testlisttypeentry2", listTypeEntry2.getKey());
 	}
 
-	private void _assertObjectActionParameters(
-		List<ObjectAction> objectActions) {
+	private void _assertObjectActions(
+		int objectActionsCount, ObjectDefinition objectDefinition) {
+
+		List<ObjectAction> objectActions =
+			_objectActionLocalService.getObjectActions(
+				objectDefinition.getObjectDefinitionId());
+
+		Assert.assertEquals(
+			objectActions.toString(), objectActionsCount, objectActions.size());
 
 		for (ObjectAction objectAction : objectActions) {
 			String objectActionExecutorKey =
@@ -924,19 +931,6 @@ public class BundleSiteInitializerTest {
 				Assert.assertNotNull(url);
 			}
 		}
-	}
-
-	private void _assertObjectActions(
-		int objectActionsCount, ObjectDefinition objectDefinition) {
-
-		List<ObjectAction> objectActions =
-			_objectActionLocalService.getObjectActions(
-				objectDefinition.getObjectDefinitionId());
-
-		_assertObjectActionParameters(objectActions);
-
-		Assert.assertEquals(
-			objectActions.toString(), objectActionsCount, objectActions.size());
 	}
 
 	private void _assertObjectDefinitions(

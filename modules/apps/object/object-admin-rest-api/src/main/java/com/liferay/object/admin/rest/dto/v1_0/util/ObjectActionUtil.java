@@ -22,7 +22,9 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
+import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -108,6 +110,26 @@ public class ObjectActionUtil {
 		}
 
 		return parameters;
+	}
+
+	public static UnicodeProperties toParametersUnicodeProperties(
+		Map<String, ?> parameters) {
+
+		Map<String, String> map = new HashMap<>();
+
+		for (Map.Entry<String, ?> entry : parameters.entrySet()) {
+			Object value = entry.getValue();
+
+			if (value instanceof ArrayList) {
+				value = JSONFactoryUtil.looseSerialize(value);
+			}
+
+			map.put(entry.getKey(), value.toString());
+		}
+
+		return UnicodePropertiesBuilder.create(
+			map, true
+		).build();
 	}
 
 }
