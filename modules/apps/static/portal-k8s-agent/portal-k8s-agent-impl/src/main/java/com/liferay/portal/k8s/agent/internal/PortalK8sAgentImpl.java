@@ -727,9 +727,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
 						"A config map name with suffix ",
-						"\"-lxc-ext-init-metadata\" must begin with a value ",
+						"\"-lxc-ext-init-metadata\" must begin with the value ",
 						"of the label \"ext.lxc.liferay.com/serviceId\" ",
-						"followed by a \"-\" and then a value of the label ",
+						"followed by a \"-\" and then the value of the label ",
 						"\"dxp.lxc.liferay.com/virtualInstanceId\" followed ",
 						"by \"-lxc-ext-init-metadata\""));
 			}
