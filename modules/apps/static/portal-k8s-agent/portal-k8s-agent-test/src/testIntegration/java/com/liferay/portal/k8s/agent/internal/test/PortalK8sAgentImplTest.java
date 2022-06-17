@@ -82,8 +82,8 @@ public class PortalK8sAgentImplTest {
 		new LiferayIntegrationTestRule();
 
 	public void after() {
-		_kubernetesMockServer.destroy();
 		_kubernetesMockClient.close();
+		_kubernetesMockServer.destroy();
 	}
 
 	@Before
