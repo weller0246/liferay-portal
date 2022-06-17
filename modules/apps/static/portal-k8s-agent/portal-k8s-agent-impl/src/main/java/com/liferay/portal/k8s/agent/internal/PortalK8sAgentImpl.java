@@ -665,11 +665,11 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					" does not follow a recognized pattern"));
 		}
 
-		if (!labels.containsKey("lxc.liferay.com/metadataType") ||
-			(!Objects.equals(
-				labels.get("lxc.liferay.com/metadataType"), "dxp") &&
-			 !Objects.equals(
-				 labels.get("lxc.liferay.com/metadataType"), "ext-init"))) {
+		String metadataType = labels.get("lxc.liferay.com/metadataType");
+
+		if ((metadataType == null) ||
+			(!Objects.equals(metadataType, "dxp") &&
+			 !Objects.equals(metadataType, "ext-init"))) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
