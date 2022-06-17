@@ -205,10 +205,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			}
 		}
 		else {
-			final Map<String, String> annotations = new TreeMap<>();
-			final Map<String, String> binaryData = new TreeMap<>();
-			final Map<String, String> data = new TreeMap<>();
-			final Map<String, String> labels = new TreeMap<>();
+			Map<String, String> annotations = new TreeMap<>();
+			Map<String, String> binaryData = new TreeMap<>();
+			Map<String, String> data = new TreeMap<>();
+			Map<String, String> labels = new TreeMap<>();
 
 			configMapModelConsumer.accept(
 				new ConfigMapModel() {
@@ -237,7 +237,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 			_validateRequiredLabels(configMapName, labels);
 
-			configMap = new ConfigMapBuilder().withNewMetadata(
+			ConfigMapBuilder configMapBuilder = new ConfigMapBuilder();
+
+			configMap = configMapBuilder.withNewMetadata(
 			).withNamespace(
 				_portalK8sAgentConfiguration.namespace()
 			).withName(

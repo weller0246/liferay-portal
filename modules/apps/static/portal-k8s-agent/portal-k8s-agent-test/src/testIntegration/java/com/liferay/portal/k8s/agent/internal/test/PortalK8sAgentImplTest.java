@@ -276,13 +276,15 @@ public class PortalK8sAgentImplTest {
 
 			Assert.assertNotNull(portalK8sConfigMapModifier);
 
+			ConfigMapBuilder configMapBuilder = new ConfigMapBuilder();
+
 			String serviceId = RandomTestUtil.randomString();
 
 			String mainDomain = serviceId.concat("-extproject.lfr.sh");
 
 			_kubernetesMockClient.configMaps(
 			).createOrReplace(
-				new ConfigMapBuilder().withNewMetadata(
+				configMapBuilder.withNewMetadata(
 				).withName(
 					StringBundler.concat(
 						serviceId, "-", TestPropsValues.COMPANY_WEB_ID,
