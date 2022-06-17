@@ -182,8 +182,8 @@ public class CETFactoryImpl implements CETFactory {
 				@Override
 				public void keyEmitted(
 					ServiceTrackerMap<String, CETImplFactory> serviceTrackerMap,
-					String key, CETImplFactory service,
-					CETImplFactory content) {
+					String key, CETImplFactory serviceCETImplFactory,
+					CETImplFactory contentCETImplFactory) {
 
 					synchronized (_types) {
 						_types.add(key);
@@ -195,8 +195,8 @@ public class CETFactoryImpl implements CETFactory {
 				@Override
 				public void keyRemoved(
 					ServiceTrackerMap<String, CETImplFactory> serviceTrackerMap,
-					String key, CETImplFactory service,
-					CETImplFactory content) {
+					String key, CETImplFactory serviceCETImplFactory,
+					CETImplFactory contentCETImplFactory) {
 
 					synchronized (_types) {
 						_types.remove(key);
