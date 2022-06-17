@@ -85,7 +85,7 @@ public class ViewObjectEntriesDisplayContext {
 		_objectViewLocalService = objectViewLocalService;
 		_portletResourcePermission = portletResourcePermission;
 
-		_apiURL = _buildAPIURL(restContextPath);
+		_apiURL = _getAPIURL(restContextPath);
 		_objectRequestHelper = new ObjectRequestHelper(httpServletRequest);
 	}
 
@@ -229,7 +229,7 @@ public class ViewObjectEntriesDisplayContext {
 			_objectRequestHelper.getLiferayPortletResponse());
 	}
 
-	private String _buildAPIURL(String restContextPath) {
+	private String _getAPIURL(String restContextPath) {
 		String apiURL = "/o" + restContextPath;
 
 		try {
