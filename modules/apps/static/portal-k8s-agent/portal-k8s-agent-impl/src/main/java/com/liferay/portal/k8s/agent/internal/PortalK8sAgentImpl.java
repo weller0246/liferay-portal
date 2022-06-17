@@ -678,7 +678,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					"or \"ext-init\""));
 		}
 
-		if (!labels.containsKey("dxp.lxc.liferay.com/virtualInstanceId")) {
+		String virtualInstanceId = labels.get(
+			"dxp.lxc.liferay.com/virtualInstanceId");
+
+		if (virtualInstanceId == null) {
 			throw new IllegalArgumentException(
 				StringBundler.concat(
 					"Config map labels must contain the key ",
@@ -686,9 +689,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					"the web ID of the virtual instance from which the ",
 					"configuration originated"));
 		}
-
-		String virtualInstanceId = labels.get(
-			"dxp.lxc.liferay.com/virtualInstanceId");
 
 		// <virtualInstanceId>-lxc-dxp-metadata
 
@@ -707,7 +707,9 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		// <serviceId>-<virtualInstanceId>-lxc-ext-init-metadata
 
 		else if (configMapName.endsWith("-lxc-ext-init-metadata")) {
-			if (!labels.containsKey("ext.lxc.liferay.com/serviceId")) {
+			String serviceId = labels.get("ext.lxc.liferay.com/serviceId");
+
+			if (serviceId == null) {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
 						"A config map with the suffix ",
@@ -715,8 +717,6 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 						"the key \"ext.lxc.liferay.com/serviceId\" whose ",
 						"value is the target service ID"));
 			}
-
-			String serviceId = labels.get("ext.lxc.liferay.com/serviceId");
 
 			if (!Objects.equals(
 					configMapName,
