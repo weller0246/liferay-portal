@@ -28,6 +28,26 @@ import java.sql.ResultSet;
  */
 public class UpgradeUuid extends UpgradeProcess {
 
+	@Override
+	protected void doUpgrade() throws Exception {
+		upgradeUuid("AccountEntry", "accountEntryId");
+		upgradeUuid("AccountGroup", "accountGroupId");
+		upgradeUuid("CommerceCatalog", "commerceCatalogId");
+		upgradeUuid("CommerceChannel", "commerceChannelId");
+		upgradeUuid("CIWarehouse", "CIWarehouseId");
+		upgradeUuid("CIWarehouseItem", "CIWarehouseItemId");
+		upgradeUuid("CommerceOrderItem", "commerceOrderItemId");
+		upgradeUuid("CommerceOrderNote", "commerceOrderNoteId");
+		upgradeUuid("CommerceOrderType", "commerceOrderTypeId");
+		upgradeUuid("CommerceOrderTypeRel", "commerceOrderTypeRelId");
+		upgradeUuid("CommerceShipment", "commerceShipmentId");
+		upgradeUuid("CommerceShipmentItem", "commerceShipmentItemId");
+		upgradeUuid("CommerceTermEntry", "commerceTermEntryId");
+		upgradeUuid("COREntry", "COREntryId");
+		upgradeUuid("CPTaxCategory", "CPTaxCategoryId");
+		upgradeUuid("DispatchTrigger", "dispatchTriggerId");
+	}
+
 	protected void upgradeUuid(String tableName, String primKeyColumnName)
 		throws Exception {
 
@@ -73,26 +93,6 @@ public class UpgradeUuid extends UpgradeProcess {
 				preparedStatement2.executeBatch();
 			}
 		}
-	}
-
-	@Override
-	protected void doUpgrade() throws Exception {
-		upgradeUuid("AccountEntry", "accountEntryId");
-		upgradeUuid("AccountGroup", "accountGroupId");
-		upgradeUuid("CommerceCatalog", "commerceCatalogId");
-		upgradeUuid("CommerceChannel", "commerceChannelId");
-		upgradeUuid("CIWarehouse", "CIWarehouseId");
-		upgradeUuid("CIWarehouseItem", "CIWarehouseItemId");
-		upgradeUuid("CommerceOrderItem", "commerceOrderItemId");
-		upgradeUuid("CommerceOrderNote", "commerceOrderNoteId");
-		upgradeUuid("CommerceOrderType", "commerceOrderTypeId");
-		upgradeUuid("CommerceOrderTypeRel", "commerceOrderTypeRelId");
-		upgradeUuid("CommerceShipment", "commerceShipmentId");
-		upgradeUuid("CommerceShipmentItem", "commerceShipmentItemId");
-		upgradeUuid("CommerceTermEntry", "commerceTermEntryId");
-		upgradeUuid("COREntry", "COREntryId");
-		upgradeUuid("CPTaxCategory", "CPTaxCategoryId");
-		upgradeUuid("DispatchTrigger", "dispatchTriggerId");
 	}
 
 }
