@@ -360,9 +360,8 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		_validateExternalReferenceCode(
-			objectField.getCompanyId(), externalReferenceCode,
-			objectField.getObjectFieldId(),
-			objectField.getObjectDefinitionId());
+			objectField.getObjectFieldId(), objectField.getCompanyId(),
+			externalReferenceCode, objectField.getObjectDefinitionId());
 		_validateLabel(labelMap);
 
 		objectField.setExternalReferenceCode(externalReferenceCode);
@@ -633,8 +632,8 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	private void _validateExternalReferenceCode(
-			long companyId, String externalReferenceCode,
-			long objectDefinitionId, long objectFieldId)
+			long objectFieldId, long companyId, String externalReferenceCode,
+			long objectDefinitionId)
 		throws PortalException {
 
 		if (Validator.isNull(externalReferenceCode)) {
