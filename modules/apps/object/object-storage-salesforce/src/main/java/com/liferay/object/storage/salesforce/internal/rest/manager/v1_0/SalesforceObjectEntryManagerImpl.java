@@ -356,14 +356,15 @@ public class SalesforceObjectEntryManagerImpl
 				ObjectField objectField =
 					_getObjectFieldByExternalReferenceCode(key, objectFields);
 
-				if (objectField != null) {
-					Map<String, Object> properties =
-						objectEntry.getProperties();
-
-					properties.put(
-						objectField.getName(),
-						jsonObject.isNull(key) ? null : jsonObject.get(key));
+				if (objectField == null) {
+					continue;
 				}
+
+				Map<String, Object> properties = objectEntry.getProperties();
+
+				properties.put(
+					objectField.getName(),
+					jsonObject.isNull(key) ? null : jsonObject.get(key));
 			}
 		}
 
