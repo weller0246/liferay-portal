@@ -56,7 +56,7 @@ public class ObjectFieldDBTypeUtil {
 				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST)) {
 
 			finalStep.attribute(
-				SelectInfoFieldType.OPTIONS, _getInfoFieldOptions(objectField));
+				SelectInfoFieldType.OPTIONS, _getOptions(objectField));
 		}
 
 		return finalStep.build();
@@ -109,7 +109,7 @@ public class ObjectFieldDBTypeUtil {
 		return TextInfoFieldType.INSTANCE;
 	}
 
-	private static List<SelectInfoFieldType.Option> _getInfoFieldOptions(
+	private static List<SelectInfoFieldType.Option> _getOptions(
 		ObjectField objectField) {
 
 		List<SelectInfoFieldType.Option> options = new ArrayList<>();
