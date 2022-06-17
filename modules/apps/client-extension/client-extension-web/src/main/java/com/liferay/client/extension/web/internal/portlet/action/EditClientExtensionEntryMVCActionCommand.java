@@ -86,17 +86,17 @@ public class EditClientExtensionEntryMVCActionCommand
 
 			SessionErrors.add(actionRequest, exception.getClass(), exception);
 
+			CET cet = null;
+
 			ClientExtensionEntry clientExtensionEntry =
 				_fetchClientExtensionEntry(actionRequest);
 
-			CET cet;
-
-			if (clientExtensionEntry == null) {
-				cet = _cetFactory.create(
-					actionRequest, ParamUtil.getString(actionRequest, "type"));
+			if (clientExtensionEntry != null) {
+				cet = _cetFactory.create(clientExtensionEntry);
 			}
 			else {
-				cet = _cetFactory.create(clientExtensionEntry);
+				cet = _cetFactory.create(
+					actionRequest, ParamUtil.getString(actionRequest, "type"));
 			}
 
 			actionRequest.setAttribute(
@@ -104,7 +104,6 @@ public class EditClientExtensionEntryMVCActionCommand
 					EDIT_CLIENT_EXTENSION_ENTRY_DISPLAY_CONTEXT,
 				new EditClientExtensionEntryDisplayContext(
 					cet, clientExtensionEntry, actionRequest));
-
 			actionRequest.setAttribute(
 				ClientExtensionAdminWebKeys.
 					EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT,

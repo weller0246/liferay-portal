@@ -55,17 +55,17 @@ public class EditClientExtensionEntryMVCRenderCommand
 		throws PortletException {
 
 		try {
+			CET cet = null;
+
 			ClientExtensionEntry clientExtensionEntry =
 				_fetchClientExtensionEntry(renderRequest);
 
-			CET cet;
-
-			if (clientExtensionEntry == null) {
-				cet = _cetFactory.create(
-					renderRequest, ParamUtil.getString(renderRequest, "type"));
+			if (clientExtensionEntry != null) {
+				cet = _cetFactory.create(clientExtensionEntry);
 			}
 			else {
-				cet = _cetFactory.create(clientExtensionEntry);
+				cet = _cetFactory.create(
+					renderRequest, ParamUtil.getString(renderRequest, "type"));
 			}
 
 			renderRequest.setAttribute(
@@ -73,7 +73,6 @@ public class EditClientExtensionEntryMVCRenderCommand
 					EDIT_CLIENT_EXTENSION_ENTRY_DISPLAY_CONTEXT,
 				new EditClientExtensionEntryDisplayContext(
 					cet, clientExtensionEntry, renderRequest));
-
 			renderRequest.setAttribute(
 				ClientExtensionAdminWebKeys.
 					EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT,
