@@ -303,6 +303,43 @@ public class SalesforceObjectEntryManagerImpl
 			pagination.getStartPosition());
 	}
 
+	private JSONObject _toJSONObject(
+			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
+		throws Exception {
+
+		List<ObjectField> objectFields =
+			_objectFieldLocalService.getObjectFields(
+				objectDefinition.getObjectDefinitionId());
+
+		Map<String, Object> jsonObjectProperties = new HashMap<>();
+
+		Map<String, Object> properties = objectEntry.getProperties();
+
+		for (Map.Entry<String, Object> entry : properties.entrySet()) {
+			ObjectField objectField = _getObjectFieldByName(
+				entry.getKey(), objectFields);
+
+			if (objectField != null) {
+				Object value =
+					Objects.equals(entry.getValue(), StringPool.BLANK) ? null :
+						entry.getValue();
+
+				jsonObjectProperties.put(
+					objectField.getExternalReferenceCode(), value);
+
+				if (Objects.equals(
+						objectField.getObjectFieldId(),
+						objectDefinition.getTitleObjectFieldId())) {
+
+					jsonObjectProperties.put("Name", value);
+				}
+			}
+		}
+
+		return _jsonFactory.createJSONObject(
+			_jsonFactory.looseSerialize(jsonObjectProperties));
+	}
+
 	private List<ObjectEntry> _toObjectEntries(
 			long companyId, JSONArray jsonArray,
 			ObjectDefinition objectDefinition)
@@ -369,43 +406,6 @@ public class SalesforceObjectEntryManagerImpl
 		}
 
 		return objectEntry;
-	}
-
-	private JSONObject _toJSONObject(
-			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
-		throws Exception {
-
-		List<ObjectField> objectFields =
-			_objectFieldLocalService.getObjectFields(
-				objectDefinition.getObjectDefinitionId());
-
-		Map<String, Object> jsonObjectProperties = new HashMap<>();
-
-		Map<String, Object> properties = objectEntry.getProperties();
-
-		for (Map.Entry<String, Object> entry : properties.entrySet()) {
-			ObjectField objectField = _getObjectFieldByName(
-				entry.getKey(), objectFields);
-
-			if (objectField != null) {
-				Object value =
-					Objects.equals(entry.getValue(), StringPool.BLANK) ? null :
-						entry.getValue();
-
-				jsonObjectProperties.put(
-					objectField.getExternalReferenceCode(), value);
-
-				if (Objects.equals(
-						objectField.getObjectFieldId(),
-						objectDefinition.getTitleObjectFieldId())) {
-
-					jsonObjectProperties.put("Name", value);
-				}
-			}
-		}
-
-		return _jsonFactory.createJSONObject(
-			_jsonFactory.looseSerialize(jsonObjectProperties));
 	}
 
 	@Reference
