@@ -307,7 +307,7 @@ public class SalesforceObjectEntryManagerImpl
 			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
 		throws Exception {
 
-		Map<String, Object> jsonObjectProperties = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 
 		List<ObjectField> objectFields =
 			_objectFieldLocalService.getObjectFields(
@@ -319,25 +319,25 @@ public class SalesforceObjectEntryManagerImpl
 			ObjectField objectField = _getObjectFieldByName(
 				entry.getKey(), objectFields);
 
-			if (objectField != null) {
-				Object value =
-					Objects.equals(entry.getValue(), StringPool.BLANK) ? null :
-						entry.getValue();
+			if (objectField == null) {
+				continue;
+			}
 
-				jsonObjectProperties.put(
-					objectField.getExternalReferenceCode(), value);
+			Object value =
+				Objects.equals(entry.getValue(), StringPool.BLANK) ? null :
+					entry.getValue();
 
-				if (Objects.equals(
-						objectField.getObjectFieldId(),
-						objectDefinition.getTitleObjectFieldId())) {
+			map.put(objectField.getExternalReferenceCode(), value);
 
-					jsonObjectProperties.put("Name", value);
-				}
+			if (Objects.equals(
+					objectField.getObjectFieldId(),
+					objectDefinition.getTitleObjectFieldId())) {
+
+				map.put("Name", value);
 			}
 		}
 
-		return _jsonFactory.createJSONObject(
-			_jsonFactory.looseSerialize(jsonObjectProperties));
+		return _jsonFactory.createJSONObject(_jsonFactory.looseSerialize(map));
 	}
 
 	private List<ObjectEntry> _toObjectEntries(
