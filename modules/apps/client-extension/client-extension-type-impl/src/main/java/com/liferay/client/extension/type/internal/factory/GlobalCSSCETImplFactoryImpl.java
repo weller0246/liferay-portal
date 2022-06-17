@@ -17,16 +17,14 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.IFrameCET;
+import com.liferay.client.extension.type.GlobalCSSCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.IFrameCETImpl;
+import com.liferay.client.extension.type.internal.GlobalCSSCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Properties;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.portlet.PortletRequest;
 
@@ -36,31 +34,34 @@ import org.osgi.service.component.annotations.Component;
  * @author Iván Zaera Avellón
  */
 @Component(
-	property = "type=" + ClientExtensionEntryConstants.TYPE_IFRAME,
+	property = "type=" + ClientExtensionEntryConstants.TYPE_GLOBAL_CSS,
 	service = CETImplFactory.class
 )
-public class IFrameCETImplFactory implements CETImplFactory<IFrameCET> {
+public class GlobalCSSCETImplFactoryImpl
+	implements CETImplFactory<GlobalCSSCET> {
 
 	@Override
-	public IFrameCET cet(ClientExtensionEntry clientExtensionEntry)
+	public GlobalCSSCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new IFrameCETImpl(clientExtensionEntry);
+		return new GlobalCSSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public IFrameCET cet(PortletRequest portletRequest) throws PortalException {
-		return new IFrameCETImpl(portletRequest);
+	public GlobalCSSCET cet(PortletRequest portletRequest)
+		throws PortalException {
+
+		return new GlobalCSSCETImpl(portletRequest);
 	}
 
 	@Override
-	public IFrameCET cet(
+	public GlobalCSSCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new IFrameCETImpl(
+		return new GlobalCSSCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -71,36 +72,13 @@ public class IFrameCETImplFactory implements CETImplFactory<IFrameCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		IFrameCETImpl newIFrameCETImpl = new IFrameCETImpl(
+		GlobalCSSCET newGlobalCSSCETImpl = new GlobalCSSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			newIFrameCETImpl.getFriendlyURLMapping());
-
-		if (!matcher.matches()) {
-			throw new ClientExtensionEntryTypeSettingsException(
-				"please-enter-a-valid-friendly-url-mapping");
-		}
-
-		if (!Validator.isUrl(newIFrameCETImpl.getURL())) {
+		if (!Validator.isUrl(newGlobalCSSCETImpl.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}
-
-		if (oldTypeSettingsUnicodeProperties != null) {
-			IFrameCETImpl oldIFrameCETImpl = new IFrameCETImpl(
-				oldTypeSettingsUnicodeProperties);
-
-			if (newIFrameCETImpl.isInstanceable() !=
-					oldIFrameCETImpl.isInstanceable()) {
-
-				throw new ClientExtensionEntryTypeSettingsException(
-					"the-instanceable-value-cannot-be-changed");
-			}
-		}
 	}
-
-	private static final Pattern _friendlyURLMappingPattern = Pattern.compile(
-		"[A-Za-z0-9-_]*");
 
 }

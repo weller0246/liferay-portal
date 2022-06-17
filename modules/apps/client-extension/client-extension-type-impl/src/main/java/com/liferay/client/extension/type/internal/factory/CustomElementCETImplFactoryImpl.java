@@ -43,7 +43,7 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
 	service = CETImplFactory.class
 )
-public class CustomElementCETImplFactory
+public class CustomElementCETImplFactoryImpl
 	implements CETImplFactory<CustomElementCET> {
 
 	@Override

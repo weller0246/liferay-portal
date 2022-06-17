@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.GlobalJSCET;
+import com.liferay.client.extension.type.ThemeJSCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.GlobalJSCETImpl;
+import com.liferay.client.extension.type.internal.ThemeJSCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -34,33 +34,33 @@ import org.osgi.service.component.annotations.Component;
  * @author Iván Zaera Avellón
  */
 @Component(
-	property = "type=" + ClientExtensionEntryConstants.TYPE_GLOBAL_JS,
+	property = "type=" + ClientExtensionEntryConstants.TYPE_THEME_JS,
 	service = CETImplFactory.class
 )
-public class GlobalJSCETImplFactory implements CETImplFactory<GlobalJSCET> {
+public class ThemeJSCETImplFactoryImpl implements CETImplFactory<ThemeJSCET> {
 
 	@Override
-	public GlobalJSCET cet(ClientExtensionEntry clientExtensionEntry)
+	public ThemeJSCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new GlobalJSCETImpl(clientExtensionEntry);
+		return new ThemeJSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public GlobalJSCET cet(PortletRequest portletRequest)
+	public ThemeJSCET cet(PortletRequest portletRequest)
 		throws PortalException {
 
-		return new GlobalJSCETImpl(portletRequest);
+		return new ThemeJSCETImpl(portletRequest);
 	}
 
 	@Override
-	public GlobalJSCET cet(
+	public ThemeJSCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new GlobalJSCETImpl(
+		return new ThemeJSCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -71,10 +71,10 @@ public class GlobalJSCETImplFactory implements CETImplFactory<GlobalJSCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		GlobalJSCET newGlobalJSCETImpl = new GlobalJSCETImpl(
+		ThemeJSCET newThemeJSCETImpl = new ThemeJSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newGlobalJSCETImpl.getURL())) {
+		if (!Validator.isUrl(newThemeJSCETImpl.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}
