@@ -22,7 +22,7 @@ import com.liferay.portal.kernel.util.StringUtil;
  */
 public class ObjectDefinitionNotificationTermUtil {
 
-	public static String getObjectFieldTerm(
+	public static String getObjectFieldTermName(
 		String objectDefinitionShortName, String objectFieldName) {
 
 		String termName = StringUtil.toUpperCase(

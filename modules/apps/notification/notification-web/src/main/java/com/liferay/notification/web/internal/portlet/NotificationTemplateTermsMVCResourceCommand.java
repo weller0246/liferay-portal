@@ -74,7 +74,7 @@ public class NotificationTemplateTermsMVCResourceCommand
 					"name", objectField.getLabel(LocaleUtil.getDefault())
 				).put(
 					"term",
-					ObjectDefinitionNotificationTermUtil.getObjectFieldTerm(
+					ObjectDefinitionNotificationTermUtil.getObjectFieldTermName(
 						objectDefinition.getShortName(), objectField.getName())
 				));
 		}

@@ -50,7 +50,7 @@ public class ObjectDefinitionNotificationTermContributor
 
 		for (ObjectField objectField : objectFields) {
 			_objectFieldIds.put(
-				ObjectDefinitionNotificationTermUtil.getObjectFieldTerm(
+				ObjectDefinitionNotificationTermUtil.getObjectFieldTermName(
 					objectDefinition.getShortName(), objectField.getName()),
 				objectField.getObjectFieldId());
 		}
