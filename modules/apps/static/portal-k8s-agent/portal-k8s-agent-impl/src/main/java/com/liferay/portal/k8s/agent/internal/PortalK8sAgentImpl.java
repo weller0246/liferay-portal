@@ -731,11 +731,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 			String serviceId = labels.get(PortalK8sConstants.SERVICE_ID_KEY);
 
-			String expectedConfigMapName = StringBundler.concat(
-				serviceId, "-", virtualInstanceId,
-				PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX);
+			if (!Objects.equals(
+					configMapName,
+					StringBundler.concat(
+						serviceId, "-", virtualInstanceId,
+						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX))) {
 
-			if (!Objects.equals(expectedConfigMapName, configMapName)) {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
 						"A config map name with suffix ",
