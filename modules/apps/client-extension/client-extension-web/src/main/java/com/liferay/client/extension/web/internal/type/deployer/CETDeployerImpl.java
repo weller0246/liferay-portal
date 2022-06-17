@@ -70,8 +70,8 @@ public class CETDeployerImpl implements CETDeployer {
 		serviceRegistrations.add(_registerConfigurationAction(cet));
 
 		CustomElementCET customElementCET = null;
-		IFrameCET iFrameCET = null;
 		String friendlyURLMapping = null;
+		IFrameCET iFrameCET = null;
 		boolean instanceable = false;
 		String portletCategoryName = null;
 
