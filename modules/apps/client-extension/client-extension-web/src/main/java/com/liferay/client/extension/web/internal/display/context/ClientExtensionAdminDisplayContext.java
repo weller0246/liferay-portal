@@ -56,7 +56,6 @@ public class ClientExtensionAdminDisplayContext {
 						).setParameter(
 							"type", type
 						).buildPortletURL());
-
 					dropdownItem.setLabel(
 						CETLabelsUtil.getAddLabel(
 							_getHttpServletRequest(), type));
