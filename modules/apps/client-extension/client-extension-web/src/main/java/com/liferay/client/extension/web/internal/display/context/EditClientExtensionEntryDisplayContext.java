@@ -16,7 +16,7 @@ package com.liferay.client.extension.web.internal.display.context;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
-import com.liferay.client.extension.web.internal.util.CETLabelsUtil;
+import com.liferay.client.extension.web.internal.display.context.util.CETLabelUtil;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -88,7 +88,7 @@ public class EditClientExtensionEntryDisplayContext {
 		if (_clientExtensionEntry == null) {
 			return LanguageUtil.get(
 				_getHttpServletRequest(),
-				CETLabelsUtil.getNewLabel(
+				CETLabelUtil.getNewLabel(
 					_getHttpServletRequest(), _cet.getType()));
 		}
 
@@ -105,8 +105,7 @@ public class EditClientExtensionEntryDisplayContext {
 	public String getTypeLabel() {
 		return LanguageUtil.get(
 			_getHttpServletRequest(),
-			CETLabelsUtil.getTypeNameLabel(
-				_getHttpServletRequest(), getType()));
+			CETLabelUtil.getTypeNameLabel(_getHttpServletRequest(), getType()));
 	}
 
 	public boolean isPropertiesVisible() {

@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.client.extension.web.internal.util;
+package com.liferay.client.extension.web.internal.display.context.util;
 
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -24,7 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * @author Iván Zaera Avellón
  */
-public class CETLabelsUtil {
+public class CETLabelUtil {
 
 	public static String getAddLabel(
 		HttpServletRequest httpServletRequest, String type) {
