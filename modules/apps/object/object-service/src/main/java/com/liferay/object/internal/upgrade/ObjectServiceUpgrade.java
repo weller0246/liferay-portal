@@ -24,7 +24,6 @@ import com.liferay.object.internal.upgrade.v2_3_0.util.ObjectFieldSettingTable;
 import com.liferay.object.internal.upgrade.v2_4_0.util.ObjectViewSortColumnTable;
 import com.liferay.object.internal.upgrade.v2_5_0.util.ObjectViewColumnUpgradeProcess;
 import com.liferay.object.internal.upgrade.v3_0_0.ObjectFieldSettingUpgradeProcess;
-import com.liferay.object.internal.upgrade.v3_12_0.ObjectFieldExternalReferenceCodeUpgradeProcess;
 import com.liferay.object.internal.upgrade.v3_2_0.ObjectValidationRuleUpgradeProcess;
 import com.liferay.object.internal.upgrade.v3_3_0.util.ObjectViewFilterColumnTable;
 import com.liferay.object.internal.upgrade.v3_4_0.ObjectActionUpgradeProcess;
@@ -115,7 +114,8 @@ public class ObjectServiceUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"3.11.0", "3.12.0",
-			new ObjectFieldExternalReferenceCodeUpgradeProcess());
+			new com.liferay.object.internal.upgrade.v3_12_0.
+				ObjectFieldUpgradeProcess());
 	}
 
 }

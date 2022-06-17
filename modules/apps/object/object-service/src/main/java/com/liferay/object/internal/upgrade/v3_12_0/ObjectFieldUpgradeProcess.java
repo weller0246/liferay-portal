@@ -19,8 +19,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 /**
  * @author Guilherme Camacho
  */
-public class ObjectFieldExternalReferenceCodeUpgradeProcess
-	extends UpgradeProcess {
+public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
