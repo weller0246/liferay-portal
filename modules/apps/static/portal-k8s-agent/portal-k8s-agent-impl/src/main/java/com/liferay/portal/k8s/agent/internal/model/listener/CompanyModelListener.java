@@ -41,37 +41,6 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 	@Override
 	public void onAfterCreate(Company company) throws ModelListenerException {
-		_updateDxpMetadata(company);
-	}
-
-	@Override
-	public void onAfterRemove(Company company) throws ModelListenerException {
-		String webId = company.getWebId();
-
-		String configMapName = webId.concat(
-			PortalK8sConstants.LXC_DXP_METADATA_SUFFIX);
-
-		_portalK8sConfigMapModifier.modifyConfigMap(
-			model -> {
-				Map<String, String> labels = model.labels();
-
-				labels.clear();
-
-				Map<String, String> data = model.data();
-
-				data.clear();
-			},
-			configMapName);
-	}
-
-	@Override
-	public void onAfterUpdate(Company originalCompany, Company company)
-		throws ModelListenerException {
-
-		_updateDxpMetadata(company);
-	}
-
-	private void _updateDxpMetadata(Company company) {
 		String webId = company.getWebId();
 
 		if (Objects.equals(webId, PropsValues.COMPANY_DEFAULT_WEB_ID)) {
@@ -106,6 +75,30 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 					StringUtil.merge(virtualHostNames, "\n"));
 			},
 			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
+	}
+
+	@Override
+	public void onAfterRemove(Company company) throws ModelListenerException {
+		String webId = company.getWebId();
+
+		_portalK8sConfigMapModifier.modifyConfigMap(
+			model -> {
+				Map<String, String> labels = model.labels();
+
+				labels.clear();
+
+				Map<String, String> data = model.data();
+
+				data.clear();
+			},
+			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
+	}
+
+	@Override
+	public void onAfterUpdate(Company originalCompany, Company company)
+		throws ModelListenerException {
+
+		onAfterCreate(company);
 	}
 
 	@Reference
