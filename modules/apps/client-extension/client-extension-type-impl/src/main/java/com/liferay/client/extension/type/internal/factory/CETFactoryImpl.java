@@ -132,7 +132,7 @@ public class CETFactoryImpl implements CETFactory {
 
 		if (cetImplFactory == null) {
 			throw new ClientExtensionEntryTypeException(
-				"No CET impl factory registered for type " + type);
+				"No CET implementation factory registered for type " + type);
 		}
 
 		return cetImplFactory;
