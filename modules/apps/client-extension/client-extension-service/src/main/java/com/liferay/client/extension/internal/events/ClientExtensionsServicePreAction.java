@@ -93,6 +93,59 @@ public class ClientExtensionsServicePreAction extends Action {
 			companyId, clientExtensionEntryRel.getCETExternalReferenceCode());
 	}
 
+	private String _getFaviconURL(Layout layout) {
+		String faviconURL = _getThemeFaviconCETURL(
+			_portal.getClassNameId(Layout.class), layout.getPlid(),
+			layout.getCompanyId());
+
+		if (Validator.isNotNull(faviconURL)) {
+			return faviconURL;
+		}
+
+		faviconURL = layout.getFaviconURL();
+
+		if (Validator.isNotNull(faviconURL)) {
+			return faviconURL;
+		}
+
+		Layout masterLayout = _layoutLocalService.fetchLayout(
+			layout.getMasterLayoutPlid());
+
+		if (masterLayout != null) {
+			faviconURL = _getThemeFaviconCETURL(
+				_portal.getClassNameId(Layout.class), masterLayout.getPlid(),
+				layout.getCompanyId());
+
+			if (Validator.isNotNull(faviconURL)) {
+				return faviconURL;
+			}
+
+			faviconURL = masterLayout.getFaviconURL();
+
+			if (Validator.isNotNull(faviconURL)) {
+				return faviconURL;
+			}
+		}
+
+		LayoutSet layoutSet = layout.getLayoutSet();
+
+		faviconURL = _getThemeFaviconCETURL(
+			_portal.getClassNameId(LayoutSet.class), layoutSet.getLayoutSetId(),
+			layout.getCompanyId());
+
+		if (Validator.isNotNull(faviconURL)) {
+			return faviconURL;
+		}
+
+		faviconURL = layoutSet.getFaviconURL();
+
+		if (Validator.isNotNull(faviconURL)) {
+			return faviconURL;
+		}
+
+		return null;
+	}
+
 	private ThemeCSSCET _getThemeCSSCET(Layout layout) {
 		CET cet = _getCET(
 			_portal.getClassNameId(Layout.class), layout.getPlid(),
@@ -147,59 +200,6 @@ public class ClientExtensionsServicePreAction extends Action {
 
 		if (cet != null) {
 			return (ThemeJSCET)cet;
-		}
-
-		return null;
-	}
-
-	private String _getFaviconURL(Layout layout) {
-		String faviconURL = _getThemeFaviconCETURL(
-			_portal.getClassNameId(Layout.class), layout.getPlid(),
-			layout.getCompanyId());
-
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
-		}
-
-		faviconURL = layout.getFaviconURL();
-
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
-		}
-
-		Layout masterLayout = _layoutLocalService.fetchLayout(
-			layout.getMasterLayoutPlid());
-
-		if (masterLayout != null) {
-			faviconURL = _getThemeFaviconCETURL(
-				_portal.getClassNameId(Layout.class), masterLayout.getPlid(),
-				layout.getCompanyId());
-
-			if (Validator.isNotNull(faviconURL)) {
-				return faviconURL;
-			}
-
-			faviconURL = masterLayout.getFaviconURL();
-
-			if (Validator.isNotNull(faviconURL)) {
-				return faviconURL;
-			}
-		}
-
-		LayoutSet layoutSet = layout.getLayoutSet();
-
-		faviconURL = _getThemeFaviconCETURL(
-			_portal.getClassNameId(LayoutSet.class), layoutSet.getLayoutSetId(),
-			layout.getCompanyId());
-
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
-		}
-
-		faviconURL = layoutSet.getFaviconURL();
-
-		if (Validator.isNotNull(faviconURL)) {
-			return faviconURL;
 		}
 
 		return null;
