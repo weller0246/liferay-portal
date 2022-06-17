@@ -71,28 +71,28 @@ public class IFrameCETImplFactoryImpl implements CETImplFactory<IFrameCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		IFrameCETImpl newIFrameCETImpl = new IFrameCETImpl(
+		IFrameCET newIFrameCET = new IFrameCETImpl(
 			newTypeSettingsUnicodeProperties);
 
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			newIFrameCETImpl.getFriendlyURLMapping());
+			newIFrameCET.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-friendly-url-mapping");
 		}
 
-		if (!Validator.isUrl(newIFrameCETImpl.getURL())) {
+		if (!Validator.isUrl(newIFrameCET.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}
 
 		if (oldTypeSettingsUnicodeProperties != null) {
-			IFrameCETImpl oldIFrameCETImpl = new IFrameCETImpl(
+			IFrameCET oldIFrameCET = new IFrameCETImpl(
 				oldTypeSettingsUnicodeProperties);
 
-			if (newIFrameCETImpl.isInstanceable() !=
-					oldIFrameCETImpl.isInstanceable()) {
+			if (newIFrameCET.isInstanceable() !=
+					oldIFrameCET.isInstanceable()) {
 
 				throw new ClientExtensionEntryTypeSettingsException(
 					"the-instanceable-value-cannot-be-changed");

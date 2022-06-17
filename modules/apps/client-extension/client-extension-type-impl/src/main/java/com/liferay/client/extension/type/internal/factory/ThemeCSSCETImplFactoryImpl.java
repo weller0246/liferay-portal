@@ -71,24 +71,24 @@ public class ThemeCSSCETImplFactoryImpl implements CETImplFactory<ThemeCSSCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		ThemeCSSCET newThemeCSSCETImpl = new ThemeCSSCETImpl(
+		ThemeCSSCET newThemeCSSCET = new ThemeCSSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String baseURL = newThemeCSSCETImpl.getBaseURL();
+		String baseURL = newThemeCSSCET.getBaseURL();
 
 		if (!Validator.isBlank(baseURL) && !Validator.isUrl(baseURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-base-url");
 		}
 
-		String clayURL = newThemeCSSCETImpl.getClayURL();
+		String clayURL = newThemeCSSCET.getClayURL();
 
 		if (!Validator.isBlank(clayURL) && !Validator.isUrl(clayURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-clay-url");
 		}
 
-		String mainURL = newThemeCSSCETImpl.getMainURL();
+		String mainURL = newThemeCSSCET.getMainURL();
 
 		if (!Validator.isBlank(mainURL) && !Validator.isUrl(mainURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(

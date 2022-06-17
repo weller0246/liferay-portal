@@ -71,10 +71,10 @@ public class ThemeJSCETImplFactoryImpl implements CETImplFactory<ThemeJSCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		ThemeJSCET newThemeJSCETImpl = new ThemeJSCETImpl(
+		ThemeJSCET newThemeJSCET = new ThemeJSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newThemeJSCETImpl.getURL())) {
+		if (!Validator.isUrl(newThemeJSCET.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}

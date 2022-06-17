@@ -72,10 +72,10 @@ public class GlobalCSSCETImplFactoryImpl
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		GlobalCSSCET newGlobalCSSCETImpl = new GlobalCSSCETImpl(
+		GlobalCSSCET newGlobalCSSCET = new GlobalCSSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newGlobalCSSCETImpl.getURL())) {
+		if (!Validator.isUrl(newGlobalCSSCET.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}

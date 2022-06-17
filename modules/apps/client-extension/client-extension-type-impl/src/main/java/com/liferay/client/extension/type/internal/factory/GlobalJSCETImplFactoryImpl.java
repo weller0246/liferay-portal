@@ -71,10 +71,10 @@ public class GlobalJSCETImplFactoryImpl implements CETImplFactory<GlobalJSCET> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		GlobalJSCET newGlobalJSCETImpl = new GlobalJSCETImpl(
+		GlobalJSCET newGlobalJSCET = new GlobalJSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newGlobalJSCETImpl.getURL())) {
+		if (!Validator.isUrl(newGlobalJSCET.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}

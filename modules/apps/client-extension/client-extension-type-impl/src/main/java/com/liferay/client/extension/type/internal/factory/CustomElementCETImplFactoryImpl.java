@@ -77,10 +77,10 @@ public class CustomElementCETImplFactoryImpl
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CustomElementCETImpl newCustomElementCETImpl = new CustomElementCETImpl(
+		CustomElementCET newCustomElementCET = new CustomElementCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String cssURLs = newCustomElementCETImpl.getCSSURLs();
+		String cssURLs = newCustomElementCET.getCSSURLs();
 
 		if (Validator.isNotNull(cssURLs)) {
 			for (String cssURL : cssURLs.split(StringPool.NEW_LINE)) {
@@ -92,14 +92,14 @@ public class CustomElementCETImplFactoryImpl
 		}
 
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			newCustomElementCETImpl.getFriendlyURLMapping());
+			newCustomElementCET.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-friendly-url-mapping");
 		}
 
-		String htmlElementName = newCustomElementCETImpl.getHTMLElementName();
+		String htmlElementName = newCustomElementCET.getHTMLElementName();
 
 		if (Validator.isNull(htmlElementName)) {
 			throw new ClientExtensionEntryTypeSettingsException(
@@ -142,7 +142,7 @@ public class CustomElementCETImplFactoryImpl
 				"x-is-a-reserved-html-element-name", htmlElementName);
 		}
 
-		String urls = newCustomElementCETImpl.getURLs();
+		String urls = newCustomElementCET.getURLs();
 
 		if (Validator.isNull(urls)) {
 			throw new ClientExtensionEntryTypeSettingsException(
@@ -157,11 +157,11 @@ public class CustomElementCETImplFactoryImpl
 		}
 
 		if (oldTypeSettingsUnicodeProperties != null) {
-			CustomElementCETImpl oldCustomElementCETImpl =
-				new CustomElementCETImpl(oldTypeSettingsUnicodeProperties);
+			CustomElementCET oldCustomElementCET = new CustomElementCETImpl(
+				oldTypeSettingsUnicodeProperties);
 
-			if (newCustomElementCETImpl.isInstanceable() !=
-					oldCustomElementCETImpl.isInstanceable()) {
+			if (newCustomElementCET.isInstanceable() !=
+					oldCustomElementCET.isInstanceable()) {
 
 				throw new ClientExtensionEntryTypeSettingsException(
 					"the-instanceable-value-cannot-be-changed");

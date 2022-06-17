@@ -72,10 +72,10 @@ public class ThemeFaviconCETImplFactoryImpl
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		ThemeFaviconCET newThemeFaviconCETImpl = new ThemeFaviconCETImpl(
+		ThemeFaviconCET newThemeFaviconCET = new ThemeFaviconCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newThemeFaviconCETImpl.getURL())) {
+		if (!Validator.isUrl(newThemeFaviconCET.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}
