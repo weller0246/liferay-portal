@@ -29,60 +29,60 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		upgradeExternalReferenceCodes("AccountEntry", "accountEntryId");
-		upgradeExternalReferenceCodes("AccountGroup", "accountGroupId");
-		upgradeExternalReferenceCodes("Address", "addressId");
-		upgradeExternalReferenceCodes("AssetCategory", "categoryId");
-		upgradeExternalReferenceCodes("AssetVocabulary", "vocabularyId");
-		upgradeExternalReferenceCodes("BlogsEntry", "entryId");
-		upgradeExternalReferenceCodes("CIWarehouse", "CIWarehouseId");
-		upgradeExternalReferenceCodes("CIWarehouseItem", "CIWarehouseItemId");
-		upgradeExternalReferenceCodes("CommerceCatalog", "commerceCatalogId");
-		upgradeExternalReferenceCodes("CommerceChannel", "commerceChannelId");
-		upgradeExternalReferenceCodes("CommerceDiscount", "commerceDiscountId");
-		upgradeExternalReferenceCodes("CommerceOrder", "commerceOrderId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference("AccountEntry", "accountEntryId");
+		upgradeExternalReference("AccountGroup", "accountGroupId");
+		upgradeExternalReference("Address", "addressId");
+		upgradeExternalReference("AssetCategory", "categoryId");
+		upgradeExternalReference("AssetVocabulary", "vocabularyId");
+		upgradeExternalReference("BlogsEntry", "entryId");
+		upgradeExternalReference("CIWarehouse", "CIWarehouseId");
+		upgradeExternalReference("CIWarehouseItem", "CIWarehouseItemId");
+		upgradeExternalReference("CommerceCatalog", "commerceCatalogId");
+		upgradeExternalReference("CommerceChannel", "commerceChannelId");
+		upgradeExternalReference("CommerceDiscount", "commerceDiscountId");
+		upgradeExternalReference("CommerceOrder", "commerceOrderId");
+		upgradeExternalReference(
 			"CommerceOrderItem", "commerceOrderItemId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommerceOrderNote", "commerceOrderNoteId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommerceOrderType", "commerceOrderTypeId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommerceOrderTypeRel", "commerceOrderTypeRelId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommercePriceEntry", "commercePriceEntryId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommercePriceList", "commercePriceListId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommercePriceModifier", "commercePriceModifierId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommercePricingClass", "commercePricingClassId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommerceTermEntry", "commerceTermEntryId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference(
 			"CommerceTierPriceEntry", "commerceTierPriceEntryId");
-		upgradeExternalReferenceCodes("COREntry", "COREntryId");
-		upgradeExternalReferenceCodes(
+		upgradeExternalReference("COREntry", "COREntryId");
+		upgradeExternalReference(
 			"CPAttachmentFileEntry", "CPAttachmentFileEntryId");
-		upgradeExternalReferenceCodes("CPInstance", "CPInstanceId");
-		upgradeExternalReferenceCodes("CPOption", "CPOptionId");
-		upgradeExternalReferenceCodes("CPOptionValue", "CPOptionValueId");
-		upgradeExternalReferenceCodes("CProduct", "CProductId");
-		upgradeExternalReferenceCodes("CPTaxCategory", "CPTaxCategoryId");
-		upgradeExternalReferenceCodes("DLFileEntry", "fileEntryId");
-		upgradeExternalReferenceCodes("KBArticle", "kbArticleId");
-		upgradeExternalReferenceCodes("KBFolder", "kbFolderId");
-		upgradeExternalReferenceCodes("MBMessage", "messageId");
-		upgradeExternalReferenceCodes("ObjectEntry", "objectEntryId");
-		upgradeExternalReferenceCodes("Organization_", "organizationId");
-		upgradeExternalReferenceCodes("RemoteAppEntry", "remoteAppEntryId");
-		upgradeExternalReferenceCodes("User_", "userId");
-		upgradeExternalReferenceCodes("UserGroup", "userGroupId");
-		upgradeExternalReferenceCodes("WikiNode", "nodeId");
-		upgradeExternalReferenceCodes("WikiPage", "pageId");
+		upgradeExternalReference("CPInstance", "CPInstanceId");
+		upgradeExternalReference("CPOption", "CPOptionId");
+		upgradeExternalReference("CPOptionValue", "CPOptionValueId");
+		upgradeExternalReference("CProduct", "CProductId");
+		upgradeExternalReference("CPTaxCategory", "CPTaxCategoryId");
+		upgradeExternalReference("DLFileEntry", "fileEntryId");
+		upgradeExternalReference("KBArticle", "kbArticleId");
+		upgradeExternalReference("KBFolder", "kbFolderId");
+		upgradeExternalReference("MBMessage", "messageId");
+		upgradeExternalReference("ObjectEntry", "objectEntryId");
+		upgradeExternalReference("Organization_", "organizationId");
+		upgradeExternalReference("RemoteAppEntry", "remoteAppEntryId");
+		upgradeExternalReference("User_", "userId");
+		upgradeExternalReference("UserGroup", "userGroupId");
+		upgradeExternalReference("WikiNode", "nodeId");
+		upgradeExternalReference("WikiPage", "pageId");
 	}
 
-	protected void upgradeExternalReferenceCodes(
+	protected void upgradeExternalReference(
 			String tableName, String primKeyColumnName)
 		throws Exception {
 
