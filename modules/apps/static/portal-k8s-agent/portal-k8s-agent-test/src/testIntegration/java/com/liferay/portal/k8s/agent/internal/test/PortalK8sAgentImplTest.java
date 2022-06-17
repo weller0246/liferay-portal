@@ -106,8 +106,9 @@ public class PortalK8sAgentImplTest {
 				public MockResponse dispatch(RecordedRequest request)
 					throws InterruptedException {
 
-					try (TCCLSwapper tcclSwapper = new TCCLSwapper(
-							DefaultKubernetesClient.class)) {
+					try (ClassLoaderClosableHolder classLoaderClosableHolder =
+							new ClassLoaderClosableHolder(
+								DefaultKubernetesClient.class)) {
 
 						return super.dispatch(request);
 					}
@@ -377,6 +378,30 @@ public class PortalK8sAgentImplTest {
 
 	}
 
+	public static class ClassLoaderClosableHolder
+		extends ClosableHolder<ClassLoader> {
+
+		public ClassLoaderClosableHolder(Class<?> clazz) throws Exception {
+			super(
+				classLoader -> {
+					Thread currentThread = Thread.currentThread();
+
+					currentThread.setContextClassLoader(classLoader);
+				},
+				() -> {
+					Thread currentThread = Thread.currentThread();
+
+					ClassLoader classLoader =
+						currentThread.getContextClassLoader();
+
+					currentThread.setContextClassLoader(clazz.getClassLoader());
+
+					return classLoader;
+				});
+		}
+
+	}
+
 	public static class ConfigurationHolder
 		extends ClosableHolder<Configuration> {
 
@@ -445,30 +470,6 @@ public class PortalK8sAgentImplTest {
 					serviceTracker = get();
 
 			return serviceTracker.waitForService(timeout);
-		}
-
-	}
-
-	public static class TCCLSwapper extends ClosableHolder<ClassLoader> {
-
-		public TCCLSwapper(Class<?> classLoaderChild) throws Exception {
-			super(
-				classLoader -> {
-					Thread currentThread = Thread.currentThread();
-
-					currentThread.setContextClassLoader(classLoader);
-				},
-				() -> {
-					Thread currentThread = Thread.currentThread();
-
-					ClassLoader original =
-						currentThread.getContextClassLoader();
-
-					currentThread.setContextClassLoader(
-						classLoaderChild.getClassLoader());
-
-					return original;
-				});
 		}
 
 	}
