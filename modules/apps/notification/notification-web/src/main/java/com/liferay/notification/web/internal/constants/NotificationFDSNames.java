@@ -14,11 +14,15 @@
 
 package com.liferay.notification.web.internal.constants;
 
+import com.liferay.notification.constants.NotificationPortletKeys;
+
 /**
  * @author Gabriel Albuquerque
  */
 public class NotificationFDSNames {
 
-	public static final String NOTIFICATION_TEMPLATES = "notificationTemplates";
+	public static final String NOTIFICATION_TEMPLATES =
+		NotificationPortletKeys.NOTIFICATION_TEMPLATES +
+			"-notificationTemplates";
 
 }
