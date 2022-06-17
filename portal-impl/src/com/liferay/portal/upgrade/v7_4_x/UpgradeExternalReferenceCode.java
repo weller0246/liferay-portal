@@ -89,9 +89,7 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 			return;
 		}
 
-		if (hasTable(tableName) &&
-			!hasColumn(tableName, "externalReferenceCode")) {
-
+		if (!hasColumn(tableName, "externalReferenceCode")) {
 			alterTableAddColumn(
 				tableName, "externalReferenceCode", "VARCHAR(75)");
 		}
