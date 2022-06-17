@@ -61,13 +61,13 @@ public class ClientExtensionTopHeadDynamicInclude implements DynamicInclude {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
 				_getClientExtensionEntryRels(themeDisplay.getLayout())) {
 
-			GlobalCSSCET cetGlobalCSS = (GlobalCSSCET)_cetManager.getCET(
+			GlobalCSSCET globalCSSCET = (GlobalCSSCET)_cetManager.getCET(
 				clientExtensionEntryRel.getCompanyId(),
 				clientExtensionEntryRel.getCETExternalReferenceCode());
 
 			printWriter.print(
 				"<link data-senna-track=\"temporary\" href=\"" +
-					cetGlobalCSS.getURL() +
+					globalCSSCET.getURL() +
 						"\" rel=\"stylesheet\" type=\"text/css\" />");
 		}
 	}

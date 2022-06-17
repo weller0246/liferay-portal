@@ -64,17 +64,17 @@ public class ClientExtensionsServicePreAction extends Action {
 
 		themeDisplay.setFaviconURL(_getFaviconURL(layout));
 
-		ThemeCSSCET cetThemeCSS = _getThemeCSSCET(layout);
+		ThemeCSSCET themeCSSCET = _getThemeCSSCET(layout);
 
-		if (cetThemeCSS != null) {
-			themeDisplay.setClayCSSURL(cetThemeCSS.getClayURL());
-			themeDisplay.setMainCSSURL(cetThemeCSS.getMainURL());
+		if (themeCSSCET != null) {
+			themeDisplay.setClayCSSURL(themeCSSCET.getClayURL());
+			themeDisplay.setMainCSSURL(themeCSSCET.getMainURL());
 		}
 
-		ThemeJSCET cetThemeJS = _getThemeJSCET(layout);
+		ThemeJSCET themeJSCET = _getThemeJSCET(layout);
 
-		if (cetThemeJS != null) {
-			themeDisplay.setMainJSURL(cetThemeJS.getURL());
+		if (themeJSCET != null) {
+			themeDisplay.setMainJSURL(themeJSCET.getURL());
 		}
 	}
 
