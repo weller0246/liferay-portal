@@ -65,9 +65,9 @@ public class CETItemDescriptor
 						_cet.getType(),
 						ClientExtensionEntryConstants.TYPE_THEME_FAVICON)) {
 
-					ThemeFaviconCET cetThemeFavicon = (ThemeFaviconCET)_cet;
+					ThemeFaviconCET themeFaviconCET = (ThemeFaviconCET)_cet;
 
-					return cetThemeFavicon.getURL();
+					return themeFaviconCET.getURL();
 				}
 
 				return null;

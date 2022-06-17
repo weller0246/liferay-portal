@@ -126,9 +126,9 @@ public class ClientExtensionsServicePreAction extends Action {
 			return null;
 		}
 
-		ThemeFaviconCET cetThemeFavicon = (ThemeFaviconCET)cet;
+		ThemeFaviconCET themeFaviconCET = (ThemeFaviconCET)cet;
 
-		return cetThemeFavicon.getURL();
+		return themeFaviconCET.getURL();
 	}
 
 	private ThemeJSCET _getThemeJSCET(Layout layout) {

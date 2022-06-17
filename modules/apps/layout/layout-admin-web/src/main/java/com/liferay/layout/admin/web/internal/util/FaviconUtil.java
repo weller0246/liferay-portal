@@ -48,9 +48,9 @@ public class FaviconUtil {
 			layout.getPlid(), layout.getCompanyId());
 
 		if (cet != null) {
-			ThemeFaviconCET cetThemeFavicon = (ThemeFaviconCET)cet;
+			ThemeFaviconCET themeFaviconCET = (ThemeFaviconCET)cet;
 
-			String faviconTitle = cetThemeFavicon.getName(locale);
+			String faviconTitle = themeFaviconCET.getName(locale);
 
 			if (Validator.isNotNull(faviconTitle)) {
 				return faviconTitle;
@@ -208,9 +208,9 @@ public class FaviconUtil {
 			return null;
 		}
 
-		ThemeFaviconCET cetThemeFavicon = (ThemeFaviconCET)cet;
+		ThemeFaviconCET themeFaviconCET = (ThemeFaviconCET)cet;
 
-		return cetThemeFavicon.getURL();
+		return themeFaviconCET.getURL();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(FaviconUtil.class);
