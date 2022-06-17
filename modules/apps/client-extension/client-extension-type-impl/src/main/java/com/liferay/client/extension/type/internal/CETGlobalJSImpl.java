@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETGlobalJS;
+import com.liferay.client.extension.type.GlobalJSCET;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -28,13 +28,13 @@ import javax.portlet.PortletRequest;
 /**
  * @author Eudaldo Alonso
  */
-public class CETGlobalJSImpl extends BaseCETImpl implements CETGlobalJS {
+public class GlobalJSCETImpl extends BaseCETImpl implements GlobalJSCET {
 
-	public CETGlobalJSImpl(ClientExtensionEntry clientExtensionEntry) {
+	public GlobalJSCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
 	}
 
-	public CETGlobalJSImpl(PortletRequest portletRequest) {
+	public GlobalJSCETImpl(PortletRequest portletRequest) {
 		this(
 			UnicodePropertiesBuilder.create(
 				true
@@ -43,7 +43,7 @@ public class CETGlobalJSImpl extends BaseCETImpl implements CETGlobalJS {
 			).build());
 	}
 
-	public CETGlobalJSImpl(
+	public GlobalJSCETImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -53,7 +53,7 @@ public class CETGlobalJSImpl extends BaseCETImpl implements CETGlobalJS {
 			properties, sourceCodeURL, typeSettingsUnicodeProperties);
 	}
 
-	public CETGlobalJSImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+	public GlobalJSCETImpl(UnicodeProperties typeSettingsUnicodeProperties) {
 		super(typeSettingsUnicodeProperties);
 	}
 

@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETThemeCSS;
+import com.liferay.client.extension.type.ThemeCSSCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.CETThemeCSSImpl;
+import com.liferay.client.extension.type.internal.ThemeCSSCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -37,30 +37,30 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_THEME_CSS,
 	service = CETImplFactory.class
 )
-public class CETThemeCSSImplFactory implements CETImplFactory<CETThemeCSS> {
+public class ThemeCSSCETImplFactory implements CETImplFactory<ThemeCSSCET> {
 
 	@Override
-	public CETThemeCSS cet(ClientExtensionEntry clientExtensionEntry)
+	public ThemeCSSCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new CETThemeCSSImpl(clientExtensionEntry);
+		return new ThemeCSSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETThemeCSS cet(PortletRequest portletRequest)
+	public ThemeCSSCET cet(PortletRequest portletRequest)
 		throws PortalException {
 
-		return new CETThemeCSSImpl(portletRequest);
+		return new ThemeCSSCETImpl(portletRequest);
 	}
 
 	@Override
-	public CETThemeCSS cet(
+	public ThemeCSSCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new CETThemeCSSImpl(
+		return new ThemeCSSCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -71,24 +71,24 @@ public class CETThemeCSSImplFactory implements CETImplFactory<CETThemeCSS> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETThemeCSS newCETThemeCSSImpl = new CETThemeCSSImpl(
+		ThemeCSSCET newThemeCSSCETImpl = new ThemeCSSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String baseURL = newCETThemeCSSImpl.getBaseURL();
+		String baseURL = newThemeCSSCETImpl.getBaseURL();
 
 		if (!Validator.isBlank(baseURL) && !Validator.isUrl(baseURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-base-url");
 		}
 
-		String clayURL = newCETThemeCSSImpl.getClayURL();
+		String clayURL = newThemeCSSCETImpl.getClayURL();
 
 		if (!Validator.isBlank(clayURL) && !Validator.isUrl(clayURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-clay-url");
 		}
 
-		String mainURL = newCETThemeCSSImpl.getMainURL();
+		String mainURL = newThemeCSSCETImpl.getMainURL();
 
 		if (!Validator.isBlank(mainURL) && !Validator.isUrl(mainURL, true)) {
 			throw new ClientExtensionEntryTypeSettingsException(

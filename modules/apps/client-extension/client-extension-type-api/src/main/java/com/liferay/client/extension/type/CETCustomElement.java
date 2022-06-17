@@ -24,7 +24,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @CETType(description = "This is a description.", name = "customElement")
 @ProviderType
-public interface CETCustomElement extends CET {
+public interface CustomElementCET extends CET {
 
 	@CETProperty(defaultValue = "", name = "cssURLs", type = "list")
 	public String getCSSURLs();

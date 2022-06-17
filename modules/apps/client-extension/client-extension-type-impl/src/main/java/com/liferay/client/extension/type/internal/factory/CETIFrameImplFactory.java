@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETIFrame;
+import com.liferay.client.extension.type.IFrameCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.CETIFrameImpl;
+import com.liferay.client.extension.type.internal.IFrameCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -39,28 +39,28 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_IFRAME,
 	service = CETImplFactory.class
 )
-public class CETIFrameImplFactory implements CETImplFactory<CETIFrame> {
+public class IFrameCETImplFactory implements CETImplFactory<IFrameCET> {
 
 	@Override
-	public CETIFrame cet(ClientExtensionEntry clientExtensionEntry)
+	public IFrameCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new CETIFrameImpl(clientExtensionEntry);
+		return new IFrameCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETIFrame cet(PortletRequest portletRequest) throws PortalException {
-		return new CETIFrameImpl(portletRequest);
+	public IFrameCET cet(PortletRequest portletRequest) throws PortalException {
+		return new IFrameCETImpl(portletRequest);
 	}
 
 	@Override
-	public CETIFrame cet(
+	public IFrameCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new CETIFrameImpl(
+		return new IFrameCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -71,28 +71,28 @@ public class CETIFrameImplFactory implements CETImplFactory<CETIFrame> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETIFrameImpl newCETIFrameImpl = new CETIFrameImpl(
+		IFrameCETImpl newIFrameCETImpl = new IFrameCETImpl(
 			newTypeSettingsUnicodeProperties);
 
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			newCETIFrameImpl.getFriendlyURLMapping());
+			newIFrameCETImpl.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-friendly-url-mapping");
 		}
 
-		if (!Validator.isUrl(newCETIFrameImpl.getURL())) {
+		if (!Validator.isUrl(newIFrameCETImpl.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}
 
 		if (oldTypeSettingsUnicodeProperties != null) {
-			CETIFrameImpl oldCETIFrameImpl = new CETIFrameImpl(
+			IFrameCETImpl oldIFrameCETImpl = new IFrameCETImpl(
 				oldTypeSettingsUnicodeProperties);
 
-			if (newCETIFrameImpl.isInstanceable() !=
-					oldCETIFrameImpl.isInstanceable()) {
+			if (newIFrameCETImpl.isInstanceable() !=
+					oldIFrameCETImpl.isInstanceable()) {
 
 				throw new ClientExtensionEntryTypeSettingsException(
 					"the-instanceable-value-cannot-be-changed");

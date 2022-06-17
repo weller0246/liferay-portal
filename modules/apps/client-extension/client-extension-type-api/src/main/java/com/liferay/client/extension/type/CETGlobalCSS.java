@@ -24,7 +24,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @CETType(description = "This is a description.", name = "globalCSS")
 @ProviderType
-public interface CETGlobalCSS extends CET {
+public interface GlobalCSSCET extends CET {
 
 	@CETProperty(defaultValue = "", name = "url", type = "string")
 	public String getURL();

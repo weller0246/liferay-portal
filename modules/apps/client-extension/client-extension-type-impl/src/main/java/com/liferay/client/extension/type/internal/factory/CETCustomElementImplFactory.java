@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETCustomElement;
+import com.liferay.client.extension.type.CustomElementCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.CETCustomElementImpl;
+import com.liferay.client.extension.type.internal.CustomElementCETImpl;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -43,30 +43,30 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
 	service = CETImplFactory.class
 )
-public class CETCustomElementImplFactory
-	implements CETImplFactory<CETCustomElement> {
+public class CustomElementCETImplFactory
+	implements CETImplFactory<CustomElementCET> {
 
 	@Override
-	public CETCustomElement cet(ClientExtensionEntry clientExtensionEntry)
+	public CustomElementCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new CETCustomElementImpl(clientExtensionEntry);
+		return new CustomElementCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETCustomElement cet(PortletRequest portletRequest)
+	public CustomElementCET cet(PortletRequest portletRequest)
 		throws PortalException {
 
-		return new CETCustomElementImpl(portletRequest);
+		return new CustomElementCETImpl(portletRequest);
 	}
 
-	public CETCustomElement cet(
+	public CustomElementCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new CETCustomElementImpl(
+		return new CustomElementCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -77,10 +77,10 @@ public class CETCustomElementImplFactory
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETCustomElementImpl newCETCustomElementImpl = new CETCustomElementImpl(
+		CustomElementCETImpl newCustomElementCETImpl = new CustomElementCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		String cssURLs = newCETCustomElementImpl.getCSSURLs();
+		String cssURLs = newCustomElementCETImpl.getCSSURLs();
 
 		if (Validator.isNotNull(cssURLs)) {
 			for (String cssURL : cssURLs.split(StringPool.NEW_LINE)) {
@@ -92,14 +92,14 @@ public class CETCustomElementImplFactory
 		}
 
 		Matcher matcher = _friendlyURLMappingPattern.matcher(
-			newCETCustomElementImpl.getFriendlyURLMapping());
+			newCustomElementCETImpl.getFriendlyURLMapping());
 
 		if (!matcher.matches()) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-friendly-url-mapping");
 		}
 
-		String htmlElementName = newCETCustomElementImpl.getHTMLElementName();
+		String htmlElementName = newCustomElementCETImpl.getHTMLElementName();
 
 		if (Validator.isNull(htmlElementName)) {
 			throw new ClientExtensionEntryTypeSettingsException(
@@ -142,7 +142,7 @@ public class CETCustomElementImplFactory
 				"x-is-a-reserved-html-element-name", htmlElementName);
 		}
 
-		String urls = newCETCustomElementImpl.getURLs();
+		String urls = newCustomElementCETImpl.getURLs();
 
 		if (Validator.isNull(urls)) {
 			throw new ClientExtensionEntryTypeSettingsException(
@@ -157,11 +157,11 @@ public class CETCustomElementImplFactory
 		}
 
 		if (oldTypeSettingsUnicodeProperties != null) {
-			CETCustomElementImpl oldCETCustomElementImpl =
-				new CETCustomElementImpl(oldTypeSettingsUnicodeProperties);
+			CustomElementCETImpl oldCustomElementCETImpl =
+				new CustomElementCETImpl(oldTypeSettingsUnicodeProperties);
 
-			if (newCETCustomElementImpl.isInstanceable() !=
-					oldCETCustomElementImpl.isInstanceable()) {
+			if (newCustomElementCETImpl.isInstanceable() !=
+					oldCustomElementCETImpl.isInstanceable()) {
 
 				throw new ClientExtensionEntryTypeSettingsException(
 					"the-instanceable-value-cannot-be-changed");

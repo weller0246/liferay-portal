@@ -16,8 +16,8 @@ package com.liferay.client.extension.web.internal.type.deployer;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.type.CET;
-import com.liferay.client.extension.type.CETCustomElement;
-import com.liferay.client.extension.type.CETIFrame;
+import com.liferay.client.extension.type.CustomElementCET;
+import com.liferay.client.extension.type.IFrameCET;
 import com.liferay.client.extension.type.deployer.CETDeployer;
 import com.liferay.client.extension.type.factory.CETFactory;
 import com.liferay.client.extension.web.internal.portlet.ClientExtensionEntryFriendlyURLMapper;
@@ -69,8 +69,8 @@ public class CETDeployerImpl implements CETDeployer {
 
 		serviceRegistrations.add(_registerConfigurationAction(cet));
 
-		CETCustomElement cetCustomElement = null;
-		CETIFrame cetIFrame = null;
+		CustomElementCET cetCustomElement = null;
+		IFrameCET cetIFrame = null;
 		String friendlyURLMapping = null;
 		boolean instanceable = false;
 		String portletCategoryName = null;
@@ -79,7 +79,7 @@ public class CETDeployerImpl implements CETDeployer {
 				cet.getType(),
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
-			cetCustomElement = (CETCustomElement)cet;
+			cetCustomElement = (CustomElementCET)cet;
 
 			friendlyURLMapping = cetCustomElement.getFriendlyURLMapping();
 			instanceable = cetCustomElement.isInstanceable();
@@ -88,7 +88,7 @@ public class CETDeployerImpl implements CETDeployer {
 		else if (Objects.equals(
 					cet.getType(), ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
-			cetIFrame = (CETIFrame)cet;
+			cetIFrame = (IFrameCET)cet;
 
 			friendlyURLMapping = cetIFrame.getFriendlyURLMapping();
 			instanceable = cetIFrame.isInstanceable();
@@ -150,7 +150,7 @@ public class CETDeployerImpl implements CETDeployer {
 	}
 
 	private ServiceRegistration<Portlet> _registerPortlet(
-		CET cet, CETCustomElement cetCustomElement, CETIFrame cetIFrame,
+		CET cet, CustomElementCET cetCustomElement, IFrameCET cetIFrame,
 		boolean instanceable, String portletCategoryName) {
 
 		String portletName = _getPortletId(cet);

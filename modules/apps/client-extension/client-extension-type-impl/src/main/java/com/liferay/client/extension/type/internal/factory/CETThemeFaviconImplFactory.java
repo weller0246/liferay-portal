@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETThemeFavicon;
+import com.liferay.client.extension.type.ThemeFaviconCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.CETThemeFaviconImpl;
+import com.liferay.client.extension.type.internal.ThemeFaviconCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -37,31 +37,31 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_THEME_FAVICON,
 	service = CETImplFactory.class
 )
-public class CETThemeFaviconImplFactory
-	implements CETImplFactory<CETThemeFavicon> {
+public class ThemeFaviconCETImplFactory
+	implements CETImplFactory<ThemeFaviconCET> {
 
 	@Override
-	public CETThemeFavicon cet(ClientExtensionEntry clientExtensionEntry)
+	public ThemeFaviconCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new CETThemeFaviconImpl(clientExtensionEntry);
+		return new ThemeFaviconCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETThemeFavicon cet(PortletRequest portletRequest)
+	public ThemeFaviconCET cet(PortletRequest portletRequest)
 		throws PortalException {
 
-		return new CETThemeFaviconImpl(portletRequest);
+		return new ThemeFaviconCETImpl(portletRequest);
 	}
 
 	@Override
-	public CETThemeFavicon cet(
+	public ThemeFaviconCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new CETThemeFaviconImpl(
+		return new ThemeFaviconCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -72,10 +72,10 @@ public class CETThemeFaviconImplFactory
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETThemeFavicon newCETThemeFaviconImpl = new CETThemeFaviconImpl(
+		ThemeFaviconCET newThemeFaviconCETImpl = new ThemeFaviconCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newCETThemeFaviconImpl.getURL())) {
+		if (!Validator.isUrl(newThemeFaviconCETImpl.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}

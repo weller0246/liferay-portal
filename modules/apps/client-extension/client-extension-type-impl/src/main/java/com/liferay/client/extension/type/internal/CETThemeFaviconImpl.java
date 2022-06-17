@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETThemeFavicon;
+import com.liferay.client.extension.type.ThemeFaviconCET;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -28,14 +28,14 @@ import javax.portlet.PortletRequest;
 /**
  * @author Iván Zaera Avellón
  */
-public class CETThemeFaviconImpl
-	extends BaseCETImpl implements CETThemeFavicon {
+public class ThemeFaviconCETImpl
+	extends BaseCETImpl implements ThemeFaviconCET {
 
-	public CETThemeFaviconImpl(ClientExtensionEntry clientExtensionEntry) {
+	public ThemeFaviconCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
 	}
 
-	public CETThemeFaviconImpl(PortletRequest portletRequest) {
+	public ThemeFaviconCETImpl(PortletRequest portletRequest) {
 		this(
 			UnicodePropertiesBuilder.create(
 				true
@@ -44,7 +44,7 @@ public class CETThemeFaviconImpl
 			).build());
 	}
 
-	public CETThemeFaviconImpl(
+	public ThemeFaviconCETImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -54,7 +54,7 @@ public class CETThemeFaviconImpl
 			properties, sourceCodeURL, typeSettingsUnicodeProperties);
 	}
 
-	public CETThemeFaviconImpl(
+	public ThemeFaviconCETImpl(
 		UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(typeSettingsUnicodeProperties);

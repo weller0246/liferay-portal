@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETIFrame;
+import com.liferay.client.extension.type.IFrameCET;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -28,13 +28,13 @@ import javax.portlet.PortletRequest;
 /**
  * @author Brian Wing Shun Chan
  */
-public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
+public class IFrameCETImpl extends BaseCETImpl implements IFrameCET {
 
-	public CETIFrameImpl(ClientExtensionEntry clientExtensionEntry) {
+	public IFrameCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
 	}
 
-	public CETIFrameImpl(PortletRequest portletRequest) {
+	public IFrameCETImpl(PortletRequest portletRequest) {
 		this(
 			UnicodePropertiesBuilder.create(
 				true
@@ -52,7 +52,7 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 			).build());
 	}
 
-	public CETIFrameImpl(
+	public IFrameCETImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -62,7 +62,7 @@ public class CETIFrameImpl extends BaseCETImpl implements CETIFrame {
 			properties, sourceCodeURL, typeSettingsUnicodeProperties);
 	}
 
-	public CETIFrameImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+	public IFrameCETImpl(UnicodeProperties typeSettingsUnicodeProperties) {
 		super(typeSettingsUnicodeProperties);
 	}
 

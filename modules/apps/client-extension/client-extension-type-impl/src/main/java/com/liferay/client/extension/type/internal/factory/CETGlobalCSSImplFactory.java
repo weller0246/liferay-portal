@@ -17,9 +17,9 @@ package com.liferay.client.extension.type.internal.factory;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeSettingsException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETGlobalCSS;
+import com.liferay.client.extension.type.GlobalCSSCET;
 import com.liferay.client.extension.type.factory.CETImplFactory;
-import com.liferay.client.extension.type.internal.CETGlobalCSSImpl;
+import com.liferay.client.extension.type.internal.GlobalCSSCETImpl;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
@@ -37,30 +37,30 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + ClientExtensionEntryConstants.TYPE_GLOBAL_CSS,
 	service = CETImplFactory.class
 )
-public class CETGlobalCSSImplFactory implements CETImplFactory<CETGlobalCSS> {
+public class GlobalCSSCETImplFactory implements CETImplFactory<GlobalCSSCET> {
 
 	@Override
-	public CETGlobalCSS cet(ClientExtensionEntry clientExtensionEntry)
+	public GlobalCSSCET cet(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		return new CETGlobalCSSImpl(clientExtensionEntry);
+		return new GlobalCSSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CETGlobalCSS cet(PortletRequest portletRequest)
+	public GlobalCSSCET cet(PortletRequest portletRequest)
 		throws PortalException {
 
-		return new CETGlobalCSSImpl(portletRequest);
+		return new GlobalCSSCETImpl(portletRequest);
 	}
 
 	@Override
-	public CETGlobalCSS cet(
+	public GlobalCSSCET cet(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)
 		throws PortalException {
 
-		return new CETGlobalCSSImpl(
+		return new GlobalCSSCETImpl(
 			baseURL, companyId, description, externalReferenceCode, name,
 			properties, sourceCodeURL, unicodeProperties);
 	}
@@ -71,10 +71,10 @@ public class CETGlobalCSSImplFactory implements CETImplFactory<CETGlobalCSS> {
 			UnicodeProperties oldTypeSettingsUnicodeProperties)
 		throws PortalException {
 
-		CETGlobalCSS newCETGlobalCSSImpl = new CETGlobalCSSImpl(
+		GlobalCSSCET newGlobalCSSCETImpl = new GlobalCSSCETImpl(
 			newTypeSettingsUnicodeProperties);
 
-		if (!Validator.isUrl(newCETGlobalCSSImpl.getURL())) {
+		if (!Validator.isUrl(newGlobalCSSCETImpl.getURL())) {
 			throw new ClientExtensionEntryTypeSettingsException(
 				"please-enter-a-valid-url");
 		}

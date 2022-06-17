@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETThemeJS;
+import com.liferay.client.extension.type.ThemeJSCET;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
@@ -28,13 +28,13 @@ import javax.portlet.PortletRequest;
 /**
  * @author Iván Zaera Avellón
  */
-public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
+public class ThemeJSCETImpl extends BaseCETImpl implements ThemeJSCET {
 
-	public CETThemeJSImpl(ClientExtensionEntry clientExtensionEntry) {
+	public ThemeJSCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
 	}
 
-	public CETThemeJSImpl(PortletRequest portletRequest) {
+	public ThemeJSCETImpl(PortletRequest portletRequest) {
 		this(
 			UnicodePropertiesBuilder.create(
 				true
@@ -43,7 +43,7 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 			).build());
 	}
 
-	public CETThemeJSImpl(
+	public ThemeJSCETImpl(
 		String baseURL, long companyId, String description, String name,
 		String externalReferenceCode, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -53,7 +53,7 @@ public class CETThemeJSImpl extends BaseCETImpl implements CETThemeJS {
 			properties, sourceCodeURL, typeSettingsUnicodeProperties);
 	}
 
-	public CETThemeJSImpl(UnicodeProperties typeSettingsUnicodeProperties) {
+	public ThemeJSCETImpl(UnicodeProperties typeSettingsUnicodeProperties) {
 		super(typeSettingsUnicodeProperties);
 	}
 

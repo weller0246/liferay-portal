@@ -23,7 +23,7 @@ import com.liferay.asset.list.model.AssetListEntry;
 import com.liferay.asset.list.service.AssetListEntryLocalService;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.service.ClientExtensionEntryLocalService;
-import com.liferay.client.extension.type.CETCustomElement;
+import com.liferay.client.extension.type.CustomElementCET;
 import com.liferay.client.extension.type.factory.CETFactory;
 import com.liferay.commerce.inventory.model.CommerceInventoryWarehouse;
 import com.liferay.commerce.inventory.service.CommerceInventoryWarehouseLocalService;
@@ -427,7 +427,7 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(clientExtensionEntry);
 
-		CETCustomElement cetCustomElement = (CETCustomElement)_cetFactory.cet(
+		CustomElementCET cetCustomElement = (CustomElementCET)_cetFactory.cet(
 			clientExtensionEntry);
 
 		Assert.assertEquals(

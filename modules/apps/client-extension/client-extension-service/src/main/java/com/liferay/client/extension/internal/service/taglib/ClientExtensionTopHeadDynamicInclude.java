@@ -17,7 +17,7 @@ package com.liferay.client.extension.internal.service.taglib;
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntryRel;
 import com.liferay.client.extension.service.ClientExtensionEntryRelLocalService;
-import com.liferay.client.extension.type.CETGlobalCSS;
+import com.liferay.client.extension.type.GlobalCSSCET;
 import com.liferay.client.extension.type.manager.CETManager;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -61,7 +61,7 @@ public class ClientExtensionTopHeadDynamicInclude implements DynamicInclude {
 		for (ClientExtensionEntryRel clientExtensionEntryRel :
 				_getClientExtensionEntryRels(themeDisplay.getLayout())) {
 
-			CETGlobalCSS cetGlobalCSS = (CETGlobalCSS)_cetManager.getCET(
+			GlobalCSSCET cetGlobalCSS = (GlobalCSSCET)_cetManager.getCET(
 				clientExtensionEntryRel.getCompanyId(),
 				clientExtensionEntryRel.getCETExternalReferenceCode());
 

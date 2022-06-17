@@ -24,7 +24,7 @@ import org.osgi.annotation.versioning.ProviderType;
  */
 @CETType(description = "This is a description.", name = "iframe")
 @ProviderType
-public interface CETIFrame extends CET {
+public interface IFrameCET extends CET {
 
 	@CETProperty(
 		defaultValue = "", name = "friendlyURLMapping", type = "string"

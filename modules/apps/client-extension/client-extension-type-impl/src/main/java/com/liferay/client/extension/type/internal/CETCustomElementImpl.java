@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.model.ClientExtensionEntry;
-import com.liferay.client.extension.type.CETCustomElement;
+import com.liferay.client.extension.type.CustomElementCET;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -30,14 +30,14 @@ import javax.portlet.PortletRequest;
 /**
  * @author Brian Wing Shun Chan
  */
-public class CETCustomElementImpl
-	extends BaseCETImpl implements CETCustomElement {
+public class CustomElementCETImpl
+	extends BaseCETImpl implements CustomElementCET {
 
-	public CETCustomElementImpl(ClientExtensionEntry clientExtensionEntry) {
+	public CustomElementCETImpl(ClientExtensionEntry clientExtensionEntry) {
 		super(clientExtensionEntry);
 	}
 
-	public CETCustomElementImpl(PortletRequest portletRequest) {
+	public CustomElementCETImpl(PortletRequest portletRequest) {
 		this(
 			UnicodePropertiesBuilder.create(
 				true
@@ -68,7 +68,7 @@ public class CETCustomElementImpl
 			).build());
 	}
 
-	public CETCustomElementImpl(
+	public CustomElementCETImpl(
 		String baseURL, long companyId, String description,
 		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
@@ -78,7 +78,7 @@ public class CETCustomElementImpl
 			properties, sourceCodeURL, typeSettingsUnicodeProperties);
 	}
 
-	public CETCustomElementImpl(
+	public CustomElementCETImpl(
 		UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(typeSettingsUnicodeProperties);

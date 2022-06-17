@@ -15,8 +15,8 @@
 package com.liferay.client.extension.web.internal.portlet;
 
 import com.liferay.client.extension.type.CET;
-import com.liferay.client.extension.type.CETCustomElement;
-import com.liferay.client.extension.type.CETIFrame;
+import com.liferay.client.extension.type.CustomElementCET;
+import com.liferay.client.extension.type.IFrameCET;
 import com.liferay.frontend.js.loader.modules.extender.npm.NPMResolver;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
@@ -52,7 +52,7 @@ import javax.portlet.RenderResponse;
 public class ClientExtensionEntryPortlet extends MVCPortlet {
 
 	public ClientExtensionEntryPortlet(
-		CET cet, CETCustomElement cetCustomElement, CETIFrame cetIFrame,
+		CET cet, CustomElementCET cetCustomElement, IFrameCET cetIFrame,
 		NPMResolver npmResolver) {
 
 		_cet = cet;
@@ -205,8 +205,8 @@ public class ClientExtensionEntryPortlet extends MVCPortlet {
 		ClientExtensionEntryPortlet.class);
 
 	private final CET _cet;
-	private final CETCustomElement _cetCustomElement;
-	private final CETIFrame _cetIFrame;
+	private final CustomElementCET _cetCustomElement;
+	private final IFrameCET _cetIFrame;
 	private final NPMResolver _npmResolver;
 
 }
