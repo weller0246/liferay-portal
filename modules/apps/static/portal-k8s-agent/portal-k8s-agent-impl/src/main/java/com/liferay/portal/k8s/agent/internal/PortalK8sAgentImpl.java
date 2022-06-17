@@ -133,11 +133,10 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		).get();
 
 		if (configMap != null) {
-			final ObjectMeta metadata = configMap.getMetadata();
-			final Map<String, String> binaryData = configMap.getBinaryData();
-			final Map<String, String> data = configMap.getData();
-
-			ConfigMap original = new ConfigMapBuilder(
+			Map<String, String> binaryData = configMap.getBinaryData();
+			Map<String, String> data = configMap.getData();
+			ObjectMeta objectMeta = configMap.getMetadata();
+			ConfigMap originalConfigMap = new ConfigMapBuilder(
 				configMap
 			).build();
 
@@ -146,7 +145,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 					@Override
 					public Map<String, String> annotations() {
-						return metadata.getAnnotations();
+						return objectMeta.getAnnotations();
 					}
 
 					@Override
@@ -161,7 +160,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 					@Override
 					public Map<String, String> labels() {
-						return metadata.getLabels();
+						return objectMeta.getLabels();
 					}
 
 				});
@@ -178,10 +177,11 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 				return Result.DELETED;
 			}
-			else if (!Objects.equals(binaryData, original.getBinaryData()) ||
-					 !Objects.equals(data, original.getData())) {
+			else if (!Objects.equals(
+						binaryData, originalConfigMap.getBinaryData()) ||
+					 !Objects.equals(data, originalConfigMap.getData())) {
 
-				_validateRequiredLabels(configMapName, metadata.getLabels());
+				_validateRequiredLabels(configMapName, objectMeta.getLabels());
 
 				configMap = _kubernetesClient.configMaps(
 				).withName(

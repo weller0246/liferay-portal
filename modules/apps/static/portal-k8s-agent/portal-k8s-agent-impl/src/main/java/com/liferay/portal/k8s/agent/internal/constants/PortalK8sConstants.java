@@ -31,8 +31,7 @@ public class PortalK8sConstants {
 	public static final String METADATA_TYPE_KEY =
 		"lxc.liferay.com/metadataType";
 
-	public static final String SERVICE_ID_KEY =
-		"ext.lxc.liferay.com/serviceId";
+	public static final String SERVICE_ID_KEY = "ext.lxc.liferay.com/serviceId";
 
 	public static final String VIRTUAL_INSTANCE_ID_KEY =
 		"dxp.lxc.liferay.com/virtualInstanceId";
