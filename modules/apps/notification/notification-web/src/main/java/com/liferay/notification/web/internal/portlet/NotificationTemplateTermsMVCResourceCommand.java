@@ -16,7 +16,6 @@ package com.liferay.notification.web.internal.portlet;
 
 import com.liferay.notification.constants.NotificationPortletKeys;
 import com.liferay.object.model.ObjectDefinition;
-import com.liferay.object.model.ObjectField;
 import com.liferay.object.notification.term.util.ObjectDefinitionNotificationTermUtil;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -26,9 +25,7 @@ import com.liferay.portal.kernel.portlet.bridges.mvc.BaseMVCResourceCommand;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCResourceCommand;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
-
-import java.util.HashSet;
-import java.util.Set;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
@@ -63,24 +60,18 @@ public class NotificationTemplateTermsMVCResourceCommand
 			return;
 		}
 
-		Set<Object> termsSet = new HashSet<>();
-
-		for (ObjectField objectField :
+		JSONPortletResponseUtil.writeJSON(
+			resourceRequest, resourceResponse,
+			TransformUtil.transform(
 				_objectFieldLocalService.getObjectFields(
-					objectDefinition.getObjectDefinitionId())) {
-
-			termsSet.add(
-				JSONUtil.put(
+					objectDefinition.getObjectDefinitionId()),
+				objectField -> JSONUtil.put(
 					"name", objectField.getLabel(LocaleUtil.getDefault())
 				).put(
 					"term",
 					ObjectDefinitionNotificationTermUtil.getObjectFieldTermName(
 						objectDefinition.getShortName(), objectField.getName())
-				));
-		}
-
-		JSONPortletResponseUtil.writeJSON(
-			resourceRequest, resourceResponse, termsSet);
+				)));
 	}
 
 	@Reference
