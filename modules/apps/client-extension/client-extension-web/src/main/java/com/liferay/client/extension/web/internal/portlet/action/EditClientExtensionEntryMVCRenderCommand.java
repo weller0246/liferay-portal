@@ -61,11 +61,11 @@ public class EditClientExtensionEntryMVCRenderCommand
 			CET cet;
 
 			if (clientExtensionEntry == null) {
-				cet = _cetFactory.cet(
+				cet = _cetFactory.create(
 					renderRequest, ParamUtil.getString(renderRequest, "type"));
 			}
 			else {
-				cet = _cetFactory.cet(clientExtensionEntry);
+				cet = _cetFactory.create(clientExtensionEntry);
 			}
 
 			renderRequest.setAttribute(

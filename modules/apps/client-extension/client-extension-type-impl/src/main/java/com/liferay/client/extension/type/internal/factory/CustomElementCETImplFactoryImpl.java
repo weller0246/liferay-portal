@@ -47,20 +47,20 @@ public class CustomElementCETImplFactoryImpl
 	implements CETImplFactory<CustomElementCET> {
 
 	@Override
-	public CustomElementCET cet(ClientExtensionEntry clientExtensionEntry)
+	public CustomElementCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new CustomElementCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public CustomElementCET cet(PortletRequest portletRequest)
+	public CustomElementCET create(PortletRequest portletRequest)
 		throws PortalException {
 
 		return new CustomElementCETImpl(portletRequest);
 	}
 
-	public CustomElementCET cet(
+	public CustomElementCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

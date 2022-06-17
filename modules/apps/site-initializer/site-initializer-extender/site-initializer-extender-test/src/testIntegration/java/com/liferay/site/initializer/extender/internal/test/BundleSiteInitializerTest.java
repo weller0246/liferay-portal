@@ -427,8 +427,8 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(clientExtensionEntry);
 
-		CustomElementCET customElementCET = (CustomElementCET)_cetFactory.cet(
-			clientExtensionEntry);
+		CustomElementCET customElementCET =
+			(CustomElementCET)_cetFactory.create(clientExtensionEntry);
 
 		Assert.assertEquals(
 			"liferay-test-remote-app", customElementCET.getHTMLElementName());

@@ -40,21 +40,21 @@ import org.osgi.service.component.annotations.Component;
 public class GlobalJSCETImplFactoryImpl implements CETImplFactory<GlobalJSCET> {
 
 	@Override
-	public GlobalJSCET cet(ClientExtensionEntry clientExtensionEntry)
+	public GlobalJSCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new GlobalJSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public GlobalJSCET cet(PortletRequest portletRequest)
+	public GlobalJSCET create(PortletRequest portletRequest)
 		throws PortalException {
 
 		return new GlobalJSCETImpl(portletRequest);
 	}
 
 	@Override
-	public GlobalJSCET cet(
+	public GlobalJSCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

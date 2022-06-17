@@ -92,11 +92,11 @@ public class EditClientExtensionEntryMVCActionCommand
 			CET cet;
 
 			if (clientExtensionEntry == null) {
-				cet = _cetFactory.cet(
+				cet = _cetFactory.create(
 					actionRequest, ParamUtil.getString(actionRequest, "type"));
 			}
 			else {
-				cet = _cetFactory.cet(clientExtensionEntry);
+				cet = _cetFactory.create(clientExtensionEntry);
 			}
 
 			actionRequest.setAttribute(
@@ -127,7 +127,7 @@ public class EditClientExtensionEntryMVCActionCommand
 		_clientExtensionEntryService.addClientExtensionEntry(
 			StringPool.BLANK, description, nameMap,
 			ParamUtil.getString(actionRequest, "properties"), sourceCodeURL,
-			type, String.valueOf(_cetFactory.cet(actionRequest, type)));
+			type, String.valueOf(_cetFactory.create(actionRequest, type)));
 	}
 
 	private ClientExtensionEntry _fetchClientExtensionEntry(
@@ -161,7 +161,7 @@ public class EditClientExtensionEntryMVCActionCommand
 			clientExtensionEntry.getClientExtensionEntryId(), description,
 			nameMap, properties, sourceCodeURL,
 			String.valueOf(
-				_cetFactory.cet(
+				_cetFactory.create(
 					actionRequest, clientExtensionEntry.getType())));
 	}
 

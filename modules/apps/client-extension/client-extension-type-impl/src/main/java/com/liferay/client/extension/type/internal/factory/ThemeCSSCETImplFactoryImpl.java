@@ -40,21 +40,21 @@ import org.osgi.service.component.annotations.Component;
 public class ThemeCSSCETImplFactoryImpl implements CETImplFactory<ThemeCSSCET> {
 
 	@Override
-	public ThemeCSSCET cet(ClientExtensionEntry clientExtensionEntry)
+	public ThemeCSSCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new ThemeCSSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public ThemeCSSCET cet(PortletRequest portletRequest)
+	public ThemeCSSCET create(PortletRequest portletRequest)
 		throws PortalException {
 
 		return new ThemeCSSCETImpl(portletRequest);
 	}
 
 	@Override
-	public ThemeCSSCET cet(
+	public ThemeCSSCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

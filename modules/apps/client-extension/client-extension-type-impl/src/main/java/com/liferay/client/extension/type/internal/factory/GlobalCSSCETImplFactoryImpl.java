@@ -41,21 +41,21 @@ public class GlobalCSSCETImplFactoryImpl
 	implements CETImplFactory<GlobalCSSCET> {
 
 	@Override
-	public GlobalCSSCET cet(ClientExtensionEntry clientExtensionEntry)
+	public GlobalCSSCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new GlobalCSSCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public GlobalCSSCET cet(PortletRequest portletRequest)
+	public GlobalCSSCET create(PortletRequest portletRequest)
 		throws PortalException {
 
 		return new GlobalCSSCETImpl(portletRequest);
 	}
 
 	@Override
-	public GlobalCSSCET cet(
+	public GlobalCSSCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

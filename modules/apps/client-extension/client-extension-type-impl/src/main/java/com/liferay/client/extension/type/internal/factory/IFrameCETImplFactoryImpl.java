@@ -42,19 +42,21 @@ import org.osgi.service.component.annotations.Component;
 public class IFrameCETImplFactoryImpl implements CETImplFactory<IFrameCET> {
 
 	@Override
-	public IFrameCET cet(ClientExtensionEntry clientExtensionEntry)
+	public IFrameCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new IFrameCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public IFrameCET cet(PortletRequest portletRequest) throws PortalException {
+	public IFrameCET create(PortletRequest portletRequest)
+		throws PortalException {
+
 		return new IFrameCETImpl(portletRequest);
 	}
 
 	@Override
-	public IFrameCET cet(
+	public IFrameCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

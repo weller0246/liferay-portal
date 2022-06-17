@@ -31,12 +31,12 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface CETImplFactory<T extends CET> {
 
-	public T cet(ClientExtensionEntry clientExtensionEntry)
+	public T create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException;
 
-	public T cet(PortletRequest portletRequest) throws PortalException;
+	public T create(PortletRequest portletRequest) throws PortalException;
 
-	public T cet(
+	public T create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL,

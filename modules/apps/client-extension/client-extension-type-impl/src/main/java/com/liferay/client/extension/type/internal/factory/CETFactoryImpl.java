@@ -52,7 +52,7 @@ import org.osgi.service.component.annotations.Deactivate;
 public class CETFactoryImpl implements CETFactory {
 
 	@Override
-	public CET cet(
+	public CET create(
 			CETConfiguration cetConfiguration, long companyId,
 			String externalReferenceCode)
 		throws PortalException {
@@ -61,7 +61,7 @@ public class CETFactoryImpl implements CETFactory {
 			cetConfiguration.type());
 
 		try {
-			return cetImplFactory.cet(
+			return cetImplFactory.create(
 				cetConfiguration.baseURL(), companyId,
 				cetConfiguration.description(), externalReferenceCode,
 				cetConfiguration.name(), _loadProperties(cetConfiguration),
@@ -74,22 +74,22 @@ public class CETFactoryImpl implements CETFactory {
 	}
 
 	@Override
-	public CET cet(ClientExtensionEntry clientExtensionEntry)
+	public CET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		CETImplFactory cetImplFactory = _getCETImplFactory(
 			clientExtensionEntry.getType());
 
-		return cetImplFactory.cet(clientExtensionEntry);
+		return cetImplFactory.create(clientExtensionEntry);
 	}
 
 	@Override
-	public CET cet(PortletRequest portletRequest, String type)
+	public CET create(PortletRequest portletRequest, String type)
 		throws PortalException {
 
 		CETImplFactory cetImplFactory = _getCETImplFactory(type);
 
-		return cetImplFactory.cet(portletRequest);
+		return cetImplFactory.create(portletRequest);
 	}
 
 	@Override

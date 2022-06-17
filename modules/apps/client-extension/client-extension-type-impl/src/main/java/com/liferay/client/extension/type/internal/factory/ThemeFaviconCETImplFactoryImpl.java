@@ -41,21 +41,21 @@ public class ThemeFaviconCETImplFactoryImpl
 	implements CETImplFactory<ThemeFaviconCET> {
 
 	@Override
-	public ThemeFaviconCET cet(ClientExtensionEntry clientExtensionEntry)
+	public ThemeFaviconCET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
 		return new ThemeFaviconCETImpl(clientExtensionEntry);
 	}
 
 	@Override
-	public ThemeFaviconCET cet(PortletRequest portletRequest)
+	public ThemeFaviconCET create(PortletRequest portletRequest)
 		throws PortalException {
 
 		return new ThemeFaviconCETImpl(portletRequest);
 	}
 
 	@Override
-	public ThemeFaviconCET cet(
+	public ThemeFaviconCET create(
 			String baseURL, long companyId, String description,
 			String externalReferenceCode, String name, Properties properties,
 			String sourceCodeURL, UnicodeProperties unicodeProperties)

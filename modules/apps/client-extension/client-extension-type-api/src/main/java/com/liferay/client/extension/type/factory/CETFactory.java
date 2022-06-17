@@ -32,15 +32,15 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface CETFactory {
 
-	public CET cet(
+	public CET create(
 			CETConfiguration cetConfiguration, long companyId,
 			String externalReferenceCode)
 		throws PortalException;
 
-	public CET cet(ClientExtensionEntry clientExtensionEntry)
+	public CET create(ClientExtensionEntry clientExtensionEntry)
 		throws PortalException;
 
-	public CET cet(PortletRequest portletRequest, String type)
+	public CET create(PortletRequest portletRequest, String type)
 		throws PortalException;
 
 	public Collection<String> getTypes();
