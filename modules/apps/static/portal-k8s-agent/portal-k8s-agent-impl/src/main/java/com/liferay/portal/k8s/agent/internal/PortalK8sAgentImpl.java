@@ -181,7 +181,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 						binaryData, originalConfigMap.getBinaryData()) ||
 					 !Objects.equals(data, originalConfigMap.getData())) {
 
-				_validateRequiredLabels(configMapName, objectMeta.getLabels());
+				_validateLabels(configMapName, objectMeta.getLabels());
 
 				configMap = _kubernetesClient.configMaps(
 				).withName(
@@ -235,7 +235,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 				});
 
-			_validateRequiredLabels(configMapName, labels);
+			_validateLabels(configMapName, labels);
 
 			ConfigMapBuilder configMapBuilder = new ConfigMapBuilder();
 
@@ -654,7 +654,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 		}
 	}
 
-	private void _validateRequiredLabels(
+	private void _validateLabels(
 		String configMapName, Map<String, String> labels) {
 
 		if (!configMapName.endsWith(
@@ -664,7 +664,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
-					"A config map name ", configMapName,
+					"Config map name ", configMapName,
 					" does not follow a recognized pattern"));
 		}
 
@@ -679,7 +679,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			throw new IllegalArgumentException(
 				StringBundler.concat(
 					"Config map labels must contain the key ",
-					PortalK8sConstants.METADATA_TYPE_KEY, " with value of ",
+					PortalK8sConstants.METADATA_TYPE_KEY, " with a value of ",
 					PortalK8sConstants.METADATA_TYPE_DXP_VALUE, " or ",
 					PortalK8sConstants.METADATA_TYPE_EXT_INIT_VALUE));
 		}
@@ -689,8 +689,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 				StringBundler.concat(
 					"Config map labels must contain the key ",
 					PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY,
-					" whose value is the webId of the virtual instance from ",
-					"which the configuration originated."));
+					" whose value is the web ID of the virtual instance from ",
+					"which the configuration originated"));
 		}
 
 		String virtualInstanceId = labels.get(
@@ -707,7 +707,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
-					"A config map name with suffix",
+					"A config map name with suffix ",
 					PortalK8sConstants.LXC_DXP_METADATA_SUFFIX,
 					" must begin with the value of the label ",
 					PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY, " followed by ",
@@ -738,12 +738,12 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 			if (!Objects.equals(expectedConfigMapName, configMapName)) {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
-						"A config map name with suffix",
+						"A config map name with suffix ",
 						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX,
 						" must begin with the value of the label ",
 						PortalK8sConstants.SERVICE_ID_KEY,
-						" followed by a dash (-) then the value of the label ",
-						PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY,
+						" followed by a dash (-) and then the value of the ",
+						"label ", PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY,
 						" followed by ",
 						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX));
 			}
