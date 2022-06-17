@@ -73,7 +73,7 @@ public class NotificationTemplatesPortlet extends MVCPortlet {
 			new ViewNotificationTemplatesDisplayContext(
 				_editorConfigurationFactory,
 				_portal.getHttpServletRequest(renderRequest),
-				_notificationTemplateModelResourcePermission));
+				_modelResourcePermission));
 
 		super.render(renderRequest, renderResponse);
 	}
@@ -85,7 +85,7 @@ public class NotificationTemplatesPortlet extends MVCPortlet {
 		target = "(model.class.name=com.liferay.notification.model.NotificationTemplate)"
 	)
 	private ModelResourcePermission<NotificationTemplate>
-		_notificationTemplateModelResourcePermission;
+		_modelResourcePermission;
 
 	@Reference
 	private Portal _portal;
