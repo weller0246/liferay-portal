@@ -17,9 +17,9 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETThemeJS> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<ThemeJSCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETThemeJS cetThemeJS = editClientExtensionEntryPartDisplayContext.getCET();
+ThemeJSCET themeJSCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input ignoreRequestValue="<%= true %>" label="url" name="url" type="text" value="<%= cetThemeJS.getURL() %>" />
+<aui:input ignoreRequestValue="<%= true %>" label="url" name="url" type="text" value="<%= themeJSCET.getURL() %>" />

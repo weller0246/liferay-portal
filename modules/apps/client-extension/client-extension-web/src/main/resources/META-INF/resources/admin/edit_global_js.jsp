@@ -17,9 +17,9 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETGlobalJS> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<GlobalJSCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETGlobalJS cetGlobalJS = editClientExtensionEntryPartDisplayContext.getCET();
+GlobalJSCET globalJSCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input ignoreRequestValue="<%= true %>" label="url" name="url" type="text" value="<%= cetGlobalJS.getURL() %>" />
+<aui:input ignoreRequestValue="<%= true %>" label="url" name="url" type="text" value="<%= globalJSCET.getURL() %>" />

@@ -17,27 +17,27 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETIFrame> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<IFrameCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETIFrame cetIFrame = editClientExtensionEntryPartDisplayContext.getCET();
+IFrameCET iFrameCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input label="url" name="url" type="text" value="<%= cetIFrame.getURL() %>" />
+<aui:input label="url" name="url" type="text" value="<%= iFrameCET.getURL() %>" />
 
 <c:choose>
 	<c:when test="<%= editClientExtensionEntryPartDisplayContext.isNew() %>">
-		<aui:input label="instanceable" name="instanceable" type="checkbox" value="<%= cetIFrame.isInstanceable() %>" />
+		<aui:input label="instanceable" name="instanceable" type="checkbox" value="<%= iFrameCET.isInstanceable() %>" />
 	</c:when>
 	<c:otherwise>
-		<aui:input disabled="<%= true %>" label="instanceable" name="instanceable-disabled" type="checkbox" value="<%= cetIFrame.isInstanceable() %>" />
-		<aui:input name="instanceable" type="hidden" value="<%= cetIFrame.isInstanceable() %>" />
+		<aui:input disabled="<%= true %>" label="instanceable" name="instanceable-disabled" type="checkbox" value="<%= iFrameCET.isInstanceable() %>" />
+		<aui:input name="instanceable" type="hidden" value="<%= iFrameCET.isInstanceable() %>" />
 	</c:otherwise>
 </c:choose>
 
 <clay:select
 	label="portlet-category-name"
 	name="portletCategoryName"
-	options="<%= editClientExtensionEntryPartDisplayContext.getPortletCategoryNameSelectOptions(cetIFrame.getPortletCategoryName()) %>"
+	options="<%= editClientExtensionEntryPartDisplayContext.getPortletCategoryNameSelectOptions(iFrameCET.getPortletCategoryName()) %>"
 />
 
-<aui:input label="friendly-url-mapping" name="friendlyURLMapping" type="text" value="<%= cetIFrame.getFriendlyURLMapping() %>" />
+<aui:input label="friendly-url-mapping" name="friendlyURLMapping" type="text" value="<%= iFrameCET.getFriendlyURLMapping() %>" />

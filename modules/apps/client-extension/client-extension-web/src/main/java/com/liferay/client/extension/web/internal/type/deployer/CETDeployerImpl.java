@@ -69,8 +69,8 @@ public class CETDeployerImpl implements CETDeployer {
 
 		serviceRegistrations.add(_registerConfigurationAction(cet));
 
-		CustomElementCET cetCustomElement = null;
-		IFrameCET cetIFrame = null;
+		CustomElementCET customElementCET = null;
+		IFrameCET iFrameCET = null;
 		String friendlyURLMapping = null;
 		boolean instanceable = false;
 		String portletCategoryName = null;
@@ -79,20 +79,20 @@ public class CETDeployerImpl implements CETDeployer {
 				cet.getType(),
 				ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT)) {
 
-			cetCustomElement = (CustomElementCET)cet;
+			customElementCET = (CustomElementCET)cet;
 
-			friendlyURLMapping = cetCustomElement.getFriendlyURLMapping();
-			instanceable = cetCustomElement.isInstanceable();
-			portletCategoryName = cetCustomElement.getPortletCategoryName();
+			friendlyURLMapping = customElementCET.getFriendlyURLMapping();
+			instanceable = customElementCET.isInstanceable();
+			portletCategoryName = customElementCET.getPortletCategoryName();
 		}
 		else if (Objects.equals(
 					cet.getType(), ClientExtensionEntryConstants.TYPE_IFRAME)) {
 
-			cetIFrame = (IFrameCET)cet;
+			iFrameCET = (IFrameCET)cet;
 
-			friendlyURLMapping = cetIFrame.getFriendlyURLMapping();
-			instanceable = cetIFrame.isInstanceable();
-			portletCategoryName = cetIFrame.getPortletCategoryName();
+			friendlyURLMapping = iFrameCET.getFriendlyURLMapping();
+			instanceable = iFrameCET.isInstanceable();
+			portletCategoryName = iFrameCET.getPortletCategoryName();
 		}
 
 		if (Validator.isNull(portletCategoryName)) {
@@ -106,7 +106,7 @@ public class CETDeployerImpl implements CETDeployer {
 
 		serviceRegistrations.add(
 			_registerPortlet(
-				cet, cetCustomElement, cetIFrame, instanceable,
+				cet, customElementCET, iFrameCET, instanceable,
 				portletCategoryName));
 
 		return serviceRegistrations;
@@ -150,7 +150,7 @@ public class CETDeployerImpl implements CETDeployer {
 	}
 
 	private ServiceRegistration<Portlet> _registerPortlet(
-		CET cet, CustomElementCET cetCustomElement, IFrameCET cetIFrame,
+		CET cet, CustomElementCET customElementCET, IFrameCET iFrameCET,
 		boolean instanceable, String portletCategoryName) {
 
 		String portletName = _getPortletId(cet);
@@ -172,8 +172,8 @@ public class CETDeployerImpl implements CETDeployer {
 				"javax.portlet.security-role-ref", "power-user,user"
 			).build();
 
-		if (cetCustomElement != null) {
-			String cssURLs = cetCustomElement.getCSSURLs();
+		if (customElementCET != null) {
+			String cssURLs = customElementCET.getCSSURLs();
 
 			if (Validator.isNotNull(cssURLs)) {
 				dictionary.put(
@@ -181,9 +181,9 @@ public class CETDeployerImpl implements CETDeployer {
 					cssURLs.split(StringPool.NEW_LINE));
 			}
 
-			String urls = cetCustomElement.getURLs();
+			String urls = customElementCET.getURLs();
 
-			if (cetCustomElement.isUseESM()) {
+			if (customElementCET.isUseESM()) {
 				_clientExtensionTopHeadDynamicInclude.registerURLs(
 					portletName, urls.split(StringPool.NEW_LINE));
 			}
@@ -193,7 +193,7 @@ public class CETDeployerImpl implements CETDeployer {
 					urls.split(StringPool.NEW_LINE));
 			}
 		}
-		else if (cetIFrame != null) {
+		else if (iFrameCET != null) {
 			dictionary.put(
 				"com.liferay.portlet.footer-portlet-css",
 				"/display/css/main.css");
@@ -206,7 +206,7 @@ public class CETDeployerImpl implements CETDeployer {
 		return _bundleContext.registerService(
 			Portlet.class,
 			new ClientExtensionEntryPortlet(
-				cet, cetCustomElement, cetIFrame, _npmResolver),
+				cet, customElementCET, iFrameCET, _npmResolver),
 			dictionary);
 	}
 

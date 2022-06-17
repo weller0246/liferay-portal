@@ -17,9 +17,9 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETThemeFavicon> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<ThemeFaviconCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETThemeFavicon cetThemeFavicon = editClientExtensionEntryPartDisplayContext.getCET();
+ThemeFaviconCET themeFaviconCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input label="url" name="url" type="text" value="<%= cetThemeFavicon.getURL() %>" />
+<aui:input label="url" name="url" type="text" value="<%= themeFaviconCET.getURL() %>" />

@@ -17,19 +17,19 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETCustomElement> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<CustomElementCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETCustomElement cetCustomElement = editClientExtensionEntryPartDisplayContext.getCET();
+CustomElementCET customElementCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input label="html-element-name" name="htmlElementName" type="text" value="<%= cetCustomElement.getHTMLElementName() %>" />
+<aui:input label="html-element-name" name="htmlElementName" type="text" value="<%= customElementCET.getHTMLElementName() %>" />
 
-<aui:input label="use-esm" name="useESM" type="checkbox" value="<%= cetCustomElement.isUseESM() %>" />
+<aui:input label="use-esm" name="useESM" type="checkbox" value="<%= customElementCET.isUseESM() %>" />
 
 <div id="<portlet:namespace />_urls_field">
 
 	<%
-	for (String url : editClientExtensionEntryPartDisplayContext.getStrings(cetCustomElement.getURLs())) {
+	for (String url : editClientExtensionEntryPartDisplayContext.getStrings(customElementCET.getURLs())) {
 	%>
 
 		<div class="lfr-form-row">
@@ -45,7 +45,7 @@ CETCustomElement cetCustomElement = editClientExtensionEntryPartDisplayContext.g
 <div id="<portlet:namespace />_cssURLs_field">
 
 	<%
-	for (String cssURL : editClientExtensionEntryPartDisplayContext.getStrings(cetCustomElement.getCSSURLs())) {
+	for (String cssURL : editClientExtensionEntryPartDisplayContext.getStrings(customElementCET.getCSSURLs())) {
 	%>
 
 		<div class="lfr-form-row">
@@ -60,21 +60,21 @@ CETCustomElement cetCustomElement = editClientExtensionEntryPartDisplayContext.g
 
 <c:choose>
 	<c:when test="<%= editClientExtensionEntryPartDisplayContext.isNew() %>">
-		<aui:input label="instanceable" name="instanceable" type="checkbox" value="<%= cetCustomElement.isInstanceable() %>" />
+		<aui:input label="instanceable" name="instanceable" type="checkbox" value="<%= customElementCET.isInstanceable() %>" />
 	</c:when>
 	<c:otherwise>
-		<aui:input disabled="<%= true %>" label="instanceable" name="instanceable-disabled" type="checkbox" value="<%= cetCustomElement.isInstanceable() %>" />
-		<aui:input name="instanceable" type="hidden" value="<%= cetCustomElement.isInstanceable() %>" />
+		<aui:input disabled="<%= true %>" label="instanceable" name="instanceable-disabled" type="checkbox" value="<%= customElementCET.isInstanceable() %>" />
+		<aui:input name="instanceable" type="hidden" value="<%= customElementCET.isInstanceable() %>" />
 	</c:otherwise>
 </c:choose>
 
 <clay:select
 	label="portlet-category-name"
 	name="portletCategoryName"
-	options="<%= editClientExtensionEntryPartDisplayContext.getPortletCategoryNameSelectOptions(cetCustomElement.getPortletCategoryName()) %>"
+	options="<%= editClientExtensionEntryPartDisplayContext.getPortletCategoryNameSelectOptions(customElementCET.getPortletCategoryName()) %>"
 />
 
-<aui:input label="friendly-url-mapping" name="friendlyURLMapping" type="text" value="<%= cetCustomElement.getFriendlyURLMapping() %>" />
+<aui:input label="friendly-url-mapping" name="friendlyURLMapping" type="text" value="<%= customElementCET.getFriendlyURLMapping() %>" />
 
 <aui:script use="liferay-auto-fields">
 	new Liferay.AutoFields({

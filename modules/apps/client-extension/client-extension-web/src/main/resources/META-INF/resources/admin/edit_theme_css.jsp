@@ -17,11 +17,11 @@
 <%@ include file="/admin/init.jsp" %>
 
 <%
-EditClientExtensionEntryPartDisplayContext<CETThemeCSS> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
+EditClientExtensionEntryPartDisplayContext<ThemeCSSCET> editClientExtensionEntryPartDisplayContext = (EditClientExtensionEntryPartDisplayContext)renderRequest.getAttribute(ClientExtensionAdminWebKeys.EDIT_CLIENT_EXTENSION_ENTRY_PART_DISPLAY_CONTEXT);
 
-CETThemeCSS cetThemeCSS = editClientExtensionEntryPartDisplayContext.getCET();
+ThemeCSSCET themeCSSCET = editClientExtensionEntryPartDisplayContext.getCET();
 %>
 
-<aui:input label="main-css-url" name="mainURL" type="text" value="<%= cetThemeCSS.getMainURL() %>" />
+<aui:input label="main-css-url" name="mainURL" type="text" value="<%= themeCSSCET.getMainURL() %>" />
 
-<aui:input label="clay-css-url" name="clayURL" type="text" value="<%= cetThemeCSS.getClayURL() %>" />
+<aui:input label="clay-css-url" name="clayURL" type="text" value="<%= themeCSSCET.getClayURL() %>" />
