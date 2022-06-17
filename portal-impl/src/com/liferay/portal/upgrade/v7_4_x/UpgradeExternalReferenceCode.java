@@ -16,6 +16,7 @@ package com.liferay.portal.upgrade.v7_4_x;
 
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
 
 import java.sql.PreparedStatement;
@@ -94,55 +95,58 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 				tableName, "externalReferenceCode", "VARCHAR(75)");
 		}
 
-		StringBundler selectSB = new StringBundler(7);
+		try (LoggingTimer loggingTimer = new LoggingTimer()) {
+			StringBundler selectSB = new StringBundler(7);
 
-		selectSB.append("select ");
-		selectSB.append(primKeyColumnName);
+			selectSB.append("select ");
+			selectSB.append(primKeyColumnName);
 
-		boolean hasUuid = hasColumn(tableName, "uuid_");
+			boolean hasUuid = hasColumn(tableName, "uuid_");
 
-		if (hasUuid) {
-			selectSB.append(", uuid_");
-		}
-
-		selectSB.append(" from ");
-		selectSB.append(tableName);
-		selectSB.append(" where externalReferenceCode is null or ");
-		selectSB.append("externalReferenceCode = ''");
-
-		StringBundler updateSB = new StringBundler(5);
-
-		updateSB.append("update ");
-		updateSB.append(tableName);
-		updateSB.append(" set externalReferenceCode = ? where ");
-		updateSB.append(primKeyColumnName);
-		updateSB.append(" = ?");
-
-		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
-				selectSB.toString());
-			ResultSet resultSet = preparedStatement1.executeQuery();
-			PreparedStatement preparedStatement2 =
-				AutoBatchPreparedStatementUtil.autoBatch(
-					connection.prepareStatement(updateSB.toString()))) {
-
-			while (resultSet.next()) {
-				long primKey = resultSet.getLong(1);
-
-				if (hasUuid) {
-					String uuid = resultSet.getString(2);
-
-					preparedStatement2.setString(1, uuid);
-				}
-				else {
-					preparedStatement2.setString(1, String.valueOf(primKey));
-				}
-
-				preparedStatement2.setLong(2, primKey);
-
-				preparedStatement2.addBatch();
+			if (hasUuid) {
+				selectSB.append(", uuid_");
 			}
 
-			preparedStatement2.executeBatch();
+			selectSB.append(" from ");
+			selectSB.append(tableName);
+			selectSB.append(" where externalReferenceCode is null or ");
+			selectSB.append("externalReferenceCode = ''");
+
+			StringBundler updateSB = new StringBundler(5);
+
+			updateSB.append("update ");
+			updateSB.append(tableName);
+			updateSB.append(" set externalReferenceCode = ? where ");
+			updateSB.append(primKeyColumnName);
+			updateSB.append(" = ?");
+
+			try (PreparedStatement preparedStatement1 =
+					connection.prepareStatement(selectSB.toString());
+				ResultSet resultSet = preparedStatement1.executeQuery();
+				PreparedStatement preparedStatement2 =
+					AutoBatchPreparedStatementUtil.autoBatch(
+						connection.prepareStatement(updateSB.toString()))) {
+
+				while (resultSet.next()) {
+					long primKey = resultSet.getLong(1);
+
+					if (hasUuid) {
+						String uuid = resultSet.getString(2);
+
+						preparedStatement2.setString(1, uuid);
+					}
+					else {
+						preparedStatement2.setString(
+							1, String.valueOf(primKey));
+					}
+
+					preparedStatement2.setLong(2, primKey);
+
+					preparedStatement2.addBatch();
+				}
+
+				preparedStatement2.executeBatch();
+			}
 		}
 	}
 
