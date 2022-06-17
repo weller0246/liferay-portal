@@ -20,7 +20,6 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
-import com.liferay.portal.k8s.agent.internal.constants.PortalK8sConstants;
 import com.liferay.portal.k8s.agent.mutator.PortalK8sConfigurationPropertiesMutator;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -657,10 +656,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 	private void _validateLabels(
 		String configMapName, Map<String, String> labels) {
 
-		if (!configMapName.endsWith(
-				PortalK8sConstants.LXC_DXP_METADATA_SUFFIX) &&
-			!configMapName.endsWith(
-				PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX)) {
+		if (!configMapName.endsWith("-lxc-dxp-metadata") &&
+			!configMapName.endsWith("-lxc-ext-init-metadata")) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
@@ -668,85 +665,73 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 					" does not follow a recognized pattern"));
 		}
 
-		if (!labels.containsKey(PortalK8sConstants.METADATA_TYPE_KEY) ||
+		if (!labels.containsKey("lxc.liferay.com/metadataType") ||
 			(!Objects.equals(
-				PortalK8sConstants.METADATA_TYPE_DXP_VALUE,
-				labels.get(PortalK8sConstants.METADATA_TYPE_KEY)) &&
+				labels.get("lxc.liferay.com/metadataType"), "dxp") &&
 			 !Objects.equals(
-				 PortalK8sConstants.METADATA_TYPE_EXT_INIT_VALUE,
-				 labels.get(PortalK8sConstants.METADATA_TYPE_KEY)))) {
+				 labels.get("lxc.liferay.com/metadataType"), "ext-init"))) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
 					"Config map labels must contain the key ",
-					PortalK8sConstants.METADATA_TYPE_KEY, " with a value of ",
-					PortalK8sConstants.METADATA_TYPE_DXP_VALUE, " or ",
-					PortalK8sConstants.METADATA_TYPE_EXT_INIT_VALUE));
+					"\"lxc.liferay.com/metadataType\" with a value of \"dxp\" ",
+					"or \"ext-init\""));
 		}
 
-		if (!labels.containsKey(PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY)) {
+		if (!labels.containsKey("dxp.lxc.liferay.com/virtualInstanceId")) {
 			throw new IllegalArgumentException(
 				StringBundler.concat(
 					"Config map labels must contain the key ",
-					PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY,
-					" whose value is the web ID of the virtual instance from ",
-					"which the configuration originated"));
+					"\"dxp.lxc.liferay.com/virtualInstanceId\" whose value is ",
+					"the web ID of the virtual instance from which the ",
+					"configuration originated"));
 		}
 
 		String virtualInstanceId = labels.get(
-			PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY);
+			"dxp.lxc.liferay.com/virtualInstanceId");
 
 		// <virtualInstanceId>-lxc-dxp-metadata
 
-		if (configMapName.endsWith(
-				PortalK8sConstants.LXC_DXP_METADATA_SUFFIX) &&
+		if (configMapName.endsWith("-lxc-dxp-metadata") &&
 			!Objects.equals(
-				virtualInstanceId.concat(
-					PortalK8sConstants.LXC_DXP_METADATA_SUFFIX),
-				configMapName)) {
+				virtualInstanceId.concat("-lxc-dxp-metadata"), configMapName)) {
 
 			throw new IllegalArgumentException(
 				StringBundler.concat(
-					"A config map name with suffix ",
-					PortalK8sConstants.LXC_DXP_METADATA_SUFFIX,
-					" must begin with the value of the label ",
-					PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY, " followed by ",
-					PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
+					"A config map name with the suffix \"-lxc-dxp-metadata\" ",
+					"must begin with the value of the label ",
+					"\"dxp.lxc.liferay.com/virtualInstanceId\" followed by ",
+					"\"-lxc-dxp-metadata\""));
 		}
 
 		// <serviceId>-<virtualInstanceId>-lxc-ext-init-metadata
 
-		else if (configMapName.endsWith(
-					PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX)) {
-
-			if (!labels.containsKey(PortalK8sConstants.SERVICE_ID_KEY)) {
+		else if (configMapName.endsWith("-lxc-ext-init-metadata")) {
+			if (!labels.containsKey("ext.lxc.liferay.com/serviceId")) {
 				throw new IllegalArgumentException(
 					StringBundler.concat(
-						"A config map with suffix ",
-						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX,
-						" must have a label with the key ",
-						PortalK8sConstants.SERVICE_ID_KEY,
-						" whose value is the target serviceId"));
+						"A config map with the suffix ",
+						"\"-lxc-ext-init-metadata\" must have a label with ",
+						"the key \"ext.lxc.liferay.com/serviceId\" whose ",
+						"value is the target service ID"));
 			}
 
-			String serviceId = labels.get(PortalK8sConstants.SERVICE_ID_KEY);
+			String serviceId = labels.get("ext.lxc.liferay.com/serviceId");
 
 			if (!Objects.equals(
 					configMapName,
 					StringBundler.concat(
 						serviceId, "-", virtualInstanceId,
-						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX))) {
+						"-lxc-ext-init-metadata"))) {
 
 				throw new IllegalArgumentException(
 					StringBundler.concat(
 						"A config map name with suffix ",
-						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX,
-						" must begin with the value of the label ",
-						PortalK8sConstants.SERVICE_ID_KEY,
-						" followed by a dash (-) and then the value of the ",
-						"label ", PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY,
-						" followed by ",
-						PortalK8sConstants.LXC_EXT_INIT_METADATA_SUFFIX));
+						"\"-lxc-ext-init-metadata\" must begin with a value ",
+						"of the label \"ext.lxc.liferay.com/serviceId\" ",
+						"followed by a \"-\" and then a value of the label ",
+						"\"dxp.lxc.liferay.com/virtualInstanceId\" followed ",
+						"by \"-lxc-ext-init-metadata\""));
 			}
 		}
 	}

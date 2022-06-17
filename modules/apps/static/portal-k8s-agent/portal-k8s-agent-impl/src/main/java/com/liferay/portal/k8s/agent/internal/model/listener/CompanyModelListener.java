@@ -16,7 +16,6 @@ package com.liferay.portal.k8s.agent.internal.model.listener;
 
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
-import com.liferay.portal.k8s.agent.internal.constants.PortalK8sConstants;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Company;
@@ -69,12 +68,10 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 				Map<String, String> labels = model.labels();
 
-				labels.put(
-					PortalK8sConstants.METADATA_TYPE_KEY,
-					PortalK8sConstants.METADATA_TYPE_DXP_VALUE);
-				labels.put(PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY, webId);
+				labels.put("lxc.liferay.com/metadataType", "dxp");
+				labels.put("dxp.lxc.liferay.com/virtualInstanceId", webId);
 			},
-			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
+			webId.concat("-lxc-dxp-metadata"));
 	}
 
 	@Override
@@ -91,7 +88,7 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 				labels.clear();
 			},
-			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
+			webId.concat("-lxc-dxp-metadata"));
 	}
 
 	@Override
