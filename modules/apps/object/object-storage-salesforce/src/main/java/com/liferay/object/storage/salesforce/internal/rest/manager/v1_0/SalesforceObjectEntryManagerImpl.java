@@ -48,7 +48,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -307,11 +306,11 @@ public class SalesforceObjectEntryManagerImpl
 			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
 		throws Exception {
 
+		JSONObject jsonObject = _jsonFactory.createJSONObject();
+
 		List<ObjectField> objectFields =
 			_objectFieldLocalService.getObjectFields(
 				objectDefinition.getObjectDefinitionId());
-
-		Map<String, Object> jsonObjectProperties = new HashMap<>();
 
 		Map<String, Object> properties = objectEntry.getProperties();
 
@@ -324,20 +323,18 @@ public class SalesforceObjectEntryManagerImpl
 					Objects.equals(entry.getValue(), StringPool.BLANK) ? null :
 						entry.getValue();
 
-				jsonObjectProperties.put(
-					objectField.getExternalReferenceCode(), value);
+				jsonObject.put(objectField.getExternalReferenceCode(), value);
 
 				if (Objects.equals(
 						objectField.getObjectFieldId(),
 						objectDefinition.getTitleObjectFieldId())) {
 
-					jsonObjectProperties.put("Name", value);
+					jsonObject.put("Name", value);
 				}
 			}
 		}
 
-		return _jsonFactory.createJSONObject(
-			_jsonFactory.looseSerialize(jsonObjectProperties));
+		return jsonObject;
 	}
 
 	private List<ObjectEntry> _toObjectEntries(
