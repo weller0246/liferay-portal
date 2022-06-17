@@ -58,13 +58,6 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 		_portalK8sConfigMapModifier.modifyConfigMap(
 			model -> {
-				Map<String, String> labels = model.labels();
-
-				labels.put(
-					PortalK8sConstants.METADATA_TYPE_KEY,
-					PortalK8sConstants.METADATA_TYPE_DXP_VALUE);
-				labels.put(PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY, webId);
-
 				Map<String, String> data = model.data();
 
 				data.put(
@@ -73,6 +66,13 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 				data.put(
 					"com.liferay.lxc.dxp.domains",
 					StringUtil.merge(virtualHostNames, "\n"));
+
+				Map<String, String> labels = model.labels();
+
+				labels.put(
+					PortalK8sConstants.METADATA_TYPE_KEY,
+					PortalK8sConstants.METADATA_TYPE_DXP_VALUE);
+				labels.put(PortalK8sConstants.VIRTUAL_INSTANCE_ID_KEY, webId);
 			},
 			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
 	}
@@ -83,13 +83,13 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 		_portalK8sConfigMapModifier.modifyConfigMap(
 			model -> {
-				Map<String, String> labels = model.labels();
-
-				labels.clear();
-
 				Map<String, String> data = model.data();
 
 				data.clear();
+
+				Map<String, String> labels = model.labels();
+
+				labels.clear();
 			},
 			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
 	}
