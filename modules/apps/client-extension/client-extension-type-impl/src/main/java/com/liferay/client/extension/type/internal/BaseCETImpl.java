@@ -16,7 +16,7 @@ package com.liferay.client.extension.type.internal;
 
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
-import com.liferay.client.extension.type.internal.util.URLFieldUtil;
+import com.liferay.client.extension.type.annotation.CETProperty;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringPool;
@@ -29,11 +29,15 @@ import com.liferay.portal.kernel.workflow.WorkflowConstants;
 
 import java.io.IOException;
 
+import java.lang.reflect.Method;
+
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 /**
  * @author Brian Wing Shun Chan
@@ -168,34 +172,33 @@ public abstract class BaseCETImpl<T extends CET> implements CET {
 			_typeSettingsUnicodeProperties.getProperty(key));
 	}
 
-	private UnicodeProperties _transform(
-		String baseURL, UnicodeProperties unicodeProperties) {
+	private boolean _isURLCETPropertyName(String name) {
+		if (_urlCETPropertyNames == null) {
+			Set<String> urlCETPropertyNames = new HashSet<>();
 
-		UnicodeProperties transformedUnicodeProperties =
-			new UnicodeProperties();
+			Class<T> cetClass = getCETClass();
 
-		for (Map.Entry<String, String> entry : unicodeProperties.entrySet()) {
-			String name = entry.getKey();
-			String value = entry.getValue();
+			for (Method method : cetClass.getDeclaredMethods()) {
+				CETProperty cetProperty = method.getAnnotation(
+					CETProperty.class);
 
-			if (URLFieldUtil.isURLField(getCETClass(), name)) {
-				value = _transformURLField(baseURL, value);
+				if (cetProperty.url()) {
+					urlCETPropertyNames.add(cetProperty.name());
+				}
 			}
 
-			transformedUnicodeProperties.put(name, value);
+			_urlCETPropertyNames = urlCETPropertyNames;
 		}
 
-		return transformedUnicodeProperties;
+		return _urlCETPropertyNames.contains(name);
 	}
 
-	private String _transformURLField(String baseURL, String value) {
+	private String _transform(String baseURL, String value) {
 		if (value.contains(StringPool.NEW_LINE)) {
 			List<String> values = new ArrayList<>();
 
-			for (String valueLine :
-					StringUtil.split(value, CharPool.NEW_LINE)) {
-
-				values.add(_transformURLField(baseURL, valueLine));
+			for (String line : StringUtil.split(value, CharPool.NEW_LINE)) {
+				values.add(_transform(baseURL, line));
 			}
 
 			return StringUtil.merge(values, StringPool.NEW_LINE);
@@ -211,6 +214,28 @@ public abstract class BaseCETImpl<T extends CET> implements CET {
 
 		return baseURL + value;
 	}
+
+	private UnicodeProperties _transform(
+		String baseURL, UnicodeProperties unicodeProperties) {
+
+		UnicodeProperties transformedUnicodeProperties =
+			new UnicodeProperties();
+
+		for (Map.Entry<String, String> entry : unicodeProperties.entrySet()) {
+			String name = entry.getKey();
+			String value = entry.getValue();
+
+			if (_isURLCETPropertyName(name)) {
+				value = _transform(baseURL, value);
+			}
+
+			transformedUnicodeProperties.put(name, value);
+		}
+
+		return transformedUnicodeProperties;
+	}
+
+	private static Set<String> _urlCETPropertyNames;
 
 	private String _baseURL = StringPool.BLANK;
 	private ClientExtensionEntry _clientExtensionEntry;
