@@ -17,9 +17,6 @@ package com.liferay.portal.k8s.agent.internal.model.listener;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.internal.constants.PortalK8sConstants;
-import com.liferay.portal.kernel.dao.orm.Criterion;
-import com.liferay.portal.kernel.dao.orm.DynamicQuery;
-import com.liferay.portal.kernel.dao.orm.RestrictionsFactoryUtil;
 import com.liferay.portal.kernel.exception.ModelListenerException;
 import com.liferay.portal.kernel.model.BaseModelListener;
 import com.liferay.portal.kernel.model.Company;
@@ -83,20 +80,12 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 
 		List<String> virtualHostNames = new ArrayList<>();
 
-		DynamicQuery dynamicQuery = _virtualHostLocalService.dynamicQuery();
+		for (VirtualHost virtualHost :
+				_virtualHostLocalService.getVirtualHosts(
+					company.getCompanyId())) {
 
-		Criterion criterion = RestrictionsFactoryUtil.eq(
-			"companyId", company.getCompanyId());
-
-		List<VirtualHost> virtualHosts = _virtualHostLocalService.dynamicQuery(
-			dynamicQuery.add(criterion));
-
-		for (VirtualHost virtualHost : virtualHosts) {
 			virtualHostNames.add(virtualHost.getHostname());
 		}
-
-		String configMapName = webId.concat(
-			PortalK8sConstants.LXC_DXP_METADATA_SUFFIX);
 
 		_portalK8sConfigMapModifier.modifyConfigMap(
 			model -> {
@@ -116,7 +105,7 @@ public class CompanyModelListener extends BaseModelListener<Company> {
 					"com.liferay.lxc.dxp.domains",
 					StringUtil.merge(virtualHostNames, "\n"));
 			},
-			configMapName);
+			webId.concat(PortalK8sConstants.LXC_DXP_METADATA_SUFFIX));
 	}
 
 	@Reference
