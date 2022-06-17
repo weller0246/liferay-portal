@@ -30,10 +30,10 @@ public @interface CETProperty {
 
 	String defaultValue() default "";
 
-	boolean isURL() default false;
-
 	String name() default "";
 
 	String type() default "";
+
+	boolean url() default false;
 
 }

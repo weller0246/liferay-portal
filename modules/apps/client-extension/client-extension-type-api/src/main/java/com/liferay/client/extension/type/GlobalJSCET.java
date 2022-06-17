@@ -26,7 +26,7 @@ import org.osgi.annotation.versioning.ProviderType;
 @ProviderType
 public interface GlobalJSCET extends CET {
 
-	@CETProperty(defaultValue = "", isURL = true, name = "url", type = "string")
+	@CETProperty(defaultValue = "", name = "url", type = "string", url = true)
 	public String getURL();
 
 }

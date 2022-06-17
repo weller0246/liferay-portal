@@ -41,7 +41,7 @@ public class URLFieldUtil {
 				CETProperty cetProperty = method.getAnnotation(
 					CETProperty.class);
 
-				if (cetProperty.isURL()) {
+				if (cetProperty.url()) {
 					urlFields.add(cetProperty.name());
 				}
 			}
