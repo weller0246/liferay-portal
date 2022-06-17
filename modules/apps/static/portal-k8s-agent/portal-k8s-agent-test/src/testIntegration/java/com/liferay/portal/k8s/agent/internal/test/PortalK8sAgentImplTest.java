@@ -19,6 +19,8 @@ import com.liferay.petra.function.UnsafeSupplier;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
@@ -92,23 +94,25 @@ public class PortalK8sAgentImplTest {
 
 		_bundleContext = _bundle.getBundleContext();
 
-		Map<ServerRequest, Queue<ServerResponse>> responses = new HashMap<>();
+		Map<ServerRequest, Queue<ServerResponse>> serverResponses =
+			new HashMap<>();
 
 		_kubernetesMockServer = new KubernetesMockServer(
-			new Context(), new MockWebServer(), responses,
-			new KubernetesMixedDispatcher(responses, Collections.emptyList()) {
+			new Context(), new MockWebServer(), serverResponses,
+			new KubernetesMixedDispatcher(
+				serverResponses, Collections.emptyList()) {
 
 				@Override
 				public MockResponse dispatch(RecordedRequest request)
 					throws InterruptedException {
 
-					try (TCCLSwapper swapper = new TCCLSwapper(
+					try (TCCLSwapper tcclSwapper = new TCCLSwapper(
 							DefaultKubernetesClient.class)) {
 
 						return super.dispatch(request);
 					}
 					catch (Exception exception) {
-						exception.printStackTrace();
+						_log.error(exception);
 					}
 
 					return null;
@@ -159,21 +163,21 @@ public class PortalK8sAgentImplTest {
 
 			portalK8sConfigMapModifier.modifyConfigMap(
 				model -> {
-					Map<String, String> labels = model.labels();
-
-					labels.put("lxc.liferay.com/metadataType", "dxp");
-					labels.put(
-						"dxp.lxc.liferay.com/virtualInstanceId",
-						TestPropsValues.COMPANY_WEB_ID);
-
 					Map<String, String> data = model.data();
 
 					data.put(
-						"com.liferay.lxc.dxp.mainDomain",
-						TestPropsValues.COMPANY_WEB_ID);
-					data.put(
 						"com.liferay.lxc.dxp.domains",
 						TestPropsValues.COMPANY_WEB_ID);
+					data.put(
+						"com.liferay.lxc.dxp.mainDomain",
+						TestPropsValues.COMPANY_WEB_ID);
+
+					Map<String, String> labels = model.labels();
+
+					labels.put(
+						"dxp.lxc.liferay.com/virtualInstanceId",
+						TestPropsValues.COMPANY_WEB_ID);
+					labels.put("lxc.liferay.com/metadataType", "dxp");
 				},
 				configMapName);
 
@@ -184,24 +188,24 @@ public class PortalK8sAgentImplTest {
 
 			Assert.assertNotNull(configMap);
 
-			ObjectMeta metadata = configMap.getMetadata();
-
-			Map<String, String> labels = metadata.getLabels();
-
-			Assert.assertEquals(
-				"dxp", labels.get("lxc.liferay.com/metadataType"));
-			Assert.assertEquals(
-				TestPropsValues.COMPANY_WEB_ID,
-				labels.get("dxp.lxc.liferay.com/virtualInstanceId"));
+			ObjectMeta objectMeta = configMap.getMetadata();
 
 			Map<String, String> data = configMap.getData();
 
 			Assert.assertEquals(
 				TestPropsValues.COMPANY_WEB_ID,
-				data.get("com.liferay.lxc.dxp.mainDomain"));
+				data.get("com.liferay.lxc.dxp.domains"));
 			Assert.assertEquals(
 				TestPropsValues.COMPANY_WEB_ID,
-				data.get("com.liferay.lxc.dxp.domains"));
+				data.get("com.liferay.lxc.dxp.mainDomain"));
+
+			Map<String, String> labels = objectMeta.getLabels();
+
+			Assert.assertEquals(
+				TestPropsValues.COMPANY_WEB_ID,
+				labels.get("dxp.lxc.liferay.com/virtualInstanceId"));
+			Assert.assertEquals(
+				"dxp", labels.get("lxc.liferay.com/metadataType"));
 		}
 	}
 
@@ -468,6 +472,9 @@ public class PortalK8sAgentImplTest {
 		}
 
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		PortalK8sAgentImplTest.class);
 
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
