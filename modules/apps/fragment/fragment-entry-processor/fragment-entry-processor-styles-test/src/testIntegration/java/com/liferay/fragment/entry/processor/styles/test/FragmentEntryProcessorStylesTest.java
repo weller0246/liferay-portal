@@ -59,6 +59,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import org.springframework.mock.web.MockHttpServletRequest;
+
 /**
  * @author Víctor Galán
  */
@@ -114,7 +116,8 @@ public class FragmentEntryProcessorStylesTest {
 			_fragmentEntryProcessorRegistry.processFragmentEntryLinkHTML(
 				fragmentEntryLink,
 				new DefaultFragmentEntryProcessorContext(
-					null, null, FragmentEntryLinkConstants.EDIT,
+					new MockHttpServletRequest(), null,
+					FragmentEntryLinkConstants.EDIT,
 					LocaleUtil.getMostRelevantLocale())));
 
 		String layoutStructureItemUniqueCssClass =
