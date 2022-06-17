@@ -930,11 +930,11 @@ public class ObjectFieldLocalServiceTest {
 			LocalizedMapUtil.getLocalizedMap("baker"), "baker", true,
 			_getObjectFieldSettings("Text"));
 
+		Assert.assertEquals(
+			externalReferenceCode, objectField.getExternalReferenceCode());
 		Assert.assertEquals("baker_", objectField.getDBColumnName());
 		Assert.assertEquals(
 			ObjectFieldConstants.DB_TYPE_STRING, objectField.getDBType());
-		Assert.assertEquals(
-			externalReferenceCode, objectField.getExternalReferenceCode());
 		Assert.assertTrue(objectField.isIndexed());
 		Assert.assertFalse(objectField.isIndexedAsKeyword());
 		Assert.assertEquals(
