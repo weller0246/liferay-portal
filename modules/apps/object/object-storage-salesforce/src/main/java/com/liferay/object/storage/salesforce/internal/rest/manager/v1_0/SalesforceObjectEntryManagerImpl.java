@@ -80,7 +80,7 @@ public class SalesforceObjectEntryManagerImpl
 			objectDefinition.getCompanyId(),
 			getGroupId(objectDefinition, scopeKey),
 			"sobjects/" + _getSalesforceObjectName(objectDefinition.getName()),
-			_toSalesforceEntry(objectDefinition, objectEntry));
+			_toJSONObject(objectDefinition, objectEntry));
 
 		return getObjectEntry(
 			dtoConverterContext, responseJSONObject.getString("id"),
@@ -110,7 +110,7 @@ public class SalesforceObjectEntryManagerImpl
 				"sobjects/",
 				_getSalesforceObjectName(objectDefinition.getName()), "/",
 				externalReferenceCode),
-			_toSalesforceEntry(objectDefinition, objectEntry));
+			_toJSONObject(objectDefinition, objectEntry));
 
 		return getObjectEntry(
 			dtoConverterContext, externalReferenceCode, companyId,
@@ -371,7 +371,7 @@ public class SalesforceObjectEntryManagerImpl
 		return objectEntry;
 	}
 
-	private JSONObject _toSalesforceEntry(
+	private JSONObject _toJSONObject(
 			ObjectDefinition objectDefinition, ObjectEntry objectEntry)
 		throws Exception {
 
