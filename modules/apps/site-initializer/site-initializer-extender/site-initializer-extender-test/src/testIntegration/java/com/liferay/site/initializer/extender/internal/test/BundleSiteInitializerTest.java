@@ -427,13 +427,13 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(clientExtensionEntry);
 
-		CustomElementCET cetCustomElement = (CustomElementCET)_cetFactory.cet(
+		CustomElementCET customElementCET = (CustomElementCET)_cetFactory.cet(
 			clientExtensionEntry);
 
 		Assert.assertEquals(
-			"liferay-test-remote-app", cetCustomElement.getHTMLElementName());
+			"liferay-test-remote-app", customElementCET.getHTMLElementName());
 		Assert.assertEquals(
-			"category.remote-apps", cetCustomElement.getPortletCategoryName());
+			"category.remote-apps", customElementCET.getPortletCategoryName());
 	}
 
 	private void _assertCommerceCatalogs(Group group) throws Exception {
