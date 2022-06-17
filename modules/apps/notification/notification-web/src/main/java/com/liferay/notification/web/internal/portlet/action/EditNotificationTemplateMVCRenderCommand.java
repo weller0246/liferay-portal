@@ -55,7 +55,6 @@ public class EditNotificationTemplateMVCRenderCommand
 			NotificationWebKeys.NOTIFICATION_TEMPLATES,
 			_notificationTemplateLocalService.fetchNotificationTemplate(
 				ParamUtil.getLong(renderRequest, "notificationTemplateId")));
-
 		renderRequest.setAttribute(
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
 			new ViewNotificationTemplatesDisplayContext(
