@@ -65,7 +65,7 @@ public class CETFactoryImpl implements CETFactory {
 
 		String baseURL = cetConfiguration.baseURL();
 
-		// TODO: use AbsolutePortalURLBuilder to make up portalURL value
+		// TODO Use AbsolutePortalURLBuilder
 
 		baseURL = baseURL.replaceAll(
 			Pattern.quote("${portalURL}"), _portal.getPathContext());
