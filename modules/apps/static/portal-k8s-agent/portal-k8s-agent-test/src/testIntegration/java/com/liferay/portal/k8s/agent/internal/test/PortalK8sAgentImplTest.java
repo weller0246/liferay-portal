@@ -55,6 +55,7 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -82,11 +83,6 @@ public class PortalK8sAgentImplTest {
 	@Rule
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
-
-	public void after() {
-		_kubernetesMockClient.close();
-		_kubernetesMockServer.destroy();
-	}
 
 	@Before
 	public void setUp() {
@@ -125,6 +121,13 @@ public class PortalK8sAgentImplTest {
 		_kubernetesMockServer.init(InetAddress.getLoopbackAddress(), 0);
 
 		_kubernetesMockClient = _kubernetesMockServer.createClient();
+	}
+
+	@After
+	public void tearDown() {
+		_kubernetesMockClient.close();
+
+		_kubernetesMockServer.destroy();
 	}
 
 	@Test
