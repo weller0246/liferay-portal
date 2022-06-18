@@ -40,19 +40,21 @@ import org.osgi.service.component.annotations.Reference;
 public class CTSettingsConfigurationHelper {
 
 	public CTSettingsConfiguration getCTSettingsConfiguration(long companyId) {
-		return _getConfiguration(companyId);
+		return _getCTSettingsConfiguration(companyId);
 	}
 
 	public boolean isEnabled(long companyId) {
-		CTSettingsConfiguration configuration = _getConfiguration(companyId);
+		CTSettingsConfiguration ctSettingsConfiguration =
+			_getCTSettingsConfiguration(companyId);
 
-		return configuration.enabled();
+		return ctSettingsConfiguration.enabled();
 	}
 
 	public boolean isSandboxEnabled(long companyId) {
-		CTSettingsConfiguration configuration = _getConfiguration(companyId);
+		CTSettingsConfiguration ctSettingsConfiguration =
+			_getCTSettingsConfiguration(companyId);
 
-		return configuration.sandboxEnabled();
+		return ctSettingsConfiguration.sandboxEnabled();
 	}
 
 	public void save(long companyId, boolean enabled, boolean sandboxEnabled)
@@ -74,7 +76,9 @@ public class CTSettingsConfigurationHelper {
 			CTSettingsConfiguration.class, properties);
 	}
 
-	private CTSettingsConfiguration _getConfiguration(long companyId) {
+	private CTSettingsConfiguration _getCTSettingsConfiguration(
+		long companyId) {
+
 		try {
 			return _configurationProvider.getCompanyConfiguration(
 				CTSettingsConfiguration.class, companyId);
