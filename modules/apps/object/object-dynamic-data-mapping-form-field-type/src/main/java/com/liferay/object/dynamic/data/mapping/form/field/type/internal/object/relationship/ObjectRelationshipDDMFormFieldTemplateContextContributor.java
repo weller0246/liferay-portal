@@ -92,7 +92,15 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 			}
 		).put(
 			"value",
-			_checkValueParameter(ddmFormFieldRenderingContext.getValue())
+			() -> {
+				String value = ddmFormFieldRenderingContext.getValue();
+
+				if (value.equals("0")) {
+					return StringPool.BLANK;
+				}
+
+				return value;
+			}
 		).put(
 			"valueKey", "externalReferenceCode"
 		).build();
@@ -111,14 +119,6 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 		}
 
 		return valueString;
-	}
-
-	private String _checkValueParameter(String value) {
-		if (value.equals("0")) {
-			return StringPool.BLANK;
-		}
-
-		return value;
 	}
 
 	private String _getAPIURL(
