@@ -394,7 +394,8 @@ public class DDMFormRuleToDDMFormRuleModelConverterTest
 
 		for (String ddmExpressionFunctionName : ddmExpressionFunctionNames) {
 			ddmExpressionFunctionFactories.put(
-				ddmExpressionFunctionName, new TestFunctionFactory());
+				ddmExpressionFunctionName,
+				new TestDDMExpressionFunctionFactory());
 		}
 
 		Mockito.when(
@@ -438,7 +439,7 @@ public class DDMFormRuleToDDMFormRuleModelConverterTest
 		_spiDDMFormRuleSerializerContext = Mockito.mock(
 			SPIDDMFormRuleSerializerContext.class);
 
-	private static class TestFunctionFactory
+	private static class TestDDMExpressionFunctionFactory
 		implements DDMExpressionFunctionFactory {
 
 		@Override

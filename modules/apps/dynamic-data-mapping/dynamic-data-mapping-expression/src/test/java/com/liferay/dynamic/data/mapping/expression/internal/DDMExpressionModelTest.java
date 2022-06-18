@@ -62,11 +62,11 @@ public class DDMExpressionModelTest {
 				Matchers.any())
 		).thenReturn(
 			HashMapBuilder.<String, DDMExpressionFunctionFactory>put(
-				"date", new TestFunctionFactory()
+				"date", new TestDDMExpressionFunctionFactory()
 			).put(
-				"equals", new TestFunctionFactory()
+				"equals", new TestDDMExpressionFunctionFactory()
 			).put(
-				"sum", new TestFunctionFactory()
+				"sum", new TestDDMExpressionFunctionFactory()
 			).build()
 		);
 	}
@@ -525,7 +525,7 @@ public class DDMExpressionModelTest {
 
 	private static DDMExpressionFunctionTracker _ddmExpressionFunctionTracker;
 
-	private static class TestFunctionFactory
+	private static class TestDDMExpressionFunctionFactory
 		implements DDMExpressionFunctionFactory {
 
 		@Override
