@@ -61,8 +61,7 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 		throws PortalException {
 
 		CTSettingsConfiguration ctSettingsConfiguration =
-			_getCTSettingsConfiguration(
-				group.getCompanyId());
+			_getCTSettingsConfiguration(group.getCompanyId());
 
 		if (ctSettingsConfiguration.enabled()) {
 			return false;

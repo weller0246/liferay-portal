@@ -131,8 +131,7 @@ public class StagingConfigurationPortlet extends MVCPortlet {
 
 		if (stagingType != StagingConstants.TYPE_NOT_STAGED) {
 			CTSettingsConfiguration ctSettingsConfiguration =
-				_getCTSettingsConfiguration(
-					themeDisplay.getCompanyId());
+				_getCTSettingsConfiguration(themeDisplay.getCompanyId());
 
 			if (ctSettingsConfiguration.enabled()) {
 				SessionErrors.add(actionRequest, "publicationsEnabled");
