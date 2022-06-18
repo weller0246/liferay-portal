@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.change.tracking.web.internal.configuration.configuration.persistence.listener;
+package com.liferay.change.tracking.web.internal.configuration.persistence.listener;
 
 import com.liferay.change.tracking.configuration.CTSettingsConfiguration;
 import com.liferay.change.tracking.exception.CTStagingEnabledException;
