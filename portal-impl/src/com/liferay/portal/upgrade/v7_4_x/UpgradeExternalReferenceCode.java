@@ -15,6 +15,8 @@
 package com.liferay.portal.upgrade.v7_4_x;
 
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringBundler;
@@ -81,7 +83,15 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 		throws Exception {
 
 		if (!hasTable(tableName)) {
+			if (_log.isWarnEnabled()) {
+				_log.warn("Skip nonexistent table " + tableName);
+			}
+
 			return;
+		}
+
+		if (_log.isWarnEnabled()) {
+			_log.warn("Upgrade table " + tableName);
 		}
 
 		if (!hasColumn(tableName, "externalReferenceCode")) {
@@ -143,5 +153,8 @@ public class UpgradeExternalReferenceCode extends UpgradeProcess {
 			}
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		UpgradeExternalReferenceCode.class);
 
 }
