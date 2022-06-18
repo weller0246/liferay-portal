@@ -563,7 +563,8 @@ public class ObjectFieldLocalServiceImpl
 			objectDefinition.setAccountEntryRestrictedObjectFieldId(0);
 			objectDefinition.setAccountEntryRestricted(false);
 
-			_objectDefinitionPersistence.update(objectDefinition);
+			objectDefinition = _objectDefinitionPersistence.update(
+				objectDefinition);
 		}
 
 		String objectFieldSettingFileSource = StringPool.BLANK;
