@@ -44,6 +44,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -95,7 +96,7 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 			() -> {
 				String value = ddmFormFieldRenderingContext.getValue();
 
-				if (value.equals("0")) {
+				if (Objects.equals(value, "0")) {
 					return StringPool.BLANK;
 				}
 
