@@ -69,19 +69,21 @@ public class UpdateGlobalPublicationsConfigurationMVCActionCommand
 
 		long companyId = themeDisplay.getCompanyId();
 
-		CTSettingsConfiguration configuration =
+		CTSettingsConfiguration ctSettingsConfiguration =
 			_ctSettingsConfigurationHelper.getCTSettingsConfiguration(
 				companyId);
 
-		if (configuration.enabled()) {
+		if (ctSettingsConfiguration.enabled()) {
 			redirectURL.setParameter(
 				"mvcRenderCommandName", "/change_tracking/view_settings");
 		}
 
 		boolean enablePublications = ParamUtil.getBoolean(
-			actionRequest, "enablePublications", configuration.enabled());
+			actionRequest, "enablePublications",
+			ctSettingsConfiguration.enabled());
 		boolean enableSandboxOnly = ParamUtil.getBoolean(
-			actionRequest, "enableSandboxOnly", configuration.sandboxEnabled());
+			actionRequest, "enableSandboxOnly",
+			ctSettingsConfiguration.sandboxEnabled());
 
 		try {
 			_portletPermission.check(
