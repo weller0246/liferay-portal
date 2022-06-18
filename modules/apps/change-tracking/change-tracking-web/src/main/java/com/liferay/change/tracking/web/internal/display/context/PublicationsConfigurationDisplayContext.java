@@ -41,12 +41,12 @@ public class PublicationsConfigurationDisplayContext {
 			(ThemeDisplay)_httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		CTSettingsConfiguration configuration =
+		CTSettingsConfiguration ctSettingsConfiguration =
 			ctSettingsConfigurationHelper.getCTSettingsConfiguration(
 				themeDisplay.getCompanyId());
 
-		_publicationsEnabled = configuration.enabled();
-		_sandboxOnlyEnabled = configuration.sandboxEnabled();
+		_publicationsEnabled = ctSettingsConfiguration.enabled();
+		_sandboxOnlyEnabled = ctSettingsConfiguration.sandboxEnabled();
 
 		_renderResponse = renderResponse;
 	}
