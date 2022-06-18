@@ -130,8 +130,9 @@ public class StagingConfigurationPortlet extends MVCPortlet {
 		int stagingType = ParamUtil.getInteger(actionRequest, "stagingType");
 
 		if (stagingType != StagingConstants.TYPE_NOT_STAGED) {
-			CTSettingsConfiguration ctSettingsConfiguration = _getConfiguration(
-				themeDisplay.getCompanyId());
+			CTSettingsConfiguration ctSettingsConfiguration =
+				_getCTSettingsConfiguration(
+					themeDisplay.getCompanyId());
 
 			if (ctSettingsConfiguration.enabled()) {
 				SessionErrors.add(actionRequest, "publicationsEnabled");
@@ -343,7 +344,9 @@ public class StagingConfigurationPortlet extends MVCPortlet {
 		_stagingLocalService = null;
 	}
 
-	private CTSettingsConfiguration _getConfiguration(long companyId) {
+	private CTSettingsConfiguration _getCTSettingsConfiguration(
+		long companyId) {
+
 		try {
 			return _configurationProvider.getCompanyConfiguration(
 				CTSettingsConfiguration.class, companyId);

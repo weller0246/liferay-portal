@@ -60,8 +60,9 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 	public boolean isShow(PermissionChecker permissionChecker, Group group)
 		throws PortalException {
 
-		CTSettingsConfiguration ctSettingsConfiguration = _getConfiguration(
-			group.getCompanyId());
+		CTSettingsConfiguration ctSettingsConfiguration =
+			_getCTSettingsConfiguration(
+				group.getCompanyId());
 
 		if (ctSettingsConfiguration.enabled()) {
 			return false;
@@ -86,20 +87,23 @@ public class StagingProcessesPanelApp extends BasePanelApp {
 			CTSettingsConfiguration.class, properties);
 	}
 
-	private CTSettingsConfiguration _getConfiguration(long companyId) {
-		CTSettingsConfiguration configuration =
+	private CTSettingsConfiguration _getCTSettingsConfiguration(
+		long companyId) {
+
+		CTSettingsConfiguration ctSettingsConfiguration =
 			ConfigurableUtil.createConfigurable(
 				CTSettingsConfiguration.class, Collections.emptyMap());
 
 		try {
-			configuration = _configurationProvider.getCompanyConfiguration(
-				CTSettingsConfiguration.class, companyId);
+			ctSettingsConfiguration =
+				_configurationProvider.getCompanyConfiguration(
+					CTSettingsConfiguration.class, companyId);
 		}
 		catch (ConfigurationException configurationException) {
 			_log.error(configurationException);
 		}
 
-		return configuration;
+		return ctSettingsConfiguration;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
