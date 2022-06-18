@@ -67,6 +67,11 @@ public class ObjectEntryInfoItemCreator
 		throws InfoFormException {
 
 		try {
+			ServiceContext serviceContext =
+				ServiceContextThreadLocal.getServiceContext();
+
+			ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
+
 			Map<String, Serializable> values = new HashMap<>();
 
 			for (InfoFieldValue<Object> infoFieldValue :
@@ -78,11 +83,6 @@ public class ObjectEntryInfoItemCreator
 					infoField.getName(),
 					(Serializable)infoFieldValue.getValue());
 			}
-
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
-
-			ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
 
 			return _objectEntryService.addObjectEntry(
 				_getGroupId(
@@ -111,7 +111,7 @@ public class ObjectEntryInfoItemCreator
 			return 0;
 		}
 
-		Long groupId = 0L;
+		long groupId = 0;
 
 		if (Objects.equals(
 				ObjectDefinitionConstants.SCOPE_SITE,
