@@ -133,11 +133,11 @@ public class ObjectDefinitionGraphQLDTOContributor
 			objectRelationshipLocalService.getObjectRelationships(
 				objectDefinition.getObjectDefinitionId());
 
-		Stream<ObjectRelationship> objectRelationshipsStream =
+		Stream<ObjectRelationship> stream =
 			objectRelationships.stream();
 
-		List<ObjectRelationship> manyToManyRelationships =
-			objectRelationshipsStream.filter(
+		List<ObjectRelationship> manyToManyObjectRelationships =
+			stream.filter(
 				objectRelationship -> objectRelationship.getType(
 				).equals(
 					ObjectRelationshipConstants.TYPE_MANY_TO_MANY
@@ -146,16 +146,16 @@ public class ObjectDefinitionGraphQLDTOContributor
 				Collectors.toList()
 			);
 
-		for (ObjectRelationship manyToManyRelationship :
-				manyToManyRelationships) {
+		for (ObjectRelationship manyToManyObjectRelationship :
+				manyToManyObjectRelationships) {
 
 			graphQLDTOProperties.add(
 				GraphQLDTOProperty.of(
-					manyToManyRelationship.getName(), Long.class));
+					manyToManyObjectRelationship.getName(), Long.class));
 
 			relationshipGraphQLDTOProperties.add(
 				GraphQLDTOProperty.of(
-					manyToManyRelationship.getName(), Map.class));
+					manyToManyObjectRelationship.getName(), Map.class));
 		}
 
 		return new ObjectDefinitionGraphQLDTOContributor(
