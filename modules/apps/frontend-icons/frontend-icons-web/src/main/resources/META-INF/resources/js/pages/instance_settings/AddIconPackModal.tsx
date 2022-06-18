@@ -185,7 +185,7 @@ export default function AddIconPackModal({
 				>
 					<ClayForm.Group className={hasError ? 'has-error' : ''}>
 						<label htmlFor={portletNamespace + 'name'}>
-							{Liferay.Language.get('pack-name')}
+							{Liferay.Language.get('icon-pack-name')}
 						</label>
 
 						<ClayInput
@@ -212,11 +212,11 @@ export default function AddIconPackModal({
 											  )
 											: containsWhiteSpace
 											? Liferay.Language.get(
-													'name-of-icon-pack-cannot-contain-whitespace'
+													'the-icon-pack-name-cannot-contain-whitespace'
 											  )
 											: !iconPackName
 											? Liferay.Language.get(
-													'name-of-icon-pack-is-required'
+													'the-icon-pack-name-pack-is-required'
 											  )
 											: ''
 									}`}
