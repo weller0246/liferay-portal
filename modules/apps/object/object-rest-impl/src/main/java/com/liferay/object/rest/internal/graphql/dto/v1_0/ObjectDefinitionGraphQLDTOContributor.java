@@ -45,6 +45,7 @@ import com.liferay.portal.vulcan.graphql.dto.v1_0.Creator;
 import com.liferay.portal.vulcan.list.type.ListEntry;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.math.BigDecimal;
 
@@ -56,7 +57,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -133,29 +133,19 @@ public class ObjectDefinitionGraphQLDTOContributor
 			objectRelationshipLocalService.getObjectRelationships(
 				objectDefinition.getObjectDefinitionId());
 
-		Stream<ObjectRelationship> stream =
-			objectRelationships.stream();
+		for (ObjectRelationship objectRelationship : objectRelationships) {
+			if (!Objects.equals(
+					objectRelationship.getType(),
+					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
-		List<ObjectRelationship> manyToManyObjectRelationships =
-			stream.filter(
-				objectRelationship -> objectRelationship.getType(
-				).equals(
-					ObjectRelationshipConstants.TYPE_MANY_TO_MANY
-				)
-			).collect(
-				Collectors.toList()
-			);
-
-		for (ObjectRelationship manyToManyObjectRelationship :
-				manyToManyObjectRelationships) {
+				continue;
+			}
 
 			graphQLDTOProperties.add(
 				GraphQLDTOProperty.of(
-					manyToManyObjectRelationship.getName(), Long.class));
-
+					objectRelationship.getName(), Long.class));
 			relationshipGraphQLDTOProperties.add(
-				GraphQLDTOProperty.of(
-					manyToManyObjectRelationship.getName(), Map.class));
+				GraphQLDTOProperty.of(objectRelationship.getName(), Map.class));
 		}
 
 		return new ObjectDefinitionGraphQLDTOContributor(
@@ -277,37 +267,30 @@ public class ObjectDefinitionGraphQLDTOContributor
 			return null;
 		}
 
+		String relationshipIdName = null;
+
 		ObjectEntry objectEntry = _objectEntryManager.getObjectEntry(
 			dtoConverterContext, _objectDefinition, id);
 
 		Map<String, Object> properties = objectEntry.getProperties();
 
-		Set<String> propertiesKeySet = properties.keySet();
+		for (String key : properties.keySet()) {
+			if (key.contains(relationshipName)) {
+				relationshipIdName = key;
 
-		Stream<String> propertiesKeySetStream = propertiesKeySet.stream();
+				break;
+			}
+		}
 
-		String relationshipIdName = propertiesKeySetStream.filter(
-			property -> property.contains(relationshipName)
-		).findFirst(
-		).orElse(
-			StringPool.BLANK
-		);
-
-		if (relationshipIdName.equals(StringPool.BLANK)) {
-			Page<ObjectEntry> objectEntryRelatedObjectEntriesPage =
+		if (relationshipIdName == null) {
+			Page<ObjectEntry> page =
 				_objectEntryManager.getObjectEntryRelatedObjectEntries(
 					dtoConverterContext, _objectDefinition, id,
 					relationshipName,
 					Pagination.of(QueryUtil.ALL_POS, QueryUtil.ALL_POS));
 
-			Collection<ObjectEntry> items =
-				objectEntryRelatedObjectEntriesPage.getItems();
-
-			List<Map<String, Object>> maps = new ArrayList<>();
-
-			items.forEach(objectEntry1 -> maps.add(_toMap(objectEntry1)));
-
-			return (T)maps;
+			return (T)TransformUtil.transform(
+				page.getItems(), itemObjectEntry -> _toMap(itemObjectEntry));
 		}
 
 		Object relationshipId = properties.get(relationshipIdName);
