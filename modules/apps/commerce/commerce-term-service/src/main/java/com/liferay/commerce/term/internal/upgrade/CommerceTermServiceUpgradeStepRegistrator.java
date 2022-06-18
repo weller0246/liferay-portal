@@ -12,55 +12,47 @@
  * details.
  */
 
-package com.liferay.commerce.order.rule.internal.upgrade;
+package com.liferay.commerce.term.internal.upgrade;
 
 import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.BaseUuidUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Cheryl Tang
+ * @author Brian Wing Shun Chan
  */
 @Component(
 	enabled = false, immediate = true, service = UpgradeStepRegistrator.class
 )
-public class CommerceOrderRuleUpgradeStepRegistrator
+public class CommerceTermServiceUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 
 	@Override
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.1.0",
-			new MVCCVersionUpgradeProcess() {
-
-				@Override
-				protected String[] getModuleTableNames() {
-					return new String[] {"COREntry", "COREntryRel"};
-				}
-
-			});
-
-		registry.register(
-			"1.1.0", "1.2.0",
 			new BaseUuidUpgradeProcess() {
 
 				@Override
 				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"COREntry", "COREntryId"}};
+					return new String[][] {
+						{"CommerceTermEntry", "commerceTermEntryId"}
+					};
 				}
 
 			});
 
 		registry.register(
-			"1.2.0", "1.2.1",
+			"1.1.0", "1.1.1",
 			new BaseExternalReferenceCodeUpgradeProcess() {
 
 				@Override
 				protected String[][] getTableAndPrimaryKeyColumnNames() {
-					return new String[][] {{"COREntry", "COREntryId"}};
+					return new String[][] {
+						{"CommerceTermEntry", "commerceTermEntryId"}
+					};
 				}
 
 			});

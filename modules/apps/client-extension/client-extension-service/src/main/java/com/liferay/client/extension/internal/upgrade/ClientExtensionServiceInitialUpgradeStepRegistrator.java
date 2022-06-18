@@ -28,7 +28,7 @@ import org.osgi.service.component.annotations.Reference;
 @Component(
 	enabled = true, immediate = true, service = UpgradeStepRegistrator.class
 )
-public class ClientExtensionInitialUpgradeStepRegistrator
+public class ClientExtensionServiceInitialUpgradeStepRegistrator
 	implements UpgradeStepRegistrator {
 
 	@Override
