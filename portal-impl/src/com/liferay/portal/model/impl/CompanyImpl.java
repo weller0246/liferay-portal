@@ -279,6 +279,10 @@ public class CompanyImpl extends CompanyBaseImpl {
 
 	@Override
 	public String getVirtualHostname() {
+
+		// Call Validator.isNotNull on _virtualHostname because of the field is
+		// an especially annotated CacheField. See LCD-14360.
+
 		if (Validator.isNotNull(_virtualHostname)) {
 			return _virtualHostname;
 		}
