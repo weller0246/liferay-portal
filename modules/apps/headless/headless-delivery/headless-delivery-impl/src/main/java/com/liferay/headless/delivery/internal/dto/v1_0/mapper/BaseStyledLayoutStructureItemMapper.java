@@ -390,7 +390,6 @@ public abstract class BaseStyledLayoutStructureItemMapper
 								"paddingRight", null);
 							paddingTop = styleJSONObject.getString(
 								"paddingTop", null);
-
 							shadow = styleJSONObject.getString("shadow", null);
 							textAlign = styleJSONObject.getString(
 								"textAlign", null);
