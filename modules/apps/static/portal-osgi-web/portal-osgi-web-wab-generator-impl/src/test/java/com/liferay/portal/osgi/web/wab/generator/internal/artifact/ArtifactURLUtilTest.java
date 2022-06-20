@@ -51,24 +51,24 @@ public class ArtifactURLUtilTest {
 	public static void setUpClass() {
 		URL.setURLStreamHandlerFactory(
 			protocol -> {
-				if (Objects.equals("webbundle", protocol)) {
-					return new URLStreamHandler() {
-
-						protected URLConnection openConnection(URL url)
-							throws IOException {
-
-							return new URLConnection(url) {
-
-								public void connect() throws IOException {
-								}
-
-							};
-						}
-
-					};
+				if (!Objects.equals(protocol, "webbundle")) {
+					return null;
 				}
 
-				return null;
+				return new URLStreamHandler() {
+
+					protected URLConnection openConnection(URL url)
+						throws IOException {
+
+						return new URLConnection(url) {
+
+							public void connect() throws IOException {
+							}
+
+						};
+					}
+
+				};
 			});
 	}
 
