@@ -14,7 +14,6 @@
 
 package com.liferay.portal.osgi.web.wab.generator.internal.artifact;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.File;
@@ -73,21 +72,18 @@ public class ArtifactURLUtilTest {
 	}
 
 	@Test
-	public void testClientExtensionURLNoVersionContainsExpectedSymbolicName()
+	public void testClientExtensionURLWithoutVersionContainsExpectedSymbolicName()
 		throws Exception {
 
 		File file = temporaryFolder.newFile("clientextension.zip");
 
 		URI uri = file.toURI();
 
-		URL transformedURL = ArtifactURLUtil.transform(uri.toURL());
+		URL url = ArtifactURLUtil.transform(uri.toURL());
 
-		String query = transformedURL.getQuery();
+		String query = url.getQuery();
 
 		Assert.assertTrue(
-			StringBundler.concat(
-				"Expected ", query, " to contain ",
-				Constants.BUNDLE_SYMBOLICNAME, "=clientextension"),
 			query.contains(Constants.BUNDLE_SYMBOLICNAME + "=clientextension"));
 	}
 
@@ -99,22 +95,15 @@ public class ArtifactURLUtilTest {
 
 		URI uri = file.toURI();
 
-		URL transformedURL = ArtifactURLUtil.transform(uri.toURL());
+		URL url = ArtifactURLUtil.transform(uri.toURL());
 
-		String query = transformedURL.getQuery();
-
-		Assert.assertTrue(
-			StringBundler.concat(
-				"Expected ", query, " to contain ",
-				Constants.BUNDLE_SYMBOLICNAME, "=clientextension"),
-			query.contains(Constants.BUNDLE_SYMBOLICNAME + "=clientextension"));
+		String query = url.getQuery();
 
 		Assert.assertFalse(
-			StringBundler.concat(
-				"Expected ", query, " to not contain ",
-				Constants.BUNDLE_SYMBOLICNAME, "=clientextension-1.0.0"),
 			query.contains(
 				Constants.BUNDLE_SYMBOLICNAME + "=clientextension-1.0.0"));
+		Assert.assertTrue(
+			query.contains(Constants.BUNDLE_SYMBOLICNAME + "=clientextension"));
 	}
 
 	@Test
@@ -123,14 +112,11 @@ public class ArtifactURLUtilTest {
 
 		URI uri = new URI(uriString);
 
-		URL transformedURL = ArtifactURLUtil.transform(uri.toURL());
+		URL url = ArtifactURLUtil.transform(uri.toURL());
 
-		String query = transformedURL.getQuery();
+		String query = url.getQuery();
 
 		Assert.assertTrue(
-			StringBundler.concat(
-				"Expected ", query, " to contain ",
-				Constants.BUNDLE_SYMBOLICNAME, "=classic-theme.autodeployed"),
 			query.contains(
 				Constants.BUNDLE_SYMBOLICNAME + "=classic-theme.autodeployed"));
 	}

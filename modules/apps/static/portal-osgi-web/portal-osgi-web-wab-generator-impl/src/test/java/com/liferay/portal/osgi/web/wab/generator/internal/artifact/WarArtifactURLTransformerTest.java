@@ -43,26 +43,6 @@ public class WarArtifactURLTransformerTest {
 	public static TemporaryFolder temporaryFolder = new TemporaryFolder();
 
 	@Test
-	public void testClientExtensionURLNoConfigFile() throws Exception {
-		File dir = temporaryFolder.newFolder();
-
-		File clientExtensionZipFile = new File(dir, "clientextension.zip");
-
-		clientExtensionZipFile.createNewFile();
-
-		WarArtifactUrlTransformer warArtifactUrlTransformer =
-			new WarArtifactUrlTransformer(new AtomicBoolean(true));
-
-		boolean canTransformURL = warArtifactUrlTransformer.canTransformURL(
-			clientExtensionZipFile);
-
-		Assert.assertFalse(
-			"Expected to not be able to transform file " +
-				clientExtensionZipFile,
-			canTransformURL);
-	}
-
-	@Test
 	public void testClientExtensionURLWithConfigFile() throws Exception {
 		File dir = temporaryFolder.newFolder();
 
@@ -77,27 +57,35 @@ public class WarArtifactURLTransformerTest {
 		WarArtifactUrlTransformer warArtifactUrlTransformer =
 			new WarArtifactUrlTransformer(new AtomicBoolean(true));
 
-		boolean canTransformURL = warArtifactUrlTransformer.canTransformURL(
-			file);
+		Assert.assertTrue(warArtifactUrlTransformer.canTransformURL(file));
+	}
 
-		Assert.assertTrue(
-			"Expected to be able to transform file " + file, canTransformURL);
+	@Test
+	public void testClientExtensionURLWithoutConfigFile() throws Exception {
+		File clientExtensionZipFile = new File(
+			temporaryFolder.newFolder(), "clientextension.zip");
+
+		clientExtensionZipFile.createNewFile();
+
+		WarArtifactUrlTransformer warArtifactUrlTransformer =
+			new WarArtifactUrlTransformer(new AtomicBoolean(true));
+
+		Assert.assertFalse(
+			warArtifactUrlTransformer.canTransformURL(clientExtensionZipFile));
 	}
 
 	private void _zipDirToFile(File dir, File zipFile) throws Exception {
 		try (ZipOutputStream zipOutputStream = new ZipOutputStream(
 				new FileOutputStream(zipFile))) {
 
-			File[] files = dir.listFiles();
-
-			for (File file : files) {
+			for (File file : dir.listFiles()) {
 				ZipEntry zipEntry = new ZipEntry(file.getName());
 
 				zipOutputStream.putNextEntry(zipEntry);
 
-				byte[] data = Files.readAllBytes(file.toPath());
+				byte[] bytes = Files.readAllBytes(file.toPath());
 
-				zipOutputStream.write(data, 0, data.length);
+				zipOutputStream.write(bytes, 0, bytes.length);
 
 				zipOutputStream.closeEntry();
 			}
