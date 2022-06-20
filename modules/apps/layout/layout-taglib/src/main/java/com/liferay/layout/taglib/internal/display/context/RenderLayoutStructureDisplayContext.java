@@ -135,25 +135,25 @@ public class RenderLayoutStructureDisplayContext {
 	public String getColorCssClasses(
 		StyledLayoutStructureItem styledLayoutStructureItem) {
 
-		StringBundler cssClassSB = new StringBundler(4);
+		StringBundler sb = new StringBundler(4);
 
 		String backgroundColorCssClass =
 			styledLayoutStructureItem.getBackgroundColorCssClass();
 
 		if (_themeColorsCssClasses.contains(backgroundColorCssClass)) {
-			cssClassSB.append("bg-");
-			cssClassSB.append(backgroundColorCssClass);
+			sb.append("bg-");
+			sb.append(backgroundColorCssClass);
 		}
 
 		String textColorCssClass =
 			styledLayoutStructureItem.getTextColorCssClass();
 
 		if (_themeColorsCssClasses.contains(textColorCssClass)) {
-			cssClassSB.append(" text-");
-			cssClassSB.append(textColorCssClass);
+			sb.append(" text-");
+			sb.append(textColorCssClass);
 		}
 
-		return cssClassSB.toString();
+		return sb.toString();
 	}
 
 	public String getContainerLinkHref(
@@ -397,7 +397,7 @@ public class RenderLayoutStructureDisplayContext {
 	public String getStyle(StyledLayoutStructureItem styledLayoutStructureItem)
 		throws Exception {
 
-		StringBundler styleSB = new StringBundler(8);
+		StringBundler sb = new StringBundler(8);
 
 		JSONObject backgroundImageJSONObject =
 			styledLayoutStructureItem.getBackgroundImageJSONObject();
@@ -437,23 +437,23 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		if (fileEntryId != 0) {
-			styleSB.append("--background-image-file-entry-id:");
-			styleSB.append(fileEntryId);
-			styleSB.append(StringPool.SEMICOLON);
+			sb.append("--background-image-file-entry-id:");
+			sb.append(fileEntryId);
+			sb.append(StringPool.SEMICOLON);
 		}
 
 		String backgroundImageURL = _getBackgroundImage(
 			backgroundImageJSONObject);
 
 		if (Validator.isNotNull(backgroundImageURL)) {
-			styleSB.append("--lfr-background-image-");
-			styleSB.append(styledLayoutStructureItem.getItemId());
-			styleSB.append(": url(");
-			styleSB.append(backgroundImageURL);
-			styleSB.append(");");
+			sb.append("--lfr-background-image-");
+			sb.append(styledLayoutStructureItem.getItemId());
+			sb.append(": url(");
+			sb.append(backgroundImageURL);
+			sb.append(");");
 		}
 
-		return styleSB.toString();
+		return sb.toString();
 	}
 
 	public String getStyleFromStyleBookEntry(String styleValue)

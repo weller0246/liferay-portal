@@ -724,7 +724,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(StringPool.LESS_THAN);
 		jspWriter.write(htmlTag);
 		jspWriter.write(" class=\"");
-
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
 				containerStyledLayoutStructureItem));
@@ -1186,7 +1185,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		}
 
 		jspWriter.write("<div class=\"");
-
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
 				rowStyledLayoutStructureItem));
@@ -1198,7 +1196,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
 				rowStyledLayoutStructureItem));
-
 		jspWriter.write("\" style=\"");
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
