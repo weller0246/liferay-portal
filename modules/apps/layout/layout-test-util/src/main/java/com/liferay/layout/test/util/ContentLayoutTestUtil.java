@@ -228,9 +228,9 @@ public class ContentLayoutTestUtil {
 				CompanyLocalServiceUtil.getCompany(layout.getCompanyId()),
 				GroupLocalServiceUtil.getGroup(layout.getGroupId()), layout);
 
+		mockLiferayPortletActionRequest.addParameter("itemId", itemId);
 		mockLiferayPortletActionRequest.addParameter(
 			"portletIds", new String[] {portletId});
-		mockLiferayPortletActionRequest.addParameter("itemId", itemId);
 
 		return ReflectionTestUtil.invoke(
 			markItemForDeletionMVCActionCommand, "doTransactionalCommand",
