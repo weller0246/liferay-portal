@@ -33,7 +33,7 @@ import org.junit.rules.TemporaryFolder;
 /**
  * @author Gregory Amerson
  */
-public class WarArtifactURLTransformerTest {
+public class WarArtifactUrlTransformerTest {
 
 	@ClassRule
 	public static LiferayUnitTestRule liferayUnitTestRule =
