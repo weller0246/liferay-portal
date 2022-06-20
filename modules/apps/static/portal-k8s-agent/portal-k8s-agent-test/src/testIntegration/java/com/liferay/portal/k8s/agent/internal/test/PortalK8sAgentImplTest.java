@@ -21,14 +21,12 @@ import com.liferay.portal.k8s.agent.PortalK8sConfigMapModifier;
 import com.liferay.portal.k8s.agent.configuration.v1.PortalK8sAgentConfiguration;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
@@ -266,8 +264,7 @@ public class PortalK8sAgentImplTest {
 
 			Map<String, String> data = configMap.getData();
 
-			Assert.assertEquals(
-				webId, data.get("com.liferay.lxc.dxp.domains"));
+			Assert.assertEquals(webId, data.get("com.liferay.lxc.dxp.domains"));
 			Assert.assertEquals(
 				webId, data.get("com.liferay.lxc.dxp.mainDomain"));
 
