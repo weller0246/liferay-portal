@@ -274,13 +274,13 @@ public class ObjectRelationshipLocalServiceTest {
 	}
 
 	private void _testSystemObjectRelationshipManyToMany() throws Exception {
-		String relationshipName = StringUtil.randomId();
-
 		for (String deletionType :
 				Arrays.asList(
 					ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
 					ObjectRelationshipConstants.DELETION_TYPE_CASCADE,
 					ObjectRelationshipConstants.DELETION_TYPE_DISASSOCIATE)) {
+
+			String relationshipName = StringUtil.randomId();
 
 			ObjectRelationship objectRelationship =
 				_objectRelationshipLocalService.addObjectRelationship(
