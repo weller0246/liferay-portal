@@ -89,20 +89,20 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 
 			_updateDLSizeLimitConfiguration(group.getGroupId(), actionRequest);
 		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-
-			SessionErrors.add(
-				actionRequest, portalException.getClass(), portalException);
-
-			actionResponse.sendRedirect(
-				ParamUtil.getString(actionRequest, "redirect"));
-		}
 		catch (ConfigurationModelListenerException
 					configurationModelListenerException) {
 
 			SessionErrors.add(
 				actionRequest, configurationModelListenerException.getClass());
+
+			actionResponse.sendRedirect(
+				ParamUtil.getString(actionRequest, "redirect"));
+		}
+		catch (PortalException portalException) {
+			_log.error(portalException);
+
+			SessionErrors.add(
+				actionRequest, portalException.getClass(), portalException);
 
 			actionResponse.sendRedirect(
 				ParamUtil.getString(actionRequest, "redirect"));
