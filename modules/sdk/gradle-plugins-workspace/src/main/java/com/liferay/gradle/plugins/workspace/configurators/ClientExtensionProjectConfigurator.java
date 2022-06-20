@@ -110,15 +110,16 @@ public class ClientExtensionProjectConfigurator
 	@Override
 	public void apply(Project project) {
 		TaskProvider<CreateClientExtensionConfigTask>
-			createClientExtensionConfigProvider = GradleUtil.addTaskProvider(
-				project, CREATE_CLIENT_EXTENSION_CONFIG_TASK_NAME,
-				CreateClientExtensionConfigTask.class);
+			createClientExtensionConfigTaskProvider =
+				GradleUtil.addTaskProvider(
+					project, CREATE_CLIENT_EXTENSION_CONFIG_TASK_NAME,
+					CreateClientExtensionConfigTask.class);
 
 		TaskProvider<Zip> zipTaskProvider = GradleUtil.addTaskProvider(
 			project, BUILD_CLIENT_EXTENSION_TASK_NAME, Zip.class);
 
 		_baseConfigureClientExtensionProject(
-			project, createClientExtensionConfigProvider, zipTaskProvider);
+			project, createClientExtensionConfigTaskProvider, zipTaskProvider);
 
 		File clientExtensionFile = project.file(_CLIENT_EXTENSION_YAML);
 
@@ -143,9 +144,10 @@ public class ClientExtensionProjectConfigurator
 						clientExtension.id = id;
 						clientExtension.projectName = project.getName();
 
-						createClientExtensionConfigProvider.configure(
-							config -> config.addClientExtension(
-								clientExtension));
+						createClientExtensionConfigTaskProvider.configure(
+							createClientExtensionConfigTask ->
+								createClientExtensionConfigTask.
+									addClientExtension(clientExtension));
 
 						ClientExtensionTypeConfigurer
 							clientExtensionTypeConfigurer =
@@ -224,7 +226,7 @@ public class ClientExtensionProjectConfigurator
 	private TaskProvider<Zip> _baseConfigureClientExtensionProject(
 		Project project,
 		TaskProvider<CreateClientExtensionConfigTask>
-			createClientExtensionConfigProvider,
+			createClientExtensionConfigTaskProvider,
 		TaskProvider<Zip> zipTaskProvider) {
 
 		if (isDefaultRepositoryEnabled()) {
@@ -249,7 +251,7 @@ public class ClientExtensionProjectConfigurator
 		_configureTaskDeploy(project);
 
 		_configureTaskBuildClientExtension(
-			project, createClientExtensionConfigProvider, zipTaskProvider);
+			project, createClientExtensionConfigTaskProvider, zipTaskProvider);
 
 		addTaskDockerDeploy(
 			project, zipTaskProvider,
@@ -335,7 +337,7 @@ public class ClientExtensionProjectConfigurator
 	private void _configureTaskBuildClientExtension(
 		Project project,
 		TaskProvider<CreateClientExtensionConfigTask>
-			createClientExtensionConfigProvider,
+			createClientExtensionConfigTaskProvider,
 		TaskProvider<Zip> zipTaskProvider) {
 
 		zipTaskProvider.configure(
@@ -360,7 +362,7 @@ public class ClientExtensionProjectConfigurator
 
 						}));
 
-				zip.from(createClientExtensionConfigProvider);
+				zip.from(createClientExtensionConfigTaskProvider);
 			});
 	}
 
