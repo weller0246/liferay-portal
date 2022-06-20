@@ -47,8 +47,8 @@ public class ThemeJSCETImpl extends BaseCETImpl implements ThemeJSCET {
 	}
 
 	public ThemeJSCETImpl(
-		String baseURL, long companyId, String description, String name,
-		String externalReferenceCode, Properties properties,
+		String baseURL, long companyId, String description,
+		String externalReferenceCode, String name, Properties properties,
 		String sourceCodeURL, UnicodeProperties typeSettingsUnicodeProperties) {
 
 		super(
