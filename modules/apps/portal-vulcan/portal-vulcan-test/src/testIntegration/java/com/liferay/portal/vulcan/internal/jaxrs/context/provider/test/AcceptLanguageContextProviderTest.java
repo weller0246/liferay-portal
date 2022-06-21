@@ -51,7 +51,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -116,7 +115,6 @@ public class AcceptLanguageContextProviderTest {
 		_testCreateContext(LocaleUtil.BRAZIL, user);
 	}
 
-	@Ignore
 	@Test
 	public void testCreateContextWithDefaultUser() throws Exception {
 		User user = _company.getDefaultUser();
