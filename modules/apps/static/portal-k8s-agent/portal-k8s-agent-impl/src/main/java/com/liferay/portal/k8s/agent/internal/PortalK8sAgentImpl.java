@@ -133,11 +133,8 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 
 		if (configMap != null) {
 			Map<String, String> annotations = _getAnnotations(configMap);
-
 			Map<String, String> binaryData = _getBinaryData(configMap);
-
 			Map<String, String> data = _getData(configMap);
-
 			Map<String, String> labels = _getLabels(configMap);
 
 			ConfigMap originalConfigMap = new ConfigMapBuilder(
