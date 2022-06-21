@@ -18,13 +18,13 @@ import com.liferay.fragment.exception.FragmentEntryContentException;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.processor.FragmentEntryProcessor;
 import com.liferay.fragment.processor.FragmentEntryProcessorContext;
+import com.liferay.layout.constants.LayoutWebKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItemCSSUtil;
 import com.liferay.layout.util.structure.StyledLayoutStructureItem;
-import com.liferay.layout.util.structure.constants.LayoutStructureWebKeys;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONObject;
@@ -149,7 +149,7 @@ public class StylesFragmentEntryProcessor implements FragmentEntryProcessor {
 
 		LayoutStructure layoutStructure =
 			(LayoutStructure)httpServletRequest.getAttribute(
-				LayoutStructureWebKeys.LAYOUT_STRUCTURE);
+				LayoutWebKeys.LAYOUT_STRUCTURE);
 
 		if (layoutStructure == null) {
 			try {

@@ -22,13 +22,13 @@ import com.liferay.fragment.processor.FragmentEntryProcessorContext;
 import com.liferay.fragment.processor.PortletRegistry;
 import com.liferay.fragment.renderer.FragmentPortletRenderer;
 import com.liferay.fragment.service.FragmentEntryLinkLocalService;
+import com.liferay.layout.constants.LayoutWebKeys;
 import com.liferay.layout.page.template.model.LayoutPageTemplateStructure;
 import com.liferay.layout.page.template.service.LayoutPageTemplateEntryLocalService;
 import com.liferay.layout.page.template.service.LayoutPageTemplateStructureLocalService;
 import com.liferay.layout.service.LayoutClassedModelUsageLocalService;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
-import com.liferay.layout.util.structure.constants.LayoutStructureWebKeys;
 import com.liferay.petra.string.CharPool;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -268,7 +268,7 @@ public class PortletFragmentEntryProcessor implements FragmentEntryProcessor {
 
 		LayoutStructure layoutStructure =
 			(LayoutStructure)httpServletRequest.getAttribute(
-				LayoutStructureWebKeys.LAYOUT_STRUCTURE);
+				LayoutWebKeys.LAYOUT_STRUCTURE);
 
 		if (layoutStructure == null) {
 			LayoutPageTemplateStructure layoutPageTemplateStructure =
