@@ -570,8 +570,8 @@ public class CommerceShipmentItemLocalServiceImpl
 				commerceShipmentItemId) {
 
 			throw new DuplicateCommerceShipmentItemException(
-				"There is another shipment item with external reference code " +
-					externalReferenceCode);
+				"There is another commerce shipment item with external " +
+					"reference code " + externalReferenceCode);
 		}
 	}
 
