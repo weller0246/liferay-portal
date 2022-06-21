@@ -61,9 +61,6 @@ public class SegmentsConfigurationProviderTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
-		mockHttpServletRequest.setAttribute(
-			WebKeys.USER_ID, TestPropsValues.getUserId());
-
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setCompany(
@@ -73,6 +70,9 @@ public class SegmentsConfigurationProviderTest {
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
+
+		mockHttpServletRequest.setAttribute(
+			WebKeys.USER_ID, TestPropsValues.getUserId());
 
 		String configurationURL =
 			_segmentsConfigurationProvider.getConfigurationURL(
@@ -89,27 +89,23 @@ public class SegmentsConfigurationProviderTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
+		ThemeDisplay themeDisplay = new ThemeDisplay();
+
+		themeDisplay.setCompany(
+			_companyLocalService.fetchCompany(TestPropsValues.getCompanyId()));
+
+		mockHttpServletRequest.setAttribute(
+			WebKeys.THEME_DISPLAY, themeDisplay);
+
 		User user = UserTestUtil.addUser(TestPropsValues.getGroupId());
 
 		mockHttpServletRequest.setAttribute(WebKeys.USER_ID, user.getUserId());
 
-		try {
-			ThemeDisplay themeDisplay = new ThemeDisplay();
+		Assert.assertNull(
+			_segmentsConfigurationProvider.getConfigurationURL(
+				mockHttpServletRequest));
 
-			themeDisplay.setCompany(
-				_companyLocalService.fetchCompany(
-					TestPropsValues.getCompanyId()));
-
-			mockHttpServletRequest.setAttribute(
-				WebKeys.THEME_DISPLAY, themeDisplay);
-
-			Assert.assertNull(
-				_segmentsConfigurationProvider.getConfigurationURL(
-					mockHttpServletRequest));
-		}
-		finally {
-			_userLocalService.deleteUser(user);
-		}
+		_userLocalService.deleteUser(user);
 	}
 
 	@Test
