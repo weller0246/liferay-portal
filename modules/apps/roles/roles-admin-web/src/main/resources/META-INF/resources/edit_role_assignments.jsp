@@ -117,9 +117,7 @@ renderResponse.setTitle(role.getTitle(locale));
 				<clay:link
 					cssClass="assign-roles-segments-warning"
 					href="<%= segmentsConfigurationURL %>"
-					label='<%=
-						LanguageUtil.get(request, "to-enable,-go-to-instance-settings")
-%>'
+					label='<%= LanguageUtil.get(request, "to-enable,-go-to-instance-settings") %>'
 				/>
 			</c:when>
 			<c:otherwise>
