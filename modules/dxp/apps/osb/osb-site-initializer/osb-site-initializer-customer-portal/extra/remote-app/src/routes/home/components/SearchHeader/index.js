@@ -11,12 +11,8 @@
 
 import {useState} from 'react';
 import i18n from '../../../../common/I18n';
-<<<<<<< HEAD
 import Skeleton from '../../../../common/components/Skeleton';
-import SearchBar from './components/SearchBar';
-=======
 import SearchBar from './components/SearchBar/SearchBar';
->>>>>>> 548f504 (LPS-155445 Changes in the SearchBar import)
 
 const SearchHeader = ({count, loading, onSearchSubmit}) => {
 	const [searchTerm, setSearchTerm] = useState('');
