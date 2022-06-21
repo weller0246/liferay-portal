@@ -58,6 +58,8 @@ public class CETManagerImpl implements CETManager {
 		CET cet = _cetFactory.create(
 			cetConfiguration, companyId, externalReferenceCode);
 
+		_undeployCET(cet);
+
 		Map<String, CET> cetsMap = _getCETsMap(cet.getCompanyId());
 
 		cetsMap.put(externalReferenceCode, cet);
