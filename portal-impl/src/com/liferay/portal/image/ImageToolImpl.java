@@ -707,18 +707,18 @@ public class ImageToolImpl implements ImageTool {
 			OutputStream outputStream)
 		throws IOException {
 
-		Iterator<ImageWriter> imageWriterIterator =
-			ImageIO.getImageWritersByMIMEType(contentType);
+		Iterator<ImageWriter> iterator = ImageIO.getImageWritersByMIMEType(
+			contentType);
 
-		if (!imageWriterIterator.hasNext()) {
-			ImageTypeSpecifier type =
+		if (!iterator.hasNext()) {
+			ImageTypeSpecifier imageTypeSpecifier =
 				ImageTypeSpecifier.createFromRenderedImage(renderedImage);
 
-			imageWriterIterator = ImageIO.getImageWriters(type, contentType);
+			iterator = ImageIO.getImageWriters(imageTypeSpecifier, contentType);
 		}
 
-		while (imageWriterIterator.hasNext()) {
-			ImageWriter imageWriter = imageWriterIterator.next();
+		while (iterator.hasNext()) {
+			ImageWriter imageWriter = iterator.next();
 
 			ImageOutputStream imageOutputStream =
 				ImageIO.createImageOutputStream(outputStream);
@@ -742,7 +742,7 @@ public class ImageToolImpl implements ImageTool {
 			}
 		}
 
-		throw new IOException("No image writer available for image type");
+		throw new IOException("No image writer is available for image type");
 	}
 
 	protected RenderedImage doScale(
