@@ -178,9 +178,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		RenderLayoutStructureTag.class.getName() + "#COLLECTION_ELEMENT_INDEX";
 
 	private String _getErrorMessage(
-			FormStyledLayoutStructureItem formStyledLayoutStructureItem,
-			InfoForm infoForm)
-		throws Exception {
+		FormStyledLayoutStructureItem formStyledLayoutStructureItem,
+		InfoForm infoForm) {
 
 		HttpServletRequest httpServletRequest = getRequest();
 
