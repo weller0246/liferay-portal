@@ -14,6 +14,7 @@
 
 package com.liferay.client.extension.type.internal.factory;
 
+import com.liferay.client.extension.constants.ClientExtensionEntryConstants;
 import com.liferay.client.extension.exception.ClientExtensionEntryTypeException;
 import com.liferay.client.extension.model.ClientExtensionEntry;
 import com.liferay.client.extension.type.CET;
@@ -23,6 +24,7 @@ import com.liferay.client.extension.type.factory.CETImplFactory;
 import com.liferay.petra.string.StringPool;
 import com.liferay.petra.string.StringUtil;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PropertiesUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
@@ -31,6 +33,8 @@ import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 import java.io.IOException;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -42,7 +46,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Brian Wing Shun Chan
  */
-@Component(service = CETFactory.class)
+@Component(immediate = true, service = CETFactory.class)
 public class CETFactoryImpl implements CETFactory {
 
 	@Override
@@ -99,7 +103,7 @@ public class CETFactoryImpl implements CETFactory {
 
 	@Override
 	public Collection<String> getTypes() {
-		return _cetImplFactoryRegistry.getTypes();
+		return Collections.unmodifiableSet(_cetImplFactories.keySet());
 	}
 
 	@Override
@@ -117,7 +121,13 @@ public class CETFactoryImpl implements CETFactory {
 	private CETImplFactory _getCETImplFactory(String type)
 		throws ClientExtensionEntryTypeException {
 
-		return _cetImplFactoryRegistry.getCETImplFactory(type);
+		CETImplFactory cetImplFactory = _cetImplFactories.get(type);
+
+		if (cetImplFactory != null) {
+			return cetImplFactory;
+		}
+
+		throw new ClientExtensionEntryTypeException("Unknown type " + type);
 	}
 
 	private Properties _loadProperties(CETConfiguration cetConfiguration)
@@ -154,8 +164,29 @@ public class CETFactoryImpl implements CETFactory {
 		return typeSettingsUnicodeProperties;
 	}
 
-	@Reference
-	private CETImplFactoryRegistry _cetImplFactoryRegistry;
+	private final Map<String, CETImplFactory> _cetImplFactories =
+		HashMapBuilder.<String, CETImplFactory>put(
+			ClientExtensionEntryConstants.TYPE_CUSTOM_ELEMENT,
+			new CustomElementCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_GLOBAL_CSS,
+			new GlobalCSSCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_GLOBAL_JS,
+			new GlobalJSCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_IFRAME,
+			new IFrameCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_THEME_CSS,
+			new ThemeCSSCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_THEME_FAVICON,
+			new ThemeFaviconCETImplFactoryImpl()
+		).put(
+			ClientExtensionEntryConstants.TYPE_THEME_JS,
+			new ThemeJSCETImplFactoryImpl()
+		).build();
 
 	@Reference
 	private Portal _portal;
