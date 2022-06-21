@@ -142,17 +142,18 @@ public class OpenIdConnectAuthenticationHandlerImpl
 			httpServletRequest);
 
 		Issuer issuer = null;
-		OIDCProviderMetadata providerMetadata =
+
+		OIDCProviderMetadata oidcProviderMetadata =
 			openIdConnectProvider.getOIDCProviderMetadata();
 
-		if (providerMetadata != null) {
-			issuer = providerMetadata.getIssuer();
+		if (oidcProviderMetadata != null) {
+			issuer = oidcProviderMetadata.getIssuer();
 		}
 
 		long userId = _openIdConnectUserInfoProcessor.processUserInfo(
 			userInfo, _portal.getCompanyId(httpServletRequest),
-			serviceContext.getPathMain(), serviceContext.getPortalURL(),
-			issuer.getValue());
+			issuer.getValue(), serviceContext.getPathMain(),
+			serviceContext.getPortalURL());
 
 		userIdUnsafeConsumer.accept(userId);
 

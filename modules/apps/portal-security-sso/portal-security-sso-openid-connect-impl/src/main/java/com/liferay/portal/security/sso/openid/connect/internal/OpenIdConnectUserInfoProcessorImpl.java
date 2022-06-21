@@ -37,6 +37,7 @@ import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -50,17 +51,8 @@ public class OpenIdConnectUserInfoProcessorImpl
 
 	@Override
 	public long processUserInfo(
-			UserInfo userInfo, long companyId, String mainPath,
+			UserInfo userInfo, long companyId, String issuer, String mainPath,
 			String portalURL)
-		throws PortalException {
-
-		return processUserInfo(userInfo, companyId, mainPath, portalURL, null);
-	}
-
-	@Override
-	public long processUserInfo(
-			UserInfo userInfo, long companyId, String mainPath,
-			String portalURL, String issuer)
 		throws PortalException {
 
 		String emailAddress = userInfo.getEmailAddress();
@@ -147,14 +139,12 @@ public class OpenIdConnectUserInfoProcessorImpl
 	}
 
 	private long[] _getRoleIds(long companyId, String issuer) {
-		if (Validator.isNull(issuer)) {
-			return null;
-		}
+		if (Validator.isNull(issuer) ||
+			Objects.equals(
+				issuer,
+				_props.get(
+					"open.id.connect.user.info.processor.impl.issuer"))) {
 
-		String issuerDefined = _props.get(
-			"open.id.connect.user.info.processor.impl.issuer.defined");
-
-		if (!issuer.equals(issuerDefined)) {
 			return null;
 		}
 
