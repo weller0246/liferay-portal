@@ -14,6 +14,7 @@ import ProjectList from './components/ProjectsList';
 import SearchHeader from './components/SearchHeader';
 import useHasManyProjects from './hooks/useHasManyProjects';
 import useKoroneikiAccounts from './hooks/useKoroneikiAccounts';
+import './app.scss';
 
 const Home = () => {
 	const {data, fetchMore, fetching, loading, search} = useKoroneikiAccounts();
