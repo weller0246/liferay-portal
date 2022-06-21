@@ -9,20 +9,12 @@
  * distribution rights of the Software.
  */
 
-<<<<<<< HEAD
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import classNames from 'classnames';
 import {useEffect} from 'react';
 import i18n from '../../../../common/I18n';
-import ProjectCard from './components/ProjectCard';
+import ProjectCard from './components/ProjectCard/ProjectCard';
 import useIntersectionObserver from './hooks/useIntersectionObserver';
-
-const THRESHOLD_COUNT = 4;
-
-const getLoadingCards = () =>
-	[...new Array(THRESHOLD_COUNT)].map((_, index) => (
-		<ProjectCard key={index} loading />
-	));
 
 const ProjectList = ({
 	fetching,
@@ -81,6 +73,10 @@ const ProjectList = ({
 		);
 	};
 
+	if (loading) {
+		return <>Loading</>;
+	}
+
 	return (
 		<div
 			className={classNames('d-flex flex-wrap', {
@@ -88,12 +84,9 @@ const ProjectList = ({
 				'cp-home-projects-sm pt-2': hasManyProjects,
 			})}
 		>
-			{loading ? getLoadingCards() : showResults()}
+			{showResults()}
 		</div>
 	);
 };
 
 export default ProjectList;
-=======
-export {default} from './ProjectList';
->>>>>>> b658384 (LPS-155445 Add new files aproach)
