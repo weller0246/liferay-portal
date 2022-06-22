@@ -1478,34 +1478,34 @@ public class BundleSiteInitializer implements SiteInitializer {
 			type = LayoutConstants.TYPE_PORTLET;
 		}
 
-		Map<Locale, String> nameI18nMap = new HashMap<>(
+		Map<Locale, String> nameMap = new HashMap<>(
 			SiteInitializerUtil.toMap(jsonObject.getString("name_i18n")));
 
 		Locale siteDefaultLocale = _portal.getSiteDefaultLocale(
 			serviceContext.getScopeGroupId());
 
-		if (!nameI18nMap.containsKey(siteDefaultLocale)) {
-			nameI18nMap.put(siteDefaultLocale, jsonObject.getString("name"));
+		if (!nameMap.containsKey(siteDefaultLocale)) {
+			nameMap.put(siteDefaultLocale, jsonObject.getString("name"));
 		}
 
-		Map<Locale, String> friendlyURLI18nMap = new HashMap<>(
+		Map<Locale, String> friendlyURLMap = new HashMap<>(
 			SiteInitializerUtil.toMap(
 				jsonObject.getString("friendlyURL_i18n")));
 
-		if (!friendlyURLI18nMap.containsKey(siteDefaultLocale)) {
-			friendlyURLI18nMap.put(
+		if (!friendlyURLMap.containsKey(siteDefaultLocale)) {
+			friendlyURLMap.put(
 				siteDefaultLocale, jsonObject.getString("friendlyURL"));
 		}
 
 		Layout layout = _layoutLocalService.addLayout(
 			serviceContext.getUserId(), serviceContext.getScopeGroupId(),
-			jsonObject.getBoolean("private"), parentLayoutId, nameI18nMap,
+			jsonObject.getBoolean("private"), parentLayoutId, nameMap,
 			SiteInitializerUtil.toMap(jsonObject.getString("title_i18n")),
 			SiteInitializerUtil.toMap(jsonObject.getString("description_i18n")),
 			SiteInitializerUtil.toMap(jsonObject.getString("keywords_i18n")),
 			SiteInitializerUtil.toMap(jsonObject.getString("robots_i18n")),
 			type, null, jsonObject.getBoolean("hidden"),
-			jsonObject.getBoolean("system"), friendlyURLI18nMap,
+			jsonObject.getBoolean("system"), friendlyURLMap,
 			serviceContext);
 
 		if (jsonObject.has("priority")) {
