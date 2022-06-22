@@ -1472,12 +1472,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(json);
 
-		String type = StringUtil.toLowerCase(jsonObject.getString("type"));
-
-		if (Objects.equals(type, "widget")) {
-			type = LayoutConstants.TYPE_PORTLET;
-		}
-
 		Map<Locale, String> nameMap = new HashMap<>(
 			SiteInitializerUtil.toMap(jsonObject.getString("name_i18n")));
 
@@ -1486,6 +1480,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		if (!nameMap.containsKey(siteDefaultLocale)) {
 			nameMap.put(siteDefaultLocale, jsonObject.getString("name"));
+		}
+
+		String type = StringUtil.toLowerCase(jsonObject.getString("type"));
+
+		if (Objects.equals(type, "widget")) {
+			type = LayoutConstants.TYPE_PORTLET;
 		}
 
 		Map<Locale, String> friendlyURLMap = new HashMap<>(
