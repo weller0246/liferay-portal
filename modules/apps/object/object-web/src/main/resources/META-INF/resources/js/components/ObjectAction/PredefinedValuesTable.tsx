@@ -104,7 +104,7 @@ export default function PredefinedValuesTable({
 								<div
 									data-tooltip-align="top"
 									title={Liferay.Language.get(
-										'by-checking-this-option-expressions-will-not-be-used-for-filling-the-predefined-value-field'
+										'by-checking-this-option,-expressions-will-not-be-used-for-filling-the-predefined-value-field'
 									)}
 								>
 									<ClayIcon
