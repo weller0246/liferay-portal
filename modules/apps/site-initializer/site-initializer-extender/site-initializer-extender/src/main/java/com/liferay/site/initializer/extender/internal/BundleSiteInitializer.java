@@ -1505,8 +1505,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			SiteInitializerUtil.toMap(jsonObject.getString("keywords_i18n")),
 			SiteInitializerUtil.toMap(jsonObject.getString("robots_i18n")),
 			type, null, jsonObject.getBoolean("hidden"),
-			jsonObject.getBoolean("system"), friendlyURLMap,
-			serviceContext);
+			jsonObject.getBoolean("system"), friendlyURLMap, serviceContext);
 
 		if (jsonObject.has("priority")) {
 			layout = _layoutLocalService.updatePriority(
