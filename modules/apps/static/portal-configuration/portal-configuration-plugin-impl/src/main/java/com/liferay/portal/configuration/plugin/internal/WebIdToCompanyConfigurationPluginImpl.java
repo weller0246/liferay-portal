@@ -55,10 +55,9 @@ public class WebIdToCompanyConfigurationPluginImpl
 
 		try {
 
-			// This logic is deliberately using CompanyLocalServiceUtil because
-			// this must execute very early in portal initialization and while
-			// that part of the spring context IS wired up it hasn't yet been
-			// published as OSGi services.
+			// Use CompanyLocalServiceUtil because this executes early in the
+			// portal initialization when Spring has been wired but the OSGi
+			// service is not yet published
 
 			company = CompanyLocalServiceUtil.getCompanyByWebId(webId);
 		}
