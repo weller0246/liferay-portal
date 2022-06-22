@@ -17,7 +17,7 @@
 <%@ include file="/empty_result_message/init.jsp" %>
 
 <div class="taglib-empty-result-message <%= Validator.isNotNull(animationTypeCssClass) ? "c-empty-state-animation" : StringPool.BLANK %>">
-	<div class="<%= "c-empty-state-image " + animationTypeCssClass %>"></div>
+	<div class="c-empty-state-image <%= animationTypeCssClass %>"></div>
 
 	<h1 class="taglib-empty-result-message-title">
 		<c:choose>
