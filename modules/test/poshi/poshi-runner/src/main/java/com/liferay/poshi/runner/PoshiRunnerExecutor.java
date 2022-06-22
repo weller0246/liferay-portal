@@ -871,7 +871,7 @@ public class PoshiRunnerExecutor {
 				properties.getProperty("disable-webdriver"))) {
 
 			throw new RuntimeException(
-				"Unable to call selenium method while webdriver is disabled");
+				"Unable to call Selenium method while WebDriver is disabled");
 		}
 
 		PoshiStackTraceUtil.setCurrentElement(executeElement);
