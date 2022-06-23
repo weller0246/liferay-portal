@@ -11,29 +11,28 @@
  * FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for more
  * details.
  */
+package com.liferay.message.boards.exception;
 
-package com.liferay.message.boards.uad.constants;
+import com.liferay.portal.kernel.exception.NoSuchModelException;
 
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
-public class MBUADConstants {
+public class NoSuchSuspiciousActivityException extends NoSuchModelException {
 
-	public static final String[] USER_ID_FIELD_NAMES_MB_CATEGORY = {
-		"userId", "statusByUserId"
-	};
+	public NoSuchSuspiciousActivityException() {
+	}
 
-	public static final String[] USER_ID_FIELD_NAMES_MB_MESSAGE = {
-		"userId", "statusByUserId"
-	};
+	public NoSuchSuspiciousActivityException(String msg) {
+		super(msg);
+	}
 
-	public static final String[] USER_ID_FIELD_NAMES_MB_SUSPICIOUS_ACTIVITY = {
-		"userId"
-	};
+	public NoSuchSuspiciousActivityException(String msg, Throwable throwable) {
+		super(msg, throwable);
+	}
 
-	public static final String[] USER_ID_FIELD_NAMES_MB_THREAD = {
-		"userId", "rootMessageUserId", "lastPostByUserId", "statusByUserId"
-	};
+	public NoSuchSuspiciousActivityException(Throwable throwable) {
+		super(throwable);
+	}
 
 }

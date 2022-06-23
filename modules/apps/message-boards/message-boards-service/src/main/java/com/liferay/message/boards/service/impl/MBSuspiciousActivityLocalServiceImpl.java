@@ -12,28 +12,20 @@
  * details.
  */
 
-package com.liferay.message.boards.uad.constants;
+package com.liferay.message.boards.service.impl;
+
+import com.liferay.message.boards.service.base.MBSuspiciousActivityLocalServiceBaseImpl;
+import com.liferay.portal.aop.AopService;
+
+import org.osgi.service.component.annotations.Component;
 
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
-public class MBUADConstants {
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_CATEGORY = {
-		"userId", "statusByUserId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_MESSAGE = {
-		"userId", "statusByUserId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_SUSPICIOUS_ACTIVITY = {
-		"userId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_THREAD = {
-		"userId", "rootMessageUserId", "lastPostByUserId", "statusByUserId"
-	};
-
+@Component(
+	property = "model.class.name=com.liferay.message.boards.model.MBSuspiciousActivity",
+	service = AopService.class
+)
+public class MBSuspiciousActivityLocalServiceImpl
+	extends MBSuspiciousActivityLocalServiceBaseImpl {
 }

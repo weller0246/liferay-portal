@@ -12,28 +12,10 @@
  * details.
  */
 
-package com.liferay.message.boards.uad.constants;
+package com.liferay.message.boards.model.impl;
 
 /**
  * @author Brian Wing Shun Chan
- * @generated
  */
-public class MBUADConstants {
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_CATEGORY = {
-		"userId", "statusByUserId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_MESSAGE = {
-		"userId", "statusByUserId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_SUSPICIOUS_ACTIVITY = {
-		"userId"
-	};
-
-	public static final String[] USER_ID_FIELD_NAMES_MB_THREAD = {
-		"userId", "rootMessageUserId", "lastPostByUserId", "statusByUserId"
-	};
-
+public class MBSuspiciousActivityImpl extends MBSuspiciousActivityBaseImpl {
 }
