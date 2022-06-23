@@ -24,8 +24,11 @@ import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.field.reader.InfoItemFieldReaderFieldSetProvider;
 import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.localized.InfoLocalizedValue;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
 import com.liferay.template.info.item.provider.TemplateInfoItemFieldSetProvider;
 
@@ -66,10 +69,11 @@ public class CPDefinitionInfoItemFormProvider
 						cpDefinition.getCPDefinitionId())));
 		}
 		catch (PortalException portalException) {
-			throw new RuntimeException(
-				"Unable to get asset entry for product " +
-					cpDefinition.getCPDefinitionId(),
-				portalException);
+			_log.error(
+				"Unable to get info form for commerce product definition " +
+					cpDefinition.getCPDefinitionId());
+
+			return ReflectionUtil.throwException(portalException);
 		}
 	}
 
@@ -292,6 +296,9 @@ public class CPDefinitionInfoItemFormProvider
 			"schedule"
 		).build();
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CPDefinitionInfoItemFormProvider.class);
 
 	@Reference
 	private AssetEntryInfoItemFieldSetProvider
