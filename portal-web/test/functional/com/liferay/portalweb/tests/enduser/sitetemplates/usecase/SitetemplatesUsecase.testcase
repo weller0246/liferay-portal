@@ -725,7 +725,7 @@ definition {
 	@priority = "4"
 	test ViewNavigationMenuCopyFromSitesTemplate {
 		property release.feature.flags.disable.DISABLE_PRIVATE_LAYOUTS = "true";
-
+		property portal.upstream = "marcell";
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		SiteTemplates.addCP(
@@ -821,6 +821,8 @@ definition {
 	@description = "This is a use case for LPS-113145. Portlet configuration is copied when a site is created from a site template."
 	@priority = "3"
 	test ViewPortletConfigurationOfGlobalTemplatesPageCopyFromSitesTemplate {
+		property portal.upstream = "marcell";
+		
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
 
 		SiteTemplates.addCP(
