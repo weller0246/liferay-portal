@@ -157,7 +157,7 @@ public class ObjectEntryInfoItemCreator
 
 			throw new InfoFormValidationException.FileSize(
 				infoFieldUniqueId,
-				objectEntryValuesException.getMaxFileSizeInMB() + " MB");
+				objectEntryValuesException.getMaxFileSize() + " MB");
 		}
 		catch (ObjectEntryValuesException.ExceedsTextMaxLength
 					objectEntryValuesException) {
