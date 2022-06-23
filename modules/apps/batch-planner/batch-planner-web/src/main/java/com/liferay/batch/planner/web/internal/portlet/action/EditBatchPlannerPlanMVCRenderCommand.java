@@ -85,7 +85,7 @@ public class EditBatchPlannerPlanMVCRenderCommand implements MVCRenderCommand {
 				_vulcanBatchEngineTaskItemDelegateRegistry.
 					getEntityClassNames()) {
 
-			if (!_isBatchPlannerEnabled(export, entityClassName)) {
+			if (!_isBatchPlannerEnabled(entityClassName, export)) {
 				continue;
 			}
 
@@ -116,7 +116,7 @@ public class EditBatchPlannerPlanMVCRenderCommand implements MVCRenderCommand {
 	}
 
 	private boolean _isBatchPlannerEnabled(
-		boolean export, String entityClassName) {
+		String entityClassName, boolean export) {
 
 		if (export) {
 			return _vulcanBatchEngineTaskItemDelegateRegistry.
