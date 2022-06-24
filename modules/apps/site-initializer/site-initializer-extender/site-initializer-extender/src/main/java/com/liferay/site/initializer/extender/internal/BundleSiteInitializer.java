@@ -1113,40 +1113,38 @@ public class BundleSiteInitializer implements SiteInitializer {
 					serviceContext.getCompanyId(),
 					jsonObject.getString("modelResource"));
 
-			if (expandoBridge == null) {
+			if ((expandoBridge == null) ||
+				(expandoBridge.getAttribute(jsonObject.getString("name")) !=
+					null)) {
+
 				continue;
 			}
 
-			if (expandoBridge.getAttribute(jsonObject.getString("name")) ==
-					null) {
+			expandoBridge.addAttribute(
+				jsonObject.getString("name"), jsonObject.getInt("dataType"));
 
-				expandoBridge.addAttribute(
-					jsonObject.getString("name"),
-					jsonObject.getInt("dataType"));
+			if (jsonObject.has("properties")) {
+				JSONObject propertiesJSONObject = jsonObject.getJSONObject(
+					"properties");
 
-				if (jsonObject.has("properties")) {
-					JSONObject propertiesJSONObject = jsonObject.getJSONObject(
-						"properties");
+				UnicodeProperties unicodeProperties = new UnicodeProperties(
+					true);
 
-					UnicodeProperties unicodeProperties = new UnicodeProperties(
-						true);
+				for (Map.Entry<String, Object> entry :
+						propertiesJSONObject.toMap(
+						).entrySet()) {
 
-					for (Map.Entry<String, Object> entry :
-							propertiesJSONObject.toMap(
-							).entrySet()) {
+					Object entryValue = entry.getValue();
 
-						Object entryValue = entry.getValue();
+					String entryKey = TextFormatter.format(
+						entry.getKey(), TextFormatter.K);
 
-						String entryKey = TextFormatter.format(
-							entry.getKey(), TextFormatter.K);
-
-						unicodeProperties.setProperty(
-							entryKey, entryValue.toString());
-					}
-
-					expandoBridge.setAttributeProperties(
-						jsonObject.getString("name"), unicodeProperties);
+					unicodeProperties.setProperty(
+						entryKey, entryValue.toString());
 				}
+
+				expandoBridge.setAttributeProperties(
+					jsonObject.getString("name"), unicodeProperties);
 			}
 		}
 	}
