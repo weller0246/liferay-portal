@@ -440,19 +440,23 @@ public class BundleSiteInitializer implements SiteInitializer {
 					serviceContext.fetchUser()
 				).build();
 
-			Map<String, String> objectsStringUtilReplaceValues = _invoke(
-				() -> _addObjectDefinitions(
-					listTypeDefinitionIdsStringUtilReplaceValues,
-					objectDefinitionResource, serviceContext,
-					siteNavigationMenuItemSettingsBuilder));
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues =
+					_invoke(
+						() -> _addObjectDefinitions(
+							listTypeDefinitionIdsStringUtilReplaceValues,
+							objectDefinitionResource, serviceContext,
+							siteNavigationMenuItemSettingsBuilder));
 
 			_invoke(
 				() -> _addCPDefinitions(
 					documentsStringUtilReplaceValues,
-					objectsStringUtilReplaceValues, serviceContext));
+					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+					serviceContext));
 			_invoke(
 				() -> _addPermissions(
-					objectsStringUtilReplaceValues, serviceContext));
+					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+					serviceContext));
 
 			// TODO Review order/dependency
 
@@ -466,7 +470,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 					assetListEntryIdsStringUtilReplaceValues,
 					clientExtensionEntryIdsStringUtilReplaceValues,
 					documentsStringUtilReplaceValues, layouts,
-					objectsStringUtilReplaceValues, serviceContext,
+					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+					serviceContext,
 					siteNavigationMenuItemSettingsBuilder.build(),
 					taxonomyCategoryIdsStringUtilReplaceValues));
 
@@ -725,7 +730,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 	private void _addCPDefinitions(
 			Map<String, String> documentsStringUtilReplaceValues,
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -738,7 +744,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		_commerceSiteInitializer.addCPDefinitions(
 			_bundle, documentsStringUtilReplaceValues,
-			objectsStringUtilReplaceValues, serviceContext, _servletContext);
+			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+			serviceContext, _servletContext);
 	}
 
 	private void _addDDMStructures(ServiceContext serviceContext)
@@ -1552,7 +1559,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Map<String, String> assetListEntryIdsStringUtilReplaceValues,
 			Map<String, String> clientExtensionEntryIdsStringUtilReplaceValues,
 			Map<String, String> documentsStringUtilReplaceValues,
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			Map<String, String> releaseInfoStringUtilReplaceValues,
 			Layout layout, String resourcePath, ServiceContext serviceContext,
 			Map<String, String> taxonomyCategoryIdsStringUtilReplaceValues)
@@ -1578,7 +1586,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			).putAll(
 				documentsStringUtilReplaceValues
 			).putAll(
-				objectsStringUtilReplaceValues
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues
 			).putAll(
 				releaseInfoStringUtilReplaceValues
 			).putAll(
@@ -1800,7 +1808,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			Map<String, String> clientExtensionEntryIdsStringUtilReplaceValues,
 			Map<String, String> documentsStringUtilReplaceValues,
 			Map<String, Layout> layouts,
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			ServiceContext serviceContext,
 			Map<String, SiteNavigationMenuItemSetting>
 				siteNavigationMenuItemSettings,
@@ -1815,7 +1824,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				assetListEntryIdsStringUtilReplaceValues,
 				clientExtensionEntryIdsStringUtilReplaceValues,
 				documentsStringUtilReplaceValues,
-				objectsStringUtilReplaceValues,
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 				releaseInfoStringUtilReplaceValues, entry.getValue(),
 				entry.getKey(), serviceContext,
 				taxonomyCategoryIdsStringUtilReplaceValues);
@@ -2336,11 +2345,14 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addPermissions(
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			ServiceContext serviceContext)
 		throws Exception {
 
-		_addRoles(objectsStringUtilReplaceValues, serviceContext);
+		_addRoles(
+			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
+			serviceContext);
 
 		_addUserAccounts(serviceContext);
 
@@ -2362,7 +2374,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addResourcePermissions(
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			String resourcePath, ServiceContext serviceContext)
 		throws Exception {
 
@@ -2374,7 +2387,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 		JSONArray jsonArray = JSONFactoryUtil.createJSONArray(
 			StringUtil.replace(
-				json, "[$", "$]", objectsStringUtilReplaceValues));
+				json, "[$", "$]",
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues));
 
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -2500,7 +2514,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addRoles(
-			Map<String, String> objectsStringUtilReplaceValues,
+			Map<String, String>
+				objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			ServiceContext serviceContext)
 		throws Exception {
 
@@ -2518,7 +2533,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		_addResourcePermissions(
-			objectsStringUtilReplaceValues,
+			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			"/site-initializer/resource-permissions.json", serviceContext);
 	}
 
