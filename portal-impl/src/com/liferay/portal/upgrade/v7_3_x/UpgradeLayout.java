@@ -41,9 +41,7 @@ public class UpgradeLayout extends UpgradeProcess {
 		}
 
 		alterTableAddColumn("Layout", "statusByUserId", "LONG");
-
 		alterTableAddColumn("Layout", "statusByUserName", "VARCHAR(75) null");
-
 		alterTableAddColumn("Layout", "statusDate", "DATE null");
 
 		runSQL("DROP_TABLE_IF_EXISTS(LayoutVersion)");
