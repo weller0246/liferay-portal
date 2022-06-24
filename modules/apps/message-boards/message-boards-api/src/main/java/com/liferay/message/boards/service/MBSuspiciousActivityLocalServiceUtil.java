@@ -61,6 +61,14 @@ public class MBSuspiciousActivityLocalServiceUtil {
 		return getService().addMBSuspiciousActivity(mbSuspiciousActivity);
 	}
 
+	public static MBSuspiciousActivity addOrUpdateSuspiciousActivity(
+			long userId, long messageId, String description, String type)
+		throws PortalException {
+
+		return getService().addOrUpdateSuspiciousActivity(
+			userId, messageId, description, type);
+	}
+
 	/**
 	 * Creates a new message boards suspicious activity with the primary key. Does not add the message boards suspicious activity to the database.
 	 *

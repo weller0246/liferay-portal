@@ -60,6 +60,7 @@ create index IX_F6B01E4A on MBMessage (uuid_[$COLUMN_LENGTH:75$], companyId, ctC
 create index IX_DAB8F51A on MBMessage (uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
 create unique index IX_EAF86BCC on MBMessage (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);
 
+create index IX_72C5BBAF on MBSuspiciousActivity (userId, messageId, ctCollectionId);
 create index IX_191B6619 on MBSuspiciousActivity (uuid_[$COLUMN_LENGTH:75$], companyId, ctCollectionId);
 create index IX_B5AC78AB on MBSuspiciousActivity (uuid_[$COLUMN_LENGTH:75$], ctCollectionId);
 create unique index IX_A3E15B5B on MBSuspiciousActivity (uuid_[$COLUMN_LENGTH:75$], groupId, ctCollectionId);

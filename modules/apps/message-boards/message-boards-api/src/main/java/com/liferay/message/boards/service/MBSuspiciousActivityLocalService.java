@@ -84,6 +84,10 @@ public interface MBSuspiciousActivityLocalService
 	public MBSuspiciousActivity addMBSuspiciousActivity(
 		MBSuspiciousActivity mbSuspiciousActivity);
 
+	public MBSuspiciousActivity addOrUpdateSuspiciousActivity(
+			long userId, long messageId, String description, String type)
+		throws PortalException;
+
 	/**
 	 * Creates a new message boards suspicious activity with the primary key. Does not add the message boards suspicious activity to the database.
 	 *

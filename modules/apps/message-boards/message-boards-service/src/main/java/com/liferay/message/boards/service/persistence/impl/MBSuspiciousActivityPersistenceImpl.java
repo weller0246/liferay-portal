@@ -47,6 +47,7 @@ import com.liferay.portal.kernel.util.PropsKeys;
 import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.SetUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.uuid.PortalUUID;
 
@@ -1530,6 +1531,257 @@ public class MBSuspiciousActivityPersistenceImpl
 	private static final String _FINDER_COLUMN_UUID_C_COMPANYID_2 =
 		"mbSuspiciousActivity.companyId = ?";
 
+	private FinderPath _finderPathFetchByU_M;
+	private FinderPath _finderPathCountByU_M;
+
+	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or throws a <code>NoSuchSuspiciousActivityException</code> if it could not be found.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the matching message boards suspicious activity
+	 * @throws NoSuchSuspiciousActivityException if a matching message boards suspicious activity could not be found
+	 */
+	@Override
+	public MBSuspiciousActivity findByU_M(long userId, long messageId)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity mbSuspiciousActivity = fetchByU_M(
+			userId, messageId);
+
+		if (mbSuspiciousActivity == null) {
+			StringBundler sb = new StringBundler(6);
+
+			sb.append(_NO_SUCH_ENTITY_WITH_KEY);
+
+			sb.append("userId=");
+			sb.append(userId);
+
+			sb.append(", messageId=");
+			sb.append(messageId);
+
+			sb.append("}");
+
+			if (_log.isDebugEnabled()) {
+				_log.debug(sb.toString());
+			}
+
+			throw new NoSuchSuspiciousActivityException(sb.toString());
+		}
+
+		return mbSuspiciousActivity;
+	}
+
+	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the matching message boards suspicious activity, or <code>null</code> if a matching message boards suspicious activity could not be found
+	 */
+	@Override
+	public MBSuspiciousActivity fetchByU_M(long userId, long messageId) {
+		return fetchByU_M(userId, messageId, true);
+	}
+
+	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching message boards suspicious activity, or <code>null</code> if a matching message boards suspicious activity could not be found
+	 */
+	@Override
+	public MBSuspiciousActivity fetchByU_M(
+		long userId, long messageId, boolean useFinderCache) {
+
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			MBSuspiciousActivity.class);
+
+		Object[] finderArgs = null;
+
+		if (useFinderCache && productionMode) {
+			finderArgs = new Object[] {userId, messageId};
+		}
+
+		Object result = null;
+
+		if (useFinderCache && productionMode) {
+			result = finderCache.getResult(_finderPathFetchByU_M, finderArgs);
+		}
+
+		if (result instanceof MBSuspiciousActivity) {
+			MBSuspiciousActivity mbSuspiciousActivity =
+				(MBSuspiciousActivity)result;
+
+			if ((userId != mbSuspiciousActivity.getUserId()) ||
+				(messageId != mbSuspiciousActivity.getMessageId())) {
+
+				result = null;
+			}
+		}
+
+		if (result == null) {
+			StringBundler sb = new StringBundler(4);
+
+			sb.append(_SQL_SELECT_MBSUSPICIOUSACTIVITY_WHERE);
+
+			sb.append(_FINDER_COLUMN_U_M_USERID_2);
+
+			sb.append(_FINDER_COLUMN_U_M_MESSAGEID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(userId);
+
+				queryPos.add(messageId);
+
+				List<MBSuspiciousActivity> list = query.list();
+
+				if (list.isEmpty()) {
+					if (useFinderCache && productionMode) {
+						finderCache.putResult(
+							_finderPathFetchByU_M, finderArgs, list);
+					}
+				}
+				else {
+					if (list.size() > 1) {
+						Collections.sort(list, Collections.reverseOrder());
+
+						if (_log.isWarnEnabled()) {
+							if (!productionMode || !useFinderCache) {
+								finderArgs = new Object[] {userId, messageId};
+							}
+
+							_log.warn(
+								"MBSuspiciousActivityPersistenceImpl.fetchByU_M(long, long, boolean) with parameters (" +
+									StringUtil.merge(finderArgs) +
+										") yields a result set with more than 1 result. This violates the logical unique restriction. There is no order guarantee on which result is returned by this finder.");
+						}
+					}
+
+					MBSuspiciousActivity mbSuspiciousActivity = list.get(0);
+
+					result = mbSuspiciousActivity;
+
+					cacheResult(mbSuspiciousActivity);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		if (result instanceof List<?>) {
+			return null;
+		}
+		else {
+			return (MBSuspiciousActivity)result;
+		}
+	}
+
+	/**
+	 * Removes the message boards suspicious activity where userId = &#63; and messageId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the message boards suspicious activity that was removed
+	 */
+	@Override
+	public MBSuspiciousActivity removeByU_M(long userId, long messageId)
+		throws NoSuchSuspiciousActivityException {
+
+		MBSuspiciousActivity mbSuspiciousActivity = findByU_M(
+			userId, messageId);
+
+		return remove(mbSuspiciousActivity);
+	}
+
+	/**
+	 * Returns the number of message boards suspicious activities where userId = &#63; and messageId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the number of matching message boards suspicious activities
+	 */
+	@Override
+	public int countByU_M(long userId, long messageId) {
+		boolean productionMode = ctPersistenceHelper.isProductionMode(
+			MBSuspiciousActivity.class);
+
+		FinderPath finderPath = null;
+		Object[] finderArgs = null;
+
+		Long count = null;
+
+		if (productionMode) {
+			finderPath = _finderPathCountByU_M;
+
+			finderArgs = new Object[] {userId, messageId};
+
+			count = (Long)finderCache.getResult(finderPath, finderArgs);
+		}
+
+		if (count == null) {
+			StringBundler sb = new StringBundler(3);
+
+			sb.append(_SQL_COUNT_MBSUSPICIOUSACTIVITY_WHERE);
+
+			sb.append(_FINDER_COLUMN_U_M_USERID_2);
+
+			sb.append(_FINDER_COLUMN_U_M_MESSAGEID_2);
+
+			String sql = sb.toString();
+
+			Session session = null;
+
+			try {
+				session = openSession();
+
+				Query query = session.createQuery(sql);
+
+				QueryPos queryPos = QueryPos.getInstance(query);
+
+				queryPos.add(userId);
+
+				queryPos.add(messageId);
+
+				count = (Long)query.uniqueResult();
+
+				if (productionMode) {
+					finderCache.putResult(finderPath, finderArgs, count);
+				}
+			}
+			catch (Exception exception) {
+				throw processException(exception);
+			}
+			finally {
+				closeSession(session);
+			}
+		}
+
+		return count.intValue();
+	}
+
+	private static final String _FINDER_COLUMN_U_M_USERID_2 =
+		"mbSuspiciousActivity.userId = ? AND ";
+
+	private static final String _FINDER_COLUMN_U_M_MESSAGEID_2 =
+		"mbSuspiciousActivity.messageId = ?";
+
 	public MBSuspiciousActivityPersistenceImpl() {
 		Map<String, String> dbColumnNames = new HashMap<String, String>();
 
@@ -1566,6 +1818,14 @@ public class MBSuspiciousActivityPersistenceImpl
 			new Object[] {
 				mbSuspiciousActivity.getUuid(),
 				mbSuspiciousActivity.getGroupId()
+			},
+			mbSuspiciousActivity);
+
+		finderCache.putResult(
+			_finderPathFetchByU_M,
+			new Object[] {
+				mbSuspiciousActivity.getUserId(),
+				mbSuspiciousActivity.getMessageId()
 			},
 			mbSuspiciousActivity);
 	}
@@ -1661,6 +1921,15 @@ public class MBSuspiciousActivityPersistenceImpl
 		finderCache.putResult(_finderPathCountByUUID_G, args, Long.valueOf(1));
 		finderCache.putResult(
 			_finderPathFetchByUUID_G, args, mbSuspiciousActivityModelImpl);
+
+		args = new Object[] {
+			mbSuspiciousActivityModelImpl.getUserId(),
+			mbSuspiciousActivityModelImpl.getMessageId()
+		};
+
+		finderCache.putResult(_finderPathCountByU_M, args, Long.valueOf(1));
+		finderCache.putResult(
+			_finderPathFetchByU_M, args, mbSuspiciousActivityModelImpl);
 	}
 
 	/**
@@ -2419,6 +2688,16 @@ public class MBSuspiciousActivityPersistenceImpl
 			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByUuid_C",
 			new String[] {String.class.getName(), Long.class.getName()},
 			new String[] {"uuid_", "companyId"}, false);
+
+		_finderPathFetchByU_M = new FinderPath(
+			FINDER_CLASS_NAME_ENTITY, "fetchByU_M",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			new String[] {"userId", "messageId"}, true);
+
+		_finderPathCountByU_M = new FinderPath(
+			FINDER_CLASS_NAME_LIST_WITHOUT_PAGINATION, "countByU_M",
+			new String[] {Long.class.getName(), Long.class.getName()},
+			new String[] {"userId", "messageId"}, false);
 
 		_setMBSuspiciousActivityUtilPersistence(this);
 	}

@@ -58,6 +58,15 @@ public class MBSuspiciousActivityLocalServiceWrapper
 			mbSuspiciousActivity);
 	}
 
+	@Override
+	public MBSuspiciousActivity addOrUpdateSuspiciousActivity(
+			long userId, long messageId, String description, String type)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _mbSuspiciousActivityLocalService.addOrUpdateSuspiciousActivity(
+			userId, messageId, description, type);
+	}
+
 	/**
 	 * Creates a new message boards suspicious activity with the primary key. Does not add the message boards suspicious activity to the database.
 	 *

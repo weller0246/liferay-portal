@@ -550,6 +550,71 @@ public class MBSuspiciousActivityUtil {
 	}
 
 	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or throws a <code>NoSuchSuspiciousActivityException</code> if it could not be found.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the matching message boards suspicious activity
+	 * @throws NoSuchSuspiciousActivityException if a matching message boards suspicious activity could not be found
+	 */
+	public static MBSuspiciousActivity findByU_M(long userId, long messageId)
+		throws com.liferay.message.boards.exception.
+			NoSuchSuspiciousActivityException {
+
+		return getPersistence().findByU_M(userId, messageId);
+	}
+
+	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or returns <code>null</code> if it could not be found. Uses the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the matching message boards suspicious activity, or <code>null</code> if a matching message boards suspicious activity could not be found
+	 */
+	public static MBSuspiciousActivity fetchByU_M(long userId, long messageId) {
+		return getPersistence().fetchByU_M(userId, messageId);
+	}
+
+	/**
+	 * Returns the message boards suspicious activity where userId = &#63; and messageId = &#63; or returns <code>null</code> if it could not be found, optionally using the finder cache.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @param useFinderCache whether to use the finder cache
+	 * @return the matching message boards suspicious activity, or <code>null</code> if a matching message boards suspicious activity could not be found
+	 */
+	public static MBSuspiciousActivity fetchByU_M(
+		long userId, long messageId, boolean useFinderCache) {
+
+		return getPersistence().fetchByU_M(userId, messageId, useFinderCache);
+	}
+
+	/**
+	 * Removes the message boards suspicious activity where userId = &#63; and messageId = &#63; from the database.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the message boards suspicious activity that was removed
+	 */
+	public static MBSuspiciousActivity removeByU_M(long userId, long messageId)
+		throws com.liferay.message.boards.exception.
+			NoSuchSuspiciousActivityException {
+
+		return getPersistence().removeByU_M(userId, messageId);
+	}
+
+	/**
+	 * Returns the number of message boards suspicious activities where userId = &#63; and messageId = &#63;.
+	 *
+	 * @param userId the user ID
+	 * @param messageId the message ID
+	 * @return the number of matching message boards suspicious activities
+	 */
+	public static int countByU_M(long userId, long messageId) {
+		return getPersistence().countByU_M(userId, messageId);
+	}
+
+	/**
 	 * Caches the message boards suspicious activity in the entity cache if it is enabled.
 	 *
 	 * @param mbSuspiciousActivity the message boards suspicious activity
