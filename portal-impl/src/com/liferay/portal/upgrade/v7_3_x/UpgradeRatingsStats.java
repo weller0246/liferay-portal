@@ -28,13 +28,13 @@ public class UpgradeRatingsStats extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		alterTableAddColumn("RatingsStats", "createDate", "DATE null");
 
-		alterTableAddColumn("RatingsStats", "modifiedDate", "DATE null");
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				_getUpdateSQL("createDate", "min"))) {
 
 			preparedStatement.executeUpdate();
 		}
+
+		alterTableAddColumn("RatingsStats", "modifiedDate", "DATE null");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				_getUpdateSQL("modifiedDate", "max"))) {
