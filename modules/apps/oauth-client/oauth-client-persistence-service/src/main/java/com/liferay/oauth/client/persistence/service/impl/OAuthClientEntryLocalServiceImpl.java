@@ -366,8 +366,7 @@ public class OAuthClientEntryLocalServiceImpl
 
 				for (Object value : valueJSONArray) {
 					if (!(value instanceof String)) {
-						throw new ParseException(
-							"Each custom parameter value must be a String");
+						throw new ParseException("Value is not a string");
 					}
 				}
 			}
