@@ -73,7 +73,6 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 
 		String className = _portal.getClassName(
 			ParamUtil.getLong(originalHttpServletRequest, "classNameId"));
-
 		String formItemId = ParamUtil.getString(
 			httpServletRequest, "formItemId");
 
