@@ -21,7 +21,7 @@
 <%
 String message = null;
 
-StringBundler sb = new StringBundler(9);
+StringBundler sb = new StringBundler(8);
 
 sb.append("User ID ");
 sb.append(request.getRemoteUser());
@@ -31,7 +31,6 @@ sb.append(", Referer ");
 sb.append(request.getHeader("Referer"));
 sb.append(", Remote address ");
 sb.append(request.getRemoteAddr());
-sb.append(", Exception is null");
 
 if (exception != null) {
 	message = exception.getMessage();
