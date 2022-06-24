@@ -25,11 +25,11 @@ StringBundler sb = new StringBundler(8);
 
 sb.append("User ID ");
 sb.append(request.getRemoteUser());
-sb.append(", Current URL ");
+sb.append(", current URL ");
 sb.append(PortalUtil.getCurrentURL(request));
-sb.append(", Referer ");
+sb.append(", referer ");
 sb.append(request.getHeader("Referer"));
-sb.append(", Remote address ");
+sb.append(", remote address ");
 sb.append(request.getRemoteAddr());
 
 if (exception != null) {
