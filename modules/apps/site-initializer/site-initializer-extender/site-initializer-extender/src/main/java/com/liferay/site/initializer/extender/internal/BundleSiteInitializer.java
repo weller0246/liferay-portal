@@ -1133,13 +1133,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 				Map<String, Object> map = propertiesJSONObject.toMap();
 
 				for (Map.Entry<String, Object> entry : map.entrySet()) {
-					Object entryValue = entry.getValue();
-
-					String entryKey = TextFormatter.format(
-						entry.getKey(), TextFormatter.K);
-
 					unicodeProperties.setProperty(
-						entryKey, entryValue.toString());
+						TextFormatter.format(entry.getKey(), TextFormatter.K),
+						String.valueOf(entry.getValue()));
 				}
 
 				expandoBridge.setAttributeProperties(
