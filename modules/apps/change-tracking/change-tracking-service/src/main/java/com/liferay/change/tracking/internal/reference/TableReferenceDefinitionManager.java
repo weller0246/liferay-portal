@@ -333,11 +333,12 @@ public class TableReferenceDefinitionManager {
 			BasePersistence<?> basePersistence =
 				tableReferenceDefinition.getBasePersistence();
 
+			long classNameId = _classNameLocalService.getClassNameId(
+				basePersistence.getModelClass());
+
 			TableReferenceInfo<T> tableReferenceInfo =
 				TableReferenceInfoFactory.create(
-					_classNameLocalService.getClassNameId(
-						basePersistence.getModelClass()),
-					primaryKeyColumn, tableReferenceDefinition);
+					classNameId, primaryKeyColumn, tableReferenceDefinition);
 
 			Table<?> table = tableReferenceDefinition.getTable();
 

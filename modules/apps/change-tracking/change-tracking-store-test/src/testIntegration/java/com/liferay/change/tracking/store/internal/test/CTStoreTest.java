@@ -904,10 +904,10 @@ public class CTStoreTest {
 	private void _assertCTFileSize(String fileName, byte[] data)
 		throws Exception {
 
-		Assert.assertEquals(
-			data.length,
-			_ctStore.getFileSize(
-				_companyId, _REPOSITORY_ID, fileName, _VERSION_1));
+		long fileSize = _ctStore.getFileSize(
+			_companyId, _REPOSITORY_ID, fileName, _VERSION_1);
+
+		Assert.assertEquals(data.length, fileSize);
 	}
 
 	private void _assertCTFileVersions(String fileName, String... versions)
@@ -952,10 +952,10 @@ public class CTStoreTest {
 	private void _assertFileSize(String fileName, byte[] data)
 		throws Exception {
 
-		Assert.assertEquals(
-			data.length,
-			_fileSystemStore.getFileSize(
-				_companyId, _REPOSITORY_ID, fileName, _VERSION_1));
+		long fileSize = _fileSystemStore.getFileSize(
+			_companyId, _REPOSITORY_ID, fileName, _VERSION_1);
+
+		Assert.assertEquals(data.length, fileSize);
 	}
 
 	private void _assertHasCTFile(String fileName, byte[] data)
