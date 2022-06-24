@@ -19,13 +19,13 @@
 <%
 String tabs1 = ParamUtil.getString(request, "tabs1", "customized");
 
+String tabs1Names = "classic,customized,minimum,react";
+
 PortletURL portletURL = PortletURLBuilder.createRenderURL(
 	renderResponse
 ).setTabs1(
 	tabs1
 ).buildPortletURL();
-
-String tabs1Names = "classic,customized,minimum,react";
 %>
 
 <clay:container-fluid>
