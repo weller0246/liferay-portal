@@ -1124,13 +1124,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 				jsonObject.getString("name"), jsonObject.getInt("dataType"));
 
 			if (jsonObject.has("properties")) {
+				UnicodeProperties unicodeProperties = new UnicodeProperties(
+					true);
+
 				JSONObject propertiesJSONObject = jsonObject.getJSONObject(
 					"properties");
 
 				Map<String, Object> map = propertiesJSONObject.toMap();
-
-				UnicodeProperties unicodeProperties = new UnicodeProperties(
-					true);
 
 				for (Map.Entry<String, Object> entry : map.entrySet()) {
 					Object entryValue = entry.getValue();
