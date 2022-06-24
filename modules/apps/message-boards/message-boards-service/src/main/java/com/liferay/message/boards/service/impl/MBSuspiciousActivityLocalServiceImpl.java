@@ -14,10 +14,19 @@
 
 package com.liferay.message.boards.service.impl;
 
+import com.liferay.message.boards.model.MBMessage;
+import com.liferay.message.boards.model.MBSuspiciousActivity;
+import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.service.base.MBSuspiciousActivityLocalServiceBaseImpl;
+import com.liferay.message.boards.service.persistence.MBMessagePersistence;
+import com.liferay.message.boards.service.persistence.MBThreadPersistence;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -28,4 +37,53 @@ import org.osgi.service.component.annotations.Component;
 )
 public class MBSuspiciousActivityLocalServiceImpl
 	extends MBSuspiciousActivityLocalServiceBaseImpl {
+
+	@Override
+	public MBSuspiciousActivity addOrUpdateSuspiciousActivity(
+			long userId, long messageId, String description, String type)
+		throws PortalException {
+
+		MBSuspiciousActivity suspiciousActivity =
+			mbSuspiciousActivityPersistence.fetchByU_M(userId, messageId);
+
+		if (suspiciousActivity == null) {
+			long suspiciousActivityId = counterLocalService.increment();
+
+			suspiciousActivity = mbSuspiciousActivityPersistence.create(
+				suspiciousActivityId);
+
+			MBMessage message = _mbMessagePersistence.findByPrimaryKey(
+				messageId);
+
+			MBThread thread = _mbThreadPersistence.findByPrimaryKey(
+				message.getThreadId());
+
+			suspiciousActivity.setGroupId(thread.getGroupId());
+
+			User user = _userLocalService.getUser(userId);
+
+			suspiciousActivity.setCompanyId(user.getCompanyId());
+			suspiciousActivity.setUserId(user.getUserId());
+			suspiciousActivity.setUserName(user.getFullName());
+
+			suspiciousActivity.setMessageId(messageId);
+			suspiciousActivity.setThreadId(thread.getThreadId());
+		}
+
+		suspiciousActivity.setDescription(description);
+		suspiciousActivity.setType(type);
+
+		return mbSuspiciousActivityLocalService.updateMBSuspiciousActivity(
+			suspiciousActivity);
+	}
+
+	@Reference
+	private MBMessagePersistence _mbMessagePersistence;
+
+	@Reference
+	private MBThreadPersistence _mbThreadPersistence;
+
+	@Reference
+	private UserLocalService _userLocalService;
+
 }
