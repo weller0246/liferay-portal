@@ -64,13 +64,13 @@ public class DBUpgraderTest {
 			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
 			ReleaseConstants.STATE_GOOD);
 
-		Boolean currentUpgrading = StartupHelperUtil.isUpgrading();
+		boolean upgrading = StartupHelperUtil.isUpgrading();
 
 		StartupHelperUtil.setUpgrading(true);
 
 		DBUpgrader.upgradePortal();
 
-		StartupHelperUtil.setUpgrading(currentUpgrading);
+		StartupHelperUtil.setUpgrading(upgrading);
 	}
 
 	@Test
@@ -79,7 +79,7 @@ public class DBUpgraderTest {
 			ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER,
 			ReleaseConstants.STATE_UPGRADE_FAILURE);
 
-		Boolean currentUpgrading = StartupHelperUtil.isUpgrading();
+		boolean upgrading = StartupHelperUtil.isUpgrading();
 
 		StartupHelperUtil.setUpgrading(true);
 
@@ -91,7 +91,7 @@ public class DBUpgraderTest {
 		catch (IllegalStateException illegalStateException) {
 		}
 		finally {
-			StartupHelperUtil.setUpgrading(currentUpgrading);
+			StartupHelperUtil.setUpgrading(upgrading);
 		}
 	}
 
@@ -101,13 +101,13 @@ public class DBUpgraderTest {
 			ReleaseInfo.RELEASE_7_1_0_BUILD_NUMBER,
 			ReleaseConstants.STATE_UPGRADE_FAILURE);
 
-		Boolean currentUpgrading = StartupHelperUtil.isUpgrading();
+		boolean upgrading = StartupHelperUtil.isUpgrading();
 
 		StartupHelperUtil.setUpgrading(true);
 
 		DBUpgrader.upgradePortal();
 
-		StartupHelperUtil.setUpgrading(currentUpgrading);
+		StartupHelperUtil.setUpgrading(upgrading);
 	}
 
 	private static int _getReleaseColumnValue(String columnName) {
