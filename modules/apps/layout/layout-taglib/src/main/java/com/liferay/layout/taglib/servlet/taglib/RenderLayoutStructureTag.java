@@ -368,21 +368,25 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				renderLayoutStructureDisplayContext)
 		throws Exception {
 
-		List<String> collectionStyledLayoutStructureItemIds =
-			renderLayoutStructureDisplayContext.
-				getCollectionStyledLayoutStructureItemIds();
-
-		collectionStyledLayoutStructureItemIds.add(
-			layoutStructureItem.getItemId());
-
 		JspWriter jspWriter = pageContext.getOut();
+
+		jspWriter.write("<div class=\"");
 
 		CollectionStyledLayoutStructureItem
 			collectionStyledLayoutStructureItem =
 				(CollectionStyledLayoutStructureItem)layoutStructureItem;
 
-		HttpServletRequest httpServletRequest = getRequest();
+		jspWriter.write(
+			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
+				collectionStyledLayoutStructureItem));
 
+		jspWriter.write(StringPool.SPACE);
+		jspWriter.write(
+			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
+				layoutStructureItem));
+		jspWriter.write("\" style=\"");
+
+		HttpServletRequest httpServletRequest = getRequest();
 		HttpServletResponse httpServletResponse =
 			(HttpServletResponse)pageContext.getResponse();
 
@@ -392,21 +396,18 @@ public class RenderLayoutStructureTag extends IncludeTag {
 					collectionStyledLayoutStructureItem, httpServletRequest,
 					httpServletResponse);
 
-		jspWriter.write("<div class=\"");
-
-		jspWriter.write(
-			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
-				collectionStyledLayoutStructureItem));
-		jspWriter.write(StringPool.SPACE);
-		jspWriter.write(
-			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
-				layoutStructureItem));
-
-		jspWriter.write("\" style=\"");
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
 				collectionStyledLayoutStructureItem));
+
 		jspWriter.write("\">");
+
+		List<String> collectionStyledLayoutStructureItemIds =
+			renderLayoutStructureDisplayContext.
+				getCollectionStyledLayoutStructureItemIds();
+
+		collectionStyledLayoutStructureItemIds.add(
+			layoutStructureItem.getItemId());
 
 		List<Object> collection =
 			renderCollectionLayoutStructureItemDisplayContext.getCollection();
@@ -905,10 +906,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getAddInfoItemActionURL());
 		jspWriter.write("\" class=\"");
-
-		FormStyledLayoutStructureItem formStyledLayoutStructureItem =
-			(FormStyledLayoutStructureItem)layoutStructureItem;
-
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
 				layoutStructureItem));
@@ -917,6 +914,10 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
 				layoutStructureItem));
 		jspWriter.write(StringPool.SPACE);
+
+		FormStyledLayoutStructureItem formStyledLayoutStructureItem =
+			(FormStyledLayoutStructureItem)layoutStructureItem;
+
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
 				formStyledLayoutStructureItem));
@@ -926,21 +927,17 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			renderLayoutStructureDisplayContext.getStyle(
 				formStyledLayoutStructureItem));
 		jspWriter.write("\">");
-
 		jspWriter.write("<input name=\"classNameId\" type=\"hidden\" value=\"");
 		jspWriter.write(
 			String.valueOf(formStyledLayoutStructureItem.getClassNameId()));
 		jspWriter.write("\">");
-
 		jspWriter.write("<input name=\"classTypeId\" type=\"hidden\" value=\"");
 		jspWriter.write(
 			String.valueOf(formStyledLayoutStructureItem.getClassTypeId()));
 		jspWriter.write("\">");
-
 		jspWriter.write("<input name=\"formItemId\" type=\"hidden\" value=\"");
 		jspWriter.write(formStyledLayoutStructureItem.getItemId());
 		jspWriter.write("\">");
-
 		jspWriter.write("<input name=\"plid\" type=\"hidden\" value=\"");
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)getRequest().getAttribute(
@@ -948,10 +945,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 		jspWriter.write(String.valueOf(themeDisplay.getPlid()));
 
-		jspWriter.write("\">");
-
 		jspWriter.write(
-			"<input name=\"segmentsExperienceId\" type=\"hidden\" value=\"");
+			"\"><input name=\"segmentsExperienceId\" type=\"hidden\" value=\"");
 		jspWriter.write(
 			String.valueOf(
 				SegmentsExperienceUtil.getSegmentsExperienceId(getRequest())));
