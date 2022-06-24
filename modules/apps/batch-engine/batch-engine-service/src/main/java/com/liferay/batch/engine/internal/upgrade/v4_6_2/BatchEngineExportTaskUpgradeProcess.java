@@ -23,10 +23,8 @@ public class BatchEngineExportTaskUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		if (hasColumn("BatchEngineExportTask", "fieldNames")) {
-			alterColumnType(
-				"BatchEngineExportTask", "fieldNames", "STRING null");
-		}
+		alterColumnType(
+			"BatchEngineExportTask", "fieldNames", "STRING null");
 	}
 
 }
