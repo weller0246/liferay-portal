@@ -138,12 +138,6 @@ public class ObjectEntryOpenAPIResourceImpl
 		_objectDefinition = _objectDefinitionLocalService.getObjectDefinition(
 			objectDefinitionId);
 
-		return _createObjectEntryOpenAPI(type, uriInfo);
-	}
-
-	private Response _createObjectEntryOpenAPI(String type, UriInfo uriInfo)
-		throws Exception {
-
 		Response response = _openAPIResource.getOpenAPI(
 			_getOpenAPISchemaFilter(_objectDefinition.getRESTContextPath()),
 			new HashSet<Class<?>>() {
