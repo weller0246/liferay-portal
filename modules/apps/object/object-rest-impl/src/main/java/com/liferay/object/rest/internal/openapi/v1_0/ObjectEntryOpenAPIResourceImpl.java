@@ -137,6 +137,9 @@ public class ObjectEntryOpenAPIResourceImpl
 		_objectDefinition = _objectDefinitionLocalService.getObjectDefinition(
 			objectDefinitionId);
 
+		Map<ObjectRelationship, ObjectDefinition> relatedObjectDefinitionsMap =
+			_getRelatedObjectDefinitionsMap();
+
 		Response response = _openAPIResource.getOpenAPI(
 			_getOpenAPISchemaFilter(_objectDefinition.getRESTContextPath()),
 			new HashSet<Class<?>>() {
@@ -150,9 +153,6 @@ public class ObjectEntryOpenAPIResourceImpl
 		OpenAPI openAPI = (OpenAPI)response.getEntity();
 
 		Paths paths = openAPI.getPaths();
-
-		Map<ObjectRelationship, ObjectDefinition> relatedObjectDefinitionsMap =
-			_getRelatedObjectDefinitionsMap();
 
 		for (String key : new ArrayList<>(paths.keySet())) {
 			if (!key.contains("objectRelationshipName")) {
