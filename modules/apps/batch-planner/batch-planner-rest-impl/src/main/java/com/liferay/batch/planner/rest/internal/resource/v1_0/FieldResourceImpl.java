@@ -42,26 +42,26 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			String internalClassName, Boolean export)
 		throws Exception {
 
-		List<com.liferay.portal.vulcan.batch.engine.Field> fields = _getFields(
-			internalClassName);
+		List<com.liferay.portal.vulcan.batch.engine.Field> vulcanFields =
+			_getVulcanFields(internalClassName);
 
 		if (GetterUtil.getBoolean(export)) {
-			fields = _fieldProvider.filter(
-				fields,
+			vulcanFields = _fieldProvider.filter(
+				vulcanFields,
 				com.liferay.portal.vulcan.batch.engine.Field.AccessType.WRITE);
 		}
 		else {
-			fields = _fieldProvider.filter(
-				fields,
+			vulcanFields = _fieldProvider.filter(
+				vulcanFields,
 				com.liferay.portal.vulcan.batch.engine.Field.AccessType.READ);
 		}
 
-		fields.sort(Comparator.comparing(field -> field.getName()));
+		vulcanFields.sort(Comparator.comparing(field -> field.getName()));
 
-		return Page.of(transform(fields, this::_toField));
+		return Page.of(transform(vulcanFields, this::_toField));
 	}
 
-	private List<com.liferay.portal.vulcan.batch.engine.Field> _getFields(
+	private List<com.liferay.portal.vulcan.batch.engine.Field> _getVulcanFields(
 			String internalClassName)
 		throws Exception {
 
@@ -78,13 +78,15 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			contextUriInfo);
 	}
 
-	private Field _toField(com.liferay.portal.vulcan.batch.engine.Field field) {
+	private Field _toField(
+		com.liferay.portal.vulcan.batch.engine.Field vulcanField) {
+
 		return new Field() {
 			{
-				description = field.getDescription();
-				name = field.getName();
-				required = field.isRequired();
-				type = field.getType();
+				description = vulcanField.getDescription();
+				name = vulcanField.getName();
+				required = vulcanField.isRequired();
+				type = vulcanField.getType();
 			}
 		};
 	}

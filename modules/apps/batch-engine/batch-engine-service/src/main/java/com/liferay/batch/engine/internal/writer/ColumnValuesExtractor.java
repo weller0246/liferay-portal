@@ -144,10 +144,10 @@ public class ColumnValuesExtractor {
 		int index = fieldName.indexOf(CharPool.UNDERLINE);
 
 		if (index == -1) {
-			Field propertiesMapField = fieldMap.get("properties");
+			Field propertiesField = fieldMap.get("properties");
 
 			if (!ItemClassIndexUtil.isObjectEntryProperties(
-					propertiesMapField)) {
+					propertiesField)) {
 
 				throw new IllegalArgumentException(
 					"Invalid field name : " + fieldName);
@@ -155,7 +155,7 @@ public class ColumnValuesExtractor {
 
 			_unsafeFunctions.add(
 				item -> {
-					Map<?, ?> map = (Map<?, ?>)propertiesMapField.get(item);
+					Map<?, ?> map = (Map<?, ?>)propertiesField.get(item);
 
 					Object value = map.get(fieldName);
 
