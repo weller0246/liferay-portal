@@ -75,7 +75,7 @@ public class FieldProvider {
 		return new ArrayList<>(dtoEntityFields.values());
 	}
 
-	public List<Field> getObjectEntryFields(
+	public List<Field> getFields(
 			long companyId, String objectDefinitionName, UriInfo uriInfo)
 		throws Exception {
 
@@ -83,11 +83,11 @@ public class FieldProvider {
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				companyId, objectDefinitionName);
 
-		Map<String, Field> objectEntryEntityFields =
-			_objectEntryOpenAPIResource.getObjectEntryEntityFields(
+		Map<String, Field> fields =
+			_objectEntryOpenAPIResource.getFields(
 				objectDefinition.getObjectDefinitionId(), uriInfo);
 
-		return new ArrayList<>(objectEntryEntityFields.values());
+		return new ArrayList<>(fields.values());
 	}
 
 	private OpenAPIYAML _getOpenAPIYAML(String internalClassName)

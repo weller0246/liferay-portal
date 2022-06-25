@@ -66,7 +66,7 @@ public class ObjectEntryOpenAPIResourceImpl
 	implements ObjectEntryOpenAPIResource {
 
 	@Override
-	public Map<String, Field> getObjectEntryEntityFields(
+	public Map<String, Field> getFields(
 			long objectDefinitionId, UriInfo uriInfo)
 		throws Exception {
 

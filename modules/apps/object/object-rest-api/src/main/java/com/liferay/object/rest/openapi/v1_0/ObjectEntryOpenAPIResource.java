@@ -26,7 +26,7 @@ import javax.ws.rs.core.UriInfo;
  */
 public interface ObjectEntryOpenAPIResource {
 
-	public Map<String, Field> getObjectEntryEntityFields(
+	public Map<String, Field> getFields(
 			long objectDefinitionId, UriInfo uriInfo)
 		throws Exception;
 
