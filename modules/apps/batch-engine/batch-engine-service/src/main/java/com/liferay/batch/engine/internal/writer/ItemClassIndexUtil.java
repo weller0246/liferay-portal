@@ -66,9 +66,9 @@ public class ItemClassIndexUtil {
 	}
 
 	public static boolean isObjectEntryProperties(Field field) {
-		if (Objects.isNull(field) ||
-			!Objects.equals(field.getType(), Map.class) ||
-			!Objects.equals(field.getDeclaringClass(), ObjectEntry.class)) {
+		if ((field == null) ||
+			!Objects.equals(field.getDeclaringClass(), ObjectEntry.class) ||
+			!Objects.equals(field.getType(), Map.class)) {
 
 			return false;
 		}
