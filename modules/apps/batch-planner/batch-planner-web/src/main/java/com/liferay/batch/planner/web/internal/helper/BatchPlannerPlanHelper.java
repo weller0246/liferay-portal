@@ -338,25 +338,25 @@ public class BatchPlannerPlanHelper {
 	}
 
 	private String _resolveInternalClassName(String internalClassName) {
-		int idx = internalClassName.indexOf(StringPool.POUND);
+		int index = internalClassName.indexOf(StringPool.POUND);
 
-		if (idx < 0) {
+		if (index < 0) {
 			return internalClassName;
 		}
 
-		return internalClassName.substring(0, idx);
+		return internalClassName.substring(0, index);
 	}
 
 	private String _resolveTaskItemDelegateName(
 		String internalClassName, String taskItemDelegateName) {
 
-		int idx = internalClassName.indexOf(StringPool.POUND);
+		int index = internalClassName.indexOf(StringPool.POUND);
 
-		if (idx < 0) {
+		if (index < 0) {
 			return taskItemDelegateName;
 		}
 
-		return internalClassName.substring(idx + 3);
+		return internalClassName.substring(index + 3);
 	}
 
 	private BatchPlannerPlan _updateBatchPlannerPlan(
