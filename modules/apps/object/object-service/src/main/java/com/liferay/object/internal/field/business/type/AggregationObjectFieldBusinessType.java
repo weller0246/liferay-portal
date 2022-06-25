@@ -48,7 +48,8 @@ public class AggregationObjectFieldBusinessType
 
 	@Override
 	public Set<String> getAllowedObjectFieldSettingsNames() {
-		return SetUtil.fromArray("function", "relatedObject", "summarizeField");
+		return SetUtil.fromArray(
+			"function", "relatedObjectEntry", "summarizeField");
 	}
 
 	@Override
