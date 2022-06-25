@@ -55,7 +55,6 @@ public class ObjectEntryApplication extends Application {
 	protected void activate(Map<String, Object> properties) {
 		_objectDefinitionName = (String)properties.get(
 			"liferay.object.definition.name");
-
 		_objectDefinitionId = (Long)properties.get(
 			"liferay.object.definition.id");
 	}
