@@ -64,6 +64,20 @@ public class FieldProvider {
 			});
 	}
 
+	public List<Field> getFields(
+			long companyId, String objectDefinitionName, UriInfo uriInfo)
+		throws Exception {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.fetchObjectDefinition(
+				companyId, objectDefinitionName);
+
+		Map<String, Field> fields = _objectEntryOpenAPIResource.getFields(
+			objectDefinition.getObjectDefinitionId(), uriInfo);
+
+		return new ArrayList<>(fields.values());
+	}
+
 	public List<Field> getFields(String internalClassName) throws Exception {
 		OpenAPIYAML openAPIYAML = _getOpenAPIYAML(internalClassName);
 
@@ -73,21 +87,6 @@ public class FieldProvider {
 			openAPIYAML);
 
 		return new ArrayList<>(dtoEntityFields.values());
-	}
-
-	public List<Field> getFields(
-			long companyId, String objectDefinitionName, UriInfo uriInfo)
-		throws Exception {
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.fetchObjectDefinition(
-				companyId, objectDefinitionName);
-
-		Map<String, Field> fields =
-			_objectEntryOpenAPIResource.getFields(
-				objectDefinition.getObjectDefinitionId(), uriInfo);
-
-		return new ArrayList<>(fields.values());
 	}
 
 	private OpenAPIYAML _getOpenAPIYAML(String internalClassName)

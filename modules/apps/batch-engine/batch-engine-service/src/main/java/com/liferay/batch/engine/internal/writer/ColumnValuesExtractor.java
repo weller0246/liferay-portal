@@ -146,9 +146,7 @@ public class ColumnValuesExtractor {
 		if (index == -1) {
 			Field propertiesField = fieldMap.get("properties");
 
-			if (!ItemClassIndexUtil.isObjectEntryProperties(
-					propertiesField)) {
-
+			if (!ItemClassIndexUtil.isObjectEntryProperties(propertiesField)) {
 				throw new IllegalArgumentException(
 					"Invalid field name : " + fieldName);
 			}
