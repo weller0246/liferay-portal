@@ -340,7 +340,6 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 							childDTOProperty.getExtensions();
 
 						if ((extensions != null) &&
-							extensions.containsKey("x-required") &&
 							GetterUtil.getBoolean(
 								extensions.get("x-required"))) {
 
