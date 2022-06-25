@@ -31,6 +31,7 @@ import com.liferay.portal.vulcan.batch.engine.Field;
 import com.liferay.portal.vulcan.openapi.DTOProperty;
 import com.liferay.portal.vulcan.openapi.OpenAPISchemaFilter;
 import com.liferay.portal.vulcan.resource.OpenAPIResource;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -49,8 +50,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
@@ -337,20 +336,14 @@ public class ObjectEntryOpenAPIResourceImpl
 		DTOProperty dtoProperty = new DTOProperty(
 			new HashMap<>(), "ObjectEntry", "object");
 
-		List<ObjectField> objectFields =
-			_objectFieldLocalService.getObjectFields(
-				_objectDefinition.getObjectDefinitionId());
-
-		Stream<ObjectField> stream = objectFields.stream();
-
 		dtoProperty.setDTOProperties(
-			stream.map(
-				this::_getDTOProperty
-			).collect(
-				Collectors.toList()
-			));
+			TransformUtil.transform(
+				_objectFieldLocalService.getObjectFields(
+					_objectDefinition.getObjectDefinitionId()),
+				this::_getDTOProperty));
 
 		openAPISchemaFilter.setDTOProperty(dtoProperty);
+
 		openAPISchemaFilter.setSchemaMappings(
 			HashMapBuilder.put(
 				"ObjectEntry", _objectDefinition.getShortName()
