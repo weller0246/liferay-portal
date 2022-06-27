@@ -163,7 +163,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		RenderLayoutStructureTag.class.getName() + "#COLLECTION_ELEMENT_INDEX";
 
 	private void _renderCollectionStyledLayoutStructureItem(
-			InfoForm infoForm, LayoutStructureItem layoutStructureItem,
+			InfoForm infoForm,
+			CollectionStyledLayoutStructureItem
+				collectionStyledLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -171,19 +173,13 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		JspWriter jspWriter = pageContext.getOut();
 
 		jspWriter.write("<div class=\"");
-
-		CollectionStyledLayoutStructureItem
-			collectionStyledLayoutStructureItem =
-				(CollectionStyledLayoutStructureItem)layoutStructureItem;
-
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
 				collectionStyledLayoutStructureItem));
-
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
-				layoutStructureItem));
+				collectionStyledLayoutStructureItem));
 		jspWriter.write("\" style=\"");
 
 		HttpServletRequest httpServletRequest = getRequest();
@@ -204,7 +200,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				getCollectionStyledLayoutStructureItemIds();
 
 		collectionStyledLayoutStructureItemIds.add(
-			layoutStructureItem.getItemId());
+			collectionStyledLayoutStructureItem.getItemId());
 
 		List<Object> collection =
 			renderCollectionLayoutStructureItemDisplayContext.getCollection();
@@ -328,8 +324,10 @@ public class RenderLayoutStructureTag extends IncludeTag {
 							COLLECTION_ELEMENT_INDEX, index);
 
 						_renderLayoutStructure(
-							layoutStructureItem.getChildrenItemIds(), index,
-							infoForm, renderLayoutStructureDisplayContext);
+							collectionStyledLayoutStructureItem.
+								getChildrenItemIds(),
+							index, infoForm,
+							renderLayoutStructureDisplayContext);
 
 						httpServletRequest.removeAttribute(
 							COLLECTION_ELEMENT_INDEX);
@@ -453,13 +451,10 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 	private void _renderColumnLayoutStructureItem(
 			int collectionElementIndex, InfoForm infoForm,
-			LayoutStructureItem layoutStructureItem,
+			ColumnLayoutStructureItem columnLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
-
-		ColumnLayoutStructureItem columnLayoutStructureItem =
-			(ColumnLayoutStructureItem)layoutStructureItem;
 
 		RowStyledLayoutStructureItem rowStyledLayoutStructureItem =
 			(RowStyledLayoutStructureItem)
@@ -476,23 +471,22 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		colTag.doStartTag();
 
 		_renderLayoutStructure(
-			layoutStructureItem.getChildrenItemIds(), collectionElementIndex,
-			infoForm, renderLayoutStructureDisplayContext);
+			columnLayoutStructureItem.getChildrenItemIds(),
+			collectionElementIndex, infoForm,
+			renderLayoutStructureDisplayContext);
 
 		colTag.doEndTag();
 	}
 
 	private void _renderContainerStyledLayoutStructureItem(
 			int collectionElementIndex, InfoForm infoForm,
-			LayoutStructureItem layoutStructureItem,
+			ContainerStyledLayoutStructureItem
+				containerStyledLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
 
 		JspWriter jspWriter = pageContext.getOut();
-
-		ContainerStyledLayoutStructureItem containerStyledLayoutStructureItem =
-			(ContainerStyledLayoutStructureItem)layoutStructureItem;
 
 		String containerLinkHref =
 			renderLayoutStructureDisplayContext.getContainerLinkHref(
@@ -524,7 +518,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
-				layoutStructureItem));
+				containerStyledLayoutStructureItem));
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
@@ -590,8 +584,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write("\">");
 
 		_renderLayoutStructure(
-			layoutStructureItem.getChildrenItemIds(), collectionElementIndex,
-			infoForm, renderLayoutStructureDisplayContext);
+			containerStyledLayoutStructureItem.getChildrenItemIds(),
+			collectionElementIndex, infoForm,
+			renderLayoutStructureDisplayContext);
 
 		jspWriter.write("</");
 		jspWriter.write(htmlTag);
@@ -683,7 +678,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 	private void _renderFormStyledLayoutStructureItem(
 			int collectionElementIndex, InfoForm infoForm,
-			LayoutStructureItem layoutStructureItem,
+			FormStyledLayoutStructureItem formStyledLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -700,20 +695,15 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write("\" class=\"");
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
-				layoutStructureItem));
+				formStyledLayoutStructureItem));
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
-				layoutStructureItem));
+				formStyledLayoutStructureItem));
 		jspWriter.write(StringPool.SPACE);
-
-		FormStyledLayoutStructureItem formStyledLayoutStructureItem =
-			(FormStyledLayoutStructureItem)layoutStructureItem;
-
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
 				formStyledLayoutStructureItem));
-
 		jspWriter.write("\" method=\"POST=\" style=\"");
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
@@ -771,8 +761,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		}
 
 		_renderLayoutStructure(
-			layoutStructureItem.getChildrenItemIds(), collectionElementIndex,
-			infoForm, renderLayoutStructureDisplayContext);
+			formStyledLayoutStructureItem.getChildrenItemIds(),
+			collectionElementIndex, infoForm,
+			renderLayoutStructureDisplayContext);
 
 		jspWriter.write("</form>");
 	}
@@ -798,7 +789,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 	private void _renderFragmentStyledLayoutStructureItem(
 			int collectionElementIndex, InfoForm infoForm,
-			LayoutStructureItem layoutStructureItem,
+			FragmentStyledLayoutStructureItem fragmentStyledLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
@@ -816,9 +807,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
 			jspWriter.write("<div class=\"master-layout-fragment\">");
 		}
-
-		FragmentStyledLayoutStructureItem fragmentStyledLayoutStructureItem =
-			(FragmentStyledLayoutStructureItem)layoutStructureItem;
 
 		if (fragmentStyledLayoutStructureItem.getFragmentEntryLinkId() > 0) {
 			FragmentEntryLink fragmentEntryLink =
@@ -882,12 +870,14 @@ public class RenderLayoutStructureTag extends IncludeTag {
 					CollectionStyledLayoutStructureItem) {
 
 				_renderCollectionStyledLayoutStructureItem(
-					infoForm, layoutStructureItem,
+					infoForm,
+					(CollectionStyledLayoutStructureItem)layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof ColumnLayoutStructureItem) {
 				_renderColumnLayoutStructureItem(
-					collectionElementIndex, infoForm, layoutStructureItem,
+					collectionElementIndex, infoForm,
+					(ColumnLayoutStructureItem)layoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -906,7 +896,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderContainerStyledLayoutStructureItem(
-					collectionElementIndex, infoForm, layoutStructureItem,
+					collectionElementIndex, infoForm,
+					containerStyledLayoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -943,7 +934,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 						collectionElementIndex,
 						renderLayoutStructureDisplayContext.getInfoForm(
 							formStyledLayoutStructureItem),
-						layoutStructureItem,
+						formStyledLayoutStructureItem,
 						renderLayoutStructureDisplayContext);
 				}
 			}
@@ -963,7 +954,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderFragmentStyledLayoutStructureItem(
-					collectionElementIndex, infoForm, layoutStructureItem,
+					collectionElementIndex, infoForm,
+					fragmentStyledLayoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else if (layoutStructureItem instanceof
@@ -981,7 +973,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				_renderRowStyledLayoutStructureItem(
-					collectionElementIndex, infoForm, layoutStructureItem,
+					collectionElementIndex, infoForm,
+					rowStyledLayoutStructureItem,
 					renderLayoutStructureDisplayContext);
 			}
 			else {
@@ -1013,15 +1006,12 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 	private void _renderRowStyledLayoutStructureItem(
 			int collectionElementIndex, InfoForm infoForm,
-			LayoutStructureItem layoutStructureItem,
+			RowStyledLayoutStructureItem rowStyledLayoutStructureItem,
 			RenderLayoutStructureDisplayContext
 				renderLayoutStructureDisplayContext)
 		throws Exception {
 
 		JspWriter jspWriter = pageContext.getOut();
-
-		RowStyledLayoutStructureItem rowStyledLayoutStructureItem =
-			(RowStyledLayoutStructureItem)layoutStructureItem;
 
 		jspWriter.write("<div class=\"");
 		jspWriter.write(
@@ -1030,7 +1020,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemCssClass(
-				layoutStructureItem));
+				rowStyledLayoutStructureItem));
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
@@ -1062,7 +1052,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			rowTag.doStartTag();
 
 			_renderLayoutStructure(
-				layoutStructureItem.getChildrenItemIds(),
+				rowStyledLayoutStructureItem.getChildrenItemIds(),
 				collectionElementIndex, infoForm,
 				renderLayoutStructureDisplayContext);
 
@@ -1081,7 +1071,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			rowTag.doStartTag();
 
 			_renderLayoutStructure(
-				layoutStructureItem.getChildrenItemIds(),
+				rowStyledLayoutStructureItem.getChildrenItemIds(),
 				collectionElementIndex, infoForm,
 				renderLayoutStructureDisplayContext);
 
