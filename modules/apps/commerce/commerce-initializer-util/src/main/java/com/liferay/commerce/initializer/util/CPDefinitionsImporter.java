@@ -278,22 +278,24 @@ public class CPDefinitionsImporter {
 			JSONObject customValueJSONObject =
 				customFieldJSONObject.getJSONObject("customValue");
 
-			if (customValueJSONObject != null) {
-				if (customValueJSONObject.get("data") instanceof BigDecimal) {
-					BigDecimal customValue =
-						(BigDecimal)customValueJSONObject.get("data");
+			if (customValueJSONObject == null) {
+				continue;
+			}
 
-					expandoBridge.setAttributeDefault(
-						customFieldJSONObject.getString("name"),
-						customValue.doubleValue());
-
-					continue;
-				}
+			if (customValueJSONObject.get("data") instanceof BigDecimal) {
+				BigDecimal customValue = (BigDecimal)customValueJSONObject.get(
+					"data");
 
 				expandoBridge.setAttributeDefault(
 					customFieldJSONObject.getString("name"),
-					(Serializable)customValueJSONObject.get("data"));
+					customValue.doubleValue());
+
+				continue;
 			}
+
+			expandoBridge.setAttributeDefault(
+				customFieldJSONObject.getString("name"),
+				(Serializable)customValueJSONObject.get("data"));
 		}
 	}
 
