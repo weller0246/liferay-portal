@@ -208,6 +208,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		if (ListUtil.isEmpty(collection)) {
 			_renderEmptyState(jspWriter);
 
+			jspWriter.write("</div>");
+
 			collectionStyledLayoutStructureItemIds.remove(
 				collectionStyledLayoutStructureItemIds.size() - 1);
 
@@ -673,7 +675,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write("<div class=\"c-empty-state-text\">");
 		jspWriter.write(
 			LanguageUtil.get(getRequest(), "sorry,-no-results-were-found"));
-		jspWriter.write("</div></div></div>");
+		jspWriter.write("</div></div>");
 	}
 
 	private void _renderFormStyledLayoutStructureItem(
