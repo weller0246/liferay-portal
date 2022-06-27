@@ -41,11 +41,14 @@ import com.liferay.info.type.WebImage;
 import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
+import com.liferay.layout.util.structure.DropZoneLayoutStructureItem;
 import com.liferay.layout.util.structure.FormStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItemUtil;
+import com.liferay.layout.util.structure.RootLayoutStructureItem;
+import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.StyledLayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -630,6 +633,50 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		return false;
+	}
+
+	public boolean isIncludeContainer(
+		RowStyledLayoutStructureItem rowStyledLayoutStructureItem) {
+
+		LayoutStructureItem parentLayoutStructureItem =
+			_layoutStructure.getLayoutStructureItem(
+				rowStyledLayoutStructureItem.getParentItemId());
+
+		boolean includeContainer = false;
+
+		if (parentLayoutStructureItem instanceof RootLayoutStructureItem) {
+			Layout layout = _themeDisplay.getLayout();
+
+			if (Objects.equals(
+					layout.getType(), LayoutConstants.TYPE_PORTLET)) {
+
+				includeContainer = true;
+			}
+			else {
+				LayoutStructureItem rootParentLayoutStructureItem =
+					_layoutStructure.getLayoutStructureItem(
+						parentLayoutStructureItem.getParentItemId());
+
+				if (rootParentLayoutStructureItem == null) {
+					includeContainer = true;
+				}
+				else if (rootParentLayoutStructureItem instanceof
+							DropZoneLayoutStructureItem) {
+
+					LayoutStructureItem dropZoneParentLayoutStructureItem =
+						_layoutStructure.getLayoutStructureItem(
+							rootParentLayoutStructureItem.getParentItemId());
+
+					if (dropZoneParentLayoutStructureItem instanceof
+							RootLayoutStructureItem) {
+
+						includeContainer = true;
+					}
+				}
+			}
+		}
+
+		return includeContainer;
 	}
 
 	private String _getBackgroundImage(JSONObject jsonObject) throws Exception {

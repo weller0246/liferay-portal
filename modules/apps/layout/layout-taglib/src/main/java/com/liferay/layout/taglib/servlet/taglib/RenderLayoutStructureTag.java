@@ -49,7 +49,6 @@ import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItemCSSUtil;
-import com.liferay.layout.util.structure.RootLayoutStructureItem;
 import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -1024,50 +1023,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		RowStyledLayoutStructureItem rowStyledLayoutStructureItem =
 			(RowStyledLayoutStructureItem)layoutStructureItem;
 
-		LayoutStructureItem parentLayoutStructureItem =
-			_layoutStructure.getLayoutStructureItem(
-				rowStyledLayoutStructureItem.getParentItemId());
-
-		boolean includeContainer = false;
-
-		if (parentLayoutStructureItem instanceof RootLayoutStructureItem) {
-			HttpServletRequest httpServletRequest = getRequest();
-
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
-
-			Layout layout = themeDisplay.getLayout();
-
-			if (Objects.equals(
-					layout.getType(), LayoutConstants.TYPE_PORTLET)) {
-
-				includeContainer = true;
-			}
-			else {
-				LayoutStructureItem rootParentLayoutStructureItem =
-					_layoutStructure.getLayoutStructureItem(
-						parentLayoutStructureItem.getParentItemId());
-
-				if (rootParentLayoutStructureItem == null) {
-					includeContainer = true;
-				}
-				else if (rootParentLayoutStructureItem instanceof
-							DropZoneLayoutStructureItem) {
-
-					LayoutStructureItem dropZoneParentLayoutStructureItem =
-						_layoutStructure.getLayoutStructureItem(
-							rootParentLayoutStructureItem.getParentItemId());
-
-					if (dropZoneParentLayoutStructureItem instanceof
-							RootLayoutStructureItem) {
-
-						includeContainer = true;
-					}
-				}
-			}
-		}
-
 		jspWriter.write("<div class=\"");
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getLayoutStructureItemUniqueCssClass(
@@ -1086,7 +1041,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				rowStyledLayoutStructureItem));
 		jspWriter.write("\">");
 
-		if (includeContainer) {
+		if (renderLayoutStructureDisplayContext.isIncludeContainer(
+				rowStyledLayoutStructureItem)) {
+
 			ContainerTag containerTag = new ContainerTag();
 
 			containerTag.setCssClass("p-0");
