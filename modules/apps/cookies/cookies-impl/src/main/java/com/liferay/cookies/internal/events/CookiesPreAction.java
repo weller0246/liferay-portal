@@ -188,23 +188,23 @@ public class CookiesPreAction extends Action {
 			(cookiesPreferenceHandlingConfiguration.explicitConsentMode() &&
 			 !userConsent)) {
 
-			String optionalCookiesValue = "true";
+			String cookieValue = "true";
 
 			if (cookiesPreferenceHandlingConfiguration.explicitConsentMode()) {
-				optionalCookiesValue = "false";
+				cookieValue = "false";
 			}
 
 			_addCookies(
 				httpServletRequest, httpServletResponse,
 				new Cookie(
 					CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
-					optionalCookiesValue),
+					cookieValue),
 				new Cookie(
 					CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE,
-					optionalCookiesValue),
+					cookieValue),
 				new Cookie(
 					CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION,
-					optionalCookiesValue));
+					cookieValue));
 		}
 	}
 
