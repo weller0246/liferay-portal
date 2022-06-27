@@ -119,7 +119,7 @@ public class CookiesPreAction extends Action {
 	private void _run(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse)
-		throws ConfigurationException {
+		throws Exception {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
