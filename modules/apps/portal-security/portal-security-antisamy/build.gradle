@@ -146,8 +146,8 @@ private String _filterBlogsSanitizer(String line) {
 
 	if (line.contains('<literal value="hr"/>')) {
 		line = """\
-			|	${line}
-			|	<literal value="iframe"/>""".stripMargin()
+			|${line}
+			|				<literal value="iframe"/>""".stripMargin()
 	}
 	else if (line.contains('<tag name="iframe" action="remove"/>')) {
 		line = """\
@@ -416,8 +416,8 @@ private String _filterKnowledgeBaseSanitizer(String line) {
 
 	if (line.contains('<literal value="hr"/>')) {
 		line = """\
-			|	${line}
-			|	<literal value="iframe"/>""".stripMargin()
+			|${line}
+			|				<literal value="iframe"/>""".stripMargin()
 	}
 	else if (line.contains('<tag name="iframe" action="remove"/>')) {
 		line = """\
