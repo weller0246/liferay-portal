@@ -14,8 +14,8 @@
 
 package com.liferay.commerce.internal.object.system;
 
-import com.liferay.commerce.pricing.model.CommercePricingClass;
-import com.liferay.commerce.pricing.model.CommercePricingClassTable;
+import com.liferay.commerce.product.model.CPDefinition;
+import com.liferay.commerce.product.model.CPDefinitionTable;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;
@@ -31,20 +31,20 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Gleice Lisbino
+ * @author José Abelenda
  */
 @Component(enabled = true, service = SystemObjectDefinitionMetadata.class)
-public class CommerceProductGroupSystemObjectDefinitionMetadata
+public class CPDefinitionSystemObjectDefinitionMetadata
 	extends BaseSystemObjectDefinitionMetadata {
 
 	@Override
 	public Map<Locale, String> getLabelMap() {
-		return createLabelMap("commerce-product-group");
+		return createLabelMap("cp-definition");
 	}
 
 	@Override
 	public Class<?> getModelClass() {
-		return CommercePricingClass.class;
+		return CPDefinition.class;
 	}
 
 	@Override
@@ -55,25 +55,33 @@ public class CommerceProductGroupSystemObjectDefinitionMetadata
 			createObjectField(
 				"Text", "String", "external-reference-code",
 				"externalReferenceCode", false, true),
+			createObjectField("Text", "String", "name", "name", false, true),
 			createObjectField(
-				"Integer", "Integer", "number-of-products", "productsCount",
+				"Text", "CPDefinitionId", "String", "product-id", "productId",
 				false, true),
-			createObjectField("Text", "String", "title", "title", false, true));
+			createObjectField(
+				"Text", "String", "short-description", "shortDescription",
+				false, true),
+			createObjectField(
+				"Text", "String", "sku", "skuFormatted", false, true),
+			createObjectField(
+				"Text", "String", "thumbnail", "thumbnail", false, true),
+			createObjectField("Text", "String", "uuid", "uuid", false, true));
 	}
 
 	@Override
 	public Map<Locale, String> getPluralLabelMap() {
-		return createLabelMap("commerce-product-groups");
+		return createLabelMap("cp-definitions");
 	}
 
 	@Override
 	public Column<?, Long> getPrimaryKeyColumn() {
-		return CommercePricingClassTable.INSTANCE.commercePricingClassId;
+		return CPDefinitionTable.INSTANCE.CPDefinitionId;
 	}
 
 	@Override
 	public String getRESTContextPath() {
-		return "headless-commerce-admin-catalog/v1.0/product-groups";
+		return "headless-commerce-admin-catalog/v1.0/products";
 	}
 
 	@Override
@@ -83,7 +91,7 @@ public class CommerceProductGroupSystemObjectDefinitionMetadata
 
 	@Override
 	public Table getTable() {
-		return CommercePricingClassTable.INSTANCE;
+		return CPDefinitionTable.INSTANCE;
 	}
 
 	@Override

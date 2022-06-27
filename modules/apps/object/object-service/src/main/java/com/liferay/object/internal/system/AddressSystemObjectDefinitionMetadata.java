@@ -12,16 +12,16 @@
  * details.
  */
 
-package com.liferay.commerce.internal.object.system;
+package com.liferay.object.internal.system;
 
-import com.liferay.commerce.product.model.CPDefinition;
-import com.liferay.commerce.product.model.CPDefinitionTable;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
+import com.liferay.portal.kernel.model.Address;
+import com.liferay.portal.kernel.model.AddressTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,57 +31,44 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author José Abelenda
+ * @author Rodrigo Paulino
  */
-@Component(enabled = true, service = SystemObjectDefinitionMetadata.class)
-public class CPDefinitionEntrySystemObjectDefinitionMetadata
+@Component(immediate = true, service = SystemObjectDefinitionMetadata.class)
+public class AddressSystemObjectDefinitionMetadata
 	extends BaseSystemObjectDefinitionMetadata {
 
 	@Override
 	public Map<Locale, String> getLabelMap() {
-		return createLabelMap("cp-definition");
+		return createLabelMap("postal-address");
 	}
 
 	@Override
 	public Class<?> getModelClass() {
-		return CPDefinition.class;
+		return Address.class;
 	}
 
 	@Override
 	public List<ObjectField> getObjectFields() {
 		return Arrays.asList(
+			createObjectField("Text", "String", "name", "name", true, true),
 			createObjectField(
-				"Text", "String", "description", "description", false, true),
-			createObjectField(
-				"Text", "String", "external-reference-code",
-				"externalReferenceCode", false, true),
-			createObjectField("Text", "String", "name", "name", false, true),
-			createObjectField(
-				"Text", "CPDefinitionId", "String", "product-id", "productId",
-				false, true),
-			createObjectField(
-				"Text", "String", "short-description", "shortDescription",
-				false, true),
-			createObjectField(
-				"Text", "String", "sku", "skuFormatted", false, true),
-			createObjectField(
-				"Text", "String", "thumbnail", "thumbnail", false, true),
-			createObjectField("Text", "String", "uuid", "uuid", false, true));
+				"Text", "street1", "String", "street1", "streetAddressLine1",
+				true, true));
 	}
 
 	@Override
 	public Map<Locale, String> getPluralLabelMap() {
-		return createLabelMap("cp-definitions");
+		return createLabelMap("postal-addresses");
 	}
 
 	@Override
 	public Column<?, Long> getPrimaryKeyColumn() {
-		return CPDefinitionTable.INSTANCE.CPDefinitionId;
+		return AddressTable.INSTANCE.addressId;
 	}
 
 	@Override
 	public String getRESTContextPath() {
-		return "headless-commerce-admin-catalog/v1.0/products";
+		return "headless-admin-user/v1.0/accounts/{accountId}/postal-addresses";
 	}
 
 	@Override
@@ -91,7 +78,7 @@ public class CPDefinitionEntrySystemObjectDefinitionMetadata
 
 	@Override
 	public Table getTable() {
-		return CPDefinitionTable.INSTANCE;
+		return AddressTable.INSTANCE;
 	}
 
 	@Override

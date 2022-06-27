@@ -12,16 +12,16 @@
  * details.
  */
 
-package com.liferay.object.internal.system;
+package com.liferay.commerce.internal.object.system;
 
+import com.liferay.commerce.pricing.model.CommercePricingClass;
+import com.liferay.commerce.pricing.model.CommercePricingClassTable;
 import com.liferay.object.constants.ObjectDefinitionConstants;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.system.BaseSystemObjectDefinitionMetadata;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
-import com.liferay.portal.kernel.model.Address;
-import com.liferay.portal.kernel.model.AddressTable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,44 +31,49 @@ import java.util.Map;
 import org.osgi.service.component.annotations.Component;
 
 /**
- * @author Rodrigo Paulino
+ * @author Gleice Lisbino
  */
-@Component(immediate = true, service = SystemObjectDefinitionMetadata.class)
-public class PostalAddressSystemObjectDefinitionMetadata
+@Component(enabled = true, service = SystemObjectDefinitionMetadata.class)
+public class CommercePricingClassSystemObjectDefinitionMetadata
 	extends BaseSystemObjectDefinitionMetadata {
 
 	@Override
 	public Map<Locale, String> getLabelMap() {
-		return createLabelMap("postal-address");
+		return createLabelMap("commerce-product-group");
 	}
 
 	@Override
 	public Class<?> getModelClass() {
-		return Address.class;
+		return CommercePricingClass.class;
 	}
 
 	@Override
 	public List<ObjectField> getObjectFields() {
 		return Arrays.asList(
-			createObjectField("Text", "String", "name", "name", true, true),
 			createObjectField(
-				"Text", "street1", "String", "street1", "streetAddressLine1",
-				true, true));
+				"Text", "String", "description", "description", false, true),
+			createObjectField(
+				"Text", "String", "external-reference-code",
+				"externalReferenceCode", false, true),
+			createObjectField(
+				"Integer", "Integer", "number-of-products", "productsCount",
+				false, true),
+			createObjectField("Text", "String", "title", "title", false, true));
 	}
 
 	@Override
 	public Map<Locale, String> getPluralLabelMap() {
-		return createLabelMap("postal-addresses");
+		return createLabelMap("commerce-product-groups");
 	}
 
 	@Override
 	public Column<?, Long> getPrimaryKeyColumn() {
-		return AddressTable.INSTANCE.addressId;
+		return CommercePricingClassTable.INSTANCE.commercePricingClassId;
 	}
 
 	@Override
 	public String getRESTContextPath() {
-		return "headless-admin-user/v1.0/accounts/{accountId}/postal-addresses";
+		return "headless-commerce-admin-catalog/v1.0/product-groups";
 	}
 
 	@Override
@@ -78,7 +83,7 @@ public class PostalAddressSystemObjectDefinitionMetadata
 
 	@Override
 	public Table getTable() {
-		return AddressTable.INSTANCE;
+		return CommercePricingClassTable.INSTANCE;
 	}
 
 	@Override
