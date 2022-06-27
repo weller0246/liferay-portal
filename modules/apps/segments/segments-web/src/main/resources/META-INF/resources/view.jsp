@@ -64,7 +64,7 @@ request.setAttribute("view.jsp-eventName", eventName);
 			<c:otherwise>
 				<span><%=
 				LanguageUtil.get(
-					request, "to-enable-segmentation-contact-your-system-administrator") %></span>
+					request, "contact-your-system-administrator-to-enable-segmentation") %></span>
 			</c:otherwise>
 		</c:choose>
 	</clay:stripe>
