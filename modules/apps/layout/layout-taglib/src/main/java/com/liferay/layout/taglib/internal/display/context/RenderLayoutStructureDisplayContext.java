@@ -18,10 +18,6 @@ import com.liferay.asset.info.display.contributor.util.ContentAccessor;
 import com.liferay.fragment.entry.processor.helper.FragmentEntryProcessorHelper;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.renderer.DefaultFragmentRendererContext;
-import com.liferay.frontend.token.definition.FrontendToken;
-import com.liferay.frontend.token.definition.FrontendTokenDefinition;
-import com.liferay.frontend.token.definition.FrontendTokenDefinitionRegistry;
-import com.liferay.frontend.token.definition.FrontendTokenMapping;
 import com.liferay.info.constants.InfoDisplayWebKeys;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.form.InfoForm;
@@ -43,21 +39,16 @@ import com.liferay.layout.util.structure.StyledLayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassedModel;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutConstants;
-import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
-import com.liferay.portal.kernel.service.LayoutSetLocalServiceUtil;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -67,15 +58,11 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.segments.SegmentsEntryRetriever;
 import com.liferay.segments.context.RequestContextMapper;
-import com.liferay.style.book.model.StyleBookEntry;
-import com.liferay.style.book.util.DefaultStyleBookEntryUtil;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -456,25 +443,6 @@ public class RenderLayoutStructureDisplayContext {
 		return sb.toString();
 	}
 
-	public String getStyleFromStyleBookEntry(String styleValue)
-		throws Exception {
-
-		JSONObject frontendTokensValuesJSONObject =
-			_getFrontendTokensJSONObject();
-
-		JSONObject styleValueJSONObject =
-			frontendTokensValuesJSONObject.getJSONObject(styleValue);
-
-		if (styleValueJSONObject == null) {
-			return styleValue;
-		}
-
-		String cssVariable = styleValueJSONObject.getString(
-			FrontendTokenMapping.TYPE_CSS_VARIABLE);
-
-		return "var(--" + cssVariable + ")";
-	}
-
 	private String _getBackgroundImage(JSONObject jsonObject) throws Exception {
 		if (jsonObject == null) {
 			return StringPool.BLANK;
@@ -650,84 +618,6 @@ public class RenderLayoutStructureDisplayContext {
 			classPKInfoItemIdentifier.getClassPK(), fieldId, locale);
 	}
 
-	private JSONObject _getFrontendTokensJSONObject() throws Exception {
-		if (_frontendTokensJSONObject != null) {
-			return _frontendTokensJSONObject;
-		}
-
-		_frontendTokensJSONObject = JSONFactoryUtil.createJSONObject();
-
-		FrontendTokenDefinitionRegistry frontendTokenDefinitionRegistry =
-			ServletContextUtil.getFrontendTokenDefinitionRegistry();
-
-		LayoutSet layoutSet = LayoutSetLocalServiceUtil.fetchLayoutSet(
-			_themeDisplay.getSiteGroupId(), false);
-
-		FrontendTokenDefinition frontendTokenDefinition =
-			frontendTokenDefinitionRegistry.getFrontendTokenDefinition(
-				layoutSet.getThemeId());
-
-		if (frontendTokenDefinition == null) {
-			return _frontendTokensJSONObject;
-		}
-
-		StyleBookEntry styleBookEntry = null;
-
-		if (!ParamUtil.getBoolean(
-				_httpServletRequest, "styleBookEntryPreview")) {
-
-			styleBookEntry = DefaultStyleBookEntryUtil.getDefaultStyleBookEntry(
-				_themeDisplay.getLayout());
-		}
-
-		JSONObject frontendTokenValuesJSONObject = null;
-
-		if (styleBookEntry != null) {
-			frontendTokenValuesJSONObject = JSONFactoryUtil.createJSONObject(
-				styleBookEntry.getFrontendTokensValues());
-		}
-		else {
-			frontendTokenValuesJSONObject = JSONFactoryUtil.createJSONObject();
-		}
-
-		Collection<FrontendToken> frontendTokens =
-			frontendTokenDefinition.getFrontendTokens();
-
-		for (FrontendToken frontendToken : frontendTokens) {
-			List<FrontendTokenMapping> frontendTokenMappings = new ArrayList<>(
-				frontendToken.getFrontendTokenMappings(
-					FrontendTokenMapping.TYPE_CSS_VARIABLE));
-
-			if (ListUtil.isEmpty(frontendTokenMappings)) {
-				continue;
-			}
-
-			_frontendTokensJSONObject.put(
-				frontendToken.getName(),
-				JSONUtil.put(
-					FrontendTokenMapping.TYPE_CSS_VARIABLE,
-					() -> {
-						FrontendTokenMapping frontendTokenMapping =
-							frontendTokenMappings.get(0);
-
-						return frontendTokenMapping.getValue();
-					}
-				).put(
-					"value",
-					Optional.ofNullable(
-						frontendTokenValuesJSONObject.getJSONObject(
-							frontendToken.getName())
-					).map(
-						valueJSONObject -> valueJSONObject.getString("value")
-					).orElse(
-						frontendToken.getDefaultValue()
-					)
-				));
-		}
-
-		return _frontendTokensJSONObject;
-	}
-
 	private String _getMainItemId() {
 		if (Validator.isNotNull(_mainItemId)) {
 			return _mainItemId;
@@ -889,7 +779,6 @@ public class RenderLayoutStructureDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		RenderLayoutStructureDisplayContext.class);
 
-	private JSONObject _frontendTokensJSONObject;
 	private final HttpServletRequest _httpServletRequest;
 	private final LayoutStructure _layoutStructure;
 	private final String _mainItemId;
