@@ -62,12 +62,12 @@ public class CookiesPreAction extends Action {
 		HttpServletResponse httpServletResponse, Cookie... cookies) {
 
 		for (Cookie cookie : cookies) {
-			cookie.setPath("/");
-			cookie.setVersion(0);
-
 			if (cookie.getMaxAge() != 0) {
 				cookie.setMaxAge(365 * 24 * 60 * 60);
 			}
+
+			cookie.setPath("/");
+			cookie.setVersion(0);
 
 			CookiesManagerUtil.addCookie(
 				CookiesConstants.CONSENT_TYPE_NECESSARY, cookie,
