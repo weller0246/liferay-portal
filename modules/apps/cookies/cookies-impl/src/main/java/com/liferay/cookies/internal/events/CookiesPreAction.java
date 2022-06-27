@@ -146,42 +146,42 @@ public class CookiesPreAction extends Action {
 			return;
 		}
 
-		boolean functionalConsentCookieSet = Validator.isNotNull(
+		boolean functionalConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL));
-		boolean necessaryConsentCookieSet = Validator.isNotNull(
+		boolean necessaryConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_NECESSARY));
-		boolean performanceConsentCookieSet = Validator.isNotNull(
+		boolean performanceConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE));
-		boolean personalizationConsentCookieSet = Validator.isNotNull(
+		boolean personalizationConsent = Validator.isNotNull(
 			cookieValues.get(
 				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION));
 
 		boolean optionalConsentCookiesSet = false;
 
-		if (performanceConsentCookieSet && functionalConsentCookieSet &&
-			personalizationConsentCookieSet) {
+		if (performanceConsent && functionalConsent &&
+			personalizationConsent) {
 
 			optionalConsentCookiesSet = true;
 		}
 
-		boolean userConsentCookieSet = Validator.isNotNull(
+		boolean userConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_USER_CONSENT_CONFIGURED));
 
-		if (optionalConsentCookiesSet && necessaryConsentCookieSet &&
-			userConsentCookieSet) {
+		if (optionalConsentCookiesSet && necessaryConsent &&
+			userConsent) {
 
 			return;
 		}
 
 		if (!cookiesPreferenceHandlingConfiguration.explicitConsentMode() ||
-			!userConsentCookieSet) {
+			!userConsent) {
 
 			_expireCookiesIfSet(
 				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 		}
 
-		if (!necessaryConsentCookieSet) {
+		if (!necessaryConsent) {
 			_addCookies(
 				httpServletRequest, httpServletResponse,
 				new Cookie(
@@ -190,7 +190,7 @@ public class CookiesPreAction extends Action {
 
 		if (!optionalConsentCookiesSet ||
 			(cookiesPreferenceHandlingConfiguration.explicitConsentMode() &&
-			 !userConsentCookieSet)) {
+			 !userConsent)) {
 
 			String optionalCookiesValue = "true";
 
