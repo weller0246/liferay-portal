@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.fragment.input.templateparser;
+package com.liferay.fragment.input.template.parser;
 
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;

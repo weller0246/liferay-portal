@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.fragment.input.templateparser;
+package com.liferay.fragment.input.template.parser;
 
 import com.liferay.fragment.contributor.FragmentCollectionContributorTracker;
 import com.liferay.fragment.model.FragmentEntry;
