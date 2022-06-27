@@ -78,8 +78,8 @@ public class CookiesPreAction extends Action {
 
 	private void _expireCookiesIfSet(
 		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse, Map<String, String> cookieValues,
-		String... cookieNames) {
+		HttpServletResponse httpServletResponse,
+		Map<String, String> cookieValues, String... cookieNames) {
 
 		for (String cookieName : cookieNames) {
 			String cookieValue = cookieValues.get(cookieName);
