@@ -570,6 +570,44 @@ public class RenderLayoutStructureDisplayContext {
 		return sb.toString();
 	}
 
+	public String getSuccessMessage(
+			FormStyledLayoutStructureItem formStyledLayoutStructureItem)
+		throws Exception {
+
+		String successMessage = null;
+
+		JSONObject successMessageJSONObject =
+			formStyledLayoutStructureItem.getSuccessMessageJSONObject();
+
+		if ((successMessageJSONObject != null) &&
+			successMessageJSONObject.has("message")) {
+
+			JSONObject messageJSONObject =
+				successMessageJSONObject.getJSONObject("message");
+
+			if (messageJSONObject.has(_themeDisplay.getLanguageId())) {
+				successMessage = messageJSONObject.getString(
+					_themeDisplay.getLanguageId());
+			}
+			else {
+				String siteDefaultLanguageId = LanguageUtil.getLanguageId(
+					PortalUtil.getSiteDefaultLocale(
+						_themeDisplay.getScopeGroupId()));
+
+				successMessage = messageJSONObject.getString(
+					siteDefaultLanguageId);
+			}
+		}
+
+		if (successMessage == null) {
+			successMessage = LanguageUtil.get(
+				_themeDisplay.getLocale(),
+				"thank-you.-your-information-was-successfully-received");
+		}
+
+		return successMessage;
+	}
+
 	public boolean includeCommonStyles(FragmentEntryLink fragmentEntryLink)
 		throws Exception {
 

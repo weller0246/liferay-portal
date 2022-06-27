@@ -54,7 +54,6 @@ import com.liferay.layout.util.structure.RowStyledLayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.io.unsync.UnsyncStringWriter;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.layoutconfiguration.util.RuntimePageUtil;
 import com.liferay.portal.kernel.model.Layout;
@@ -72,7 +71,6 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Constants;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
-import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.PropsValues;
@@ -781,51 +779,18 @@ public class RenderLayoutStructureTag extends IncludeTag {
 	}
 
 	private void _renderFormStyledLayoutStructureItemSuccessMessage(
-			FormStyledLayoutStructureItem formStyledLayoutStructureItem)
+			FormStyledLayoutStructureItem formStyledLayoutStructureItem,
+			RenderLayoutStructureDisplayContext
+				renderLayoutStructureDisplayContext)
 		throws Exception {
-
-		HttpServletRequest httpServletRequest = getRequest();
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
-		String successMessage = null;
-
-		JSONObject successMessageJSONObject =
-			formStyledLayoutStructureItem.getSuccessMessageJSONObject();
-
-		if ((successMessageJSONObject != null) &&
-			successMessageJSONObject.has("message")) {
-
-			JSONObject messageJSONObject =
-				successMessageJSONObject.getJSONObject("message");
-
-			if (messageJSONObject.has(themeDisplay.getLanguageId())) {
-				successMessage = messageJSONObject.getString(
-					themeDisplay.getLanguageId());
-			}
-			else {
-				String siteDefaultLanguageId = LanguageUtil.getLanguageId(
-					PortalUtil.getSiteDefaultLocale(
-						themeDisplay.getScopeGroupId()));
-
-				successMessage = messageJSONObject.getString(
-					siteDefaultLanguageId);
-			}
-		}
-
-		if (successMessage == null) {
-			successMessage = LanguageUtil.get(
-				themeDisplay.getLocale(),
-				"thank-you.-your-information-was-successfully-received");
-		}
 
 		JspWriter jspWriter = pageContext.getOut();
 
 		jspWriter.write("<div class=\"font-weight-semi-bold bg-white");
 		jspWriter.write("text-secondary text-center text-3 p-5\">");
-		jspWriter.write(successMessage);
+		jspWriter.write(
+			renderLayoutStructureDisplayContext.getSuccessMessage(
+				formStyledLayoutStructureItem));
 		jspWriter.write("</div>");
 
 		SessionMessages.remove(
@@ -971,7 +936,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 						formStyledLayoutStructureItem.getItemId())) {
 
 					_renderFormStyledLayoutStructureItemSuccessMessage(
-						formStyledLayoutStructureItem);
+						formStyledLayoutStructureItem,
+						renderLayoutStructureDisplayContext);
 				}
 				else {
 					_renderFormStyledLayoutStructureItem(
