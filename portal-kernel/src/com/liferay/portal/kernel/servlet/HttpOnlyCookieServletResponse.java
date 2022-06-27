@@ -63,14 +63,14 @@ public class HttpOnlyCookieServletResponse extends HttpServletResponseWrapper {
 
 	@Override
 	public void addCookie(Cookie cookie) {
-		if (!_cookieHttpOnlyCookieNamesExcludes.contains(cookie.getName())) {
+		if (!_httpOnlyCookieNames.contains(cookie.getName())) {
 			cookie.setHttpOnly(true);
 		}
 
 		super.addCookie(cookie);
 	}
 
-	private static final Set<String> _cookieHttpOnlyCookieNamesExcludes =
+	private static final Set<String> _httpOnlyCookieNames =
 		new HashSet<String>() {
 			{
 				addAll(
