@@ -65,7 +65,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author Eudaldo Alonso
@@ -76,13 +75,12 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 
 	public RenderCollectionLayoutStructureItemDisplayContext(
 		CollectionStyledLayoutStructureItem collectionStyledLayoutStructureItem,
-		HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse) {
+		HttpServletRequest httpServletRequest) {
 
 		_collectionStyledLayoutStructureItem =
 			collectionStyledLayoutStructureItem;
+
 		_httpServletRequest = httpServletRequest;
-		_httpServletResponse = httpServletResponse;
 
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
@@ -591,7 +589,6 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 	private final CollectionStyledLayoutStructureItem
 		_collectionStyledLayoutStructureItem;
 	private final HttpServletRequest _httpServletRequest;
-	private final HttpServletResponse _httpServletResponse;
 	private Integer _maxNumberOfItemsPerPage;
 	private Integer _numberOfItemsToDisplay;
 	private Integer _numberOfPages;

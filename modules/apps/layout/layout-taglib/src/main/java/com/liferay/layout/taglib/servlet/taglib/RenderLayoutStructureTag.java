@@ -452,14 +452,11 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write("\" style=\"");
 
 		HttpServletRequest httpServletRequest = getRequest();
-		HttpServletResponse httpServletResponse =
-			(HttpServletResponse)pageContext.getResponse();
 
 		RenderCollectionLayoutStructureItemDisplayContext
 			renderCollectionLayoutStructureItemDisplayContext =
 				new RenderCollectionLayoutStructureItemDisplayContext(
-					collectionStyledLayoutStructureItem, httpServletRequest,
-					httpServletResponse);
+					collectionStyledLayoutStructureItem, httpServletRequest);
 
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
@@ -496,7 +493,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 
 			PipingServletResponse pipingServletResponse =
 				new PipingServletResponse(
-					httpServletResponse, unsyncStringWriter);
+					(HttpServletResponse)pageContext.getResponse(),
+					unsyncStringWriter);
 
 			DefaultInfoListRendererContext defaultInfoListRendererContext =
 				new DefaultInfoListRendererContext(
