@@ -224,10 +224,10 @@ public class BundleSiteInitializerTest {
 			_assertCommerceSpecificationProducts(serviceContext);
 			_assertCPDefinition(group);
 			_assertCPInstanceProperties(group);
-			_assertExpandoColumns(serviceContext);
 			_assertDDMStructure(group);
 			_assertDDMTemplate(group);
 			_assertDLFileEntry(group);
+			_assertExpandoColumns(serviceContext);
 			_assertFragmentEntries(group);
 			_assertJournalArticles(group);
 			_assertKBArticles(group);
@@ -631,15 +631,6 @@ public class BundleSiteInitializerTest {
 			cpDefinitionOptionRels.size());
 	}
 
-	private void _assertCustomValue(ExpandoBridge expandoBridge) {
-		Assert.assertNotNull(expandoBridge);
-		Assert.assertEquals(
-			expandoBridge.getAttribute("Test Expando Column 1"), 0.1);
-		Assert.assertEquals(
-			"Test Expando Column Value 2",
-			expandoBridge.getAttribute("Test Expando Column 2"));
-	}
-
 	private void _assertDDMStructure(Group group) {
 		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
 			group.getGroupId(),
@@ -705,12 +696,12 @@ public class BundleSiteInitializerTest {
 			"com.liferay.commerce.product.model.CPDefinition");
 
 		Assert.assertNotNull(expandoBridge);
-		Assert.assertNotNull(
-			expandoBridge.getAttribute("Test Expando Column 1"));
-		Assert.assertNotNull(
+		Assert.assertEquals(
+			expandoBridge.getAttribute("Test Expando Column 1"), 0.1);
+		Assert.assertEquals(
+			"Test Expando Column Value 2",
 			expandoBridge.getAttribute("Test Expando Column 2"));
 		Assert.assertNull(expandoBridge.getAttribute("Test Expando Column 3"));
-		_assertCustomValue(expandoBridge);
 	}
 
 	private void _assertFragmentEntries(Group group) {
