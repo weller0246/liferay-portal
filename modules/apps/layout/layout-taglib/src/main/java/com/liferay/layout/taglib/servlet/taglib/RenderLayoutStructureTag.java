@@ -706,11 +706,12 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(
 			LayoutStructureItemCSSUtil.getStyledLayoutStructureItemCssClasses(
 				formStyledLayoutStructureItem));
-		jspWriter.write("\" method=\"POST\" style=\"");
+		jspWriter.write(
+			"\" enctype=\"multipart/form-data\" method=\"POST\" style=\"");
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
 				formStyledLayoutStructureItem));
-		jspWriter.write("\" enctype=\"multipart/form-data\">");
+		jspWriter.write(">");
 
 		String redirect =
 			renderLayoutStructureDisplayContext.
