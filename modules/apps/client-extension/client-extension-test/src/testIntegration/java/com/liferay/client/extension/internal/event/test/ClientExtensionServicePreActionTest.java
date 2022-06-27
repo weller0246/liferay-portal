@@ -73,7 +73,7 @@ import org.springframework.mock.web.MockHttpServletResponse;
  * @author Víctor Galán
  */
 @RunWith(Arquillian.class)
-public class ClientExtensionPreActionTest {
+public class ClientExtensionServicePreActionTest {
 
 	@ClassRule
 	@Rule
@@ -220,7 +220,7 @@ public class ClientExtensionPreActionTest {
 
 	private LifecycleAction _getLifecycleAction() {
 		Bundle bundle = FrameworkUtil.getBundle(
-			ClientExtensionPreActionTest.class);
+			ClientExtensionServicePreActionTest.class);
 
 		ServiceTrackerList<LifecycleAction> lifecycleActions =
 			ServiceTrackerListFactory.open(
