@@ -156,18 +156,18 @@ public class CookiesPreAction extends Action {
 			cookieValues.get(
 				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION));
 
-		boolean optionalConsentCookiesSet = false;
+		boolean optionalConsent = false;
 
 		if (performanceConsent && functionalConsent &&
 			personalizationConsent) {
 
-			optionalConsentCookiesSet = true;
+			optionalConsent = true;
 		}
 
 		boolean userConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_USER_CONSENT_CONFIGURED));
 
-		if (optionalConsentCookiesSet && necessaryConsent &&
+		if (optionalConsent && necessaryConsent &&
 			userConsent) {
 
 			return;
@@ -188,7 +188,7 @@ public class CookiesPreAction extends Action {
 					CookiesConstants.NAME_CONSENT_TYPE_NECESSARY, "true"));
 		}
 
-		if (!optionalConsentCookiesSet ||
+		if (!optionalConsent ||
 			(cookiesPreferenceHandlingConfiguration.explicitConsentMode() &&
 			 !userConsent)) {
 
