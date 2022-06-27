@@ -163,8 +163,7 @@ public class RenderLayoutStructureDisplayContext {
 
 	public String getContainerLinkHref(
 			ContainerStyledLayoutStructureItem
-				containerStyledLayoutStructureItem,
-			Object displayObject, Locale locale)
+				containerStyledLayoutStructureItem)
 		throws PortalException {
 
 		JSONObject linkJSONObject =
@@ -175,7 +174,7 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		JSONObject localizedJSONObject = linkJSONObject.getJSONObject(
-			LocaleUtil.toLanguageId(locale));
+			LocaleUtil.toLanguageId(_themeDisplay.getLocale()));
 
 		if ((localizedJSONObject != null) &&
 			(localizedJSONObject.length() > 0)) {
@@ -284,6 +283,9 @@ public class RenderLayoutStructureDisplayContext {
 			"collectionFieldId");
 
 		if (Validator.isNotNull(collectionFieldId)) {
+			Object displayObject = _httpServletRequest.getAttribute(
+				InfoDisplayWebKeys.INFO_LIST_DISPLAY_OBJECT);
+
 			String mappedCollectionValue = _getMappedCollectionValue(
 				collectionFieldId, displayObject);
 
@@ -313,15 +315,15 @@ public class RenderLayoutStructureDisplayContext {
 		JSONObject hrefJSONObject = linkJSONObject.getJSONObject("href");
 
 		if (hrefJSONObject != null) {
-			return hrefJSONObject.getString(LocaleUtil.toLanguageId(locale));
+			return hrefJSONObject.getString(
+				LocaleUtil.toLanguageId(_themeDisplay.getLocale()));
 		}
 
 		return StringPool.BLANK;
 	}
 
 	public String getContainerLinkTarget(
-		ContainerStyledLayoutStructureItem containerStyledLayoutStructureItem,
-		Locale locale) {
+		ContainerStyledLayoutStructureItem containerStyledLayoutStructureItem) {
 
 		JSONObject linkJSONObject =
 			containerStyledLayoutStructureItem.getLinkJSONObject();
@@ -331,7 +333,7 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		JSONObject localizedJSONObject = linkJSONObject.getJSONObject(
-			LocaleUtil.toLanguageId(locale));
+			LocaleUtil.toLanguageId(_themeDisplay.getLocale()));
 
 		if ((localizedJSONObject != null) &&
 			(localizedJSONObject.length() > 0)) {

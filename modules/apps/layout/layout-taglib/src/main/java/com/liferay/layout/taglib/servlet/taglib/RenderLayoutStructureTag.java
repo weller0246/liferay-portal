@@ -497,18 +497,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		ContainerStyledLayoutStructureItem containerStyledLayoutStructureItem =
 			(ContainerStyledLayoutStructureItem)layoutStructureItem;
 
-		HttpServletRequest httpServletRequest = getRequest();
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		String containerLinkHref =
 			renderLayoutStructureDisplayContext.getContainerLinkHref(
-				containerStyledLayoutStructureItem,
-				httpServletRequest.getAttribute(
-					InfoDisplayWebKeys.INFO_LIST_DISPLAY_OBJECT),
-				themeDisplay.getLocale());
+				containerStyledLayoutStructureItem);
 
 		if (Validator.isNotNull(containerLinkHref)) {
 			jspWriter.write("<a href=\"");
@@ -517,8 +508,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			jspWriter.write("none;\" target=\"");
 			jspWriter.write(
 				renderLayoutStructureDisplayContext.getContainerLinkTarget(
-					containerStyledLayoutStructureItem,
-					themeDisplay.getLocale()));
+					containerStyledLayoutStructureItem));
 			jspWriter.write("\">");
 		}
 
