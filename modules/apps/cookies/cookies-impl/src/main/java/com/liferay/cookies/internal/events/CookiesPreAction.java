@@ -82,14 +82,15 @@ public class CookiesPreAction extends Action {
 		for (String cookieName : cookieNames) {
 			String cookieValue = cookieValues.get(cookieName);
 
-			if (cookieValue != null) {
-				Cookie cookie = new Cookie(cookieName, null);
-
-				cookie.setMaxAge(0);
-
-				_addCookies(
-					httpServletRequest, httpServletResponse, cookie);
+			if (cookieValue == null) {
+				continue;
 			}
+
+			Cookie cookie = new Cookie(cookieName, null);
+
+			cookie.setMaxAge(0);
+
+			_addCookies(httpServletRequest, httpServletResponse, cookie);
 		}
 	}
 
