@@ -138,20 +138,20 @@ public class CookiesPreAction extends Action {
 			_expireCookiesIfSet(
 				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED,
+				CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
 				CookiesConstants.NAME_CONSENT_TYPE_NECESSARY,
 				CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE,
-				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION,
-				CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL);
+				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION);
 
 			return;
 		}
 
+		boolean functionalConsentCookieSet = Validator.isNotNull(
+			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL));
 		boolean necessaryConsentCookieSet = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_NECESSARY));
 		boolean performanceConsentCookieSet = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE));
-		boolean functionalConsentCookieSet = Validator.isNotNull(
-			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL));
 		boolean personalizationConsentCookieSet = Validator.isNotNull(
 			cookieValues.get(
 				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION));
