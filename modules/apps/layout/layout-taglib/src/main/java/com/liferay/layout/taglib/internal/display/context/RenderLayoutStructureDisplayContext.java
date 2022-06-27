@@ -642,41 +642,39 @@ public class RenderLayoutStructureDisplayContext {
 			_layoutStructure.getLayoutStructureItem(
 				rowStyledLayoutStructureItem.getParentItemId());
 
-		boolean includeContainer = false;
+		if (!(parentLayoutStructureItem instanceof RootLayoutStructureItem)) {
+			return false;
+		}
 
-		if (parentLayoutStructureItem instanceof RootLayoutStructureItem) {
-			Layout layout = _themeDisplay.getLayout();
+		Layout layout = _themeDisplay.getLayout();
 
-			if (Objects.equals(
-					layout.getType(), LayoutConstants.TYPE_PORTLET)) {
+		if (Objects.equals(layout.getType(), LayoutConstants.TYPE_PORTLET)) {
+			return true;
+		}
 
-				includeContainer = true;
-			}
-			else {
-				LayoutStructureItem rootParentLayoutStructureItem =
-					_layoutStructure.getLayoutStructureItem(
-						parentLayoutStructureItem.getParentItemId());
+		LayoutStructureItem rootParentLayoutStructureItem =
+			_layoutStructure.getLayoutStructureItem(
+				parentLayoutStructureItem.getParentItemId());
 
-				if (rootParentLayoutStructureItem == null) {
-					includeContainer = true;
-				}
-				else if (rootParentLayoutStructureItem instanceof
-							DropZoneLayoutStructureItem) {
+		if (rootParentLayoutStructureItem == null) {
+			return true;
+		}
 
-					LayoutStructureItem dropZoneParentLayoutStructureItem =
-						_layoutStructure.getLayoutStructureItem(
-							rootParentLayoutStructureItem.getParentItemId());
+		if (rootParentLayoutStructureItem instanceof
+				DropZoneLayoutStructureItem) {
 
-					if (dropZoneParentLayoutStructureItem instanceof
-							RootLayoutStructureItem) {
+			LayoutStructureItem dropZoneParentLayoutStructureItem =
+				_layoutStructure.getLayoutStructureItem(
+					rootParentLayoutStructureItem.getParentItemId());
 
-						includeContainer = true;
-					}
-				}
+			if (dropZoneParentLayoutStructureItem instanceof
+					RootLayoutStructureItem) {
+
+				return true;
 			}
 		}
 
-		return includeContainer;
+		return false;
 	}
 
 	private String _getBackgroundImage(JSONObject jsonObject) throws Exception {
