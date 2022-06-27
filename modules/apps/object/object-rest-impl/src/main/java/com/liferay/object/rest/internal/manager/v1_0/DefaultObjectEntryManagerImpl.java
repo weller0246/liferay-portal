@@ -793,7 +793,7 @@ public class DefaultObjectEntryManagerImpl
 		return values;
 	}
 
-	private static final long _NONEXISTING_ACCOUNT_ENTRY_ID = -1L;
+	private static final long _NONEXISTING_ACCOUNT_ENTRY_ID = -1;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		DefaultObjectEntryManagerImpl.class);
