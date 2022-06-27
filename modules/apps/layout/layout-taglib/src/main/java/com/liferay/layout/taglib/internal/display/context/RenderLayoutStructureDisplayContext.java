@@ -15,10 +15,18 @@
 package com.liferay.layout.taglib.internal.display.context;
 
 import com.liferay.asset.info.display.contributor.util.ContentAccessor;
+import com.liferay.fragment.entry.processor.constants.FragmentEntryProcessorConstants;
 import com.liferay.fragment.entry.processor.helper.FragmentEntryProcessorHelper;
 import com.liferay.fragment.model.FragmentEntryLink;
 import com.liferay.fragment.renderer.DefaultFragmentRendererContext;
+import com.liferay.fragment.service.FragmentEntryLinkLocalServiceUtil;
+import com.liferay.fragment.util.configuration.FragmentConfigurationField;
+import com.liferay.fragment.util.configuration.FragmentEntryConfigurationParser;
 import com.liferay.info.constants.InfoDisplayWebKeys;
+import com.liferay.info.exception.InfoFormException;
+import com.liferay.info.exception.InfoFormValidationException;
+import com.liferay.info.exception.NoSuchFormVariationException;
+import com.liferay.info.field.InfoField;
 import com.liferay.info.field.InfoFieldValue;
 import com.liferay.info.form.InfoForm;
 import com.liferay.info.item.ClassPKInfoItemIdentifier;
@@ -27,11 +35,14 @@ import com.liferay.info.item.InfoItemIdentifier;
 import com.liferay.info.item.InfoItemReference;
 import com.liferay.info.item.InfoItemServiceTracker;
 import com.liferay.info.item.provider.InfoItemFieldValuesProvider;
+import com.liferay.info.item.provider.InfoItemFormProvider;
 import com.liferay.info.item.provider.InfoItemObjectProvider;
 import com.liferay.info.type.WebImage;
 import com.liferay.layout.taglib.internal.servlet.ServletContextUtil;
 import com.liferay.layout.util.constants.LayoutDataItemTypeConstants;
 import com.liferay.layout.util.structure.ContainerStyledLayoutStructureItem;
+import com.liferay.layout.util.structure.FormStyledLayoutStructureItem;
+import com.liferay.layout.util.structure.FragmentStyledLayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructure;
 import com.liferay.layout.util.structure.LayoutStructureItem;
 import com.liferay.layout.util.structure.LayoutStructureItemUtil;
@@ -39,7 +50,9 @@ import com.liferay.layout.util.structure.StyledLayoutStructureItem;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ClassedModel;
@@ -48,7 +61,11 @@ import com.liferay.portal.kernel.model.LayoutConstants;
 import com.liferay.portal.kernel.model.Theme;
 import com.liferay.portal.kernel.repository.model.FileEntry;
 import com.liferay.portal.kernel.service.LayoutLocalServiceUtil;
+import com.liferay.portal.kernel.service.LayoutServiceUtil;
+import com.liferay.portal.kernel.servlet.SessionErrors;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.Constants;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -62,6 +79,7 @@ import com.liferay.segments.context.RequestContextMapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -368,6 +386,113 @@ public class RenderLayoutStructureDisplayContext {
 		return defaultFragmentRendererContext;
 	}
 
+	public String getErrorMessage(
+		FormStyledLayoutStructureItem formStyledLayoutStructureItem,
+		InfoForm infoForm) {
+
+		InfoFormException infoFormException =
+			(InfoFormException)SessionErrors.get(
+				_httpServletRequest, formStyledLayoutStructureItem.getItemId());
+
+		if (!(infoFormException instanceof InfoFormValidationException)) {
+			return infoFormException.getLocalizedMessage(
+				_themeDisplay.getLocale());
+		}
+
+		InfoFormValidationException infoFormValidationException =
+			(InfoFormValidationException)infoFormException;
+
+		if (Validator.isNull(
+				infoFormValidationException.getInfoFieldUniqueId())) {
+
+			return infoFormException.getLocalizedMessage(
+				_themeDisplay.getLocale());
+		}
+
+		String formInputLabel = _getFormInputLabel(
+			infoFormValidationException.getInfoFieldUniqueId(),
+			_themeDisplay.getLocale());
+
+		if (Validator.isNotNull(formInputLabel)) {
+			return infoFormValidationException.getLocalizedMessage(
+				formInputLabel, _themeDisplay.getLocale());
+		}
+
+		InfoField infoField = infoForm.getInfoField(
+			infoFormValidationException.getInfoFieldUniqueId());
+
+		formInputLabel = infoField.getLabel(_themeDisplay.getLocale());
+
+		return infoFormValidationException.getLocalizedMessage(
+			formInputLabel, _themeDisplay.getLocale());
+	}
+
+	public String getFormStyledLayoutStructureItemRedirect(
+			FormStyledLayoutStructureItem formStyledLayoutStructureItem)
+		throws Exception {
+
+		JSONObject successMessageJSONObject =
+			formStyledLayoutStructureItem.getSuccessMessageJSONObject();
+
+		if (successMessageJSONObject == null) {
+			return null;
+		}
+
+		String redirect = null;
+
+		if (successMessageJSONObject.has("url")) {
+			redirect = _getFormStyledLayoutStructureItemURLRedirect(
+				successMessageJSONObject);
+		}
+		else if (successMessageJSONObject.has("layoutUuid")) {
+			redirect = _getFormStyledLayoutStructureItemLayoutRedirect(
+				successMessageJSONObject);
+		}
+
+		return redirect;
+	}
+
+	public InfoForm getInfoForm(
+		FormStyledLayoutStructureItem formStyledLayoutStructureItem) {
+
+		long classNameId = formStyledLayoutStructureItem.getClassNameId();
+
+		if (classNameId <= 0) {
+			return null;
+		}
+
+		InfoItemServiceTracker infoItemServiceTracker =
+			ServletContextUtil.getInfoItemServiceTracker();
+
+		InfoItemFormProvider<Object> infoItemFormProvider =
+			infoItemServiceTracker.getFirstInfoItemService(
+				InfoItemFormProvider.class,
+				PortalUtil.getClassName(classNameId));
+
+		if (infoItemFormProvider != null) {
+			try {
+				return infoItemFormProvider.getInfoForm(
+					String.valueOf(
+						formStyledLayoutStructureItem.getClassTypeId()),
+					_themeDisplay.getScopeGroupId());
+			}
+			catch (NoSuchFormVariationException noSuchFormVariationException) {
+				if (_log.isDebugEnabled()) {
+					_log.debug(noSuchFormVariationException);
+				}
+
+				return null;
+			}
+		}
+
+		return null;
+	}
+
+	public String getLayoutMode() {
+		return ParamUtil.getString(
+			_httpServletRequest, "p_l_mode", Constants.VIEW);
+	}
+
 	public LayoutStructure getLayoutStructure() {
 		return _layoutStructure;
 	}
@@ -441,6 +566,30 @@ public class RenderLayoutStructureDisplayContext {
 		}
 
 		return sb.toString();
+	}
+
+	public boolean includeCommonStyles(FragmentEntryLink fragmentEntryLink)
+		throws Exception {
+
+		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+			fragmentEntryLink.getEditableValues());
+
+		JSONObject stylesFragmentEntryEntryProcessorJSONObject =
+			jsonObject.getJSONObject(
+				FragmentEntryProcessorConstants.
+					KEY_STYLES_FRAGMENT_ENTRY_PROCESSOR);
+
+		if (stylesFragmentEntryEntryProcessorJSONObject == null) {
+			return false;
+		}
+
+		if (stylesFragmentEntryEntryProcessorJSONObject.getBoolean(
+				"hasCommonStyles")) {
+
+			return true;
+		}
+
+		return false;
 	}
 
 	private String _getBackgroundImage(JSONObject jsonObject) throws Exception {
@@ -616,6 +765,105 @@ public class RenderLayoutStructureDisplayContext {
 		return fragmentEntryProcessorHelper.getFileEntryId(
 			PortalUtil.getClassNameId(infoItemReference.getClassName()),
 			classPKInfoItemIdentifier.getClassPK(), fieldId, locale);
+	}
+
+	private String _getFormInputLabel(String infoFieldUniqueId, Locale locale) {
+		FragmentEntryConfigurationParser fragmentEntryConfigurationParser =
+			ServletContextUtil.getFragmentEntryConfigurationParser();
+
+		Map<Long, LayoutStructureItem> fragmentLayoutStructureItems =
+			_layoutStructure.getFragmentLayoutStructureItems();
+
+		for (LayoutStructureItem layoutStructureItem :
+				fragmentLayoutStructureItems.values()) {
+
+			if (!(layoutStructureItem instanceof
+					FragmentStyledLayoutStructureItem)) {
+
+				continue;
+			}
+
+			FragmentStyledLayoutStructureItem
+				fragmentStyledLayoutStructureItem =
+					(FragmentStyledLayoutStructureItem)layoutStructureItem;
+
+			if (fragmentStyledLayoutStructureItem.getFragmentEntryLinkId() <=
+					0) {
+
+				continue;
+			}
+
+			FragmentEntryLink fragmentEntryLink =
+				FragmentEntryLinkLocalServiceUtil.fetchFragmentEntryLink(
+					fragmentStyledLayoutStructureItem.getFragmentEntryLinkId());
+
+			if ((fragmentEntryLink == null) ||
+				Validator.isNull(fragmentEntryLink.getEditableValues())) {
+
+				continue;
+			}
+
+			String inputFieldId = GetterUtil.getString(
+				fragmentEntryConfigurationParser.getFieldValue(
+					fragmentEntryLink.getEditableValues(),
+					new FragmentConfigurationField(
+						"inputFieldId", "string", StringPool.BLANK, false,
+						"text"),
+					locale));
+
+			if (!Objects.equals(inputFieldId, infoFieldUniqueId)) {
+				continue;
+			}
+
+			return GetterUtil.getString(
+				fragmentEntryConfigurationParser.getFieldValue(
+					fragmentEntryLink.getEditableValues(),
+					new FragmentConfigurationField(
+						"inputLabel", "string", StringPool.BLANK, true, "text"),
+					locale));
+		}
+
+		return StringPool.BLANK;
+	}
+
+	private String _getFormStyledLayoutStructureItemLayoutRedirect(
+			JSONObject successMessageJSONObject)
+		throws Exception {
+
+		long groupId = successMessageJSONObject.getLong("groupId");
+		boolean privateLayout = successMessageJSONObject.getBoolean(
+			"privateLayout");
+		long layoutId = successMessageJSONObject.getLong("layoutId");
+
+		Layout layout = LayoutServiceUtil.fetchLayout(
+			groupId, privateLayout, layoutId);
+
+		if (layout != null) {
+			return PortalUtil.getLayoutURL(layout, _themeDisplay);
+		}
+
+		return null;
+	}
+
+	private String _getFormStyledLayoutStructureItemURLRedirect(
+			JSONObject successMessageJSONObject)
+		throws Exception {
+
+		JSONObject urlJSONObject = successMessageJSONObject.getJSONObject(
+			"url");
+
+		String redirect = urlJSONObject.getString(
+			_themeDisplay.getLanguageId());
+
+		if (Validator.isNull(redirect)) {
+			String siteDefaultLanguageId = LanguageUtil.getLanguageId(
+				PortalUtil.getSiteDefaultLocale(
+					_themeDisplay.getScopeGroupId()));
+
+			redirect = urlJSONObject.getString(siteDefaultLanguageId);
+		}
+
+		return redirect;
 	}
 
 	private String _getMainItemId() {
