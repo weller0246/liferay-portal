@@ -2366,7 +2366,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 	}
 
 	private void _addOrganizationUser(
-			JSONArray jsonArray, ServiceContext serviceContext, Long userId)
+			JSONArray jsonArray, ServiceContext serviceContext, long userId)
 		throws Exception {
 
 		if (JSONUtil.isEmpty(jsonArray)) {
@@ -2376,7 +2376,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			Long organizationId = _organizationLocalService.getOrganizationId(
+			long organizationId = _organizationLocalService.getOrganizationId(
 				serviceContext.getCompanyId(), jsonObject.getString("name"));
 
 			if (organizationId <= 0) {
@@ -3151,6 +3151,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			}
 
 			int j = 0;
+			long userId = 0;
 
 			UserAccount userAccount = UserAccount.toDTO(
 				String.valueOf(jsonObject));
@@ -3159,8 +3160,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 				_userLocalService.fetchUserByEmailAddress(
 					serviceContext.getCompanyId(),
 					userAccount.getEmailAddress());
-
-			Long userId = null;
 
 			if (existingUserAccount == null) {
 				JSONObject accountBriefsJSONObject =
