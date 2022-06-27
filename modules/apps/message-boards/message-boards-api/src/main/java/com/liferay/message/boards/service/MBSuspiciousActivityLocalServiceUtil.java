@@ -135,6 +135,13 @@ public class MBSuspiciousActivityLocalServiceUtil {
 		return getService().deletePersistedModel(persistedModel);
 	}
 
+	public static MBSuspiciousActivity deleteSuspiciousActivity(
+			long suspiciousActivityId)
+		throws PortalException {
+
+		return getService().deleteSuspiciousActivity(suspiciousActivityId);
+	}
+
 	public static <T> T dslQuery(DSLQuery dslQuery) {
 		return getService().dslQuery(dslQuery);
 	}
@@ -351,6 +358,12 @@ public class MBSuspiciousActivityLocalServiceUtil {
 			uuid, groupId);
 	}
 
+	public static List<MBSuspiciousActivity> getMessageSuspiciousActivities(
+		long messageId) {
+
+		return getService().getMessageSuspiciousActivities(messageId);
+	}
+
 	/**
 	 * Returns the OSGi service identifier.
 	 *
@@ -369,6 +382,19 @@ public class MBSuspiciousActivityLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
+	public static MBSuspiciousActivity getSuspiciousActivity(
+			long suspiciousActivityId)
+		throws PortalException {
+
+		return getService().getSuspiciousActivity(suspiciousActivityId);
+	}
+
+	public static List<MBSuspiciousActivity> getThreadSuspiciousActivities(
+		long threadId) {
+
+		return getService().getThreadSuspiciousActivities(threadId);
+	}
+
 	/**
 	 * Updates the message boards suspicious activity in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.
 	 *
@@ -383,6 +409,13 @@ public class MBSuspiciousActivityLocalServiceUtil {
 		MBSuspiciousActivity mbSuspiciousActivity) {
 
 		return getService().updateMBSuspiciousActivity(mbSuspiciousActivity);
+	}
+
+	public static MBSuspiciousActivity updateValidated(
+			long suspiciousActivityId)
+		throws PortalException {
+
+		return getService().updateValidated(suspiciousActivityId);
 	}
 
 	public static MBSuspiciousActivityLocalService getService() {
