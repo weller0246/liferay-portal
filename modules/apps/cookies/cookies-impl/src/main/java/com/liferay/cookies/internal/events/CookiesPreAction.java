@@ -131,12 +131,12 @@ public class CookiesPreAction extends Action {
 					CookiesPreferenceHandlingConfiguration.class,
 					themeDisplay.getScopeGroupId());
 
-		Map<String, String> requestCookies = _getCookieValues(
+		Map<String, String> cookieValues = _getCookieValues(
 			httpServletRequest.getCookies());
 
 		if (!cookiesPreferenceHandlingConfiguration.enabled()) {
 			_expireCookiesIfSet(
-				httpServletRequest, httpServletResponse, requestCookies,
+				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED,
 				CookiesConstants.NAME_CONSENT_TYPE_NECESSARY,
 				CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE,
@@ -147,13 +147,13 @@ public class CookiesPreAction extends Action {
 		}
 
 		boolean necessaryConsentCookieSet = Validator.isNotNull(
-			requestCookies.get(CookiesConstants.NAME_CONSENT_TYPE_NECESSARY));
+			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_NECESSARY));
 		boolean performanceConsentCookieSet = Validator.isNotNull(
-			requestCookies.get(CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE));
+			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE));
 		boolean functionalConsentCookieSet = Validator.isNotNull(
-			requestCookies.get(CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL));
+			cookieValues.get(CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL));
 		boolean personalizationConsentCookieSet = Validator.isNotNull(
-			requestCookies.get(
+			cookieValues.get(
 				CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION));
 
 		boolean optionalConsentCookiesSet = false;
@@ -165,7 +165,7 @@ public class CookiesPreAction extends Action {
 		}
 
 		boolean userConsentCookieSet = Validator.isNotNull(
-			requestCookies.get(CookiesConstants.NAME_USER_CONSENT_CONFIGURED));
+			cookieValues.get(CookiesConstants.NAME_USER_CONSENT_CONFIGURED));
 
 		if (optionalConsentCookiesSet && necessaryConsentCookieSet &&
 			userConsentCookieSet) {
@@ -177,7 +177,7 @@ public class CookiesPreAction extends Action {
 			!userConsentCookieSet) {
 
 			_expireCookiesIfSet(
-				httpServletRequest, httpServletResponse, requestCookies,
+				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 		}
 
