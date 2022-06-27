@@ -491,11 +491,11 @@ public class ObjectFieldLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
+		_validateDefaultValue(businessType, defaultValue);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
-		_validateDefaultValue(businessType, defaultValue);
 
 		ObjectField objectField = objectFieldPersistence.create(
 			counterLocalService.increment());
@@ -716,9 +716,7 @@ public class ObjectFieldLocalServiceImpl
 		if (!Objects.equals(
 				ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, businessType)) {
 
-			throw new ObjectFieldDefaultValueException(
-				"Object Field with different business type from picklist " +
-					"must not have default type!");
+			throw new ObjectFieldDefaultValueException();
 		}
 	}
 
