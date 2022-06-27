@@ -1062,6 +1062,7 @@ public class BundleSiteInitializerTest {
 		Organization organization1 = organizationsPage1.fetchFirstItem();
 
 		Assert.assertNotNull(organization1);
+
 		_assertUserOrganizations(organization1.getId(), serviceContext, 1);
 
 		Page<Organization> organizationsPage2 =
@@ -1074,6 +1075,7 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(organization2);
 		Assert.assertTrue(organization2.getNumberOfOrganizations() == 1);
+
 		_assertUserOrganizations(organization2.getId(), serviceContext, 1);
 
 		Page<Organization> organizationsPage3 =
@@ -1084,6 +1086,7 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(organization3);
 		Assert.assertEquals("Test Organization 3", organization3.getName());
+
 		_assertUserOrganizations(organization3.getId(), serviceContext, 0);
 	}
 
