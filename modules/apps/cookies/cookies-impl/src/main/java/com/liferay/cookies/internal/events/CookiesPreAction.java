@@ -76,7 +76,7 @@ public class CookiesPreAction extends Action {
 		}
 	}
 
-	private void _expireCookiesIfSet(
+	private void _expireCookies(
 		HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse,
 		Map<String, String> cookieValues, String... cookieNames) {
@@ -135,7 +135,7 @@ public class CookiesPreAction extends Action {
 			httpServletRequest.getCookies());
 
 		if (!cookiesPreferenceHandlingConfiguration.enabled()) {
-			_expireCookiesIfSet(
+			_expireCookies(
 				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED,
 				CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
@@ -158,25 +158,21 @@ public class CookiesPreAction extends Action {
 
 		boolean optionalConsent = false;
 
-		if (performanceConsent && functionalConsent &&
-			personalizationConsent) {
-
+		if (performanceConsent && functionalConsent && personalizationConsent) {
 			optionalConsent = true;
 		}
 
 		boolean userConsent = Validator.isNotNull(
 			cookieValues.get(CookiesConstants.NAME_USER_CONSENT_CONFIGURED));
 
-		if (optionalConsent && necessaryConsent &&
-			userConsent) {
-
+		if (optionalConsent && necessaryConsent && userConsent) {
 			return;
 		}
 
 		if (!cookiesPreferenceHandlingConfiguration.explicitConsentMode() ||
 			!userConsent) {
 
-			_expireCookiesIfSet(
+			_expireCookies(
 				httpServletRequest, httpServletResponse, cookieValues,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 		}
