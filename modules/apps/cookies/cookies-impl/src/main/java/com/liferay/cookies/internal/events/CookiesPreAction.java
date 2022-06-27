@@ -83,12 +83,12 @@ public class CookiesPreAction extends Action {
 			String cookieValue = cookieValues.get(cookieName);
 
 			if (cookieValue != null) {
-				Cookie expiredCookie = new Cookie(cookieName, null);
+				Cookie cookie = new Cookie(cookieName, null);
 
-				expiredCookie.setMaxAge(0);
+				cookie.setMaxAge(0);
 
 				_addCookies(
-					httpServletRequest, httpServletResponse, expiredCookie);
+					httpServletRequest, httpServletResponse, cookie);
 			}
 		}
 	}
