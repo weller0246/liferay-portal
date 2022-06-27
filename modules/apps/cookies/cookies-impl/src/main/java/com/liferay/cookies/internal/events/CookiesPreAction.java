@@ -95,11 +95,11 @@ public class CookiesPreAction extends Action {
 		}
 	}
 
-	private Map<String, String> _parseCookieMap(Cookie[] cookies) {
-		Map<String, String> cookieMap = new HashMap<>();
+	private Map<String, String> _getCookieValues(Cookie[] cookies) {
+		Map<String, String> cookieValues = new HashMap<>();
 
 		if (cookies == null) {
-			return cookieMap;
+			return cookieValues;
 		}
 
 		for (Cookie cookie : cookies) {
@@ -109,11 +109,11 @@ public class CookiesPreAction extends Action {
 					CookiesConstants.NAME_USER_CONSENT_CONFIGURED) ||
 				cookieName.startsWith("CONSENT_TYPE_")) {
 
-				cookieMap.put(cookieName, cookie.getValue());
+				cookieValues.put(cookieName, cookie.getValue());
 			}
 		}
 
-		return cookieMap;
+		return cookieValues;
 	}
 
 	private void _run(
@@ -131,7 +131,7 @@ public class CookiesPreAction extends Action {
 					CookiesPreferenceHandlingConfiguration.class,
 					themeDisplay.getScopeGroupId());
 
-		Map<String, String> requestCookies = _parseCookieMap(
+		Map<String, String> requestCookies = _getCookieValues(
 			httpServletRequest.getCookies());
 
 		if (!cookiesPreferenceHandlingConfiguration.enabled()) {
