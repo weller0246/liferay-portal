@@ -89,13 +89,14 @@ public class ClientExtensionPreActionTest {
 	public void tearDown() throws Exception {
 		_clientExtensionEntryLocalService.deleteClientExtensionEntry(
 			_clientExtensionEntry);
+
 		_clientExtensionEntryRelLocalService.deleteClientExtensionEntryRel(
 			_clientExtensionEntryRel);
 	}
 
 	@Test
 	public void testProcessServicePreActionLayout() throws Exception {
-		String faviconURL = "http://faviconlayout.com";
+		String faviconURL = "http://" + RandomTestUtil.randomString() + ".com";
 
 		_clientExtensionEntry = _addClientExtensionEntry(faviconURL);
 
@@ -125,7 +126,7 @@ public class ClientExtensionPreActionTest {
 
 	@Test
 	public void testProcessServicePreActionLayoutSet() throws Exception {
-		String faviconURL = "http://faviconlayoutset.com";
+		String faviconURL = "http://" + RandomTestUtil.randomString() + ".com";
 
 		_clientExtensionEntry = _addClientExtensionEntry(faviconURL);
 
@@ -159,7 +160,7 @@ public class ClientExtensionPreActionTest {
 
 	@Test
 	public void testProcessServicePreActionMasterLayout() throws Exception {
-		String faviconURL = "http://faviconmasterlayout.com";
+		String faviconURL = "http://" + RandomTestUtil.randomString() + ".com";
 
 		_clientExtensionEntry = _addClientExtensionEntry(faviconURL);
 
@@ -260,10 +261,9 @@ public class ClientExtensionPreActionTest {
 
 		LifecycleAction lifecycleAction = _getLifecycleAction();
 
-		LifecycleEvent lifecycleEvent = new LifecycleEvent(
-			mockHttpServletRequest, new MockHttpServletResponse());
-
-		lifecycleAction.processLifecycleEvent(lifecycleEvent);
+		lifecycleAction.processLifecycleEvent(
+			new LifecycleEvent(
+				mockHttpServletRequest, new MockHttpServletResponse()));
 	}
 
 	private ClientExtensionEntry _clientExtensionEntry;
