@@ -79,10 +79,9 @@ public class RenderCollectionLayoutStructureItemDisplayContext {
 
 		_collectionStyledLayoutStructureItem =
 			collectionStyledLayoutStructureItem;
-
 		_httpServletRequest = httpServletRequest;
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
 
