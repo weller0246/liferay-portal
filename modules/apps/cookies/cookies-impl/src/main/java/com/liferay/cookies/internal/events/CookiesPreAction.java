@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.events.Action;
 import com.liferay.portal.kernel.events.LifecycleAction;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProvider;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Validator;
@@ -78,8 +77,7 @@ public class CookiesPreAction extends Action {
 
 	private void _expireCookies(
 		Map<String, String> cookieValues, HttpServletRequest httpServletRequest,
-		HttpServletResponse httpServletResponse,
-		String... cookieNames) {
+		HttpServletResponse httpServletResponse, String... cookieNames) {
 
 		for (String cookieName : cookieNames) {
 			String cookieValue = cookieValues.get(cookieName);
@@ -197,8 +195,7 @@ public class CookiesPreAction extends Action {
 			_addCookies(
 				httpServletRequest, httpServletResponse,
 				new Cookie(
-					CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
-					cookieValue),
+					CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL, cookieValue),
 				new Cookie(
 					CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE,
 					cookieValue),
