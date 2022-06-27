@@ -77,9 +77,9 @@ public class CookiesPreAction extends Action {
 	}
 
 	private void _expireCookies(
-		HttpServletRequest httpServletRequest,
+		Map<String, String> cookieValues, HttpServletRequest httpServletRequest,
 		HttpServletResponse httpServletResponse,
-		Map<String, String> cookieValues, String... cookieNames) {
+		String... cookieNames) {
 
 		for (String cookieName : cookieNames) {
 			String cookieValue = cookieValues.get(cookieName);
@@ -136,7 +136,7 @@ public class CookiesPreAction extends Action {
 
 		if (!cookiesPreferenceHandlingConfiguration.enabled()) {
 			_expireCookies(
-				httpServletRequest, httpServletResponse, cookieValues,
+				cookieValues, httpServletRequest, httpServletResponse,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED,
 				CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
 				CookiesConstants.NAME_CONSENT_TYPE_NECESSARY,
@@ -173,7 +173,7 @@ public class CookiesPreAction extends Action {
 			!userConsent) {
 
 			_expireCookies(
-				httpServletRequest, httpServletResponse, cookieValues,
+				cookieValues, httpServletRequest, httpServletResponse,
 				CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 		}
 
