@@ -60,7 +60,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testCookieManagementDisabledWithAllCookies() throws Exception {
-		_setCookieManagementConfiguration(false, false);
+		_setConfiguration(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -100,7 +100,7 @@ public class CookiesPreActionTest {
 	public void testCookieManagementDisabledWithConsentCookies()
 		throws Exception {
 
-		_setCookieManagementConfiguration(false, false);
+		_setConfiguration(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -136,7 +136,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testCookieManagementDisabledWithoutCookies() throws Exception {
-		_setCookieManagementConfiguration(false, false);
+		_setConfiguration(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -152,7 +152,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithAllCookies() throws Exception {
-		_setCookieManagementConfiguration(true, true);
+		_setConfiguration(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -168,7 +168,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithConsentCookies() throws Exception {
-		_setCookieManagementConfiguration(true, true);
+		_setConfiguration(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -202,7 +202,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithoutCookies() throws Exception {
-		_setCookieManagementConfiguration(true, true);
+		_setConfiguration(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -238,7 +238,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithAllCookies() throws Exception {
-		_setCookieManagementConfiguration(true, false);
+		_setConfiguration(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -254,7 +254,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithConsentCookies() throws Exception {
-		_setCookieManagementConfiguration(true, false);
+		_setConfiguration(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -270,7 +270,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithoutCookies() throws Exception {
-		_setCookieManagementConfiguration(true, false);
+		_setConfiguration(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -344,7 +344,7 @@ public class CookiesPreActionTest {
 		return mockHttpServletRequest;
 	}
 
-	private void _setCookieManagementConfiguration(
+	private void _setConfiguration(
 			Boolean enabled, Boolean explicitConsentMode)
 		throws Exception {
 
