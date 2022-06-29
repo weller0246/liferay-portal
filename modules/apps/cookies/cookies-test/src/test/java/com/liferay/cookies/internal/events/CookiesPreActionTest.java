@@ -305,8 +305,8 @@ public class CookiesPreActionTest {
 	}
 
 	private HttpServletRequest _getHttpServletRequest(
-		boolean necessaryConsent, boolean optionalConsent,
-		boolean userConsent) {
+		boolean consentTypeNecessary, boolean consentTypeOptional,
+		boolean consentTypeUser) {
 
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
@@ -316,19 +316,19 @@ public class CookiesPreActionTest {
 
 		List<Cookie> cookies = new ArrayList<>();
 
-		if (necessaryConsent) {
+		if (consentTypeNecessary) {
 			cookies.add(
 				new Cookie(
 					CookiesConstants.NAME_CONSENT_TYPE_NECESSARY, "true"));
 		}
 
-		if (optionalConsent) {
+		if (consentTypeOptional) {
 			for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 				cookies.add(new Cookie(cookieName, "true"));
 			}
 		}
 
-		if (userConsent) {
+		if (consentTypeUser) {
 			cookies.add(
 				new Cookie(
 					CookiesConstants.NAME_USER_CONSENT_CONFIGURED, "true"));
