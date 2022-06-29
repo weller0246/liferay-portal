@@ -311,12 +311,8 @@ public class CookiesPreActionTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
-		ThemeDisplay themeDisplay = new ThemeDisplay();
-
-		themeDisplay.setScopeGroupId(0);
-
 		mockHttpServletRequest.setAttribute(
-			WebKeys.THEME_DISPLAY, themeDisplay);
+			WebKeys.THEME_DISPLAY, new ThemeDisplay());
 
 		List<Cookie> cookies = new ArrayList<>();
 
