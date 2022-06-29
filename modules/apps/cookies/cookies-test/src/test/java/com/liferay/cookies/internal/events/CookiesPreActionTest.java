@@ -73,13 +73,6 @@ public class CookiesPreActionTest {
 
 		Assert.assertEquals(Arrays.toString(cookies), 5, cookies.length);
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
-			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
-
-		Assert.assertNotNull(userConsentConfiguredCookie);
-		Assert.assertEquals(0, userConsentConfiguredCookie.getMaxAge());
-		Assert.assertNull(userConsentConfiguredCookie.getValue());
-
 		Cookie consentTypeCookie = httpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
@@ -87,12 +80,19 @@ public class CookiesPreActionTest {
 		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
 		Assert.assertNull(consentTypeCookie.getValue());
 
+		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
+
+		Assert.assertNotNull(userConsentConfiguredCookie);
+		Assert.assertEquals(0, userConsentConfiguredCookie.getMaxAge());
+		Assert.assertNull(userConsentConfiguredCookie.getValue());
+
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
-			Assert.assertNull(cookie.getValue());
 			Assert.assertEquals(0, cookie.getMaxAge());
+			Assert.assertNull(cookie.getValue());
 		}
 	}
 
@@ -113,24 +113,24 @@ public class CookiesPreActionTest {
 
 		Assert.assertEquals(Arrays.toString(cookies), 4, cookies.length);
 
+		Cookie consentTypeCookie = httpServletResponse.getCookie(
+			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
+
+		Assert.assertNotNull(consentTypeCookie);
+		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
+		Assert.assertNull(consentTypeCookie.getValue());
+
 		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNull(userConsentConfiguredCookie);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
-			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
-
-		Assert.assertNotNull(consentTypeCookie);
-		Assert.assertNull(consentTypeCookie.getValue());
-		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
-
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
-			Assert.assertNull(cookie.getValue());
 			Assert.assertEquals(0, cookie.getMaxAge());
+			Assert.assertNull(cookie.getValue());
 		}
 	}
 
