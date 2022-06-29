@@ -342,17 +342,6 @@ public class CookiesPreActionTest {
 	private void _setConfiguration(Boolean enabled, Boolean explicitConsentMode)
 		throws Exception {
 
-		ReflectionTestUtil.setFieldValue(_cookiesManager, "_portal", _portal);
-
-		ReflectionTestUtil.setFieldValue(
-			CookiesManagerUtil.class, "_cookiesManager", _cookiesManager);
-
-		Mockito.when(
-			_portal.isSecure(Mockito.any())
-		).thenReturn(
-			false
-		);
-
 		Mockito.when(
 			_configurationProvider.getGroupConfiguration(
 				CookiesPreferenceHandlingConfiguration.class, 0)
@@ -375,6 +364,17 @@ public class CookiesPreActionTest {
 		ReflectionTestUtil.setFieldValue(
 			_cookiesPreAction, "_configurationProvider",
 			_configurationProvider);
+
+		ReflectionTestUtil.setFieldValue(_cookiesManager, "_portal", _portal);
+
+		ReflectionTestUtil.setFieldValue(
+			CookiesManagerUtil.class, "_cookiesManager", _cookiesManager);
+
+		Mockito.when(
+			_portal.isSecure(Mockito.any())
+		).thenReturn(
+			false
+		);
 	}
 
 	private static final String[] _OPTIONAL_COOKIE_NAMES = {
