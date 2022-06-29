@@ -108,6 +108,8 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 			redirect = ParamUtil.getString(httpServletRequest, "redirect");
 
 			if (Validator.isNull(redirect)) {
+				redirect = ParamUtil.getString(httpServletRequest, "backURL");
+
 				SessionMessages.add(httpServletRequest, formItemId);
 			}
 		}
