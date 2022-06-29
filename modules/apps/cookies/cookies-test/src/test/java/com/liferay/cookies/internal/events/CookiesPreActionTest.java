@@ -84,8 +84,8 @@ public class CookiesPreActionTest {
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNotNull(consentTypeCookie);
-		Assert.assertNull(consentTypeCookie.getValue());
 		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
+		Assert.assertNull(consentTypeCookie.getValue());
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
