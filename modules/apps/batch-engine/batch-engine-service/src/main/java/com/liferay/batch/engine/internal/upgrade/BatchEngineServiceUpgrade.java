@@ -85,7 +85,7 @@ public class BatchEngineServiceUpgrade implements UpgradeStepRegistrator {
 		registry.register(
 			"4.6.1", "4.6.2",
 			UpgradeStepFactory.alterColumnTypes(
-				"BatchEngineExportTask", "fieldNames", "STRING null"));
+				"BatchEngineExportTask", "STRING null", "fieldNames"));
 	}
 
 	@Reference
