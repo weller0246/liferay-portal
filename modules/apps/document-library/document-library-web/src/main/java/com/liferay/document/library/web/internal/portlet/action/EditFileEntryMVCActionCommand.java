@@ -1016,22 +1016,24 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 
 		String currentUrlTitle = friendlyURLEntry.getUrlTitle();
 
-		if (Validator.isNotNull(originalUrlTitle) &&
-			!currentUrlTitle.equals(
+		if (Validator.isNull(originalUrlTitle) ||
+			currentUrlTitle.equals(
 				_friendlyURLNormalizer.normalizeWithEncoding(
 					originalUrlTitle))) {
 
-			MultiSessionMessages.add(
-				actionRequest, "friendlyURLChanged",
-				_language.format(
-					_portal.getHttpServletRequest(actionRequest),
-					"the-friendly-url-x-was-changed-to-x-to-ensure-uniqueness",
-					new Object[] {
-						"<strong>" + _html.escapeURL(originalUrlTitle) +
-							"</strong>",
-						"<strong>" + currentUrlTitle + "</strong>"
-					}));
+			return;
 		}
+
+		MultiSessionMessages.add(
+			actionRequest, "friendlyURLChanged",
+			_language.format(
+				_portal.getHttpServletRequest(actionRequest),
+				"the-friendly-url-x-was-changed-to-x-to-ensure-uniqueness",
+				new Object[] {
+					"<strong>" + _html.escapeURL(originalUrlTitle) +
+						"</strong>",
+					"<strong>" + currentUrlTitle + "</strong>"
+				}));
 	}
 
 	private void _handleUploadException(
