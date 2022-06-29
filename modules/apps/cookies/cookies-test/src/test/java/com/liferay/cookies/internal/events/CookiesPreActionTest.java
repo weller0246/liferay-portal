@@ -64,23 +64,23 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 5, cookies.length);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
+		Cookie consentTypeCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNotNull(consentTypeCookie);
 		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
 		Assert.assertNull(consentTypeCookie.getValue());
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+		Cookie userConsentConfiguredCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNotNull(userConsentConfiguredCookie);
@@ -88,7 +88,7 @@ public class CookiesPreActionTest {
 		Assert.assertNull(userConsentConfiguredCookie.getValue());
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
-			Cookie cookie = httpServletResponse.getCookie(cookieName);
+			Cookie cookie = mockHttpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
 			Assert.assertEquals(0, cookie.getMaxAge());
@@ -104,29 +104,29 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 4, cookies.length);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
+		Cookie consentTypeCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNotNull(consentTypeCookie);
 		Assert.assertEquals(0, consentTypeCookie.getMaxAge());
 		Assert.assertNull(consentTypeCookie.getValue());
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+		Cookie userConsentConfiguredCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNull(userConsentConfiguredCookie);
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
-			Cookie cookie = httpServletResponse.getCookie(cookieName);
+			Cookie cookie = mockHttpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
 			Assert.assertEquals(0, cookie.getMaxAge());
@@ -140,12 +140,12 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 0, cookies.length);
 	}
@@ -156,12 +156,12 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 0, cookies.length);
 	}
@@ -172,27 +172,27 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 3, cookies.length);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
+		Cookie consentTypeCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNull(consentTypeCookie);
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+		Cookie userConsentConfiguredCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNull(userConsentConfiguredCookie);
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
-			Cookie cookie = httpServletResponse.getCookie(cookieName);
+			Cookie cookie = mockHttpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
 			Assert.assertNotEquals(0, cookie.getMaxAge());
@@ -206,29 +206,29 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 4, cookies.length);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
+		Cookie consentTypeCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNotNull(consentTypeCookie);
 		Assert.assertNotEquals(0, consentTypeCookie.getMaxAge());
 		Assert.assertEquals("true", consentTypeCookie.getValue());
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+		Cookie userConsentConfiguredCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNull(userConsentConfiguredCookie);
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
-			Cookie cookie = httpServletResponse.getCookie(cookieName);
+			Cookie cookie = mockHttpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
 			Assert.assertNotEquals(0, cookie.getMaxAge());
@@ -242,12 +242,12 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 0, cookies.length);
 	}
@@ -258,12 +258,12 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 0, cookies.length);
 	}
@@ -274,29 +274,29 @@ public class CookiesPreActionTest {
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
-		MockHttpServletResponse httpServletResponse =
+		MockHttpServletResponse mockHttpServletResponse =
 			new MockHttpServletResponse();
 
-		_cookiesPreAction.run(httpServletRequest, httpServletResponse);
+		_cookiesPreAction.run(httpServletRequest, mockHttpServletResponse);
 
-		Cookie[] cookies = httpServletResponse.getCookies();
+		Cookie[] cookies = mockHttpServletResponse.getCookies();
 
 		Assert.assertEquals(Arrays.toString(cookies), 4, cookies.length);
 
-		Cookie consentTypeCookie = httpServletResponse.getCookie(
+		Cookie consentTypeCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_CONSENT_TYPE_NECESSARY);
 
 		Assert.assertNotNull(consentTypeCookie);
 		Assert.assertNotEquals(0, consentTypeCookie.getMaxAge());
 		Assert.assertEquals("true", consentTypeCookie.getValue());
 
-		Cookie userConsentConfiguredCookie = httpServletResponse.getCookie(
+		Cookie userConsentConfiguredCookie = mockHttpServletResponse.getCookie(
 			CookiesConstants.NAME_USER_CONSENT_CONFIGURED);
 
 		Assert.assertNull(userConsentConfiguredCookie);
 
 		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
-			Cookie cookie = httpServletResponse.getCookie(cookieName);
+			Cookie cookie = mockHttpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
 			Assert.assertNotEquals(0, cookie.getMaxAge());
