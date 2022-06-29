@@ -102,12 +102,6 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 
 				sendRedirect(actionRequest, actionResponse, redirect);
 			}
-			else if (cmd.equals("addBillingAddress")) {
-				_addBillingAddress(actionRequest);
-			}
-			else if (cmd.equals("addShippingAddress")) {
-				_addShippingAddress(actionRequest);
-			}
 			else if (cmd.equals(Constants.DELETE)) {
 				_deleteCommerceOrders(actionRequest);
 
@@ -119,6 +113,15 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 				sendRedirect(
 					actionRequest, actionResponse,
 					openOrdersPortletURL.toString());
+			}
+			else if (cmd.equals(Constants.UPDATE)) {
+				_updateCommerceOrder(actionRequest);
+			}
+			else if (cmd.equals("addBillingAddress")) {
+				_addBillingAddress(actionRequest);
+			}
+			else if (cmd.equals("addShippingAddress")) {
+				_addShippingAddress(actionRequest);
 			}
 			else if (cmd.equals("purchaseOrderNumber")) {
 				_updatePurchaseOrderNumber(actionRequest);
@@ -161,9 +164,6 @@ public class EditCommerceOrderMVCActionCommand extends BaseMVCActionCommand {
 			}
 			else if (cmd.equals("transition")) {
 				_executeTransition(actionRequest);
-			}
-			else if (cmd.equals(Constants.UPDATE)) {
-				_updateCommerceOrder(actionRequest);
 			}
 			else if (cmd.equals("updateBillingAddress")) {
 				_updateBillingAddress(actionRequest);
