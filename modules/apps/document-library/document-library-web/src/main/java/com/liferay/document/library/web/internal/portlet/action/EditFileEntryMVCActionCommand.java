@@ -1005,7 +1005,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 		return portletURL.toString();
 	}
 
-	private void _getUrlTitleChangedMessage(
+	private void _addUrlTitleChangedMessage(
 		ActionRequest actionRequest, String originalUrlTitle,
 		long fileEntryId) {
 
@@ -1409,7 +1409,7 @@ public class EditFileEntryMVCActionCommand extends BaseMVCActionCommand {
 			if (_ffFriendlyURLEntryFileEntryConfiguration.enabled() &&
 				Validator.isNotNull(urlTitle)) {
 
-				_getUrlTitleChangedMessage(
+				_addUrlTitleChangedMessage(
 					actionRequest, urlTitle, fileEntry.getFileEntryId());
 			}
 
