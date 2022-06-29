@@ -27,7 +27,6 @@ import com.liferay.portal.kernel.module.framework.ModuleServiceLifecycle;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
-import com.liferay.portal.upgrade.step.util.UpgradeStepFactory;
 
 import org.osgi.service.cm.ConfigurationAdmin;
 import org.osgi.service.component.annotations.Component;
@@ -84,8 +83,8 @@ public class BatchEngineServiceUpgrade implements UpgradeStepRegistrator {
 
 		registry.register(
 			"4.6.1", "4.6.2",
-			UpgradeStepFactory.addColumns(
-				"BatchEngineExportTask", "fieldNames", "STRING null"));
+			new com.liferay.batch.engine.internal.upgrade.v4_6_2.
+				BatchEngineExportTaskUpgradeProcess());
 	}
 
 	@Reference
