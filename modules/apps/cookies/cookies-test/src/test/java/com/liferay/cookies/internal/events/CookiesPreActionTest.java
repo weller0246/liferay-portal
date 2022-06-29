@@ -335,6 +335,7 @@ public class CookiesPreActionTest {
 		}
 
 		mockHttpServletRequest.setCookies(cookies.toArray(new Cookie[0]));
+
 		mockHttpServletRequest.setPathInfo(StringPool.BLANK);
 
 		return mockHttpServletRequest;
