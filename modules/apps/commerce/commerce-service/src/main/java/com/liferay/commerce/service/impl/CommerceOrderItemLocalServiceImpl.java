@@ -345,40 +345,9 @@ public class CommerceOrderItemLocalServiceImpl
 						).from(
 							CommerceOrderItemTable.INSTANCE
 						).where(
-							CommerceOrderItemTable.INSTANCE.commerceOrderId.eq(
-								commerceOrderId
-							).and(
-								() -> {
-									Predicate predicate = null;
-
-									if (ArrayUtil.isNotEmpty(
-											commerceOrderItemIds)) {
-
-										predicate =
-											CommerceOrderItemTable.INSTANCE.
-												commerceOrderItemId.in(
-													commerceOrderItemIds);
-									}
-
-									if (ArrayUtil.isNotEmpty(
-											externalReferenceCodes)) {
-
-										if (predicate != null) {
-											return predicate.or(
-												CommerceOrderItemTable.INSTANCE.
-													externalReferenceCode.in(
-														externalReferenceCodes));
-										}
-
-										predicate =
-											CommerceOrderItemTable.INSTANCE.
-												externalReferenceCode.in(
-													externalReferenceCodes);
-									}
-
-									return predicate;
-								}
-							)
+							_getPredicate(
+								commerceOrderId, commerceOrderItemIds,
+								externalReferenceCodes)
 						))
 				)
 			));
@@ -1493,6 +1462,40 @@ public class CommerceOrderItemLocalServiceImpl
 					cpInstanceId));
 
 		return jsonArray.toString();
+	}
+
+	private Predicate _getPredicate(
+		long commerceOrderId, Long[] commerceOrderItemIds,
+		String[] externalReferenceCodes) {
+
+		return CommerceOrderItemTable.INSTANCE.commerceOrderId.eq(
+			commerceOrderId
+		).and(
+			() -> {
+				Predicate predicate = null;
+
+				if (ArrayUtil.isNotEmpty(commerceOrderItemIds)) {
+					predicate =
+						CommerceOrderItemTable.INSTANCE.commerceOrderItemId.in(
+							commerceOrderItemIds);
+				}
+
+				if (ArrayUtil.isNotEmpty(externalReferenceCodes)) {
+					if (predicate != null) {
+						return predicate.or(
+							CommerceOrderItemTable.INSTANCE.
+								externalReferenceCode.in(
+									externalReferenceCodes));
+					}
+
+					predicate =
+						CommerceOrderItemTable.INSTANCE.externalReferenceCode.
+							in(externalReferenceCodes);
+				}
+
+				return predicate;
+			}
+		);
 	}
 
 	private CommerceProductPrice _getStaticCommerceProductPrice(
