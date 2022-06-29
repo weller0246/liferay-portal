@@ -618,7 +618,6 @@ public class CPDefinitionLocalServiceImpl
 			AssetEntry newAssetEntry = (AssetEntry)assetEntry.clone();
 
 			newAssetEntry.setEntryId(counterLocalService.increment());
-
 			newAssetEntry.setClassPK(newCPDefinitionId);
 
 			_assetEntryLocalService.addAssetEntry(newAssetEntry);
@@ -686,7 +685,6 @@ public class CPDefinitionLocalServiceImpl
 			newCPDefinitionLink.setUuid(PortalUUIDUtil.generate());
 			newCPDefinitionLink.setCPDefinitionLinkId(
 				counterLocalService.increment());
-
 			newCPDefinitionLink.setCPDefinitionId(newCPDefinitionId);
 
 			cpDefinitionLinkPersistence.update(newCPDefinitionLink);
@@ -735,7 +733,6 @@ public class CPDefinitionLocalServiceImpl
 					PortalUUIDUtil.generate());
 				newCPDefinitionOptionValueRel.setCPDefinitionOptionValueRelId(
 					counterLocalService.increment());
-
 				newCPDefinitionOptionValueRel.setCPDefinitionOptionRelId(
 					newCPDefinitionOptionRelId);
 
@@ -767,7 +764,6 @@ public class CPDefinitionLocalServiceImpl
 			newCPDefinitionSpecificationOptionValue.
 				setCPDefinitionSpecificationOptionValueId(
 					counterLocalService.increment());
-
 			newCPDefinitionSpecificationOptionValue.setCPDefinitionId(
 				newCPDefinitionId);
 
@@ -786,7 +782,6 @@ public class CPDefinitionLocalServiceImpl
 			newCPDisplayLayout.setUuid(PortalUUIDUtil.generate());
 			newCPDisplayLayout.setCPDisplayLayoutId(
 				counterLocalService.increment());
-
 			newCPDisplayLayout.setClassPK(newCPDefinitionId);
 
 			cpDisplayLayoutPersistence.update(newCPDisplayLayout);
@@ -806,9 +801,8 @@ public class CPDefinitionLocalServiceImpl
 				String.valueOf(cpInstanceId));
 			newCPInstance.setCPInstanceId(cpInstanceId);
 
-			newCPInstance.setCPInstanceUuid(PortalUUIDUtil.generate());
-
 			newCPInstance.setCPDefinitionId(newCPDefinitionId);
+			newCPInstance.setCPInstanceUuid(PortalUUIDUtil.generate());
 
 			List<CPInstanceOptionValueRel> cpInstanceOptionValueRels =
 				cpInstanceOptionValueRelPersistence.findByCPInstanceId(
@@ -2230,7 +2224,6 @@ public class CPDefinitionLocalServiceImpl
 					"keywords", keywords
 				).build()
 			).build());
-
 		searchContext.setCompanyId(companyId);
 		searchContext.setEnd(end);
 

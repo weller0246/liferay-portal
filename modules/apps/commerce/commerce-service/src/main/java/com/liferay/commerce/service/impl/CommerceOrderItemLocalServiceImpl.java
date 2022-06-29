@@ -1512,7 +1512,6 @@ public class CommerceOrderItemLocalServiceImpl
 
 		commerceProductPriceImpl.setUnitPrice(
 			_commerceMoneyFactory.create(commerceCurrency, optionValuePrice));
-
 		commerceProductPriceImpl.setUnitPromoPrice(
 			_commerceMoneyFactory.create(commerceCurrency, BigDecimal.ZERO));
 		commerceProductPriceImpl.setUnitPromoPriceWithTaxAmount(
@@ -1536,14 +1535,11 @@ public class CommerceOrderItemLocalServiceImpl
 		commerceProductPriceImpl.setUnitPriceWithTaxAmount(
 			_commerceMoneyFactory.create(
 				commerceCurrency, unitPriceWithTaxAmount));
-
 		commerceProductPriceImpl.setFinalPrice(
 			_commerceMoneyFactory.create(commerceCurrency, optionValuePrice));
-
 		commerceProductPriceImpl.setFinalPriceWithTaxAmount(
 			_commerceMoneyFactory.create(
 				commerceCurrency, finalPriceWithTaxAmount));
-
 		commerceProductPriceImpl.setCommerceDiscountValue(null);
 		commerceProductPriceImpl.setQuantity(quantity);
 
@@ -2016,7 +2012,6 @@ public class CommerceOrderItemLocalServiceImpl
 
 		commerceOrderItem.setJson(json);
 		commerceOrderItem.setQuantity(quantity);
-
 		commerceOrderItem.setExpandoBridgeAttributes(serviceContext);
 
 		return commerceOrderItemPersistence.update(commerceOrderItem);
