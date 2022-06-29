@@ -87,7 +87,7 @@ public class CookiesPreActionTest {
 		Assert.assertNull(necessaryCookie.getValue());
 		Assert.assertEquals(0, necessaryCookie.getMaxAge());
 
-		for (String cookieName : _OPTIONAL_COOKIES) {
+		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
@@ -125,7 +125,7 @@ public class CookiesPreActionTest {
 		Assert.assertNull(necessaryCookie.getValue());
 		Assert.assertEquals(0, necessaryCookie.getMaxAge());
 
-		for (String cookieName : _OPTIONAL_COOKIES) {
+		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
@@ -191,7 +191,7 @@ public class CookiesPreActionTest {
 
 		Assert.assertNull(necessaryCookie);
 
-		for (String cookieName : _OPTIONAL_COOKIES) {
+		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
@@ -227,7 +227,7 @@ public class CookiesPreActionTest {
 		Assert.assertEquals("true", necessaryCookie.getValue());
 		Assert.assertNotEquals(0, necessaryCookie.getMaxAge());
 
-		for (String cookieName : _OPTIONAL_COOKIES) {
+		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
@@ -295,7 +295,7 @@ public class CookiesPreActionTest {
 		Assert.assertEquals("true", necessaryCookie.getValue());
 		Assert.assertNotEquals(0, necessaryCookie.getMaxAge());
 
-		for (String cookieName : _OPTIONAL_COOKIES) {
+		for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 			Cookie cookie = httpServletResponse.getCookie(cookieName);
 
 			Assert.assertNotNull(cookie);
@@ -327,7 +327,7 @@ public class CookiesPreActionTest {
 		}
 
 		if (optionalConsent) {
-			for (String cookieName : _OPTIONAL_COOKIES) {
+			for (String cookieName : _OPTIONAL_COOKIE_NAMES) {
 				cookies.add(new Cookie(cookieName, "true"));
 			}
 		}
@@ -383,7 +383,7 @@ public class CookiesPreActionTest {
 			_configurationProvider);
 	}
 
-	private static final String[] _OPTIONAL_COOKIES = {
+	private static final String[] _OPTIONAL_COOKIE_NAMES = {
 		CookiesConstants.NAME_CONSENT_TYPE_FUNCTIONAL,
 		CookiesConstants.NAME_CONSENT_TYPE_PERFORMANCE,
 		CookiesConstants.NAME_CONSENT_TYPE_PERSONALIZATION
