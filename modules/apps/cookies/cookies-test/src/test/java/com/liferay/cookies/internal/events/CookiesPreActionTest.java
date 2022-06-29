@@ -60,7 +60,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testCookieManagementDisabledWithAllCookies() throws Exception {
-		_setConfiguration(false, false);
+		_setUp(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -100,7 +100,7 @@ public class CookiesPreActionTest {
 	public void testCookieManagementDisabledWithConsentCookies()
 		throws Exception {
 
-		_setConfiguration(false, false);
+		_setUp(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -136,7 +136,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testCookieManagementDisabledWithoutCookies() throws Exception {
-		_setConfiguration(false, false);
+		_setUp(false, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -152,7 +152,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithAllCookies() throws Exception {
-		_setConfiguration(true, true);
+		_setUp(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -168,7 +168,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithConsentCookies() throws Exception {
-		_setConfiguration(true, true);
+		_setUp(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -202,7 +202,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testExplicitModeWithoutCookies() throws Exception {
-		_setConfiguration(true, true);
+		_setUp(true, true);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -238,7 +238,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithAllCookies() throws Exception {
-		_setConfiguration(true, false);
+		_setUp(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, true);
@@ -254,7 +254,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithConsentCookies() throws Exception {
-		_setConfiguration(true, false);
+		_setUp(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			true, true, false);
@@ -270,7 +270,7 @@ public class CookiesPreActionTest {
 
 	@Test
 	public void testImplicitModeWithoutCookies() throws Exception {
-		_setConfiguration(true, false);
+		_setUp(true, false);
 
 		HttpServletRequest httpServletRequest = _getHttpServletRequest(
 			false, false, false);
@@ -339,7 +339,7 @@ public class CookiesPreActionTest {
 		return mockHttpServletRequest;
 	}
 
-	private void _setConfiguration(Boolean enabled, Boolean explicitConsentMode)
+	private void _setUp(Boolean enabled, Boolean explicitConsentMode)
 		throws Exception {
 
 		Mockito.when(
