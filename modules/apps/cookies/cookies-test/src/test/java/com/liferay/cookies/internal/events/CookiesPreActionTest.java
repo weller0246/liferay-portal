@@ -344,8 +344,7 @@ public class CookiesPreActionTest {
 		return mockHttpServletRequest;
 	}
 
-	private void _setConfiguration(
-			Boolean enabled, Boolean explicitConsentMode)
+	private void _setConfiguration(Boolean enabled, Boolean explicitConsentMode)
 		throws Exception {
 
 		ReflectionTestUtil.setFieldValue(_cookiesManager, "_portal", _portal);
