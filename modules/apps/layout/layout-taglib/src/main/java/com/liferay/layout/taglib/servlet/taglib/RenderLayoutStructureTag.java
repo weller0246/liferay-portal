@@ -689,12 +689,6 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			return;
 		}
 
-		HttpServletRequest httpServletRequest = getRequest();
-
-		ThemeDisplay themeDisplay =
-			(ThemeDisplay)httpServletRequest.getAttribute(
-				WebKeys.THEME_DISPLAY);
-
 		JspWriter jspWriter = pageContext.getOut();
 
 		jspWriter.write("<form action=\"");
@@ -723,7 +717,15 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				getFormStyledLayoutStructureItemRedirect(
 					formStyledLayoutStructureItem));
 		jspWriter.write("\"><input name=\"backURL\" type=\"hidden\" value=\"");
+
+		HttpServletRequest httpServletRequest = getRequest();
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
+
 		jspWriter.write(themeDisplay.getURLCurrent());
+
 		jspWriter.write(
 			"\"><input name=\"classNameId\" type=\"hidden\" value=\"");
 		jspWriter.write(
@@ -736,9 +738,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			"\"><input name=\"formItemId\" type=\"hidden\" value=\"");
 		jspWriter.write(formStyledLayoutStructureItem.getItemId());
 		jspWriter.write("\"><input name=\"groupId\" type=\"hidden\" value=\"");
-
 		jspWriter.write(String.valueOf(themeDisplay.getScopeGroupId()));
-
 		jspWriter.write("\"><input name=\"plid\" type=\"hidden\" value=\"");
 		jspWriter.write(String.valueOf(themeDisplay.getPlid()));
 		jspWriter.write(
