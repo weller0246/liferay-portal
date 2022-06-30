@@ -50,8 +50,6 @@ public class SelectDDMFormFieldValueRendererAccessorTest {
 		DDMFormField ddmFormField = DDMFormTestUtil.createDDMFormField(
 			"Select", "Select", "select", "string", false, false, false);
 
-		ddmFormField.setProperty("dataSourceType", "manual");
-
 		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
 
 		ddmFormFieldOptions.addOptionLabel(
@@ -62,6 +60,8 @@ public class SelectDDMFormFieldValueRendererAccessorTest {
 			"value 3", LocaleUtil.US, "option with &");
 
 		ddmFormField.setDDMFormFieldOptions(ddmFormFieldOptions);
+
+		ddmFormField.setProperty("dataSourceType", "manual");
 
 		ddmForm.addDDMFormField(ddmFormField);
 
