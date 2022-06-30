@@ -26,8 +26,6 @@ if (Validator.isNull(redirect)) {
 }
 
 SegmentsCompanyConfigurationDisplayContext segmentsCompanyConfigurationDisplayContext = (SegmentsCompanyConfigurationDisplayContext)request.getAttribute(SegmentsCompanyConfigurationDisplayContext.class.getName());
-
-Boolean hasAlert = !segmentsCompanyConfigurationDisplayContext.isSegmentationEnabled() || !segmentsCompanyConfigurationDisplayContext.isRoleSegmentationEnabled();
 %>
 
 <liferay-util:html-top
@@ -94,7 +92,7 @@ Boolean hasAlert = !segmentsCompanyConfigurationDisplayContext.isSegmentationEna
 			</aui:alert>
 		</c:if>
 
-		<div class="row <%= hasAlert ? "c-mt-5" : "" %>">
+		<div class="row <%= !segmentsCompanyConfigurationDisplayContext.isSegmentationEnabled() || !segmentsCompanyConfigurationDisplayContext.isRoleSegmentationEnabled() ? "c-mt-5" : "" %>">
 			<div class="col-sm-12 form-group">
 				<div class="form-group__inner">
 					<c:choose>
