@@ -204,7 +204,7 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
 
 			for (SelectInfoFieldType.Option option :
-					optionsOptional.orElse(new ArrayList<>())) {
+					optionsOptional.orElse(Collections.emptyList())) {
 
 				options.add(
 					new InputTemplateNode.Option(
