@@ -371,9 +371,9 @@ public class SalesforceObjectEntryManagerImpl
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST)) {
 
-				Map<String, String> mapValue = (HashMap<String, String>)value;
+				Map<String, String> valueMap = (HashMap<String, String>)value;
 
-				value = mapValue.get("key");
+				value = valueMap.get("key");
 			}
 
 			map.put(
