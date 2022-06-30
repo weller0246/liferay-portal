@@ -47,7 +47,7 @@ public class OpenAPIYAMLProvider {
 
 		if (response.getStatus() != 200) {
 			throw new IllegalArgumentException(
-				"Unable to find Open API specification for " +
+				"Unable to find OpenAPI specification for " +
 					internalClassName);
 		}
 
