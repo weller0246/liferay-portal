@@ -22,8 +22,6 @@ CPDefinitionPricingClassDisplayContext cpDefinitionPricingClassDisplayContext = 
 CPDefinition cpDefinition = cpDefinitionPricingClassDisplayContext.getCPDefinition();
 
 CProduct cProduct = cpDefinition.getCProduct();
-
-long cpDefinitionId = cpDefinitionPricingClassDisplayContext.getCPDefinitionId();
 %>
 
 <c:if test="<%= cpDefinitionPricingClassDisplayContext.hasPermission(permissionChecker, cpDefinition, ActionKeys.VIEW) %>">
@@ -31,7 +29,7 @@ long cpDefinitionId = cpDefinitionPricingClassDisplayContext.getCPDefinitionId()
 
 		<aui:form action="<%= editProductDefinitionProductGroupsActionURL %>" method="post" name="fm">
 			<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
-			<aui:input name="cpDefinitionId" type="hidden" value="<%= cpDefinitionId %>" />
+			<aui:input name="cpDefinitionId" type="hidden" value="<%= cpDefinitionPricingClassDisplayContext.getCPDefinitionId() %>" />
 			<aui:input name="workflowAction" type="hidden" value="<%= WorkflowConstants.ACTION_SAVE_DRAFT %>" />
 			<div id="item-finder-root"></div>
 
@@ -141,7 +139,7 @@ long cpDefinitionId = cpDefinitionPricingClassDisplayContext.getCPDefinitionId()
 				<frontend-data-set:classic-display
 					contextParams='<%=
 						HashMapBuilder.<String, String>put(
-							"cpDefinitionId", String.valueOf(cpDefinitionId)
+							"cpDefinitionId", String.valueOf(cpDefinitionPricingClassDisplayContext.getCPDefinitionId())
 						).build()
 					%>'
 					dataProviderKey="<%= CommercePricingFDSNames.PRODUCT_PRICING_CLASSES %>"
