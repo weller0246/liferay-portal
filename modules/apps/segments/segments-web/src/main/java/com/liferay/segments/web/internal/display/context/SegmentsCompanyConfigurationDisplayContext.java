@@ -80,7 +80,6 @@ public class SegmentsCompanyConfigurationDisplayContext {
 			HttpComponentsUtil.getParameterMap(
 				_segmentsConfigurationProvider.getConfigurationURL(
 					_httpServletRequest)));
-
 		resourceURL.setResourceID("/configuration_admin/export_configuration");
 
 		return resourceURL.toString();

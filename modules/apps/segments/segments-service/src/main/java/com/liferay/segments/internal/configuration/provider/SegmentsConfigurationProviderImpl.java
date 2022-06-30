@@ -66,14 +66,14 @@ public class SegmentsConfigurationProviderImpl
 			_portal.getUser(httpServletRequest));
 
 		if (permissionChecker.isCompanyAdmin()) {
-			Configuration configuration = _getSegmentsCompanyConfiguration(
-				_portal.getCompanyId(httpServletRequest));
-
 			String factoryPid =
 				"com.liferay.segments.configuration." +
 					"SegmentsCompanyConfiguration";
 
 			String pid = factoryPid;
+
+			Configuration configuration = _getSegmentsCompanyConfiguration(
+				_portal.getCompanyId(httpServletRequest));
 
 			if (configuration != null) {
 				pid = configuration.getPid();
