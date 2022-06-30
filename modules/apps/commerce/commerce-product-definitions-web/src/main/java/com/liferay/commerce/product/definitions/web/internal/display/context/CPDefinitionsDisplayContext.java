@@ -403,7 +403,6 @@ public class CPDefinitionsDisplayContext
 		List<HeaderActionModel> headerActionModels = new ArrayList<>();
 
 		CPDefinition cpDefinition = getCPDefinition();
-
 		CProductVersionConfiguration cProductVersionConfiguration =
 			_configurationProvider.getConfiguration(
 				CProductVersionConfiguration.class,
