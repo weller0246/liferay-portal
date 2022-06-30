@@ -1222,7 +1222,9 @@ definition {
 
 		DDLNavigator.gotoView();
 
-		Pause(locator1 = "1000");
+		WaitForElementPresent(
+			locator1 = "AppBuilder#WIDGET_DEPLOYED",
+			value1 = "Dynamic Data Lists Display");
 
 		var adminViewURL = Navigator.getCurrentURL(adminViewURL = "${adminViewURL}");
 
@@ -1230,7 +1232,9 @@ definition {
 
 		DDLRecord.editPG();
 
-		Pause(locator1 = "1000");
+		WaitForElementPresent(
+			key_fieldLabel = "Text",
+			locator1 = "TextInput#GENERIC_TEXT_INPUT");
 
 		var adminEditURL = Navigator.getCurrentURL(adminEditURL = "${adminEditURL}");
 
