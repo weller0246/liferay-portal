@@ -128,14 +128,13 @@ public class FragmentEntryLinkLocalServiceImpl
 
 		fragmentEntryLink.setNamespace(namespace);
 
+		fragmentEntryLink.setRendererKey(rendererKey);
+		fragmentEntryLink.setType(type);
+
 		String processedHTML = html;
 
 		HttpServletRequest httpServletRequest = serviceContext.getRequest();
 		HttpServletResponse httpServletResponse = serviceContext.getResponse();
-
-		fragmentEntryLink.setRendererKey(rendererKey);
-
-		fragmentEntryLink.setType(type);
 
 		if ((httpServletRequest != null) && (httpServletResponse != null)) {
 			DefaultFragmentEntryProcessorContext
