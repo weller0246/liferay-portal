@@ -198,21 +198,20 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 				minValue -> inputTemplateNode.addAttribute("min", minValue));
 		}
 		else if (infoField.getInfoFieldType() instanceof SelectInfoFieldType) {
-			List<InputTemplateNode.Option> optionsList = new ArrayList<>();
+			List<InputTemplateNode.Option> options = new ArrayList<>();
 
 			Optional<List<SelectInfoFieldType.Option>> optionsOptional =
 				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
 
-			List<SelectInfoFieldType.Option> options = optionsOptional.orElse(
-				new ArrayList<>());
+			for (SelectInfoFieldType.Option option :
+					optionsOptional.orElse(new ArrayList<>())) {
 
-			for (SelectInfoFieldType.Option option : options) {
-				optionsList.add(
+				options.add(
 					new InputTemplateNode.Option(
 						option.getLabel(locale), option.getValue()));
 			}
 
-			inputTemplateNode.addAttribute("options", optionsList);
+			inputTemplateNode.addAttribute("options", options);
 		}
 
 		return inputTemplateNode;
