@@ -14,9 +14,7 @@
 
 package com.liferay.message.boards.service.impl;
 
-import com.liferay.message.boards.exception.NoSuchSuspiciousActivityException;
 import com.liferay.message.boards.model.MBSuspiciousActivity;
-import com.liferay.message.boards.service.MBSuspiciousActivityLocalService;
 import com.liferay.message.boards.service.base.MBSuspiciousActivityServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -24,7 +22,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -44,16 +41,16 @@ public class MBSuspiciousActivityServiceImpl
 			long messageId, String description, String type)
 		throws PortalException {
 
-		return _mbSuspiciousActivityLocalService.addOrUpdateSuspiciousActivity(
+		return mbSuspiciousActivityLocalService.addOrUpdateSuspiciousActivity(
 			getUserId(), messageId, description, type);
 	}
 
 	@Override
 	public MBSuspiciousActivity deleteSuspiciousActivity(
 			long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
-		return _mbSuspiciousActivityLocalService.deleteSuspiciousActivity(
+		return mbSuspiciousActivityLocalService.deleteSuspiciousActivity(
 			suspiciousActivityId);
 	}
 
@@ -61,7 +58,7 @@ public class MBSuspiciousActivityServiceImpl
 	public List<MBSuspiciousActivity> getMessageSuspiciousActivities(
 		long messageId) {
 
-		return _mbSuspiciousActivityLocalService.getMessageSuspiciousActivities(
+		return mbSuspiciousActivityLocalService.getMessageSuspiciousActivities(
 			messageId);
 	}
 
@@ -69,7 +66,7 @@ public class MBSuspiciousActivityServiceImpl
 	public MBSuspiciousActivity getSuspiciousActivity(long suspiciousActivityId)
 		throws PortalException {
 
-		return _mbSuspiciousActivityLocalService.getSuspiciousActivity(
+		return mbSuspiciousActivityLocalService.getSuspiciousActivity(
 			suspiciousActivityId);
 	}
 
@@ -77,7 +74,7 @@ public class MBSuspiciousActivityServiceImpl
 	public List<MBSuspiciousActivity> getThreadSuspiciousActivities(
 		long threadId) {
 
-		return _mbSuspiciousActivityLocalService.getThreadSuspiciousActivities(
+		return mbSuspiciousActivityLocalService.getThreadSuspiciousActivities(
 			threadId);
 	}
 
@@ -85,11 +82,8 @@ public class MBSuspiciousActivityServiceImpl
 	public MBSuspiciousActivity updateValidated(long suspiciousActivityId)
 		throws PortalException {
 
-		return _mbSuspiciousActivityLocalService.updateValidated(
+		return mbSuspiciousActivityLocalService.updateValidated(
 			suspiciousActivityId);
 	}
-
-	@Reference
-	private MBSuspiciousActivityLocalService _mbSuspiciousActivityLocalService;
 
 }
