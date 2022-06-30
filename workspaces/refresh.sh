@@ -23,7 +23,7 @@ function check_blade {
 		exit 1
 	fi
 
-	#${bladePath} update -s
+	${bladePath} update -s
 
 	echo "${bladePath}"
 }
