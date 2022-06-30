@@ -1319,9 +1319,16 @@ definition {
 		var key_entryTitle = "${entryTitle}";
 		var key_tagName = "${tagName}";
 
-		AssertElementNotPresent(
-			locator1 = "BlogsEntry#TAG",
-			tagName = StringUtil.lowerCase("${tagName}"));
+		if (isSet(duplicate)) {
+			AssertElementNotPresent(
+				locator1 = "BlogsEntry#TAG_2",
+				tagName = StringUtil.lowerCase("${tagName}"));
+		}
+		else {
+			AssertElementNotPresent(
+				locator1 = "BlogsEntry#TAG",
+				tagName = StringUtil.lowerCase("${tagName}"));
+		}
 	}
 
 	macro viewOldFriendlyURL {
