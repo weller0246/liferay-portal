@@ -114,13 +114,13 @@ public class MBSuspiciousActivityLocalServiceImpl
 	public MBSuspiciousActivity updateValidated(long suspiciousActivityId)
 		throws PortalException {
 
-		MBSuspiciousActivity suspiciousActivity = getSuspiciousActivity(
-			suspiciousActivityId);
+		MBSuspiciousActivity suspiciousActivity =
+			mbSuspiciousActivityPersistence.findByPrimaryKey(
+				suspiciousActivityId);
 
 		suspiciousActivity.setValidated(!suspiciousActivity.isValidated());
 
-		return mbSuspiciousActivityLocalService.updateMBSuspiciousActivity(
-			suspiciousActivity);
+		return mbSuspiciousActivityPersistence.update(suspiciousActivity);
 	}
 
 	@Reference
