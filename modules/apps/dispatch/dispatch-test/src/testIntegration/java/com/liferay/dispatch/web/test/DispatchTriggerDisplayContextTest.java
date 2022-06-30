@@ -168,7 +168,6 @@ public class DispatchTriggerDisplayContextTest {
 			_getDispatchTriggerDisplayContext(mockHttpServletRequest);
 
 		Assert.assertNotNull(dispatchTriggerDisplayContext);
-
 		Assert.assertTrue(
 			ReflectionTestUtil.invoke(
 				dispatchTriggerDisplayContext, "isClusterModeSingle",

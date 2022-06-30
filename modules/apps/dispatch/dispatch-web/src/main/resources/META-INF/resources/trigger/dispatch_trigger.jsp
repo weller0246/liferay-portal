@@ -17,8 +17,6 @@
 <%@ include file="/init.jsp" %>
 
 <%
-DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
-
 DispatchTrigger dispatchTrigger = (DispatchTrigger)request.getAttribute(DispatchWebKeys.DISPATCH_TRIGGER);
 
 Date endDate = (dispatchTrigger.getEndDate() == null) ? new Date() : dispatchTrigger.getEndDate();
@@ -45,6 +43,8 @@ int startDateYear = startDateCalendar.get(Calendar.YEAR);
 
 boolean neverEnd = ParamUtil.getBoolean(request, "neverEnd", true);
 boolean dispatchTaskExecutorReady = true;
+
+DispatchTriggerDisplayContext dispatchTriggerDisplayContext = (DispatchTriggerDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
 
 if (dispatchTrigger != null) {
 	if (dispatchTrigger.getEndDate() != null) {
