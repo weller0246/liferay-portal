@@ -689,8 +689,11 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			return;
 		}
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)getRequest().getAttribute(
-			WebKeys.THEME_DISPLAY);
+		HttpServletRequest httpServletRequest = getRequest();
+
+		ThemeDisplay themeDisplay =
+			(ThemeDisplay)httpServletRequest.getAttribute(
+				WebKeys.THEME_DISPLAY);
 
 		JspWriter jspWriter = pageContext.getOut();
 
