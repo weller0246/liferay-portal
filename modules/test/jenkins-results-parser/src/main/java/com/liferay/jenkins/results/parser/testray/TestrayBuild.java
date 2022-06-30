@@ -48,7 +48,7 @@ public class TestrayBuild implements Comparable<TestrayBuild> {
 	@Override
 	public int compareTo(TestrayBuild testrayBuild) {
 		if (testrayBuild == null) {
-			throw new NullPointerException("Testray Build is null");
+			throw new NullPointerException("Testray build is null");
 		}
 
 		Integer id = testrayBuild.getID();
