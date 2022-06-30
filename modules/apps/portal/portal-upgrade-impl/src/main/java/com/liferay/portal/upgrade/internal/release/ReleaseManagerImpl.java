@@ -188,8 +188,8 @@ public class ReleaseManagerImpl implements ReleaseManager {
 				}
 				catch (Throwable throwable) {
 					_log.error(
-						"Failed upgrade process for module ".concat(
-							bundleSymbolicName),
+						"Failed upgrade process for module " +
+							bundleSymbolicName,
 						throwable);
 				}
 			}
