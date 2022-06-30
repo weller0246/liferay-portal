@@ -14,7 +14,6 @@
 
 package com.liferay.message.boards.service.impl;
 
-import com.liferay.message.boards.exception.NoSuchSuspiciousActivityException;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBSuspiciousActivity;
 import com.liferay.message.boards.model.MBThread;
