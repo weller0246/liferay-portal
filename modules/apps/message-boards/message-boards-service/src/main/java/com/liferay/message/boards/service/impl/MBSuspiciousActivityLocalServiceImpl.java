@@ -83,7 +83,7 @@ public class MBSuspiciousActivityLocalServiceImpl
 	@Override
 	public MBSuspiciousActivity deleteSuspiciousActivity(
 			long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
 		return mbSuspiciousActivityPersistence.remove(suspiciousActivityId);
 	}
@@ -97,7 +97,7 @@ public class MBSuspiciousActivityLocalServiceImpl
 
 	@Override
 	public MBSuspiciousActivity getSuspiciousActivity(long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
 		return mbSuspiciousActivityPersistence.findByPrimaryKey(
 			suspiciousActivityId);
@@ -112,7 +112,7 @@ public class MBSuspiciousActivityLocalServiceImpl
 
 	@Override
 	public MBSuspiciousActivity updateValidated(long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
 		MBSuspiciousActivity suspiciousActivity = getSuspiciousActivity(
 			suspiciousActivityId);

@@ -67,7 +67,7 @@ public class MBSuspiciousActivityServiceImpl
 
 	@Override
 	public MBSuspiciousActivity getSuspiciousActivity(long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
 		return _mbSuspiciousActivityLocalService.getSuspiciousActivity(
 			suspiciousActivityId);
@@ -83,7 +83,7 @@ public class MBSuspiciousActivityServiceImpl
 
 	@Override
 	public MBSuspiciousActivity updateValidated(long suspiciousActivityId)
-		throws NoSuchSuspiciousActivityException {
+		throws PortalException {
 
 		return _mbSuspiciousActivityLocalService.updateValidated(
 			suspiciousActivityId);
