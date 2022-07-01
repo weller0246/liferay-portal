@@ -107,22 +107,22 @@ public class SegmentsConfigurationProviderImpl
 		PermissionChecker permissionChecker = _permissionCheckerFactory.create(
 			_portal.getUser(httpServletRequest));
 
-		if (permissionChecker.isOmniadmin()) {
-			return PortletURLBuilder.create(
-				_portal.getControlPanelPortletURL(
-					httpServletRequest,
-					ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
-					PortletRequest.RENDER_PHASE)
-			).setMVCRenderCommandName(
-				"/configuration_admin/edit_configuration"
-			).setRedirect(
-				_portal.getCurrentCompleteURL(httpServletRequest)
-			).setParameter(
-				"factoryPid", SegmentsConfiguration.class.getName()
-			).buildString();
+		if (!permissionChecker.isOmniadmin()) {
+			return null;
 		}
 
-		return null;
+		return PortletURLBuilder.create(
+			_portal.getControlPanelPortletURL(
+				httpServletRequest,
+				ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
+				PortletRequest.RENDER_PHASE)
+		).setMVCRenderCommandName(
+			"/configuration_admin/edit_configuration"
+		).setRedirect(
+			_portal.getCurrentCompleteURL(httpServletRequest)
+		).setParameter(
+			"factoryPid", SegmentsConfiguration.class.getName()
+		).buildString();
 	}
 
 	@Override
