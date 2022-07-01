@@ -211,7 +211,6 @@ public class OAuthClientASLocalMetadataLocalServiceImpl
 
 		String currentIssuer = String.valueOf(
 			currentAuthorizationServerMetadata.getIssuer());
-
 		String currentLocalWellKnownURI =
 			oAuthClientASLocalMetadata.getLocalWellKnownURI();
 
