@@ -79,15 +79,11 @@ SegmentsCompanyConfigurationDisplayContext segmentsCompanyConfigurationDisplayCo
 					<c:when test="<%= segmentsConfigurationURL != null %>">
 						<clay:link
 							href="<%= segmentsConfigurationURL %>"
-							label='<%=
-								LanguageUtil.get(request, "to-enable,-go-to-system-settings")
-%>'
+							label='<%= LanguageUtil.get(request, "to-enable,-go-to-system-settings") %>'
 						/>
 					</c:when>
 					<c:otherwise>
-				<span><%=
-				LanguageUtil.get(
-					request, "contact-your-system-administrator-to-enable-segmentation") %></span>
+						<span><liferay-ui:message key="contact-your-system-administrator-to-enable-segmentation" /></span>
 					</c:otherwise>
 				</c:choose>
 			</clay:alert>
