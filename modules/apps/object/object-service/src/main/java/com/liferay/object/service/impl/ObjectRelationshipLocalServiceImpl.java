@@ -616,14 +616,14 @@ public class ObjectRelationshipLocalServiceImpl
 		if ((parameterObjectFieldId == 0) && parameterRequired) {
 			throw new ObjectRelationshipParameterObjectFieldIdException(
 				"Object definition " + objectDefinition.getName() +
-					" requires parameter");
+					" requires a parameter object field ID");
 		}
 
 		if (parameterObjectFieldId > 0) {
 			if (!parameterRequired) {
 				throw new ObjectRelationshipParameterObjectFieldIdException(
 					"Object definition " + objectDefinition.getName() +
-						" does not allow parameter");
+						" does not allow a parameter object field ID");
 			}
 
 			ObjectField objectField = _objectFieldLocalService.getObjectField(
