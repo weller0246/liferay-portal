@@ -175,11 +175,11 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			inputTemplateNode.addAttribute(
 				"maxFileSize", maximumFileSizeOptional.orElse(0L));
 
-			Optional<FileInfoFieldType.FileSourceType> fileSourceOptional =
+			Optional<FileInfoFieldType.FileSourceType> fileSourceTypeOptional =
 				infoField.getAttributeOptional(FileInfoFieldType.FILE_SOURCE);
 
 			FileInfoFieldType.FileSourceType fileSourceType =
-				fileSourceOptional.orElse(null);
+				fileSourceTypeOptional.orElse(null);
 
 			if (fileSourceType != null) {
 				boolean selectFromDocumentLibrary = false;
