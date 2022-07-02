@@ -127,6 +127,13 @@ public class NotificationTemplateLocalServiceImpl
 		notificationTemplate = notificationTemplatePersistence.update(
 			notificationTemplate);
 
+		_resourceLocalService.addResources(
+			notificationTemplate.getCompanyId(), 0,
+			notificationTemplate.getUserId(),
+			NotificationTemplate.class.getName(),
+			notificationTemplate.getNotificationTemplateId(), false, true,
+			true);
+
 		for (long attachmentObjectFieldId : attachmentObjectFieldIds) {
 			_notificationTemplateAttachmentLocalService.
 				addNotificationTemplateAttachment(
@@ -134,13 +141,6 @@ public class NotificationTemplateLocalServiceImpl
 					notificationTemplate.getNotificationTemplateId(),
 					attachmentObjectFieldId);
 		}
-
-		_resourceLocalService.addResources(
-			notificationTemplate.getCompanyId(), 0,
-			notificationTemplate.getUserId(),
-			NotificationTemplate.class.getName(),
-			notificationTemplate.getNotificationTemplateId(), false, true,
-			true);
 
 		return notificationTemplate;
 	}
@@ -168,10 +168,6 @@ public class NotificationTemplateLocalServiceImpl
 		notificationTemplate = notificationTemplatePersistence.remove(
 			notificationTemplate);
 
-		_notificationTemplateAttachmentPersistence.
-			removeByNotificationTemplateId(
-				notificationTemplate.getNotificationTemplateId());
-
 		_resourceLocalService.deleteResource(
 			notificationTemplate, ResourceConstants.SCOPE_INDIVIDUAL);
 
@@ -186,6 +182,10 @@ public class NotificationTemplateLocalServiceImpl
 
 			_notificationQueueEntryPersistence.update(notificationQueueEntry);
 		}
+
+		_notificationTemplateAttachmentPersistence.
+			removeByNotificationTemplateId(
+				notificationTemplate.getNotificationTemplateId());
 
 		return notificationTemplate;
 	}
@@ -259,7 +259,6 @@ public class NotificationTemplateLocalServiceImpl
 
 		EmailAddressValidator emailAddressValidator =
 			EmailAddressValidatorFactory.getInstance();
-
 		List<Long> fileEntryIds = _getFileEntryIds(
 			user.getCompanyId(), notificationTemplateId, object);
 
