@@ -142,9 +142,7 @@ public class DateUtil {
 
 		Instant instant = zonedDateTime.toInstant();
 
-		Long milliseconds = instant.toEpochMilli();
-
-		return String.valueOf(milliseconds);
+		return String.valueOf(instant.toEpochMilli());
 	}
 
 	public static String getYear(String offsetDays) {
