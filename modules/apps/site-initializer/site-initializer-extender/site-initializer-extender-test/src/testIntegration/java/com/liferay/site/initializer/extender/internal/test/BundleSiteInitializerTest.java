@@ -1404,14 +1404,14 @@ public class BundleSiteInitializerTest {
 
 		UserGroup userGroup1 =
 			_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
-				group.getCompanyId(), "TESTUSERGROUP01");
+				group.getCompanyId(), "TESTUSERGROUP1");
 
 		Assert.assertNotNull(userGroup1);
 		Assert.assertTrue(userGroups.contains(userGroup1));
 
 		UserGroup userGroup2 =
 			_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
-				group.getCompanyId(), "TESTUSERGROUP02");
+				group.getCompanyId(), "TESTUSERGROUP2");
 
 		Assert.assertNotNull(userGroup2);
 		Assert.assertTrue(userGroups.contains(userGroup2));
