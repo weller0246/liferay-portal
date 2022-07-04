@@ -89,20 +89,20 @@ public class PortalLog4jTest {
 		_tempLogFileDirPath = Files.createTempDirectory(
 			PortalLog4jTest.class.getName());
 
-		/**
-		 * It is needed to keep this order for the logger setAdditive and
-		 * setLevel methods, because calling the setAdditive method on a
-		 * logger causes the parent loggers to reset their log level.
-		 */
 		Logger logger = (Logger)LogManager.getLogger(PortalLog4jTest.class);
 
 		Logger upgradeLogger = (Logger)LogManager.getLogger(
 			TestUpgradeProcess.class.getName());
 
+		// Calling the setAdditive method on a logger causes the parent loggers
+		// to reset their log level
+
 		logger.setAdditive(false);
+
 		upgradeLogger.setAdditive(false);
 
 		logger.setLevel(Level.TRACE);
+
 		upgradeLogger.setLevel(Level.TRACE);
 
 		Logger rootLogger = (Logger)LogManager.getRootLogger();
