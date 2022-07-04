@@ -529,12 +529,12 @@ public class ObjectFieldLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
+		_validateDefaultValue(businessType, defaultValue, state);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
 		_validateName(0, objectDefinition, name, system);
 		_validateState(required, state);
-		_validateDefaultValue(businessType, defaultValue, state);
 
 		ObjectField objectField = objectFieldPersistence.create(
 			counterLocalService.increment());
