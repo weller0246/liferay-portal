@@ -228,7 +228,7 @@ export default function EditObjectField({
 			let newObjectFieldSettings: ObjectFieldSetting[] | undefined = [];
 
 			if (objectFieldBusinessType === 'Date') {
-				const dateJson: ObjectFieldDateRangeFilterSettring = {};
+				const dateJson: ObjectFieldDateRangeFilterSettings = {};
 
 				valueList?.forEach(({label, value}) => {
 					dateJson[value] = label;
@@ -284,7 +284,7 @@ export default function EditObjectField({
 				let newFilterValues: ObjectFieldFilterSetting[] = [];
 
 				if (objectFieldBusinessType === 'Date') {
-					const dateJson: ObjectFieldDateRangeFilterSettring = {};
+					const dateJson: ObjectFieldDateRangeFilterSettings = {};
 
 					valueList?.forEach(({label, value}) => {
 						dateJson[value] = label;
