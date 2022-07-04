@@ -769,7 +769,7 @@ public class ObjectFieldLocalServiceImpl
 
 		if (!state) {
 			throw new ObjectFieldStateException(
-				"Object field default value can only be added when the " +
+				"Object field default value can only be set when the " +
 					"picklist is a state");
 		}
 	}
