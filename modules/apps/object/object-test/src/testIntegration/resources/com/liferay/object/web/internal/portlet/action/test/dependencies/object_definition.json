@@ -26,6 +26,11 @@
 			"objectActionTriggerKey": "onAfterAdd",
 			"parameters": {
 				"url": "www.liferay.com"
+			},
+			"status": {
+				"code": 0,
+				"label": "never-ran",
+				"label_i18n": "Never Ran"
 			}
 		}
 	],
