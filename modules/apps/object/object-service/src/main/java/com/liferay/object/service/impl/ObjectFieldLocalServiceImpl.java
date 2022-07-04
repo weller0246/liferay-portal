@@ -877,7 +877,7 @@ public class ObjectFieldLocalServiceImpl
 
 		if (state && !required) {
 			throw new ObjectFieldStateException(
-				"Object field must be mandatory when the state is true");
+				"Object field must be required when the state is true");
 		}
 	}
 
