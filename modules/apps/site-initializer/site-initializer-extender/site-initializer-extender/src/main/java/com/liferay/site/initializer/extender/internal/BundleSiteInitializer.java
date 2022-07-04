@@ -3242,19 +3242,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-			String externalReferenceCode = jsonObject.getString(
-				"externalReferenceCode");
-
-			UserGroup userGroup =
-				_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
-					serviceContext.getCompanyId(), externalReferenceCode);
-
-			if (userGroup == null) {
-				userGroup = _userGroupLocalService.addOrUpdateUserGroup(
-					externalReferenceCode, serviceContext.getUserId(),
-					serviceContext.getCompanyId(), jsonObject.getString("name"),
-					jsonObject.getString("description"), serviceContext);
-			}
+			UserGroup userGroup = _userGroupLocalService.addOrUpdateUserGroup(
+				jsonObject.getString("externalReferenceCode"),
+				serviceContext.getUserId(), serviceContext.getCompanyId(),
+				jsonObject.getString("name"),
+				jsonObject.getString("description"), serviceContext);
 
 			_userGroupLocalService.addGroupUserGroup(
 				serviceContext.getScopeGroupId(), userGroup);
