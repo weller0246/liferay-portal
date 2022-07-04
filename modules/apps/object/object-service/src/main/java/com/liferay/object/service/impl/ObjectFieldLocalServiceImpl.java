@@ -441,10 +441,10 @@ public class ObjectFieldLocalServiceImpl
 			return objectField;
 		}
 
+		_validateDefaultValue(businessType, defaultValue, state);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateState(required, state);
-		_validateDefaultValue(businessType, defaultValue, state);
 
 		if (Validator.isNotNull(objectField.getRelationshipType())) {
 			if (!Objects.equals(objectField.getDBType(), dbType) ||
