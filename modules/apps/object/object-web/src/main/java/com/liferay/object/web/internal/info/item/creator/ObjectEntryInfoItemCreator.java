@@ -230,15 +230,15 @@ public class ObjectEntryInfoItemCreator
 		ObjectField objectField = ObjectFieldLocalServiceUtil.fetchObjectField(
 			objectDefinitionId, objectFieldName);
 
-		ObjectFieldSetting acceptedFileExtensionsObjectFieldSetting =
+		ObjectFieldSetting objectFieldSetting =
 			ObjectFieldSettingLocalServiceUtil.fetchObjectFieldSetting(
 				objectField.getObjectFieldId(), "acceptedFileExtensions");
 
-		if (acceptedFileExtensionsObjectFieldSetting == null) {
+		if (objectFieldSetting == null) {
 			return StringPool.BLANK;
 		}
 
-		return acceptedFileExtensionsObjectFieldSetting.getValue();
+		return objectFieldSetting.getValue();
 	}
 
 	private long _getGroupId(
