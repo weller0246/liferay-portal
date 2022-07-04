@@ -73,10 +73,11 @@ import org.apache.felix.cm.PersistenceManager;
 public class UpgradeReport {
 
 	public UpgradeReport() {
+		_stopWatch.start();
+
 		_initialBuildNumber = _getBuildNumber();
 		_initialSchemaVersion = _getSchemaVersion();
 		_initialTableCounts = _getTableCounts();
-		_stopWatch.start();
 	}
 
 	public void addErrorMessage(String loggerName, String message) {
