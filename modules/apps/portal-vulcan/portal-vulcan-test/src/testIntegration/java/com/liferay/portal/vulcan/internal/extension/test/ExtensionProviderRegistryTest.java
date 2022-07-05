@@ -15,6 +15,7 @@
 package com.liferay.portal.vulcan.internal.extension.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.vulcan.extension.ExtensionProvider;
@@ -76,25 +77,25 @@ public class ExtensionProviderRegistryTest {
 				_COMPANY_ID, _CLASS_NAME);
 
 		Assert.assertEquals(
-			Collections.singletonList(_extensionProvider),
-			extensionProviders);
+			Collections.singletonList(_extensionProvider), extensionProviders);
 
 		extensionProviders = _extensionProviderRegistry.getExtensionProviders(
-			22222, "com.liferay.other.model.Other");
+			22222, RandomTestUtil.randomString());
 
 		Assert.assertEquals(Collections.emptyList(), extensionProviders);
 	}
 
-	private static final String _CLASS_NAME =
-		"com.liferay.test.model.Test";
+	private static final String _CLASS_NAME = "com.liferay.test.model.Test";
 
 	private static final long _COMPANY_ID = 11111;
+
+	private final ExtensionProvider _extensionProvider =
+		new TestExtensionProvider();
 
 	@Inject
 	private ExtensionProviderRegistry _extensionProviderRegistry;
 
 	private ServiceRegistration<ExtensionProvider> _serviceRegistration;
-	private ExtensionProvider _extensionProvider = new TestExtensionProvider();
 
 	private static class TestExtensionProvider implements ExtensionProvider {
 
