@@ -109,12 +109,14 @@ function getInputCommonConfiguration(configurationValues, formFields) {
 	return fields;
 }
 
-function getTypeLabels(itemTypes, classNameId, classTypeId) {
-	if (!itemTypes || !classNameId) {
+function getTypeLabels(classNameId, classTypeId) {
+	if (!classNameId) {
 		return {};
 	}
 
-	const selectedType = itemTypes.find(({value}) => value === classNameId);
+	const selectedType = config.formTypes.find(
+		({value}) => value === classNameId
+	);
 
 	const selectedSubtype = selectedType.subtypes.length
 		? selectedType.subtypes.find(({value}) => value === classTypeId)
@@ -360,14 +362,9 @@ export function FormInputGeneralPanel({item}) {
 function FormInputMappingOptions({configurationValues, form, onValueSelect}) {
 	const {classNameId, classTypeId, fields} = form;
 
-	const formTypes = useCache({
-		fetcher: () => FormService.getAvailableEditPageInfoItemFormProviders(),
-		key: [CACHE_KEYS.formTypes],
-	});
-
 	const {subtype, type} = useMemo(
-		() => getTypeLabels(formTypes, classNameId, classTypeId),
-		[formTypes, classNameId, classTypeId]
+		() => getTypeLabels(classNameId, classTypeId),
+		[classNameId, classTypeId]
 	);
 
 	if (!classNameId || !classTypeId) {
