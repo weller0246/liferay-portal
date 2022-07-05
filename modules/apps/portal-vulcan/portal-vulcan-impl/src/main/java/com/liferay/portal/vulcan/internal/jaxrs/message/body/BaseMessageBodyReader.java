@@ -143,23 +143,21 @@ public abstract class BaseMessageBodyReader
 
 		Map<String, Serializable> extendedProperties = new HashMap<>();
 
-		List<String> classFieldNames = new ArrayList<>();
+		List<String> fieldNames = new ArrayList<>();
 
 		for (Field field : clazz.getDeclaredFields()) {
-			classFieldNames.add(field.getName());
+			fieldNames.add(field.getName());
 		}
 
 		Iterator<String> iterator = jsonNode.fieldNames();
 
 		while (iterator.hasNext()) {
-			String jsonFieldName = iterator.next();
+			String fieldName = iterator.next();
 
-			if (!classFieldNames.contains(jsonFieldName)) {
-				JsonNode fieldNameJsonNode = jsonNode.get(jsonFieldName);
-
+			if (!fieldNames.contains(fieldName)) {
 				extendedProperties.put(
-					jsonFieldName,
-					_getJsonNodeValue(fieldNameJsonNode, objectMapper));
+					fieldName,
+					_getJsonNodeValue(jsonNode.get(fieldName), objectMapper));
 			}
 		}
 
