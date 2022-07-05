@@ -15,11 +15,10 @@
 package com.liferay.portal.vulcan.internal.extension;
 
 import com.liferay.osgi.util.ServiceTrackerFactory;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.vulcan.extension.ExtensionProvider;
 import com.liferay.portal.vulcan.extension.ExtensionProviderRegistry;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.osgi.framework.BundleContext;
@@ -39,15 +38,15 @@ public class ExtensionProviderRegistryImpl
 	public List<ExtensionProvider> getExtensionProviders(
 		long companyId, String className) {
 
-		ExtensionProvider[] extensionProviders = _serviceTracker.getServices(
-			new ExtensionProvider[0]);
+		return TransformUtil.transformToList(
+			_serviceTracker.getServices(new ExtensionProvider[0]),
+			extensionProvider -> {
+				if (extensionProvider.isExtensionFor(companyId, className)) {
+					return extensionProvider;
+				}
 
-		ExtensionProvider[] classNameExtensionProviders = ArrayUtil.filter(
-			extensionProviders,
-			extensionProvider -> extensionProvider.isExtensionFor(
-				companyId, className));
-
-		return Arrays.asList(classNameExtensionProviders);
+				return null;
+			});
 	}
 
 	@Activate
