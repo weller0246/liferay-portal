@@ -1507,19 +1507,16 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 
 			ObjectEntry testrayCaseResultObjectEntry1 = entry.getValue();
 
-			if (Validator.isNull(
-					_getProperty("errors", testrayCaseResultObjectEntry1)) ||
-				Validator.isNull(
-					_getProperty("errors", testrayCaseResultObjectEntry2))) {
-
-				continue;
-			}
-
 			String testrayCaseResultErrors1 = (String)_getProperty(
 				"errors", testrayCaseResultObjectEntry1);
 
-			if (!testrayCaseResultErrors1.equals(
-					_getProperty("errors", testrayCaseResultObjectEntry2))) {
+			String testrayCaseResultErrors2 = (String)_getProperty(
+				"errors", testrayCaseResultObjectEntry2);
+
+			if (Validator.isNull(testrayCaseResultErrors1) ||
+				Validator.isNull(testrayCaseResultErrors2) ||
+				!Objects.equals(
+					testrayCaseResultErrors1, testrayCaseResultErrors2)) {
 
 				continue;
 			}
