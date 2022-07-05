@@ -70,13 +70,15 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.when(
 			_company.getCompanyId()
 		).thenReturn(
-			_COMPANY_ID_TEST
+			_COMPANY_ID
 		);
+
 		Mockito.when(
 			_entityExtensionHandlerContextResolver.getContext(Mockito.any())
 		).thenReturn(
 			_entityExtensionHandler
 		);
+
 		Mockito.when(
 			_providers.getContextResolver(
 				Mockito.eq(EntityExtensionHandler.class),
@@ -84,16 +86,19 @@ public class EntityExtensionWriterInterceptorTest {
 		).thenReturn(
 			_entityExtensionHandlerContextResolver
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getEntity()
 		).thenReturn(
-			_ENTITY_TEST
+			_TEST_ENTITY
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getMediaType()
 		).thenReturn(
 			MediaType.APPLICATION_JSON_TYPE
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getType()
 		).thenReturn(
@@ -108,35 +113,41 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.verify(
 			_entityExtensionHandler
 		).setExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_ENTITY_TEST),
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_TEST_ENTITY),
 			Mockito.eq(extendedProperties)
 		);
+
 		Mockito.verify(
 			_entityExtensionHandler
 		).getExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_ENTITY_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_TEST_ENTITY)
 		);
+
 		Mockito.verify(
 			_entityExtensionHandler
 		).getFilteredPropertyNames(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_ENTITY_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_TEST_ENTITY)
 		);
+
 		Mockito.verify(
 			_entityExtensionHandlerContextResolver
 		).getContext(
 			Mockito.eq(TestEntity.class)
 		);
+
 		Mockito.verify(
 			_providers
 		).getContextResolver(
 			Mockito.eq(EntityExtensionHandler.class),
 			Mockito.eq(MediaType.APPLICATION_JSON_TYPE)
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).setGenericType(
 			ExtendedEntity.class
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).setEntity(
@@ -151,6 +162,7 @@ public class EntityExtensionWriterInterceptorTest {
 		).thenReturn(
 			MediaType.APPLICATION_JSON_TYPE
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getType()
 		).thenReturn(
@@ -165,11 +177,13 @@ public class EntityExtensionWriterInterceptorTest {
 		).setGenericType(
 			Mockito.any()
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext, Mockito.never()
 		).setEntity(
 			Mockito.any()
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).proceed();
@@ -182,13 +196,15 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.when(
 			_company.getCompanyId()
 		).thenReturn(
-			_COMPANY_ID_TEST
+			_COMPANY_ID
 		);
+
 		Mockito.when(
 			_entityExtensionHandlerContextResolver.getContext(Mockito.any())
 		).thenReturn(
 			_entityExtensionHandler
 		);
+
 		Mockito.when(
 			_providers.getContextResolver(
 				Mockito.eq(EntityExtensionHandler.class),
@@ -199,13 +215,15 @@ public class EntityExtensionWriterInterceptorTest {
 		Mockito.when(
 			_writerInterceptorContext.getEntity()
 		).thenReturn(
-			_ENTITY_TEST
+			_TEST_ENTITY
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getMediaType()
 		).thenReturn(
 			MediaType.APPLICATION_JSON_TYPE
 		);
+
 		Mockito.when(
 			_writerInterceptorContext.getType()
 		).thenReturn(
@@ -220,35 +238,42 @@ public class EntityExtensionWriterInterceptorTest {
 		).setExtendedProperties(
 			Mockito.anyLong(), Mockito.any(), Mockito.any()
 		);
+
 		Mockito.verify(
 			_entityExtensionHandler
 		).getExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_ENTITY_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_TEST_ENTITY)
 		);
+
 		Mockito.verify(
 			_entityExtensionHandler
 		).getFilteredPropertyNames(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_ENTITY_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_TEST_ENTITY)
 		);
+
 		Mockito.verify(
 			_entityExtensionHandlerContextResolver
 		).getContext(
 			Mockito.eq(TestEntity.class)
 		);
+
 		Mockito.verify(
 			_providers
 		).getContextResolver(
 			Mockito.eq(EntityExtensionHandler.class),
 			Mockito.eq(MediaType.APPLICATION_JSON_TYPE)
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).setGenericType(
 			ExtendedEntity.class
 		);
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).proceed();
+
 		Mockito.verify(
 			_writerInterceptorContext
 		).setEntity(
@@ -256,9 +281,9 @@ public class EntityExtensionWriterInterceptorTest {
 		);
 	}
 
-	private static final long _COMPANY_ID_TEST = 11111;
+	private static final long _COMPANY_ID = 11111;
 
-	private static final TestEntity _ENTITY_TEST = new TestEntity();
+	private static final TestEntity _TEST_ENTITY = new TestEntity();
 
 	@Mock
 	private Company _company;
@@ -270,8 +295,9 @@ public class EntityExtensionWriterInterceptorTest {
 	private EntityExtensionHandlerContextResolver
 		_entityExtensionHandlerContextResolver;
 
-	private EntityExtensionWriterInterceptor _entityExtensionWriterInterceptor =
-		new EntityExtensionWriterInterceptor();
+	private final EntityExtensionWriterInterceptor
+		_entityExtensionWriterInterceptor =
+			new EntityExtensionWriterInterceptor();
 
 	@Mock
 	private Providers _providers;
