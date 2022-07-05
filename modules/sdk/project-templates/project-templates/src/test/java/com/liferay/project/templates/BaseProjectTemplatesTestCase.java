@@ -961,7 +961,7 @@ public interface BaseProjectTemplatesTestCase {
 								content = content.replace(
 									"repositories {",
 									"repositories {\n\t\tmavenLocal()\n\t\t" +
-										"maven { \n\t\t\turl \"" +
+										"maven {\n\t\t\turl \"" +
 											m2tmpPathString + "\"\n\t\t}");
 							}
 						}
