@@ -64,6 +64,7 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -533,17 +534,15 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			(List<ObjectEntry>)testrayRunsObjectEntriesPage.getItems();
 
 		for (ObjectEntry testrayRunObjectEntry : testrayRunsObjectEntries) {
-			Map<String, Object> testrayRunPropertiesMap =
+			Map<String, Object> properties =
 				testrayRunObjectEntry.getProperties();
 
 			for (ObjectEntry testrayBuildObjectEntry :
 					testrayBuildsObjectEntries) {
 
-				Long testrayBuildId = testrayBuildObjectEntry.getId();
-
-				if (testrayBuildId.equals(
-						(Long)testrayRunPropertiesMap.get(
-							"r_buildToRuns_c_buildId"))) {
+				if (Objects.equals(
+						testrayBuildObjectEntry.getId(),
+						properties.get("r_buildToRuns_c_buildId"))) {
 
 					return testrayRunObjectEntry;
 				}
