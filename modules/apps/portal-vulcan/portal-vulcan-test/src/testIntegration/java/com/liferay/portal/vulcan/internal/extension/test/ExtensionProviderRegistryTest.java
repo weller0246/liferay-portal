@@ -60,10 +60,8 @@ public class ExtensionProviderRegistryTest {
 
 		BundleContext bundleContext = bundle.getBundleContext();
 
-		_testExtensionProvider = new TestExtensionProvider();
-
 		_serviceRegistration = bundleContext.registerService(
-			ExtensionProvider.class, _testExtensionProvider, null);
+			ExtensionProvider.class, _extensionProvider, null);
 	}
 
 	@After
@@ -75,10 +73,10 @@ public class ExtensionProviderRegistryTest {
 	public void testGetExtensionProviders() {
 		List<ExtensionProvider> extensionProviders =
 			_extensionProviderRegistry.getExtensionProviders(
-				_COMPANY_ID_TEST, _CLASS_NAME_TEST);
+				_COMPANY_ID, _CLASS_NAME);
 
 		Assert.assertEquals(
-			Collections.singletonList(_testExtensionProvider),
+			Collections.singletonList(_extensionProvider),
 			extensionProviders);
 
 		extensionProviders = _extensionProviderRegistry.getExtensionProviders(
@@ -87,16 +85,16 @@ public class ExtensionProviderRegistryTest {
 		Assert.assertEquals(Collections.emptyList(), extensionProviders);
 	}
 
-	private static final String _CLASS_NAME_TEST =
+	private static final String _CLASS_NAME =
 		"com.liferay.test.model.Test";
 
-	private static final long _COMPANY_ID_TEST = 11111;
+	private static final long _COMPANY_ID = 11111;
 
 	@Inject
 	private ExtensionProviderRegistry _extensionProviderRegistry;
 
 	private ServiceRegistration<ExtensionProvider> _serviceRegistration;
-	private ExtensionProvider _testExtensionProvider;
+	private ExtensionProvider _extensionProvider = new TestExtensionProvider();
 
 	private static class TestExtensionProvider implements ExtensionProvider {
 
@@ -123,8 +121,8 @@ public class ExtensionProviderRegistryTest {
 
 		@Override
 		public boolean isApplicableExtension(long companyId, String className) {
-			if ((companyId == _COMPANY_ID_TEST) &&
-				Objects.equals(className, _CLASS_NAME_TEST)) {
+			if ((companyId == _COMPANY_ID) &&
+				Objects.equals(className, _CLASS_NAME)) {
 
 				return true;
 			}
