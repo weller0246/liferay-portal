@@ -118,7 +118,7 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 				portalGitWorkingDirectory.getModifiedFilesList()) {
 
 			_concatenateProperties(
-				modifiedFile, "",
+				modifiedFile,
 				"modules.includes.required.test.batch.class.names.excludes",
 				JobProperty.Type.MODULE_EXCLUDE_GLOB, excludesJobProperties,
 				traversedModulesProperties);
@@ -195,17 +195,7 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 	}
 
 	private String _concatenateProperties(
-		File file, String basePropertyName, JobProperty.Type jobType,
-		List<JobProperty> jobPropertiesList,
-		Set<File> traversedPropertiesList) {
-
-		return _concatenateProperties(
-			file, "", basePropertyName, jobType, jobPropertiesList,
-			traversedPropertiesList);
-	}
-
-	private String _concatenateProperties(
-		File file, String concatenatedProperties, String basePropertyName,
+		File file, List<String> propertyStrings, String basePropertyName,
 		JobProperty.Type jobType, List<JobProperty> jobPropertiesList,
 		Set<File> traversedPropertiesList) {
 
@@ -229,12 +219,13 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		Path parentFilePath = parentFile.toPath();
 
 		if (parentFilePath.equals(modulesBaseDirPath)) {
-			return concatenatedProperties;
+			return JenkinsResultsParserUtil.join(
+				_DELIMITER_CONCATENATED_PROPERTIES, propertyStrings);
 		}
 
 		if (!canonicalFile.isDirectory()) {
 			return _concatenateProperties(
-				parentFile, concatenatedProperties, basePropertyName, jobType,
+				parentFile, propertyStrings, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
@@ -242,12 +233,13 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 
 		if (!testPropertiesFile.exists()) {
 			return _concatenateProperties(
-				parentFile, concatenatedProperties, basePropertyName, jobType,
+				parentFile, propertyStrings, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
 		if (traversedPropertiesList.contains(testPropertiesFile)) {
-			return concatenatedProperties;
+			return JenkinsResultsParserUtil.join(
+				_DELIMITER_CONCATENATED_PROPERTIES, propertyStrings);
 		}
 
 		traversedPropertiesList.add(testPropertiesFile);
@@ -256,26 +248,21 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 			basePropertyName, canonicalFile, jobType);
 
 		if (jobPropertiesList.contains(jobProperty)) {
-			return concatenatedProperties;
+			return JenkinsResultsParserUtil.join(
+				_DELIMITER_CONCATENATED_PROPERTIES, propertyStrings);
 		}
 
 		String testBatchPropertyQuery = jobProperty.getValue();
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(testBatchPropertyQuery) &&
 			!testBatchPropertyQuery.equals("false") &&
-			!concatenatedProperties.contains(testBatchPropertyQuery)) {
+			!propertyStrings.contains(testBatchPropertyQuery)) {
 
 			jobPropertiesList.add(jobProperty);
 
 			recordJobProperty(jobProperty);
 
-			if (!concatenatedProperties.isEmpty()) {
-				concatenatedProperties += JenkinsResultsParserUtil.combine(
-					",\\", testBatchPropertyQuery, ",\\");
-			}
-			else {
-				concatenatedProperties += testBatchPropertyQuery;
-			}
+			propertyStrings.add(testBatchPropertyQuery);
 		}
 
 		Properties testProperties = JenkinsResultsParserUtil.getProperties(
@@ -286,16 +273,28 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 				testProperties, "ignoreParents", false, getTestSuiteName()));
 
 		if (ignoreParents) {
-			return concatenatedProperties;
+			return JenkinsResultsParserUtil.join(
+				_DELIMITER_CONCATENATED_PROPERTIES, propertyStrings);
 		}
 
 		if (!parentFilePath.equals(modulesBaseDirPath)) {
 			return _concatenateProperties(
-				parentFile, concatenatedProperties, basePropertyName, jobType,
+				parentFile, propertyStrings, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
-		return concatenatedProperties;
+		return JenkinsResultsParserUtil.join(
+			_DELIMITER_CONCATENATED_PROPERTIES, propertyStrings);
+	}
+
+	private String _concatenateProperties(
+		File file, String basePropertyName, JobProperty.Type jobType,
+		List<JobProperty> jobPropertiesList,
+		Set<File> traversedPropertiesList) {
+
+		return _concatenateProperties(
+			file, new ArrayList<String>(), basePropertyName, jobType,
+			jobPropertiesList, traversedPropertiesList);
 	}
 
 	private String _getAppTitle(File appBndFile) {
@@ -391,6 +390,8 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 
 		return releaseModuleAppDirs;
 	}
+
+	private static final String _DELIMITER_CONCATENATED_PROPERTIES = ",\\";
 
 	private static final Pattern _singleModuleBatchNamePattern =
 		Pattern.compile("modules-unit-(?<moduleName>\\S+)-jdk\\d+");
