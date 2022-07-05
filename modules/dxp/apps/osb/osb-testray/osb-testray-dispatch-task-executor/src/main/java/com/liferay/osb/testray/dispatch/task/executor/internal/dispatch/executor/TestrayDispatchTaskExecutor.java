@@ -455,13 +455,13 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			destinationTestrayCaseResultObjectEntry.getProperties();
 
 		properties.put(
+			"dueStatus",
+			_getProperty("dueStatus", sourceTestrayCaseResultObjectEntry));
+		properties.put(
 			"r_userToCaseResults_userId",
 			_getProperty(
 				"r_userToCaseResults_userId",
 				sourceTestrayCaseResultObjectEntry));
-		properties.put(
-			"dueStatus",
-			_getProperty("dueStatus", sourceTestrayCaseResultObjectEntry));
 
 		_objectEntryManager.updateObjectEntry(
 			_defaultDTOConverterContext, _objectDefinitions.get("CaseResult"),
