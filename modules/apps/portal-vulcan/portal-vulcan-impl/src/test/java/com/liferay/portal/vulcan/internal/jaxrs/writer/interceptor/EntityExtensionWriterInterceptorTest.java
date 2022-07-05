@@ -54,9 +54,6 @@ public class EntityExtensionWriterInterceptorTest {
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 
-		_entityExtensionWriterInterceptor =
-			new EntityExtensionWriterInterceptor();
-
 		ReflectionTestUtil.setFieldValue(
 			_entityExtensionWriterInterceptor, "_company", _company);
 		ReflectionTestUtil.setFieldValue(
@@ -273,7 +270,8 @@ public class EntityExtensionWriterInterceptorTest {
 	private EntityExtensionHandlerContextResolver
 		_entityExtensionHandlerContextResolver;
 
-	private EntityExtensionWriterInterceptor _entityExtensionWriterInterceptor;
+	private EntityExtensionWriterInterceptor _entityExtensionWriterInterceptor =
+		new EntityExtensionWriterInterceptor();
 
 	@Mock
 	private Providers _providers;
