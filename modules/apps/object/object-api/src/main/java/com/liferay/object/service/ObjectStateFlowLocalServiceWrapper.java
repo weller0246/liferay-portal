@@ -39,10 +39,11 @@ public class ObjectStateFlowLocalServiceWrapper
 
 	@Override
 	public com.liferay.object.model.ObjectStateFlow addObjectStateFlow(
-		long objectFieldId, long userId, String userName) {
+			long userId, long objectFieldId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectStateFlowLocalService.addObjectStateFlow(
-			objectFieldId, userId, userName);
+			userId, objectFieldId);
 	}
 
 	/**

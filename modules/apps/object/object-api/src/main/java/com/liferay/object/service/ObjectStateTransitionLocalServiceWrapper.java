@@ -39,13 +39,14 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 	@Override
 	public com.liferay.object.model.ObjectStateTransition
-		addObjectStateTransition(
-			long objectStateFlowId, long sourceObjectStateId,
-			long targetObjectStateId, long userId, String userName) {
+			addObjectStateTransition(
+				long userId, long objectStateFlowId, long sourceObjectStateId,
+				long targetObjectStateId)
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectStateTransitionLocalService.addObjectStateTransition(
-			objectStateFlowId, sourceObjectStateId, targetObjectStateId, userId,
-			userName);
+			userId, objectStateFlowId, sourceObjectStateId,
+			targetObjectStateId);
 	}
 
 	/**

@@ -45,9 +45,10 @@ public class ObjectStateFlowLocalServiceUtil {
 	 * Never modify this class directly. Add custom service methods to <code>com.liferay.object.service.impl.ObjectStateFlowLocalServiceImpl</code> and rerun ServiceBuilder to regenerate this class.
 	 */
 	public static ObjectStateFlow addObjectStateFlow(
-		long objectFieldId, long userId, String userName) {
+			long userId, long objectFieldId)
+		throws PortalException {
 
-		return getService().addObjectStateFlow(objectFieldId, userId, userName);
+		return getService().addObjectStateFlow(userId, objectFieldId);
 	}
 
 	/**
