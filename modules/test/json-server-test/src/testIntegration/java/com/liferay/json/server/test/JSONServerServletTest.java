@@ -335,10 +335,10 @@ public class JSONServerServletTest {
 				"Missing model name in path /fruit", message.get("message"));
 		}
 
-		// /fruit/plantae/tracheophyta/vitis?filter=name+eq+merlot
+		// /supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f
 
 		mockHttpServletRequest.setPathInfo(
-			"/fruit/plantae/tracheophyta/vitis?filter=name+eq+merlot");
+			"supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f");
 
 		mockHttpServletResponse = new MockHttpServletResponse();
 
