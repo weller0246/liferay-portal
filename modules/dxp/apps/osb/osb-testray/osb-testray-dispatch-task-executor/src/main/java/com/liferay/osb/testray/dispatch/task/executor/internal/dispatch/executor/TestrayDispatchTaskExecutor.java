@@ -397,6 +397,10 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 						testrayCaseResultObjectEntry1.getId() + "'",
 					null, null, null);
 
+		List<ObjectEntry> testrayCaseResultsIssuesObjectEntries1 =
+			(List<ObjectEntry>)
+				testrayCaseResultsIssuesObjectEntriesPage1.getItems();
+
 		com.liferay.portal.vulcan.pagination.Page<ObjectEntry>
 			testrayCaseResultsIssuesObjectEntriesPage2 =
 				_objectEntryManager.getObjectEntries(
@@ -406,9 +410,6 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 						testrayCaseResultObjectEntry2.getId() + "'",
 					null, null, null);
 
-		List<ObjectEntry> testrayCaseResultsIssuesObjectEntries1 =
-			(List<ObjectEntry>)
-				testrayCaseResultsIssuesObjectEntriesPage1.getItems();
 		List<ObjectEntry> testrayCaseResultsIssuesObjectEntries2 =
 			(List<ObjectEntry>)
 				testrayCaseResultsIssuesObjectEntriesPage2.getItems();
