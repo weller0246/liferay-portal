@@ -24,6 +24,8 @@ import com.liferay.jenkins.results.parser.job.property.JobProperty;
 import java.io.File;
 import java.io.IOException;
 
+import java.nio.file.Path;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -165,12 +167,8 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 			String modifiedModuleAbsolutePath =
 				JenkinsResultsParserUtil.getCanonicalPath(modifiedModuleDir);
 
-			String modifiedModuleRelativePath =
-				modifiedModuleAbsolutePath.substring(
-					modifiedModuleAbsolutePath.indexOf("modules/"));
-
 			if ((moduleName != null) &&
-				!modifiedModuleRelativePath.contains("/" + moduleName)) {
+				!modifiedModuleAbsolutePath.contains("/" + moduleName)) {
 
 				continue;
 			}
@@ -187,6 +185,100 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		}
 
 		return includesJobProperties;
+	}
+
+	private String _concatProperties(
+		File file, String concatedProperties, String basePropertyName,
+		JobProperty.Type jobType, List<JobProperty> jobPropertiesList,
+		Set<File> traversedPropertiesList) {
+
+		if (file == null) {
+			return "";
+		}
+
+		File canonicalFile = JenkinsResultsParserUtil.getCanonicalFile(file);
+
+		File parentFile = canonicalFile.getParentFile();
+
+		if ((parentFile == null) || !parentFile.exists()) {
+			return "";
+		}
+
+		File modulesBaseDir = new File(
+			portalGitWorkingDirectory.getWorkingDirectory(), "modules");
+
+		Path modulesBaseDirPath = modulesBaseDir.toPath();
+
+		Path parentFilePath = parentFile.toPath();
+
+		if (parentFilePath.equals(modulesBaseDirPath)) {
+			return concatedProperties;
+		}
+
+		if (!canonicalFile.isDirectory()) {
+			return _concatProperties(
+				parentFile, concatedProperties, basePropertyName, jobType,
+				jobPropertiesList, traversedPropertiesList);
+		}
+
+		File testPropertiesFile = new File(canonicalFile, "test.properties");
+
+		if (!testPropertiesFile.exists()) {
+			return _concatProperties(
+				parentFile, concatedProperties, basePropertyName, jobType,
+				jobPropertiesList, traversedPropertiesList);
+		}
+
+		if (traversedPropertiesList.contains(testPropertiesFile)) {
+			return concatedProperties;
+		}
+
+		traversedPropertiesList.add(testPropertiesFile);
+
+		JobProperty jobProperty = getJobProperty(
+			basePropertyName, canonicalFile, jobType);
+
+		if (jobPropertiesList.contains(jobProperty)) {
+			return concatedProperties;
+		}
+
+		String testBatchPropertyQuery = jobProperty.getValue();
+
+		if (!JenkinsResultsParserUtil.isNullOrEmpty(testBatchPropertyQuery) &&
+			!testBatchPropertyQuery.equals("false") &&
+			!concatedProperties.contains(testBatchPropertyQuery)) {
+
+			jobPropertiesList.add(jobProperty);
+
+			recordJobProperty(jobProperty);
+
+			if (!concatedProperties.isEmpty()) {
+				concatedProperties += JenkinsResultsParserUtil.combine(
+					",\\", testBatchPropertyQuery, ",\\");
+			}
+			else {
+				concatedProperties += testBatchPropertyQuery;
+			}
+		}
+
+		Properties testProperties = JenkinsResultsParserUtil.getProperties(
+			testPropertiesFile);
+
+		boolean ignoreParents = Boolean.valueOf(
+			JenkinsResultsParserUtil.getProperty(
+				testProperties, "ignoreParents", false, getTestSuiteName()));
+
+		if (ignoreParents) {
+			return concatedProperties;
+		}
+
+		if (!parentFilePath.equals(modulesBaseDirPath)) {
+			return _concatProperties(
+				parentFile, concatedProperties, basePropertyName, jobType,
+				jobPropertiesList, traversedPropertiesList);
+		}
+
+		return concatedProperties;
 	}
 
 	private String _getAppTitle(File appBndFile) {
