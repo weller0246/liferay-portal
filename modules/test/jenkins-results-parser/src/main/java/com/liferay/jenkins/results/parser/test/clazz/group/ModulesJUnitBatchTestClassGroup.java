@@ -119,7 +119,7 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		for (File modifiedFile :
 				portalGitWorkingDirectory.getModifiedFilesList()) {
 
-			_concatProperties(
+			_concatenateProperties(
 				modifiedFile, "",
 				"modules.includes.required.test.batch.class.names.excludes",
 				JobProperty.Type.MODULE_EXCLUDE_GLOB, excludesJobProperties,
@@ -181,12 +181,12 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 				continue;
 			}
 
-			_concatProperties(
+			_concatenateProperties(
 				modifiedFile, "", "test.batch.class.names.includes.modules",
 				JobProperty.Type.MODULE_INCLUDE_GLOB, includesJobProperties,
 				traversedTestBatchProperties);
 
-			_concatProperties(
+			_concatenateProperties(
 				modifiedFile, "",
 				"modules.includes.required.test.batch.class.names.includes",
 				JobProperty.Type.MODULE_INCLUDE_GLOB, includesJobProperties,
@@ -196,8 +196,8 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		return includesJobProperties;
 	}
 
-	private String _concatProperties(
-		File file, String concatedProperties, String basePropertyName,
+	private String _concatenateProperties(
+		File file, String concatenatedProperties, String basePropertyName,
 		JobProperty.Type jobType, List<JobProperty> jobPropertiesList,
 		Set<File> traversedPropertiesList) {
 
@@ -221,25 +221,25 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		Path parentFilePath = parentFile.toPath();
 
 		if (parentFilePath.equals(modulesBaseDirPath)) {
-			return concatedProperties;
+			return concatenatedProperties;
 		}
 
 		if (!canonicalFile.isDirectory()) {
-			return _concatProperties(
-				parentFile, concatedProperties, basePropertyName, jobType,
+			return _concatenateProperties(
+				parentFile, concatenatedProperties, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
 		File testPropertiesFile = new File(canonicalFile, "test.properties");
 
 		if (!testPropertiesFile.exists()) {
-			return _concatProperties(
-				parentFile, concatedProperties, basePropertyName, jobType,
+			return _concatenateProperties(
+				parentFile, concatenatedProperties, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
 		if (traversedPropertiesList.contains(testPropertiesFile)) {
-			return concatedProperties;
+			return concatenatedProperties;
 		}
 
 		traversedPropertiesList.add(testPropertiesFile);
@@ -248,25 +248,25 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 			basePropertyName, canonicalFile, jobType);
 
 		if (jobPropertiesList.contains(jobProperty)) {
-			return concatedProperties;
+			return concatenatedProperties;
 		}
 
 		String testBatchPropertyQuery = jobProperty.getValue();
 
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(testBatchPropertyQuery) &&
 			!testBatchPropertyQuery.equals("false") &&
-			!concatedProperties.contains(testBatchPropertyQuery)) {
+			!concatenatedProperties.contains(testBatchPropertyQuery)) {
 
 			jobPropertiesList.add(jobProperty);
 
 			recordJobProperty(jobProperty);
 
-			if (!concatedProperties.isEmpty()) {
-				concatedProperties += JenkinsResultsParserUtil.combine(
+			if (!concatenatedProperties.isEmpty()) {
+				concatenatedProperties += JenkinsResultsParserUtil.combine(
 					",\\", testBatchPropertyQuery, ",\\");
 			}
 			else {
-				concatedProperties += testBatchPropertyQuery;
+				concatenatedProperties += testBatchPropertyQuery;
 			}
 		}
 
@@ -278,16 +278,16 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 				testProperties, "ignoreParents", false, getTestSuiteName()));
 
 		if (ignoreParents) {
-			return concatedProperties;
+			return concatenatedProperties;
 		}
 
 		if (!parentFilePath.equals(modulesBaseDirPath)) {
-			return _concatProperties(
-				parentFile, concatedProperties, basePropertyName, jobType,
+			return _concatenateProperties(
+				parentFile, concatenatedProperties, basePropertyName, jobType,
 				jobPropertiesList, traversedPropertiesList);
 		}
 
-		return concatedProperties;
+		return concatenatedProperties;
 	}
 
 	private String _getAppTitle(File appBndFile) {
