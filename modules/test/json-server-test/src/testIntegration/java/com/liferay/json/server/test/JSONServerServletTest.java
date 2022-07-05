@@ -495,10 +495,12 @@ public class JSONServerServletTest {
 				"Unknown ID in path /fruit/orange/3", message.get("message"));
 		}
 
-		// /supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f
+		// /supercalifragilisticexpialidocious/something/to/say/when/you/have
+		// /nothing/to/say?a=b&c=d&e=f
 
 		mockHttpServletRequest.setPathInfo(
-			"supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f");
+			"supercalifragilisticexpialidocious/something/to/say/when/you" +
+				"/have/nothing/to/say?a=b&c=d&e=f");
 
 		mockHttpServletResponse = new MockHttpServletResponse();
 
