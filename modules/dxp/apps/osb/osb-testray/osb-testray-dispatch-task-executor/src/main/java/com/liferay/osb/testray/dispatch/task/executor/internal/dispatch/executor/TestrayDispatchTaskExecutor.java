@@ -384,7 +384,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			ObjectEntry testrayCaseResultObjectEntry2)
 		throws Exception {
 
-		ObjectEntry recipientTestrayCaseResultObjectEntry = null;
+		ObjectEntry destinationTestrayCaseResultObjectEntry = null;
 		ObjectEntry sourceTestrayCaseResultObjectEntry = null;
 		List<ObjectEntry> sourceTestrayCaseResultsIssuesObjectEntries = null;
 
@@ -422,7 +422,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 					0) &&
 			testrayCaseResultsIssuesObjectEntries2.isEmpty()) {
 
-			recipientTestrayCaseResultObjectEntry =
+			destinationTestrayCaseResultObjectEntry =
 				testrayCaseResultObjectEntry2;
 			sourceTestrayCaseResultObjectEntry = testrayCaseResultObjectEntry1;
 			sourceTestrayCaseResultsIssuesObjectEntries =
@@ -437,39 +437,39 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 					 testrayCaseResultObjectEntry1) <= 0) &&
 				 testrayCaseResultsIssuesObjectEntries1.isEmpty()) {
 
-			recipientTestrayCaseResultObjectEntry =
+			destinationTestrayCaseResultObjectEntry =
 				testrayCaseResultObjectEntry1;
 			sourceTestrayCaseResultObjectEntry = testrayCaseResultObjectEntry2;
 			sourceTestrayCaseResultsIssuesObjectEntries =
 				testrayCaseResultsIssuesObjectEntries2;
 		}
 
-		if ((recipientTestrayCaseResultObjectEntry == null) ||
+		if ((destinationTestrayCaseResultObjectEntry == null) ||
 			(sourceTestrayCaseResultObjectEntry == null)) {
 
 			return;
 		}
 
-		Map<String, Object> recipientTestrayCaseResultPropertiesMap =
-			recipientTestrayCaseResultObjectEntry.getProperties();
+		Map<String, Object> destinationTestrayCaseResultPropertiesMap =
+			destinationTestrayCaseResultObjectEntry.getProperties();
 
 		Map<String, Object> sourceTestrayCaseResultPropertiesMap =
 			sourceTestrayCaseResultObjectEntry.getProperties();
 
-		recipientTestrayCaseResultPropertiesMap.put(
+		destinationTestrayCaseResultPropertiesMap.put(
 			"r_userToCaseResults_userId",
 			sourceTestrayCaseResultPropertiesMap.get(
 				"r_userToCaseResults_userId"));
-		recipientTestrayCaseResultPropertiesMap.put(
+		destinationTestrayCaseResultPropertiesMap.put(
 			"dueStatus", sourceTestrayCaseResultPropertiesMap.get("dueStatus"));
 
-		recipientTestrayCaseResultObjectEntry.setProperties(
-			recipientTestrayCaseResultPropertiesMap);
+		destinationTestrayCaseResultObjectEntry.setProperties(
+			destinationTestrayCaseResultPropertiesMap);
 
 		_objectEntryManager.updateObjectEntry(
 			_defaultDTOConverterContext, _objectDefinitions.get("CaseResult"),
-			recipientTestrayCaseResultObjectEntry.getId(),
-			recipientTestrayCaseResultObjectEntry);
+			destinationTestrayCaseResultObjectEntry.getId(),
+			destinationTestrayCaseResultObjectEntry);
 
 		for (ObjectEntry testrayCaseResultsIssuesObjectEntry :
 				sourceTestrayCaseResultsIssuesObjectEntries) {
@@ -494,7 +494,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			}
 
 			_addTestrayCaseResultIssue(
-				companyId, recipientTestrayCaseResultObjectEntry.getId(),
+				companyId, destinationTestrayCaseResultObjectEntry.getId(),
 				(String)_getProperty("name", testrayIssueObjectEntry));
 		}
 	}
