@@ -75,8 +75,8 @@ public class DefaultPropertyValidator implements PropertyValidator {
 		if (!valid) {
 			throw new ValidationException(
 				StringBundler.concat(
-					"The property ", propertyName,
-					" is not valid, expected type: ", propertyType));
+					"The property name \"", propertyName,
+					"\" is invalid for property type ", propertyType));
 		}
 	}
 
