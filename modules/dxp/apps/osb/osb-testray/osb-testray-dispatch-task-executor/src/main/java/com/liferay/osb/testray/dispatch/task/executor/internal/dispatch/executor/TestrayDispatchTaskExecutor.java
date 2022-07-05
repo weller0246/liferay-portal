@@ -1471,17 +1471,14 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			return;
 		}
 
-		ObjectEntry testrayRunObjectEntry1 =
-			_objectEntryManager.getObjectEntry(
-				_defaultDTOConverterContext, _objectDefinitions.get("Run"),
-				testrayRunId);
+		ObjectEntry testrayRunObjectEntry1 = _objectEntryManager.getObjectEntry(
+			_defaultDTOConverterContext, _objectDefinitions.get("Run"),
+			testrayRunId);
 
-		ObjectEntry testrayRunObjectEntry2 =
-			_fetchLatestTestrayRunObjectEntry(
-				companyId,
-				(String)_getProperty(
-					"environmentHash", testrayRunObjectEntry1),
-				testrayRoutineObjectEntry.getId(), testrayRunId);
+		ObjectEntry testrayRunObjectEntry2 = _fetchLatestTestrayRunObjectEntry(
+			companyId,
+			(String)_getProperty("environmentHash", testrayRunObjectEntry1),
+			testrayRoutineObjectEntry.getId(), testrayRunId);
 
 		if (testrayRunObjectEntry2 == null) {
 			return;
