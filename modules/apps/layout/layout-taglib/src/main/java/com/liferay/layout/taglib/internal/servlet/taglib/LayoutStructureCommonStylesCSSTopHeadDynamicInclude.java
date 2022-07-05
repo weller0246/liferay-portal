@@ -29,7 +29,6 @@ import java.io.PrintWriter;
 
 import java.util.Date;
 import java.util.Objects;
-import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,13 +80,14 @@ public class LayoutStructureCommonStylesCSSTopHeadDynamicInclude
 			SegmentsExperienceUtil.getSegmentsExperienceId(httpServletRequest));
 		printWriter.print("&t=");
 
-		Date modifiedDate = Optional.ofNullable(
-			layout.getModifiedDate()
-		).orElse(
-			new Date()
-		);
+		Date modifiedDate = layout.getModifiedDate();
 
-		printWriter.print(modifiedDate.getTime());
+		if (modifiedDate != null) {
+			printWriter.print(modifiedDate.getTime());
+		}
+		else {
+			printWriter.print(System.currentTimeMillis());
+		}
 
 		printWriter.print("\" rel=\"stylesheet\" type=\"text/css\">");
 	}
