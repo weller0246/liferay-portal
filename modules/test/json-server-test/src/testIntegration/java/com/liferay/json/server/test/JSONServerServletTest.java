@@ -335,25 +335,6 @@ public class JSONServerServletTest {
 				"Missing model name in path /fruit", message.get("message"));
 		}
 
-		// /supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f
-
-		mockHttpServletRequest.setPathInfo(
-			"supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f");
-
-		mockHttpServletResponse = new MockHttpServletResponse();
-
-		_servlet.service(mockHttpServletRequest, mockHttpServletResponse);
-
-		List<Map<String, Object>> grapes = _objectMapper.readValue(
-			mockHttpServletResponse.getContentAsString(), List.class);
-
-		Assert.assertEquals(grapes.toString(), 1, grapes.size());
-
-		Map<String, Object> grape = grapes.get(0);
-
-		Assert.assertEquals(1, grape.get("id"));
-		Assert.assertEquals("Merlot", grape.get("name"));
-
 		// /fruit/apple with color/green
 
 		mockHttpServletRequest.setContent("{\"color\": \"green\"}".getBytes());
@@ -513,6 +494,25 @@ public class JSONServerServletTest {
 			Assert.assertEquals(
 				"Unknown ID in path /fruit/orange/3", message.get("message"));
 		}
+
+		// /supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f
+
+		mockHttpServletRequest.setPathInfo(
+			"supercalifragilisticexpialidocious/something/to/say/when/you/have/nothing/to/say?a=b&c=d&e=f");
+
+		mockHttpServletResponse = new MockHttpServletResponse();
+
+		_servlet.service(mockHttpServletRequest, mockHttpServletResponse);
+
+		List<Map<String, Object>> grapes = _objectMapper.readValue(
+			mockHttpServletResponse.getContentAsString(), List.class);
+
+		Assert.assertEquals(grapes.toString(), 1, grapes.size());
+
+		Map<String, Object> grape = grapes.get(0);
+
+		Assert.assertEquals(1, grape.get("id"));
+		Assert.assertEquals("Merlot", grape.get("name"));
 	}
 
 	@Test
