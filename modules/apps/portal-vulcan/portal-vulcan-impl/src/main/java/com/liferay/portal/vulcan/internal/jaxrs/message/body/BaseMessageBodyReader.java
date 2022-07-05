@@ -80,14 +80,14 @@ public abstract class BaseMessageBodyReader
 			InputStream inputStream)
 		throws IOException {
 
+		Object object = null;
+
 		ObjectMapper objectMapper = _getObjectMapper(clazz);
 
 		ObjectReader objectReader = objectMapper.readerFor(clazz);
 
 		EntityExtensionHandler entityExtensionHandler =
 			_getEntityExtensionHandler(clazz, mediaType);
-
-		Object object = null;
 
 		if (_isCreateOrUpdateMethod(_httpServletRequest.getMethod()) &&
 			(entityExtensionHandler != null)) {
