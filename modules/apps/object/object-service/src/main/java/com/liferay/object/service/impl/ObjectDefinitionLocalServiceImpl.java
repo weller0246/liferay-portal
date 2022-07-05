@@ -806,7 +806,7 @@ public class ObjectDefinitionLocalServiceImpl
 				"String", null, false, false, null,
 				LocalizedMapUtil.getLocalizedMap(
 					LanguageUtil.get(LocaleUtil.getDefault(), "author")),
-				"userName", false,false);
+				"userName", false, false);
 		}
 
 		if (objectFields != null) {
