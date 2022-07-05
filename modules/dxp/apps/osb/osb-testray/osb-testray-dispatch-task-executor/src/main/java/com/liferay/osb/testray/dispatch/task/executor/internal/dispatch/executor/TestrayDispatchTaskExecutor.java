@@ -847,30 +847,28 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		return objectEntry.getId();
 	}
 
-	private Map<Long, ObjectEntry> _getTestrayCaseResultMap(
+	private Map<Long, ObjectEntry> _getTestrayCaseResultObjectEntries(
 			long companyId, ObjectEntry testrayRunObjectEntry)
 		throws Exception {
 
-		Map<Long, ObjectEntry> testrayCaseResultMap = new HashMap<>();
+		Map<Long, ObjectEntry> testrayCaseResultObjectEntries = new HashMap<>();
 
 		com.liferay.portal.vulcan.pagination.Page<ObjectEntry> page =
 			_objectEntryManager.getObjectEntries(
 				companyId, _objectDefinitions.get("CaseResult"), null, null,
 				_defaultDTOConverterContext,
-				"runId eq '" + testrayRunObjectEntry.getId() + "'", null,
-				null, null);
+				"runId eq '" + testrayRunObjectEntry.getId() + "'", null, null,
+				null);
 
-		for (ObjectEntry testrayCaseResultObjectEntry : page.getItems()) {
-			Map<String, Object> testrayCaseResultPropertiesMap =
-				testrayCaseResultObjectEntry.getProperties();
+		for (ObjectEntry objectEntry : page.getItems()) {
+			Map<String, Object> properties = objectEntry.getProperties();
 
-			testrayCaseResultMap.put(
-				(long)testrayCaseResultPropertiesMap.get(
-					"r_caseToCaseResult_c_caseId"),
-				testrayCaseResultObjectEntry);
+			testrayCaseResultObjectEntries.put(
+				(long)properties.get("r_caseToCaseResult_c_caseId"),
+				objectEntry);
 		}
 
-		return testrayCaseResultMap;
+		return testrayCaseResultObjectEntries;
 	}
 
 	private long _getTestrayCaseTypeId(
@@ -1514,17 +1512,19 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			return;
 		}
 
-		Map<Long, ObjectEntry> testrayCaseResultMap1 = _getTestrayCaseResultMap(
-			companyId, currentTestrayRunObjectEntry);
+		Map<Long, ObjectEntry> testrayCaseResultObjectEntries1 =
+			_getTestrayCaseResultObjectEntries(
+				companyId, currentTestrayRunObjectEntry);
 
-		Map<Long, ObjectEntry> testrayCaseResultMap2 = _getTestrayCaseResultMap(
-			companyId, latestTestrayRunObjectEntry);
+		Map<Long, ObjectEntry> testrayCaseResultObjectEntries2 =
+			_getTestrayCaseResultObjectEntries(
+				companyId, latestTestrayRunObjectEntry);
 
 		for (Map.Entry<Long, ObjectEntry> entry :
-				testrayCaseResultMap1.entrySet()) {
+				testrayCaseResultObjectEntries1.entrySet()) {
 
 			ObjectEntry testrayCaseResultObjectEntry2 =
-				testrayCaseResultMap2.get(entry.getKey());
+				testrayCaseResultObjectEntries2.get(entry.getKey());
 
 			if (testrayCaseResultObjectEntry2 == null) {
 				continue;
