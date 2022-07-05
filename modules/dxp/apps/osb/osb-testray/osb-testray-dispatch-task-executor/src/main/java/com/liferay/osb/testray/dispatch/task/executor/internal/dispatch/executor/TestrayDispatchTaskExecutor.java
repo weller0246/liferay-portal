@@ -385,8 +385,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 
 		ObjectEntry recipientTestrayCaseResultObjectEntry = null;
 		ObjectEntry sourceTestrayCaseResultObjectEntry = null;
-		List<ObjectEntry> sourceTestrayCaseResultsIssuesObjectEntriesList =
-			null;
+		List<ObjectEntry> sourceTestrayCaseResultsIssuesObjectEntries = null;
 
 		com.liferay.portal.vulcan.pagination.Page<ObjectEntry>
 			testrayCaseResultsIssuesObjectEntriesPage1 =
@@ -411,38 +410,38 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		Map<String, Object> testrayCaseResultPropertiesMap2 =
 			testrayCaseResultObjectEntry2.getProperties();
 
-		List<ObjectEntry> testrayCaseResultsIssuesObjectEntriesList1 =
+		List<ObjectEntry> testrayCaseResultsIssuesObjectEntries1 =
 			(List<ObjectEntry>)
 				testrayCaseResultsIssuesObjectEntriesPage1.getItems();
-		List<ObjectEntry> testrayCaseResultsIssuesObjectEntriesList2 =
+		List<ObjectEntry> testrayCaseResultsIssuesObjectEntries2 =
 			(List<ObjectEntry>)
 				testrayCaseResultsIssuesObjectEntriesPage2.getItems();
 
 		if (((Long)testrayCaseResultPropertiesMap1.get(
 				"r_userToCaseResults_userId") > 0) &&
-			!testrayCaseResultsIssuesObjectEntriesList1.isEmpty() &&
+			!testrayCaseResultsIssuesObjectEntries1.isEmpty() &&
 			((Long)testrayCaseResultPropertiesMap2.get(
 				"r_userToCaseResults_userId") <= 0) &&
-			testrayCaseResultsIssuesObjectEntriesList2.isEmpty()) {
+			testrayCaseResultsIssuesObjectEntries2.isEmpty()) {
 
 			recipientTestrayCaseResultObjectEntry =
 				testrayCaseResultObjectEntry2;
 			sourceTestrayCaseResultObjectEntry = testrayCaseResultObjectEntry1;
-			sourceTestrayCaseResultsIssuesObjectEntriesList =
-				testrayCaseResultsIssuesObjectEntriesList1;
+			sourceTestrayCaseResultsIssuesObjectEntries =
+				testrayCaseResultsIssuesObjectEntries1;
 		}
 		else if (((Long)testrayCaseResultPropertiesMap2.get(
 					"r_userToCaseResults_userId") > 0) &&
-				 !testrayCaseResultsIssuesObjectEntriesList2.isEmpty() &&
+				 !testrayCaseResultsIssuesObjectEntries2.isEmpty() &&
 				 ((Long)testrayCaseResultPropertiesMap1.get(
 					 "r_userToCaseResults_userId") <= 0) &&
-				 testrayCaseResultsIssuesObjectEntriesList1.isEmpty()) {
+				 testrayCaseResultsIssuesObjectEntries1.isEmpty()) {
 
 			recipientTestrayCaseResultObjectEntry =
 				testrayCaseResultObjectEntry1;
 			sourceTestrayCaseResultObjectEntry = testrayCaseResultObjectEntry2;
-			sourceTestrayCaseResultsIssuesObjectEntriesList =
-				testrayCaseResultsIssuesObjectEntriesList2;
+			sourceTestrayCaseResultsIssuesObjectEntries =
+				testrayCaseResultsIssuesObjectEntries2;
 		}
 
 		if ((recipientTestrayCaseResultObjectEntry == null) ||
@@ -473,7 +472,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			recipientTestrayCaseResultObjectEntry);
 
 		for (ObjectEntry testrayCaseResultsIssuesObjectEntry :
-				sourceTestrayCaseResultsIssuesObjectEntriesList) {
+				sourceTestrayCaseResultsIssuesObjectEntries) {
 
 			Map<String, Object> testrayCaseResultsIssuesPropertiesMap =
 				testrayCaseResultsIssuesObjectEntry.getProperties();
@@ -518,7 +517,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 					"routineId eq '" + testrayRoutineId + "'", null, null,
 					new Sort[] {new Sort("createDate_sortable", 3, false)});
 
-		List<ObjectEntry> testrayBuildsObjectEntriesList =
+		List<ObjectEntry> testrayBuildsObjectEntries =
 			(List<ObjectEntry>)testrayBuildsObjectEntriesPage.getItems();
 
 		com.liferay.portal.vulcan.pagination.Page<ObjectEntry>
@@ -530,11 +529,11 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 					testrayRunId, "'"),
 				null, null, null);
 
-		List<ObjectEntry> testrayRunsObjectEntriesList =
+		List<ObjectEntry> testrayRunsObjectEntries =
 			(List<ObjectEntry>)testrayRunsObjectEntriesPage.getItems();
 
 		return _getFirstTestrayRunInTestrayBuild(
-			testrayBuildsObjectEntriesList, testrayRunsObjectEntriesList);
+			testrayBuildsObjectEntries, testrayRunsObjectEntries);
 	}
 
 	private String _getAttributeValue(String attributeName, Node node) {
@@ -554,15 +553,15 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 	}
 
 	private ObjectEntry _getFirstTestrayRunInTestrayBuild(
-		List<ObjectEntry> testrayBuildsObjectEntriesList,
-		List<ObjectEntry> testrayRunsObjectEntriesList) {
+		List<ObjectEntry> testrayBuildsObjectEntries,
+		List<ObjectEntry> testrayRunsObjectEntries) {
 
-		for (ObjectEntry testrayRunObjectEntry : testrayRunsObjectEntriesList) {
+		for (ObjectEntry testrayRunObjectEntry : testrayRunsObjectEntries) {
 			Map<String, Object> testrayRunPropertiesMap =
 				testrayRunObjectEntry.getProperties();
 
 			for (ObjectEntry testrayBuildObjectEntry :
-					testrayBuildsObjectEntriesList) {
+					testrayBuildsObjectEntries) {
 
 				Long testrayBuildId = testrayBuildObjectEntry.getId();
 
