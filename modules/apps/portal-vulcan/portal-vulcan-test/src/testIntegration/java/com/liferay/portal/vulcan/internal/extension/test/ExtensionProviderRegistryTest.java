@@ -122,7 +122,7 @@ public class ExtensionProviderRegistryTest {
 		}
 
 		@Override
-		public boolean isExtensionFor(long companyId, String className) {
+		public boolean isApplicableExtension(long companyId, String className) {
 			if ((companyId == _COMPANY_ID_TEST) &&
 				Objects.equals(className, _CLASS_NAME_TEST)) {
 

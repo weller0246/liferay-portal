@@ -41,7 +41,7 @@ public class ExtensionProviderRegistryImpl
 		return TransformUtil.transformToList(
 			_serviceTracker.getServices(new ExtensionProvider[0]),
 			extensionProvider -> {
-				if (extensionProvider.isExtensionFor(companyId, className)) {
+				if (extensionProvider.isApplicableExtension(companyId, className)) {
 					return extensionProvider;
 				}
 

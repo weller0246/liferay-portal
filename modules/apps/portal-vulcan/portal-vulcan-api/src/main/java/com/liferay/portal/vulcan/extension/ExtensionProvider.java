@@ -34,7 +34,7 @@ public interface ExtensionProvider {
 	public Collection<String> getFilteredPropertyNames(
 		long companyId, Object entity);
 
-	public boolean isExtensionFor(long companyId, String className);
+	public boolean isApplicableExtension(long companyId, String className);
 
 	public void setExtendedProperties(
 			long companyId, Object entity,
