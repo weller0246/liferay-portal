@@ -431,12 +431,12 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		}
 		else if (((Long)_getProperty(
 					"r_userToCaseResults_userId",
-					testrayCaseResultObjectEntry2) > 0) &&
-				 !testrayCaseResultsIssuesObjectEntries2.isEmpty() &&
+					testrayCaseResultObjectEntry1) <= 0) &&
+				 testrayCaseResultsIssuesObjectEntries1.isEmpty() &&
 				 ((Long)_getProperty(
 					 "r_userToCaseResults_userId",
-					 testrayCaseResultObjectEntry1) <= 0) &&
-				 testrayCaseResultsIssuesObjectEntries1.isEmpty()) {
+					 testrayCaseResultObjectEntry2) > 0) &&
+				 !testrayCaseResultsIssuesObjectEntries2.isEmpty()) {
 
 			destinationTestrayCaseResultObjectEntry =
 				testrayCaseResultObjectEntry1;
