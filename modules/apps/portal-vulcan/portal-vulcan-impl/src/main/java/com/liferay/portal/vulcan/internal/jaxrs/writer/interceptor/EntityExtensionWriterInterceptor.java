@@ -45,16 +45,16 @@ public class EntityExtensionWriterInterceptor implements WriterInterceptor {
 	public void aroundWriteTo(WriterInterceptorContext writerInterceptorContext)
 		throws IOException {
 
-		Map<String, Serializable> extendedProperties =
-			EntityExtensionThreadLocal.getExtendedProperties();
 		EntityExtensionHandler entityExtensionHandler =
 			_getEntityExtensionHandler(
 				writerInterceptorContext.getType(),
 				writerInterceptorContext.getMediaType());
+		Map<String, Serializable> extendedProperties =
+			EntityExtensionThreadLocal.getExtendedProperties();
 
 		try {
-			if ((extendedProperties != null) &&
-				(entityExtensionHandler != null)) {
+			if ((entityExtensionHandler != null) &&
+				(extendedProperties != null)) {
 
 				entityExtensionHandler.setExtendedProperties(
 					_company.getCompanyId(),
