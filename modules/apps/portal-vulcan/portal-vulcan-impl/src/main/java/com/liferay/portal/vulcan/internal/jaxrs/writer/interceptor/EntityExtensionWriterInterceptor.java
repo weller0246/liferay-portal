@@ -88,7 +88,6 @@ public class EntityExtensionWriterInterceptor implements WriterInterceptor {
 				entityExtensionHandler.getFilteredPropertyNames(
 					_company.getCompanyId(),
 					writerInterceptorContext.getEntity())));
-
 		writerInterceptorContext.setGenericType(ExtendedEntity.class);
 	}
 
