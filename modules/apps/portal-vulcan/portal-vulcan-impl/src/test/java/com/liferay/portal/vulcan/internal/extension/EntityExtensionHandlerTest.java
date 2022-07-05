@@ -50,7 +50,7 @@ public class EntityExtensionHandlerTest {
 		MockitoAnnotations.initMocks(this);
 
 		_entityExtensionHandler = new EntityExtensionHandler(
-			_CLASS_NAME_TEST,
+			_CLASS_NAME,
 			Arrays.asList(
 				_mockedExtensionProvider1, _mockedExtensionProvider2));
 	}
@@ -59,8 +59,6 @@ public class EntityExtensionHandlerTest {
 	public void testGetExtendedProperties() throws Exception {
 		Map<String, Serializable> testMap1 = Collections.singletonMap(
 			"test1", "test");
-		Map<String, Serializable> testMap2 = Collections.singletonMap(
-			"test2", 5);
 
 		Mockito.when(
 			_mockedExtensionProvider1.getExtendedProperties(
@@ -68,6 +66,10 @@ public class EntityExtensionHandlerTest {
 		).thenReturn(
 			testMap1
 		);
+
+		Map<String, Serializable> testMap2 = Collections.singletonMap(
+			"test2", 5);
+
 		Mockito.when(
 			_mockedExtensionProvider2.getExtendedProperties(
 				Mockito.anyLong(), Mockito.anyObject())
@@ -76,18 +78,18 @@ public class EntityExtensionHandlerTest {
 		);
 
 		Map<String, Serializable> extendedProperties =
-			_entityExtensionHandler.getExtendedProperties(
-				_COMPANY_ID_TEST, _OBJECT_TEST);
+			_entityExtensionHandler.getExtendedProperties(_COMPANY_ID, _OBJECT);
 
 		Mockito.verify(
 			_mockedExtensionProvider1
 		).getExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT)
 		);
+
 		Mockito.verify(
 			_mockedExtensionProvider2
 		).getExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT)
 		);
 
 		Assert.assertEquals(
@@ -99,7 +101,6 @@ public class EntityExtensionHandlerTest {
 	@Test
 	public void testGetFilteredPropertyNames() {
 		Set<String> testSet1 = Collections.singleton("test1");
-		Set<String> testSet2 = Collections.singleton("test2");
 
 		Mockito.doReturn(
 			testSet1
@@ -108,6 +109,9 @@ public class EntityExtensionHandlerTest {
 		).getFilteredPropertyNames(
 			Mockito.anyLong(), Mockito.anyObject()
 		);
+
+		Set<String> testSet2 = Collections.singleton("test2");
+
 		Mockito.doReturn(
 			testSet2
 		).when(
@@ -118,17 +122,18 @@ public class EntityExtensionHandlerTest {
 
 		Set<String> filteredProperties =
 			_entityExtensionHandler.getFilteredPropertyNames(
-				_COMPANY_ID_TEST, _OBJECT_TEST);
+				_COMPANY_ID, _OBJECT);
 
 		Mockito.verify(
 			_mockedExtensionProvider1
 		).getFilteredPropertyNames(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT)
 		);
+
 		Mockito.verify(
 			_mockedExtensionProvider2
 		).getFilteredPropertyNames(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT)
 		);
 
 		Assert.assertEquals(
@@ -152,6 +157,7 @@ public class EntityExtensionHandlerTest {
 		).thenReturn(
 			Collections.singletonMap("test1", null)
 		);
+
 		Mockito.when(
 			_mockedExtensionProvider2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -160,38 +166,41 @@ public class EntityExtensionHandlerTest {
 		);
 
 		_entityExtensionHandler.setExtendedProperties(
-			_COMPANY_ID_TEST, _OBJECT_TEST, testExtendedProperties);
+			_COMPANY_ID, _OBJECT, testExtendedProperties);
 
 		Mockito.verify(
 			_mockedExtensionProvider1
 		).getExtendedPropertyDefinitions(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_CLASS_NAME_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_CLASS_NAME)
 		);
+
 		Mockito.verify(
 			_mockedExtensionProvider2
 		).getExtendedPropertyDefinitions(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_CLASS_NAME_TEST)
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_CLASS_NAME)
 		);
+
 		Mockito.verify(
 			_mockedExtensionProvider1
 		).setExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST),
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT),
 			Mockito.eq(Collections.singletonMap("test1", "test"))
 		);
+
 		Mockito.verify(
 			_mockedExtensionProvider2
 		).setExtendedProperties(
-			Mockito.eq(_COMPANY_ID_TEST), Mockito.eq(_OBJECT_TEST),
+			Mockito.eq(_COMPANY_ID), Mockito.eq(_OBJECT),
 			Mockito.eq(Collections.singletonMap("test2", 5))
 		);
 	}
 
-	private static final String _CLASS_NAME_TEST =
+	private static final String _CLASS_NAME =
 		"com.liferay.test.model.TestModel";
 
-	private static final long _COMPANY_ID_TEST = 11111;
+	private static final long _COMPANY_ID = 11111;
 
-	private static final Object _OBJECT_TEST = new Object();
+	private static final Object _OBJECT = new Object();
 
 	private EntityExtensionHandler _entityExtensionHandler;
 

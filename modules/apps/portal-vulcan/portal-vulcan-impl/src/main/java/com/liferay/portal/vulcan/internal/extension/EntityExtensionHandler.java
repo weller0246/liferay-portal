@@ -68,21 +68,17 @@ public class EntityExtensionHandler {
 		throws Exception {
 
 		for (ExtensionProvider extensionProvider : _extensionProviders) {
+			Map<String, Serializable> extensionProviderExtendedProperties =
+				new HashMap<>();
+
 			Map<String, PropertyDefinition> extendedPropertyDefinitions =
 				extensionProvider.getExtendedPropertyDefinitions(
 					companyId, _className);
 
-			Set<String> extendedPropertyNames =
-				extendedPropertyDefinitions.keySet();
+			for (Map.Entry<String, Serializable> entry :
+					extendedProperties.entrySet()) {
 
-			Set<Map.Entry<String, Serializable>> entries =
-				extendedProperties.entrySet();
-
-			Map<String, Serializable> extensionProviderExtendedProperties =
-				new HashMap<>();
-
-			for (Map.Entry<String, Serializable> entry : entries) {
-				if (extendedPropertyNames.contains(entry.getKey())) {
+				if (extendedPropertyDefinitions.containsKey(entry.getKey())) {
 					extensionProviderExtendedProperties.put(
 						entry.getKey(), entry.getValue());
 				}
@@ -97,7 +93,7 @@ public class EntityExtensionHandler {
 		long companyId, Map<String, Serializable> extendedProperties,
 		boolean partialUpdate) {
 
-		// TODO: Validate extended properties
+		// TODO
 
 	}
 

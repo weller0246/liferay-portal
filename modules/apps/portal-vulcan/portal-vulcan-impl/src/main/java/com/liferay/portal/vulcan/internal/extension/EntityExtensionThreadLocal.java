@@ -26,17 +26,18 @@ import java.util.Map;
 public class EntityExtensionThreadLocal {
 
 	public static Map<String, Serializable> getExtendedProperties() {
-		return _entityExtensionThreadLocal.get();
+		return _extendedPropertiesThreadLocal.get();
 	}
 
 	public static void setExtendedProperties(
 		Map<String, Serializable> extendedProperties) {
 
-		_entityExtensionThreadLocal.set(extendedProperties);
+		_extendedPropertiesThreadLocal.set(extendedProperties);
 	}
 
 	private static final ThreadLocal<Map<String, Serializable>>
-		_entityExtensionThreadLocal = new CentralizedThreadLocal<>(
-			EntityExtensionThreadLocal.class + "._entityExtensionThreadLocal");
+		_extendedPropertiesThreadLocal = new CentralizedThreadLocal<>(
+			EntityExtensionThreadLocal.class +
+				"._extendedPropertiesThreadLocal");
 
 }
