@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.object.web.internal.util;
+package com.liferay.object.web.internal.configuration.util;
 
 import com.liferay.object.configuration.ObjectConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
