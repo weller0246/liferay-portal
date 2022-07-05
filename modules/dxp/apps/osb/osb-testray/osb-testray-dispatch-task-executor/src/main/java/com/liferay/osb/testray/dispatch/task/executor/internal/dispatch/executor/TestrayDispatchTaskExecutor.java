@@ -451,21 +451,19 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			return;
 		}
 
-		Map<String, Object> destinationTestrayCaseResultPropertiesMap =
+		Map<String, Object> properties =
 			destinationTestrayCaseResultObjectEntry.getProperties();
 
-		Map<String, Object> sourceTestrayCaseResultPropertiesMap =
-			sourceTestrayCaseResultObjectEntry.getProperties();
-
-		destinationTestrayCaseResultPropertiesMap.put(
+		properties.put(
 			"r_userToCaseResults_userId",
-			sourceTestrayCaseResultPropertiesMap.get(
-				"r_userToCaseResults_userId"));
-		destinationTestrayCaseResultPropertiesMap.put(
-			"dueStatus", sourceTestrayCaseResultPropertiesMap.get("dueStatus"));
+			_getProperty(
+				"r_userToCaseResults_userId",
+				sourceTestrayCaseResultObjectEntry));
+		properties.put(
+			"dueStatus",
+			_getProperty("dueStatus", sourceTestrayCaseResultObjectEntry));
 
-		destinationTestrayCaseResultObjectEntry.setProperties(
-			destinationTestrayCaseResultPropertiesMap);
+		destinationTestrayCaseResultObjectEntry.setProperties(properties);
 
 		_objectEntryManager.updateObjectEntry(
 			_defaultDTOConverterContext, _objectDefinitions.get("CaseResult"),
