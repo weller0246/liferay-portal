@@ -87,9 +87,9 @@ public abstract class BaseMessageBodyReader
 		EntityExtensionHandler entityExtensionHandler =
 			_getEntityExtensionHandler(clazz, mediaType);
 
-		Object object;
+		Object object = null;
 
-		if (_isUpdateOrCreateMethod(_httpServletRequest.getMethod()) &&
+		if (_isCreateOrUpdateMethod(_httpServletRequest.getMethod()) &&
 			(entityExtensionHandler != null)) {
 
 			JsonNode jsonNode = objectReader.readTree(inputStream);
@@ -203,7 +203,7 @@ public abstract class BaseMessageBodyReader
 		);
 	}
 
-	private boolean _isUpdateOrCreateMethod(String method) {
+	private boolean _isCreateOrUpdateMethod(String method) {
 		if (Objects.equals(method, HttpMethod.PATCH) ||
 			Objects.equals(method, HttpMethod.POST) ||
 			Objects.equals(method, HttpMethod.PUT)) {
