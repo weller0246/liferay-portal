@@ -88,7 +88,7 @@ export function Attachments({setValues, values}: IProps) {
 
 		const {items} = (await response.json()) as {items: ObjectField[]};
 
-		const fields: ObjectField[] = items.filter(
+		const fields: ObjectField[] = items?.filter(
 			(field) => field.businessType === 'Attachment'
 		);
 
@@ -96,11 +96,19 @@ export function Attachments({setValues, values}: IProps) {
 	};
 
 	useEffect(() => {
-		setSelectedEntity(
-			objectDefinitions?.find(
-				(item) => item.id === values.objectDefinitionId
-			)
+		const currentObjectDefinition = objectDefinitions?.find(
+			(item) => item.id === values.objectDefinitionId
 		);
+
+		if (!currentObjectDefinition) {
+			setValues({
+				...values,
+				attachmentObjectFieldIds: [],
+				objectDefinitionId: null,
+			});
+		}
+
+		setSelectedEntity(currentObjectDefinition);
 
 		if (values.objectDefinitionId) {
 			getAttachmentFields(values.objectDefinitionId);
