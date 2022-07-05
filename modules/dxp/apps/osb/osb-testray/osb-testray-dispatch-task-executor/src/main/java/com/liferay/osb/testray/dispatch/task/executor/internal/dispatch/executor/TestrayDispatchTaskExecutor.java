@@ -468,13 +468,13 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			destinationTestrayCaseResultObjectEntry.getId(),
 			destinationTestrayCaseResultObjectEntry);
 
-		for (ObjectEntry testrayCaseResultsIssuesObjectEntry :
+		for (ObjectEntry sourceTestrayCaseResultsIssuesObjectEntry :
 				sourceTestrayCaseResultsIssuesObjectEntries) {
 
 			String testrayIssueId = String.valueOf(
 				_getProperty(
 					"r_issueToCaseResultsIssues_c_issueId",
-					testrayCaseResultsIssuesObjectEntry));
+					sourceTestrayCaseResultsIssuesObjectEntry));
 
 			com.liferay.portal.vulcan.pagination.Page<ObjectEntry>
 				testrayIssueObjectEntriesPage =
