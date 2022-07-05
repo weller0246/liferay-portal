@@ -17,8 +17,12 @@ package com.liferay.object.service.impl;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.service.base.ObjectStateLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marco Leo
@@ -32,18 +36,25 @@ public class ObjectStateLocalServiceImpl
 
 	@Override
 	public ObjectState addObjectState(
-		long listTypeEntryId, long objectStateFlowId, long userId,
-		String userName) {
+			long userId, long listTypeEntryId, long objectStateFlowId)
+		throws PortalException {
 
 		ObjectState objectState = createObjectState(
 			counterLocalService.increment());
 
-		objectState.setUserId(userId);
-		objectState.setUserName(userName);
+		User user = _userLocalService.getUser(userId);
+
+		objectState.setCompanyId(user.getCompanyId());
+		objectState.setUserId(user.getUserId());
+		objectState.setUserName(user.getFullName());
+
 		objectState.setListTypeEntryId(listTypeEntryId);
 		objectState.setObjectStateFlowId(objectStateFlowId);
 
 		return updateObjectState(objectState);
 	}
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }

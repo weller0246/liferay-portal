@@ -17,8 +17,12 @@ package com.liferay.object.service.impl;
 import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.object.service.base.ObjectStateTransitionLocalServiceBaseImpl;
 import com.liferay.portal.aop.AopService;
+import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.model.User;
+import com.liferay.portal.kernel.service.UserLocalService;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marco Leo
@@ -32,19 +36,27 @@ public class ObjectStateTransitionLocalServiceImpl
 
 	@Override
 	public ObjectStateTransition addObjectStateTransition(
-		long objectStateFlowId, long sourceObjectStateId,
-		long targetObjectStateId, long userId, String userName) {
+			long userId, long objectStateFlowId, long sourceObjectStateId,
+			long targetObjectStateId)
+		throws PortalException {
 
 		ObjectStateTransition objectStateTransition =
 			createObjectStateTransition(counterLocalService.increment());
 
-		objectStateTransition.setUserId(userId);
-		objectStateTransition.setUserName(userName);
+		User user = _userLocalService.getUser(userId);
+
+		objectStateTransition.setCompanyId(user.getCompanyId());
+		objectStateTransition.setUserId(user.getUserId());
+		objectStateTransition.setUserName(user.getFullName());
+
 		objectStateTransition.setObjectStateFlowId(objectStateFlowId);
 		objectStateTransition.setSourceObjectStateId(sourceObjectStateId);
 		objectStateTransition.setTargetObjectStateId(targetObjectStateId);
 
 		return addObjectStateTransition(objectStateTransition);
 	}
+
+	@Reference
+	private UserLocalService _userLocalService;
 
 }
