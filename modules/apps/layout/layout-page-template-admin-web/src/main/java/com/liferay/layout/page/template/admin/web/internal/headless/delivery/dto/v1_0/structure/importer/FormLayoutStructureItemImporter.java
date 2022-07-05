@@ -112,10 +112,10 @@ public class FormLayoutStructureItemImporter
 					portal.getClassNameId(
 						(String)itemReferenceMap.get("className")));
 
-				Integer subtypeId = (Integer)itemReferenceMap.get("subtypeId");
+				Integer classType = (Integer)itemReferenceMap.get("classType");
 
-				if (subtypeId != null) {
-					formStyledLayoutStructureItem.setClassTypeId(subtypeId);
+				if (classType != null) {
+					formStyledLayoutStructureItem.setClassTypeId(classType);
 				}
 			}
 
