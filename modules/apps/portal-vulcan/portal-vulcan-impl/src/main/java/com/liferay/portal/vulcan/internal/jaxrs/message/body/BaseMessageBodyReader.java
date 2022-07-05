@@ -141,17 +141,18 @@ public abstract class BaseMessageBodyReader
 			Class<?> clazz, JsonNode jsonNode, ObjectMapper objectMapper)
 		throws IOException {
 
+		Map<String, Serializable> extendedProperties = new HashMap<>();
+
 		List<String> classFieldNames = new ArrayList<>();
 
 		for (Field field : clazz.getDeclaredFields()) {
 			classFieldNames.add(field.getName());
 		}
 
-		Iterator<String> fieldNamesIterator = jsonNode.fieldNames();
-		Map<String, Serializable> extendedProperties = new HashMap<>();
+		Iterator<String> iterator = jsonNode.fieldNames();
 
-		while (fieldNamesIterator.hasNext()) {
-			String jsonFieldName = fieldNamesIterator.next();
+		while (iterator.hasNext()) {
+			String jsonFieldName = iterator.next();
 
 			if (!classFieldNames.contains(jsonFieldName)) {
 				JsonNode fieldNameJsonNode = jsonNode.get(jsonFieldName);
