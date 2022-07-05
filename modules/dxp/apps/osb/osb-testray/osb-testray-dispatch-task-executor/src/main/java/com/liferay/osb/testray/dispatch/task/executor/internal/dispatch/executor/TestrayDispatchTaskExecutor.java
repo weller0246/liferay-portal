@@ -853,17 +853,14 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 
 		Map<Long, ObjectEntry> testrayCaseResultMap = new HashMap<>();
 
-		com.liferay.portal.vulcan.pagination.Page<ObjectEntry>
-			testrayCaseResultObjectEntriesPage =
-				_objectEntryManager.getObjectEntries(
-					companyId, _objectDefinitions.get("CaseResult"), null, null,
-					_defaultDTOConverterContext,
-					"runId eq '" + testrayRunObjectEntry.getId() + "'", null,
-					null, null);
+		com.liferay.portal.vulcan.pagination.Page<ObjectEntry> page =
+			_objectEntryManager.getObjectEntries(
+				companyId, _objectDefinitions.get("CaseResult"), null, null,
+				_defaultDTOConverterContext,
+				"runId eq '" + testrayRunObjectEntry.getId() + "'", null,
+				null, null);
 
-		for (ObjectEntry testrayCaseResultObjectEntry :
-				testrayCaseResultObjectEntriesPage.getItems()) {
-
+		for (ObjectEntry testrayCaseResultObjectEntry : page.getItems()) {
 			Map<String, Object> testrayCaseResultPropertiesMap =
 				testrayCaseResultObjectEntry.getProperties();
 
