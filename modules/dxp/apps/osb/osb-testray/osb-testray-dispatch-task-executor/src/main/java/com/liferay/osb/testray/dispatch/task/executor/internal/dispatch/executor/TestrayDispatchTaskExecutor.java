@@ -505,7 +505,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		}
 	}
 
-	private ObjectEntry _fetchLatestTestrayRun(
+	private ObjectEntry _fetchLatestTestrayRunObjectEntry(
 			long companyId, String environmentHash, long testrayRoutineId,
 			long testrayRunId)
 		throws Exception {
@@ -1494,10 +1494,11 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		Map<String, Object> currentTestrayRunPropertiesMap =
 			currentTestrayRunObjectEntry.getProperties();
 
-		ObjectEntry latestTestrayRunObjectEntry = _fetchLatestTestrayRun(
-			companyId,
-			(String)currentTestrayRunPropertiesMap.get("environmentHash"),
-			testrayRoutineObjectEntry.getId(), testrayRunId);
+		ObjectEntry latestTestrayRunObjectEntry =
+			_fetchLatestTestrayRunObjectEntry(
+				companyId,
+				(String)currentTestrayRunPropertiesMap.get("environmentHash"),
+				testrayRoutineObjectEntry.getId(), testrayRunId);
 
 		if (latestTestrayRunObjectEntry == null) {
 			return;
