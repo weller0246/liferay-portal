@@ -180,18 +180,28 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 			}
 
 			_concatenateProperties(
-				modifiedFile, "", "test.batch.class.names.includes.modules",
+				modifiedFile, "test.batch.class.names.includes.modules",
 				JobProperty.Type.MODULE_INCLUDE_GLOB, includesJobProperties,
 				traversedTestBatchProperties);
 
 			_concatenateProperties(
-				modifiedFile, "",
+				modifiedFile,
 				"modules.includes.required.test.batch.class.names.includes",
 				JobProperty.Type.MODULE_INCLUDE_GLOB, includesJobProperties,
 				traversedModulesProperties);
 		}
 
 		return includesJobProperties;
+	}
+
+	private String _concatenateProperties(
+		File file, String basePropertyName, JobProperty.Type jobType,
+		List<JobProperty> jobPropertiesList,
+		Set<File> traversedPropertiesList) {
+
+		return _concatenateProperties(
+			file, "", basePropertyName, jobType, jobPropertiesList,
+			traversedPropertiesList);
 	}
 
 	private String _concatenateProperties(
