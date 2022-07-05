@@ -59,7 +59,6 @@ public class ObjectActionUtil {
 				parameters = toParameters(
 					serviceBuilderObjectAction.
 						getParametersUnicodeProperties());
-
 				status = new Status() {
 					{
 						code = serviceBuilderObjectAction.getStatus();
