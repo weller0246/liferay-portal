@@ -855,7 +855,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 			Map<String, Object> properties = objectEntry.getProperties();
 
 			testrayCaseResultObjectEntries.put(
-				(long)properties.get("r_caseToCaseResult_c_caseId"),
+				(Long)properties.get("r_caseToCaseResult_c_caseId"),
 				objectEntry);
 		}
 
