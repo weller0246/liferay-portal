@@ -1467,7 +1467,7 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 				_defaultDTOConverterContext, _objectDefinitions.get("Routine"),
 				testrayRoutineId);
 
-		if (!(boolean)_getProperty("autoanalyze", testrayRoutineObjectEntry)) {
+		if (!(Boolean)_getProperty("autoanalyze", testrayRoutineObjectEntry)) {
 			return;
 		}
 
