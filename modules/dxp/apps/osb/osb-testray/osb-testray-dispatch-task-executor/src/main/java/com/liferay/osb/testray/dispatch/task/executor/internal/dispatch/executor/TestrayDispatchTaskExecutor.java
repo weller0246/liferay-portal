@@ -532,30 +532,6 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		List<ObjectEntry> testrayRunsObjectEntries =
 			(List<ObjectEntry>)testrayRunsObjectEntriesPage.getItems();
 
-		return _getFirstTestrayRunInTestrayBuild(
-			testrayBuildsObjectEntries, testrayRunsObjectEntries);
-	}
-
-	private String _getAttributeValue(String attributeName, Node node) {
-		NamedNodeMap namedNodeMap = node.getAttributes();
-
-		if (namedNodeMap == null) {
-			return null;
-		}
-
-		Node attributeNode = namedNodeMap.getNamedItem(attributeName);
-
-		if (attributeNode == null) {
-			return null;
-		}
-
-		return attributeNode.getTextContent();
-	}
-
-	private ObjectEntry _getFirstTestrayRunInTestrayBuild(
-		List<ObjectEntry> testrayBuildsObjectEntries,
-		List<ObjectEntry> testrayRunsObjectEntries) {
-
 		for (ObjectEntry testrayRunObjectEntry : testrayRunsObjectEntries) {
 			Map<String, Object> testrayRunPropertiesMap =
 				testrayRunObjectEntry.getProperties();
@@ -575,6 +551,22 @@ public class TestrayDispatchTaskExecutor extends BaseDispatchTaskExecutor {
 		}
 
 		return null;
+	}
+
+	private String _getAttributeValue(String attributeName, Node node) {
+		NamedNodeMap namedNodeMap = node.getAttributes();
+
+		if (namedNodeMap == null) {
+			return null;
+		}
+
+		Node attributeNode = namedNodeMap.getNamedItem(attributeName);
+
+		if (attributeNode == null) {
+			return null;
+		}
+
+		return attributeNode.getTextContent();
 	}
 
 	private ObjectDefinition _getObjectDefinition(
