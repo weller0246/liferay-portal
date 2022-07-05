@@ -46,11 +46,6 @@ public abstract class BaseSystemObjectDefinitionMetadata
 	implements SystemObjectDefinitionMetadata {
 
 	@Override
-	public String getIdPropertyName() {
-		return "id";
-	}
-
-	@Override
 	public String getModelClassName() {
 		Class<?> modelClass = getModelClass();
 
@@ -68,6 +63,11 @@ public abstract class BaseSystemObjectDefinitionMetadata
 		}
 
 		return tableName;
+	}
+
+	@Override
+	public String getRESTDTOIdPropertyName() {
+		return "id";
 	}
 
 	@Activate

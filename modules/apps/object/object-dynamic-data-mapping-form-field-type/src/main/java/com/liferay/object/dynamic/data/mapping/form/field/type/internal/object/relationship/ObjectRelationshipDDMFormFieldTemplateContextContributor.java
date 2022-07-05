@@ -240,7 +240,7 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 			return "id";
 		}
 
-		return systemObjectDefinitionMetadata.getIdPropertyName();
+		return systemObjectDefinitionMetadata.getRESTDTOIdPropertyName();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(

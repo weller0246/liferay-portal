@@ -38,11 +38,6 @@ public class CPDefinitionSystemObjectDefinitionMetadata
 	extends BaseSystemObjectDefinitionMetadata {
 
 	@Override
-	public String getIdPropertyName() {
-		return "productId";
-	}
-
-	@Override
 	public Map<Locale, String> getLabelMap() {
 		return createLabelMap("cp-definition");
 	}
@@ -87,6 +82,11 @@ public class CPDefinitionSystemObjectDefinitionMetadata
 	@Override
 	public String getRESTContextPath() {
 		return "headless-commerce-admin-catalog/v1.0/products";
+	}
+
+	@Override
+	public String getRESTDTOIdPropertyName() {
+		return "productId";
 	}
 
 	@Override

@@ -28,8 +28,6 @@ import java.util.Map;
  */
 public interface SystemObjectDefinitionMetadata {
 
-	public String getIdPropertyName();
-
 	public Map<Locale, String> getLabelMap();
 
 	public Class<?> getModelClass();
@@ -45,6 +43,8 @@ public interface SystemObjectDefinitionMetadata {
 	public Column<?, Long> getPrimaryKeyColumn();
 
 	public String getRESTContextPath();
+
+	public String getRESTDTOIdPropertyName();
 
 	public String getScope();
 
