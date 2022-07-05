@@ -58,9 +58,9 @@ public class EntityExtensionWriterInterceptorTest {
 			new EntityExtensionWriterInterceptor();
 
 		ReflectionTestUtil.setFieldValue(
-			_entityExtensionWriterInterceptor, "_providers", _providers);
-		ReflectionTestUtil.setFieldValue(
 			_entityExtensionWriterInterceptor, "_company", _company);
+		ReflectionTestUtil.setFieldValue(
+			_entityExtensionWriterInterceptor, "_providers", _providers);
 	}
 
 	@Test
