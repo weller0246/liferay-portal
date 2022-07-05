@@ -504,15 +504,15 @@ public class JSONServerServletTest {
 
 		_servlet.service(mockHttpServletRequest, mockHttpServletResponse);
 
-		List<Map<String, Object>> grapes = _objectMapper.readValue(
+		List<Map<String, Object>> maps = _objectMapper.readValue(
 			mockHttpServletResponse.getContentAsString(), List.class);
 
-		Assert.assertEquals(grapes.toString(), 1, grapes.size());
+		Assert.assertEquals(maps.toString(), 1, maps.size());
 
-		Map<String, Object> grape = grapes.get(0);
+		Map<String, Object> map = maps.get(0);
 
-		Assert.assertEquals(1, grape.get("id"));
-		Assert.assertEquals("Merlot", grape.get("name"));
+		Assert.assertEquals(1, map.get("id"));
+		Assert.assertEquals("Merlot", map.get("name"));
 	}
 
 	@Test
