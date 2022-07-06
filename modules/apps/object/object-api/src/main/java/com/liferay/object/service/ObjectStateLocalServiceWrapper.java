@@ -335,6 +335,15 @@ public class ObjectStateLocalServiceWrapper
 	}
 
 	@Override
+	public com.liferay.object.model.ObjectState getObjectStateFlowObjectState(
+			long listTypeEntryId, long objectStateFlowId)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _objectStateLocalService.getObjectStateFlowObjectState(
+			listTypeEntryId, objectStateFlowId);
+	}
+
+	@Override
 	public java.util.List<com.liferay.object.model.ObjectState>
 		getObjectStateFlowObjectStates(long objectStateFlowId) {
 
@@ -358,17 +367,6 @@ public class ObjectStateLocalServiceWrapper
 		int start, int end) {
 
 		return _objectStateLocalService.getObjectStates(start, end);
-	}
-
-	@Override
-	public com.liferay.object.model.ObjectState
-			getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-				long listTypeEntryId, long objectStateFlowId)
-		throws com.liferay.object.exception.NoSuchObjectStateException {
-
-		return _objectStateLocalService.
-			getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-				listTypeEntryId, objectStateFlowId);
 	}
 
 	/**

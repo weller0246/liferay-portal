@@ -15,7 +15,6 @@
 package com.liferay.object.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.model.ObjectState;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
 import com.liferay.portal.kernel.dao.orm.ActionableDynamicQuery;
@@ -259,6 +258,11 @@ public interface ObjectStateLocalService
 		throws PortalException;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
+	public ObjectState getObjectStateFlowObjectState(
+			long listTypeEntryId, long objectStateFlowId)
+		throws PortalException;
+
+	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ObjectState> getObjectStateFlowObjectStates(
 		long objectStateFlowId);
 
@@ -275,11 +279,6 @@ public interface ObjectStateLocalService
 	 */
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<ObjectState> getObjectStates(int start, int end);
-
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public ObjectState getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-			long listTypeEntryId, long objectStateFlowId)
-		throws NoSuchObjectStateException;
 
 	/**
 	 * Returns the number of object states.

@@ -294,6 +294,14 @@ public class ObjectStateLocalServiceUtil {
 		return getService().getObjectStateByUuidAndCompanyId(uuid, companyId);
 	}
 
+	public static ObjectState getObjectStateFlowObjectState(
+			long listTypeEntryId, long objectStateFlowId)
+		throws PortalException {
+
+		return getService().getObjectStateFlowObjectState(
+			listTypeEntryId, objectStateFlowId);
+	}
+
 	public static List<ObjectState> getObjectStateFlowObjectStates(
 		long objectStateFlowId) {
 
@@ -313,16 +321,6 @@ public class ObjectStateLocalServiceUtil {
 	 */
 	public static List<ObjectState> getObjectStates(int start, int end) {
 		return getService().getObjectStates(start, end);
-	}
-
-	public static ObjectState
-			getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-				long listTypeEntryId, long objectStateFlowId)
-		throws com.liferay.object.exception.NoSuchObjectStateException {
-
-		return getService().
-			getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-				listTypeEntryId, objectStateFlowId);
 	}
 
 	/**
