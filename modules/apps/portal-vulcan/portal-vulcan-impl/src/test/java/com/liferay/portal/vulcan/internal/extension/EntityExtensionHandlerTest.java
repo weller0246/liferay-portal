@@ -335,7 +335,7 @@ public class EntityExtensionHandlerTest {
 	}
 
 	@Test(expected = ValidationException.class)
-	public void testValidateMissingMandatoryProperty() {
+	public void testValidateMissingRequiredProperty() {
 		ExtensionProvider extensionProviderMock1 = Mockito.mock(
 			ExtensionProvider.class);
 		ExtensionProvider extensionProviderMock2 = Mockito.mock(
@@ -402,7 +402,7 @@ public class EntityExtensionHandlerTest {
 	}
 
 	@Test
-	public void testValidateMissingMandatoryPropertyInPartialUpdate() {
+	public void testValidateMissingRequiredPropertyInPartialUpdate() {
 		ExtensionProvider extensionProviderMock1 = Mockito.mock(
 			ExtensionProvider.class);
 		ExtensionProvider extensionProviderMock2 = Mockito.mock(
