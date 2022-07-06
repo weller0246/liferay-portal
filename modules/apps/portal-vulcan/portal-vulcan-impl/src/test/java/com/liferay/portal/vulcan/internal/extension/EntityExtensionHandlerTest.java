@@ -224,6 +224,7 @@ public class EntityExtensionHandlerTest {
 				propertyDefinition2.getPropertyName(), propertyDefinition2
 			).build()
 		);
+
 		Mockito.when(
 			extensionProviderMock2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -291,6 +292,7 @@ public class EntityExtensionHandlerTest {
 				propertyDefinition2.getPropertyName(), propertyDefinition2
 			).build()
 		);
+
 		Mockito.when(
 			extensionProviderMock2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -358,6 +360,7 @@ public class EntityExtensionHandlerTest {
 				propertyDefinition2.getPropertyName(), propertyDefinition2
 			).build()
 		);
+
 		Mockito.when(
 			extensionProviderMock2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -390,6 +393,7 @@ public class EntityExtensionHandlerTest {
 		).getExtendedPropertyDefinitions(
 			_COMPANY_ID, _CLASS_NAME
 		);
+
 		Mockito.verify(
 			extensionProviderMock2
 		).getExtendedPropertyDefinitions(
@@ -423,6 +427,7 @@ public class EntityExtensionHandlerTest {
 				propertyDefinition2.getPropertyName(), propertyDefinition2
 			).build()
 		);
+
 		Mockito.when(
 			extensionProviderMock2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -455,6 +460,7 @@ public class EntityExtensionHandlerTest {
 		).getExtendedPropertyDefinitions(
 			_COMPANY_ID, _CLASS_NAME
 		);
+
 		Mockito.verify(
 			extensionProviderMock2
 		).getExtendedPropertyDefinitions(
@@ -488,6 +494,7 @@ public class EntityExtensionHandlerTest {
 				propertyDefinition2.getPropertyName(), propertyDefinition2
 			).build()
 		);
+
 		Mockito.when(
 			extensionProviderMock2.getExtendedPropertyDefinitions(
 				Mockito.anyLong(), Mockito.anyString())
@@ -524,6 +531,7 @@ public class EntityExtensionHandlerTest {
 		).getExtendedPropertyDefinitions(
 			_COMPANY_ID, _CLASS_NAME
 		);
+
 		Mockito.verify(
 			extensionProviderMock2
 		).getExtendedPropertyDefinitions(
