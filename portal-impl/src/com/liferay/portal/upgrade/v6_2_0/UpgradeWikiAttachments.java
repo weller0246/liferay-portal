@@ -79,15 +79,15 @@ public class UpgradeWikiAttachments extends BaseAttachmentsUpgradeProcess {
 
 			try (PreparedStatement preparedStatement =
 					connection.prepareStatement(sb.toString());
-				ResultSet rs = preparedStatement.executeQuery()) {
+				ResultSet resultSet = preparedStatement.executeQuery()) {
 
-				while (rs.next()) {
-					long resourcePrimKey = rs.getLong("resourcePrimKey");
-					long groupId = rs.getLong("groupId");
-					long companyId = rs.getLong("companyId");
-					long userId = rs.getLong("userId");
-					String userName = rs.getString("userName");
-					long nodeId = rs.getLong("nodeId");
+				while (resultSet.next()) {
+					long resourcePrimKey = resultSet.getLong("resourcePrimKey");
+					long groupId = resultSet.getLong("groupId");
+					long companyId = resultSet.getLong("companyId");
+					long userId = resultSet.getLong("userId");
+					String userName = resultSet.getString("userName");
+					long nodeId = resultSet.getLong("nodeId");
 
 					updateEntryAttachments(
 						companyId, groupId, resourcePrimKey, nodeId, userId,

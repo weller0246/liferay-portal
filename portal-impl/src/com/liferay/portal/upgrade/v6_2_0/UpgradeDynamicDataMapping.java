@@ -117,12 +117,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select structureId, structureKey, xsd from DDMStructure");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long structureId = rs.getLong("structureId");
-				String structureKey = rs.getString("structureKey");
-				String xsd = rs.getString("xsd");
+			while (resultSet.next()) {
+				long structureId = resultSet.getLong("structureId");
+				String structureKey = resultSet.getString("structureKey");
+				String xsd = resultSet.getString("xsd");
 
 				if (Validator.isNull(structureKey)) {
 					structureKey = String.valueOf(System.currentTimeMillis());
@@ -183,12 +183,12 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select templateId, templateKey, script from DDMTemplate " +
 					"where language = 'xsd'");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long templateId = rs.getLong("templateId");
-				String templateKey = rs.getString("templateKey");
-				String script = rs.getString("script");
+			while (resultSet.next()) {
+				long templateId = resultSet.getLong("templateId");
+				String templateKey = resultSet.getString("templateKey");
+				String script = resultSet.getString("script");
 
 				if (Validator.isNull(templateKey)) {
 					templateKey = String.valueOf(System.currentTimeMillis());

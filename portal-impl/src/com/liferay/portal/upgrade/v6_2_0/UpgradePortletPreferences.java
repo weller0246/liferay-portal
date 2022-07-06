@@ -52,19 +52,19 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 				PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
 						connection, deleteSQL);
-				ResultSet rs = preparedStatement1.executeQuery()) {
+				ResultSet resultSet = preparedStatement1.executeQuery()) {
 
-				while (rs.next()) {
+				while (resultSet.next()) {
 					String portletId = GetterUtil.getString(
-						rs.getString("portletId"));
+						resultSet.getString("portletId"));
 					String typeSettings = GetterUtil.getString(
-						rs.getString("typeSettings"));
+						resultSet.getString("typeSettings"));
 
 					if (typeSettings.contains(portletId)) {
 						continue;
 					}
 
-					long portletPreferencesId = rs.getLong(
+					long portletPreferencesId = resultSet.getLong(
 						"portletPreferencesId");
 
 					if (_log.isDebugEnabled()) {

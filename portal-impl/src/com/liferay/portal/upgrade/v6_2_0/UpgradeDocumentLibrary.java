@@ -84,11 +84,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 			preparedStatement.setLong(1, userId);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (rs.next()) {
-					String firstName = rs.getString("firstName");
-					String middleName = rs.getString("middleName");
-					String lastName = rs.getString("lastName");
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					String firstName = resultSet.getString("firstName");
+					String middleName = resultSet.getString("middleName");
+					String lastName = resultSet.getString("lastName");
 
 					FullNameGenerator fullNameGenerator =
 						FullNameGeneratorFactory.getInstance();
@@ -147,9 +147,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 							4, WorkflowConstants.STATUS_IN_TRASH);
 						preparedStatement.setFetchSize(size);
 
-						try (ResultSet rs = preparedStatement.executeQuery()) {
-							while (rs.next()) {
-								long folderId = rs.getLong(1);
+						try (ResultSet resultSet =
+								preparedStatement.executeQuery()) {
+
+							while (resultSet.next()) {
+								long folderId = resultSet.getLong(1);
 
 								DLFolderTreeModel treeModel =
 									new DLFolderTreeModel(
@@ -226,15 +228,15 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select distinct userId from DLFolder where userName is null " +
 					"or userName = ''");
-			ResultSet rs = preparedStatement1.executeQuery();
+			ResultSet resultSet = preparedStatement1.executeQuery();
 			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.autoBatch(
 					connection,
 					"update DLFolder set userName = ? where userId = ? and " +
 						"(userName is null or userName = '')")) {
 
-			while (rs.next()) {
-				long userId = rs.getLong("userId");
+			while (resultSet.next()) {
+				long userId = resultSet.getLong("userId");
 
 				String userName = getUserName(userId);
 
@@ -279,13 +281,13 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select fileEntryTypeId, companyId, name, description from " +
 					"DLFileEntryType");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long fileEntryTypeId = rs.getLong("fileEntryTypeId");
-				long companyId = rs.getLong("companyId");
-				String name = GetterUtil.getString(rs.getString("name"));
-				String description = rs.getString("description");
+			while (resultSet.next()) {
+				long fileEntryTypeId = resultSet.getLong("fileEntryTypeId");
+				long companyId = resultSet.getLong("companyId");
+				String name = GetterUtil.getString(resultSet.getString("name"));
+				String description = resultSet.getString("description");
 
 				if (fileEntryTypeId ==
 						DLFileEntryTypeConstants.

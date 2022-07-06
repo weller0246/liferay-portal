@@ -46,10 +46,11 @@ public class UpgradeLayoutSet extends UpgradeProcess {
 
 				preparedStatement.setBoolean(1, true);
 
-				try (ResultSet rs = preparedStatement.executeQuery()) {
-					while (rs.next()) {
-						long groupId = rs.getLong("Group_.groupId");
-						long layoutSetId = rs.getLong("LayoutSet.layoutSetId");
+				try (ResultSet resultSet = preparedStatement.executeQuery()) {
+					while (resultSet.next()) {
+						long groupId = resultSet.getLong("Group_.groupId");
+						long layoutSetId = resultSet.getLong(
+							"LayoutSet.layoutSetId");
 
 						runSQL(
 							StringBundler.concat(

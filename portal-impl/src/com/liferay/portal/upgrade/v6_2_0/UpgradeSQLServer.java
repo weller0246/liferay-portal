@@ -60,21 +60,21 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 			try (PreparedStatement preparedStatement =
 					connection.prepareStatement(sql);
-				ResultSet rs = preparedStatement.executeQuery()) {
+				ResultSet resultSet = preparedStatement.executeQuery()) {
 
-				while (rs.next()) {
-					String tableName = rs.getString("table_name");
+				while (resultSet.next()) {
+					String tableName = resultSet.getString("table_name");
 
 					if (!isPortal62TableName(tableName)) {
 						continue;
 					}
 
-					String columnName = rs.getString("column_name");
-					String dataType = rs.getString("data_type");
-					boolean nullable = rs.getBoolean("is_nullable");
+					String columnName = resultSet.getString("column_name");
+					String dataType = resultSet.getString("data_type");
+					boolean nullable = resultSet.getBoolean("is_nullable");
 
 					if (dataType.equals("varchar")) {
-						int length = rs.getInt("length");
+						int length = resultSet.getInt("length");
 
 						convertVarcharColumn(
 							tableName, columnName, length, nullable);
@@ -201,16 +201,16 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sql);
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				String tableName = rs.getString("table_name");
+			while (resultSet.next()) {
+				String tableName = resultSet.getString("table_name");
 
 				if (!isPortal62TableName(tableName)) {
 					continue;
 				}
 
-				String indexName = rs.getString("index_name");
+				String indexName = resultSet.getString("index_name");
 
 				if (_log.isInfoEnabled()) {
 					_log.info(
@@ -265,10 +265,10 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sql);
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				String columnName = rs.getString("column_name");
+			while (resultSet.next()) {
+				String columnName = resultSet.getString("column_name");
 
 				columnNames.add(columnName);
 			}

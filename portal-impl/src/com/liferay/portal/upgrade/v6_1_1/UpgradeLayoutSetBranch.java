@@ -69,12 +69,12 @@ public class UpgradeLayoutSetBranch extends UpgradeProcess {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select groupId, layoutSetBranchId, privateLayout from " +
 					"LayoutSetBranch");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long layoutSetBranchId = rs.getLong("layoutSetBranchId");
-				long groupId = rs.getLong("groupId");
-				boolean privateLayout = rs.getBoolean("privateLayout");
+			while (resultSet.next()) {
+				long layoutSetBranchId = resultSet.getLong("layoutSetBranchId");
+				long groupId = resultSet.getLong("groupId");
+				boolean privateLayout = resultSet.getBoolean("privateLayout");
 
 				upgradeLayoutSetBranch(
 					layoutSetBranchId, groupId, privateLayout);
@@ -99,18 +99,19 @@ public class UpgradeLayoutSetBranch extends UpgradeProcess {
 			preparedStatement.setLong(1, groupId);
 			preparedStatement.setBoolean(2, privateLayout);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while (rs.next()) {
-					String themeId = rs.getString("themeId");
-					String colorSchemeId = rs.getString("colorSchemeId");
-					String wapThemeId = rs.getString("wapThemeId");
-					String wapColorSchemeId = rs.getString("wapColorSchemeId");
-					String css = rs.getString("css");
-					String settings = rs.getString("settings_");
-					String layoutSetPrototypeUuid = rs.getString(
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					String themeId = resultSet.getString("themeId");
+					String colorSchemeId = resultSet.getString("colorSchemeId");
+					String wapThemeId = resultSet.getString("wapThemeId");
+					String wapColorSchemeId = resultSet.getString(
+						"wapColorSchemeId");
+					String css = resultSet.getString("css");
+					String settings = resultSet.getString("settings_");
+					String layoutSetPrototypeUuid = resultSet.getString(
 						"layoutSetPrototypeUuid");
-					boolean layoutSetPrototypeLinkEnabled = rs.getBoolean(
-						"layoutSetPrototypeLinkEnabled");
+					boolean layoutSetPrototypeLinkEnabled =
+						resultSet.getBoolean("layoutSetPrototypeLinkEnabled");
 
 					updateLayoutSetBranch(
 						layoutSetBranchId, themeId, colorSchemeId, wapThemeId,

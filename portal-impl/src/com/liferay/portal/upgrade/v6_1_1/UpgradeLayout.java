@@ -41,9 +41,9 @@ public class UpgradeLayout extends UpgradeProcess {
 
 			preparedStatement.setString(1, layoutPrototypeUuid);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while (rs.next()) {
-					return rs.getLong("groupId");
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					return resultSet.getLong("groupId");
 				}
 			}
 		}
@@ -63,9 +63,9 @@ public class UpgradeLayout extends UpgradeProcess {
 			preparedStatement.setLong(2, groupId);
 			preparedStatement.setBoolean(3, true);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while (rs.next()) {
-					int count = rs.getInt(1);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					int count = resultSet.getInt(1);
 
 					if (count > 0) {
 						return true;
@@ -90,15 +90,15 @@ public class UpgradeLayout extends UpgradeProcess {
 
 			try (PreparedStatement preparedStatement =
 					connection.prepareStatement(sb.toString());
-				ResultSet rs = preparedStatement.executeQuery()) {
+				ResultSet resultSet = preparedStatement.executeQuery()) {
 
 				// Get pages with a sourcePrototypeLayoutUuid that have a page
 				// template. If the layoutUuid points to a page template, remove
 				// it. Otherwise, it points to a site template page, so leave
 				// it.
 
-				while (rs.next()) {
-					String layoutPrototypeUuid = rs.getString(
+				while (resultSet.next()) {
+					String layoutPrototypeUuid = resultSet.getString(
 						"layoutPrototypeUuid");
 
 					long groupId = getLayoutPrototypeGroupId(
@@ -108,13 +108,13 @@ public class UpgradeLayout extends UpgradeProcess {
 						continue;
 					}
 
-					String sourcePrototypeLayoutUuid = rs.getString(
+					String sourcePrototypeLayoutUuid = resultSet.getString(
 						"sourcePrototypeLayoutUuid");
 
 					if (isGroupPrivateLayout(
 							groupId, sourcePrototypeLayoutUuid)) {
 
-						long plid = rs.getLong("plid");
+						long plid = resultSet.getLong("plid");
 
 						runSQL(
 							"update Layout set sourcePrototypeLayoutUuid = " +

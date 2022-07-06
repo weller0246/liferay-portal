@@ -77,15 +77,15 @@ public class UpgradeMessageBoardsAttachments
 				"select messageId, groupId, companyId, userId, userName, " +
 					"threadId from MBMessage where classNameId = 0 and " +
 						"classPK = 0");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long messageId = rs.getLong("messageId");
-				long groupId = rs.getLong("groupId");
-				long companyId = rs.getLong("companyId");
-				long userId = rs.getLong("userId");
-				String userName = rs.getString("userName");
-				long threadId = rs.getLong("threadId");
+			while (resultSet.next()) {
+				long messageId = resultSet.getLong("messageId");
+				long groupId = resultSet.getLong("groupId");
+				long companyId = resultSet.getLong("companyId");
+				long userId = resultSet.getLong("userId");
+				String userName = resultSet.getString("userName");
+				long threadId = resultSet.getLong("threadId");
 
 				updateEntryAttachments(
 					companyId, groupId, messageId, threadId, userId, userName);

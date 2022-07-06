@@ -278,9 +278,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				PortalUtil.getClassNameId("com.liferay.portal.model.Company"));
 			preparedStatement.setLong(2, companyId);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (rs.next()) {
-					return rs.getLong("groupId");
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return resultSet.getLong("groupId");
 				}
 
 				return 0;
@@ -371,9 +371,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			preparedStatement.setLong(1, companyId);
 			preparedStatement.setBoolean(2, true);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (rs.next()) {
-					String languageId = rs.getString("languageId");
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					String languageId = resultSet.getString("languageId");
 
 					return LocaleUtil.fromLanguageId(languageId);
 				}
@@ -401,9 +401,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			preparedStatement.setString(1, roleName);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (rs.next()) {
-					return rs.getLong("roleId");
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return resultSet.getLong("roleId");
 				}
 
 				return 0;
@@ -456,7 +456,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 					"select distinct companyId, groupId, resourcePrimKey, " +
 						"structureId from JournalArticle where structureId " +
 							"!= ''"));
-			ResultSet rs = preparedStatement1.executeQuery()) {
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			long classNameId = PortalUtil.getClassNameId(
 				"com.liferay.portlet.journal.model.JournalArticle");
@@ -467,11 +467,11 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						"update AssetEntry set classTypeId = ? where " +
 							"classNameId = ? AND classPK = ?")) {
 
-				while (rs.next()) {
-					long groupId = rs.getLong("groupId");
-					long companyId = rs.getLong("companyId");
-					long resourcePrimKey = rs.getLong("resourcePrimKey");
-					String structureId = rs.getString("structureId");
+				while (resultSet.next()) {
+					long groupId = resultSet.getLong("groupId");
+					long companyId = resultSet.getLong("companyId");
+					long resourcePrimKey = resultSet.getLong("resourcePrimKey");
+					String structureId = resultSet.getString("structureId");
 
 					long ddmStructureId = getDDMStructureId(
 						groupId, getCompanyGroupId(companyId), structureId);
@@ -495,11 +495,11 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				"select groupId, portletId from JournalContentSearch group " +
 					"by groupId, portletId having count(groupId) > 1 and " +
 						"count(portletId) > 1");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long groupId = rs.getLong("groupId");
-				String portletId = rs.getString("portletId");
+			while (resultSet.next()) {
+				long groupId = resultSet.getLong("groupId");
+				String portletId = resultSet.getString("portletId");
 
 				updateContentSearch(groupId, portletId);
 			}
@@ -652,7 +652,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			PreparedStatement insertPS =
 				AutoBatchPreparedStatementUtil.autoBatch(
 					connection, insertSB.toString());
-			ResultSet rs = selectPS.executeQuery()) {
+			ResultSet resultSet = selectPS.executeQuery()) {
 
 			long currentCompanyId = 0;
 			String currentPrimKey = null;
@@ -660,10 +660,10 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			boolean hasOwnerResourcePermissions = false;
 			boolean hasSiteMemberResourcePermissions = false;
 
-			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
-				String primKey = rs.getString("primKey");
-				long roleId = rs.getLong("roleId");
+			while (resultSet.next()) {
+				long companyId = resultSet.getLong("companyId");
+				String primKey = resultSet.getString("primKey");
+				long roleId = resultSet.getLong("roleId");
 
 				if ((currentPrimKey != null) &&
 					!primKey.equals(currentPrimKey)) {
@@ -874,12 +874,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				AutoBatchPreparedStatementUtil.autoBatch(
 					connection,
 					"update JournalArticle set content = ? where id_ = ?");
-			ResultSet rs = preparedStatement1.executeQuery()) {
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
-			while (rs.next()) {
-				long id = rs.getLong("id_");
-				long groupId = rs.getLong("groupId");
-				String content = rs.getString("content");
+			while (resultSet.next()) {
+				long id = resultSet.getLong("id_");
+				long groupId = resultSet.getLong("groupId");
+				String content = resultSet.getString("content");
 
 				try {
 					Document document = SAXReaderUtil.read(content);
@@ -979,9 +979,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		runSQL(sb.toString());
 	}
 
-	protected long updateStructure(ResultSet rs) throws Exception {
-		long groupId = rs.getLong("groupId");
-		String structureId = rs.getString("structureId");
+	protected long updateStructure(ResultSet resultSet) throws Exception {
+		long groupId = resultSet.getLong("groupId");
+		String structureId = resultSet.getString("structureId");
 
 		Long ddmStructureId = _ddmStructureIds.get(groupId + "#" + structureId);
 
@@ -991,23 +991,23 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 		ddmStructureId = increment();
 
-		String uuid_ = rs.getString("uuid_");
-		long companyId = rs.getLong("companyId");
-		long userId = rs.getLong("userId");
-		String userName = rs.getString("userName");
-		Timestamp createDate = rs.getTimestamp("createDate");
-		Timestamp modifiedDate = rs.getTimestamp("modifiedDate");
-		String parentStructureId = rs.getString("parentStructureId");
-		String name = rs.getString("name");
-		String description = rs.getString("description");
-		String xsd = rs.getString("xsd");
+		String uuid_ = resultSet.getString("uuid_");
+		long companyId = resultSet.getLong("companyId");
+		long userId = resultSet.getLong("userId");
+		String userName = resultSet.getString("userName");
+		Timestamp createDate = resultSet.getTimestamp("createDate");
+		Timestamp modifiedDate = resultSet.getTimestamp("modifiedDate");
+		String parentStructureId = resultSet.getString("parentStructureId");
+		String name = resultSet.getString("name");
+		String description = resultSet.getString("description");
+		String xsd = resultSet.getString("xsd");
 
 		addDDMStructure(
 			uuid_, ddmStructureId, groupId, companyId, userId, userName,
 			createDate, modifiedDate, parentStructureId, structureId, name,
 			description, xsd);
 
-		long id_ = rs.getLong("id_");
+		long id_ = resultSet.getLong("id_");
 
 		updateJournalArticleClassNameIdAndClassPK(id_, ddmStructureId);
 
@@ -1028,9 +1028,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			preparedStatement.setString(1, structureId);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (rs.next()) {
-					return updateStructure(rs);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (resultSet.next()) {
+					return updateStructure(resultSet);
 				}
 
 				return 0;
@@ -1049,10 +1049,10 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select * from JournalStructure");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				updateStructure(rs);
+			while (resultSet.next()) {
+				updateStructure(resultSet);
 			}
 
 			runSQL("drop table JournalStructure");
@@ -1063,27 +1063,27 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select * from JournalTemplate");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				String uuid_ = rs.getString("uuid_");
-				long id_ = rs.getLong("id_");
-				long groupId = rs.getLong("groupId");
-				long companyId = rs.getLong("companyId");
-				long userId = rs.getLong("userId");
-				String userName = rs.getString("userName");
-				Timestamp createDate = rs.getTimestamp("createDate");
-				Timestamp modifiedDate = rs.getTimestamp("modifiedDate");
-				String templateId = rs.getString("templateId");
-				String structureId = rs.getString("structureId");
-				String name = rs.getString("name");
-				String description = rs.getString("description");
-				String language = rs.getString("langType");
-				String script = rs.getString("xsl");
-				boolean cacheable = rs.getBoolean("cacheable");
-				boolean smallImage = rs.getBoolean("smallImage");
-				long smallImageId = rs.getLong("smallImageId");
-				String smallImageURL = rs.getString("smallImageURL");
+			while (resultSet.next()) {
+				String uuid_ = resultSet.getString("uuid_");
+				long id_ = resultSet.getLong("id_");
+				long groupId = resultSet.getLong("groupId");
+				long companyId = resultSet.getLong("companyId");
+				long userId = resultSet.getLong("userId");
+				String userName = resultSet.getString("userName");
+				Timestamp createDate = resultSet.getTimestamp("createDate");
+				Timestamp modifiedDate = resultSet.getTimestamp("modifiedDate");
+				String templateId = resultSet.getString("templateId");
+				String structureId = resultSet.getString("structureId");
+				String name = resultSet.getString("name");
+				String description = resultSet.getString("description");
+				String language = resultSet.getString("langType");
+				String script = resultSet.getString("xsl");
+				boolean cacheable = resultSet.getBoolean("cacheable");
+				boolean smallImage = resultSet.getBoolean("smallImage");
+				long smallImageId = resultSet.getLong("smallImageId");
+				String smallImageURL = resultSet.getString("smallImageURL");
 
 				long ddmTemplateId = increment();
 
@@ -1155,7 +1155,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select distinct groupId, articleId, urlTitle from " +
 					"JournalArticle");
-			ResultSet rs = preparedStatement1.executeQuery()) {
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			Map<String, String> processedArticleIds = new HashMap<>();
 
@@ -1165,9 +1165,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						"update JournalArticle set urlTitle = ? where " +
 							"urlTitle = ?")) {
 
-				while (rs.next()) {
+				while (resultSet.next()) {
 					String urlTitle = GetterUtil.getString(
-						rs.getString("urlTitle"));
+						resultSet.getString("urlTitle"));
 
 					String normalizedURLTitle =
 						FriendlyURLNormalizerUtil.
@@ -1177,8 +1177,8 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						continue;
 					}
 
-					String articleId = rs.getString("articleId");
-					long groupId = rs.getLong("groupId");
+					String articleId = resultSet.getString("articleId");
+					long groupId = resultSet.getLong("groupId");
 
 					normalizedURLTitle = _getUniqueUrlTitle(
 						groupId, articleId, normalizedURLTitle,
@@ -1240,9 +1240,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			preparedStatement.setString(2, urlTitle);
 			preparedStatement.setString(3, articleId);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while (rs.next()) {
-					int count = rs.getInt(1);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					int count = resultSet.getInt(1);
 
 					if (count > 0) {
 						return false;

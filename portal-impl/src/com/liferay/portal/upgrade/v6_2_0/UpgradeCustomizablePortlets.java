@@ -78,8 +78,8 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 			preparedStatement.setLong(3, plid);
 			preparedStatement.setString(4, portletId);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				if (!rs.next()) {
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				if (!resultSet.next()) {
 					return null;
 				}
 
@@ -87,15 +87,16 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 					new PortletPreferencesImpl();
 
 				portletPreferences.setPortletPreferencesId(
-					rs.getLong("portletPreferencesId"));
-				portletPreferences.setOwnerId(rs.getLong("ownerId"));
-				portletPreferences.setOwnerType(rs.getInt("ownerType"));
-				portletPreferences.setPlid(rs.getLong("plid"));
-				portletPreferences.setPortletId(rs.getString("portletId"));
+					resultSet.getLong("portletPreferencesId"));
+				portletPreferences.setOwnerId(resultSet.getLong("ownerId"));
+				portletPreferences.setOwnerType(resultSet.getInt("ownerType"));
+				portletPreferences.setPlid(resultSet.getLong("plid"));
+				portletPreferences.setPortletId(
+					resultSet.getString("portletId"));
 
 				// TODO LPS-157670
 
-				//portletPreferences.setPreferences(rs.getString("preferences"));
+				//portletPreferences.setPreferences(resultSet.getString("preferences"));
 
 				return portletPreferences;
 			}
@@ -108,12 +109,12 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 				"select ownerId, ownerType, preferences from " +
 					"PortalPreferences where preferences like " +
 						"'%com.liferay.portal.model.CustomizedPages%'");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long ownerId = rs.getLong("ownerId");
-				int ownerType = rs.getInt("ownerType");
-				String preferences = rs.getString("preferences");
+			while (resultSet.next()) {
+				long ownerId = resultSet.getLong("ownerId");
+				int ownerType = resultSet.getInt("ownerType");
+				String preferences = resultSet.getString("preferences");
 
 				PortalPreferencesWrapper portalPreferencesWrapper =
 					getPortalPreferencesInstance(

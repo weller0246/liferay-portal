@@ -35,18 +35,18 @@ public class UpgradeLayoutFriendlyURL extends UpgradeProcess {
 				"select plid, groupId, companyId, userId, userName, " +
 					"createDate, modifiedDate, privateLayout, friendlyURL " +
 						"from Layout");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long plid = rs.getLong("plid");
-				long groupId = rs.getLong("groupId");
-				long companyId = rs.getLong("companyId");
-				long userId = rs.getLong("userId");
-				String userName = rs.getString("userName");
-				Timestamp createDate = rs.getTimestamp("createDate");
-				Timestamp modifiedDate = rs.getTimestamp("modifiedDate");
-				boolean privateLayout = rs.getBoolean("privateLayout");
-				String friendlyURL = rs.getString("friendlyURL");
+			while (resultSet.next()) {
+				long plid = resultSet.getLong("plid");
+				long groupId = resultSet.getLong("groupId");
+				long companyId = resultSet.getLong("companyId");
+				long userId = resultSet.getLong("userId");
+				String userName = resultSet.getString("userName");
+				Timestamp createDate = resultSet.getTimestamp("createDate");
+				Timestamp modifiedDate = resultSet.getTimestamp("modifiedDate");
+				boolean privateLayout = resultSet.getBoolean("privateLayout");
+				String friendlyURL = resultSet.getString("friendlyURL");
 
 				addLayoutFriendlyURL(
 					groupId, companyId, userId, userName, createDate,

@@ -49,11 +49,11 @@ public class UpgradeCompany extends UpgradeProcess {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select companyId, key_ from Company");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				long companyId = rs.getLong("companyId");
-				String key = rs.getString("key_");
+			while (resultSet.next()) {
+				long companyId = resultSet.getLong("companyId");
+				String key = resultSet.getString("key_");
 
 				upgradeKey(companyId, key);
 			}

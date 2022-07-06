@@ -45,9 +45,9 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			preparedStatement.setLong(2, folderId);
 			preparedStatement.setString(3, title);
 
-			try (ResultSet rs = preparedStatement.executeQuery()) {
-				while (rs.next()) {
-					int count = rs.getInt(1);
+			try (ResultSet resultSet = preparedStatement.executeQuery()) {
+				while (resultSet.next()) {
+					int count = resultSet.getInt(1);
 
 					if (count > 0) {
 						return true;
@@ -64,13 +64,13 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select fileEntryId, groupId, folderId, title, extension, " +
 					"version from DLFileEntry");
-			ResultSet rs = preparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement.executeQuery()) {
 
-			while (rs.next()) {
-				String title = rs.getString("title");
+			while (resultSet.next()) {
+				String title = resultSet.getString("title");
 
 				String extension = GetterUtil.getString(
-					rs.getString("extension"));
+					resultSet.getString("extension"));
 
 				String periodAndExtension = StringPool.PERIOD.concat(extension);
 
@@ -84,8 +84,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 				int count = 0;
 
-				long groupId = rs.getLong("groupId");
-				long folderId = rs.getLong("folderId");
+				long groupId = resultSet.getLong("groupId");
+				long folderId = resultSet.getLong("folderId");
 
 				while (hasFileEntry(groupId, folderId, uniqueTitle) ||
 					   ((count != 0) &&
@@ -102,8 +102,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					continue;
 				}
 
-				long fileEntryId = rs.getLong("fileEntryId");
-				String version = rs.getString("version");
+				long fileEntryId = resultSet.getLong("fileEntryId");
+				String version = resultSet.getString("version");
 
 				uniqueTitle += periodAndExtension;
 
