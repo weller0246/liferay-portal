@@ -14,7 +14,6 @@
 
 package com.liferay.object.service.impl;
 
-import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.base.ObjectStateLocalServiceBaseImpl;
@@ -95,20 +94,20 @@ public class ObjectStateLocalServiceImpl
 	}
 
 	@Override
+	public ObjectState getObjectStateFlowObjectState(
+			long listTypeEntryId, long objectStateFlowId)
+		throws PortalException {
+
+		return objectStatePersistence.findByLTEI_OSFI(
+			listTypeEntryId, objectStateFlowId);
+	}
+
+	@Override
 	public List<ObjectState> getObjectStateFlowObjectStates(
 		long objectStateFlowId) {
 
 		return objectStatePersistence.findByObjectStateFlowId(
 			objectStateFlowId);
-	}
-
-	@Override
-	public ObjectState getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-			long listTypeEntryId, long objectStateFlowId)
-		throws NoSuchObjectStateException {
-
-		return objectStatePersistence.findByLTEI_OSFI(
-			listTypeEntryId, objectStateFlowId);
 	}
 
 	@Reference

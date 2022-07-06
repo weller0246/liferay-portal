@@ -15,13 +15,13 @@
 package com.liferay.object.admin.rest.internal.dto.v1_0.util;
 
 import com.liferay.object.admin.rest.dto.v1_0.NextObjectState;
-import com.liferay.object.exception.NoSuchObjectStateException;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.model.ObjectStateTransition;
 import com.liferay.object.service.ObjectStateFlowLocalServiceUtil;
 import com.liferay.object.service.ObjectStateLocalServiceUtil;
 import com.liferay.object.service.ObjectStateTransitionLocalServiceUtil;
+import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
 /**
@@ -76,7 +76,7 @@ public class ObjectStateFlowUtil {
 	private static ObjectStateTransition _toObjectStateTransition(
 			NextObjectState nextObjectState, long objectStateFlowId,
 			long sourceObjectStateId)
-		throws NoSuchObjectStateException {
+		throws PortalException {
 
 		ObjectStateTransition objectStateTransition =
 			ObjectStateTransitionLocalServiceUtil.createObjectStateTransition(
@@ -86,9 +86,8 @@ public class ObjectStateFlowUtil {
 		objectStateTransition.setSourceObjectStateId(sourceObjectStateId);
 
 		ObjectState targetObjectState =
-			ObjectStateLocalServiceUtil.
-				getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-					nextObjectState.getListTypeEntryId(), objectStateFlowId);
+			ObjectStateLocalServiceUtil.getObjectStateFlowObjectState(
+				nextObjectState.getListTypeEntryId(), objectStateFlowId);
 
 		objectStateTransition.setTargetObjectStateId(
 			targetObjectState.getObjectStateId());

@@ -170,10 +170,9 @@ public class PicklistObjectFieldBusinessType
 				objectField.getObjectFieldId());
 
 		ObjectState objectState =
-			_objectStateLocalService.
-				getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-					listTypeEntry.getListTypeEntryId(),
-					objectStateFlow.getObjectStateFlowId());
+			_objectStateLocalService.getObjectStateFlowObjectState(
+				listTypeEntry.getListTypeEntryId(),
+				objectStateFlow.getObjectStateFlowId());
 
 		List<ListTypeEntry> listTypeEntries = TransformUtil.transform(
 			_objectStateLocalService.getNextObjectStates(
