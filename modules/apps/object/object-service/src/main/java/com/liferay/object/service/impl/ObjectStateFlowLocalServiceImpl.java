@@ -93,8 +93,8 @@ public class ObjectStateFlowLocalServiceImpl
 	public void deleteObjectFieldObjectStateFlow(long objectFieldId)
 		throws PortalException {
 
-		ObjectStateFlow objectStateFlow = getObjectFieldObjectStateFlow(
-			objectFieldId);
+		ObjectStateFlow objectStateFlow =
+			objectStateFlowPersistence.fetchByObjectFieldId(objectFieldId);
 
 		objectStateFlowPersistence.remove(
 			objectStateFlow.getObjectStateFlowId());
