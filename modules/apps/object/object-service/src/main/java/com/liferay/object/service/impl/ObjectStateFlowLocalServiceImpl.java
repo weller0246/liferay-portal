@@ -112,21 +112,6 @@ public class ObjectStateFlowLocalServiceImpl
 		return objectStateFlowPersistence.fetchByObjectFieldId(objectFieldId);
 	}
 
-	@Override
-	public void updateObjectStateTransitions(ObjectStateFlow objectStateFlow)
-		throws PortalException {
-
-		if (objectStateFlow == null) {
-			return;
-		}
-
-		for (ObjectState objectState : objectStateFlow.getObjectStates()) {
-			_objectStateLocalService.updateObjectStateTransitions(
-				objectState.getObjectStateId(),
-				objectState.getObjectStateTransitions());
-		}
-	}
-
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;
 

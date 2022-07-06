@@ -38,6 +38,7 @@ import com.liferay.object.model.ObjectRelationship;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectStateFlowLocalService;
+import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.ObjectViewLocalService;
 import com.liferay.object.service.base.ObjectFieldLocalServiceBaseImpl;
 import com.liferay.object.service.persistence.ObjectDefinitionPersistence;
@@ -450,7 +451,7 @@ public class ObjectFieldLocalServiceImpl
 
 			_addOrUpdateObjectFieldSettings(objectField, objectFieldSettings);
 
-			_objectStateFlowLocalService.updateObjectStateTransitions(
+			_objectStateTransitionLocalService.updateObjectStateTransitions(
 				objectStateFlow);
 
 			return objectField;
@@ -490,7 +491,7 @@ public class ObjectFieldLocalServiceImpl
 
 		_addOrUpdateObjectFieldSettings(objectField, objectFieldSettings);
 
-		_objectStateFlowLocalService.updateObjectStateTransitions(
+		_objectStateTransitionLocalService.updateObjectStateTransitions(
 			objectStateFlow);
 
 		return objectField;
@@ -958,6 +959,10 @@ public class ObjectFieldLocalServiceImpl
 
 	@Reference
 	private ObjectStateFlowLocalService _objectStateFlowLocalService;
+
+	@Reference
+	private ObjectStateTransitionLocalService
+		_objectStateTransitionLocalService;
 
 	@Reference
 	private ObjectViewLocalService _objectViewLocalService;
