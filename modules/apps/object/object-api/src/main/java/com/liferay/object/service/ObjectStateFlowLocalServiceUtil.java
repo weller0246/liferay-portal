@@ -90,7 +90,7 @@ public class ObjectStateFlowLocalServiceUtil {
 	}
 
 	public static void deleteObjectFieldObjectStateFlow(long objectFieldId)
-		throws com.liferay.object.exception.NoSuchObjectStateFlowException {
+		throws PortalException {
 
 		getService().deleteObjectFieldObjectStateFlow(objectFieldId);
 	}

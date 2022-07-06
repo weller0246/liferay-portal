@@ -90,7 +90,7 @@ public class ObjectStateFlowLocalServiceWrapper
 
 	@Override
 	public void deleteObjectFieldObjectStateFlow(long objectFieldId)
-		throws com.liferay.object.exception.NoSuchObjectStateFlowException {
+		throws com.liferay.portal.kernel.exception.PortalException {
 
 		_objectStateFlowLocalService.deleteObjectFieldObjectStateFlow(
 			objectFieldId);

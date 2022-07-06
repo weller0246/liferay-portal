@@ -15,7 +15,6 @@
 package com.liferay.object.service;
 
 import com.liferay.exportimport.kernel.lar.PortletDataContext;
-import com.liferay.object.exception.NoSuchObjectStateFlowException;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.petra.sql.dsl.query.DSLQuery;
@@ -97,7 +96,7 @@ public interface ObjectStateFlowLocalService
 		throws PortalException;
 
 	public void deleteObjectFieldObjectStateFlow(long objectFieldId)
-		throws NoSuchObjectStateFlowException;
+		throws PortalException;
 
 	/**
 	 * Deletes the object state flow with the primary key from the database. Also notifies the appropriate model listeners.
