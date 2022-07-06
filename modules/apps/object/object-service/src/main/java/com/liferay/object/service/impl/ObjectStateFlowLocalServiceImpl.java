@@ -118,7 +118,7 @@ public class ObjectStateFlowLocalServiceImpl
 	private ObjectStateFlow _addObjectStateFlow(long userId, long objectFieldId)
 		throws PortalException {
 
-		ObjectStateFlow objectStateFlow = createObjectStateFlow(
+		ObjectStateFlow objectStateFlow = objectStateFlowPersistence.create(
 			counterLocalService.increment());
 
 		User user = _userLocalService.getUser(userId);
@@ -129,7 +129,7 @@ public class ObjectStateFlowLocalServiceImpl
 
 		objectStateFlow.setObjectFieldId(objectFieldId);
 
-		return addObjectStateFlow(objectStateFlow);
+		return objectStateFlowPersistence.update(objectStateFlow);
 	}
 
 	@Reference
