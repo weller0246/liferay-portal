@@ -65,12 +65,12 @@ public class ObjectStateLocalServiceImpl
 			objectStatePersistence.findByListTypeEntryId(listTypeEntryId);
 
 		for (ObjectState objectState : objectStates) {
+			objectStatePersistence.remove(objectState);
+
 			_objectStateTransitionLocalService.
 				deleteObjectStateObjectStateTransitions(
 					objectState.getObjectStateId());
 		}
-
-		objectStatePersistence.removeByListTypeEntryId(listTypeEntryId);
 	}
 
 	@Override
