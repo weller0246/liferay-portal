@@ -14,7 +14,6 @@
 
 package com.liferay.object.service.impl;
 
-import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalService;
 import com.liferay.object.exception.NoSuchObjectStateFlowException;
 import com.liferay.object.model.ObjectField;
@@ -27,8 +26,8 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -55,18 +54,12 @@ public class ObjectStateFlowLocalServiceImpl
 		ObjectStateFlow objectStateFlow = _addObjectStateFlow(
 			objectField.getUserId(), objectField.getObjectFieldId());
 
-		List<ListTypeEntry> listTypeEntries =
+		List<ObjectState> objectStates = TransformUtil.transform(
 			_listTypeEntryLocalService.getListTypeEntries(
-				objectField.getListTypeDefinitionId());
-
-		List<ObjectState> objectStates = new ArrayList<>();
-
-		for (ListTypeEntry listTypeEntry : listTypeEntries) {
-			objectStates.add(
-				_objectStateLocalService.addObjectState(
-					objectField.getUserId(), listTypeEntry.getListTypeEntryId(),
-					objectStateFlow.getObjectStateFlowId()));
-		}
+				objectField.getListTypeDefinitionId()),
+			listTypeEntry -> _objectStateLocalService.addObjectState(
+				objectField.getUserId(), listTypeEntry.getListTypeEntryId(),
+				objectStateFlow.getObjectStateFlowId()));
 
 		for (ObjectState sourceObjectState : objectStates) {
 			for (ObjectState targetObjectState : objectStates) {
