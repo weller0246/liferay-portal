@@ -80,9 +80,8 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 			String issuer, String tokenEndPoint)
 		throws Exception {
 
-		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-
 		URI issuerURI = URI.create(issuer);
+		MessageDigest messageDigest = MessageDigest.getInstance("MD5");
 
 		return StringBundler.concat(
 			issuerURI.getScheme(), "://", issuerURI.getAuthority(),
