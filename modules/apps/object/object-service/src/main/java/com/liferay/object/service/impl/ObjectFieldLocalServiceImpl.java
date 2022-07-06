@@ -129,9 +129,9 @@ public class ObjectFieldLocalServiceImpl
 					dbTableName, objectField.getDBColumnName(), dbType));
 		}
 
-		_objectStateFlowLocalService.addDefaultObjectStateFlow(objectField);
-
 		_addOrUpdateObjectFieldSettings(objectField, objectFieldSettings);
+
+		_objectStateFlowLocalService.addDefaultObjectStateFlow(objectField);
 
 		return objectField;
 	}
