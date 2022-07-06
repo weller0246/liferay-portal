@@ -45,7 +45,7 @@ public class PropertyDefinition {
 		_propertyType = propertyType;
 		_required = required;
 
-		_propertyClass = _propertyTypeClasses.getOrDefault(propertyType, null);
+		_propertyClass = _propertyTypeClasses.get(propertyType);
 		_propertyValidator = new DefaultPropertyValidator();
 	}
 
@@ -58,7 +58,7 @@ public class PropertyDefinition {
 		_propertyValidator = propertyValidator;
 		_required = required;
 
-		_propertyClass = _propertyTypeClasses.getOrDefault(propertyType, null);
+		_propertyClass = _propertyTypeClasses.get(propertyType);
 	}
 
 	public Class<?> getPropertyClass() {
