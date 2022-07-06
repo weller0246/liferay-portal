@@ -50,15 +50,27 @@ public class ObjectStateFlowLocalServiceImpl
 			return null;
 		}
 
-		ObjectStateFlow objectStateFlow = _addObjectStateFlow(
-			objectField.getUserId(), objectField.getObjectFieldId());
+		long objectStateFlowId = counterLocalService.increment();
+
+		ObjectStateFlow objectStateFlow = objectStateFlowPersistence.create(
+			objectStateFlowId);
+
+		User user = _userLocalService.getUser(objectField.getUserId());
+
+		objectStateFlow.setCompanyId(user.getCompanyId());
+		objectStateFlow.setUserId(user.getUserId());
+		objectStateFlow.setUserName(user.getFullName());
+
+		objectStateFlow.setObjectFieldId(objectField.getObjectFieldId());
+
+		objectStateFlow = objectStateFlowPersistence.update(objectStateFlow);
 
 		List<ObjectState> objectStates = TransformUtil.transform(
 			_listTypeEntryLocalService.getListTypeEntries(
 				objectField.getListTypeDefinitionId()),
 			listTypeEntry -> _objectStateLocalService.addObjectState(
 				objectField.getUserId(), listTypeEntry.getListTypeEntryId(),
-				objectStateFlow.getObjectStateFlowId()));
+				objectStateFlowId));
 
 		for (ObjectState sourceObjectState : objectStates) {
 			for (ObjectState targetObjectState : objectStates) {
@@ -113,23 +125,6 @@ public class ObjectStateFlowLocalServiceImpl
 				objectState.getObjectStateId(),
 				objectState.getObjectStateTransitions());
 		}
-	}
-
-	private ObjectStateFlow _addObjectStateFlow(long userId, long objectFieldId)
-		throws PortalException {
-
-		ObjectStateFlow objectStateFlow = objectStateFlowPersistence.create(
-			counterLocalService.increment());
-
-		User user = _userLocalService.getUser(userId);
-
-		objectStateFlow.setCompanyId(user.getCompanyId());
-		objectStateFlow.setUserId(user.getUserId());
-		objectStateFlow.setUserName(user.getFullName());
-
-		objectStateFlow.setObjectFieldId(objectFieldId);
-
-		return objectStateFlowPersistence.update(objectStateFlow);
 	}
 
 	@Reference
