@@ -37,15 +37,15 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 	protected boolean hasFileEntry(long groupId, long folderId, String title)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select count(*) from DLFileEntry where groupId = ? and " +
 					"folderId = ? and title = ?")) {
 
-			ps.setLong(1, groupId);
-			ps.setLong(2, folderId);
-			ps.setString(3, title);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setLong(2, folderId);
+			preparedStatement.setString(3, title);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					int count = rs.getInt(1);
 
@@ -61,10 +61,10 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	protected void updateFileEntries() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select fileEntryId, groupId, folderId, title, extension, " +
 					"version from DLFileEntry");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				String title = rs.getString("title");
@@ -116,23 +116,24 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			long fileEntryId, String version, String newTitle)
 		throws SQLException {
 
-		try (PreparedStatement ps1 = connection.prepareStatement(
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"update DLFileEntry set title = ? where fileEntryId = ?")) {
 
-			ps1.setString(1, newTitle);
-			ps1.setLong(2, fileEntryId);
+			preparedStatement1.setString(1, newTitle);
+			preparedStatement1.setLong(2, fileEntryId);
 
-			ps1.executeUpdate();
+			preparedStatement1.executeUpdate();
 
-			try (PreparedStatement ps2 = connection.prepareStatement(
-					"update DLFileVersion set title = ? where fileEntryId = " +
-						"? and version = ?")) {
+			try (PreparedStatement preparedStatement2 =
+					connection.prepareStatement(
+						"update DLFileVersion set title = ? where fileEntryId = " +
+							"? and version = ?")) {
 
-				ps2.setString(1, newTitle);
-				ps2.setLong(2, fileEntryId);
-				ps2.setString(3, version);
+				preparedStatement2.setString(1, newTitle);
+				preparedStatement2.setLong(2, fileEntryId);
+				preparedStatement2.setString(3, version);
 
-				ps2.executeUpdate();
+				preparedStatement2.executeUpdate();
 			}
 		}
 	}

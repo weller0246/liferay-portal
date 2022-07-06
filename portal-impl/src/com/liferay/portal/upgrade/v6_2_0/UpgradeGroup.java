@@ -37,13 +37,13 @@ public class UpgradeGroup extends UpgradeProcess {
 
 	protected void upgradeFriendlyURL() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"update Group_ set friendlyURL= ? where classNameId = ?")) {
 
-			ps.setString(1, GroupConstants.GLOBAL_FRIENDLY_URL);
-			ps.setLong(2, _CLASS_NAME_ID);
+			preparedStatement.setString(1, GroupConstants.GLOBAL_FRIENDLY_URL);
+			preparedStatement.setLong(2, _CLASS_NAME_ID);
 
-			ps.execute();
+			preparedStatement.execute();
 		}
 	}
 

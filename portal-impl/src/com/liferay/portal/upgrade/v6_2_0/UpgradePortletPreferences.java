@@ -47,11 +47,12 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 			String deleteSQL =
 				"delete from PortletPreferences where portletPreferencesId = ?";
 
-			try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
-				PreparedStatement ps2 =
+			try (PreparedStatement preparedStatement1 =
+					connection.prepareStatement(selectSQL);
+				PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
 						connection, deleteSQL);
-				ResultSet rs = ps1.executeQuery()) {
+				ResultSet rs = preparedStatement1.executeQuery()) {
 
 				while (rs.next()) {
 					String portletId = GetterUtil.getString(
@@ -72,12 +73,12 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 								portletPreferencesId);
 					}
 
-					ps2.setLong(1, portletPreferencesId);
+					preparedStatement2.setLong(1, portletPreferencesId);
 
-					ps2.addBatch();
+					preparedStatement2.addBatch();
 				}
 
-				ps2.executeBatch();
+				preparedStatement2.executeBatch();
 			}
 		}
 	}

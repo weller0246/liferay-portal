@@ -70,15 +70,15 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 		sb.append("portletId, preferences from PortletPreferences where ");
 		sb.append("ownerId = ?, ownerType = ?, plid = ?, portletId = ?");
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString())) {
 
-			ps.setLong(1, ownerId);
-			ps.setInt(2, ownerType);
-			ps.setLong(3, plid);
-			ps.setString(4, portletId);
+			preparedStatement.setLong(1, ownerId);
+			preparedStatement.setInt(2, ownerType);
+			preparedStatement.setLong(3, plid);
+			preparedStatement.setString(4, portletId);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (!rs.next()) {
 					return null;
 				}
@@ -104,11 +104,11 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 
 	protected void upgradeCustomizablePreferences() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select ownerId, ownerType, preferences from " +
 					"PortalPreferences where preferences like " +
 						"'%com.liferay.portal.model.CustomizedPages%'");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long ownerId = rs.getLong("ownerId");
@@ -170,8 +170,8 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 				sb.append("ownerId = ? and ownerType = ? and plid = ? and ");
 				sb.append("portletId = ?");
 
-				try (PreparedStatement ps = connection.prepareStatement(
-						sb.toString())) {
+				try (PreparedStatement preparedStatement =
+						connection.prepareStatement(sb.toString())) {
 
 					for (String customPortletId : StringUtil.split(value)) {
 						if (!PortletIdCodec.hasInstanceId(customPortletId)) {
@@ -186,22 +186,24 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 									customPortletId),
 								ownerId, instanceId);
 
-							ps.setLong(1, ownerId);
-							ps.setInt(2, PortletKeys.PREFS_OWNER_TYPE_USER);
-							ps.setLong(3, plid);
-							ps.setString(4, newPortletId);
-							ps.setLong(5, 0L);
-							ps.setInt(6, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
-							ps.setLong(7, plid);
-							ps.setString(8, newPortletId);
+							preparedStatement.setLong(1, ownerId);
+							preparedStatement.setInt(
+								2, PortletKeys.PREFS_OWNER_TYPE_USER);
+							preparedStatement.setLong(3, plid);
+							preparedStatement.setString(4, newPortletId);
+							preparedStatement.setLong(5, 0L);
+							preparedStatement.setInt(
+								6, PortletKeys.PREFS_OWNER_TYPE_LAYOUT);
+							preparedStatement.setLong(7, plid);
+							preparedStatement.setString(8, newPortletId);
 
 							newPortletIds.add(newPortletId);
 
-							ps.addBatch();
+							preparedStatement.addBatch();
 						}
 					}
 
-					ps.executeBatch();
+					preparedStatement.executeBatch();
 				}
 
 				value = StringUtil.merge(newPortletIds);

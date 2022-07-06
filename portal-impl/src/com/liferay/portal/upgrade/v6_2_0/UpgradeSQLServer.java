@@ -58,8 +58,9 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 			String sql = sb.toString();
 
-			try (PreparedStatement ps = connection.prepareStatement(sql);
-				ResultSet rs = ps.executeQuery()) {
+			try (PreparedStatement preparedStatement =
+					connection.prepareStatement(sql);
+				ResultSet rs = preparedStatement.executeQuery()) {
 
 				while (rs.next()) {
 					String tableName = rs.getString("table_name");
@@ -198,8 +199,9 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 		String sql = sb.toString();
 
-		try (PreparedStatement ps = connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sql);
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				String tableName = rs.getString("table_name");
@@ -261,8 +263,9 @@ public class UpgradeSQLServer extends UpgradeProcess {
 
 		String sql = sb.toString();
 
-		try (PreparedStatement ps = connection.prepareStatement(sql);
-			ResultSet rs = ps.executeQuery()) {
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sql);
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				String columnName = rs.getString("column_name");

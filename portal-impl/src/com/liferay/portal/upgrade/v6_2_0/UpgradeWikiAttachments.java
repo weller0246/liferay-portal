@@ -77,9 +77,9 @@ public class UpgradeWikiAttachments extends BaseAttachmentsUpgradeProcess {
 			sb.append("nodeId from WikiPage group by resourcePrimKey, ");
 			sb.append("groupId, companyId, nodeId");
 
-			try (PreparedStatement ps = connection.prepareStatement(
-					sb.toString());
-				ResultSet rs = ps.executeQuery()) {
+			try (PreparedStatement preparedStatement =
+					connection.prepareStatement(sb.toString());
+				ResultSet rs = preparedStatement.executeQuery()) {
 
 				while (rs.next()) {
 					long resourcePrimKey = rs.getLong("resourcePrimKey");

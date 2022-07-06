@@ -78,25 +78,28 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 		String sql = sb.toString();
 
-		try (PreparedStatement ps = connection.prepareStatement(sql)) {
-			ps.setString(1, uuid);
-			ps.setLong(2, ddmStructureId);
-			ps.setLong(3, groupId);
-			ps.setLong(4, companyId);
-			ps.setLong(5, userId);
-			ps.setString(6, userName);
-			ps.setTimestamp(7, createDate);
-			ps.setTimestamp(8, modifiedDate);
-			ps.setLong(9, parentDDMStructureId);
-			ps.setLong(10, classNameId);
-			ps.setString(11, ddmStructureKey);
-			ps.setString(12, name);
-			ps.setString(13, description);
-			ps.setString(14, getDDMXSD(xsd, getDefaultLocale(companyId)));
-			ps.setString(15, storageType);
-			ps.setInt(16, type);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sql)) {
 
-			ps.executeUpdate();
+			preparedStatement.setString(1, uuid);
+			preparedStatement.setLong(2, ddmStructureId);
+			preparedStatement.setLong(3, groupId);
+			preparedStatement.setLong(4, companyId);
+			preparedStatement.setLong(5, userId);
+			preparedStatement.setString(6, userName);
+			preparedStatement.setTimestamp(7, createDate);
+			preparedStatement.setTimestamp(8, modifiedDate);
+			preparedStatement.setLong(9, parentDDMStructureId);
+			preparedStatement.setLong(10, classNameId);
+			preparedStatement.setString(11, ddmStructureKey);
+			preparedStatement.setString(12, name);
+			preparedStatement.setString(13, description);
+			preparedStatement.setString(
+				14, getDDMXSD(xsd, getDefaultLocale(companyId)));
+			preparedStatement.setString(15, storageType);
+			preparedStatement.setInt(16, type);
+
+			preparedStatement.executeUpdate();
 		}
 		catch (Exception e) {
 			_log.error(
@@ -154,30 +157,32 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 		String sql = sb.toString();
 
-		try (PreparedStatement ps = connection.prepareStatement(sql)) {
-			ps.setString(1, uuid);
-			ps.setLong(2, ddmTemplateId);
-			ps.setLong(3, groupId);
-			ps.setLong(4, companyId);
-			ps.setLong(5, userId);
-			ps.setString(6, userName);
-			ps.setTimestamp(7, createDate);
-			ps.setTimestamp(8, modifiedDate);
-			ps.setLong(9, classNameId);
-			ps.setLong(10, classPK);
-			ps.setString(11, templateKey);
-			ps.setString(12, name);
-			ps.setString(13, description);
-			ps.setString(14, type);
-			ps.setString(15, mode);
-			ps.setString(16, language);
-			ps.setString(17, script);
-			ps.setBoolean(18, cacheable);
-			ps.setBoolean(19, smallImage);
-			ps.setLong(20, smallImageId);
-			ps.setString(21, smallImageURL);
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				sql)) {
 
-			ps.executeUpdate();
+			preparedStatement.setString(1, uuid);
+			preparedStatement.setLong(2, ddmTemplateId);
+			preparedStatement.setLong(3, groupId);
+			preparedStatement.setLong(4, companyId);
+			preparedStatement.setLong(5, userId);
+			preparedStatement.setString(6, userName);
+			preparedStatement.setTimestamp(7, createDate);
+			preparedStatement.setTimestamp(8, modifiedDate);
+			preparedStatement.setLong(9, classNameId);
+			preparedStatement.setLong(10, classPK);
+			preparedStatement.setString(11, templateKey);
+			preparedStatement.setString(12, name);
+			preparedStatement.setString(13, description);
+			preparedStatement.setString(14, type);
+			preparedStatement.setString(15, mode);
+			preparedStatement.setString(16, language);
+			preparedStatement.setString(17, script);
+			preparedStatement.setBoolean(18, cacheable);
+			preparedStatement.setBoolean(19, smallImage);
+			preparedStatement.setLong(20, smallImageId);
+			preparedStatement.setString(21, smallImageURL);
+
+			preparedStatement.executeUpdate();
 		}
 		catch (Exception e) {
 			_log.error(
@@ -198,19 +203,21 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	}
 
 	protected void addResourcePermission(
-		PreparedStatement ps, long companyId, String primKey, long roleId) {
+		PreparedStatement preparedStatement, long companyId, String primKey,
+		long roleId) {
 
 		try {
-			ps.setLong(1, increment(ResourcePermission.class.getName()));
-			ps.setLong(2, companyId);
-			ps.setString(3, "com.liferay.portlet.journal");
-			ps.setInt(4, ResourceConstants.SCOPE_INDIVIDUAL);
-			ps.setString(5, primKey);
-			ps.setLong(6, roleId);
-			ps.setLong(7, 0);
-			ps.setLong(8, 1);
+			preparedStatement.setLong(
+				1, increment(ResourcePermission.class.getName()));
+			preparedStatement.setLong(2, companyId);
+			preparedStatement.setString(3, "com.liferay.portlet.journal");
+			preparedStatement.setInt(4, ResourceConstants.SCOPE_INDIVIDUAL);
+			preparedStatement.setString(5, primKey);
+			preparedStatement.setLong(6, roleId);
+			preparedStatement.setLong(7, 0);
+			preparedStatement.setLong(8, 1);
 
-			ps.addBatch();
+			preparedStatement.addBatch();
 		}
 		catch (Exception e) {
 			_log.error("Unable to insert ResourcePermission", e);
@@ -262,16 +269,16 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	}
 
 	protected long getCompanyGroupId(long companyId) throws Exception {
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select groupId from Group_ where classNameId = ? and " +
 					"classPK = ?")) {
 
-			ps.setLong(
+			preparedStatement.setLong(
 				1,
 				PortalUtil.getClassNameId("com.liferay.portal.model.Company"));
-			ps.setLong(2, companyId);
+			preparedStatement.setLong(2, companyId);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (rs.next()) {
 					return rs.getLong("groupId");
 				}
@@ -357,14 +364,14 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	}
 
 	protected Locale getDefaultLocale(long companyId) throws Exception {
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select languageId from User_ where companyId = ? and " +
 					"defaultUser = ?")) {
 
-			ps.setLong(1, companyId);
-			ps.setBoolean(2, true);
+			preparedStatement.setLong(1, companyId);
+			preparedStatement.setBoolean(2, true);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (rs.next()) {
 					String languageId = rs.getString("languageId");
 
@@ -389,12 +396,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	}
 
 	protected long getRoleId(String roleName) throws Exception {
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select roleId from Role_ where name = ?")) {
 
-			ps.setString(1, roleName);
+			preparedStatement.setString(1, roleName);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (rs.next()) {
 					return rs.getLong("roleId");
 				}
@@ -444,17 +451,17 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected void updateAssetEntryClassTypeId() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps1 = connection.prepareStatement(
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				SQLTransformer.transform(
 					"select distinct companyId, groupId, resourcePrimKey, " +
 						"structureId from JournalArticle where structureId " +
 							"!= ''"));
-			ResultSet rs = ps1.executeQuery()) {
+			ResultSet rs = preparedStatement1.executeQuery()) {
 
 			long classNameId = PortalUtil.getClassNameId(
 				"com.liferay.portlet.journal.model.JournalArticle");
 
-			try (PreparedStatement ps2 =
+			try (PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 						connection,
 						"update AssetEntry set classTypeId = ? where " +
@@ -469,26 +476,26 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 					long ddmStructureId = getDDMStructureId(
 						groupId, getCompanyGroupId(companyId), structureId);
 
-					ps2.setLong(1, ddmStructureId);
+					preparedStatement2.setLong(1, ddmStructureId);
 
-					ps2.setLong(2, classNameId);
-					ps2.setLong(3, resourcePrimKey);
+					preparedStatement2.setLong(2, classNameId);
+					preparedStatement2.setLong(3, resourcePrimKey);
 
-					ps2.addBatch();
+					preparedStatement2.addBatch();
 				}
 
-				ps2.executeBatch();
+				preparedStatement2.executeBatch();
 			}
 		}
 	}
 
 	protected void updateContentSearch() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select groupId, portletId from JournalContentSearch group " +
 					"by groupId, portletId having count(groupId) > 1 and " +
 						"count(portletId) > 1");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long groupId = rs.getLong("groupId");
@@ -586,16 +593,16 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			long journalStructureId, Long ddmStructureId)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update JournalArticle set classNameId = ?, classPK = ? " +
 					"where classNameId = ? and classPK = ?")) {
 
-			ps.setLong(1, getDDMStructureClassNameId());
-			ps.setLong(2, ddmStructureId);
-			ps.setLong(3, getJournalStructureClassNameId());
-			ps.setLong(4, journalStructureId);
+			preparedStatement.setLong(1, getDDMStructureClassNameId());
+			preparedStatement.setLong(2, ddmStructureId);
+			preparedStatement.setLong(3, getJournalStructureClassNameId());
+			preparedStatement.setLong(4, journalStructureId);
 
-			ps.execute();
+			preparedStatement.execute();
 		}
 	}
 
@@ -858,15 +865,16 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected void updateLinkToLayoutContent() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps1 = connection.prepareStatement(
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				SQLTransformer.transform(
 					"select id_, groupId, content from JournalArticle where " +
 						"structureId != '' and content like " +
 							"'%link_to_layout%'"));
-			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection,
-				"update JournalArticle set content = ? where id_ = ?");
-			ResultSet rs = ps1.executeQuery()) {
+			PreparedStatement preparedStatement2 =
+				AutoBatchPreparedStatementUtil.autoBatch(
+					connection,
+					"update JournalArticle set content = ? where id_ = ?");
+			ResultSet rs = preparedStatement1.executeQuery()) {
 
 			while (rs.next()) {
 				long id = rs.getLong("id_");
@@ -882,17 +890,17 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						updateElement(groupId, element);
 					}
 
-					ps2.setString(1, document.asXML());
-					ps2.setLong(2, id);
+					preparedStatement2.setString(1, document.asXML());
+					preparedStatement2.setLong(2, id);
 
-					ps2.addBatch();
+					preparedStatement2.addBatch();
 				}
 				catch (Exception e) {
 					_log.error("Unable to update content for article " + id, e);
 				}
 			}
 
-			ps2.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 
@@ -1015,12 +1023,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	}
 
 	protected long updateStructure(String structureId) throws Exception {
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select * from JournalStructure where structureId = ?")) {
 
-			ps.setString(1, structureId);
+			preparedStatement.setString(1, structureId);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (rs.next()) {
 					return updateStructure(rs);
 				}
@@ -1039,9 +1047,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected void updateStructures() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select * from JournalStructure");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				updateStructure(rs);
@@ -1053,9 +1061,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected void updateTemplates() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select * from JournalTemplate");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				String uuid_ = rs.getString("uuid_");
@@ -1144,14 +1152,14 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected void upgradeURLTitle() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps1 = connection.prepareStatement(
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select distinct groupId, articleId, urlTitle from " +
 					"JournalArticle");
-			ResultSet rs = ps1.executeQuery()) {
+			ResultSet rs = preparedStatement1.executeQuery()) {
 
 			Map<String, String> processedArticleIds = new HashMap<>();
 
-			try (PreparedStatement ps2 =
+			try (PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
 						connection,
 						"update JournalArticle set urlTitle = ? where " +
@@ -1176,14 +1184,14 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						groupId, articleId, normalizedURLTitle,
 						processedArticleIds);
 
-					ps2.setString(1, normalizedURLTitle);
+					preparedStatement2.setString(1, normalizedURLTitle);
 
-					ps2.setString(2, urlTitle);
+					preparedStatement2.setString(2, urlTitle);
 
-					ps2.addBatch();
+					preparedStatement2.addBatch();
 				}
 
-				ps2.executeBatch();
+				preparedStatement2.executeBatch();
 			}
 		}
 	}
@@ -1224,15 +1232,15 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			long groupId, String articleId, String urlTitle)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select count(*) from JournalArticle where groupId = ? and " +
 					"urlTitle = ? and articleId != ?")) {
 
-			ps.setLong(1, groupId);
-			ps.setString(2, urlTitle);
-			ps.setString(3, articleId);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setString(2, urlTitle);
+			preparedStatement.setString(3, articleId);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					int count = rs.getInt(1);
 

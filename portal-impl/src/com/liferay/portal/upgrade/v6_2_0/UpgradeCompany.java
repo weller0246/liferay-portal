@@ -47,9 +47,9 @@ public class UpgradeCompany extends UpgradeProcess {
 
 	protected void upgradeKey() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select companyId, key_ from Company");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long companyId = rs.getLong("companyId");
@@ -75,13 +75,14 @@ public class UpgradeCompany extends UpgradeProcess {
 			}
 		}
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update Company set key_ = ? where companyId = ?")) {
 
-			ps.setString(1, Base64.objectToString(EncryptorUtil.generateKey()));
-			ps.setLong(2, companyId);
+			preparedStatement.setString(
+				1, Base64.objectToString(EncryptorUtil.generateKey()));
+			preparedStatement.setLong(2, companyId);
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 

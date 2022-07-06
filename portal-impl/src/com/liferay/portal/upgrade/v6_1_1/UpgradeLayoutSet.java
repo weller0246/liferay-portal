@@ -41,12 +41,12 @@ public class UpgradeLayoutSet extends UpgradeProcess {
 			sb.append("Group_ on (LayoutSet.groupId = Group_.groupId and ");
 			sb.append("Group_.liveGroupId > 0 and LayoutSet.logo = ?)");
 
-			try (PreparedStatement ps = connection.prepareStatement(
-					sb.toString())) {
+			try (PreparedStatement preparedStatement =
+					connection.prepareStatement(sb.toString())) {
 
-				ps.setBoolean(1, true);
+				preparedStatement.setBoolean(1, true);
 
-				try (ResultSet rs = ps.executeQuery()) {
+				try (ResultSet rs = preparedStatement.executeQuery()) {
 					while (rs.next()) {
 						long groupId = rs.getLong("Group_.groupId");
 						long layoutSetId = rs.getLong("LayoutSet.layoutSetId");

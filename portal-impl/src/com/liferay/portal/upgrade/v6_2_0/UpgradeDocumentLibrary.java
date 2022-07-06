@@ -78,13 +78,13 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 	}
 
 	protected String getUserName(long userId) throws Exception {
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select firstName, middleName, lastName from User_ where " +
 					"userId = ?")) {
 
-			ps.setLong(1, userId);
+			preparedStatement.setLong(1, userId);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				if (rs.next()) {
 					String firstName = rs.getString("firstName");
 					String middleName = rs.getString("middleName");
@@ -136,16 +136,18 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 					List<DLFolderTreeModel> treeModels = new ArrayList<>();
 
-					try (PreparedStatement ps = connection.prepareStatement(
-							_SELECT_DLFOLDER_BY_PARENT)) {
+					try (PreparedStatement preparedStatement =
+							connection.prepareStatement(
+								_SELECT_DLFOLDER_BY_PARENT)) {
 
-						ps.setLong(1, previousId);
-						ps.setLong(2, companyId);
-						ps.setLong(3, parentPrimaryKey);
-						ps.setInt(4, WorkflowConstants.STATUS_IN_TRASH);
-						ps.setFetchSize(size);
+						preparedStatement.setLong(1, previousId);
+						preparedStatement.setLong(2, companyId);
+						preparedStatement.setLong(3, parentPrimaryKey);
+						preparedStatement.setInt(
+							4, WorkflowConstants.STATUS_IN_TRASH);
+						preparedStatement.setFetchSize(size);
 
-						try (ResultSet rs = ps.executeQuery()) {
+						try (ResultSet rs = preparedStatement.executeQuery()) {
 							while (rs.next()) {
 								long folderId = rs.getLong(1);
 
@@ -221,14 +223,15 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	protected void updateDLFolderUserName() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps1 = connection.prepareStatement(
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select distinct userId from DLFolder where userName is null " +
 					"or userName = ''");
-			ResultSet rs = ps1.executeQuery();
-			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection,
-				"update DLFolder set userName = ? where userId = ? and " +
-					"(userName is null or userName = '')")) {
+			ResultSet rs = preparedStatement1.executeQuery();
+			PreparedStatement preparedStatement2 =
+				AutoBatchPreparedStatementUtil.autoBatch(
+					connection,
+					"update DLFolder set userName = ? where userId = ? and " +
+						"(userName is null or userName = '')")) {
 
 			while (rs.next()) {
 				long userId = rs.getLong("userId");
@@ -236,10 +239,10 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				String userName = getUserName(userId);
 
 				if (Validator.isNotNull(userName)) {
-					ps2.setString(1, userName);
-					ps2.setLong(2, userId);
+					preparedStatement2.setString(1, userName);
+					preparedStatement2.setLong(2, userId);
 
-					ps2.addBatch();
+					preparedStatement2.addBatch();
 				}
 				else {
 					if (_log.isInfoEnabled()) {
@@ -248,7 +251,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				}
 			}
 
-			ps2.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 
@@ -257,25 +260,26 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 			String name, String description)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update DLFileEntryType set fileEntryTypeKey = ?, name = ?, " +
 					"description = ? where fileEntryTypeId = ?")) {
 
-			ps.setString(1, fileEntryTypeKey);
-			ps.setString(2, localize(companyId, name, "Name"));
-			ps.setString(3, localize(companyId, description, "Description"));
-			ps.setLong(4, fileEntryTypeId);
+			preparedStatement.setString(1, fileEntryTypeKey);
+			preparedStatement.setString(2, localize(companyId, name, "Name"));
+			preparedStatement.setString(
+				3, localize(companyId, description, "Description"));
+			preparedStatement.setLong(4, fileEntryTypeId);
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 
 	protected void updateFileEntryTypes() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select fileEntryTypeId, companyId, name, description from " +
 					"DLFileEntryType");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long fileEntryTypeId = rs.getLong("fileEntryTypeId");
@@ -360,8 +364,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 	private class DLFolderTreeModel implements TreeModel {
 
-		public DLFolderTreeModel(PreparedStatement ps) {
-			_ps = ps;
+		public DLFolderTreeModel(PreparedStatement preparedStatement) {
+			_preparedStatement = preparedStatement;
 		}
 
 		@Override
@@ -386,10 +390,10 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		@Override
 		public void updateTreePath(String treePath) {
 			try {
-				_ps.setString(1, treePath);
-				_ps.setLong(2, _folderId);
+				_preparedStatement.setString(1, treePath);
+				_preparedStatement.setLong(2, _folderId);
 
-				_ps.addBatch();
+				_preparedStatement.addBatch();
 			}
 			catch (SQLException sqle) {
 				_log.error("Unable to update tree path: " + treePath, sqle);
@@ -397,7 +401,7 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 		}
 
 		private long _folderId;
-		private final PreparedStatement _ps;
+		private final PreparedStatement _preparedStatement;
 
 	}
 

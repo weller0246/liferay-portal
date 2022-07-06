@@ -96,15 +96,15 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			long structureId, String structureKey, String xsd)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update DDMStructure set structureKey = ?, xsd = ? where " +
 					"structureId = ?")) {
 
-			ps.setString(1, structureKey);
-			ps.setString(2, xsd);
-			ps.setLong(3, structureId);
+			preparedStatement.setString(1, structureKey);
+			preparedStatement.setString(2, xsd);
+			preparedStatement.setLong(3, structureId);
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 		catch (SQLException sqle) {
 			if (_log.isWarnEnabled()) {
@@ -115,9 +115,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	protected void updateStructures() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select structureId, structureKey, xsd from DDMStructure");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long structureId = rs.getLong("structureId");
@@ -139,21 +139,21 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	protected void updateStructuresClassNameId() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"update DDMStructure set classNameId = ? where classNameId = " +
 					"?")) {
 
-			ps.setLong(
+			preparedStatement.setLong(
 				1,
 				PortalUtil.getClassNameId(
 					"com.liferay.portlet.documentlibrary.model." +
 						"DLFileEntryMetadata"));
-			ps.setLong(
+			preparedStatement.setLong(
 				2,
 				PortalUtil.getClassNameId(
 					"com.liferay.portlet.documentlibrary.model.DLFileEntry"));
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 		catch (SQLException sqle) {
 			if (_log.isWarnEnabled()) {
@@ -166,24 +166,24 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			long templateId, String templateKey, String script)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update DDMTemplate set templateKey = ?, script = ? where " +
 					"templateId = ?")) {
 
-			ps.setString(1, templateKey);
-			ps.setString(2, script);
-			ps.setLong(3, templateId);
+			preparedStatement.setString(1, templateKey);
+			preparedStatement.setString(2, script);
+			preparedStatement.setLong(3, templateId);
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 
 	protected void updateTemplates() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select templateId, templateKey, script from DDMTemplate " +
 					"where language = 'xsd'");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long templateId = rs.getLong("templateId");

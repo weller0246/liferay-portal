@@ -34,14 +34,14 @@ public class UpgradeLayout extends UpgradeProcess {
 	protected long getLayoutPrototypeGroupId(String layoutPrototypeUuid)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select groupId from Group_ where classPK = (select " +
 					"layoutPrototypeId from LayoutPrototype where uuid_ = " +
 						"?)")) {
 
-			ps.setString(1, layoutPrototypeUuid);
+			preparedStatement.setString(1, layoutPrototypeUuid);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					return rs.getLong("groupId");
 				}
@@ -55,15 +55,15 @@ public class UpgradeLayout extends UpgradeProcess {
 			long groupId, String sourcePrototypeLayoutUuid)
 		throws Exception {
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select count(*) from Layout where uuid_ = ? and groupId = ? " +
 					"and privateLayout = ?")) {
 
-			ps.setString(1, sourcePrototypeLayoutUuid);
-			ps.setLong(2, groupId);
-			ps.setBoolean(3, true);
+			preparedStatement.setString(1, sourcePrototypeLayoutUuid);
+			preparedStatement.setLong(2, groupId);
+			preparedStatement.setBoolean(3, true);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					int count = rs.getInt(1);
 
@@ -88,9 +88,9 @@ public class UpgradeLayout extends UpgradeProcess {
 			sb.append("layoutPrototypeUuid != '' and ");
 			sb.append("sourcePrototypeLayoutUuid != ''");
 
-			try (PreparedStatement ps = connection.prepareStatement(
-					sb.toString());
-				ResultSet rs = ps.executeQuery()) {
+			try (PreparedStatement preparedStatement =
+					connection.prepareStatement(sb.toString());
+				ResultSet rs = preparedStatement.executeQuery()) {
 
 				// Get pages with a sourcePrototypeLayoutUuid that have a page
 				// template. If the layoutUuid points to a page template, remove

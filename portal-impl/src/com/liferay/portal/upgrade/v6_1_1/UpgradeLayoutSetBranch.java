@@ -47,29 +47,29 @@ public class UpgradeLayoutSetBranch extends UpgradeProcess {
 		sb.append("layoutSetPrototypeLinkEnabled = ? where layoutSetBranchId ");
 		sb.append("= ?");
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString())) {
 
-			ps.setString(1, themeId);
-			ps.setString(2, colorSchemeId);
-			ps.setString(3, wapThemeId);
-			ps.setString(4, wapColorSchemeId);
-			ps.setString(5, css);
-			ps.setString(6, settings);
-			ps.setString(7, layoutSetPrototypeUuid);
-			ps.setBoolean(8, layoutSetPrototypeLinkEnabled);
-			ps.setLong(9, layoutSetBranchId);
+			preparedStatement.setString(1, themeId);
+			preparedStatement.setString(2, colorSchemeId);
+			preparedStatement.setString(3, wapThemeId);
+			preparedStatement.setString(4, wapColorSchemeId);
+			preparedStatement.setString(5, css);
+			preparedStatement.setString(6, settings);
+			preparedStatement.setString(7, layoutSetPrototypeUuid);
+			preparedStatement.setBoolean(8, layoutSetPrototypeLinkEnabled);
+			preparedStatement.setLong(9, layoutSetBranchId);
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 
 	protected void updateLayoutSetBranches() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select groupId, layoutSetBranchId, privateLayout from " +
 					"LayoutSetBranch");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long layoutSetBranchId = rs.getLong("layoutSetBranchId");
@@ -93,13 +93,13 @@ public class UpgradeLayoutSetBranch extends UpgradeProcess {
 		sb.append("layoutSetPrototypeLinkEnabled from LayoutSet where ");
 		sb.append("groupId = ? and privateLayout = ?");
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString())) {
 
-			ps.setLong(1, groupId);
-			ps.setBoolean(2, privateLayout);
+			preparedStatement.setLong(1, groupId);
+			preparedStatement.setBoolean(2, privateLayout);
 
-			try (ResultSet rs = ps.executeQuery()) {
+			try (ResultSet rs = preparedStatement.executeQuery()) {
 				while (rs.next()) {
 					String themeId = rs.getString("themeId");
 					String colorSchemeId = rs.getString("colorSchemeId");

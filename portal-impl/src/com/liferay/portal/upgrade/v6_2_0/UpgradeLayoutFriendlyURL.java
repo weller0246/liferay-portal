@@ -31,11 +31,11 @@ public class UpgradeLayoutFriendlyURL extends UpgradeProcess {
 
 	protected void addLayoutFriendlyURL() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement ps = connection.prepareStatement(
+			PreparedStatement preparedStatement = connection.prepareStatement(
 				"select plid, groupId, companyId, userId, userName, " +
 					"createDate, modifiedDate, privateLayout, friendlyURL " +
 						"from Layout");
-			ResultSet rs = ps.executeQuery()) {
+			ResultSet rs = preparedStatement.executeQuery()) {
 
 			while (rs.next()) {
 				long plid = rs.getLong("plid");
@@ -69,24 +69,24 @@ public class UpgradeLayoutFriendlyURL extends UpgradeProcess {
 		sb.append("friendlyURL, languageId) values (?, ?, ?, ?, ?, ?, ?, ?, ");
 		sb.append("?, ?, ?, ?)");
 
-		try (PreparedStatement ps = connection.prepareStatement(
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				sb.toString())) {
 
-			ps.setString(1, PortalUUIDUtil.generate());
-			ps.setLong(2, increment());
-			ps.setLong(3, groupId);
-			ps.setLong(4, companyId);
-			ps.setLong(5, userId);
-			ps.setString(6, userName);
-			ps.setTimestamp(7, createDate);
-			ps.setTimestamp(8, modifiedDate);
-			ps.setLong(9, plid);
-			ps.setBoolean(10, privateLayout);
-			ps.setString(11, friendlyURL);
-			ps.setString(
+			preparedStatement.setString(1, PortalUUIDUtil.generate());
+			preparedStatement.setLong(2, increment());
+			preparedStatement.setLong(3, groupId);
+			preparedStatement.setLong(4, companyId);
+			preparedStatement.setLong(5, userId);
+			preparedStatement.setString(6, userName);
+			preparedStatement.setTimestamp(7, createDate);
+			preparedStatement.setTimestamp(8, modifiedDate);
+			preparedStatement.setLong(9, plid);
+			preparedStatement.setBoolean(10, privateLayout);
+			preparedStatement.setString(11, friendlyURL);
+			preparedStatement.setString(
 				12, UpgradeProcessUtil.getDefaultLanguageId(companyId));
 
-			ps.executeUpdate();
+			preparedStatement.executeUpdate();
 		}
 	}
 
