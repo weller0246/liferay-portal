@@ -22,10 +22,9 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.UserLocalService;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -81,17 +80,11 @@ public class ObjectStateLocalServiceImpl
 
 	@Override
 	public List<ObjectState> getNextObjectStates(long sourceObjectStateId) {
-		return Stream.of(
+		return TransformUtil.transform(
 			_objectStateTransitionPersistence.findBySourceObjectStateId(
-				sourceObjectStateId)
-		).flatMap(
-			List::stream
-		).map(
+				sourceObjectStateId),
 			objectStateTransition -> objectStatePersistence.fetchByPrimaryKey(
-				objectStateTransition.getTargetObjectStateId())
-		).collect(
-			Collectors.toList()
-		);
+				objectStateTransition.getTargetObjectStateId()));
 	}
 
 	@Override
