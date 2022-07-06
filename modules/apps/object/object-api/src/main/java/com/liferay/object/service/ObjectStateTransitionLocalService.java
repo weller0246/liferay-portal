@@ -251,10 +251,6 @@ public interface ObjectStateTransitionLocalService
 	public List<ObjectStateTransition> getObjectStateFlowObjectStateTransitions(
 		long objectStateFlowId);
 
-	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public List<ObjectStateTransition> getObjectStateObjectStateTransitions(
-		long sourceObjectStateId);
-
 	/**
 	 * Returns the object state transition with the primary key.
 	 *

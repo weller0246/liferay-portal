@@ -300,13 +300,6 @@ public class ObjectStateTransitionLocalServiceUtil {
 			objectStateFlowId);
 	}
 
-	public static List<ObjectStateTransition>
-		getObjectStateObjectStateTransitions(long sourceObjectStateId) {
-
-		return getService().getObjectStateObjectStateTransitions(
-			sourceObjectStateId);
-	}
-
 	/**
 	 * Returns the object state transition with the primary key.
 	 *
