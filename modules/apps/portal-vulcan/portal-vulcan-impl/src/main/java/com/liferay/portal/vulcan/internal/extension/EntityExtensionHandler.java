@@ -98,65 +98,65 @@ public class EntityExtensionHandler {
 		long companyId, Map<String, Serializable> extendedProperties,
 		boolean partialUpdate) {
 
-		Map<String, PropertyDefinition> propertyDefinitionMap = new HashMap<>();
+		Map<String, PropertyDefinition> propertyDefinitions = new HashMap<>();
 
 		for (ExtensionProvider extensionProvider : _extensionProviders) {
-			propertyDefinitionMap.putAll(
+			propertyDefinitions.putAll(
 				extensionProvider.getExtendedPropertyDefinitions(
 					companyId, _className));
 		}
 
-		List<String> unknownProperties = new ArrayList<>();
+		List<String> unknownPropertyNames = new ArrayList<>();
 
-		for (Map.Entry<String, Serializable> extendedPropertyEntry :
+		for (Map.Entry<String, Serializable> entry :
 				extendedProperties.entrySet()) {
 
-			String extendedPropertyName = extendedPropertyEntry.getKey();
+			String extendedPropertyName = entry.getKey();
 
-			if (!propertyDefinitionMap.containsKey(extendedPropertyName)) {
-				unknownProperties.add(extendedPropertyName);
+			if (!propertyDefinitions.containsKey(extendedPropertyName)) {
+				unknownPropertyNames.add(extendedPropertyName);
 
 				continue;
 			}
 
-			PropertyDefinition propertyDefinition = propertyDefinitionMap.get(
+			PropertyDefinition propertyDefinition = propertyDefinitions.get(
 				extendedPropertyName);
 
 			PropertyValidator propertyValidator =
 				propertyDefinition.getPropertyValidator();
 
-			propertyValidator.validate(
-				propertyDefinition, extendedPropertyEntry.getValue());
+			propertyValidator.validate(propertyDefinition, entry.getValue());
 
-			propertyDefinitionMap.remove(extendedPropertyName);
+			propertyDefinitions.remove(extendedPropertyName);
 		}
 
-		if (ListUtil.isNotEmpty(unknownProperties)) {
+		if (ListUtil.isNotEmpty(unknownPropertyNames)) {
 			throw new ValidationException(
-				"The properties [" + ListUtil.toString(unknownProperties, "") +
-					"] are unknown");
+				"The properties [" +
+					ListUtil.toString(unknownPropertyNames, "") +
+						"] are unknown");
 		}
 
 		if (partialUpdate) {
 			return;
 		}
 
-		List<String> missingMandatoryProperties = new ArrayList<>();
+		List<String> missingRequiredPropertyNames = new ArrayList<>();
 
 		for (PropertyDefinition propertyDefinition :
-				propertyDefinitionMap.values()) {
+				propertyDefinitions.values()) {
 
 			if (propertyDefinition.isRequired()) {
-				missingMandatoryProperties.add(
+				missingRequiredPropertyNames.add(
 					propertyDefinition.getPropertyName());
 			}
 		}
 
-		if (ListUtil.isNotEmpty(missingMandatoryProperties)) {
+		if (ListUtil.isNotEmpty(missingRequiredPropertyNames)) {
 			throw new ValidationException(
 				"The properties [" +
-					ListUtil.toString(missingMandatoryProperties, "") +
-						"] are mandatory");
+					ListUtil.toString(missingRequiredPropertyNames, "") +
+						"] are required");
 		}
 	}
 
