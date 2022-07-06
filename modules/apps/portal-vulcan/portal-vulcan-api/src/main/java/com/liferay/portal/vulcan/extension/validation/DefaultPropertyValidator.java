@@ -15,6 +15,8 @@
 package com.liferay.portal.vulcan.extension.validation;
 
 import com.liferay.petra.string.StringBundler;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.vulcan.extension.PropertyDefinition;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 
@@ -52,6 +54,9 @@ public class DefaultPropertyValidator implements PropertyValidator {
 					valid = true;
 				}
 				catch (ParseException parseException) {
+					if (_log.isDebugEnabled()) {
+						_log.debug(parseException);
+					}
 				}
 			}
 		}
@@ -93,5 +98,8 @@ public class DefaultPropertyValidator implements PropertyValidator {
 					"\" is invalid for property type ", propertyType));
 		}
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		DefaultPropertyValidator.class);
 
 }
