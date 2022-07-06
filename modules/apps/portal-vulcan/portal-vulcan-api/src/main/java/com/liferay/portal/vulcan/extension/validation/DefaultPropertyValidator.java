@@ -51,6 +51,7 @@ public class DefaultPropertyValidator implements PropertyValidator {
 
 				try {
 					dateFormat.parse((String)propertyValue);
+
 					valid = true;
 				}
 				catch (ParseException parseException) {
