@@ -15,7 +15,6 @@
 package com.liferay.object.service.impl;
 
 import com.liferay.list.type.service.ListTypeEntryLocalService;
-import com.liferay.object.exception.NoSuchObjectStateFlowException;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
@@ -80,7 +79,7 @@ public class ObjectStateFlowLocalServiceImpl
 
 	@Override
 	public void deleteObjectFieldObjectStateFlow(long objectFieldId)
-		throws NoSuchObjectStateFlowException {
+		throws PortalException {
 
 		ObjectStateFlow objectStateFlow = getObjectFieldObjectStateFlow(
 			objectFieldId);
