@@ -96,7 +96,6 @@ public class FormLayoutStructureItemMapper
 							() -> getFragmentViewPorts(
 								formStyledLayoutStructureItem.
 									getItemConfigJSONObject()));
-
 						setName(
 							() -> {
 								if (!GetterUtil.getBoolean(
