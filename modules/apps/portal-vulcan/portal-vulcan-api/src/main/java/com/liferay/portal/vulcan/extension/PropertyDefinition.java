@@ -45,7 +45,7 @@ public class PropertyDefinition {
 		_propertyType = propertyType;
 		_required = required;
 
-		_propertyClass = _propertyTypeClassMap.getOrDefault(propertyType, null);
+		_propertyClass = _propertyTypeClasses.getOrDefault(propertyType, null);
 		_propertyValidator = new DefaultPropertyValidator();
 	}
 
@@ -58,7 +58,7 @@ public class PropertyDefinition {
 		_propertyValidator = propertyValidator;
 		_required = required;
 
-		_propertyClass = _propertyTypeClassMap.getOrDefault(propertyType, null);
+		_propertyClass = _propertyTypeClasses.getOrDefault(propertyType, null);
 	}
 
 	public Class<?> getPropertyClass() {
@@ -88,7 +88,7 @@ public class PropertyDefinition {
 
 	}
 
-	private static final Map<PropertyType, Class<?>> _propertyTypeClassMap =
+	private static final Map<PropertyType, Class<?>> _propertyTypeClasses =
 		HashMapBuilder.<PropertyType, Class<?>>put(
 			PropertyType.BIG_DECIMAL, BigDecimal.class
 		).<PropertyType, Class<?>>put(
