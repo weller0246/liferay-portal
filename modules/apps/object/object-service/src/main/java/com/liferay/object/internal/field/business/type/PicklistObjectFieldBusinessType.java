@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -111,51 +110,9 @@ public class PicklistObjectFieldBusinessType
 
 		DDMFormFieldOptions ddmFormFieldOptions = new DDMFormFieldOptions();
 
-		List<ListTypeEntry> listTypeEntries =
-			_listTypeEntryLocalService.getListTypeEntries(
-				objectField.getListTypeDefinitionId());
+		for (ListTypeEntry listTypeEntry :
+				_getListTypeEntries(objectField, objectFieldRenderingContext)) {
 
-		if (objectField.isState()) {
-			String listEntryKey = objectField.getDefaultValue();
-
-			if (MapUtil.isNotEmpty(
-					objectFieldRenderingContext.getProperties())) {
-
-				ListEntry listEntry =
-					(ListEntry)objectFieldRenderingContext.getProperty(
-						objectField.getName());
-
-				listEntryKey = listEntry.getKey();
-			}
-
-			ListTypeEntry listTypeEntry =
-				_listTypeEntryLocalService.fetchListTypeEntry(
-					objectField.getListTypeDefinitionId(), listEntryKey);
-
-			ObjectStateFlow objectStateFlow =
-				_objectStateFlowLocalService.getObjectFieldObjectStateFlow(
-					objectField.getObjectFieldId());
-
-			ObjectState currentObjectState =
-				_objectStateLocalService.
-					getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
-						listTypeEntry.getListTypeEntryId(),
-						objectStateFlow.getObjectStateFlowId());
-
-			List<Long> listTypeEntryIds = ListUtil.toList(
-				_objectStateLocalService.getNextObjectStates(
-					currentObjectState.getObjectStateId()),
-				ObjectState::getListTypeEntryId);
-
-			listTypeEntryIds.add(currentObjectState.getListTypeEntryId());
-
-			listTypeEntries = TransformUtil.transform(
-				listTypeEntryIds,
-				listTypeEntryId -> _listTypeEntryLocalService.getListTypeEntry(
-					listTypeEntryId));
-		}
-
-		for (ListTypeEntry listTypeEntry : listTypeEntries) {
 			ddmFormFieldOptions.addOptionLabel(
 				listTypeEntry.getKey(), objectFieldRenderingContext.getLocale(),
 				GetterUtil.getString(
@@ -182,6 +139,53 @@ public class PicklistObjectFieldBusinessType
 		}
 
 		return ddmFormFieldPredefinedValueLocalizedValue;
+	}
+
+	private List<ListTypeEntry> _getListTypeEntries(
+			ObjectField objectField,
+			ObjectFieldRenderingContext objectFieldRenderingContext)
+		throws PortalException {
+
+		if (!objectField.isState()) {
+			return _listTypeEntryLocalService.getListTypeEntries(
+				objectField.getListTypeDefinitionId());
+		}
+
+		String listEntryKey = objectField.getDefaultValue();
+
+		if (MapUtil.isNotEmpty(objectFieldRenderingContext.getProperties())) {
+			ListEntry listEntry =
+				(ListEntry)objectFieldRenderingContext.getProperty(
+					objectField.getName());
+
+			listEntryKey = listEntry.getKey();
+		}
+
+		ListTypeEntry listTypeEntry =
+			_listTypeEntryLocalService.fetchListTypeEntry(
+				objectField.getListTypeDefinitionId(), listEntryKey);
+
+		ObjectStateFlow objectStateFlow =
+			_objectStateFlowLocalService.getObjectFieldObjectStateFlow(
+				objectField.getObjectFieldId());
+
+		ObjectState objectState =
+			_objectStateLocalService.
+				getObjectStatesByListTypeEntryIdAndObjectStateFlowId(
+					listTypeEntry.getListTypeEntryId(),
+					objectStateFlow.getObjectStateFlowId());
+
+		List<ListTypeEntry> listTypeEntries = TransformUtil.transform(
+			_objectStateLocalService.getNextObjectStates(
+				objectState.getObjectStateId()),
+			nextObjectState -> _listTypeEntryLocalService.getListTypeEntry(
+				nextObjectState.getListTypeEntryId()));
+
+		listTypeEntries.add(
+			_listTypeEntryLocalService.getListTypeEntry(
+				objectState.getListTypeEntryId()));
+
+		return listTypeEntries;
 	}
 
 	@Reference
