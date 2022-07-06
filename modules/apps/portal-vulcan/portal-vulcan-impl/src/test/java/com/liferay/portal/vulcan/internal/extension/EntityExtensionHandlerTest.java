@@ -259,6 +259,7 @@ public class EntityExtensionHandlerTest {
 		).getExtendedPropertyDefinitions(
 			_COMPANY_ID, _CLASS_NAME
 		);
+
 		Mockito.verify(
 			extensionProviderMock2
 		).getExtendedPropertyDefinitions(
@@ -327,6 +328,7 @@ public class EntityExtensionHandlerTest {
 		).getExtendedPropertyDefinitions(
 			_COMPANY_ID, _CLASS_NAME
 		);
+
 		Mockito.verify(
 			extensionProviderMock2
 		).getExtendedPropertyDefinitions(
