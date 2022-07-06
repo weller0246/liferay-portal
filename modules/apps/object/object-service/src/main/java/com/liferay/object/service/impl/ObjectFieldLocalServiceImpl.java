@@ -677,11 +677,6 @@ public class ObjectFieldLocalServiceImpl
 
 		objectField = objectFieldPersistence.remove(objectField);
 
-		if (objectField.isState()) {
-			_objectStateFlowLocalService.deleteObjectFieldObjectStateFlow(
-				objectField.getObjectFieldId());
-		}
-
 		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() ==
 				objectField.getObjectFieldId()) {
 
@@ -710,6 +705,11 @@ public class ObjectFieldLocalServiceImpl
 
 		_objectLayoutColumnPersistence.removeByObjectFieldId(
 			objectField.getObjectFieldId());
+
+		if (objectField.isState()) {
+			_objectStateFlowLocalService.deleteObjectFieldObjectStateFlow(
+				objectField.getObjectFieldId());
+		}
 
 		_objectViewLocalService.unassociateObjectField(objectField);
 
