@@ -129,14 +129,6 @@ public class ObjectStateTransitionLocalServiceImpl
 	}
 
 	@Override
-	public List<ObjectStateTransition> getObjectStateObjectStateTransitions(
-		long sourceObjectStateId) {
-
-		return objectStateTransitionPersistence.findBySourceObjectStateId(
-			sourceObjectStateId);
-	}
-
-	@Override
 	public void updateObjectStateTransitions(ObjectStateFlow objectStateFlow)
 		throws PortalException {
 

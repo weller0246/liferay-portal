@@ -17,6 +17,7 @@ package com.liferay.object.service.impl;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.service.ObjectStateTransitionLocalService;
 import com.liferay.object.service.base.ObjectStateLocalServiceBaseImpl;
+import com.liferay.object.service.persistence.ObjectStateTransitionPersistence;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.User;
@@ -81,8 +82,8 @@ public class ObjectStateLocalServiceImpl
 	@Override
 	public List<ObjectState> getNextObjectStates(long sourceObjectStateId) {
 		return Stream.of(
-			_objectStateTransitionLocalService.
-				getObjectStateObjectStateTransitions(sourceObjectStateId)
+			_objectStateTransitionPersistence.findBySourceObjectStateId(
+				sourceObjectStateId)
 		).flatMap(
 			List::stream
 		).map(
@@ -113,6 +114,9 @@ public class ObjectStateLocalServiceImpl
 	@Reference
 	private ObjectStateTransitionLocalService
 		_objectStateTransitionLocalService;
+
+	@Reference
+	private ObjectStateTransitionPersistence _objectStateTransitionPersistence;
 
 	@Reference
 	private UserLocalService _userLocalService;
