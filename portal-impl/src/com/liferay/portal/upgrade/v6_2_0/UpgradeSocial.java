@@ -18,6 +18,7 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -322,8 +323,6 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
 			long messageId = 0;
 
 			try {
@@ -341,11 +340,11 @@ public class UpgradeSocial extends UpgradeProcess {
 				}
 			}
 
-			extraDataJSONObject.put("messageId", messageId);
-
-			extraDataJSONObject.put("title", resultSet.getString("subject"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put(
+				"messageId", messageId
+			).put(
+				"title", resultSet.getString("subject")
+			);
 		}
 
 		@Override
@@ -409,11 +408,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("subject"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("subject"));
 		}
 
 		@Override
@@ -465,11 +460,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("title"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("title"));
 		}
 
 		@Override
@@ -521,11 +512,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("name"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("name"));
 		}
 
 		@Override
@@ -577,11 +564,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("title"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("title"));
 		}
 
 		@Override
@@ -630,11 +613,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("title"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("title"));
 		}
 
 		@Override
@@ -783,11 +762,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("title"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put("title", resultSet.getString("title"));
 		}
 
 		@Override
@@ -839,12 +814,11 @@ public class UpgradeSocial extends UpgradeProcess {
 				ResultSet resultSet, String extraData)
 			throws SQLException {
 
-			JSONObject extraDataJSONObject = JSONFactoryUtil.createJSONObject();
-
-			extraDataJSONObject.put("title", resultSet.getString("title"));
-			extraDataJSONObject.put("version", resultSet.getDouble("version"));
-
-			return extraDataJSONObject;
+			return JSONUtil.put(
+				"title", resultSet.getString("title")
+			).put(
+				"version", resultSet.getDouble("version")
+			);
 		}
 
 		@Override
