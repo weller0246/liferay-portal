@@ -32,9 +32,9 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
  */
 public class ObjectMapperUtil {
 
-	public static <T> T readValue(Class<?> clazz, Object element) {
+	public static <T> T readValue(Class<?> clazz, Object object) {
 		try {
-			return readValue(clazz, _objectMapper.writeValueAsString(element));
+			return readValue(clazz, _objectMapper.writeValueAsString(object));
 		}
 		catch (JsonProcessingException jsonProcessingException) {
 			if (_log.isWarnEnabled()) {
