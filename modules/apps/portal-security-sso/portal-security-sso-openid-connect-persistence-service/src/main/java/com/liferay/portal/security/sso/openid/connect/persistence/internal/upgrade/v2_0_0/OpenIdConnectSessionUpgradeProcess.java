@@ -55,7 +55,6 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 			while (resultSet.next()) {
 				long openIdConnectSessionId = resultSet.getLong(
 					"openIdConnectSessionId");
-
 				String configurationPid = resultSet.getString(
 					"configurationPid");
 
@@ -101,9 +100,6 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 
 		Dictionary<String, ?> properties = configuration.getProperties();
 
-		String openIdConnectClientId = GetterUtil.getString(
-			properties.get("openIdConnectClientId"));
-
 		String discoveryEndPoint = GetterUtil.getString(
 			properties.get("discoveryEndPoint"));
 
@@ -112,6 +108,9 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 				GetterUtil.getString(properties.get("issuerURL")),
 				GetterUtil.getString(properties.get("tokenEndPoint")));
 		}
+
+		String openIdConnectClientId = GetterUtil.getString(
+			properties.get("openIdConnectClientId"));
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update OpenIdConnectSession set authServerWellKnownURI = ?, " +
