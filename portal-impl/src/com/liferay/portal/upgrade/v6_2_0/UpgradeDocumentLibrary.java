@@ -163,11 +163,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 							}
 						}
 					}
-					catch (SQLException sqle) {
+					catch (SQLException sqlException) {
 						_log.error(
 							"Unable to get folders with parent primary key " +
 								parentPrimaryKey,
-							sqle);
+							sqlException);
 					}
 
 					return treeModels;
@@ -184,11 +184,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 						fileEntryPreparedStatement.addBatch();
 					}
-					catch (SQLException sqle) {
+					catch (SQLException sqlException) {
 						_log.error(
 							"Unable to update file entries with tree path " +
 								treePath,
-							sqle);
+							sqlException);
 					}
 
 					try {
@@ -198,11 +198,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 						fileShortcutPreparedStatement.addBatch();
 					}
-					catch (SQLException sqle) {
+					catch (SQLException sqlException) {
 						_log.error(
 							"Unable to update file shortcuts with tree path " +
 								treePath,
-							sqle);
+							sqlException);
 					}
 
 					try {
@@ -212,11 +212,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 						fileVersionPreparedStatement.addBatch();
 					}
-					catch (SQLException sqle) {
+					catch (SQLException sqlException) {
 						_log.error(
 							"Unable to update file versions with tree path " +
 								treePath,
-							sqle);
+							sqlException);
 					}
 				}
 
@@ -351,8 +351,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 				}
 			}
 		}
-		catch (SQLException sqle) {
-			_log.error("Unable to update tree paths", sqle);
+		catch (SQLException sqlException) {
+			_log.error("Unable to update tree paths", sqlException);
 		}
 	}
 
@@ -397,8 +397,9 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 				_preparedStatement.addBatch();
 			}
-			catch (SQLException sqle) {
-				_log.error("Unable to update tree path: " + treePath, sqle);
+			catch (SQLException sqlException) {
+				_log.error(
+					"Unable to update tree path: " + treePath, sqlException);
 			}
 		}
 

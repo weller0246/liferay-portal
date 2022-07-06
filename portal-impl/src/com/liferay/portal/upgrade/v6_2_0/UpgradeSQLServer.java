@@ -90,8 +90,8 @@ public class UpgradeSQLServer extends UpgradeProcess {
 					runSQL(addPrimaryKeySQL);
 				}
 			}
-			catch (Exception e) {
-				_log.error(e);
+			catch (Exception exception) {
+				_log.error(exception);
 			}
 		}
 	}
@@ -241,8 +241,8 @@ public class UpgradeSQLServer extends UpgradeProcess {
 				}
 			}
 		}
-		catch (Exception e) {
-			_log.error(e);
+		catch (Exception exception) {
+			_log.error(exception);
 		}
 	}
 
@@ -273,8 +273,8 @@ public class UpgradeSQLServer extends UpgradeProcess {
 				columnNames.add(columnName);
 			}
 		}
-		catch (Exception e) {
-			_log.error(e);
+		catch (Exception exception) {
+			_log.error(exception);
 		}
 
 		return columnNames;

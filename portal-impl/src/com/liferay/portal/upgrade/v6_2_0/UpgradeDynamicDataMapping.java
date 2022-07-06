@@ -84,9 +84,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			try {
 				runSQL("update DDMTemplate set classNameId = " + classNameId);
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(e);
+					_log.warn(exception);
 				}
 			}
 		}
@@ -106,9 +106,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			preparedStatement.executeUpdate();
 		}
-		catch (SQLException sqle) {
+		catch (SQLException sqlException) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(sqle);
+				_log.warn(sqlException);
 			}
 		}
 	}
@@ -155,9 +155,9 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 			preparedStatement.executeUpdate();
 		}
-		catch (SQLException sqle) {
+		catch (SQLException sqlException) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(sqle);
+				_log.warn(sqlException);
 			}
 		}
 	}

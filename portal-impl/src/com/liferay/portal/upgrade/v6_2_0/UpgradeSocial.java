@@ -156,9 +156,10 @@ public class UpgradeSocial extends UpgradeProcess {
 
 				preparedStatement.executeUpdate();
 			}
-			catch (Exception e) {
+			catch (Exception exception) {
 				if (_log.isWarnEnabled()) {
-					_log.warn("Unable to update activity " + activityId, e);
+					_log.warn(
+						"Unable to update activity " + activityId, exception);
 				}
 			}
 		}
@@ -331,12 +332,12 @@ public class UpgradeSocial extends UpgradeProcess {
 
 				messageId = jsonObject.getLong("messageId");
 			}
-			catch (JSONException jsone) {
+			catch (JSONException jsonException) {
 
 				// LPS-52675
 
 				if (_log.isDebugEnabled()) {
-					_log.debug(jsone);
+					_log.debug(jsonException);
 				}
 			}
 
@@ -385,12 +386,12 @@ public class UpgradeSocial extends UpgradeProcess {
 
 				messageId = jsonObject.getLong("messageId");
 			}
-			catch (JSONException jsone) {
+			catch (JSONException jsonException) {
 
 				// LPS-52675
 
 				if (_log.isDebugEnabled()) {
-					_log.debug(jsone);
+					_log.debug(jsonException);
 				}
 			}
 

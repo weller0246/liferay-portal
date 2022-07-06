@@ -126,8 +126,8 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 			try (PreparedStatement preparedStatement2 =
 					connection.prepareStatement(
-						"update DLFileVersion set title = ? where fileEntryId = " +
-							"? and version = ?")) {
+						"update DLFileVersion set title = ? where " +
+							"fileEntryId = ? and version = ?")) {
 
 				preparedStatement2.setString(1, newTitle);
 				preparedStatement2.setLong(2, fileEntryId);

@@ -101,12 +101,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			preparedStatement.executeUpdate();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to upgrade dynamic data mapping structure with UUID " +
 					uuid);
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -184,12 +184,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			preparedStatement.executeUpdate();
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to upgrade dynamic data mapping template with UUID " +
 					uuid);
 
-			throw e;
+			throw exception;
 		}
 	}
 
@@ -219,8 +219,8 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			preparedStatement.addBatch();
 		}
-		catch (Exception e) {
-			_log.error("Unable to insert ResourcePermission", e);
+		catch (Exception exception) {
+			_log.error("Unable to insert ResourcePermission", exception);
 		}
 	}
 
@@ -895,8 +895,10 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 					preparedStatement2.addBatch();
 				}
-				catch (Exception e) {
-					_log.error("Unable to update content for article " + id, e);
+				catch (Exception exception) {
+					_log.error(
+						"Unable to update content for article " + id,
+						exception);
 				}
 			}
 
@@ -1036,12 +1038,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				return 0;
 			}
 		}
-		catch (Exception e) {
+		catch (Exception exception) {
 			_log.error(
 				"Unable to update journal structure with structure ID " +
 					structureId);
 
-			throw e;
+			throw exception;
 		}
 	}
 

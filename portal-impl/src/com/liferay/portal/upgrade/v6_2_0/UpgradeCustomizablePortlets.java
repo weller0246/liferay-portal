@@ -96,7 +96,8 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 
 				// TODO LPS-157670
 
-				//portletPreferences.setPreferences(resultSet.getString("preferences"));
+				//portletPreferences.setPreferences(
+				//	resultSet.getString("preferences"));
 
 				return portletPreferences;
 			}
