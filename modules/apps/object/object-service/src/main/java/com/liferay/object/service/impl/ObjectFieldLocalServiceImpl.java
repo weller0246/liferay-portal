@@ -797,12 +797,6 @@ public class ObjectFieldLocalServiceImpl
 					ObjectFieldConstants.BUSINESS_TYPE_PICKLIST, "\""));
 		}
 
-		if (!state) {
-			throw new ObjectFieldStateException(
-				"Object field default value can only be set when the " +
-					"picklist is a state");
-		}
-
 		ListTypeEntry listTypeEntry =
 			_listTypeEntryLocalService.fetchListTypeEntry(
 				listTypeDefinitionId, defaultValue);
@@ -810,8 +804,14 @@ public class ObjectFieldLocalServiceImpl
 		if (listTypeEntry == null) {
 			throw new ObjectFieldDefaultValueException(
 				StringBundler.concat(
-					"Default value \"", defaultValue, "\" is not an item of ",
-					"the selected list"));
+					"Default value \"", defaultValue, "\" is not a list entry ",
+					"in list definition " + listTypeDefinitionId));
+		}
+
+		if (!state) {
+			throw new ObjectFieldStateException(
+				"Object field default value can only be set when the " +
+					"picklist is a state");
 		}
 	}
 
