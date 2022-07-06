@@ -406,15 +406,6 @@ public class ObjectStateFlowLocalServiceWrapper
 	}
 
 	@Override
-	public void updateObjectStateTransitions(
-			com.liferay.object.model.ObjectStateFlow objectStateFlow)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_objectStateFlowLocalService.updateObjectStateTransitions(
-			objectStateFlow);
-	}
-
-	@Override
 	public ObjectStateFlowLocalService getWrappedService() {
 		return _objectStateFlowLocalService;
 	}

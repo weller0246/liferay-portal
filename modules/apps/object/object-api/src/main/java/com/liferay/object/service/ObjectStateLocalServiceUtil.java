@@ -366,16 +366,6 @@ public class ObjectStateLocalServiceUtil {
 		return getService().updateObjectState(objectState);
 	}
 
-	public static void updateObjectStateTransitions(
-			long objectStateId,
-			List<com.liferay.object.model.ObjectStateTransition>
-				objectStateTransitions)
-		throws PortalException {
-
-		getService().updateObjectStateTransitions(
-			objectStateId, objectStateTransitions);
-	}
-
 	public static ObjectStateLocalService getService() {
 		return _service;
 	}

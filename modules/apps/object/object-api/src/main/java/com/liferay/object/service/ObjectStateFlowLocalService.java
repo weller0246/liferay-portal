@@ -308,7 +308,4 @@ public interface ObjectStateFlowLocalService
 	public ObjectStateFlow updateObjectStateFlow(
 		ObjectStateFlow objectStateFlow);
 
-	public void updateObjectStateTransitions(ObjectStateFlow objectStateFlow)
-		throws PortalException;
-
 }
