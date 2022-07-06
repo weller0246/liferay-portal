@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.tree.TreePathUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.upgrade.util.UpgradeProcessUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
@@ -44,10 +45,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
 /**
  * @author Dennis Ju
@@ -107,14 +105,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 		String languageId = UpgradeProcessUtil.getDefaultLanguageId(companyId);
 
-		Locale locale = LocaleUtil.fromLanguageId(languageId);
-
-		Map<Locale, String> localizationMap = new HashMap<>();
-
-		localizationMap.put(locale, content);
-
 		return LocalizationUtil.updateLocalization(
-			localizationMap, StringPool.BLANK, key, languageId);
+			HashMapBuilder.put(
+				LocaleUtil.fromLanguageId(languageId), content
+			).build(),
+			StringPool.BLANK, key, languageId);
 	}
 
 	protected void rebuildTree(
@@ -336,11 +331,11 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 							fileShortcutPreparedStatement,
 							fileVersionPreparedStatement);
 					}
-					catch (PortalException pe) {
+					catch (PortalException portalException) {
 						_log.error(
 							"Unable to update tree paths for company " +
 								companyId,
-							pe);
+							portalException);
 					}
 
 					folderPreparedStatement.executeBatch();

@@ -18,6 +18,8 @@ import com.liferay.counter.kernel.model.Counter;
 import com.liferay.counter.kernel.service.CounterLocalService;
 import com.liferay.counter.kernel.service.persistence.CounterFinder;
 import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -40,11 +42,11 @@ public abstract class Pre7UpgradeProcess extends UpgradeProcess {
 
 			super.upgrade();
 		}
-		catch (UpgradeException ue) {
-			throw ue;
+		catch (UpgradeException upgradeException) {
+			throw upgradeException;
 		}
-		catch (Exception e) {
-			throw new UpgradeException(e);
+		catch (Exception exception) {
+			throw new UpgradeException(exception);
 		}
 	}
 
@@ -54,8 +56,17 @@ public abstract class Pre7UpgradeProcess extends UpgradeProcess {
 
 		// TODO LPS-157670
 
+		if (_log.isDebugEnabled()) {
+			_log.debug(springServiceProxy);
+			_log.debug(fieldName);
+			_log.debug(wrapperClass);
+		}
+
 		return null;
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		Pre7UpgradeProcess.class);
 
 	private static class Pre7CounterFinderImpl implements CounterFinder {
 

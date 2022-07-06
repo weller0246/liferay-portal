@@ -156,10 +156,11 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 			String[] parts = StringUtil.split(
 				preferences.substring(x, y), StringPool.POUND);
 
-			long plid = GetterUtil.getLong(parts[0]);
 			String key = GetterUtil.getString(parts[1]);
 
 			if (LayoutTypePortletConstants.isLayoutTemplateColumnName(key)) {
+				long plid = GetterUtil.getLong(parts[0]);
+
 				String value = portalPreferencesImpl.getValue(
 					namespacePlid(plid), key);
 
