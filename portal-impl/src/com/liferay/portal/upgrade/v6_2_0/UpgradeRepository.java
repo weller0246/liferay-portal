@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v6_2_0.util.RepositoryTable;
 
 /**
  * @author Alberto Montero
@@ -24,9 +23,7 @@ public class UpgradeRepository extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			RepositoryTable.class,
-			new AlterColumnType("portletId", "VARCHAR(200) null"));
+		alterColumnType("Repository", "portletId", "VARCHAR(200) null");
 	}
 
 }

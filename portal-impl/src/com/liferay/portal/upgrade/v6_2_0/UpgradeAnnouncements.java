@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v6_2_0.util.AnnouncementsEntryTable;
 
 /**
  * @author Hai Yu
@@ -24,9 +23,7 @@ public class UpgradeAnnouncements extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			AnnouncementsEntryTable.class,
-			new AlterColumnType("content", "TEXT null"));
+		alterColumnType("AnnouncementsEntry", "content", "TEXT null");
 	}
 
 }

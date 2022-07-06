@@ -21,7 +21,6 @@ import com.liferay.portal.kernel.bean.PortalBeanLocatorUtil;
 import com.liferay.portal.kernel.model.ResourcePermission;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.spring.aop.ServiceWrapperProxyUtil;
 
 import java.io.Closeable;
 
@@ -34,7 +33,7 @@ public abstract class Pre7UpgradeProcess extends UpgradeProcess {
 
 	@Override
 	public void upgrade() throws UpgradeException {
-		try (Closeable closeable = ServiceWrapperProxyUtil.injectFieldProxy(
+		try (Closeable closeable = _injectFieldProxy(
 				PortalBeanLocatorUtil.locate(
 					CounterLocalService.class.getName()),
 				"counterFinder", Pre7CounterFinderImpl.class)) {
@@ -47,6 +46,15 @@ public abstract class Pre7UpgradeProcess extends UpgradeProcess {
 		catch (Exception e) {
 			throw new UpgradeException(e);
 		}
+	}
+
+	private Closeable _injectFieldProxy(
+			Object springServiceProxy, String fieldName, Class<?> wrapperClass)
+		throws Exception {
+
+		// TODO LPS-157670
+
+		return null;
 	}
 
 	private static class Pre7CounterFinderImpl implements CounterFinder {

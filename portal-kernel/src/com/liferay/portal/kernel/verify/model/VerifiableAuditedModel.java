@@ -12,18 +12,21 @@
  * details.
  */
 
-package com.liferay.portal.upgrade.v6_2_0;
-
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+package com.liferay.portal.kernel.verify.model;
 
 /**
- * @author Harrison Schueler
+ * @author Miguel Pastor
  */
-public class UpgradeLayout extends UpgradeProcess {
+public interface VerifiableAuditedModel extends VerifiableModel {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		alterColumnType("Layout", "css", "TEXT null");
-	}
+	public String getJoinByTableName();
+
+	public String getRelatedModelName();
+
+	public String getRelatedPKColumnName();
+
+	public boolean isAnonymousUserAllowed();
+
+	public boolean isUpdateDates();
 
 }

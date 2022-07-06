@@ -14,7 +14,7 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
-import com.liferay.layouts.admin.kernel.model.LayoutTypePortletConstants;
+import com.liferay.layout.admin.kernel.model.LayoutTypePortletConstants;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.model.PortletPreferences;
 import com.liferay.portal.kernel.portlet.PortletIdCodec;
@@ -92,7 +92,10 @@ public class UpgradeCustomizablePortlets extends UpgradeProcess {
 				portletPreferences.setOwnerType(rs.getInt("ownerType"));
 				portletPreferences.setPlid(rs.getLong("plid"));
 				portletPreferences.setPortletId(rs.getString("portletId"));
-				portletPreferences.setPreferences(rs.getString("preferences"));
+
+				// TODO LPS-157670
+
+				//portletPreferences.setPreferences(rs.getString("preferences"));
 
 				return portletPreferences;
 			}

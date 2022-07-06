@@ -14,12 +14,12 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
-import com.liferay.portal.kernel.upgrade.BaseUpgradePortletId;
+import com.liferay.portal.kernel.upgrade.BasePortletIdUpgradeProcess;
 
 /**
  * @author Eduardo García
  */
-public class UpgradeImageGallery extends BaseUpgradePortletId {
+public class UpgradeImageGallery extends BasePortletIdUpgradeProcess {
 
 	@Override
 	protected String[] getUninstanceablePortletIds() {

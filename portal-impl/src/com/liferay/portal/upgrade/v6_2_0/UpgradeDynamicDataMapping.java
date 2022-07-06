@@ -28,7 +28,6 @@ import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.xml.Document;
 import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
-import com.liferay.portal.upgrade.v6_2_0.util.DDMTemplateTable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,10 +75,8 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 
 	protected void updateSchema() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			alter(
-				DDMTemplateTable.class,
-				new AlterTableAddColumn("classNameId LONG"),
-				new AlterColumnName("structureId", "classPK LONG"));
+			alterTableAddColumn("DDMTemplate", "classNameId", "LONG");
+			alterColumnName("DDMTemplate", "structureId", "classPK LONG");
 
 			long classNameId = PortalUtil.getClassNameId(
 				"com.liferay.portlet.dynamicdatamapping.model.DDMStructure");
@@ -89,7 +86,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 			}
 			catch (Exception e) {
 				if (_log.isWarnEnabled()) {
-					_log.warn(e, e);
+					_log.warn(e);
 				}
 			}
 		}
@@ -111,7 +108,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 		catch (SQLException sqle) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(sqle, sqle);
+				_log.warn(sqle);
 			}
 		}
 	}
@@ -160,7 +157,7 @@ public class UpgradeDynamicDataMapping extends UpgradeProcess {
 		}
 		catch (SQLException sqle) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(sqle, sqle);
+				_log.warn(sqle);
 			}
 		}
 	}

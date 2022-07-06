@@ -14,10 +14,14 @@
 
 package com.liferay.portal.upgrade.v6_2_0;
 
-import com.liferay.petra.encryptor.Encryptor;
+import com.liferay.portal.kernel.encryptor.EncryptorUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.Base64;
+import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
+import com.liferay.portal.kernel.util.PropsKeys;
+import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.security.Key;
@@ -32,7 +36,7 @@ public class UpgradeCompany extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		String keyAlgorithm = Encryptor.KEY_ALGORITHM;
+		String keyAlgorithm = _KEY_ALGORITHM;
 
 		if (keyAlgorithm.equals("DES")) {
 			return;
@@ -74,11 +78,15 @@ public class UpgradeCompany extends UpgradeProcess {
 		try (PreparedStatement ps = connection.prepareStatement(
 				"update Company set key_ = ? where companyId = ?")) {
 
-			ps.setString(1, Base64.objectToString(Encryptor.generateKey()));
+			ps.setString(1, Base64.objectToString(EncryptorUtil.generateKey()));
 			ps.setLong(2, companyId);
 
 			ps.executeUpdate();
 		}
 	}
+
+	private static final String _KEY_ALGORITHM = StringUtil.toUpperCase(
+		GetterUtil.getString(
+			PropsUtil.get(PropsKeys.COMPANY_ENCRYPTION_ALGORITHM)));
 
 }

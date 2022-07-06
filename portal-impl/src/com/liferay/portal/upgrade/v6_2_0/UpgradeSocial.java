@@ -336,7 +336,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				// LPS-52675
 
 				if (_log.isDebugEnabled()) {
-					_log.debug(jsone, jsone);
+					_log.debug(jsone);
 				}
 			}
 
@@ -390,7 +390,7 @@ public class UpgradeSocial extends UpgradeProcess {
 				// LPS-52675
 
 				if (_log.isDebugEnabled()) {
-					_log.debug(jsone, jsone);
+					_log.debug(jsone);
 				}
 			}
 

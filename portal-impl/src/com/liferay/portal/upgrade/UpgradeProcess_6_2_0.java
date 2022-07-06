@@ -16,6 +16,8 @@ package com.liferay.portal.upgrade;
 
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.ReleaseInfo;
+import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
+import com.liferay.portal.kernel.verify.model.VerifiableUUIDModel;
 import com.liferay.portal.upgrade.v6_2_0.UpgradeAnnouncements;
 import com.liferay.portal.upgrade.v6_2_0.UpgradeAssetPublisher;
 import com.liferay.portal.upgrade.v6_2_0.UpgradeBlogs;
@@ -48,24 +50,10 @@ import com.liferay.portal.upgrade.v6_2_0.UpgradeUuid;
 import com.liferay.portal.upgrade.v6_2_0.UpgradeWiki;
 import com.liferay.portal.upgrade.v6_2_0.UpgradeWikiAttachments;
 import com.liferay.portal.verify.VerifyUUID;
-import com.liferay.portal.verify.model.AddressVerifiableModel;
-import com.liferay.portal.verify.model.DLFileVersionVerifiableModel;
-import com.liferay.portal.verify.model.EmailAddressVerifiableModel;
-import com.liferay.portal.verify.model.GroupVerifiableModel;
-import com.liferay.portal.verify.model.JournalArticleResourceVerifiableModel;
 import com.liferay.portal.verify.model.LayoutPrototypeVerifiableModel;
 import com.liferay.portal.verify.model.LayoutSetPrototypeVerifiableModel;
-import com.liferay.portal.verify.model.MBBanVerifiableUUIDModel;
-import com.liferay.portal.verify.model.MBDiscussionVerifiableUUIDModel;
-import com.liferay.portal.verify.model.MBThreadFlagVerifiableUUIDModel;
-import com.liferay.portal.verify.model.MBThreadVerifiableUUIDModel;
-import com.liferay.portal.verify.model.OrganizationVerifiableAuditedModel;
-import com.liferay.portal.verify.model.PasswordPolicyVerifiableModel;
-import com.liferay.portal.verify.model.PhoneVerifiableModel;
-import com.liferay.portal.verify.model.PollsVoteVerifiableUUIDModel;
 import com.liferay.portal.verify.model.RoleVerifiableModel;
 import com.liferay.portal.verify.model.UserGroupVerifiableModel;
-import com.liferay.portal.verify.model.WebSiteVerifiableModel;
 
 /**
  * @author Raymond Augé
@@ -76,6 +64,231 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 	@Override
 	public int getThreshold() {
 		return ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER;
+	}
+
+	public class AddressVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "addressId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "Address";
+		}
+
+	}
+
+	public class DLFileVersionVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "fileVersionId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "DLFileVersion";
+		}
+
+	}
+
+	public class EmailAddressVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "emailAddressId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "EmailAddress";
+		}
+
+	}
+
+	public class GroupVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "groupId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "Group_";
+		}
+
+	}
+
+	public class JournalArticleResourceVerifiableModel
+		implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "resourcePrimKey";
+		}
+
+		@Override
+		public String getTableName() {
+			return "JournalArticleResource";
+		}
+
+	}
+
+	public class MBBanVerifiableUUIDModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "banId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "MBBan";
+		}
+
+	}
+
+	public class MBDiscussionVerifiableUUIDModel
+		implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "discussionId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "MBDiscussion";
+		}
+
+	}
+
+	public class MBThreadFlagVerifiableUUIDModel
+		implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "threadFlagId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "MBThreadFlag";
+		}
+
+	}
+
+	public class MBThreadVerifiableUUIDModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "threadId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "MBThread";
+		}
+
+	}
+
+	public class OrganizationVerifiableAuditedModel
+		implements VerifiableAuditedModel, VerifiableUUIDModel {
+
+		@Override
+		public String getJoinByTableName() {
+			return null;
+		}
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "organizationId";
+		}
+
+		@Override
+		public String getRelatedModelName() {
+			return null;
+		}
+
+		@Override
+		public String getRelatedPKColumnName() {
+			return null;
+		}
+
+		@Override
+		public String getTableName() {
+			return "Organization_";
+		}
+
+		@Override
+		public boolean isAnonymousUserAllowed() {
+			return false;
+		}
+
+		@Override
+		public boolean isUpdateDates() {
+			return true;
+		}
+
+	}
+
+	public class PasswordPolicyVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "passwordPolicyId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "PasswordPolicy";
+		}
+
+	}
+
+	public class PhoneVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "phoneId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "Phone";
+		}
+
+	}
+
+	public class PollsVoteVerifiableUUIDModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "voteId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "PollsVote";
+		}
+
+	}
+
+	public class WebSiteVerifiableModel implements VerifiableUUIDModel {
+
+		@Override
+		public String getPrimaryKeyColumnName() {
+			return "websiteId";
+		}
+
+		@Override
+		public String getTableName() {
+			return "Website";
+		}
+
 	}
 
 	@Override

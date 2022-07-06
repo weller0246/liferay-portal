@@ -18,7 +18,6 @@ import com.liferay.portal.kernel.model.GroupConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.upgrade.v6_2_0.util.GroupTable;
 
 import java.sql.PreparedStatement;
 
@@ -29,9 +28,8 @@ public class UpgradeGroup extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			GroupTable.class, new AlterColumnType("typeSettings", "TEXT null"),
-			new AlterColumnType("friendlyURL", "VARCHAR(255) null"));
+		alterColumnType("Group_", "typeSettings", "TEXT null");
+		alterColumnType("Group_", "friendlyURL", "VARCHAR(255) null");
 
 		upgradeFriendlyURL();
 		upgradeSite();

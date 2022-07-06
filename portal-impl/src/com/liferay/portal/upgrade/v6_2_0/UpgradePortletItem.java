@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v6_2_0.util.PortletItemTable;
 
 /**
  * @author Alberto Montero
@@ -24,9 +23,7 @@ public class UpgradePortletItem extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			PortletItemTable.class,
-			new AlterColumnType("portletId", "VARCHAR(200) null"));
+		alterColumnType("PortletItem", "portletId", "VARCHAR(200) null");
 	}
 
 }

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.upgrade.v6_2_0.util.DLFileEntryTypeTable;
 import com.liferay.portal.util.PortalInstances;
 
 import java.io.Serializable;
@@ -63,10 +62,9 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 
 		// DLFileEntryType
 
-		alter(
-			DLFileEntryTypeTable.class,
-			new AlterTableAddColumn("fileEntryTypeKey VARCHAR(75) null"),
-			new AlterColumnType("name", "STRING null"));
+		alterTableAddColumn(
+			"DLFileEntryType", "fileEntryTypeKey", "VARCHAR(75) null");
+		alterColumnType("DLFileEntryType", "name", "STRING null");
 
 		updateFileEntryTypes();
 
@@ -228,9 +226,9 @@ public class UpgradeDocumentLibrary extends UpgradeProcess {
 					"or userName = ''");
 			ResultSet rs = ps1.executeQuery();
 			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection.prepareStatement(
-					"update DLFolder set userName = ? where userId = ? and " +
-						"(userName is null or userName = '')"))) {
+				connection,
+				"update DLFolder set userName = ? where userId = ? and " +
+					"(userName is null or userName = '')")) {
 
 			while (rs.next()) {
 				long userId = rs.getLong("userId");

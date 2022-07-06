@@ -27,7 +27,7 @@ import com.liferay.portal.kernel.upgrade.v6_2_0.BaseUpgradePortletPreferences;
 import com.liferay.portal.kernel.util.FriendlyURLNormalizerUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
-import com.liferay.portal.kernel.util.HttpUtil;
+import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -40,7 +40,6 @@ import com.liferay.portal.kernel.xml.Element;
 import com.liferay.portal.kernel.xml.Node;
 import com.liferay.portal.kernel.xml.SAXReaderUtil;
 import com.liferay.portal.kernel.xml.XPath;
-import com.liferay.portal.upgrade.v6_2_0.util.JournalFeedTable;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -220,7 +219,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	protected String decodeURL(String url) {
 		try {
-			return HttpUtil.decodeURL(url);
+			return HttpComponentsUtil.decodeURL(url);
 		}
 		catch (IllegalArgumentException iae) {
 			return url;
@@ -229,9 +228,8 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			JournalFeedTable.class,
-			new AlterColumnName("feedType", "feedFormat VARCHAR(75) null"));
+		alterColumnName(
+			"JournalFeed", "feedType", "feedFormat VARCHAR(75) null");
 
 		setUpStrutureAttributesMappings();
 
@@ -646,7 +644,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 				selectSB.toString());
 			PreparedStatement insertPS =
 				AutoBatchPreparedStatementUtil.autoBatch(
-					connection.prepareStatement(insertSB.toString()));
+					connection, insertSB.toString());
 			ResultSet rs = selectPS.executeQuery()) {
 
 			long currentCompanyId = 0;
@@ -866,8 +864,8 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 						"structureId != '' and content like " +
 							"'%link_to_layout%'"));
 			PreparedStatement ps2 = AutoBatchPreparedStatementUtil.autoBatch(
-				connection.prepareStatement(
-					"update JournalArticle set content = ? where id_ = ?"));
+				connection,
+				"update JournalArticle set content = ? where id_ = ?");
 			ResultSet rs = ps1.executeQuery()) {
 
 			while (rs.next()) {
@@ -1155,9 +1153,9 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 			try (PreparedStatement ps2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
-						connection.prepareStatement(
-							"update JournalArticle set urlTitle = ? where " +
-								"urlTitle = ?"))) {
+						connection,
+						"update JournalArticle set urlTitle = ? where " +
+							"urlTitle = ?")) {
 
 				while (rs.next()) {
 					String urlTitle = GetterUtil.getString(

@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v6_2_0.util.LayoutRevisionTable;
 
 /**
  * @author Harrison Schueler
@@ -24,8 +23,7 @@ public class UpgradeLayoutRevision extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			LayoutRevisionTable.class, new AlterColumnType("css", "TEXT null"));
+		alterColumnType("LayoutRevision", "css", "TEXT null");
 	}
 
 }

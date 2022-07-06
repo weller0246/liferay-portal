@@ -90,7 +90,7 @@ public class UpgradeSQLServer extends UpgradeProcess {
 				}
 			}
 			catch (Exception e) {
-				_log.error(e, e);
+				_log.error(e);
 			}
 		}
 	}
@@ -240,7 +240,7 @@ public class UpgradeSQLServer extends UpgradeProcess {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			_log.error(e);
 		}
 	}
 
@@ -271,7 +271,7 @@ public class UpgradeSQLServer extends UpgradeProcess {
 			}
 		}
 		catch (Exception e) {
-			_log.error(e, e);
+			_log.error(e);
 		}
 
 		return columnNames;

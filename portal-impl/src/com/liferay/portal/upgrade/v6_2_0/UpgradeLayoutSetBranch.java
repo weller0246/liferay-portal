@@ -15,7 +15,6 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.v6_2_0.util.LayoutSetBranchTable;
 
 /**
  * @author Harrison Schueler
@@ -24,9 +23,8 @@ public class UpgradeLayoutSetBranch extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alter(
-			LayoutSetBranchTable.class, new AlterColumnType("css", "TEXT null"),
-			new AlterColumnType("settings_", "TEXT null"));
+		alterColumnType("LayoutSetBranchTable", "css", "TEXT null");
+		alterColumnType("LayoutSetBranchTable", "settings_", "TEXT null");
 	}
 
 }

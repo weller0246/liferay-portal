@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
-import com.liferay.portal.upgrade.v6_2_0.util.BlogsEntryTable;
 import com.liferay.portal.upgrade.v6_2_0.util.RSSUtil;
 
 import javax.portlet.PortletPreferences;
@@ -46,9 +45,7 @@ public class UpgradeBlogs extends BaseUpgradePortletPreferences {
 
 	protected void updateEntries() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
-			alter(
-				BlogsEntryTable.class,
-				new AlterColumnType("description", "STRING null"));
+			alterColumnType("BlogsEntry", "description", "STRING null");
 		}
 	}
 

@@ -50,7 +50,7 @@ public class UpgradePortletPreferences extends UpgradeProcess {
 			try (PreparedStatement ps1 = connection.prepareStatement(selectSQL);
 				PreparedStatement ps2 =
 					AutoBatchPreparedStatementUtil.autoBatch(
-						connection.prepareStatement(deleteSQL));
+						connection, deleteSQL);
 				ResultSet rs = ps1.executeQuery()) {
 
 				while (rs.next()) {
