@@ -168,7 +168,11 @@ public abstract class BaseMessageBodyReader
 			JsonNode jsonNode, ObjectMapper objectMapper)
 		throws IOException {
 
-		if (jsonNode.isBoolean()) {
+		if (jsonNode.isArray()) {
+			return (Serializable)objectMapper.readValue(
+				jsonNode.traverse(), Object[].class);
+		}
+		else if (jsonNode.isBoolean()) {
 			return jsonNode.asBoolean();
 		}
 		else if (jsonNode.isDouble()) {
@@ -186,10 +190,6 @@ public abstract class BaseMessageBodyReader
 		else if (jsonNode.isObject()) {
 			return (Serializable)objectMapper.readValue(
 				jsonNode.traverse(), Object.class);
-		}
-		else if (jsonNode.isArray()) {
-			return (Serializable)objectMapper.readValue(
-				jsonNode.traverse(), Object[].class);
 		}
 
 		return null;
