@@ -79,7 +79,7 @@ public class ObjectFieldDTOConverter
 					serviceBuilderObjectField.getObjectFieldSettings(),
 					ObjectFieldSettingUtil::toObjectFieldSetting,
 					ObjectFieldSetting.class);
-				objectStateFlow = _toObjectStateFlowDTO(
+				objectStateFlow = _toObjectStateFlow(
 					_objectStateFlowLocalService.getObjectFieldObjectStateFlow(
 						serviceBuilderObjectField.getObjectFieldId()));
 				relationshipType = ObjectField.RelationshipType.create(
@@ -97,7 +97,7 @@ public class ObjectFieldDTOConverter
 		return objectField;
 	}
 
-	private NextObjectState _toNextObjectStateDTO(ObjectState nextObjectState) {
+	private NextObjectState _toNextObjectState(ObjectState nextObjectState) {
 		return new NextObjectState() {
 			{
 				listTypeEntryId = nextObjectState.getListTypeEntryId();
@@ -105,8 +105,8 @@ public class ObjectFieldDTOConverter
 		};
 	}
 
-	private com.liferay.object.admin.rest.dto.v1_0.ObjectState
-		_toObjectStateDTO(ObjectState objectState) {
+	private com.liferay.object.admin.rest.dto.v1_0.ObjectState _toObjectState(
+		ObjectState objectState) {
 
 		return new com.liferay.object.admin.rest.dto.v1_0.ObjectState() {
 			{
@@ -115,13 +115,13 @@ public class ObjectFieldDTOConverter
 				nextObjectStates = TransformUtil.transformToArray(
 					_objectStateLocalService.getNextObjectStates(
 						objectState.getObjectStateId()),
-					nextObjectState -> _toNextObjectStateDTO(nextObjectState),
+					nextObjectState -> _toNextObjectState(nextObjectState),
 					NextObjectState.class);
 			}
 		};
 	}
 
-	private ObjectStateFlow _toObjectStateFlowDTO(
+	private ObjectStateFlow _toObjectStateFlow(
 		com.liferay.object.model.ObjectStateFlow objectStateFlow) {
 
 		if (objectStateFlow == null) {
@@ -134,7 +134,7 @@ public class ObjectFieldDTOConverter
 				objectStates = TransformUtil.transformToArray(
 					_objectStateLocalService.getObjectStateFlowObjectStates(
 						objectStateFlow.getObjectStateFlowId()),
-					objectState -> _toObjectStateDTO(objectState),
+					objectState -> _toObjectState(objectState),
 					com.liferay.object.admin.rest.dto.v1_0.ObjectState.class);
 			}
 		};
