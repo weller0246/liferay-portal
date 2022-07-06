@@ -14,7 +14,6 @@
 
 package com.liferay.object.service.impl;
 
-import com.liferay.object.exception.NoSuchObjectStateTransitionException;
 import com.liferay.object.model.ObjectState;
 import com.liferay.object.model.ObjectStateFlow;
 import com.liferay.object.model.ObjectStateTransition;
@@ -65,28 +64,6 @@ public class ObjectStateTransitionLocalServiceImpl
 	}
 
 	@Override
-	public void addObjectStateTransitions(
-			List<ObjectStateTransition> objectStateTransitions)
-		throws PortalException {
-
-		if (ListUtil.isEmpty(objectStateTransitions)) {
-			return;
-		}
-
-		User user = _userLocalService.fetchUser(
-			PrincipalThreadLocal.getUserId());
-
-		for (ObjectStateTransition objectStateTransition :
-				objectStateTransitions) {
-
-			addObjectStateTransition(
-				user.getUserId(), objectStateTransition.getObjectStateFlowId(),
-				objectStateTransition.getSourceObjectStateId(),
-				objectStateTransition.getTargetObjectStateId());
-		}
-	}
-
-	@Override
 	public void deleteObjectStateFlowObjectStateTransitions(
 		long objectStateFlowId) {
 
@@ -101,23 +78,6 @@ public class ObjectStateTransitionLocalServiceImpl
 
 		objectStateTransitionPersistence.removeByTargetObjectStateId(
 			objectStateId);
-	}
-
-	@Override
-	public void deleteObjectStateTransitions(
-			List<ObjectStateTransition> objectStateTransitions)
-		throws NoSuchObjectStateTransitionException {
-
-		if (ListUtil.isEmpty(objectStateTransitions)) {
-			return;
-		}
-
-		for (ObjectStateTransition objectStateTransition :
-				objectStateTransitions) {
-
-			objectStateTransitionPersistence.remove(
-				objectStateTransition.getObjectStateTransitionId());
-		}
 	}
 
 	@Override
@@ -145,13 +105,29 @@ public class ObjectStateTransitionLocalServiceImpl
 				objectStateId);
 
 		if (persistedObjectStateTransitions.isEmpty()) {
-			addObjectStateTransitions(objectStateTransitions);
+			User user = _userLocalService.fetchUser(
+				PrincipalThreadLocal.getUserId());
+
+			for (ObjectStateTransition objectStateTransition :
+					objectStateTransitions) {
+
+				addObjectStateTransition(
+					user.getUserId(),
+					objectStateTransition.getObjectStateFlowId(),
+					objectStateTransition.getSourceObjectStateId(),
+					objectStateTransition.getTargetObjectStateId());
+			}
 
 			return;
 		}
 
 		if (objectStateTransitions.isEmpty()) {
-			deleteObjectStateTransitions(persistedObjectStateTransitions);
+			for (ObjectStateTransition objectStateTransition :
+					persistedObjectStateTransitions) {
+
+				objectStateTransitionPersistence.remove(
+					objectStateTransition.getObjectStateTransitionId());
+			}
 
 			return;
 		}
@@ -160,22 +136,30 @@ public class ObjectStateTransitionLocalServiceImpl
 			objectStateTransitions,
 			ObjectStateTransitionModel::getTargetObjectStateId);
 
-		deleteObjectStateTransitions(
-			ListUtil.filter(
-				persistedObjectStateTransitions,
-				objectStateTransition -> !targetObjectStateIds.contains(
-					objectStateTransition.getTargetObjectStateId())));
+		for (ObjectStateTransition objectStateTransition :
+				persistedObjectStateTransitions) {
+
+			if (!targetObjectStateIds.contains(
+					objectStateTransition.getTargetObjectStateId())) {
+
+				objectStateTransitionPersistence.remove(
+					objectStateTransition.getObjectStateTransitionId());
+			}
+		}
 
 		List<Long> persistedTargetObjectStateIds = ListUtil.toList(
 			persistedObjectStateTransitions,
 			ObjectStateTransitionModel::getTargetObjectStateId);
 
-		addObjectStateTransitions(
-			ListUtil.filter(
-				objectStateTransitions,
-				objectStateTransition ->
-					!persistedTargetObjectStateIds.contains(
-						objectStateTransition.getTargetObjectStateId())));
+		for (ObjectStateTransition objectStateTransition :
+				objectStateTransitions) {
+
+			if (!persistedTargetObjectStateIds.contains(
+					objectStateTransition.getTargetObjectStateId())) {
+
+				addObjectStateTransition(objectStateTransition);
+			}
+		}
 	}
 
 	@Reference
