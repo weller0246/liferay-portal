@@ -228,7 +228,7 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		try {
 			return HttpComponentsUtil.decodeURL(url);
 		}
-		catch (IllegalArgumentException iae) {
+		catch (IllegalArgumentException illegalArgumentException) {
 			return url;
 		}
 	}
@@ -509,30 +509,29 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 	protected void updateContentSearch(long groupId, String portletId)
 		throws Exception {
 
-		try (PreparedStatement selectPreferencesPS =
-				connection.prepareStatement(
-					"select preferences from PortletPreferences inner join " +
-						"Layout on PortletPreferences.plid = Layout.plid " +
-							"where groupId = ? and portletId = ?");
-			PreparedStatement selectSearchPS = connection.prepareStatement(
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
+				"select preferences from PortletPreferences inner join " +
+					"Layout on PortletPreferences.plid = Layout.plid where " +
+						"groupId = ? and portletId = ?");
+			PreparedStatement preparedStatement2 = connection.prepareStatement(
 				"select companyId, privateLayout, layoutId, portletId from " +
 					"JournalContentSearch where JournalContentSearch.groupId " +
 						"= ? and JournalContentSearch.articleId = ?");
-			PreparedStatement deleteSearchPS = connection.prepareStatement(
+			PreparedStatement preparedStatement3 = connection.prepareStatement(
 				"delete from JournalContentSearch where " +
 					"JournalContentSearch.groupId = ? and " +
 						"JournalContentSearch.articleId = ?");
-			PreparedStatement insertSearchPS = connection.prepareStatement(
+			PreparedStatement preparedStatement4 = connection.prepareStatement(
 				"insert into JournalContentSearch(contentSearchId, " +
 					"companyId, groupId, privateLayout, layoutId, portletId, " +
 						"articleId) values (?, ?, ?, ?, ?, ?, ?)")) {
 
-			selectPreferencesPS.setLong(1, groupId);
-			selectPreferencesPS.setString(2, portletId);
+			preparedStatement1.setLong(1, groupId);
+			preparedStatement1.setString(2, portletId);
 
-			try (ResultSet preferencesRS = selectPreferencesPS.executeQuery()) {
-				while (preferencesRS.next()) {
-					String xml = preferencesRS.getString("preferences");
+			try (ResultSet resultSet1 = preparedStatement1.executeQuery()) {
+				while (resultSet1.next()) {
+					String xml = resultSet1.getString("preferences");
 
 					PortletPreferences portletPreferences =
 						PortletPreferencesFactoryUtil.fromDefaultXML(xml);
@@ -540,33 +539,35 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 					String articleId = portletPreferences.getValue(
 						"articleId", null);
 
-					selectSearchPS.setLong(1, groupId);
-					selectSearchPS.setString(2, articleId);
+					preparedStatement2.setLong(1, groupId);
+					preparedStatement2.setString(2, articleId);
 
-					try (ResultSet searchRS = selectSearchPS.executeQuery()) {
-						if (searchRS.next()) {
-							long companyId = searchRS.getLong("companyId");
-							boolean privateLayout = searchRS.getBoolean(
+					try (ResultSet resultSet2 =
+							preparedStatement2.executeQuery()) {
+
+						if (resultSet2.next()) {
+							long companyId = resultSet2.getLong("companyId");
+							boolean privateLayout = resultSet2.getBoolean(
 								"privateLayout");
-							long layoutId = searchRS.getLong("layoutId");
+							long layoutId = resultSet2.getLong("layoutId");
 							String journalContentSearchPortletId =
-								searchRS.getString("portletId");
+								resultSet2.getString("portletId");
 
-							deleteSearchPS.setLong(1, groupId);
-							deleteSearchPS.setString(2, articleId);
+							preparedStatement3.setLong(1, groupId);
+							preparedStatement3.setString(2, articleId);
 
-							deleteSearchPS.executeUpdate();
+							preparedStatement3.executeUpdate();
 
-							insertSearchPS.setLong(1, increment());
-							insertSearchPS.setLong(2, companyId);
-							insertSearchPS.setLong(3, groupId);
-							insertSearchPS.setBoolean(4, privateLayout);
-							insertSearchPS.setLong(5, layoutId);
-							insertSearchPS.setString(
+							preparedStatement4.setLong(1, increment());
+							preparedStatement4.setLong(2, companyId);
+							preparedStatement4.setLong(3, groupId);
+							preparedStatement4.setBoolean(4, privateLayout);
+							preparedStatement4.setLong(5, layoutId);
+							preparedStatement4.setString(
 								6, journalContentSearchPortletId);
-							insertSearchPS.setString(7, articleId);
+							preparedStatement4.setString(7, articleId);
 
-							insertSearchPS.executeUpdate();
+							preparedStatement4.executeUpdate();
 						}
 					}
 				}
@@ -647,12 +648,12 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 		insertSB.append("?, ?, ?, ?, ?, ?)");
 
 		try (LoggingTimer loggingTimer = new LoggingTimer();
-			PreparedStatement selectPS = connection.prepareStatement(
+			PreparedStatement preparedStatement1 = connection.prepareStatement(
 				selectSB.toString());
-			PreparedStatement insertPS =
+			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.autoBatch(
 					connection, insertSB.toString());
-			ResultSet resultSet = selectPS.executeQuery()) {
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			long currentCompanyId = 0;
 			String currentPrimKey = null;
@@ -670,20 +671,20 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 
 					if (!hasGuestResourcePermissions) {
 						addResourcePermission(
-							insertPS, currentCompanyId, currentPrimKey,
-							guestRoleId);
+							preparedStatement2, currentCompanyId,
+							currentPrimKey, guestRoleId);
 					}
 
 					if (!hasOwnerResourcePermissions) {
 						addResourcePermission(
-							insertPS, currentCompanyId, currentPrimKey,
-							ownerRoleId);
+							preparedStatement2, currentCompanyId,
+							currentPrimKey, ownerRoleId);
 					}
 
 					if (!hasSiteMemberResourcePermissions) {
 						addResourcePermission(
-							insertPS, currentCompanyId, currentPrimKey,
-							siteMemberRoleId);
+							preparedStatement2, currentCompanyId,
+							currentPrimKey, siteMemberRoleId);
 					}
 
 					currentPrimKey = primKey;
@@ -712,24 +713,24 @@ public class UpgradeJournal extends BaseUpgradePortletPreferences {
 			if (currentPrimKey != null) {
 				if (!hasGuestResourcePermissions) {
 					addResourcePermission(
-						insertPS, currentCompanyId, currentPrimKey,
+						preparedStatement2, currentCompanyId, currentPrimKey,
 						guestRoleId);
 				}
 
 				if (!hasOwnerResourcePermissions) {
 					addResourcePermission(
-						insertPS, currentCompanyId, currentPrimKey,
+						preparedStatement2, currentCompanyId, currentPrimKey,
 						ownerRoleId);
 				}
 
 				if (!hasSiteMemberResourcePermissions) {
 					addResourcePermission(
-						insertPS, currentCompanyId, currentPrimKey,
+						preparedStatement2, currentCompanyId, currentPrimKey,
 						siteMemberRoleId);
 				}
 			}
 
-			insertPS.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 
