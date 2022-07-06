@@ -69,16 +69,6 @@ public class ObjectStateTransitionLocalServiceWrapper
 			objectStateTransition);
 	}
 
-	@Override
-	public void addObjectStateTransitions(
-			java.util.List<com.liferay.object.model.ObjectStateTransition>
-				objectStateTransitions)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		_objectStateTransitionLocalService.addObjectStateTransitions(
-			objectStateTransitions);
-	}
-
 	/**
 	 * Creates a new object state transition with the primary key. Does not add the object state transition to the database.
 	 *
@@ -157,17 +147,6 @@ public class ObjectStateTransitionLocalServiceWrapper
 
 		return _objectStateTransitionLocalService.deleteObjectStateTransition(
 			objectStateTransition);
-	}
-
-	@Override
-	public void deleteObjectStateTransitions(
-			java.util.List<com.liferay.object.model.ObjectStateTransition>
-				objectStateTransitions)
-		throws com.liferay.object.exception.
-			NoSuchObjectStateTransitionException {
-
-		_objectStateTransitionLocalService.deleteObjectStateTransitions(
-			objectStateTransitions);
 	}
 
 	/**

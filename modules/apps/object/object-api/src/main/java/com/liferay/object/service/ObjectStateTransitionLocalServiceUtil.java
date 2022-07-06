@@ -70,13 +70,6 @@ public class ObjectStateTransitionLocalServiceUtil {
 		return getService().addObjectStateTransition(objectStateTransition);
 	}
 
-	public static void addObjectStateTransitions(
-			List<ObjectStateTransition> objectStateTransitions)
-		throws PortalException {
-
-		getService().addObjectStateTransitions(objectStateTransitions);
-	}
-
 	/**
 	 * Creates a new object state transition with the primary key. Does not add the object state transition to the database.
 	 *
@@ -146,14 +139,6 @@ public class ObjectStateTransitionLocalServiceUtil {
 		ObjectStateTransition objectStateTransition) {
 
 		return getService().deleteObjectStateTransition(objectStateTransition);
-	}
-
-	public static void deleteObjectStateTransitions(
-			List<ObjectStateTransition> objectStateTransitions)
-		throws com.liferay.object.exception.
-			NoSuchObjectStateTransitionException {
-
-		getService().deleteObjectStateTransitions(objectStateTransitions);
 	}
 
 	/**
