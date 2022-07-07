@@ -120,6 +120,11 @@ public class NotificationQueueEntryResourceImpl
 				serviceBuilderNotificationQueueEntry)
 		throws PortalException {
 
+		NotificationType notificationType =
+			_notificationTypeRegistry.getNotificationType(
+				_portal.getClassName(
+					serviceBuilderNotificationQueueEntry.getClassNameId()));
+
 		return new NotificationQueueEntry() {
 			{
 				actions = HashMapBuilder.put(
@@ -161,13 +166,6 @@ public class NotificationQueueEntryResourceImpl
 				subject = serviceBuilderNotificationQueueEntry.getSubject();
 				to = serviceBuilderNotificationQueueEntry.getTo();
 				toName = serviceBuilderNotificationQueueEntry.getToName();
-
-				NotificationType notificationType =
-					_notificationTypeRegistry.getNotificationType(
-						_portal.getClassName(
-							serviceBuilderNotificationQueueEntry.
-								getClassNameId()));
-
 				triggerBy = notificationType.getLabel(
 					contextAcceptLanguage.getPreferredLocale());
 			}
