@@ -93,19 +93,19 @@ public class NotificationQueueEntryLocalServiceImpl
 		notificationQueueEntry = notificationQueueEntryPersistence.update(
 			notificationQueueEntry);
 
-		for (long fileEntryId : fileEntryIds) {
-			_notificationQueueEntryAttachmentLocalService.
-				addNotificationQueueEntryAttachment(
-					notificationQueueEntry.getCompanyId(), fileEntryId,
-					notificationQueueEntry.getNotificationQueueEntryId());
-		}
-
 		_resourceLocalService.addResources(
 			notificationQueueEntry.getCompanyId(), 0,
 			notificationQueueEntry.getUserId(),
 			NotificationQueueEntry.class.getName(),
 			notificationQueueEntry.getNotificationQueueEntryId(), false, true,
 			true);
+
+		for (long fileEntryId : fileEntryIds) {
+			_notificationQueueEntryAttachmentLocalService.
+				addNotificationQueueEntryAttachment(
+					notificationQueueEntry.getCompanyId(), fileEntryId,
+					notificationQueueEntry.getNotificationQueueEntryId());
+		}
 
 		return notificationQueueEntry;
 	}
@@ -144,11 +144,11 @@ public class NotificationQueueEntryLocalServiceImpl
 			NotificationQueueEntry notificationQueueEntry)
 		throws PortalException {
 
-		_resourceLocalService.deleteResource(
-			notificationQueueEntry, ResourceConstants.SCOPE_INDIVIDUAL);
-
 		notificationQueueEntry = notificationQueueEntryPersistence.remove(
 			notificationQueueEntry);
+
+		_resourceLocalService.deleteResource(
+			notificationQueueEntry, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		_notificationQueueEntryAttachmentLocalService.
 			deleteNotificationQueueEntryAttachments(
