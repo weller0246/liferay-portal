@@ -34,6 +34,7 @@ import com.liferay.object.service.ObjectActionLocalService;
 import com.liferay.object.service.ObjectDefinitionService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
+import com.liferay.object.service.ObjectFilterLocalService;
 import com.liferay.object.service.ObjectLayoutLocalService;
 import com.liferay.object.service.ObjectViewLocalService;
 import com.liferay.object.system.SystemObjectDefinitionMetadata;
@@ -154,7 +155,8 @@ public class ObjectDefinitionResourceImpl
 					objectDefinition.getObjectFields(),
 					objectField -> ObjectFieldUtil.toObjectField(
 						objectField, _objectFieldLocalService,
-						_objectFieldSettingLocalService))));
+						_objectFieldSettingLocalService,
+						_objectFilterLocalService))));
 	}
 
 	@Override
@@ -378,6 +380,9 @@ public class ObjectDefinitionResourceImpl
 
 	@Reference
 	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;
+
+	@Reference
+	private ObjectFilterLocalService _objectFilterLocalService;
 
 	@Reference
 	private ObjectLayoutLocalService _objectLayoutLocalService;
