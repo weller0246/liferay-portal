@@ -1140,6 +1140,8 @@ definition {
 			DMNavigator.openToConfigInInstanceSettings(portlet = "Cache Control");
 		}
 
+		WaitForPageLoad();
+
 		if (isSet(cacheControl)) {
 			AssertTextEquals(
 				key_fieldName = "cacheControl",
