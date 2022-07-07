@@ -255,7 +255,8 @@ public class ModulesJUnitBatchTestClassGroup extends JUnitBatchTestClassGroup {
 		}
 
 		JobProperty ignoreParentsJobProperty = getJobProperty(
-			"ignoreParents", file, JobProperty.Type.DEFAULT);
+			"ignoreParents[" + getTestSuiteName() + "]", file,
+			JobProperty.Type.MODULE_TEST_DIR);
 
 		boolean ignoreParents = Boolean.valueOf(
 			ignoreParentsJobProperty.getValue());
