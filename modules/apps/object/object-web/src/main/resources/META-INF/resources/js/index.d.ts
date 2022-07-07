@@ -112,6 +112,7 @@ interface ObjectDefinition {
 
 interface ObjectFieldSetting {
 	name: ObjectFieldSettingName;
+	objectFieldId: number;
 	value: string | number | boolean | ObjectFieldFilterSetting[];
 }
 
@@ -148,7 +149,8 @@ type ObjectFieldSettingName =
 	| 'relationship'
 	| 'function'
 	| 'summarizeField'
-	| 'filters';
+	| 'filters'
+	| 'stateFlow';
 
 interface ObjectValidation {
 	active: boolean;
@@ -216,4 +218,9 @@ interface ObjectDefinitionsRelationship {
 	id: number;
 	label: string;
 	related?: boolean;
+}
+
+interface ObjectState {
+	key: string;
+	nextObjectStates: string[];
 }
