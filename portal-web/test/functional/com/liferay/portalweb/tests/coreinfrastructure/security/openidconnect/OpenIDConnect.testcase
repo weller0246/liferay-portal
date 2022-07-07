@@ -32,6 +32,7 @@ definition {
 	test AssertUserIsLoggedOutWithHigherRefreshToken {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=&quot;true&quot;${line.separator}tokenRefreshOffset=&quot;120&quot;";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsLoggedOutWithHigherRefreshToken";
 
 		task ("Startup Keycloak for test") {
@@ -53,7 +54,13 @@ definition {
 				userEmailAddress = "user1",
 				userPassword = "test");
 
-			Pause(locator1 = "70000");
+			Pause(locator1 = "60000");
+
+			while (IsElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE")) {
+				Pause(localtor1 = "1000");
+
+				Refresh();
+			}
 
 			MyAccount.openMyAccountAdmin();
 
@@ -453,6 +460,7 @@ definition {
 	@description = "This is a use case for LPS-148619. User could log in and log out using Google as OpenID Connect provider, using custom parameters for the connection."
 	test OpenIDConnectWithGoogleCustomParameters {
 		property dummy.socket.proxy.disabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#EnabledOpenIDConnectOnSystemLevel";
 
 		var customTokenRequestParameters = "resource=https://contacts.google.com";
@@ -506,9 +514,13 @@ definition {
 		}
 
 		task (" And the user is still logged in after the first access token's lifetime is over and they receive a new access token in the background") {
-			Pause(locator1 = "65000");
+			Pause(locator1 = "60000");
 
-			Refresh();
+			while (IsElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE")) {
+				Pause(localtor1 = "1000");
+
+				Refresh();
+			}
 
 			User.viewLoggedInPG();
 		}
@@ -551,6 +563,7 @@ definition {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=&quot;true&quot;";
 		property portal.acceptance = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#VerifyUserIsStillLoggedInAfterAccessTokenExpiresAndRenew";
 
 		task ("Startup Keycloak for test") {
@@ -572,9 +585,13 @@ definition {
 				userEmailAddress = "user1",
 				userPassword = "test");
 
-			Pause(locator1 = "65000");
+			Pause(locator1 = "60000");
 
-			Refresh();
+			while (IsElementPresent(locator1 = "UserBar#USER_AVATAR_IMAGE")) {
+				Pause(localtor1 = "1000");
+
+				Refresh();
+			}
 
 			User.viewLoggedInPG();
 		}
