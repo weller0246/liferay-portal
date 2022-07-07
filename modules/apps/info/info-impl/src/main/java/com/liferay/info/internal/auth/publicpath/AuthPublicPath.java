@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.info.internal.request.auth.publicpath;
+package com.liferay.info.internal.auth.publicpath;
 
 import org.osgi.service.component.annotations.Component;
 
