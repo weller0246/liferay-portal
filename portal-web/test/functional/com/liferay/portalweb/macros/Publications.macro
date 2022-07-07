@@ -27,17 +27,18 @@ definition {
 			key_navBarTitle = "History",
 			locator1 = "Publications#MANAGE_PUBLICATIONS_NAVBAR_TITLE");
 
-		// This pause is required to allow the test to wait for the scheduled Publication to be published. See LRQA-70977 for more details.
-
-		Pause(locator1 = "240000");
-
 		LexiconEntry.changeDisplayStyle(displayStyle = "list");
 
 		var key_publicationName = "${publicationName}";
 
-		AssertTextEquals(
-			locator1 = "Publications#LIST_PUBLISHED_STATUS",
-			value1 = "Published");
+		while (IsElementNotPresent(locator1 = "Publications#LIST_PUBLISHED_STATUS", value1 = "Published")) {
+
+			// If the publication is not done yet, wait 10 seconds. See LRQA-70977 for more details.
+
+			Pause(locator1 = "10000");
+
+			Refresh();
+		}
 	}
 
 	macro cancelPublicationCreation {
