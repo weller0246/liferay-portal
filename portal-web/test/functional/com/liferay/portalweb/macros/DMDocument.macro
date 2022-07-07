@@ -1043,6 +1043,8 @@ definition {
 			locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_TITLE",
 			value1 = "${dmDocumentTitle}");
 
+		WaitForPageLoad();
+
 		AssertTextEquals(
 			locator1 = "Message#CHECKOUT_SUCCESS",
 			value1 = "You now have a lock on this document. No one else can edit this document until you unlock it. This lock will automatically expire in 1 day.");
@@ -1777,6 +1779,8 @@ definition {
 
 			Click(locator1 = "Button#EDIT");
 		}
+
+		WaitForPageLoad();
 
 		DMDocument.editCmd(
 			dmDocumentDescriptionEdit = "${dmDocumentDescriptionEdit}",
