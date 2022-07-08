@@ -145,7 +145,7 @@ export default function GlobalCSSCETsConfiguration({
 									)}
 								>
 									{Liferay.Language.get(
-										'numbers-indicate-in-which-order-extensions-are-loaded-extensions-inherited-from-master-will-always-be-loaded-in-first-place'
+										'numbers-indicate-the-order-in-which-client-extensions-are-loaded'
 									)}
 								</GlobalCETOrderHelpIcon>
 							</ClayTable.Cell>
