@@ -42,8 +42,6 @@ public class ObjectFieldSettingUtil {
 				objectFieldSettingLocalService.createObjectFieldSetting(0L);
 
 		serviceBuilderObjectFieldSetting.setName(objectFieldSetting.getName());
-		serviceBuilderObjectFieldSetting.setValue(
-			objectFieldSetting.getValue());
 
 		if (Objects.equals(
 				ObjectFieldSettingConstants.NAME_STATE_FLOW,
@@ -57,6 +55,9 @@ public class ObjectFieldSettingUtil {
 							ObjectStateFlow.class,
 							objectFieldSetting.getValue())));
 		}
+
+		serviceBuilderObjectFieldSetting.setValue(
+			objectFieldSetting.getValue());
 
 		return serviceBuilderObjectFieldSetting;
 	}
