@@ -410,8 +410,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private ObjectEntryLocalService _objectEntryLocalService;
 
 	@Reference
-	private ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private ObjectEntryManagerTracker _objectEntryManagerTracker;
 
 	@Reference
 	private ObjectEntryService _objectEntryService;

@@ -124,8 +124,7 @@ public class ObjectEntryDisplayContext {
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectEntryManagerTracker objectEntryManagerTracker,
 		ObjectEntryService objectEntryService,
-		ObjectFieldBusinessTypeTracker
-			objectFieldBusinessTypeTracker,
+		ObjectFieldBusinessTypeTracker objectFieldBusinessTypeTracker,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectLayoutLocalService objectLayoutLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
@@ -137,8 +136,7 @@ public class ObjectEntryDisplayContext {
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectEntryManagerTracker = objectEntryManagerTracker;
 		_objectEntryService = objectEntryService;
-		_objectFieldBusinessTypeTracker =
-			objectFieldBusinessTypeTracker;
+		_objectFieldBusinessTypeTracker = objectFieldBusinessTypeTracker;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectLayoutLocalService = objectLayoutLocalService;
 		_objectRelationshipLocalService = objectRelationshipLocalService;
@@ -1076,8 +1074,7 @@ public class ObjectEntryDisplayContext {
 	private final ItemSelector _itemSelector;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private ObjectEntry _objectEntry;
-	private final ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private final ObjectEntryManagerTracker _objectEntryManagerTracker;
 	private final ObjectEntryService _objectEntryService;
 	private final ObjectFieldBusinessTypeTracker
 		_objectFieldBusinessTypeTracker;

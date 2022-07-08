@@ -90,8 +90,7 @@ public class EditObjectLayoutMVCRenderCommand implements MVCRenderCommand {
 		_objectDefinitionModelResourcePermission;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 	@Reference
 	private ObjectLayoutLocalService _objectLayoutLocalService;

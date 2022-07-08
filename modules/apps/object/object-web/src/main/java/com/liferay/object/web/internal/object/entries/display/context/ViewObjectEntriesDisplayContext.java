@@ -69,8 +69,7 @@ public class ViewObjectEntriesDisplayContext {
 
 	public ViewObjectEntriesDisplayContext(
 		HttpServletRequest httpServletRequest,
-		ObjectFieldFDSFilterFactoryTracker
-			objectFieldFDSFilterFactoryTracker,
+		ObjectFieldFDSFilterFactoryTracker objectFieldFDSFilterFactoryTracker,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
 		ObjectViewLocalService objectViewLocalService,

@@ -327,8 +327,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private ComponentFactory _objectEntryApplicationComponentFactory;
 
 	@Reference
-	private ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private ObjectEntryManagerTracker _objectEntryManagerTracker;
 
 	@Reference(
 		target = "(component.factory=com.liferay.object.rest.internal.resource.v1_0.ObjectEntryResource)"

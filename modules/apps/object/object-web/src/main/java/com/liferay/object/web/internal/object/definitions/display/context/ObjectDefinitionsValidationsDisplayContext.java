@@ -51,13 +51,11 @@ public class ObjectDefinitionsValidationsDisplayContext
 		HttpServletRequest httpServletRequest,
 		ModelResourcePermission<ObjectDefinition>
 			objectDefinitionModelResourcePermission,
-		ObjectValidationRuleEngineTracker
-			objectValidationRuleEngineTracker) {
+		ObjectValidationRuleEngineTracker objectValidationRuleEngineTracker) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
 
-		_objectValidationRuleEngineTracker =
-			objectValidationRuleEngineTracker;
+		_objectValidationRuleEngineTracker = objectValidationRuleEngineTracker;
 	}
 
 	public List<FDSActionDropdownItem> getFDSActionDropdownItems()
@@ -86,8 +84,7 @@ public class ObjectDefinitionsValidationsDisplayContext
 
 	public List<Map<String, String>> getObjectValidationRuleEngines() {
 		return Stream.of(
-			_objectValidationRuleEngineTracker.
-				getObjectValidationRuleEngines()
+			_objectValidationRuleEngineTracker.getObjectValidationRuleEngines()
 		).flatMap(
 			List::stream
 		).map(

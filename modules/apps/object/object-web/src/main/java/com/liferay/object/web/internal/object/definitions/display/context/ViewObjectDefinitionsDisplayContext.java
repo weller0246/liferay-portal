@@ -183,8 +183,7 @@ public class ViewObjectDefinitionsDisplayContext {
 
 	private final ModelResourcePermission<ObjectDefinition>
 		_objectDefinitionModelResourcePermission;
-	private final ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private final ObjectEntryManagerTracker _objectEntryManagerTracker;
 	private final ObjectRequestHelper _objectRequestHelper;
 
 }

@@ -42,8 +42,7 @@ public class ObjectEntriesPortlet extends MVCPortlet {
 	public ObjectEntriesPortlet(
 		long objectDefinitionId,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
-		ObjectFieldFDSFilterFactoryTracker
-			objectFieldFDSFilterFactoryTracker,
+		ObjectFieldFDSFilterFactoryTracker objectFieldFDSFilterFactoryTracker,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProviderRegistry objectScopeProviderRegistry,
 		ObjectViewLocalService objectViewLocalService, Portal portal,
@@ -76,8 +75,7 @@ public class ObjectEntriesPortlet extends MVCPortlet {
 			WebKeys.PORTLET_DISPLAY_CONTEXT,
 			new ViewObjectEntriesDisplayContext(
 				_portal.getHttpServletRequest(renderRequest),
-				_objectFieldFDSFilterFactoryTracker,
-				_objectFieldLocalService,
+				_objectFieldFDSFilterFactoryTracker, _objectFieldLocalService,
 				_objectScopeProviderRegistry.getObjectScopeProvider(
 					objectDefinition.getScope()),
 				_objectViewLocalService, _portletResourcePermission,

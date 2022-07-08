@@ -149,10 +149,8 @@ public class ObjectViewDTOConverter
 		objectViewFilterColumn.setValueSummary(
 			() -> {
 				ObjectFieldFilterParser objectFieldFilterParser =
-					_objectFieldFilterParserTracker.
-						getObjectFieldFilterParser(
-							serviceBuilderObjectViewFilterColumn.
-								getFilterType());
+					_objectFieldFilterParserTracker.getObjectFieldFilterParser(
+						serviceBuilderObjectViewFilterColumn.getFilterType());
 
 				if (Objects.equals(
 						serviceBuilderObjectViewFilterColumn.
@@ -219,8 +217,7 @@ public class ObjectViewDTOConverter
 	private Language _language;
 
 	@Reference
-	private ObjectFieldFilterParserTracker
-		_objectFieldFilterParserTracker;
+	private ObjectFieldFilterParserTracker _objectFieldFilterParserTracker;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

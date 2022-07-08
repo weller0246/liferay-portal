@@ -104,7 +104,6 @@ public class ObjectDefinitionsObjectsScreenNavigationCategory
 		_objectDefinitionModelResourcePermission;
 
 	@Reference
-	private ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private ObjectEntryManagerTracker _objectEntryManagerTracker;
 
 }

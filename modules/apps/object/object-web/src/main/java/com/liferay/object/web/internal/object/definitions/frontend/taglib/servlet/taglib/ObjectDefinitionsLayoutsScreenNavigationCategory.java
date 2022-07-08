@@ -98,7 +98,6 @@ public class ObjectDefinitionsLayoutsScreenNavigationCategory
 		_objectDefinitionModelResourcePermission;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 }

@@ -56,13 +56,11 @@ public class ObjectDefinitionsFieldsDisplayContext
 		HttpServletRequest httpServletRequest,
 		ModelResourcePermission<ObjectDefinition>
 			objectDefinitionModelResourcePermission,
-		ObjectFieldBusinessTypeTracker
-			objectFieldBusinessTypeTracker) {
+		ObjectFieldBusinessTypeTracker objectFieldBusinessTypeTracker) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
 
-		_objectFieldBusinessTypeTracker =
-			objectFieldBusinessTypeTracker;
+		_objectFieldBusinessTypeTracker = objectFieldBusinessTypeTracker;
 	}
 
 	public CreationMenu getCreationMenu(ObjectDefinition objectDefinition)
@@ -135,8 +133,7 @@ public class ObjectDefinitionsFieldsDisplayContext
 		boolean includeRelationshipObjectFieldBusinessType, Locale locale) {
 
 		List<ObjectFieldBusinessType> objectFieldBusinessTypes =
-			_objectFieldBusinessTypeTracker.
-				getObjectFieldBusinessTypes();
+			_objectFieldBusinessTypeTracker.getObjectFieldBusinessTypes();
 
 		Stream<ObjectFieldBusinessType> stream =
 			objectFieldBusinessTypes.stream();

@@ -32,9 +32,7 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Marcela Cunha
  */
-@Component(
-	immediate = true, service = ObjectFieldBusinessTypeTracker.class
-)
+@Component(immediate = true, service = ObjectFieldBusinessTypeTracker.class)
 public class ObjectFieldBusinessTypeTrackerImpl
 	implements ObjectFieldBusinessTypeTracker {
 

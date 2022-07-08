@@ -540,8 +540,7 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private ObjectEntryManagerTracker _objectEntryManagerTracker;
 
 	@Reference
 	private ObjectEntryService _objectEntryService;

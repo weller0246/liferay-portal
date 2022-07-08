@@ -960,8 +960,7 @@ public class ObjectFieldLocalServiceImpl
 	private ObjectEntryPersistence _objectEntryPersistence;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 	@Reference
 	private ObjectFieldPersistence _objectFieldPersistence;

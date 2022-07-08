@@ -237,8 +237,8 @@ public class ObjectValidationRuleLocalServiceImpl
 		}
 
 		ObjectValidationRuleEngine objectValidationRuleEngine =
-			_objectValidationRuleEngineTracker.
-				getObjectValidationRuleEngine(engine);
+			_objectValidationRuleEngineTracker.getObjectValidationRuleEngine(
+				engine);
 
 		if (objectValidationRuleEngine == null) {
 			throw new ObjectValidationRuleEngineException(

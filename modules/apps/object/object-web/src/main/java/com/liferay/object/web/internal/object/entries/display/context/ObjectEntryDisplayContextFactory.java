@@ -58,15 +58,13 @@ public class ObjectEntryDisplayContextFactory {
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private ObjectEntryManagerTracker
-		_objectEntryManagerTracker;
+	private ObjectEntryManagerTracker _objectEntryManagerTracker;
 
 	@Reference
 	private ObjectEntryService _objectEntryService;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

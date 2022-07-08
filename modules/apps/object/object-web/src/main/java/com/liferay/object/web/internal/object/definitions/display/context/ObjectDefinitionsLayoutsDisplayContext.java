@@ -42,13 +42,11 @@ public class ObjectDefinitionsLayoutsDisplayContext
 		HttpServletRequest httpServletRequest,
 		ModelResourcePermission<ObjectDefinition>
 			objectDefinitionModelResourcePermission,
-		ObjectFieldBusinessTypeTracker
-			objectFieldBusinessTypeTracker) {
+		ObjectFieldBusinessTypeTracker objectFieldBusinessTypeTracker) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
 
-		_objectFieldBusinessTypeTracker =
-			objectFieldBusinessTypeTracker;
+		_objectFieldBusinessTypeTracker = objectFieldBusinessTypeTracker;
 	}
 
 	public List<FDSActionDropdownItem> getFDSActionDropdownItems()
@@ -79,8 +77,7 @@ public class ObjectDefinitionsLayoutsDisplayContext
 
 		return ObjectFieldBusinessTypeUtil.getObjectFieldBusinessTypeMaps(
 			locale,
-			_objectFieldBusinessTypeTracker.
-				getObjectFieldBusinessTypes());
+			_objectFieldBusinessTypeTracker.getObjectFieldBusinessTypes());
 	}
 
 	@Override

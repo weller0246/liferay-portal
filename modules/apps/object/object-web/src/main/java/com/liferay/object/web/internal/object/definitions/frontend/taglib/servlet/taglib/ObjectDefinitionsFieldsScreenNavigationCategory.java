@@ -92,7 +92,6 @@ public class ObjectDefinitionsFieldsScreenNavigationCategory
 		_objectDefinitionModelResourcePermission;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 }

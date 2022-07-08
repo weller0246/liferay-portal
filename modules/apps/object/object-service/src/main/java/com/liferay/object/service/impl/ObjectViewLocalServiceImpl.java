@@ -503,9 +503,8 @@ public class ObjectViewLocalServiceImpl extends ObjectViewLocalServiceBaseImpl {
 			}
 
 			ObjectFieldFilterParser objectFieldFilterParser =
-				_objectFieldFilterParserTracker.
-					getObjectFieldFilterParser(
-						objectViewFilterColumn.getFilterType());
+				_objectFieldFilterParserTracker.getObjectFieldFilterParser(
+					objectViewFilterColumn.getFilterType());
 
 			objectFieldFilterParser.validate(
 				listTypeDefinitionId, objectViewFilterColumn);
@@ -550,8 +549,7 @@ public class ObjectViewLocalServiceImpl extends ObjectViewLocalServiceBaseImpl {
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;
 
 	@Reference
-	private ObjectFieldFilterParserTracker
-		_objectFieldFilterParserTracker;
+	private ObjectFieldFilterParserTracker _objectFieldFilterParserTracker;
 
 	private final Set<String> _objectFieldNames = Collections.unmodifiableSet(
 		SetUtil.fromArray(

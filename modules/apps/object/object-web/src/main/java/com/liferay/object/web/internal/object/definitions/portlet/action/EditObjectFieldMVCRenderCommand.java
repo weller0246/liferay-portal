@@ -89,8 +89,7 @@ public class EditObjectFieldMVCRenderCommand implements MVCRenderCommand {
 		_objectDefinitionModelResourcePermission;
 
 	@Reference
-	private ObjectFieldBusinessTypeTracker
-		_objectFieldBusinessTypeTracker;
+	private ObjectFieldBusinessTypeTracker _objectFieldBusinessTypeTracker;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
