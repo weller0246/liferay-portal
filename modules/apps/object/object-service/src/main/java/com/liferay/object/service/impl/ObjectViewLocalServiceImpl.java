@@ -20,7 +20,7 @@ import com.liferay.object.exception.ObjectViewColumnFieldNameException;
 import com.liferay.object.exception.ObjectViewFilterColumnException;
 import com.liferay.object.exception.ObjectViewSortColumnException;
 import com.liferay.object.field.filter.parser.ObjectFieldFilterParser;
-import com.liferay.object.field.filter.parser.ObjectFieldFilterParserServicesTracker;
+import com.liferay.object.field.filter.parser.ObjectFieldFilterParserTracker;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectView;
@@ -503,7 +503,7 @@ public class ObjectViewLocalServiceImpl extends ObjectViewLocalServiceBaseImpl {
 			}
 
 			ObjectFieldFilterParser objectFieldFilterParser =
-				_objectFieldFilterParserServicesTracker.
+				_objectFieldFilterParserTracker.
 					getObjectFieldFilterParser(
 						objectViewFilterColumn.getFilterType());
 
@@ -550,8 +550,8 @@ public class ObjectViewLocalServiceImpl extends ObjectViewLocalServiceBaseImpl {
 	private ObjectDefinitionPersistence _objectDefinitionPersistence;
 
 	@Reference
-	private ObjectFieldFilterParserServicesTracker
-		_objectFieldFilterParserServicesTracker;
+	private ObjectFieldFilterParserTracker
+		_objectFieldFilterParserTracker;
 
 	private final Set<String> _objectFieldNames = Collections.unmodifiableSet(
 		SetUtil.fromArray(

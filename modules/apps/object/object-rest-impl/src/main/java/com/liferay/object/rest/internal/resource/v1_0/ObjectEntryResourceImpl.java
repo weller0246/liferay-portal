@@ -20,7 +20,7 @@ import com.liferay.object.rest.dto.v1_0.ObjectEntry;
 import com.liferay.object.rest.internal.odata.entity.v1_0.ObjectEntryEntityModel;
 import com.liferay.object.rest.internal.petra.sql.dsl.expression.PredicateUtil;
 import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerServicesTracker;
+import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerTracker;
 import com.liferay.object.rest.resource.v1_0.ObjectEntryResource;
 import com.liferay.object.scope.ObjectScopeProvider;
 import com.liferay.object.scope.ObjectScopeProviderRegistry;
@@ -126,7 +126,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		objectEntryManager.deleteObjectEntry(
@@ -137,7 +137,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 	@Override
 	public void deleteObjectEntry(Long objectEntryId) throws Exception {
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		objectEntryManager.deleteObjectEntry(_objectDefinition, objectEntryId);
@@ -149,7 +149,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		objectEntryManager.deleteObjectEntry(
@@ -162,7 +162,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.getObjectEntry(
@@ -177,7 +177,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		Page<ObjectEntry> page =
@@ -217,7 +217,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-153768"))) {
@@ -240,7 +240,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 	@Override
 	public ObjectEntry getObjectEntry(Long objectEntryId) throws Exception {
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.getObjectEntry(
@@ -254,7 +254,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.getObjectEntry(
@@ -270,7 +270,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-153768"))) {
@@ -296,7 +296,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.addObjectEntry(
@@ -310,7 +310,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.addObjectEntry(
@@ -324,7 +324,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.addOrUpdateObjectEntry(
@@ -344,7 +344,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 				objectRelationshipName);
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return _getRelatedObjectEntry(
@@ -362,7 +362,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.updateObjectEntry(
@@ -377,7 +377,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 		throws Exception {
 
 		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerServicesTracker.getObjectEntryManager(
+			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
 
 		return objectEntryManager.addOrUpdateObjectEntry(
@@ -501,8 +501,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
 	@Reference
-	private ObjectEntryManagerServicesTracker
-		_objectEntryManagerServicesTracker;
+	private ObjectEntryManagerTracker
+		_objectEntryManagerTracker;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;

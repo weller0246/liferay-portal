@@ -15,7 +15,7 @@
 package com.liferay.object.internal.validation.rule;
 
 import com.liferay.object.validation.rule.ObjectValidationRuleEngine;
-import com.liferay.object.validation.rule.ObjectValidationRuleEngineServicesTracker;
+import com.liferay.object.validation.rule.ObjectValidationRuleEngineTracker;
 import com.liferay.osgi.service.tracker.collections.map.ServiceReferenceMapper;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -33,10 +33,10 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Marco Leo
  */
 @Component(
-	immediate = true, service = ObjectValidationRuleEngineServicesTracker.class
+	immediate = true, service = ObjectValidationRuleEngineTracker.class
 )
-public class ObjectValidationRuleEngineServicesTrackerImpl
-	implements ObjectValidationRuleEngineServicesTracker {
+public class ObjectValidationRuleEngineTrackerImpl
+	implements ObjectValidationRuleEngineTracker {
 
 	@Override
 	public ObjectValidationRuleEngine getObjectValidationRuleEngine(

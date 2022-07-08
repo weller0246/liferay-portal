@@ -12,20 +12,20 @@
  * details.
  */
 
-package com.liferay.object.field.business.type;
+package com.liferay.object.rest.manager.v1_0;
 
 import java.util.List;
 import java.util.Set;
 
 /**
- * @author Marcela Cunha
+ * @author Guilherme Camacho
  */
-public interface ObjectFieldBusinessTypeServicesTracker {
+public interface ObjectEntryManagerTracker {
 
-	public ObjectFieldBusinessType getObjectFieldBusinessType(String name);
+	public ObjectEntryManager getObjectEntryManager(String storageType);
 
-	public List<ObjectFieldBusinessType> getObjectFieldBusinessTypes();
+	public List<ObjectEntryManager> getObjectEntryManagers();
 
-	public Set<String> getObjectFieldDBTypes();
+	public Set<String> getStorageTypes();
 
 }

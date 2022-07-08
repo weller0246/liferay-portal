@@ -15,7 +15,7 @@
 package com.liferay.object.internal.field.business.type;
 
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
 
@@ -33,10 +33,10 @@ import org.osgi.service.component.annotations.Deactivate;
  * @author Marcela Cunha
  */
 @Component(
-	immediate = true, service = ObjectFieldBusinessTypeServicesTracker.class
+	immediate = true, service = ObjectFieldBusinessTypeTracker.class
 )
-public class ObjectFieldBusinessTypeServicesTrackerImpl
-	implements ObjectFieldBusinessTypeServicesTracker {
+public class ObjectFieldBusinessTypeTrackerImpl
+	implements ObjectFieldBusinessTypeTracker {
 
 	@Override
 	public ObjectFieldBusinessType getObjectFieldBusinessType(String key) {

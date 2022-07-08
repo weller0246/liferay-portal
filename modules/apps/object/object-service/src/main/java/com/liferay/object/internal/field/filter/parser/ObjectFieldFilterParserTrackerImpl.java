@@ -12,16 +12,12 @@
  * details.
  */
 
-package com.liferay.object.rest.internal.manager.v1_0;
+package com.liferay.object.internal.field.filter.parser;
 
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManager;
-import com.liferay.object.rest.manager.v1_0.ObjectEntryManagerServicesTracker;
+import com.liferay.object.field.filter.parser.ObjectFieldFilterParser;
+import com.liferay.object.field.filter.parser.ObjectFieldFilterParserTracker;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
@@ -29,32 +25,24 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 
 /**
- * @author Guilherme Camacho
+ * @author Feliphe Marinho
  */
-@Component(immediate = true, service = ObjectEntryManagerServicesTracker.class)
-public class ObjectEntryManagerServicesTrackerImpl
-	implements ObjectEntryManagerServicesTracker {
+@Component(
+	immediate = true, service = ObjectFieldFilterParserTracker.class
+)
+public class ObjectFieldFilterParserTrackerImpl
+	implements ObjectFieldFilterParserTracker {
 
 	@Override
-	public ObjectEntryManager getObjectEntryManager(String storageType) {
-		return _serviceTrackerMap.getService(storageType);
-	}
-
-	@Override
-	public List<ObjectEntryManager> getObjectEntryManagers() {
-		return new ArrayList(_serviceTrackerMap.values());
-	}
-
-	@Override
-	public Set<String> getStorageTypes() {
-		return _serviceTrackerMap.keySet();
+	public ObjectFieldFilterParser getObjectFieldFilterParser(String key) {
+		return _serviceTrackerMap.getService(key);
 	}
 
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ObjectEntryManager.class,
-			"object.entry.manager.storage.type");
+			bundleContext, ObjectFieldFilterParser.class,
+			"object.field.filter.type.key");
 	}
 
 	@Deactivate
@@ -62,6 +50,7 @@ public class ObjectEntryManagerServicesTrackerImpl
 		_serviceTrackerMap.close();
 	}
 
-	private ServiceTrackerMap<String, ObjectEntryManager> _serviceTrackerMap;
+	private ServiceTrackerMap<String, ObjectFieldFilterParser>
+		_serviceTrackerMap;
 
 }

@@ -19,7 +19,7 @@ import com.liferay.frontend.taglib.clay.servlet.taglib.util.CreationMenu;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectFieldUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.web.internal.util.ObjectFieldBusinessTypeUtil;
@@ -56,13 +56,13 @@ public class ObjectDefinitionsFieldsDisplayContext
 		HttpServletRequest httpServletRequest,
 		ModelResourcePermission<ObjectDefinition>
 			objectDefinitionModelResourcePermission,
-		ObjectFieldBusinessTypeServicesTracker
-			objectFieldBusinessTypeServicesTracker) {
+		ObjectFieldBusinessTypeTracker
+			objectFieldBusinessTypeTracker) {
 
 		super(httpServletRequest, objectDefinitionModelResourcePermission);
 
-		_objectFieldBusinessTypeServicesTracker =
-			objectFieldBusinessTypeServicesTracker;
+		_objectFieldBusinessTypeTracker =
+			objectFieldBusinessTypeTracker;
 	}
 
 	public CreationMenu getCreationMenu(ObjectDefinition objectDefinition)
@@ -135,7 +135,7 @@ public class ObjectDefinitionsFieldsDisplayContext
 		boolean includeRelationshipObjectFieldBusinessType, Locale locale) {
 
 		List<ObjectFieldBusinessType> objectFieldBusinessTypes =
-			_objectFieldBusinessTypeServicesTracker.
+			_objectFieldBusinessTypeTracker.
 				getObjectFieldBusinessTypes();
 
 		Stream<ObjectFieldBusinessType> stream =
@@ -164,7 +164,7 @@ public class ObjectDefinitionsFieldsDisplayContext
 		return "/object-fields";
 	}
 
-	private final ObjectFieldBusinessTypeServicesTracker
-		_objectFieldBusinessTypeServicesTracker;
+	private final ObjectFieldBusinessTypeTracker
+		_objectFieldBusinessTypeTracker;
 
 }

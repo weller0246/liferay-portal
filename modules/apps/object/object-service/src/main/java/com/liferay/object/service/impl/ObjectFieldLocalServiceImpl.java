@@ -29,9 +29,9 @@ import com.liferay.object.exception.ObjectFieldRelationshipTypeException;
 import com.liferay.object.exception.ObjectFieldStateException;
 import com.liferay.object.exception.RequiredObjectFieldException;
 import com.liferay.object.field.business.type.ObjectFieldBusinessType;
-import com.liferay.object.field.business.type.ObjectFieldBusinessTypeServicesTracker;
+import com.liferay.object.field.business.type.ObjectFieldBusinessTypeTracker;
 import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributor;
-import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributorServicesTracker;
+import com.liferay.object.internal.field.setting.contributor.ObjectFieldSettingContributorTracker;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectEntry;
@@ -593,7 +593,7 @@ public class ObjectFieldLocalServiceImpl
 		throws PortalException {
 
 		ObjectFieldBusinessType objectFieldBusinessType =
-			_objectFieldBusinessTypeServicesTracker.getObjectFieldBusinessType(
+			_objectFieldBusinessTypeTracker.getObjectFieldBusinessType(
 				objectField.getBusinessType());
 
 		objectFieldBusinessType.validateObjectFieldSettings(
@@ -627,7 +627,7 @@ public class ObjectFieldLocalServiceImpl
 					newObjectFieldSetting.getName());
 
 			ObjectFieldSettingContributor objectFieldSettingContributor =
-				_objectFieldSettingContributorServicesTracker.
+				_objectFieldSettingContributorTracker.
 					getObjectFieldSettingContributor(
 						newObjectFieldSetting.getName());
 
@@ -750,11 +750,11 @@ public class ObjectFieldLocalServiceImpl
 		throws PortalException {
 
 		ObjectFieldBusinessType objectFieldBusinessType =
-			_objectFieldBusinessTypeServicesTracker.getObjectFieldBusinessType(
+			_objectFieldBusinessTypeTracker.getObjectFieldBusinessType(
 				GetterUtil.getString(businessType));
 
 		Set<String> objectFieldDBTypes =
-			_objectFieldBusinessTypeServicesTracker.getObjectFieldDBTypes();
+			_objectFieldBusinessTypeTracker.getObjectFieldDBTypes();
 
 		if (objectFieldBusinessType != null) {
 			objectField.setBusinessType(businessType);
@@ -960,15 +960,15 @@ public class ObjectFieldLocalServiceImpl
 	private ObjectEntryPersistence _objectEntryPersistence;
 
 	@Reference
-	private ObjectFieldBusinessTypeServicesTracker
-		_objectFieldBusinessTypeServicesTracker;
+	private ObjectFieldBusinessTypeTracker
+		_objectFieldBusinessTypeTracker;
 
 	@Reference
 	private ObjectFieldPersistence _objectFieldPersistence;
 
 	@Reference
-	private ObjectFieldSettingContributorServicesTracker
-		_objectFieldSettingContributorServicesTracker;
+	private ObjectFieldSettingContributorTracker
+		_objectFieldSettingContributorTracker;
 
 	@Reference
 	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;

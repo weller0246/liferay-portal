@@ -19,7 +19,7 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectViewColumn;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectViewFilterColumn;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectViewSortColumn;
 import com.liferay.object.field.filter.parser.ObjectFieldFilterParser;
-import com.liferay.object.field.filter.parser.ObjectFieldFilterParserServicesTracker;
+import com.liferay.object.field.filter.parser.ObjectFieldFilterParserTracker;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.util.LocalizedMapUtil;
@@ -149,7 +149,7 @@ public class ObjectViewDTOConverter
 		objectViewFilterColumn.setValueSummary(
 			() -> {
 				ObjectFieldFilterParser objectFieldFilterParser =
-					_objectFieldFilterParserServicesTracker.
+					_objectFieldFilterParserTracker.
 						getObjectFieldFilterParser(
 							serviceBuilderObjectViewFilterColumn.
 								getFilterType());
@@ -219,8 +219,8 @@ public class ObjectViewDTOConverter
 	private Language _language;
 
 	@Reference
-	private ObjectFieldFilterParserServicesTracker
-		_objectFieldFilterParserServicesTracker;
+	private ObjectFieldFilterParserTracker
+		_objectFieldFilterParserTracker;
 
 	@Reference
 	private ObjectFieldLocalService _objectFieldLocalService;
