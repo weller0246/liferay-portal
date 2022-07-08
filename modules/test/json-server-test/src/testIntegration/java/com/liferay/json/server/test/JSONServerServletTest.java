@@ -495,7 +495,7 @@ public class JSONServerServletTest {
 				"Unknown ID in path /fruit/orange/3", message.get("message"));
 		}
 
-		// /fruit/supercalifragilisticexpialidocious/something/to/say/when/you/
+		// /fruit/supercalifragilisticexpialidocious/something/to/say/when/you
 		// /have/nothing/to/say?a=b&c=d&e=f
 
 		mockHttpServletRequest.setPathInfo(
