@@ -42,16 +42,6 @@ public class ObjectStateFlowUtil {
 		};
 	}
 
-	private static String _toNextObjectState(ObjectState nextObjectState)
-		throws PortalException {
-
-		ListTypeEntry listTypeEntry =
-			ListTypeEntryLocalServiceUtil.getListTypeEntry(
-				nextObjectState.getListTypeEntryId());
-
-		return listTypeEntry.getKey();
-	}
-
 	private static com.liferay.object.admin.rest.dto.v1_0.ObjectState
 			_toObjectState(ObjectState objectState)
 		throws PortalException {
@@ -67,7 +57,14 @@ public class ObjectStateFlowUtil {
 				nextObjectStates = TransformUtil.transformToArray(
 					ObjectStateLocalServiceUtil.getNextObjectStates(
 						objectState.getObjectStateId()),
-					ObjectStateFlowUtil::_toNextObjectState, String.class);
+					nextObjectState -> {
+						ListTypeEntry listTypeEntry =
+							ListTypeEntryLocalServiceUtil.getListTypeEntry(
+								nextObjectState.getListTypeEntryId());
+
+						return listTypeEntry.getKey();
+					},
+					String.class);
 			}
 		};
 	}
