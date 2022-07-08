@@ -2825,6 +2825,8 @@ definition {
 	}
 
 	macro viewCacheControlConfigurationInConsole {
+		echo("${responseHeader}");
+
 		if (isSet(uncacheableMimeType)) {
 			if (contains("${responseHeader}", "Cache-Control: private, no-cache, no-store, must-revalidate")) {
 				echo("This file can not be cached");
