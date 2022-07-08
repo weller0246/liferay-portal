@@ -15,7 +15,7 @@
 package com.liferay.portal.upgrade.v6_2_0;
 
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.upgrade.util.ParallelUpgradeSchemaUtil;
+import com.liferay.portal.kernel.util.LoggingTimer;
 
 /**
  * @author Raymond Augé
@@ -24,13 +24,21 @@ public class UpgradeSchema extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		ParallelUpgradeSchemaUtil.execute(
-			this, "update-6.1.1-6.2.0.sql", "update-6.1.1-6.2.0-dl.sql",
+		_runSQLTemplate(
+			"update-6.1.1-6.2.0.sql", "update-6.1.1-6.2.0-dl.sql",
 			"update-6.1.1-6.2.0-expando.sql", "update-6.1.1-6.2.0-group.sql",
 			"update-6.1.1-6.2.0-journal.sql", "update-6.1.1-6.2.0-user.sql",
 			"update-6.1.1-6.2.0-wiki.sql");
 
 		upgrade(new UpgradeMVCCVersion());
 	}
+
+    private void _runSQLTemplate(String... sqlFileNames) throws Exception {
+        for (String sqlFileName : sqlFileNames) {
+            try (LoggingTimer loggingTimer = new LoggingTimer(sqlFileName)) {
+                runSQLTemplate(sqlFileName, false);
+            }
+        }
+    }
 
 }
