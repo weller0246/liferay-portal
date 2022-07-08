@@ -36,13 +36,20 @@ public class ObjectFieldSettingUtil {
 
 		ListUtil.isNotEmptyForEach(
 			objectField.getObjectFieldSettings(),
-			objectFieldSetting -> _putObjectFieldSettingJSONObject(
-				objectField.getBusinessType(), jsonArray, objectFieldSetting));
+			objectFieldSetting -> jsonArray.put(
+				JSONUtil.put(
+					"name", objectFieldSetting.getName()
+				).put(
+					"objectFieldId", objectFieldSetting.getObjectFieldId()
+				).put(
+					"value",
+					_getValue(objectField.getBusinessType(), objectFieldSetting)
+				)));
 
 		return jsonArray;
 	}
 
-	private static Object _getObjectFieldSettingValue(
+	private static Object _getValue(
 		String businessType, ObjectFieldSetting objectFieldSetting) {
 
 		if (Objects.equals(
@@ -80,28 +87,13 @@ public class ObjectFieldSettingUtil {
 					businessType)) {
 
 			if (Objects.equals(objectFieldSetting.getName(), "stateFlow")) {
-				return ObjectStateFlowUtil.parse(
+				return ObjectStateFlowUtil.toJSON(
 					ObjectStateFlowLocalServiceUtil.fetchObjectStateFlow(
 						GetterUtil.getLong(objectFieldSetting.getValue())));
 			}
 		}
 
 		return objectFieldSetting.getValue();
-	}
-
-	private static void _putObjectFieldSettingJSONObject(
-		String businessType, JSONArray jsonArray,
-		ObjectFieldSetting objectFieldSetting) {
-
-		jsonArray.put(
-			JSONUtil.put(
-				"name", objectFieldSetting.getName()
-			).put(
-				"objectFieldId", objectFieldSetting.getObjectFieldId()
-			).put(
-				"value",
-				_getObjectFieldSettingValue(businessType, objectFieldSetting)
-			));
 	}
 
 }
