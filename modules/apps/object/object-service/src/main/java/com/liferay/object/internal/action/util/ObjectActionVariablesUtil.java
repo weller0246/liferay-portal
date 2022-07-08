@@ -37,12 +37,11 @@ public class ObjectActionVariablesUtil {
 			systemObjectDefinitionMetadataTracker) {
 
 		if (objectDefinition.isSystem()) {
-			String dtoConverterType = _getDTOConverterType(
+			String contentType = _getContentType(
 				dtoConverterRegistry, objectDefinition,
 				systemObjectDefinitionMetadataTracker);
 
-			Object object = payloadJSONObject.get(
-				"modelDTO" + dtoConverterType);
+			Object object = payloadJSONObject.get("modelDTO" + contentType);
 
 			if (object == null) {
 				return payloadJSONObject.toMap();
@@ -76,7 +75,7 @@ public class ObjectActionVariablesUtil {
 		return variables;
 	}
 
-	private static String _getDTOConverterType(
+	private static String _getContentType(
 		DTOConverterRegistry dtoConverterRegistry,
 		ObjectDefinition objectDefinition,
 		SystemObjectDefinitionMetadataTracker
