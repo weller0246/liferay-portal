@@ -87,7 +87,7 @@ public class ObjectFieldSettingUtil {
 					businessType)) {
 
 			if (Objects.equals(objectFieldSetting.getName(), "stateFlow")) {
-				return ObjectStateFlowUtil.toJSON(
+				return ObjectStateFlowUtil.toObjectStateFlow(
 					ObjectStateFlowLocalServiceUtil.fetchObjectStateFlow(
 						GetterUtil.getLong(objectFieldSetting.getValue())));
 			}

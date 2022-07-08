@@ -17,7 +17,7 @@ package com.liferay.object.admin.rest.dto.v1_0.util;
 import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeEntryLocalServiceUtil;
 import com.liferay.object.model.ObjectState;
-import com.liferay.object.model.ObjectStateFlow;
+import com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow;
 import com.liferay.object.service.ObjectStateLocalServiceUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -27,20 +27,19 @@ import com.liferay.portal.vulcan.util.TransformUtil;
  */
 public class ObjectStateFlowUtil {
 
-	public static String toJSON(ObjectStateFlow objectStateFlow) {
-		return String.valueOf(
-			new com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow() {
-				{
-					id = objectStateFlow.getObjectStateFlowId();
-					objectStates = TransformUtil.transformToArray(
-						ObjectStateLocalServiceUtil.
-							getObjectStateFlowObjectStates(
-								objectStateFlow.getObjectStateFlowId()),
-						ObjectStateFlowUtil::_toObjectState,
-						com.liferay.object.admin.rest.dto.v1_0.ObjectState.
-							class);
-				}
-			});
+	public static ObjectStateFlow toObjectStateFlow(com.liferay.object.model.ObjectStateFlow objectStateFlow) {
+		return new com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow() {
+			{
+				id = objectStateFlow.getObjectStateFlowId();
+				objectStates = TransformUtil.transformToArray(
+					ObjectStateLocalServiceUtil.
+						getObjectStateFlowObjectStates(
+							objectStateFlow.getObjectStateFlowId()),
+					ObjectStateFlowUtil::_toObjectState,
+					com.liferay.object.admin.rest.dto.v1_0.ObjectState.
+						class);
+			}
+		};
 	}
 
 	private static String _toNextObjectState(ObjectState nextObjectState)
