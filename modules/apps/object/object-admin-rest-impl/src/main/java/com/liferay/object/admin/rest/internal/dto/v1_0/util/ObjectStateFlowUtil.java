@@ -55,8 +55,8 @@ public class ObjectStateFlowUtil {
 		serviceBuilderObjectStateFlow.setObjectStates(
 			TransformUtil.transformToList(
 				objectStateFlow.getObjectStates(),
-				objectStateDTO -> _toObjectState(
-					objectField.getListTypeDefinitionId(), objectStateDTO,
+				objectState -> _toObjectState(
+					objectField.getListTypeDefinitionId(), objectState,
 					objectStateFlow.getId())));
 
 		return serviceBuilderObjectStateFlow;
