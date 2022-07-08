@@ -63,9 +63,10 @@ public class ObjectStateFlowUtil {
 	}
 
 	private static ObjectState _toObjectState(
-		long listTypeDefinitionId,
-		com.liferay.object.admin.rest.dto.v1_0.ObjectState objectState,
-		long objectStateFlowId) {
+			long listTypeDefinitionId,
+			com.liferay.object.admin.rest.dto.v1_0.ObjectState objectState,
+			long objectStateFlowId)
+		throws PortalException {
 
 		ObjectState serviceBuilderObjectState =
 			ObjectStateLocalServiceUtil.createObjectState(0L);
@@ -73,7 +74,7 @@ public class ObjectStateFlowUtil {
 		serviceBuilderObjectState.setObjectStateId(objectState.getId());
 
 		ListTypeEntry listTypeEntry =
-			ListTypeEntryLocalServiceUtil.fetchListTypeEntry(
+			ListTypeEntryLocalServiceUtil.getListTypeEntry(
 				listTypeDefinitionId, objectState.getKey());
 
 		serviceBuilderObjectState.setListTypeEntryId(
