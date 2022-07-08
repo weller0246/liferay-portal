@@ -532,14 +532,14 @@ public class ObjectRelationshipLocalServiceTest {
 				objectRelationshipParameterObjectFieldIdException.getMessage());
 		}
 
-		long randomParameterObjectFieldId = RandomTestUtil.randomLong();
+		long parameterObjectFieldId = RandomTestUtil.randomLong();
 
 		try {
 			_objectRelationshipLocalService.addObjectRelationship(
 				TestPropsValues.getUserId(),
 				_systemObjectDefinition1.getObjectDefinitionId(),
 				_objectDefinition1.getObjectDefinitionId(),
-				randomParameterObjectFieldId,
+				parameterObjectFieldId,
 				ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
 				LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
 				StringUtil.randomId(),
@@ -549,7 +549,7 @@ public class ObjectRelationshipLocalServiceTest {
 					objectRelationshipParameterObjectFieldIdException) {
 
 			Assert.assertEquals(
-				"Parameter object field ID " + randomParameterObjectFieldId +
+				"Parameter object field ID " + parameterObjectFieldId +
 					" does not exist",
 				objectRelationshipParameterObjectFieldIdException.getMessage());
 		}
