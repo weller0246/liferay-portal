@@ -28,7 +28,7 @@ import com.liferay.portal.vulcan.util.TransformUtil;
  */
 public class ObjectStateFlowUtil {
 
-	public static String parse(ObjectStateFlow objectStateFlow) {
+	public static String toJSON(ObjectStateFlow objectStateFlow) {
 		return JSONUtil.getJSONString(
 			new com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow() {
 				{

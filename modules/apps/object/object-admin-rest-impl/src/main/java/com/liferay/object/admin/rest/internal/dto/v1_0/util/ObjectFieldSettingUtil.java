@@ -84,7 +84,7 @@ public class ObjectFieldSettingUtil {
 				objectFieldSetting.getName())) {
 
 			objectFieldSetting.setValue(
-				ObjectStateFlowUtil.parse(
+				ObjectStateFlowUtil.toJSON(
 					ObjectStateFlowLocalServiceUtil.fetchObjectStateFlow(
 						GetterUtil.getLong(
 							serviceBuilderObjectFieldSetting.getValue()))));
