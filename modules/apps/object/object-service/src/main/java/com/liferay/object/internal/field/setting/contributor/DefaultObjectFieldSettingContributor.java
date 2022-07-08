@@ -34,22 +34,21 @@ public class DefaultObjectFieldSettingContributor
 	@Override
 	public void addObjectFieldSetting(
 			long userId, long objectFieldId,
-			ObjectFieldSetting newObjectFieldSetting)
+			ObjectFieldSetting objectFieldSetting)
 		throws PortalException {
 
 		_objectFieldSettingLocalService.addObjectFieldSetting(
-			userId, objectFieldId, newObjectFieldSetting.getName(),
-			newObjectFieldSetting.getValue());
+			userId, objectFieldId, objectFieldSetting.getName(),
+			objectFieldSetting.getValue());
 	}
 
 	@Override
 	public void updateObjectFieldSetting(
-			long oldObjectFieldSettingId,
-			ObjectFieldSetting newObjectFieldSetting)
+			long objectFieldSettingId, ObjectFieldSetting objectFieldSetting)
 		throws PortalException {
 
 		_objectFieldSettingLocalService.updateObjectFieldSetting(
-			oldObjectFieldSettingId, newObjectFieldSetting.getValue());
+			objectFieldSettingId, objectFieldSetting.getValue());
 	}
 
 	@Reference

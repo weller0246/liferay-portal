@@ -24,12 +24,11 @@ public interface ObjectFieldSettingContributor {
 
 	public void addObjectFieldSetting(
 			long userId, long objectFieldId,
-			ObjectFieldSetting newObjectFieldSetting)
+			ObjectFieldSetting objectFieldSetting)
 		throws PortalException;
 
 	public void updateObjectFieldSetting(
-			long oldObjectFieldSettingId,
-			ObjectFieldSetting newObjectFieldSetting)
+			long objectFieldSettingId, ObjectFieldSetting objectFieldSetting)
 		throws PortalException;
 
 }
