@@ -84,15 +84,15 @@ public class ObjectStateFlowUtil {
 		serviceBuilderObjectState.setObjectStateTransitions(
 			TransformUtil.transformToList(
 				objectState.getNextObjectStates(),
-				nextObjectState -> _toObjectStateTransition(
-					listTypeDefinitionId, nextObjectState, objectStateFlowId,
-					objectState.getId())));
+				nextObjectStateJSON -> _toObjectStateTransition(
+					listTypeDefinitionId, nextObjectStateJSON,
+					objectStateFlowId, objectState.getId())));
 
 		return serviceBuilderObjectState;
 	}
 
 	private static ObjectStateTransition _toObjectStateTransition(
-			long listTypeDefinitionId, String nextObjectState,
+			long listTypeDefinitionId, String nextObjectStateJSON,
 			long objectStateFlowId, long sourceObjectStateId)
 		throws PortalException {
 
@@ -105,7 +105,7 @@ public class ObjectStateFlowUtil {
 
 		ListTypeEntry listTypeEntry =
 			ListTypeEntryLocalServiceUtil.fetchListTypeEntry(
-				listTypeDefinitionId, nextObjectState);
+				listTypeDefinitionId, nextObjectStateJSON);
 
 		ObjectState targetObjectState =
 			ObjectStateLocalServiceUtil.getObjectStateFlowObjectState(
