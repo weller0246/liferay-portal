@@ -82,8 +82,8 @@ public class ContentLayoutTestUtil {
 		throws Exception {
 
 		return addFormToLayout(
-			layout, classNameId, classTypeId, _DEFAULT_INPUT_HTML,
-			segmentsExperienceId, addCaptcha, infoFields);
+			layout, classNameId, classTypeId, _INPUT_HTML, segmentsExperienceId,
+			addCaptcha, infoFields);
 	}
 
 	public static JSONObject addFormToLayout(
@@ -490,7 +490,7 @@ public class ContentLayoutTestUtil {
 		}
 	}
 
-	private static final String _DEFAULT_INPUT_HTML = StringBundler.concat(
+	private static final String _INPUT_HTML = StringBundler.concat(
 		"<div class=\"${fragmentEntryLinkNamespace}-input\">",
 		"<div id=\"${fragmentEntryLinkNamespace}-inputTemplateNode\">",
 		"<p>InputName:${input.name}</p>",

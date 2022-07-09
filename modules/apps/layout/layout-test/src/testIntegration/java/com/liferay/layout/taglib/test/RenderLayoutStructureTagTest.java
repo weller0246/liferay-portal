@@ -507,7 +507,6 @@ public class RenderLayoutStructureTagTest {
 				layout.getPlid(),
 				_segmentsExperienceLocalService.
 					fetchDefaultSegmentsExperienceId(layout.getPlid())));
-
 		renderLayoutStructureTag.setPageContext(
 			new MockPageContext(
 				null, mockHttpServletRequest, mockHttpServletResponse));
