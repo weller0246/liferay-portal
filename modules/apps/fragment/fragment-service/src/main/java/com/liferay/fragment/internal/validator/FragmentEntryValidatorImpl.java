@@ -163,7 +163,7 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 
 				if (!JSONUtil.isEmpty(fieldTypesJSONArray)) {
 					throw new FragmentEntryFieldTypesException(
-						"Only input's type fragment should accept fieldTypes");
+						"Only fragment type input can have field types");
 				}
 
 				return;
@@ -171,14 +171,15 @@ public class FragmentEntryValidatorImpl implements FragmentEntryValidator {
 
 			if (JSONUtil.isEmpty(fieldTypesJSONArray)) {
 				throw new FragmentEntryFieldTypesException(
-					"Input fragment should define at least one field type");
+					"Fragment type input must have at least one field type");
 			}
 
 			if ((fieldTypesJSONArray.length() > 1) &&
 				JSONUtil.hasValue(fieldTypesJSONArray, "captcha")) {
 
 				throw new FragmentEntryFieldTypesException(
-					"Captcha field type cannot be combined with other types");
+					"Captcha field type cannot be mixed with other field " +
+						"types");
 			}
 		}
 		catch (JSONException jsonException) {
