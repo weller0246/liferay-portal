@@ -2409,8 +2409,18 @@ public class BundleSiteInitializer implements SiteInitializer {
 				"\\s+", "-"
 			));
 
-		AssetListEntry assetListEntry = _existingAssetListEntry(
-			assetListEntries, assetListEntryKey);
+		AssetListEntry assetListEntry = null;
+
+		for (AssetListEntry curAssetListEntry : assetListEntries) {
+			if (Objects.equals(
+					curAssetListEntry.getAssetListEntryKey(),
+					assetListEntryKey)) {
+
+				assetListEntry = assetListEntry;
+
+				break;
+			}
+		}
 
 		if (assetListEntry == null) {
 			_assetListEntryLocalService.addDynamicAssetListEntry(
@@ -3463,20 +3473,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 					accountBriefsJSONObject.getString("externalReferenceCode"),
 					accountRole.getId(), emailAddress);
 		}
-	}
-
-	private AssetListEntry _existingAssetListEntry(
-		List<AssetListEntry> assetListEntries, String assetListEntryKey1) {
-
-		for (AssetListEntry assetListEntry : assetListEntries) {
-			String assetListEntryKey2 = assetListEntry.getAssetListEntryKey();
-
-			if (assetListEntryKey1.equals(assetListEntryKey2)) {
-				return assetListEntry;
-			}
-		}
-
-		return null;
 	}
 
 	private long[] _getAssetCategoryIds(
