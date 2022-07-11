@@ -2342,6 +2342,29 @@ public class BundleSiteInitializer implements SiteInitializer {
 			ServiceContext serviceContext)
 		throws Exception {
 
+		AssetListEntry assetListEntry = null;
+
+		String assetListEntryKey = StringUtil.toLowerCase(
+			assetListJSONObject.getString(
+				"title"
+			).replaceAll(
+				"\\s+", "-"
+			));
+
+		for (AssetListEntry curAssetListEntry :
+				_assetListEntryLocalService.getAssetListEntries(
+					serviceContext.getScopeGroupId())) {
+
+			if (Objects.equals(
+					curAssetListEntry.getAssetListEntryKey(),
+					assetListEntryKey)) {
+
+				assetListEntry = assetListEntry;
+
+				break;
+			}
+		}
+
 		JSONObject unicodePropertiesJSONObject =
 			assetListJSONObject.getJSONObject("unicodeProperties");
 
@@ -2395,30 +2418,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 				map.put(
 					queryJSONObject.getString("key"),
 					queryJSONObject.getString("value"));
-			}
-		}
-
-		List<AssetListEntry> assetListEntries =
-			_assetListEntryLocalService.getAssetListEntries(
-				serviceContext.getScopeGroupId());
-
-		String assetListEntryKey = StringUtil.toLowerCase(
-			assetListJSONObject.getString(
-				"title"
-			).replaceAll(
-				"\\s+", "-"
-			));
-
-		AssetListEntry assetListEntry = null;
-
-		for (AssetListEntry curAssetListEntry : assetListEntries) {
-			if (Objects.equals(
-					curAssetListEntry.getAssetListEntryKey(),
-					assetListEntryKey)) {
-
-				assetListEntry = assetListEntry;
-
-				break;
 			}
 		}
 
