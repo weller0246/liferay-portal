@@ -34,7 +34,7 @@ public class UrlSubjectUpgradeProcess extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		alterTableAddColumn("MBMessage", "urlSubject", "VARCHAR(255) null");
 
-		try (SafeCloseable safeCloseable = addTempIndex(
+		try (SafeCloseable safeCloseable = addTemporaryIndex(
 				"MBMessage", false, "subject", "messageId")) {
 
 			_populateUrlSubject();

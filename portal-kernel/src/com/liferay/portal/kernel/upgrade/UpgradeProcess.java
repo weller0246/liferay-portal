@@ -154,7 +154,7 @@ public abstract class UpgradeProcess
 
 	}
 
-	protected SafeCloseable addTempIndex(
+	protected SafeCloseable addTemporaryIndex(
 			String tableName, boolean unique, String... columnNames)
 		throws Exception {
 
