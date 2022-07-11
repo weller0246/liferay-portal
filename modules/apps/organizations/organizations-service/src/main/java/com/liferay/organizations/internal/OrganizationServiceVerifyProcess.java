@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.organizations.internal.verify;
+package com.liferay.organizations.service.internal.verify;
 
 import com.liferay.petra.function.UnsafeConsumer;
 import com.liferay.petra.string.StringBundler;
@@ -22,9 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.service.OrganizationLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.LoggingTimer;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.verify.VerifyProcess;
 
 import java.sql.PreparedStatement;
@@ -52,10 +50,6 @@ public class OrganizationServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
-		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-157670"))) {
-			return;
-		}
-
 		ExecutorService executorService = Executors.newFixedThreadPool(3);
 
 		List<Future<Void>> futures = executorService.invokeAll(
@@ -85,30 +79,30 @@ public class OrganizationServiceVerifyProcess extends VerifyProcess {
 			sb.append("Organization_.organizationId and AssetEntry.classUuid ");
 			sb.append("is null");
 
-			try (PreparedStatement preparedStatement1 =
-					connection.prepareStatement(sb.toString());
-				ResultSet resultSet = preparedStatement1.executeQuery()) {
+			try (PreparedStatement ps1 = connection.prepareStatement(
+					sb.toString());
+				ResultSet rs = ps1.executeQuery()) {
 
-				try (PreparedStatement preparedStatement2 =
+				try (PreparedStatement ps2 =
 						AutoBatchPreparedStatementUtil.autoBatch(
-							connection,
-							"update AssetEntry set classUuid = ? where " +
-								"classPK = ? and classNameId = ?")) {
+							connection.prepareStatement(
+								"update AssetEntry set classUuid = ? where " +
+									"classPK = ? and classNameId = ?"))) {
 
-					while (resultSet.next()) {
-						long classPK = resultSet.getLong("classPK");
+					while (rs.next()) {
+						long classPK = rs.getLong("classPK");
 
-						String uuid = resultSet.getString("uuid");
+						String uuid = rs.getString("uuid");
 
-						preparedStatement2.setString(1, uuid);
+						ps2.setString(1, uuid);
 
-						preparedStatement2.setLong(2, classPK);
-						preparedStatement2.setLong(3, classNameId);
+						ps2.setLong(2, classPK);
+						ps2.setLong(3, classNameId);
 
-						preparedStatement2.addBatch();
+						ps2.addBatch();
 					}
 
-					preparedStatement2.executeBatch();
+					ps2.executeBatch();
 				}
 			}
 		}
@@ -133,13 +127,13 @@ public class OrganizationServiceVerifyProcess extends VerifyProcess {
 					_organizationLocalService.updateAsset(
 						organization.getUserId(), organization, null, null);
 				}
-				catch (Exception exception) {
+				catch (Exception e) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
 							StringBundler.concat(
 								"Unable to update asset for organization ",
 								organization.getOrganizationId(), ": ",
-								exception.getMessage()));
+								e.getMessage()));
 					}
 				}
 			}

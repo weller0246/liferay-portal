@@ -22,8 +22,6 @@ import com.liferay.portal.kernel.dao.orm.PropertyFactoryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupLocalService;
-import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.verify.VerifyProcess;
@@ -43,10 +41,6 @@ public class BlogsServiceVerifyProcess extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
-		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-157670"))) {
-			return;
-		}
-
 		updateStagedPortletNames();
 	}
 
@@ -67,31 +61,31 @@ public class BlogsServiceVerifyProcess extends VerifyProcess {
 			});
 		groupActionableDynamicQuery.setPerformActionMethod(
 			(ActionableDynamicQuery.PerformActionMethod<Group>)group -> {
-				UnicodeProperties typeSettingsUnicodeProperties =
+				UnicodeProperties typeSettingsProperties =
 					group.getTypeSettingsProperties();
 
-				if (typeSettingsUnicodeProperties == null) {
+				if (typeSettingsProperties == null) {
 					return;
 				}
 
 				String propertyKey = _staging.getStagedPortletId(
 					BlogsPortletKeys.BLOGS);
 
-				String propertyValue =
-					typeSettingsUnicodeProperties.getProperty(propertyKey);
+				String propertyValue = typeSettingsProperties.getProperty(
+					propertyKey);
 
 				if (Validator.isNull(propertyValue)) {
 					return;
 				}
 
-				typeSettingsUnicodeProperties.remove(propertyKey);
+				typeSettingsProperties.remove(propertyKey);
 
 				propertyKey = _staging.getStagedPortletId(
 					BlogsPortletKeys.BLOGS_ADMIN);
 
-				typeSettingsUnicodeProperties.put(propertyKey, propertyValue);
+				typeSettingsProperties.put(propertyKey, propertyValue);
 
-				group.setTypeSettingsProperties(typeSettingsUnicodeProperties);
+				group.setTypeSettingsProperties(typeSettingsProperties);
 
 				_groupLocalService.updateGroup(group);
 			});
