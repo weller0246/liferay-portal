@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.io.unsync.UnsyncBufferedReader;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.ClassUtil;
+import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -161,7 +162,12 @@ public abstract class UpgradeProcess
 		IndexMetadata indexMetadata = new IndexMetadata(
 			"IX_TEMP", tableName, unique, columnNames);
 
-		addIndexes(connection, new ArrayList<>(Arrays.asList(indexMetadata)));
+		try (LoggingTimer loggingTimer = new LoggingTimer(
+				"Add temporary index for " + tableName)) {
+
+			addIndexes(
+				connection, new ArrayList<>(Arrays.asList(indexMetadata)));
+		}
 
 		return () -> {
 			try {
