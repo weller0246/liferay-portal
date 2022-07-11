@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.Role;
 import com.liferay.portal.kernel.model.RoleConstants;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.GroupLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -63,9 +62,11 @@ public class VerifyRole extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
-		CompanyLocalServiceUtil.forEachCompanyId(
-			companyId -> verifyRoles(companyId),
-			PortalInstances.getCompanyIdsBySQL());
+		long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+
+		for (long companyId : companyIds) {
+			verifyRoles(companyId);
+		}
 	}
 
 	protected void verifyRoles(long companyId) throws Exception {
@@ -78,12 +79,12 @@ public class VerifyRole extends VerifyProcess {
 
 				addViewSiteAdministrationPermission(powerUserRole);
 			}
-			catch (NoSuchRoleException noSuchRoleException) {
+			catch (NoSuchRoleException nsre) {
 
 				// LPS-52675
 
 				if (_log.isDebugEnabled()) {
-					_log.debug(noSuchRoleException);
+					_log.debug(nsre, nsre);
 				}
 			}
 		}

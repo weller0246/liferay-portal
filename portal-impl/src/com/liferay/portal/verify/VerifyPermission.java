@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.model.UserGroup;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.security.permission.ResourceActionsUtil;
-import com.liferay.portal.kernel.service.CompanyLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourceActionLocalServiceUtil;
 import com.liferay.portal.kernel.service.ResourcePermissionLocalServiceUtil;
 import com.liferay.portal.kernel.service.RoleLocalServiceUtil;
@@ -179,10 +178,12 @@ public class VerifyPermission extends VerifyProcess {
 			long userGroupClassNameId = PortalUtil.getClassNameId(
 				UserGroup.class);
 
-			CompanyLocalServiceUtil.forEachCompanyId(
-				companyId -> fixUserDefaultRolePermissions(
-					userClassNameId, userGroupClassNameId, companyId),
-				PortalInstances.getCompanyIdsBySQL());
+			long[] companyIds = PortalInstances.getCompanyIdsBySQL();
+
+			for (long companyId : companyIds) {
+				fixUserDefaultRolePermissions(
+					userClassNameId, userGroupClassNameId, companyId);
+			}
 		}
 		finally {
 			EntityCacheUtil.clearCache();
