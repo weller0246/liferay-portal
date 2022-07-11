@@ -1680,10 +1680,14 @@ public class WebServerServlet extends HttpServlet {
 			Optional<FileEntry> fileEntryOptional = _resolveFileEntry(
 				httpServletRequest, pathArray);
 
-			return fileEntryOptional.orElseThrow(
+			FileEntry fileEntry = fileEntryOptional.orElseThrow(
 				() -> new NoSuchFileEntryException(
 					"No file entry found for friendly URL " +
 						Arrays.toString(pathArray)));
+
+			_checkExpiredFileEntry(fileEntry, httpServletRequest);
+
+			return fileEntry;
 		}
 		else if (pathArray.length == 3) {
 			long groupId = GetterUtil.getLong(pathArray[0]);
