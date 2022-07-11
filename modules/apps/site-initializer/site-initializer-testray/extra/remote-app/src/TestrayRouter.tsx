@@ -180,7 +180,7 @@ const TestrayRoute = () => (
 
 										<Route
 											element={<CaseResultEditTest />}
-											path=":status"
+											path="edit/:status"
 										/>
 									</Route>
 
