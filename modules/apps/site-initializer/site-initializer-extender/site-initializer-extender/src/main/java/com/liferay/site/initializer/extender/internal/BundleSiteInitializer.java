@@ -2345,11 +2345,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 		AssetListEntry assetListEntry = null;
 
 		String assetListEntryKey = StringUtil.toLowerCase(
-			assetListJSONObject.getString(
-				"title"
-			).replaceAll(
-				"\\s+", "-"
-			));
+			StringUtil.replace(
+				assetListJSONObject.getString("title"), ' ', '-'));
 
 		for (AssetListEntry curAssetListEntry :
 				_assetListEntryLocalService.getAssetListEntries(
