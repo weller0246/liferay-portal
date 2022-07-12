@@ -14,6 +14,8 @@
 
 package com.liferay.portal.security.sso.openid.connect.internal.util;
 
+import com.liferay.portal.vulcan.util.TransformUtil;
+
 import com.nimbusds.oauth2.sdk.ParseException;
 import com.nimbusds.oauth2.sdk.ResponseType;
 import com.nimbusds.oauth2.sdk.Scope;
@@ -21,7 +23,6 @@ import com.nimbusds.oauth2.sdk.util.JSONObjectUtils;
 
 import java.net.URI;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 
 import net.minidev.json.JSONObject;
@@ -61,16 +62,10 @@ public class OpenIdConnectRequestParametersUtil {
 			return new URI[0];
 		}
 
-		List<String> resourceList = JSONObjectUtils.getStringList(
-			requestParametersJSONObject, "resource");
-
-		URI[] resourceURIs = new URI[resourceList.size()];
-
-		for (int i = 0; i < resourceList.size(); ++i) {
-			resourceURIs[i] = URI.create(resourceList.get(i));
-		}
-
-		return resourceURIs;
+		return TransformUtil.transformToArray(
+			JSONObjectUtils.getStringList(
+				requestParametersJSONObject, "resource"),
+			resource -> URI.create(resource), URI.class);
 	}
 
 	public static ResponseType getResponseType(
