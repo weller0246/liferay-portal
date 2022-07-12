@@ -27,8 +27,6 @@ import java.util.function.BiConsumer;
 import net.minidev.json.JSONObject;
 
 /**
- * Responsible for fetching static configured common request parameters
- *
  * @author Arthur Chan
  */
 public class OpenIdConnectRequestParametersUtil {
