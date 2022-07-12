@@ -2278,16 +2278,18 @@ definition {
 
 		Click(locator1 = "FacebookLogin#LOGIN_BUTTON");
 
+		takeScreenshot();
+
 		Alert.confirmSecurity();
 
-		SelectWindow.selectWindowTopNoSPARefresh();
+		takeScreenshot();
+
+	//	SelectWindow.selectWindowTopNoSPARefresh();
 
 		if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#EMAIL_ADDRESS")) {
 			if (IsElementPresent(locator1 = "Button#SUBMIT")) {
 				Click(locator1 = "Button#SUBMIT");
 			}
-
-			SelectWindow.selectWindowNoSPARefresh(locator1 = "title=Terms of Use");
 
 			if (IsElementPresent.pauseIsElementPresent(locator1 = "Button#I_AGREE", value1 = "I Agree")) {
 				AssertClick(
@@ -2295,7 +2297,9 @@ definition {
 					value1 = "I Agree");
 			}
 
-			User.resetPassword(newPassword = "${newPassword}");
+		//	User.resetPassword(newPassword = "${newPassword}");
+			
+			User.answerPasswordReminder();
 
 			if (IsElementPresent.pauseIsElementPresent(locator1 = "TextInput#ANSWER")) {
 				Type(
