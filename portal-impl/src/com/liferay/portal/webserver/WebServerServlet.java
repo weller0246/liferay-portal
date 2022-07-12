@@ -1499,6 +1499,16 @@ public class WebServerServlet extends HttpServlet {
 			return;
 		}
 
+		PermissionChecker permissionChecker = _getPermissionChecker(
+			httpServletRequest);
+
+		ModelResourcePermission<?> fileEntryModelResourcePermission =
+			_modelResourcePermissionServiceTrackerMap.getService(
+				FileEntry.class.getName());
+
+		fileEntryModelResourcePermission.check(
+			permissionChecker, fileEntry.getFileEntryId(), ActionKeys.VIEW);
+
 		FileVersion fileVersion = fileEntry.getFileVersion();
 
 		if (!fileVersion.isExpired()) {
@@ -1506,9 +1516,6 @@ public class WebServerServlet extends HttpServlet {
 		}
 
 		User user = _getUser(httpServletRequest);
-
-		PermissionChecker permissionChecker = _getPermissionChecker(
-			httpServletRequest);
 
 		if (!permissionChecker.isContentReviewer(
 				user.getCompanyId(), fileVersion.getGroupId()) &&
@@ -1526,23 +1533,6 @@ public class WebServerServlet extends HttpServlet {
 				"The file entry " + fileEntry.getFileEntryId() +
 					" is expired and the user does not have review permission");
 		}
-	}
-
-	private void _checkPermissionsFileEntry(
-			FileEntry fileEntry, HttpServletRequest httpServletRequest)
-		throws Exception {
-
-		if (fileEntry == null) {
-			return;
-		}
-
-		ModelResourcePermission<?> fileEntryModelResourcePermission =
-			_modelResourcePermissionServiceTrackerMap.getService(
-				FileEntry.class.getName());
-
-		fileEntryModelResourcePermission.check(
-			_getPermissionChecker(httpServletRequest),
-			fileEntry.getFileEntryId(), ActionKeys.VIEW);
 	}
 
 	private void _checkResourcePermission(
@@ -1706,7 +1696,6 @@ public class WebServerServlet extends HttpServlet {
 					"No file entry found for friendly URL " +
 						Arrays.toString(pathArray)));
 
-			_checkPermissionsFileEntry(fileEntry, httpServletRequest);
 			_checkExpiredFileEntry(fileEntry, httpServletRequest);
 
 			return fileEntry;
