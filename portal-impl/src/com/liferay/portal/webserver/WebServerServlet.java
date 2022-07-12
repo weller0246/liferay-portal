@@ -1491,7 +1491,7 @@ public class WebServerServlet extends HttpServlet {
 			group.getGroupId(), pathArray[2]);
 	}
 
-	private void _checkExpiredFileEntry(
+	private void _checkFileEntry(
 			FileEntry fileEntry, HttpServletRequest httpServletRequest)
 		throws Exception {
 
@@ -1673,7 +1673,7 @@ public class WebServerServlet extends HttpServlet {
 			FileEntry fileEntry = DLAppServiceUtil.getFileEntry(
 				dlFileShortcut.getToFileEntryId());
 
-			_checkExpiredFileEntry(fileEntry, httpServletRequest);
+			_checkFileEntry(fileEntry, httpServletRequest);
 
 			return fileEntry;
 		}
@@ -1683,7 +1683,7 @@ public class WebServerServlet extends HttpServlet {
 			FileEntry fileEntry = DLAppServiceUtil.getFileEntryByUuidAndGroupId(
 				pathArray[1], groupId);
 
-			_checkExpiredFileEntry(fileEntry, httpServletRequest);
+			_checkFileEntry(fileEntry, httpServletRequest);
 
 			return fileEntry;
 		}
@@ -1696,7 +1696,7 @@ public class WebServerServlet extends HttpServlet {
 					"No file entry found for friendly URL " +
 						Arrays.toString(pathArray)));
 
-			_checkExpiredFileEntry(fileEntry, httpServletRequest);
+			_checkFileEntry(fileEntry, httpServletRequest);
 
 			return fileEntry;
 		}
@@ -1715,7 +1715,7 @@ public class WebServerServlet extends HttpServlet {
 				FileEntry fileEntry = DLAppServiceUtil.getFileEntryByFileName(
 					groupId, folderId, fileName);
 
-				_checkExpiredFileEntry(fileEntry, httpServletRequest);
+				_checkFileEntry(fileEntry, httpServletRequest);
 
 				return fileEntry;
 			}
@@ -1727,7 +1727,7 @@ public class WebServerServlet extends HttpServlet {
 				FileEntry fileEntry = DLAppServiceUtil.getFileEntry(
 					groupId, folderId, fileName);
 
-				_checkExpiredFileEntry(fileEntry, httpServletRequest);
+				_checkFileEntry(fileEntry, httpServletRequest);
 
 				return fileEntry;
 			}
@@ -1740,7 +1740,7 @@ public class WebServerServlet extends HttpServlet {
 			FileEntry fileEntry = DLAppServiceUtil.getFileEntryByUuidAndGroupId(
 				uuid, groupId);
 
-			_checkExpiredFileEntry(fileEntry, httpServletRequest);
+			_checkFileEntry(fileEntry, httpServletRequest);
 
 			return fileEntry;
 		}
