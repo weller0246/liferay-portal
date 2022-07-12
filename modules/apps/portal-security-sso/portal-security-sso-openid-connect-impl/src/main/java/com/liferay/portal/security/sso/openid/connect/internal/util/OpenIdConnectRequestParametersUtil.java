@@ -32,8 +32,8 @@ import net.minidev.json.JSONObject;
 public class OpenIdConnectRequestParametersUtil {
 
 	public static void consumeCustomRequestParameters(
-			JSONObject requestParametersJSONObject,
-			BiConsumer<String, String[]> biConsumer)
+			BiConsumer<String, String[]> biConsumer,
+			JSONObject requestParametersJSONObject)
 		throws ParseException {
 
 		if (!requestParametersJSONObject.containsKey(
