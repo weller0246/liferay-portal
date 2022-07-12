@@ -54,7 +54,7 @@ public class OpenIdConnectRequestParametersUtil {
 		}
 	}
 
-	public static URI[] getResources(JSONObject requestParametersJSONObject)
+	public static URI[] getResourceURIs(JSONObject requestParametersJSONObject)
 		throws ParseException {
 
 		if (!requestParametersJSONObject.containsKey("resource")) {
