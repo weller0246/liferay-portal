@@ -217,7 +217,7 @@ export default function GlobalJSCETsConfiguration({
 											'numbers-indicate-the-order-in-which-client-extensions-are-loaded'
 										),
 										Liferay.Language.get(
-											'extensions-inherited-from-master-will-always-be-loaded-in-first-place'
+											'extensions-inherited-from-master-will-always-be-loaded-first'
 										),
 										Liferay.Language.get(
 											'also-head-insertions-will-be-loaded-before-body-bottom-ones'
