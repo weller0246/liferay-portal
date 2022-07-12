@@ -5,7 +5,4 @@ alter table WikiNode add statusDate DATE null;
 
 COMMIT_TRANSACTION;
 
-update WikiNode set status = 0;
-update WikiNode set statusByUserId = userId;
-update WikiNode set statusByUserName = userName;
-update WikiNode set statusDate = modifiedDate;
+update WikiNode set status = 0, statusByUserId = userId, statusByUserName = userName, statusDate = modifiedDate;

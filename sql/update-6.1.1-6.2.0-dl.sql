@@ -8,9 +8,7 @@ alter table DLFileEntry add manualCheckInRequired BOOLEAN;
 
 COMMIT_TRANSACTION;
 
-update DLFileEntry set classNameId = 0;
-update DLFileEntry set classPK = 0;
-update DLFileEntry set manualCheckInRequired = FALSE;
+update DLFileEntry set classNameId = 0, classPK = 0, manualCheckInRequired = FALSE;
 
 drop index IX_E9B6A85B on DLFileEntryType;
 
@@ -39,11 +37,7 @@ alter table DLFolder add statusDate DATE null;
 
 COMMIT_TRANSACTION;
 
-update DLFolder set hidden_ = FALSE;
-update DLFolder set status = 0;
-update DLFolder set statusByUserId = userId;
-update DLFolder set statusByUserName = userName;
-update DLFolder set statusDate = modifiedDate;
+update DLFolder set hidden_ = FALSE, status = 0, statusByUserId = userId, statusByUserName = userName, statusDate = modifiedDate;
 
 drop table DLSync;
 
