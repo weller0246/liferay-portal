@@ -19,6 +19,7 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.db.partition.DBPartitionUtil;
 import com.liferay.portal.events.StartupHelperUtil;
 import com.liferay.portal.kernel.dao.db.DB;
+import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.db.DBManagerUtil;
 import com.liferay.portal.kernel.dao.jdbc.DataSourceFactoryUtil;
 import com.liferay.portal.kernel.dependency.manager.DependencyManagerSync;
@@ -197,35 +198,22 @@ public class DBInitUtil {
 			return;
 		}
 
-		try {
+		DBInspector dbInspector = new DBInspector(connection);
+
+		if (!dbInspector.hasColumn("Release_", "mvccVersion")) {
 			db.runSQL(
 				connection,
 				"alter table Release_ add mvccVersion LONG default 0 not null");
 		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-		}
 
-		try {
+		if (!dbInspector.hasColumn("Release_", "schemaVersion")) {
 			db.runSQL(
 				connection,
 				"alter table Release_ add schemaVersion VARCHAR(75) null");
 		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-		}
 
-		try {
+		if (!dbInspector.hasColumn("Release_", "state_")) {
 			db.runSQL(connection, "alter table Release_ add state_ INTEGER");
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
 		}
 
 		if (_checkDefaultRelease(connection)) {
