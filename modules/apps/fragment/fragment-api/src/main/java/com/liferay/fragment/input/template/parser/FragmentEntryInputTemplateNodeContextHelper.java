@@ -270,22 +270,6 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			minValueOptional.ifPresent(
 				minValue -> inputTemplateNode.addAttribute("min", minValue));
 		}
-		else if (infoField.getInfoFieldType() instanceof SelectInfoFieldType) {
-			List<InputTemplateNode.Option> options = new ArrayList<>();
-
-			Optional<List<SelectInfoFieldType.Option>> optionsOptional =
-				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
-
-			for (SelectInfoFieldType.Option option :
-					optionsOptional.orElse(Collections.emptyList())) {
-
-				options.add(
-					new InputTemplateNode.Option(
-						option.getLabel(locale), option.getValue()));
-			}
-
-			inputTemplateNode.addAttribute("options", options);
-		}
 		else if (infoField.getInfoFieldType() instanceof
 					RelationshipInfoFieldType) {
 
@@ -310,6 +294,22 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			inputTemplateNode.addAttribute(
 				"relationshipValueFieldName",
 				optionsValueFieldNameOptional.orElse(null));
+		}
+		else if (infoField.getInfoFieldType() instanceof SelectInfoFieldType) {
+			List<InputTemplateNode.Option> options = new ArrayList<>();
+
+			Optional<List<SelectInfoFieldType.Option>> optionsOptional =
+				infoField.getAttributeOptional(SelectInfoFieldType.OPTIONS);
+
+			for (SelectInfoFieldType.Option option :
+					optionsOptional.orElse(Collections.emptyList())) {
+
+				options.add(
+					new InputTemplateNode.Option(
+						option.getLabel(locale), option.getValue()));
+			}
+
+			inputTemplateNode.addAttribute("options", options);
 		}
 
 		return inputTemplateNode;
