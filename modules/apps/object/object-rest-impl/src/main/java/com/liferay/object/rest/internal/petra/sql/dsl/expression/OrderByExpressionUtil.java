@@ -20,9 +20,7 @@ import com.liferay.petra.sql.dsl.query.sort.OrderByExpression;
 import com.liferay.petra.string.CharPool;
 import com.liferay.portal.kernel.search.Sort;
 import com.liferay.portal.kernel.util.StringUtil;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 /**
  * @author Gabriel Albuquerque
@@ -37,24 +35,22 @@ public class OrderByExpressionUtil {
 			return null;
 		}
 
-		List<OrderByExpression> orderByExpressions = new ArrayList<>();
+		return TransformUtil.transform(
+			sorts,
+			sort -> {
+				String[] parts = StringUtil.split(
+					sort.getFieldName(), CharPool.POUND);
 
-		for (Sort sort : sorts) {
-			String[] sortParts = StringUtil.split(
-				sort.getFieldName(), CharPool.POUND);
+				Column<?, ?> column = objectFieldLocalService.getColumn(
+					objectDefinitionId, parts[1]);
 
-			Column<?, ?> column = objectFieldLocalService.getColumn(
-				objectDefinitionId, sortParts[1]);
+				if (sort.isReverse()) {
+					return column.descending();
+				}
 
-			if (sort.isReverse()) {
-				orderByExpressions.add(column.descending());
-			}
-			else {
-				orderByExpressions.add(column.ascending());
-			}
-		}
-
-		return orderByExpressions.toArray(new OrderByExpression[0]);
+				return column.ascending();
+			},
+			OrderByExpression.class);
 	}
 
 }
