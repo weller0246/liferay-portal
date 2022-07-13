@@ -407,9 +407,9 @@ public class OpenIdConnectProviderManagedServiceFactory
 	private String _getPropertyAsString(
 		String key, Dictionary<String, ?> properties) {
 
-		String value = GetterUtil.getString(properties.get(key));
+		String value = (String)properties.get(key);
 
-		if (Validator.isNull(value)) {
+		if ((value == null) || value.equals("")) {
 			return null;
 		}
 
