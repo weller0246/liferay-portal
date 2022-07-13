@@ -60,8 +60,8 @@ public class CPDefinitionSpecificationOptionValueInfoItemObjectProvider
 		}
 		catch (PortalException portalException) {
 			throw new NoSuchInfoItemException(
-				"Unable to get commerce product specification option value " +
-					classPKInfoItemIdentifier.getClassPK(),
+				"Unable to get commerce product definition specification " +
+					"option value " + classPKInfoItemIdentifier.getClassPK(),
 				portalException);
 		}
 	}

@@ -94,8 +94,7 @@ public abstract class
 				infoListRendererContext.getHttpServletResponse());
 		}
 		catch (Exception exception) {
-			_log.error(
-				"Unable to render product specifications list", exception);
+			_log.error(exception);
 		}
 	}
 
