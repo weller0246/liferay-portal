@@ -30,14 +30,14 @@ import java.util.List;
 public class OrderByExpressionUtil {
 
 	public static OrderByExpression[] getOrderByExpressions(
-		long objectDefinitionId, Sort[] sorts,
-		ObjectFieldLocalService objectFieldLocalService) {
+		long objectDefinitionId,
+		ObjectFieldLocalService objectFieldLocalService, Sort[] sorts) {
 
 		if (sorts == null) {
 			return null;
 		}
 
-		List<Object> orderByExpressions = new ArrayList<>();
+		List<OrderByExpression> orderByExpressions = new ArrayList<>();
 
 		for (Sort sort : sorts) {
 			String[] sortParts = StringUtil.split(

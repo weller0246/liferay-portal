@@ -397,8 +397,8 @@ public class DefaultObjectEntryManagerImpl
 					objectDefinition.getObjectDefinitionId(), groupId,
 					accountEntryIds, predicate, search, start, end,
 					OrderByExpressionUtil.getOrderByExpressions(
-						objectDefinition.getObjectDefinitionId(), sorts,
-						_objectFieldLocalService)),
+						objectDefinition.getObjectDefinitionId(),
+						_objectFieldLocalService, sorts)),
 				values -> getObjectEntry(
 					dtoConverterContext, objectDefinition,
 					GetterUtil.getLong(
