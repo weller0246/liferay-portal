@@ -216,8 +216,8 @@ public class SXPBlueprintUpgradeProcess extends UpgradeProcess {
 					connection,
 					StringBundler.concat(
 						"update SXPElement set externalReferenceCode = ?, ",
-						"description = ?, elementDefinitionJSON = ?, ",
-						"title = ?, version = ? where sxpElementId = ?"))) {
+						"description = ?, elementDefinitionJSON = ?, title = ",
+						"?, version = ? where sxpElementId = ?"))) {
 
 			try (ResultSet resultSet = preparedStatement1.executeQuery()) {
 				while (resultSet.next()) {
