@@ -36,7 +36,7 @@ Source formatting powered by Liferay's Source Formatter.
 
 Disabled by default. Can be enabled with the **Poshi > Source Formatter: Enabled** setting.
 
-A Source Formatter standalone jar from [repository.liferay.com](https://repository.liferay.com/nexus/content/repositories/liferay-public-releases/com/liferay/com.liferay.source.formatter.standalone/1.0.0/.) is required for this to work. Auto-fetching the jar will be available in the future.
+A Source Formatter standalone jar from [repository.liferay.com](https://repository-cdn.liferay.com/nexus/content/repositories/liferay-public-releases/com/liferay/com.liferay.source.formatter.standalone/1.0.0/.) is required for this to work. Auto-fetching the jar will be available in the future.
 
 This is a work in progress. If enabled, it is recommended that you disable format on save for now and invoke it manually.
 
@@ -70,11 +70,11 @@ This is a work in progress. If enabled, it is recommended that you disable forma
 
 ### 0.2.0
 
--   Provides method completion from multiple possible files
--   POSHI-304: Adds locator completion
--   POSHI-300: Adds "Show References" support for functions and macros
--   POSHI-296: Adds go-to-definition for selenium methods
--   POSHI-267: Adds go-to-definition support for Util class methods
+- Provides method completion from multiple possible files
+- POSHI-304: Adds locator completion
+- POSHI-300: Adds "Show References" support for functions and macros
+- POSHI-296: Adds go-to-definition for selenium methods
+- POSHI-267: Adds go-to-definition support for Util class methods
 
 ### 0.1.0, 0.1.1, 0.1.2
 
@@ -82,9 +82,9 @@ Implements CI builds
 
 ### 0.0.3
 
--   Adds more precise go-to-definition for methods
--   Adds go-to-definition for variables
--   Fixes property completion suggestions
+- Adds more precise go-to-definition for methods
+- Adds go-to-definition for variables
+- Fixes property completion suggestions
 
 ### 0.0.2
 
