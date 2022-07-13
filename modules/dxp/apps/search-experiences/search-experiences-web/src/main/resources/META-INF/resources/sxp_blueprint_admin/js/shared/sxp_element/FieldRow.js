@@ -268,8 +268,8 @@ function FieldRow({
 				)}
 
 				{showBoost && (
-					<ClayTooltipProvider>
-						<ClayInput.GroupItem shrink>
+					<ClayInput.GroupItem shrink>
+						<ClayTooltipProvider>
 							<ClayInput
 								aria-label={Liferay.Language.get('boost')}
 								className="field-boost-input"
@@ -284,8 +284,8 @@ function FieldRow({
 								type="number"
 								value={boost}
 							/>
-						</ClayInput.GroupItem>
-					</ClayTooltipProvider>
+						</ClayTooltipProvider>
+					</ClayInput.GroupItem>
 				)}
 
 				{onDelete && (
