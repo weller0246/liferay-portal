@@ -53,8 +53,6 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 		alterTableAddColumn(
 			"OpenIdConnectSession", "clientId", "VARCHAR(256) null");
 
-		alterTableDropColumn("OpenIdConnectSession", "providerName");
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select openIdConnectSessionId, configurationPid from " +
 					"OpenIdConnectSession");
@@ -84,6 +82,7 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 		}
 
 		alterTableDropColumn("OpenIdConnectSession", "configurationPid");
+		alterTableDropColumn("OpenIdConnectSession", "providerName");
 	}
 
 	private String _generateLocalWellKnownURI(
