@@ -78,7 +78,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 				String dbTableName = resultSet.getString("dbTableName");
 				Locale defaultLocale = LocaleUtil.fromLanguageId(
 					UpgradeProcessUtil.getDefaultLanguageId(companyId));
-				Timestamp now = new Timestamp(System.currentTimeMillis());
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				long objectDefinitionId = resultSet.getLong(
 					"objectDefinitionId");
 				long userId = resultSet.getLong("userId");
@@ -89,7 +89,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 				}
 
 				_insertObjectField(
-					preparedStatement2, companyId, userId, userName, now,
+					preparedStatement2, companyId, userId, userName, timestamp,
 					objectDefinitionId, ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 					ObjectEntryTable.INSTANCE.userName.getName(), dbTableName,
 					ObjectFieldConstants.DB_TYPE_STRING,
@@ -104,7 +104,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 						"Label"),
 					"creator");
 				_insertObjectField(
-					preparedStatement2, companyId, userId, userName, now,
+					preparedStatement2, companyId, userId, userName, timestamp,
 					objectDefinitionId, ObjectFieldConstants.BUSINESS_TYPE_DATE,
 					ObjectEntryTable.INSTANCE.createDate.getName(), dbTableName,
 					ObjectFieldConstants.DB_TYPE_DATE,
@@ -120,7 +120,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 						"Label"),
 					"createDate");
 				_insertObjectField(
-					preparedStatement2, companyId, userId, userName, now,
+					preparedStatement2, companyId, userId, userName, timestamp,
 					objectDefinitionId,
 					ObjectFieldConstants.BUSINESS_TYPE_LONG_INTEGER,
 					ObjectEntryTable.INSTANCE.objectEntryId.getName(),
@@ -136,7 +136,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 						"Label"),
 					"id");
 				_insertObjectField(
-					preparedStatement2, companyId, userId, userName, now,
+					preparedStatement2, companyId, userId, userName, timestamp,
 					objectDefinitionId, ObjectFieldConstants.BUSINESS_TYPE_DATE,
 					ObjectEntryTable.INSTANCE.modifiedDate.getName(),
 					dbTableName, ObjectFieldConstants.DB_TYPE_DATE,
@@ -152,7 +152,7 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 						"Label"),
 					"modifiedDate");
 				_insertObjectField(
-					preparedStatement2, companyId, userId, userName, now,
+					preparedStatement2, companyId, userId, userName, timestamp,
 					objectDefinitionId, ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 					ObjectEntryTable.INSTANCE.status.getName(), dbTableName,
 					ObjectFieldConstants.DB_TYPE_INTEGER,
@@ -174,21 +174,23 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 
 	private void _insertObjectField(
 			PreparedStatement preparedStatement, long companyId, long userId,
-			String userName, Timestamp now, long objectDefinitionId,
+			String userName, Timestamp timestamp, long objectDefinitionId,
 			String businessType, String dbColumnName, String dbTableName,
 			String dbType, String label, String name)
 		throws SQLException {
 
+		preparedStatement.setLong(1, 0);
+
 		String uuid = _portalUUID.generate();
 
-		preparedStatement.setLong(1, 0);
 		preparedStatement.setString(2, uuid);
+
 		preparedStatement.setLong(3, increment());
 		preparedStatement.setLong(4, companyId);
 		preparedStatement.setLong(5, userId);
 		preparedStatement.setString(6, userName);
-		preparedStatement.setTimestamp(7, now);
-		preparedStatement.setTimestamp(8, now);
+		preparedStatement.setTimestamp(7, timestamp);
+		preparedStatement.setTimestamp(8, timestamp);
 		preparedStatement.setString(9, uuid);
 		preparedStatement.setLong(10, 0);
 		preparedStatement.setLong(11, objectDefinitionId);
