@@ -54,7 +54,7 @@ public class ObjectFilterWrapper
 		attributes.put("objectFieldId", getObjectFieldId());
 		attributes.put("filterBy", getFilterBy());
 		attributes.put("filterType", getFilterType());
-		attributes.put("json", getJson());
+		attributes.put("json", getJSON());
 
 		return attributes;
 	}
@@ -130,7 +130,7 @@ public class ObjectFilterWrapper
 		String json = (String)attributes.get("json");
 
 		if (json != null) {
-			setJson(json);
+			setJSON(json);
 		}
 	}
 
@@ -185,8 +185,8 @@ public class ObjectFilterWrapper
 	 * @return the json of this object filter
 	 */
 	@Override
-	public String getJson() {
-		return model.getJson();
+	public String getJSON() {
+		return model.getJSON();
 	}
 
 	/**
@@ -330,8 +330,8 @@ public class ObjectFilterWrapper
 	 * @param json the json of this object filter
 	 */
 	@Override
-	public void setJson(String json) {
-		model.setJson(json);
+	public void setJSON(String json) {
+		model.setJSON(json);
 	}
 
 	/**

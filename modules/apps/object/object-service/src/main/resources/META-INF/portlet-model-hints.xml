@@ -130,7 +130,7 @@
 		<field name="objectFieldId" type="long" />
 		<field name="filterBy" type="String" />
 		<field name="filterType" type="String" />
-		<field name="json" type="String" />
+		<field name="JSON" type="String" />
 	</model>
 	<model name="com.liferay.object.model.ObjectLayout">
 		<field name="mvccVersion" type="long" />
@@ -312,7 +312,7 @@
 		<field name="modifiedDate" type="Date" />
 		<field name="objectViewId" type="long" />
 		<field name="filterType" type="String" />
-		<field name="json" type="String" />
+		<field name="JSON" type="String" />
 		<field name="objectFieldName" type="String" />
 	</model>
 	<model name="com.liferay.object.model.ObjectViewSortColumn">

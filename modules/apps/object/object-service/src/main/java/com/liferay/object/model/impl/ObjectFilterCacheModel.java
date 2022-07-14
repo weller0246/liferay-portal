@@ -163,10 +163,10 @@ public class ObjectFilterCacheModel
 		}
 
 		if (json == null) {
-			objectFilterImpl.setJson("");
+			objectFilterImpl.setJSON("");
 		}
 		else {
-			objectFilterImpl.setJson(json);
+			objectFilterImpl.setJSON(json);
 		}
 
 		objectFilterImpl.resetOriginalValues();

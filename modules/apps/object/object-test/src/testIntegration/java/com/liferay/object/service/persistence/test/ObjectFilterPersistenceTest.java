@@ -142,7 +142,7 @@ public class ObjectFilterPersistenceTest {
 
 		newObjectFilter.setFilterType(RandomTestUtil.randomString());
 
-		newObjectFilter.setJson(RandomTestUtil.randomString());
+		newObjectFilter.setJSON(RandomTestUtil.randomString());
 
 		_objectFilters.add(_persistence.update(newObjectFilter));
 
@@ -179,7 +179,7 @@ public class ObjectFilterPersistenceTest {
 			existingObjectFilter.getFilterType(),
 			newObjectFilter.getFilterType());
 		Assert.assertEquals(
-			existingObjectFilter.getJson(), newObjectFilter.getJson());
+			existingObjectFilter.getJSON(), newObjectFilter.getJSON());
 	}
 
 	@Test
@@ -476,7 +476,7 @@ public class ObjectFilterPersistenceTest {
 
 		objectFilter.setFilterType(RandomTestUtil.randomString());
 
-		objectFilter.setJson(RandomTestUtil.randomString());
+		objectFilter.setJSON(RandomTestUtil.randomString());
 
 		_objectFilters.add(_persistence.update(objectFilter));
 

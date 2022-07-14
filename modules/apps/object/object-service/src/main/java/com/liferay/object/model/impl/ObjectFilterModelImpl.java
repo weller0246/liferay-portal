@@ -295,9 +295,9 @@ public class ObjectFilterModelImpl
 		attributeSetterBiConsumers.put(
 			"filterType",
 			(BiConsumer<ObjectFilter, String>)ObjectFilter::setFilterType);
-		attributeGetterFunctions.put("json", ObjectFilter::getJson);
+		attributeGetterFunctions.put("json", ObjectFilter::getJSON);
 		attributeSetterBiConsumers.put(
-			"json", (BiConsumer<ObjectFilter, String>)ObjectFilter::setJson);
+			"json", (BiConsumer<ObjectFilter, String>)ObjectFilter::setJSON);
 
 		_attributeGetterFunctions = Collections.unmodifiableMap(
 			attributeGetterFunctions);
@@ -531,7 +531,7 @@ public class ObjectFilterModelImpl
 	}
 
 	@Override
-	public String getJson() {
+	public String getJSON() {
 		if (_json == null) {
 			return "";
 		}
@@ -541,7 +541,7 @@ public class ObjectFilterModelImpl
 	}
 
 	@Override
-	public void setJson(String json) {
+	public void setJSON(String json) {
 		if (_columnOriginalValues == Collections.EMPTY_MAP) {
 			_setColumnOriginalValues();
 		}
@@ -622,7 +622,7 @@ public class ObjectFilterModelImpl
 		objectFilterImpl.setObjectFieldId(getObjectFieldId());
 		objectFilterImpl.setFilterBy(getFilterBy());
 		objectFilterImpl.setFilterType(getFilterType());
-		objectFilterImpl.setJson(getJson());
+		objectFilterImpl.setJSON(getJSON());
 
 		objectFilterImpl.resetOriginalValues();
 
@@ -653,7 +653,7 @@ public class ObjectFilterModelImpl
 			this.<String>getColumnOriginalValue("filterBy"));
 		objectFilterImpl.setFilterType(
 			this.<String>getColumnOriginalValue("filterType"));
-		objectFilterImpl.setJson(this.<String>getColumnOriginalValue("json"));
+		objectFilterImpl.setJSON(this.<String>getColumnOriginalValue("json"));
 
 		return objectFilterImpl;
 	}
@@ -792,7 +792,7 @@ public class ObjectFilterModelImpl
 			objectFilterCacheModel.filterType = null;
 		}
 
-		objectFilterCacheModel.json = getJson();
+		objectFilterCacheModel.json = getJSON();
 
 		String json = objectFilterCacheModel.json;
 

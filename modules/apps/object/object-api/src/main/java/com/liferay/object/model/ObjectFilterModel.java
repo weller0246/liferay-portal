@@ -254,14 +254,14 @@ public interface ObjectFilterModel
 	 * @return the json of this object filter
 	 */
 	@AutoEscape
-	public String getJson();
+	public String getJSON();
 
 	/**
 	 * Sets the json of this object filter.
 	 *
 	 * @param json the json of this object filter
 	 */
-	public void setJson(String json);
+	public void setJSON(String json);
 
 	@Override
 	public ObjectFilter cloneWithOriginalValues();
