@@ -274,11 +274,11 @@ public class UpstreamFailureUtil {
 	}
 
 	public static void reset() {
-		_upstreamTestrayRoutine = null;
 		_upstreamComparisonAvailable = true;
-		_upstreamTestrayBuild = null;
-		_upstreamTopLevelBuildReport = null;
 		_upstreamJobFailuresSHA = null;
+		_upstreamTestrayBuild = null;
+		_upstreamTestrayRoutine = null;
+		_upstreamTopLevelBuildReport = null;
 	}
 
 	public static void resetUpstreamJobFailuresJSONObject() {
