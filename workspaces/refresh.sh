@@ -58,10 +58,6 @@ function refresh_sample_default_workspace {
 	touch themes/.touch
 
 	cd ..
-
-	rm -fr sample-default-workspace/client-extensions
-
-	cp -R sample-minimal-workspace/client-extensions sample-default-workspace
 }
 
 function refresh_sample_minimal_workspace {
@@ -84,6 +80,10 @@ function refresh_sample_minimal_workspace {
 	copy_template iframe sample-minimal-workspace/client-extensions/able-iframe "Able IFrame"
 	copy_template theme-css sample-minimal-workspace/client-extensions/able-theme-css "Able Theme CSS"
 	copy_template theme-favicon sample-minimal-workspace/client-extensions/able-theme-favicon "Able Theme Favicon"
+
+	rm -fr sample-default-workspace/client-extensions
+
+	cp -R sample-minimal-workspace/client-extensions sample-default-workspace
 }
 
 function main {
