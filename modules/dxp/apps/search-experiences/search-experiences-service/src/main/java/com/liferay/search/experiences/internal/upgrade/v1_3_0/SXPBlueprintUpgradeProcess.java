@@ -229,14 +229,14 @@ public class SXPBlueprintUpgradeProcess extends UpgradeProcess {
 					String title = resultSet.getString("title");
 
 					if (resultSet.getBoolean("readOnly")) {
-						description = _renameDescription(description);
-						elementDefinitionJSON = _renameElementDefinitionJSON(
-							elementDefinitionJSON);
-
 						title = _renameTitle(title);
 
 						externalReferenceCode = _getExternalReferenceCode(
 							title);
+
+						description = _renameDescription(description);
+						elementDefinitionJSON = _renameElementDefinitionJSON(
+							elementDefinitionJSON);
 					}
 
 					preparedStatement2.setString(1, externalReferenceCode);
