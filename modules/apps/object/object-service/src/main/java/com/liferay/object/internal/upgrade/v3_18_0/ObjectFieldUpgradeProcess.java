@@ -78,9 +78,9 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 				String dbTableName = resultSet.getString("dbTableName");
 				Locale defaultLocale = LocaleUtil.fromLanguageId(
 					UpgradeProcessUtil.getDefaultLanguageId(companyId));
-				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				long objectDefinitionId = resultSet.getLong(
 					"objectDefinitionId");
+				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 				long userId = resultSet.getLong("userId");
 				String userName = resultSet.getString("userName");
 
