@@ -31,9 +31,7 @@ function check_blade {
 function copy_template {
 	cp -R ../modules/apps/client-extension/client-extension-type-api/src/main/resources/com/liferay/client/extension/type/dependencies/templates/$1 "$2"
 
-	local baseName=$(basename $2)
-
-	find "$2" -type f -not -path '*/*\.ico' -exec sed -i'.bak' "s/\${id}/${baseName}/g" {} +
+	find "$2" -type f -not -path '*/*\.ico' -exec sed -i'.bak' "s/\${id}/$(basename $2)/g" {} +
 	find "$2" -type f -not -path '*/*\.ico' -exec sed -i'.bak' "s/\${name}/$3/g" {} +
 }
 
