@@ -123,7 +123,7 @@ public class LayoutStructureCommonStylesCSSServlet extends HttpServlet {
 		PrintWriter printWriter = httpServletResponse.getWriter();
 
 		printWriter.write(
-			".lfr-layout-structure-item-row { overflow: hidden; }");
+			".lfr-layout-structure-item-row {overflow: hidden;}");
 
 		JSONObject frontendTokensJSONObject = _getFrontendTokensJSONObject(
 			layout.getGroupId(), layout,
