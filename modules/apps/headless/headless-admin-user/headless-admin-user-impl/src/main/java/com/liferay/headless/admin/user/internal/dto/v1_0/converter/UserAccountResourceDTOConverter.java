@@ -33,7 +33,6 @@ import com.liferay.headless.admin.user.internal.dto.v1_0.util.ServiceBuilderList
 import com.liferay.headless.admin.user.internal.dto.v1_0.util.WebUrlUtil;
 import com.liferay.petra.function.UnsafeFunction;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Contact;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.GroupConstants;
@@ -289,7 +288,7 @@ public class UserAccountResourceDTOConverter
 
 	private SiteBrief _toSiteBrief(
 			DTOConverterContext dtoConverterContext, Group group)
-		throws PortalException {
+		throws Exception {
 
 		return new SiteBrief() {
 			{
