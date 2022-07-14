@@ -44,16 +44,35 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
-			_SELECT_OBJECT_DEFINITION);
+		String selectSQL = StringBundler.concat(
+			"select ObjectDefinition.companyId, ObjectDefinition.dbTableName, ",
+			"ObjectDefinition.objectDefinitionId, ObjectDefinition.userName, ",
+			"ObjectDefinition.userId, ObjectDefinition.system_ from ",
+			"ObjectDefinition where ObjectDefinition.objectDefinitionId not ",
+			"in (select distinct ObjectField.objectDefinitionId from ",
+			"ObjectField where (ObjectField.name = \"creator\" or ",
+			"ObjectField.name = \"dateCreated\" or ObjectField.name = ",
+			"\"dateModified\" or ObjectField.name = \"id\" or ",
+			"ObjectField.name = \"status\") and ObjectField.system_ = true)");
 
-			 ResultSet resultSet = preparedStatement1.executeQuery()
-			 ) {
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
+				selectSQL);
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
+
+			String insertSQL = StringBundler.concat(
+				"insert into ObjectField (mvccVersion, uuid_, objectFieldId, ",
+				"companyId, userId, userName, createDate, modifiedDate, ",
+				"externalReferenceCode, listTypeDefinitionId, ",
+				"objectDefinitionId, businessType, dbColumnName, dbTableName, ",
+				"dbType, defaultValue, indexed, indexedAsKeyWord, ",
+				"indexedLanguageId, label, name, relationshipType, required, ",
+				"state_, system_) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ",
+				"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
 			while (resultSet.next()) {
 				PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection, _INSERT_METADATA);
+						connection, insertSQL);
 
 				long companyId = resultSet.getLong("companyId");
 				String dbTableName = resultSet.getString("dbTableName");
@@ -190,27 +209,6 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 
 		preparedStatement.addBatch();
 	}
-
-	private static final String _INSERT_METADATA = StringBundler.concat(
-		"insert into ObjectField (mvccVersion, uuid_, objectFieldId, ",
-		"companyId, userId, userName, createDate, modifiedDate, ",
-		"externalReferenceCode, listTypeDefinitionId, objectDefinitionId, ",
-		"businessType, dbColumnName, dbTableName, dbType, defaultValue, ",
-		"indexed, indexedAsKeyWord, indexedLanguageId, label, name, ",
-		"relationshipType, required, state_, system_) values (?, ?, ?, ?, ?, ",
-		"?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
-	private static final String _SELECT_OBJECT_DEFINITION =
-		StringBundler.concat(
-			"select ObjectDefinition.companyId, ObjectDefinition.dbTableName, ",
-			"ObjectDefinition.objectDefinitionId, ObjectDefinition.userName, ",
-			"ObjectDefinition.userId, ObjectDefinition.system_ from ",
-			"ObjectDefinition where ObjectDefinition.objectDefinitionId not ",
-			"in (select distinct ObjectField.objectDefinitionId from ",
-			"ObjectField where (ObjectField.name = \"creator\" or ",
-			"ObjectField.name = \"dateCreated\" or ObjectField.name = ",
-			"\"dateModified\" or ObjectField.name = \"id\" or ",
-			"ObjectField.name = \"status\") and ObjectField.system_ = true)");
 
 	private final PortalUUID _portalUUID;
 
