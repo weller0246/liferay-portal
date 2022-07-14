@@ -371,11 +371,9 @@ public class SearchBarPortletDisplayContextFactoryTest {
 		Assert.assertEquals(
 			expectedLetTheUserChoose,
 			searchBarPortletDisplayContext.isLetTheUserChooseTheSearchScope());
-
 		Assert.assertEquals(
 			expectedSelectedCurrentSite,
 			searchBarPortletDisplayContext.isSelectedCurrentSiteSearchScope());
-
 		Assert.assertEquals(
 			expectedSelectedEverything,
 			searchBarPortletDisplayContext.isSelectedEverythingSearchScope());
