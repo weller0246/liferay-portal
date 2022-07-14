@@ -216,44 +216,33 @@ public class PortletPathsUtil {
 				headerJavaScriptSet.add(headerPortalJavaScript);
 			}
 
-			ThemeDisplay themeDisplay =
-				(ThemeDisplay)httpServletRequest.getAttribute(
-					WebKeys.THEME_DISPLAY);
+			for (String headerPortletCss : portlet.getHeaderPortletCss()) {
+				if (!HttpComponentsUtil.hasProtocol(headerPortletCss)) {
+					headerPortletCss =
+						portlet.getStaticResourcePath() + headerPortletCss;
 
-			if (!themeDisplay.isThemeCssFastLoad()) {
-				for (String headerPortletCss : portlet.getHeaderPortletCss()) {
-					if (!HttpComponentsUtil.hasProtocol(headerPortletCss)) {
-						headerPortletCss =
-							portlet.getStaticResourcePath() + headerPortletCss;
-
-						headerPortletCss = PortalUtil.getStaticResourceURL(
-							httpServletRequest, headerPortletCss,
-							rootPortlet.getTimestamp());
-					}
-
-					headerCssSet.add(headerPortletCss);
+					headerPortletCss = PortalUtil.getStaticResourceURL(
+						httpServletRequest, headerPortletCss,
+						rootPortlet.getTimestamp());
 				}
+
+				headerCssSet.add(headerPortletCss);
 			}
 
-			if (!themeDisplay.isThemeJsFastLoad()) {
-				for (String headerPortletJavaScript :
-						portlet.getHeaderPortletJavaScript()) {
+			for (String headerPortletJavaScript :
+					portlet.getHeaderPortletJavaScript()) {
 
-					if (!HttpComponentsUtil.hasProtocol(
-							headerPortletJavaScript)) {
+				if (!HttpComponentsUtil.hasProtocol(headerPortletJavaScript)) {
+					headerPortletJavaScript =
+						portlet.getStaticResourcePath() +
+							headerPortletJavaScript;
 
-						headerPortletJavaScript =
-							portlet.getStaticResourcePath() +
-								headerPortletJavaScript;
-
-						headerPortletJavaScript =
-							PortalUtil.getStaticResourceURL(
-								httpServletRequest, headerPortletJavaScript,
-								rootPortlet.getTimestamp());
-					}
-
-					headerJavaScriptSet.add(headerPortletJavaScript);
+					headerPortletJavaScript = PortalUtil.getStaticResourceURL(
+						httpServletRequest, headerPortletJavaScript,
+						rootPortlet.getTimestamp());
 				}
+
+				headerJavaScriptSet.add(headerPortletJavaScript);
 			}
 		}
 
