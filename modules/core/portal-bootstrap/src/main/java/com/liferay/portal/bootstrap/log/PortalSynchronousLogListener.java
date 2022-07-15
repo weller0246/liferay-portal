@@ -40,8 +40,8 @@ public class PortalSynchronousLogListener implements SynchronousLogListener {
 
 		String message = logEntry.getMessage();
 
-		if (StringUtil.equals("ServiceEvent REGISTERING", message) ||
-			StringUtil.equals("ServiceEvent UNREGISTERING", message)) {
+		if (StringUtil.equals(message, "ServiceEvent REGISTERING") ||
+			StringUtil.equals(message, "ServiceEvent UNREGISTERING")) {
 
 			message =
 				message + StringPool.SPACE + logEntry.getServiceReference();
