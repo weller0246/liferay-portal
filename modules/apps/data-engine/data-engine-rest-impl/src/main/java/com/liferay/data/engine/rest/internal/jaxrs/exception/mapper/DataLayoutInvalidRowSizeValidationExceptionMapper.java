@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.internal.jaxrs.exception.mapper;
 
 import com.liferay.data.engine.rest.resource.exception.DataLayoutValidationException;
+import com.liferay.portal.vulcan.jaxrs.exception.mapper.BaseExceptionMapper;
 import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
 import javax.ws.rs.core.Response;
@@ -34,8 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	service = ExceptionMapper.class
 )
 public class DataLayoutInvalidRowSizeValidationExceptionMapper
-	extends DataEngineExceptionMapper
-		<DataLayoutValidationException.InvalidRowSize> {
+	extends BaseExceptionMapper<DataLayoutValidationException.InvalidRowSize> {
 
 	@Override
 	protected Problem getProblem(

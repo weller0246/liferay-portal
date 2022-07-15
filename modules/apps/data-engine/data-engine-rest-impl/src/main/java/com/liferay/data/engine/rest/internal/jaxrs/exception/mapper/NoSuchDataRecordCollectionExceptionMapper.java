@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.internal.jaxrs.exception.mapper;
 
 import com.liferay.dynamic.data.lists.exception.NoSuchRecordSetException;
+import com.liferay.portal.vulcan.jaxrs.exception.mapper.BaseExceptionMapper;
 import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
 import javax.ws.rs.core.Response;
@@ -34,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	service = ExceptionMapper.class
 )
 public class NoSuchDataRecordCollectionExceptionMapper
-	extends DataEngineExceptionMapper<NoSuchRecordSetException> {
+	extends BaseExceptionMapper<NoSuchRecordSetException> {
 
 	@Override
 	protected Problem getProblem(

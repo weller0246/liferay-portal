@@ -15,6 +15,7 @@
 package com.liferay.data.engine.rest.internal.jaxrs.exception.mapper;
 
 import com.liferay.data.engine.rest.resource.exception.DataDefinitionValidationException;
+import com.liferay.portal.vulcan.jaxrs.exception.mapper.BaseExceptionMapper;
 import com.liferay.portal.vulcan.jaxrs.exception.mapper.Problem;
 
 import javax.ws.rs.core.Response;
@@ -34,7 +35,7 @@ import org.osgi.service.component.annotations.Component;
 	service = ExceptionMapper.class
 )
 public class DataDefinitionMustSetDefaultLocaleValidationExceptionMapper
-	extends DataEngineExceptionMapper
+	extends BaseExceptionMapper
 		<DataDefinitionValidationException.MustSetDefaultLocale> {
 
 	@Override
