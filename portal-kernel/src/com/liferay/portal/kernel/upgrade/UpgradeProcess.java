@@ -30,7 +30,6 @@ import com.liferay.portal.kernel.util.LoggingTimer;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 import com.liferay.portal.kernel.util.PortalClassLoaderUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -98,14 +97,8 @@ public abstract class UpgradeProcess
 
 			process(
 				companyId -> {
-					String companyInfo = info;
-
-					if (Validator.isNotNull(companyId)) {
-						companyInfo += "#" + companyId;
-					}
-
 					if (_log.isInfoEnabled()) {
-						_log.info("Upgrading " + companyInfo);
+						_log.info("Upgrading " + info);
 					}
 
 					doUpgrade();
