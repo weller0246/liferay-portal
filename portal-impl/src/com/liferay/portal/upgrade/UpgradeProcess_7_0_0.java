@@ -74,7 +74,8 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(new UpgradeKernelPackage());
 
 		upgrade(
-			UpgradeProcessFactory.alterColumnType("Address", "typeId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Address", "LONG", "typeId"));
 		upgrade(new UpgradeAsset());
 		upgrade(
 			UpgradeProcessFactory.runSQL(
@@ -86,20 +87,20 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(new UpgradeDocumentLibraryPortletId());
 		upgrade(new UpgradeDocumentLibraryPreferences());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"EmailAddress", "typeId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"EmailAddress", "LONG", "typeId"));
 		upgrade(new UpgradeEmailNotificationPreferences());
 		upgrade(new UpgradeExpando());
 		upgrade(new UpgradeGroup());
 		upgrade(new UpgradeLastPublishDate());
 		upgrade(new UpgradeLayout());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"ListType", "listTypeId", "LONG not null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"ListType", "LONG not null", "listTypeId"));
 		upgrade(new UpgradeLookAndFeel());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"MembershipRequest", "statusId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"MembershipRequest", "LONG", "statusId"));
 		upgrade(new UpgradeMessageBoards());
 		upgrade(
 			UpgradeModulesFactory.create(
@@ -107,10 +108,10 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(new UpgradeMySQL());
 		upgrade(new UpgradeOrganization());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"OrgLabor", "typeId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"OrgLabor", "LONG", "typeId"));
 		upgrade(
-			UpgradeProcessFactory.alterColumnType("Phone", "typeId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes("Phone", "LONG", "typeId"));
 		upgrade(new UpgradePortalPreferences());
 		upgrade(new UpgradePortletDisplayTemplatePreferences());
 		upgrade(new UpgradePortletId());
@@ -119,15 +120,15 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 		upgrade(new UpgradeRelease());
 		upgrade(new UpgradeRepository());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"RepositoryEntry", "mappedId", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"RepositoryEntry", "VARCHAR(255) null", "mappedId"));
 		upgrade(new UpgradeResourcePermission());
 		upgrade(new UpgradeSocial());
 		upgrade(new UpgradeSubscription());
 		upgrade(new UpgradeUser());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"Website", "typeId", "LONG"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Website", "LONG", "typeId"));
 		upgrade(new UpgradeWorkflow());
 
 		upgrade(new UpgradeMobileDeviceRules());

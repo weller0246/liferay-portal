@@ -92,8 +92,8 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeProcesses.put(
 			new Version(12, 2, 1),
-			UpgradeProcessFactory.alterColumnType(
-				"AssetEntry", "title", "TEXT null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"AssetEntry", "TEXT null", "title"));
 
 		upgradeProcesses.put(
 			new Version(12, 2, 2), new UpgradePortalPreferenceValue());
@@ -126,13 +126,8 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeProcesses.put(
 			new Version(13, 3, 5),
-			UpgradeProcessFactory.alterColumnType(
-				"Contact_", "prefixId", "LONG NULL"));
-
-		upgradeProcesses.put(
-			new Version(13, 3, 6),
-			UpgradeProcessFactory.alterColumnType(
-				"Contact_", "suffixId", "LONG NULL"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Contact_", "LONG NULL", "prefixId", "suffixId"));
 
 		upgradeProcesses.put(
 			new Version(14, 0, 0), new UpgradeExternalReferenceCode());

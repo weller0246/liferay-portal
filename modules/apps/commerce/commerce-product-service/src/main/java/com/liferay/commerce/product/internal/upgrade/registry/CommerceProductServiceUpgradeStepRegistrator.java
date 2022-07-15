@@ -318,8 +318,8 @@ public class CommerceProductServiceUpgradeStepRegistrator
 
 		registry.register(
 			"3.8.0", "3.8.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CPAttachmentFileEntry", "cdnURL", "STRING null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CPAttachmentFileEntry", "STRING null", "cdnURL"));
 
 		registry.register(
 			"3.8.1", "3.9.0",

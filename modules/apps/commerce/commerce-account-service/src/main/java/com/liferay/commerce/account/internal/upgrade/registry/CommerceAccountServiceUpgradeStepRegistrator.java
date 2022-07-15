@@ -75,8 +75,8 @@ public class CommerceAccountServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.2.0", "1.3.0",
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceAccount", "name", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CommerceAccount", "VARCHAR(255) null", "name"));
 
 		registry.register(
 			"1.3.0", "1.4.0",

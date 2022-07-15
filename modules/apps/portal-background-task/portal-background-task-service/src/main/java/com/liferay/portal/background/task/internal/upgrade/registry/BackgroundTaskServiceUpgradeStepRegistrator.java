@@ -38,8 +38,8 @@ public class BackgroundTaskServiceUpgradeStepRegistrator
 
 		registry.register(
 			"0.0.2", "1.0.0",
-			UpgradeProcessFactory.alterColumnType(
-				"BackgroundTask", "name", "VARCHAR(255) null"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"BackgroundTask", "VARCHAR(255) null", "name"),
 			UpgradeProcessFactory.alterColumnName(
 				"BackgroundTask", "taskContext", "taskContextMap TEXT null"));
 

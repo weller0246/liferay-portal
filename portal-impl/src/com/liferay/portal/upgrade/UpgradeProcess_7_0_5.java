@@ -37,29 +37,27 @@ public class UpgradeProcess_7_0_5 extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		upgrade(new UpgradeBookmarks());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"Company", "mx", "VARCHAR(200) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Company", "VARCHAR(200) null", "mx"));
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"Contact_", "emailAddress", "VARCHAR(254) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Contact_", "VARCHAR(254) null", "emailAddress"));
 		upgrade(new UpgradeGroup());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"EmailAddress", "address", "VARCHAR(254) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"EmailAddress", "VARCHAR(254) null", "address"));
 		upgrade(new UpgradeExpando());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"MBMailingList", "emailAddress", "VARCHAR(254) null"));
-		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"MBMailingList", "outEmailAddress", "VARCHAR(254) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"MBMailingList", "VARCHAR(254) null", "emailAddress",
+				"outEmailAddress"));
 		upgrade(new UpgradePortalPreferences());
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"User_", "emailAddress", "VARCHAR(254) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"User_", "VARCHAR(254) null", "emailAddress"));
 		upgrade(
-			UpgradeProcessFactory.alterColumnType(
-				"VirtualHost", "hostname", "VARCHAR(200) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"VirtualHost", "VARCHAR(200) null", "hostname"));
 
 		clearIndexesCache();
 	}

@@ -158,23 +158,18 @@ public class CommerceServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.1.0", "4.1.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceAddress", "name", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceAddress", "street1", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceAddress", "street2", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceAddress", "street3", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CommerceAddress", "VARCHAR(255) null", "name", "street1",
+				"street2", "street3"));
 
 		registry.register("4.1.1", "4.2.0", new DummyUpgradeProcess());
 
 		registry.register(
 			"4.2.0", "4.2.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceOrder", "printedNote", "STRING null"),
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceOrderItem", "printedNote", "STRING null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CommerceOrder", "STRING null", "printedNote"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"CommerceOrderItem", "STRING null", "printedNote"));
 
 		registry.register(
 			"4.2.1", "4.3.0",
@@ -203,8 +198,8 @@ public class CommerceServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.5.1", "4.6.0", new DummyUpgradeProcess(),
-			UpgradeProcessFactory.alterColumnType(
-				"CommerceShipment", "shippingOptionName", "TEXT"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"CommerceShipment", "TEXT", "shippingOptionName"),
 			UpgradeProcessFactory.addColumns(
 				"CommerceSubscriptionEntry",
 				"deliverySubscriptionLength INTEGER",

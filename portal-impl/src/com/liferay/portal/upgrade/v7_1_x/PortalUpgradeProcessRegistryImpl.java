@@ -55,8 +55,8 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeProcesses.put(
 			new Version(1, 1, 1),
-			UpgradeProcessFactory.alterColumnType(
-				"Counter", "name", "VARCHAR(150) not null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Counter", "VARCHAR(150) not null", "name"));
 
 		upgradeProcesses.put(new Version(1, 1, 2), new UpgradeDB2());
 
@@ -65,21 +65,21 @@ public class PortalUpgradeProcessRegistryImpl
 
 		upgradeProcesses.put(
 			new Version(2, 0, 1),
-			UpgradeProcessFactory.alterColumnType(
-				"DLFileEntryType", "fileEntryTypeKey", "VARCHAR(75) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"DLFileEntryType", "VARCHAR(75) null", "fileEntryTypeKey"));
 
 		upgradeProcesses.put(
 			new Version(2, 0, 2),
-			UpgradeProcessFactory.alterColumnType(
-				"PasswordPolicy", "regex", "STRING null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"PasswordPolicy", "STRING null", "regex"));
 
 		upgradeProcesses.put(
 			new Version(2, 0, 3), new UpgradePortalPreferences());
 
 		upgradeProcesses.put(
 			new Version(2, 0, 4),
-			UpgradeProcessFactory.alterColumnType(
-				"UserGroup", "name", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"UserGroup", "VARCHAR(255) null", "name"));
 
 		upgradeProcesses.put(
 			new Version(2, 0, 5), new UpgradeAnnouncementsPortletId());

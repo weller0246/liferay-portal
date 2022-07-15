@@ -45,10 +45,9 @@ public class CommerceProductTypeVirtualServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.1.0", "1.1.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CPDefinitionVirtualSetting", "sampleUrl", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"CPDefinitionVirtualSetting", "url", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CPDefinitionVirtualSetting", "VARCHAR(255) null", "sampleUrl",
+				"url"));
 
 		registry.register(
 			"1.1.1", "1.2.0",

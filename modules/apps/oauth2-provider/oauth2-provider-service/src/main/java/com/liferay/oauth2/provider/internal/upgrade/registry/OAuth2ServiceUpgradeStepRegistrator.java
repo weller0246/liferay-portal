@@ -35,8 +35,8 @@ public class OAuth2ServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.alterColumnType(
-				"OAuth2ScopeGrant", "scope", "VARCHAR(240) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"OAuth2ScopeGrant", "VARCHAR(240) null", "scope"));
 
 		registry.register(
 			"1.1.0", "1.2.0",
@@ -82,8 +82,8 @@ public class OAuth2ServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.0.0", "4.0.1",
-			UpgradeProcessFactory.alterColumnType(
-				"OAuth2Application", "allowedGrantTypes", "VARCHAR(128) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"OAuth2Application", "VARCHAR(128) null", "allowedGrantTypes"));
 
 		registry.register(
 			"4.0.1", "4.1.0",

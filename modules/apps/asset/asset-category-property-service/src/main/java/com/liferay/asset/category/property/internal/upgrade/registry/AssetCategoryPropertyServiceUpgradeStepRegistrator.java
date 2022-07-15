@@ -53,10 +53,8 @@ public class AssetCategoryPropertyServiceUpgradeStepRegistrator
 
 		registry.register(
 			"2.1.0", "2.2.0",
-			UpgradeProcessFactory.alterColumnType(
-				"AssetCategoryProperty", "key_", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"AssetCategoryProperty", "value", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"AssetCategoryProperty", "VARCHAR(255) null", "key_", "value"));
 
 		registry.register(
 			"2.2.0", "2.3.0",

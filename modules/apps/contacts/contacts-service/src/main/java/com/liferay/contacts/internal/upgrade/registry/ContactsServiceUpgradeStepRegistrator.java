@@ -45,8 +45,8 @@ public class ContactsServiceUpgradeStepRegistrator
 
 		registry.register(
 			"2.0.1", "2.0.2",
-			UpgradeProcessFactory.alterColumnType(
-				"Contacts_Entry", "emailAddress", "VARCHAR(254) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"Contacts_Entry", "VARCHAR(254) null", "emailAddress"));
 
 		registry.register(
 			"2.0.2", "3.0.0",

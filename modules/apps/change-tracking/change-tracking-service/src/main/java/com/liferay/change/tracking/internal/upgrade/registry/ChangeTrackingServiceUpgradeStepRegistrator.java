@@ -34,8 +34,8 @@ public class ChangeTrackingServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.0.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CTCollection", "description", "VARCHAR(200) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CTCollection", "VARCHAR(200) null", "description"));
 
 		registry.register(
 			"1.0.1", "2.0.0",

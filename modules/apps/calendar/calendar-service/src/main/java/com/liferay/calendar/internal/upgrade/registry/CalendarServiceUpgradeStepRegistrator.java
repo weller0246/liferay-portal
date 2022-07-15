@@ -65,8 +65,8 @@ public class CalendarServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"0.0.1", "1.0.0",
-			UpgradeProcessFactory.alterColumnType(
-				"CalendarBooking", "description", "TEXT null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CalendarBooking", "TEXT null", "description"));
 
 		registry.register(
 			"1.0.0", "1.0.1",
@@ -144,15 +144,15 @@ public class CalendarServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.1.0", "4.1.1",
-			UpgradeProcessFactory.alterColumnType(
-				"CalendarNotificationTemplate", "notificationTypeSettings",
-				"VARCHAR(150) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CalendarNotificationTemplate", "VARCHAR(150) null",
+				"notificationTypeSettings"));
 
 		registry.register(
 			"4.1.1", "4.1.2",
-			UpgradeProcessFactory.alterColumnType(
-				"CalendarNotificationTemplate", "notificationTypeSettings",
-				"VARCHAR(200) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"CalendarNotificationTemplate", "VARCHAR(200) null",
+				"notificationTypeSettings"));
 
 		registry.register(
 			"4.1.2", "4.2.0",

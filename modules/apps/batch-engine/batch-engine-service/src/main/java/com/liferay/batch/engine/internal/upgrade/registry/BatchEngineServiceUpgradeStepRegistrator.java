@@ -48,10 +48,10 @@ public class BatchEngineServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.0.0", "4.0.1",
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineExportTask", "className", "VARCHAR(255) null"),
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineImportTask", "className", "VARCHAR(255) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"BatchEngineExportTask", "VARCHAR(255) null", "className"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"BatchEngineImportTask", "VARCHAR(255) null", "className"));
 
 		registry.register(
 			"4.0.1", "4.1.0",
@@ -70,15 +70,15 @@ public class BatchEngineServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.2.0", "4.3.0",
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineExportTask", "fieldNames", "VARCHAR(1000) null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"BatchEngineExportTask", "VARCHAR(1000) null", "fieldNames"));
 
 		registry.register(
 			"4.3.0", "4.3.1",
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineExportTask", "errorMessage", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineImportTask", "errorMessage", "TEXT null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"BatchEngineExportTask", "TEXT null", "errorMessage"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"BatchEngineImportTask", "TEXT null", "errorMessage"));
 
 		registry.register(
 			"4.3.1", "4.4.0",
@@ -108,8 +108,8 @@ public class BatchEngineServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.6.1", "4.6.2",
-			UpgradeProcessFactory.alterColumnType(
-				"BatchEngineExportTask", "fieldNames", "STRING null"));
+			UpgradeStepFactory.alterColumnTypes(
+				"BatchEngineExportTask", "STRING null", "fieldNames"));
 	}
 
 	@Reference

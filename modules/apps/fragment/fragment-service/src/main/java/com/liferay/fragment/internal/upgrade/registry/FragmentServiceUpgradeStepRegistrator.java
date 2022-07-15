@@ -44,20 +44,11 @@ public class FragmentServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.0.1",
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntry", "css", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntry", "html", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntry", "js", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntryLink", "css", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntryLink", "html", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntryLink", "js", "TEXT null"),
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentEntryLink", "editableValues", "TEXT null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"FragmentEntry", "TEXT null", "css", "html", "js"),
+			UpgradeProcessFactory.alterColumnTypes(
+				"FragmentEntryLink", "TEXT null", "css", "html", "js",
+				"editableValues"));
 
 		registry.register("1.0.1", "1.0.2", new DummyUpgradeStep());
 
@@ -171,8 +162,8 @@ public class FragmentServiceUpgradeStepRegistrator
 
 		registry.register(
 			"2.9.2", "2.9.3",
-			UpgradeProcessFactory.alterColumnType(
-				"FragmentComposition", "description", "STRING null"));
+			UpgradeProcessFactory.alterColumnTypes(
+				"FragmentComposition", "STRING null", "description"));
 
 		registry.register(
 			"2.9.3", "2.9.4",
