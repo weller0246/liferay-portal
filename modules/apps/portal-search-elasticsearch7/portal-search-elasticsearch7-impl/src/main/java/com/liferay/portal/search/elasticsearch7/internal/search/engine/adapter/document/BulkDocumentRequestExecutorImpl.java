@@ -191,17 +191,13 @@ public class BulkDocumentRequestExecutorImpl
 				bulkDocumentRequest.getConnectionId(),
 				bulkDocumentRequest.isPreferLocalCluster());
 
-		BulkResponse bulkResponse = null;
-
-		int count = 0;
-
-		do {
+		for (int i = 0;;) {
 			try {
-				bulkResponse = restHighLevelClient.bulk(
+				return restHighLevelClient.bulk(
 					bulkRequest, RequestOptions.DEFAULT);
 			}
 			catch (Exception exception) {
-				if (count++ >= _numberOfTries) {
+				if (i++ >= _numberOfTries) {
 					if (_numberOfTries > 1) {
 						_log.error(
 							"All " + _numberOfTries +
@@ -215,8 +211,8 @@ public class BulkDocumentRequestExecutorImpl
 					StringBundler.concat(
 						"There was an exception during getting a response to ",
 						"a request from the search server, retrying after ",
-						_waitInSeconds, " seconds (", count, "/",
-						_numberOfTries, "). ", exception));
+						_waitInSeconds, " seconds (", i, "/", _numberOfTries,
+						"). ", exception));
 
 				try {
 					Thread.sleep(_waitInSeconds * Time.SECOND);
@@ -228,9 +224,6 @@ public class BulkDocumentRequestExecutorImpl
 				}
 			}
 		}
-		while (bulkResponse == null);
-
-		return bulkResponse;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
