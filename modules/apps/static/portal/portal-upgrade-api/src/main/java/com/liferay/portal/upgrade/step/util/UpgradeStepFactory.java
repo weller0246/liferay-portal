@@ -20,10 +20,7 @@ import com.liferay.portal.kernel.upgrade.UpgradeStep;
 
 /**
  * @author Carlos Sierra Andrés
- * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
- * 			com.liferay.portal.kernel.upgrade.UpgradeProcessFactory}
  */
-@Deprecated
 public class UpgradeStepFactory {
 
 	public static UpgradeStep addColumns(
