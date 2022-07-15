@@ -14,10 +14,7 @@
 
 package com.liferay.portal.kernel.upgrade;
 
-import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
-
-import java.util.Arrays;
 
 /**
  * @author Luis Ortiz Fuentes
@@ -27,15 +24,7 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess addColumns(
 		String tableName, String... columnDefinitions) {
 
-		Thread thread = Thread.currentThread();
-
-		String callerClazz = thread.getStackTrace()[2].getClassName();
-
-		String referenceName = StringBundler.concat(
-			callerClazz, " -> addColumns: ", tableName, " - ",
-			Arrays.toString(columnDefinitions));
-
-		return new UpgradeProcess(referenceName) {
+		return new UpgradeProcess() {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -55,15 +44,7 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess alterColumnTypes(
 		String tableName, String newType, String... columnNames) {
 
-		Thread thread = Thread.currentThread();
-
-		String callerClazz = thread.getStackTrace()[2].getClassName();
-
-		String referenceName = StringBundler.concat(
-			callerClazz, " -> alterColumnTypes: ", tableName, " - ", newType,
-			" - ", Arrays.toString(columnNames));
-
-		return new UpgradeProcess(referenceName) {
+		return new UpgradeProcess() {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -78,15 +59,7 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess dropColumns(
 		String tableName, String... columnNames) {
 
-		Thread thread = Thread.currentThread();
-
-		String callerClazz = thread.getStackTrace()[2].getClassName();
-
-		String referenceName = StringBundler.concat(
-			callerClazz, " -> dropColumns: ", tableName, " - ",
-			Arrays.toString(columnNames));
-
-		return new UpgradeProcess(referenceName) {
+		return new UpgradeProcess() {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -99,14 +72,7 @@ public class UpgradeProcessFactory {
 	}
 
 	public static UpgradeProcess runSQL(String sql) {
-		Thread thread = Thread.currentThread();
-
-		String callerClazz = thread.getStackTrace()[2].getClassName();
-
-		String referenceName = StringBundler.concat(
-			callerClazz, " -> runSQL: ", sql);
-
-		return new UpgradeProcess(referenceName) {
+		return new UpgradeProcess() {
 
 			@Override
 			protected void doUpgrade() throws Exception {
