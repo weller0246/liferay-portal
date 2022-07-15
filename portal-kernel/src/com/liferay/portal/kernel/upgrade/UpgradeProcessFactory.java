@@ -27,10 +27,15 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess addColumns(
 		String tableName, String... columnDefinitions) {
 
-		return new UpgradeProcess(
-			_getUpgradeInfo(
-				tableName,
-				"add the columns " + Arrays.toString(columnDefinitions))) {
+		Thread thread = Thread.currentThread();
+
+		String callerClassName = thread.getStackTrace()[2].getClassName();
+
+		String upgradeInfo = StringBundler.concat(
+			callerClassName, " - Modifying table ", tableName,
+			" to add the columns ", Arrays.toString(columnDefinitions));
+
+		return new UpgradeProcess(upgradeInfo) {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -50,12 +55,16 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess alterColumnName(
 		String tableName, String oldColumnName, String newColumnDefinition) {
 
-		return new UpgradeProcess(
-			_getUpgradeInfo(
-				tableName,
-				StringBundler.concat(
-					"change the name of the column ", oldColumnName, " to ",
-					newColumnDefinition))) {
+		Thread thread = Thread.currentThread();
+
+		String callerClassName = thread.getStackTrace()[2].getClassName();
+
+		String upgradeInfo = StringBundler.concat(
+			callerClassName, " - Modifying table ", tableName,
+			" to change the name of the column ", oldColumnName, " to ",
+			newColumnDefinition);
+
+		return new UpgradeProcess(upgradeInfo) {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -68,12 +77,16 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess alterColumnTypes(
 		String tableName, String newType, String... columnNames) {
 
-		return new UpgradeProcess(
-			_getUpgradeInfo(
-				tableName,
-				StringBundler.concat(
-					"alter the type of the columns ",
-					Arrays.toString(columnNames), " to ", newType))) {
+		Thread thread = Thread.currentThread();
+
+		String callerClassName = thread.getStackTrace()[2].getClassName();
+
+		String upgradeInfo = StringBundler.concat(
+			callerClassName, " - Modifying table ", tableName,
+			" to alter the type of the columns ", Arrays.toString(columnNames),
+			" to ", newType);
+
+		return new UpgradeProcess(upgradeInfo) {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -88,10 +101,15 @@ public class UpgradeProcessFactory {
 	public static UpgradeProcess dropColumns(
 		String tableName, String... columnNames) {
 
-		return new UpgradeProcess(
-			_getUpgradeInfo(
-				tableName,
-				"drop the columns " + Arrays.toString(columnNames))) {
+		Thread thread = Thread.currentThread();
+
+		String callerClassName = thread.getStackTrace()[2].getClassName();
+
+		String upgradeInfo = StringBundler.concat(
+			callerClassName, " - Modifying table ", tableName,
+			" to drop the columns ", Arrays.toString(columnNames));
+
+		return new UpgradeProcess(upgradeInfo) {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -104,8 +122,14 @@ public class UpgradeProcessFactory {
 	}
 
 	public static UpgradeProcess runSQL(String sql) {
-		return new UpgradeProcess(
-			_getUpgradeInfo(null, "Running the query " + sql)) {
+		Thread thread = Thread.currentThread();
+
+		String callerClassName = thread.getStackTrace()[2].getClassName();
+
+		String upgradeInfo = StringBundler.concat(
+			callerClassName, " - Running the query ", sql);
+
+		return new UpgradeProcess(upgradeInfo) {
 
 			@Override
 			protected void doUpgrade() throws Exception {
@@ -113,20 +137,6 @@ public class UpgradeProcessFactory {
 			}
 
 		};
-	}
-
-	private static String _getUpgradeInfo(String tableName, String message) {
-		Thread thread = Thread.currentThread();
-
-		String callerClassName = thread.getStackTrace()[2].getClassName();
-
-		String tableInfo = StringPool.BLANK;
-
-		if (tableName != null) {
-			tableInfo = "Modifying table " + tableName + " to ";
-		}
-
-		return StringBundler.concat(callerClassName, " - ", tableInfo, message);
 	}
 
 }
