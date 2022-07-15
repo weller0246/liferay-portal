@@ -12,9 +12,8 @@
  * details.
  */
 
-package com.liferay.commerce.inventory.internal.upgrade.v2_0_0;
+package com.liferay.commerce.currency.internal.upgrade.base;
 
-import com.liferay.commerce.inventory.internal.upgrade.v2_0_0.util.CommerceInventoryAuditTable;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
@@ -22,21 +21,10 @@ import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 /**
  * @author Alessio Antonio Rendina
  */
-public class CommerceInventoryAuditUpgradeProcess extends UpgradeProcess {
+public abstract class BaseCommerceCurrencyUpgradeProcess
+	extends UpgradeProcess {
 
-	@Override
-	protected void doUpgrade() throws Exception {
-		_addColumn("CIAudit", "logType", "VARCHAR(75)");
-		_addColumn("CIAudit", "logTypeSettings", "TEXT");
-
-		if (hasColumn(CommerceInventoryAuditTable.TABLE_NAME, "description")) {
-			runSQL("delete from CIAudit");
-
-			alterTableDropColumn("CIAudit", "description");
-		}
-	}
-
-	private void _addColumn(
+	protected void addColumn(
 			String tableName, String columnName, String columnType)
 		throws Exception {
 
@@ -49,7 +37,22 @@ public class CommerceInventoryAuditUpgradeProcess extends UpgradeProcess {
 		alterTableAddColumn(tableName, columnName, columnType);
 	}
 
+	@Override
+	protected abstract void doUpgrade() throws Exception;
+
+	protected void dropColumn(String tableName, String columnName)
+		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Dropping column %s from table %s", columnName, tableName));
+		}
+
+		alterTableDropColumn(tableName, columnName);
+	}
+
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceInventoryAuditUpgradeProcess.class);
+		BaseCommerceCurrencyUpgradeProcess.class);
 
 }

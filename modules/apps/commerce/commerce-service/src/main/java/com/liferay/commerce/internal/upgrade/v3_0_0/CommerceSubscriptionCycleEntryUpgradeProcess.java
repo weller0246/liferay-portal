@@ -14,19 +14,18 @@
 
 package com.liferay.commerce.internal.upgrade.v3_0_0;
 
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceSubscriptionEntryModelImpl;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 /**
  * @author Luca Pellizzon
  */
 public class CommerceSubscriptionCycleEntryUpgradeProcess
-	extends UpgradeProcess {
+	extends BaseCommerceServiceUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn(
-			"CommerceSubscriptionEntry", "currentCycle", "LONG");
+		addColumn("CommerceSubscriptionEntry", "currentCycle", "LONG");
 
 		if (hasColumn(
 				CommerceSubscriptionEntryModelImpl.TABLE_NAME,

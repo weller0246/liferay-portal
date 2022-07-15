@@ -14,14 +14,15 @@
 
 package com.liferay.commerce.internal.upgrade.v1_2_0;
 
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceSubscriptionEntryImpl;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Alessio Antonio Rendina
  */
-public class CommerceSubscriptionUpgradeProcess extends UpgradeProcess {
+public class CommerceSubscriptionUpgradeProcess
+	extends BaseCommerceServiceUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
@@ -33,7 +34,7 @@ public class CommerceSubscriptionUpgradeProcess extends UpgradeProcess {
 			runSQLTemplateString(template, false);
 		}
 
-		alterTableAddColumn("CommerceOrderItem", "subscription", "BOOLEAN");
+		addColumn("CommerceOrderItem", "subscription", "BOOLEAN");
 	}
 
 }

@@ -14,8 +14,10 @@
 
 package com.liferay.commerce.product.internal.upgrade.v1_3_0;
 
+import com.liferay.commerce.product.internal.upgrade.base.BaseCommerceProductServiceUpgradeProcess;
 import com.liferay.commerce.product.model.impl.CPDefinitionLinkModelImpl;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,13 +26,14 @@ import java.sql.Statement;
 /**
  * @author Ethan Bustad
  */
-public class CPDefinitionLinkUpgradeProcess extends UpgradeProcess {
+public class CPDefinitionLinkUpgradeProcess
+	extends BaseCommerceProductServiceUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("CPDefinitionLink", "CProductId", "LONG");
+		addColumn("CPDefinitionLink", "CProductId", "LONG");
 
-		alterColumnName(
+		_renameColumn(
 			"CPDefinitionLink", "CPDefinitionId1", "CPDefinitionId LONG");
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -50,8 +53,7 @@ public class CPDefinitionLinkUpgradeProcess extends UpgradeProcess {
 			}
 		}
 
-		alterTableDropColumn(
-			CPDefinitionLinkModelImpl.TABLE_NAME, "CPDefinitionId2");
+		dropColumn(CPDefinitionLinkModelImpl.TABLE_NAME, "CPDefinitionId2");
 	}
 
 	private long _getCProductId(long cpDefinitionId) throws Exception {
@@ -67,5 +69,22 @@ public class CPDefinitionLinkUpgradeProcess extends UpgradeProcess {
 
 		return 0;
 	}
+
+	private void _renameColumn(
+			String tableName, String oldColumnName, String newColumnName)
+		throws Exception {
+
+		if (_log.isInfoEnabled()) {
+			_log.info(
+				String.format(
+					"Renaming column %s to %s in table %s", oldColumnName,
+					newColumnName, tableName));
+		}
+
+		alterColumnName(tableName, oldColumnName, newColumnName);
+	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		CPDefinitionLinkUpgradeProcess.class);
 
 }

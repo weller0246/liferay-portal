@@ -14,20 +14,20 @@
 
 package com.liferay.commerce.product.internal.upgrade.v1_5_0;
 
+import com.liferay.commerce.product.internal.upgrade.base.BaseCommerceProductServiceUpgradeProcess;
 import com.liferay.commerce.product.model.impl.CPDefinitionImpl;
 import com.liferay.commerce.product.model.impl.CProductImpl;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Alessio Antonio Rendina
  */
 public class CProductExternalReferenceCodeUpgradeProcess
-	extends UpgradeProcess {
+	extends BaseCommerceProductServiceUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("CProduct", "externalReferenceCode", "VARCHAR(75)");
+		addColumn("CProduct", "externalReferenceCode", "VARCHAR(75)");
 
 		if (hasColumn(CProductImpl.TABLE_NAME, "externalReferenceCode")) {
 			Class<CProductExternalReferenceCodeUpgradeProcess> clazz =
@@ -40,8 +40,7 @@ public class CProductExternalReferenceCodeUpgradeProcess
 
 			runSQLTemplateString(template, false);
 
-			alterTableDropColumn(
-				CPDefinitionImpl.TABLE_NAME, "externalReferenceCode");
+			dropColumn(CPDefinitionImpl.TABLE_NAME, "externalReferenceCode");
 		}
 	}
 

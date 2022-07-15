@@ -14,24 +14,25 @@
 
 package com.liferay.commerce.internal.upgrade.v2_0_0;
 
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceOrderImpl;
 import com.liferay.commerce.model.impl.CommerceOrderPaymentImpl;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.StringUtil;
 
 /**
  * @author Luca Pellizzon
  */
-public class CommercePaymentMethodUpgradeProcess extends UpgradeProcess {
+public class CommercePaymentMethodUpgradeProcess
+	extends BaseCommerceServiceUpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("CommerceOrder", "transactionId", "VARCHAR(75)");
+		addColumn("CommerceOrder", "transactionId", "VARCHAR(75)");
 
 		if (hasColumn(
 				CommerceOrderImpl.TABLE_NAME, "commercePaymentMethodId")) {
 
-			alterTableAddColumn(
+			addColumn(
 				"CommerceOrder", "commercePaymentMethodKey", "VARCHAR(75)");
 
 			String template = StringUtil.read(
@@ -47,7 +48,7 @@ public class CommercePaymentMethodUpgradeProcess extends UpgradeProcess {
 				CommerceOrderPaymentImpl.TABLE_NAME,
 				"commercePaymentMethodId")) {
 
-			alterTableAddColumn(
+			addColumn(
 				"CommerceOrderPayment", "commercePaymentMethodKey",
 				"VARCHAR(75)");
 

@@ -16,6 +16,7 @@ package com.liferay.commerce.internal.upgrade.v2_2_0;
 
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.account.service.CommerceAccountLocalService;
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceOrderModelImpl;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
@@ -24,7 +25,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -34,7 +34,8 @@ import java.sql.Statement;
 /**
  * @author Ethan Bustad
  */
-public class CommerceOrderUpgradeProcess extends UpgradeProcess {
+public class CommerceOrderUpgradeProcess
+	extends BaseCommerceServiceUpgradeProcess {
 
 	public CommerceOrderUpgradeProcess(
 		CommerceAccountLocalService commerceAccountLocalService,
@@ -46,13 +47,12 @@ public class CommerceOrderUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("CommerceOrder", "commerceAccountId", "LONG");
+		addColumn("CommerceOrder", "commerceAccountId", "LONG");
 
 		if (hasColumn(CommerceOrderModelImpl.TABLE_NAME, "siteGroupId")) {
 			runSQL("update CommerceOrder set groupId = siteGroupId");
 
-			alterTableDropColumn(
-				CommerceOrderModelImpl.TABLE_NAME, "siteGroupId");
+			dropColumn(CommerceOrderModelImpl.TABLE_NAME, "siteGroupId");
 		}
 
 		if (!hasColumn(
@@ -129,9 +129,8 @@ public class CommerceOrderUpgradeProcess extends UpgradeProcess {
 			preparedStatement2.executeBatch();
 		}
 
-		alterTableDropColumn(
-			CommerceOrderModelImpl.TABLE_NAME, "orderOrganizationId");
-		alterTableDropColumn(CommerceOrderModelImpl.TABLE_NAME, "orderUserId");
+		dropColumn(CommerceOrderModelImpl.TABLE_NAME, "orderOrganizationId");
+		dropColumn(CommerceOrderModelImpl.TABLE_NAME, "orderUserId");
 	}
 
 	private long _getCommerceAccountId(long organizationId)

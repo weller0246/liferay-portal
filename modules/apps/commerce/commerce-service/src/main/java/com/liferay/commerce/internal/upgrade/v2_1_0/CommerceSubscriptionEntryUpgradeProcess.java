@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.internal.upgrade.v2_1_0;
 
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceSubscriptionEntryModelImpl;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
@@ -22,7 +23,6 @@ import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 
 import java.sql.DatabaseMetaData;
@@ -36,7 +36,8 @@ import java.util.Objects;
 /**
  * @author Ethan Bustad
  */
-public class CommerceSubscriptionEntryUpgradeProcess extends UpgradeProcess {
+public class CommerceSubscriptionEntryUpgradeProcess
+	extends BaseCommerceServiceUpgradeProcess {
 
 	public CommerceSubscriptionEntryUpgradeProcess(
 		CPDefinitionLocalService cpDefinitionLocalService,
@@ -48,9 +49,8 @@ public class CommerceSubscriptionEntryUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn(
-			"CommerceSubscriptionEntry", "CPInstanceUUID", "VARCHAR(75)");
-		alterTableAddColumn("CommerceSubscriptionEntry", "CProductId", "LONG");
+		addColumn("CommerceSubscriptionEntry", "CPInstanceUUID", "VARCHAR(75)");
+		addColumn("CommerceSubscriptionEntry", "CProductId", "LONG");
 
 		_addIndexes(CommerceSubscriptionEntryModelImpl.TABLE_NAME);
 

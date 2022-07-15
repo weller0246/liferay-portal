@@ -16,11 +16,11 @@ package com.liferay.commerce.internal.upgrade.v4_1_0;
 
 import com.liferay.commerce.account.model.CommerceAccount;
 import com.liferay.commerce.constants.CommerceAddressConstants;
+import com.liferay.commerce.internal.upgrade.base.BaseCommerceServiceUpgradeProcess;
 import com.liferay.commerce.model.impl.CommerceAddressModelImpl;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.service.ClassNameLocalService;
 import com.liferay.portal.kernel.upgrade.UpgradeException;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,7 +28,8 @@ import java.sql.ResultSet;
 /**
  * @author Alec Sloan
  */
-public class CommerceAddressUpgradeProcess extends UpgradeProcess {
+public class CommerceAddressUpgradeProcess
+	extends BaseCommerceServiceUpgradeProcess {
 
 	public CommerceAddressUpgradeProcess(
 		ClassNameLocalService classNameLocalService) {
@@ -47,7 +48,7 @@ public class CommerceAddressUpgradeProcess extends UpgradeProcess {
 						"'defaultShippingAddressId'");
 		}
 
-		alterTableAddColumn("CommerceAddress", "type_", "INTEGER");
+		addColumn("CommerceAddress", "type_", "INTEGER");
 
 		PreparedStatement preparedStatement = null;
 

@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.price.list.internal.upgrade.v1_1_0;
 
+import com.liferay.commerce.price.list.internal.upgrade.base.BaseCommercePriceListUpgradeProcess;
 import com.liferay.commerce.price.list.model.impl.CommercePriceEntryModelImpl;
 import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPInstance;
@@ -22,7 +23,6 @@ import com.liferay.commerce.product.service.CPInstanceLocalService;
 import com.liferay.portal.kernel.dao.db.IndexMetadata;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.ObjectValuePair;
 
 import java.sql.DatabaseMetaData;
@@ -37,7 +37,8 @@ import java.util.Objects;
  * @author Alec Sloan
  * @author Alessio Antonio Rendina
  */
-public class CommercePriceEntryUpgradeProcess extends UpgradeProcess {
+public class CommercePriceEntryUpgradeProcess
+	extends BaseCommercePriceListUpgradeProcess {
 
 	public CommercePriceEntryUpgradeProcess(
 		CPDefinitionLocalService cpDefinitionLocalService,
@@ -49,9 +50,8 @@ public class CommercePriceEntryUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn(
-			"CommercePriceEntry", "CPInstanceUuid", "VARCHAR(75)");
-		alterTableAddColumn("CommercePriceEntry", "CProductId", "LONG");
+		addColumn("CommercePriceEntry", "CPInstanceUuid", "VARCHAR(75)");
+		addColumn("CommercePriceEntry", "CProductId", "LONG");
 
 		_addIndexes(CommercePriceEntryModelImpl.TABLE_NAME);
 
@@ -80,6 +80,8 @@ public class CommercePriceEntryUpgradeProcess extends UpgradeProcess {
 				preparedStatement.execute();
 			}
 		}
+
+		runSQL("drop index IX_2083879C on CommercePriceEntry");
 
 		alterTableDropColumn("CommercePriceEntry", "CPInstanceId");
 	}
