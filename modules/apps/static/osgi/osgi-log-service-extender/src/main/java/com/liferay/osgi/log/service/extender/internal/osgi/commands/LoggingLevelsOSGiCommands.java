@@ -66,7 +66,7 @@ public class LoggingLevelsOSGiCommands {
 				name, StringPool.EQUAL, logLevel.name());
 		}
 		catch (IllegalArgumentException illegalArgumentException) {
-			return "no such log level: ".concat(level);
+			return "Invalid log level: " + level;
 		}
 	}
 
