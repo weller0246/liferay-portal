@@ -39,6 +39,7 @@ import com.liferay.journal.internal.upgrade.v0_0_5.UpgradeLastPublishDate;
 import com.liferay.journal.internal.upgrade.v0_0_5.UpgradePortletSettings;
 import com.liferay.journal.internal.upgrade.v0_0_6.ImageTypeContentAttributesUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v0_0_7.JournalArticleDatesUpgradeProcess;
+import com.liferay.journal.internal.upgrade.v0_0_7.JournalArticleTreePathUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v0_0_8.ArticleAssetsUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v0_0_8.ArticleExpirationDateUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v0_0_8.ArticleSystemEventsUpgradeProcess;
@@ -60,6 +61,8 @@ import com.liferay.journal.internal.upgrade.v3_5_0.JournalArticleContentUpgradeP
 import com.liferay.journal.internal.upgrade.v3_5_1.JournalArticleDataFileEntryIdUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v4_0_0.JournalArticleDDMFieldsUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v4_1_0.JournalArticleExternalReferenceCodeUpgradeProcess;
+import com.liferay.journal.internal.upgrade.v4_2_0.JournalFeedUpgradeProcess;
+import com.liferay.journal.internal.upgrade.v4_3_0.JournalFolderExternalReferenceCodeUpgradeProcess;
 import com.liferay.journal.internal.upgrade.v4_3_1.BasicWebContentAssetEntryClassTypeIdUpgradeProcess;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.util.JournalConverter;
@@ -90,7 +93,6 @@ import com.liferay.portal.kernel.upgrade.BaseSQLServerDatetimeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.UpgradeStep;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
@@ -169,9 +171,7 @@ public class JournalServiceUpgradeStepRegistrator
 
 		registry.register(
 			"0.0.7", "0.0.8", new JournalArticleDatesUpgradeProcess(),
-			UpgradeProcessFactory.runSQL(
-				"update JournalArticle set treePath = '/' where folderId=0 " +
-					"and treePath='/0/'"));
+			new JournalArticleTreePathUpgradeProcess());
 
 		registry.register(
 			"0.0.8", "1.0.0",
@@ -210,8 +210,8 @@ public class JournalServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.1.3", "1.1.4",
-			UpgradeProcessFactory.alterColumnTypes(
-				"JournalArticle", "VARCHAR(255) null", "urlTitle"));
+			new com.liferay.journal.internal.upgrade.v1_1_4.
+				JournalArticleUpgradeProcess());
 
 		registry.register(
 			"1.1.4", "1.1.5",
@@ -312,21 +312,11 @@ public class JournalServiceUpgradeStepRegistrator
 			"4.0.0", "4.1.0",
 			new JournalArticleExternalReferenceCodeUpgradeProcess());
 
-		registry.register(
-			"4.1.0", "4.2.0",
-			UpgradeProcessFactory.alterColumnTypes(
-				"JournalFeed", "VARCHAR(75) null", "DDMRendererTemplateKey",
-				"DDMStructureKey", "DDMTemplateKey"));
+		registry.register("4.1.0", "4.2.0", new JournalFeedUpgradeProcess());
 
 		registry.register(
 			"4.2.0", "4.3.0",
-			UpgradeProcessFactory.addColumns(
-				com.liferay.journal.model.JournalFolderTable.INSTANCE.getName(),
-				"externalReferenceCode VARCHAR(75)"),
-			UpgradeProcessFactory.runSQL(
-				"update JournalFolder set externalReferenceCode = " +
-					"CAST_TEXT(folderId) where externalReferenceCode is null " +
-						"or externalReferenceCode = ''"));
+			new JournalFolderExternalReferenceCodeUpgradeProcess());
 
 		registry.register(
 			"4.3.0", "4.3.1",

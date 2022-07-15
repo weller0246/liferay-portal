@@ -14,7 +14,6 @@
 
 package com.liferay.depot.internal.upgrade.registry;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -30,8 +29,8 @@ public class DepotServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.addColumns(
-				"DepotEntryGroupRel", "ddmStructuresAvailable BOOLEAN"));
+			new com.liferay.depot.internal.upgrade.v1_1_0.
+				DepotEntryGroupRelUpgradeProcess());
 
 		registry.register(
 			"1.1.0", "1.2.0",
@@ -40,9 +39,8 @@ public class DepotServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.2.0", "2.0.0",
-			UpgradeProcessFactory.addColumns(
-				"DepotEntryGroupRel", "userId LONG",
-				"userName VARCHAR(75) null", "lastPublishDate DATE null"));
+			new com.liferay.depot.internal.upgrade.v2_0_0.
+				DepotEntryGroupRelUpgradeProcess());
 	}
 
 }

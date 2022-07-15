@@ -14,7 +14,6 @@
 
 package com.liferay.commerce.qualifier.internal.upgrade.registry;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -32,10 +31,8 @@ public class CommerceQualifierEntryServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.addColumns(
-				"CommerceQualifierEntry",
-				"sourceCQualifierMetadataKey VARCHAR(75)",
-				"targetCQualifierMetadataKey VARCHAR(75)"));
+			new com.liferay.commerce.qualifier.internal.upgrade.v1_1_0.
+				CommerceQualifierEntryUpgradeProcess());
 	}
 
 }

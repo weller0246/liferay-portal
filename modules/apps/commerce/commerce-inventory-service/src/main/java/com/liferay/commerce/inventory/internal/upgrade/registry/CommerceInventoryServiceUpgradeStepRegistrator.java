@@ -14,6 +14,7 @@
 
 package com.liferay.commerce.inventory.internal.upgrade.registry;
 
+import com.liferay.commerce.inventory.internal.upgrade.v1_1_0.CommerceInventoryWarehouseItemUpgradeProcess;
 import com.liferay.commerce.inventory.internal.upgrade.v2_0_0.CommerceInventoryAuditUpgradeProcess;
 import com.liferay.commerce.inventory.internal.upgrade.v2_1_0.MVCCUpgradeProcess;
 import com.liferay.portal.kernel.log.Log;
@@ -22,7 +23,6 @@ import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess
 import com.liferay.portal.kernel.upgrade.BaseUuidUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -45,8 +45,7 @@ public class CommerceInventoryServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.addColumns(
-				"CIWarehouseItem", "externalReferenceCode VARCHAR(75)"));
+			new CommerceInventoryWarehouseItemUpgradeProcess());
 
 		registry.register("1.1.0", "1.2.0", new DummyUpgradeProcess());
 

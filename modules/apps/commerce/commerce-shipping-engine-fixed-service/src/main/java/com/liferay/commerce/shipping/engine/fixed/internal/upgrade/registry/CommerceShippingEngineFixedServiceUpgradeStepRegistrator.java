@@ -14,14 +14,13 @@
 
 package com.liferay.commerce.shipping.engine.fixed.internal.upgrade.registry;
 
+import com.liferay.commerce.shipping.engine.fixed.internal.upgrade.v1_1_0.CommerceShippingFixedOptionRelUpgradeProcess;
 import com.liferay.commerce.shipping.engine.fixed.internal.upgrade.v2_2_0.util.CommerceShippingFixedOptionQualifierTable;
+import com.liferay.commerce.shipping.engine.fixed.internal.upgrade.v2_3_0.CommerceShippingFixedOptionUpgradeProcess;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
-import com.liferay.portal.kernel.util.StringBundler;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -45,18 +44,12 @@ public class CommerceShippingEngineFixedServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.alterColumnName(
-				"CShippingFixedOptionRel", "commerceWarehouseId",
-				"commerceInventoryWarehouseId LONG"));
+			new CommerceShippingFixedOptionRelUpgradeProcess());
 
 		registry.register(
 			"1.1.0", "2.0.0",
-			UpgradeProcessFactory.alterColumnName(
-				"CShippingFixedOptionRel", "commerceCountryId",
-				"countryId LONG"),
-			UpgradeProcessFactory.alterColumnName(
-				"CShippingFixedOptionRel", "commerceRegionId",
-				"regionId LONG"));
+			new com.liferay.commerce.shipping.engine.fixed.internal.upgrade.
+				v2_0_0.CommerceShippingFixedOptionRelUpgradeProcess());
 
 		registry.register(
 			"2.0.0", "2.1.0",
@@ -76,14 +69,7 @@ public class CommerceShippingEngineFixedServiceUpgradeStepRegistrator
 			CommerceShippingFixedOptionQualifierTable.create());
 
 		registry.register(
-			"2.2.0", "2.3.0",
-			UpgradeProcessFactory.addColumns(
-				"CommerceShippingFixedOption", "key_ VARCHAR(75)"),
-			UpgradeProcessFactory.runSQL(
-				StringBundler.concat(
-					"update CommerceShippingFixedOption set key_ = CONCAT('",
-					StringUtil.randomString(3),
-					"', CAST_TEXT(commerceShippingFixedOptionId))")));
+			"2.2.0", "2.3.0", new CommerceShippingFixedOptionUpgradeProcess());
 
 		registry.register("2.3.0", "2.4.0", new DummyUpgradeStep());
 

@@ -14,7 +14,6 @@
 
 package com.liferay.knowledge.base.internal.upgrade.registry;
 
-import com.liferay.knowledge.base.constants.KBCommentConstants;
 import com.liferay.knowledge.base.internal.upgrade.v2_0_2.KBArticleUpgradeProcess;
 import com.liferay.knowledge.base.internal.upgrade.v3_0_0.util.KBArticleTable;
 import com.liferay.knowledge.base.internal.upgrade.v3_0_0.util.KBCommentTable;
@@ -28,7 +27,6 @@ import com.liferay.portal.kernel.upgrade.BaseExternalReferenceCodeUpgradeProcess
 import com.liferay.portal.kernel.upgrade.BaseSQLServerDatetimeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.kernel.upgrade.ViewCountUpgradeProcess;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
@@ -74,11 +72,12 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.1.0", "1.2.0",
-			UpgradeProcessFactory.dropColumns("KBArticle", "kbTemplateId"),
+			new com.liferay.knowledge.base.internal.upgrade.v1_2_0.
+				KBArticleUpgradeProcess(),
 			new com.liferay.knowledge.base.internal.upgrade.v1_2_0.
 				KBStructureUpgradeProcess(),
-			UpgradeProcessFactory.dropColumns(
-				"KBTemplate", "engineType", "cacheable"));
+			new com.liferay.knowledge.base.internal.upgrade.v1_2_0.
+				KBTemplateUpgradeProcess());
 
 		registry.register(
 			"1.2.0", "1.3.0",
@@ -107,8 +106,8 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 
 		registry.register(
 			"1.3.3", "1.3.4",
-			UpgradeProcessFactory.addColumns(
-				"KBArticle", "sourceURL STRING null"),
+			new com.liferay.knowledge.base.internal.upgrade.v1_3_4.
+				KBArticleUpgradeProcess(),
 			new com.liferay.knowledge.base.internal.upgrade.v1_3_4.
 				KBCommentUpgradeProcess(),
 			new com.liferay.knowledge.base.internal.upgrade.v1_3_4.
@@ -125,11 +124,8 @@ public class KnowledgeBaseServiceUpgradeStepRegistrator
 			"1.3.5", "2.0.0",
 			new com.liferay.knowledge.base.internal.upgrade.v2_0_0.
 				UpgradeClassNames(),
-			UpgradeProcessFactory.addColumns("KBComment", "status INT null"),
-			UpgradeProcessFactory.runSQL(
-				"update KBComment set status = " +
-					KBCommentConstants.STATUS_COMPLETED +
-						" where status is NULL"),
+			new com.liferay.knowledge.base.internal.upgrade.v2_0_0.
+				KBCommentUpgradeProcess(),
 			new com.liferay.knowledge.base.internal.upgrade.v2_0_0.
 				UpgradeRepository());
 

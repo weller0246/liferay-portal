@@ -14,8 +14,8 @@
 
 package com.liferay.dispatch.internal.upgrade.registry;
 
+import com.liferay.dispatch.internal.upgrade.v2_0_0.DispatchTriggerUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.BaseUuidUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -30,60 +30,42 @@ public class DispatchServiceUpgradeStepRegistrator
 	@Override
 	public void register(Registry registry) {
 		registry.register(
-			"1.0.0", "2.0.0",
-			UpgradeProcessFactory.addColumns(
-				"DispatchTrigger", "endDate DATE null", "startDate DATE null"),
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "typeSettings", "taskSettings TEXT null"),
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "type_", "taskType VARCHAR(75) null"));
+			"1.0.0", "2.0.0", new DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"2.0.0", "2.1.0",
-			UpgradeProcessFactory.addColumns(
-				"DispatchTrigger", "overlapAllowed BOOLEAN"));
+			new com.liferay.dispatch.internal.upgrade.v2_1_0.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"2.1.0", "3.0.0",
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "taskType",
-				"taskExecutorType VARCHAR(75) null"));
+			new com.liferay.dispatch.internal.upgrade.v3_0_0.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"3.0.0", "3.1.0",
-			UpgradeProcessFactory.addColumns(
-				"DispatchTrigger", "taskClusterMode INTEGER"));
+			new com.liferay.dispatch.internal.upgrade.v3_1_0.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"3.1.0", "3.1.1",
-			UpgradeProcessFactory.runSQL(
-				"delete from ResourceAction where name = '90' and actionId = " +
-					"'ADD_DISPATCH_TRIGGER'"));
+			new com.liferay.dispatch.internal.upgrade.v3_1_1.
+				DispatchTriggerModelResourcePermissionUpgradeProcess());
 
 		registry.register(
 			"3.1.1", "4.0.0",
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "taskClusterMode",
-				"dispatchTaskClusterMode INTEGER null"),
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "taskExecutorType",
-				"dispatchTaskExecutorType VARCHAR(75) null"),
-			UpgradeProcessFactory.alterColumnName(
-				"DispatchTrigger", "taskSettings",
-				"dispatchTaskSettings TEXT null"));
+			new com.liferay.dispatch.internal.upgrade.v4_0_0.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"4.0.0", "4.0.1",
-			UpgradeProcessFactory.alterColumnTypes(
-				"DispatchTrigger", "VARCHAR(75) null",
-				"dispatchTaskExecutorType"),
-			UpgradeProcessFactory.alterColumnTypes(
-				"DispatchTrigger", "TEXT null", "dispatchTaskSettings"));
+			new com.liferay.dispatch.internal.upgrade.v4_0_1.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"4.0.1", "4.1.0",
-			UpgradeProcessFactory.addColumns(
-				"DispatchTrigger", "externalReferenceCode VARCHAR(75) null"));
+			new com.liferay.dispatch.internal.upgrade.v4_1_0.
+				DispatchTriggerUpgradeProcess());
 
 		registry.register(
 			"4.1.0", "4.2.0",

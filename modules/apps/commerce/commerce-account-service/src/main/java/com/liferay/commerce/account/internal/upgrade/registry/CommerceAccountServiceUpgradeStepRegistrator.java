@@ -24,6 +24,9 @@ import com.liferay.commerce.account.internal.upgrade.v1_1_0.CommerceAccountUpgra
 import com.liferay.commerce.account.internal.upgrade.v1_2_0.util.CommerceAccountGroupCommerceAccountRelTable;
 import com.liferay.commerce.account.internal.upgrade.v1_2_0.util.CommerceAccountGroupRelTable;
 import com.liferay.commerce.account.internal.upgrade.v1_2_0.util.CommerceAccountGroupTable;
+import com.liferay.commerce.account.internal.upgrade.v1_3_0.CommerceAccountNameUpgradeProcess;
+import com.liferay.commerce.account.internal.upgrade.v1_4_0.CommerceAccountDefaultAddressesUpgradeProcess;
+import com.liferay.commerce.account.internal.upgrade.v2_0_0.CommerceAccountGroupSystemUpgradeProcess;
 import com.liferay.commerce.account.internal.upgrade.v4_0_0.CommerceAccountOrganizationRelUpgradeProcess;
 import com.liferay.commerce.account.internal.upgrade.v5_0_0.CommerceAccountUserRelUpgradeProcess;
 import com.liferay.commerce.account.internal.upgrade.v9_3_0.CommerceAccountRoleUpgradeProcess;
@@ -43,7 +46,6 @@ import com.liferay.portal.kernel.service.RoleLocalService;
 import com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalService;
 import com.liferay.portal.kernel.service.WorkflowInstanceLinkLocalService;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -74,22 +76,16 @@ public class CommerceAccountServiceUpgradeStepRegistrator
 			CommerceAccountGroupTable.create());
 
 		registry.register(
-			"1.2.0", "1.3.0",
-			UpgradeProcessFactory.alterColumnTypes(
-				"CommerceAccount", "VARCHAR(255) null", "name"));
+			"1.2.0", "1.3.0", new CommerceAccountNameUpgradeProcess());
 
 		registry.register(
 			"1.3.0", "1.4.0",
-			UpgradeProcessFactory.addColumns(
-				"CommerceAccount", "defaultBillingAddressId LONG",
-				"defaultShippingAddressId LONG"));
+			new CommerceAccountDefaultAddressesUpgradeProcess());
 
 		registry.register("1.4.0", "1.5.0", new DummyUpgradeProcess());
 
 		registry.register(
-			"1.5.0", "2.0.0",
-			UpgradeProcessFactory.alterColumnName(
-				"CommerceAccountGroup", "system", "system_ BOOLEAN"));
+			"1.5.0", "2.0.0", new CommerceAccountGroupSystemUpgradeProcess());
 
 		registry.register(
 			"2.0.0", "3.0.0",
@@ -125,10 +121,8 @@ public class CommerceAccountServiceUpgradeStepRegistrator
 
 		registry.register(
 			"7.0.0", "8.0.0",
-			UpgradeProcessFactory.runSQL("drop table CommerceAccount"),
-			UpgradeProcessFactory.runSQL(
-				"drop table CommerceAccountOrganizationRel"),
-			UpgradeProcessFactory.runSQL("drop table CommerceAccountUserRel"));
+			new com.liferay.commerce.account.internal.upgrade.v8_0_0.
+				CommerceAccountUpgradeProcess());
 
 		registry.register(
 			"8.0.0", "9.0.0",

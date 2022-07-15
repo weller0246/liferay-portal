@@ -27,6 +27,7 @@ import com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_0.UpgradeCompanyId
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_0.UpgradeKernelPackage;
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_0.UpgradeLastPublishDate;
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_1.ResourcePermissionUpgradeProcess;
+import com.liferay.dynamic.data.mapping.internal.upgrade.v1_0_2.DDMTemplateSmallImageURLUpgradeProcess;
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_1_0.CheckboxFieldToCheckboxMultipleFieldUpgradeProcess;
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_1_1.DDMFormFieldSettingsUpgradeProcess;
 import com.liferay.dynamic.data.mapping.internal.upgrade.v1_1_1.DDMStructureIndexTypeUpgradeProcess;
@@ -78,7 +79,6 @@ import com.liferay.portal.kernel.upgrade.BaseSQLServerDatetimeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.CTModelUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeStep;
 import com.liferay.portal.kernel.upgrade.MVCCVersionUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 import com.liferay.view.count.service.ViewCountEntryLocalService;
@@ -143,9 +143,7 @@ public class DDMServiceUpgradeStepRegistrator
 			new ResourcePermissionUpgradeProcess(_resourceActions));
 
 		registry.register(
-			"1.0.1", "1.0.2",
-			UpgradeProcessFactory.alterColumnTypes(
-				"DDMTemplate", "STRING null", "smallImageURL"));
+			"1.0.1", "1.0.2", new DDMTemplateSmallImageURLUpgradeProcess());
 
 		registry.register(
 			"1.0.2", "1.0.3",
@@ -356,10 +354,8 @@ public class DDMServiceUpgradeStepRegistrator
 
 		registry.register(
 			"3.7.1", "3.7.2",
-			UpgradeProcessFactory.alterColumnTypes(
-				"DDMFormInstance", "TEXT null", "description"),
-			UpgradeProcessFactory.alterColumnTypes(
-				"DDMFormInstanceVersion", "TEXT null", "description"));
+			new com.liferay.dynamic.data.mapping.internal.upgrade.v3_7_2.
+				SchemaUpgradeProcess());
 
 		registry.register(
 			"3.7.2", "3.7.3",
@@ -369,10 +365,8 @@ public class DDMServiceUpgradeStepRegistrator
 
 		registry.register(
 			"3.7.3", "3.7.4",
-			UpgradeProcessFactory.runSQL(
-				"update DDMTemplate set templateKey = " +
-					"CONCAT(CAST_TEXT(templateId), '_key') where templateKey " +
-						"is null or templateKey = ''"));
+			new com.liferay.dynamic.data.mapping.internal.upgrade.v3_7_4.
+				DDMTemplateUpgradeProcess());
 
 		registry.register(
 			"3.7.4", "3.8.0",
@@ -432,8 +426,8 @@ public class DDMServiceUpgradeStepRegistrator
 
 		registry.register(
 			"4.1.0", "4.2.0",
-			UpgradeProcessFactory.addColumns(
-				"DDMFormInstanceRecord", "ipAddress VARCHAR(75) null"));
+			new com.liferay.dynamic.data.mapping.internal.upgrade.v4_2_0.
+				DDMFormInstanceRecordUpgradeProcess());
 
 		registry.register(
 			"4.2.0", "4.3.0",
@@ -491,8 +485,8 @@ public class DDMServiceUpgradeStepRegistrator
 
 		registry.register(
 			"5.1.2", "5.1.3",
-			UpgradeProcessFactory.alterColumnTypes(
-				"DDMField", "TEXT null", "fieldName"));
+			new com.liferay.dynamic.data.mapping.internal.upgrade.v5_1_3.
+				FieldNameUpgradeProcess());
 
 		registry.register(
 			"5.1.3", "5.1.4",

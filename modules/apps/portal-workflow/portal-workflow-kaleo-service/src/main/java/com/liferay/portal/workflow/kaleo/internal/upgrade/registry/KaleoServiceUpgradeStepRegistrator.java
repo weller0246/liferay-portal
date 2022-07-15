@@ -16,11 +16,11 @@ package com.liferay.portal.workflow.kaleo.internal.upgrade.registry;
 
 import com.liferay.portal.kernel.upgrade.BaseSQLServerDatetimeUpgradeProcess;
 import com.liferay.portal.kernel.upgrade.DummyUpgradeProcess;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_0_0.KaleoTaskInstanceTokenUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_1_0.WorkflowContextUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_2_0.UpgradePortletId;
+import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_2_1.KaleoLogUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_2_1.KaleoNotificationRecipientUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_3_0.KaleoActionUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v1_3_0.KaleoDefinitionUpgradeProcess;
@@ -50,6 +50,8 @@ import com.liferay.portal.workflow.kaleo.internal.upgrade.v2_0_0.util.KaleoTrans
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v2_0_1.UpgradeMessageBoardsClassName;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v3_1_1.KaleoNotificationUpgradeProcess;
 import com.liferay.portal.workflow.kaleo.internal.upgrade.v3_2_0.KaleoInstanceUpgradeProcess;
+import com.liferay.portal.workflow.kaleo.internal.upgrade.v3_3_0.KaleoNodeUpgradeProcess;
+import com.liferay.portal.workflow.kaleo.internal.upgrade.v3_4_0.KaleoTransitionUpgradeProcess;
 
 import org.osgi.service.component.annotations.Component;
 
@@ -82,9 +84,7 @@ public class KaleoServiceUpgradeStepRegistrator
 			new UpgradePortletId());
 
 		registry.register(
-			"1.2.0", "1.2.1",
-			UpgradeProcessFactory.alterColumnTypes(
-				"KaleoLog", "TEXT null", "comment_"),
+			"1.2.0", "1.2.1", new KaleoLogUpgradeProcess(),
 			new KaleoNotificationRecipientUpgradeProcess());
 
 		registry.register(
@@ -151,14 +151,10 @@ public class KaleoServiceUpgradeStepRegistrator
 
 		registry.register("3.1.1", "3.2.0", new KaleoInstanceUpgradeProcess());
 
-		registry.register(
-			"3.2.0", "3.3.0",
-			UpgradeProcessFactory.addColumns("KaleoNode", "label STRING null"));
+		registry.register("3.2.0", "3.3.0", new KaleoNodeUpgradeProcess());
 
 		registry.register(
-			"3.3.0", "3.4.0",
-			UpgradeProcessFactory.addColumns(
-				"KaleoTransition", "label STRING null"));
+			"3.3.0", "3.4.0", new KaleoTransitionUpgradeProcess());
 	}
 
 }

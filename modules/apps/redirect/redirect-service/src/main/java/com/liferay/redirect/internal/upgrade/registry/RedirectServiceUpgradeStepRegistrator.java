@@ -15,7 +15,6 @@
 package com.liferay.redirect.internal.upgrade.registry;
 
 import com.liferay.portal.configuration.upgrade.PrefsPropsToConfigurationUpgradeHelper;
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -32,9 +31,8 @@ public class RedirectServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "2.0.0",
-			UpgradeProcessFactory.addColumns(
-				"RedirectNotFoundEntry", "userId LONG",
-				"userName VARCHAR(75) null", "ignored BOOLEAN"));
+			new com.liferay.redirect.internal.upgrade.v2_0_0.
+				RedirectNotFoundEntryUpgradeProcess());
 
 		registry.register(
 			"2.0.0", "2.0.1",
@@ -43,7 +41,8 @@ public class RedirectServiceUpgradeStepRegistrator
 
 		registry.register(
 			"2.0.1", "3.0.0",
-			UpgradeProcessFactory.dropColumns("RedirectNotFoundEntry", "hits"));
+			new com.liferay.redirect.internal.upgrade.v3_0_0.
+				RedirectNotFoundEntryUpgradeProcess());
 
 		registry.register(
 			"3.0.0", "3.0.1",
