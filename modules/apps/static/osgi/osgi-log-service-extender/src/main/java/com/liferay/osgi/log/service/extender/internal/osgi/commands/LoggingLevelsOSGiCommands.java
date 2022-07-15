@@ -73,13 +73,11 @@ public class LoggingLevelsOSGiCommands {
 	public String[] levels(String context) {
 		LoggerContext loggerContext = _loggerAdmin.getLoggerContext(context);
 
-		Map<String, LogLevel> logLevels = loggerContext.getLogLevels();
-
 		List<String> categories = new ArrayList<>();
 
-		Set<Map.Entry<String, LogLevel>> entrySet = logLevels.entrySet();
+		Map<String, LogLevel> logLevels = loggerContext.getLogLevels();
 
-		for (Map.Entry<String, LogLevel> entry : entrySet) {
+		for (Map.Entry<String, LogLevel> entry : logLevels.entrySet()) {
 			LogLevel logLevel = entry.getValue();
 
 			categories.add(
