@@ -62,8 +62,8 @@ public abstract class UpgradeProcess
 	public UpgradeProcess() {
 	}
 
-	public UpgradeProcess(String upgradeInfo) {
-		_upgradeInfo = upgradeInfo;
+	public UpgradeProcess(String callerInfo) {
+		_callerInfo = callerInfo;
 	}
 
 	public void clearIndexesCache() {
@@ -84,10 +84,6 @@ public abstract class UpgradeProcess
 
 		String message = "Completed upgrade process ";
 
-		String info =
-			(_upgradeInfo == null) ? ClassUtil.getClassName(this) :
-				_upgradeInfo;
-
 		try (Connection connection = getConnection()) {
 			this.connection = connection;
 
@@ -98,7 +94,13 @@ public abstract class UpgradeProcess
 			process(
 				companyId -> {
 					if (_log.isInfoEnabled()) {
-						_log.info("Upgrading " + info);
+						String clazzName = ClassUtil.getClassName(this);
+
+						String info = StringBundler.concat(
+							"Upgrading ", clazzName,
+							(_callerInfo == null) ? "" : " - " + _callerInfo);
+
+						_log.info(info);
 					}
 
 					doUpgrade();
@@ -115,8 +117,9 @@ public abstract class UpgradeProcess
 			if (_log.isInfoEnabled()) {
 				_log.info(
 					StringBundler.concat(
-						message, info, " in ",
-						System.currentTimeMillis() - start, " ms"));
+						message, ClassUtil.getClassName(this),
+						(_callerInfo == null) ? "" : " - " + _callerInfo,
+						" in ", System.currentTimeMillis() - start, " ms"));
 			}
 		}
 	}
@@ -386,6 +389,6 @@ public abstract class UpgradeProcess
 		<String, List<ObjectValuePair<String, IndexMetadata>>>
 			_portalIndexesSQL = new HashMap<>();
 
-	private String _upgradeInfo;
+	private String _callerInfo;
 
 }
