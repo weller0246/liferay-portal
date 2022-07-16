@@ -310,7 +310,7 @@
 	<bean class="com.liferay.portal.util.HtmlImpl" id="com.liferay.portal.util.HtmlImpl" />
 	<bean class="com.liferay.portal.util.PortalImpl" id="com.liferay.portal.util.Portal" />
 	<bean class="com.liferay.portal.verify.model.AddressVerifiableModel" />
-	<bean class="com.liferay.portal.verify.model.AssetTagVerifiableModel" />
+	<bean class="com.liferay.portal.verify.model.AssetTagVerifiableUUIDModel" />
 	<bean class="com.liferay.portal.verify.model.DLFileVersionVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.EmailAddressVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.GroupVerifiableModel" />

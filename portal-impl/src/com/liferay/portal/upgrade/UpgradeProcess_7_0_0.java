@@ -58,7 +58,7 @@ import com.liferay.portal.upgrade.v7_0_0.UpgradeUser;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeWebsite;
 import com.liferay.portal.upgrade.v7_0_0.UpgradeWorkflow;
 import com.liferay.portal.verify.VerifyUUID;
-import com.liferay.portal.verify.model.AssetTagVerifiableModel;
+import com.liferay.portal.verify.model.AssetTagVerifiableUUIDModel;
 import com.liferay.portal.verify.model.RatingsEntryVerifiableModel;
 import com.liferay.portal.verify.model.TeamVerifiableModel;
 
@@ -129,7 +129,7 @@ public class UpgradeProcess_7_0_0 extends UpgradeProcess {
 	protected void populateUUIDModels() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			VerifyUUID.verify(
-				new AssetTagVerifiableModel(),
+				new AssetTagVerifiableUUIDModel(),
 				new RatingsEntryVerifiableModel(), new TeamVerifiableModel());
 		}
 	}

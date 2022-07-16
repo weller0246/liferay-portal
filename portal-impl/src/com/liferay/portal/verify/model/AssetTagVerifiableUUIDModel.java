@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.verify.model.VerifiableUUIDModel;
 /**
  * @author Brian Wing Shun Chan
  */
-public class AssetTagVerifiableModel implements VerifiableUUIDModel {
+public class AssetTagVerifiableUUIDModel implements VerifiableUUIDModel {
 
 	@Override
 	public String getPrimaryKeyColumnName() {
