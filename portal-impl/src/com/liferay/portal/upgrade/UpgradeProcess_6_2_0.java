@@ -277,7 +277,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class WebSiteVerifiableModel implements VerifiableUUIDModel {
+	public class WebsiteVerifiableModel implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -348,7 +348,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 				new OrganizationVerifiableAuditedModel(),
 				new PasswordPolicyVerifiableModel(), new PhoneVerifiableModel(),
 				new RoleVerifiableModel(), new UserGroupVerifiableModel(),
-				new WebSiteVerifiableModel());
+				new WebsiteVerifiableModel());
 		}
 	}
 
