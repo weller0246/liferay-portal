@@ -76,6 +76,9 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 	@Override
 	@Test
 	public void testGetObjectDefinitionObjectFieldsPage() throws Exception {
+
+		// TODO Fix REST builder
+
 		Long objectDefinitionId =
 			testGetObjectDefinitionObjectFieldsPage_getObjectDefinitionId();
 		Long irrelevantObjectDefinitionId =
@@ -131,6 +134,8 @@ public class ObjectFieldResourceTest extends BaseObjectFieldResourceTestCase {
 	@Test
 	public void testGetObjectDefinitionObjectFieldsPageWithPagination()
 		throws Exception {
+
+		// TODO Fix REST builder
 
 		Long objectDefinitionId =
 			testGetObjectDefinitionObjectFieldsPage_getObjectDefinitionId();
