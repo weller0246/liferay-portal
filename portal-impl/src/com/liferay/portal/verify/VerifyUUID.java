@@ -50,14 +50,6 @@ public class VerifyUUID extends VerifyProcess {
 		if (!ArrayUtil.isEmpty(_verifiableUUIDModels)) {
 			doVerify(_verifiableUUIDModels);
 		}
-
-		Map<String, VerifiableUUIDModel> verifiableUUIDModelsMap =
-			PortalBeanLocatorUtil.locate(VerifiableUUIDModel.class);
-
-		Collection<VerifiableUUIDModel> verifiableUUIDModels =
-			verifiableUUIDModelsMap.values();
-
-		doVerify(verifiableUUIDModels.toArray(new VerifiableUUIDModel[0]));
 	}
 
 	protected void doVerify(VerifiableUUIDModel... verifiableUUIDModels)
