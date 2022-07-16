@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.verify.model.VerifiableUUIDModel;
 /**
  * @author Miguel Pastor
  */
-public class WebSiteVerifiableModel implements VerifiableUUIDModel {
+public class WebsiteVerifiableModel implements VerifiableUUIDModel {
 
 	@Override
 	public String getPrimaryKeyColumnName() {
