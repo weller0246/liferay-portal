@@ -66,7 +66,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 		return ReleaseInfo.RELEASE_6_2_0_BUILD_NUMBER;
 	}
 
-	public class AddressVerifiableModel implements VerifiableUUIDModel {
+	public class AddressVerifiableUUIDModel implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -80,7 +80,8 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class DLFileVersionVerifiableModel implements VerifiableUUIDModel {
+	public class DLFileVersionVerifiableUUIDModel
+		implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -94,7 +95,8 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class EmailAddressVerifiableModel implements VerifiableUUIDModel {
+	public class EmailAddressVerifiableUUIDModel
+		implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -108,7 +110,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class GroupVerifiableModel implements VerifiableUUIDModel {
+	public class GroupVerifiableUUIDModel implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -122,7 +124,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class JournalArticleResourceVerifiableModel
+	public class JournalArticleResourceVerifiableUUIDModel
 		implements VerifiableUUIDModel {
 
 		@Override
@@ -235,7 +237,8 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class PasswordPolicyVerifiableModel implements VerifiableUUIDModel {
+	public class PasswordPolicyVerifiableUUIDModel
+		implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -249,7 +252,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class PhoneVerifiableModel implements VerifiableUUIDModel {
+	public class PhoneVerifiableUUIDModel implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -277,7 +280,7 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 
 	}
 
-	public class WebsiteVerifiableModel implements VerifiableUUIDModel {
+	public class WebsiteVerifiableUUIDModel implements VerifiableUUIDModel {
 
 		@Override
 		public String getPrimaryKeyColumnName() {
@@ -334,10 +337,11 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 	protected void populateUUIDModels() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer()) {
 			VerifyUUID.verify(
-				new AddressVerifiableModel(),
-				new DLFileVersionVerifiableModel(),
-				new EmailAddressVerifiableModel(), new GroupVerifiableModel(),
-				new JournalArticleResourceVerifiableModel(),
+				new AddressVerifiableUUIDModel(),
+				new DLFileVersionVerifiableUUIDModel(),
+				new EmailAddressVerifiableUUIDModel(),
+				new GroupVerifiableUUIDModel(),
+				new JournalArticleResourceVerifiableUUIDModel(),
 				new LayoutPrototypeVerifiableModel(),
 				new LayoutSetPrototypeVerifiableModel(),
 				new MBBanVerifiableUUIDModel(),
@@ -346,9 +350,10 @@ public class UpgradeProcess_6_2_0 extends Pre7UpgradeProcess {
 				new MBThreadVerifiableUUIDModel(),
 				new PollsVoteVerifiableUUIDModel(),
 				new OrganizationVerifiableAuditedModel(),
-				new PasswordPolicyVerifiableModel(), new PhoneVerifiableModel(),
-				new RoleVerifiableModel(), new UserGroupVerifiableModel(),
-				new WebsiteVerifiableModel());
+				new PasswordPolicyVerifiableUUIDModel(),
+				new PhoneVerifiableUUIDModel(), new RoleVerifiableModel(),
+				new UserGroupVerifiableModel(),
+				new WebsiteVerifiableUUIDModel());
 		}
 	}
 
