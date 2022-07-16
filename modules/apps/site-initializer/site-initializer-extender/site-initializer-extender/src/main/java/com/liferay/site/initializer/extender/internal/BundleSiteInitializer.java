@@ -1701,7 +1701,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 					json,
 					new String[] {
 						"[$GROUP_FRIENDLY_URL$]", "[$GROUP_ID$]",
-						"[$SITE_ENTRY_NAME$]"
+						"[$GROUP_KEY$]"
 					},
 					new String[] {
 						scopeGroup.getFriendlyURL(),

@@ -326,7 +326,7 @@
 																						},
 																						{
 																							"fieldName": "siteKey",
-																							"fieldValue": "[$SITE_ENTRY_NAME$]"
+																							"fieldValue": "[$GROUP_KEY$]"
 																						}
 																					]
 																				}
