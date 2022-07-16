@@ -14,46 +14,34 @@
 
 package com.liferay.portal.verify.model;
 
-import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
+import com.liferay.portal.kernel.model.LayoutBranch;
+import com.liferay.portal.kernel.verify.model.VerifiableResourcedModel;
+import com.liferay.portal.model.impl.LayoutBranchModelImpl;
 
 /**
- * @author Miguel Pastor
+ * @author Brian Wing Shun Chan
  */
-public class LayoutFriendlyURLAuditedModel implements VerifiableAuditedModel {
+public class LayoutBranchVerifiableResourcedModel
+	implements VerifiableResourcedModel {
 
 	@Override
-	public String getJoinByTableName() {
-		return null;
+	public String getModelName() {
+		return LayoutBranch.class.getName();
 	}
 
 	@Override
 	public String getPrimaryKeyColumnName() {
-		return "layoutFriendlyURLId";
-	}
-
-	@Override
-	public String getRelatedModelName() {
-		return null;
-	}
-
-	@Override
-	public String getRelatedPKColumnName() {
-		return null;
+		return "layoutBranchId";
 	}
 
 	@Override
 	public String getTableName() {
-		return "LayoutFriendlyURL";
+		return LayoutBranchModelImpl.TABLE_NAME;
 	}
 
 	@Override
-	public boolean isAnonymousUserAllowed() {
-		return false;
-	}
-
-	@Override
-	public boolean isUpdateDates() {
-		return false;
+	public String getUserIdColumnName() {
+		return "userId";
 	}
 
 }

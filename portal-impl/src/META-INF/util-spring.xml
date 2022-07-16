@@ -310,13 +310,13 @@
 	<bean class="com.liferay.portal.util.HtmlImpl" id="com.liferay.portal.util.HtmlImpl" />
 	<bean class="com.liferay.portal.util.PortalImpl" id="com.liferay.portal.util.Portal" />
 	<bean class="com.liferay.portal.verify.model.GroupVerifiableResourcedModel" />
-	<bean class="com.liferay.portal.verify.model.LayoutBranchVerifiableModel" />
-	<bean class="com.liferay.portal.verify.model.LayoutFriendlyURLAuditedModel" />
+	<bean class="com.liferay.portal.verify.model.LayoutBranchVerifiableResourcedModel" />
+	<bean class="com.liferay.portal.verify.model.LayoutFriendlyURLVerifiableAuditedModel" />
 	<bean class="com.liferay.portal.verify.model.LayoutPrototypeVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.LayoutSetPrototypeVerifiableModel" />
-	<bean class="com.liferay.portal.verify.model.LayoutVerifiableModel" />
-	<bean class="com.liferay.portal.verify.model.OrganizationVerifiableAuditedModel" />
-	<bean class="com.liferay.portal.verify.model.RepositoryEntryVerifiableModel" />
+	<bean class="com.liferay.portal.verify.model.LayoutVerifiableAuditedModel" />
+	<bean class="com.liferay.portal.verify.model.OrganizationVerifiableModel" />
+	<bean class="com.liferay.portal.verify.model.RepositoryEntryVerifiableAuditedModel" />
 	<bean class="com.liferay.portal.verify.model.RoleVerifiableModel" />
 	<bean class="com.liferay.portal.verify.model.UserGroupVerifiableModel" />
 	<bean class="com.liferay.portal.workflow.LayoutRevisionWorkflowHandler" id="com.liferay.portal.workflow.LayoutRevisionWorkflowHandler" />

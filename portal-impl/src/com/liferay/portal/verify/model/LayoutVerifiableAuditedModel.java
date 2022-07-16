@@ -15,13 +15,11 @@
 package com.liferay.portal.verify.model;
 
 import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
-import com.liferay.portal.kernel.verify.model.VerifiableUUIDModel;
 
 /**
  * @author Miguel Pastor
  */
-public class OrganizationVerifiableAuditedModel
-	implements VerifiableAuditedModel, VerifiableUUIDModel {
+public class LayoutVerifiableAuditedModel implements VerifiableAuditedModel {
 
 	@Override
 	public String getJoinByTableName() {
@@ -30,7 +28,7 @@ public class OrganizationVerifiableAuditedModel
 
 	@Override
 	public String getPrimaryKeyColumnName() {
-		return "organizationId";
+		return "plid";
 	}
 
 	@Override
@@ -45,7 +43,7 @@ public class OrganizationVerifiableAuditedModel
 
 	@Override
 	public String getTableName() {
-		return "Organization_";
+		return "Layout";
 	}
 
 	@Override
@@ -55,7 +53,7 @@ public class OrganizationVerifiableAuditedModel
 
 	@Override
 	public boolean isUpdateDates() {
-		return true;
+		return false;
 	}
 
 }

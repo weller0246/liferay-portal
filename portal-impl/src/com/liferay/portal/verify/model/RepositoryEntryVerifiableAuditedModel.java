@@ -19,7 +19,8 @@ import com.liferay.portal.kernel.verify.model.VerifiableAuditedModel;
 /**
  * @author Miguel Pastor
  */
-public class RepositoryEntryVerifiableModel implements VerifiableAuditedModel {
+public class RepositoryEntryVerifiableAuditedModel
+	implements VerifiableAuditedModel {
 
 	@Override
 	public String getJoinByTableName() {
