@@ -46,10 +46,8 @@ import com.liferay.portal.upgrade.PortalUpgradeProcess;
 import com.liferay.portal.util.InitUtil;
 import com.liferay.portal.util.PortalClassPathUtil;
 import com.liferay.portal.util.PropsValues;
-import com.liferay.portal.verify.VerifyGroup;
 import com.liferay.portal.verify.VerifyProcessSuite;
 import com.liferay.portal.verify.VerifyProperties;
-import com.liferay.portal.verify.VerifyResourcePermissions;
 import com.liferay.portlet.documentlibrary.store.StoreFactory;
 import com.liferay.util.dao.orm.CustomSQLUtil;
 
@@ -274,22 +272,9 @@ public class DBUpgrader {
 	}
 
 	public static void verify() throws Exception {
-		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-157670"))) {
-			VerifyProcessSuite verifyProcessSuite = new VerifyProcessSuite();
+		VerifyProcessSuite verifyProcessSuite = new VerifyProcessSuite();
 
-			verifyProcessSuite.verify();
-
-			return;
-		}
-
-		VerifyGroup verifyGroup = new VerifyGroup();
-
-		verifyGroup.verify();
-
-		VerifyResourcePermissions verifyResourcePermissions =
-			new VerifyResourcePermissions();
-
-		verifyResourcePermissions.verify();
+		verifyProcessSuite.verify();
 	}
 
 	private static void _checkClassNamesAndResourceActions() {

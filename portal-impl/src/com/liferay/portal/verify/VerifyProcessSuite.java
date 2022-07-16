@@ -14,6 +14,9 @@
 
 package com.liferay.portal.verify;
 
+import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.PropsUtil;
+
 /**
  * @author Alexander Chow
  */
@@ -21,14 +24,21 @@ public class VerifyProcessSuite extends VerifyProcess {
 
 	@Override
 	protected void doVerify() throws Exception {
-		verify(new VerifyPermission());
-		verify(new VerifyGroup());
-		verify(new VerifyRole());
+		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-157670"))) {
+			verify(new VerifyPermission());
+			verify(new VerifyGroup());
+			verify(new VerifyRole());
 
-		verify(new VerifyAuditedModel());
-		verify(new VerifyResourceActions());
-		verify(new VerifyResourcePermissions());
-		verify(new VerifyUser());
+			verify(new VerifyAuditedModel());
+			verify(new VerifyResourceActions());
+			verify(new VerifyResourcePermissions());
+			verify(new VerifyUser());
+		}
+		else {
+			verify(new VerifyGroup());
+
+			verify(new VerifyResourcePermissions());
+		}
 	}
 
 }
