@@ -60,7 +60,7 @@ public class ClientExtensionEntryLocalServiceTest {
 	}
 
 	@Test
-	public void testGlobalJSClientExtensionEntriesAreAdded() throws Exception {
+	public void testAddClientExtensionEntry() throws Exception {
 		ClientExtensionEntry clientExtensionEntry =
 			_clientExtensionEntryLocalService.addClientExtensionEntry(
 				RandomTestUtil.randomString(), TestPropsValues.getUserId(),
