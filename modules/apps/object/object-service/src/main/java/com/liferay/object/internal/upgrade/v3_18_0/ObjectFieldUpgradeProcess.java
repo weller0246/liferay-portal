@@ -50,10 +50,10 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 			"ObjectDefinition.userId, ObjectDefinition.system_ from ",
 			"ObjectDefinition where ObjectDefinition.objectDefinitionId not ",
 			"in (select distinct ObjectField.objectDefinitionId from ",
-			"ObjectField where (ObjectField.name = \"creator\" or ",
-			"ObjectField.name = \"dateCreated\" or ObjectField.name = ",
-			"\"dateModified\" or ObjectField.name = \"id\" or ",
-			"ObjectField.name = \"status\") and ObjectField.system_ = true)");
+			"ObjectField where (ObjectField.name = 'creator' or ",
+			"ObjectField.name = 'createDate' or ObjectField.name = 'id' or ",
+			"ObjectField.name = 'modifiedDate' or ObjectField.name = ",
+			"'status') and ObjectField.system_ = true)");
 
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				selectSQL);
