@@ -162,7 +162,7 @@ public class ObjectDefinitionGraphQLTest {
 									_objectDefinitionName,
 									StringBundler.concat(
 										"{", _objectFieldName, ": \"", value,
-										"\",", _listFieldName, ": {key: \"",
+										"\", ", _listFieldName, ": {key: \"",
 										_listFieldValueKey, "\"}}")
 								).build(),
 								new GraphQLField(_objectFieldName),
@@ -361,7 +361,7 @@ public class ObjectDefinitionGraphQLTest {
 						HashMapBuilder.<String, Object>put(
 							_objectDefinitionName,
 							StringBundler.concat(
-								"{", _objectFieldName, ": \"", value, "\",",
+								"{", _objectFieldName, ": \"", value, "\", ",
 								_listFieldName, ": {key: \"",
 								_listFieldValueKey, "\"}}")
 						).build(),
@@ -397,7 +397,7 @@ public class ObjectDefinitionGraphQLTest {
 									_objectDefinitionName,
 									StringBundler.concat(
 										"{", _objectFieldName, ": \"", value,
-										"\",", _listFieldName, ": {key: \"",
+										"\", ", _listFieldName, ": {key: \"",
 										_listFieldValueKey, "\"}}")
 								).put(
 									_objectDefinitionPrimaryKeyName,
