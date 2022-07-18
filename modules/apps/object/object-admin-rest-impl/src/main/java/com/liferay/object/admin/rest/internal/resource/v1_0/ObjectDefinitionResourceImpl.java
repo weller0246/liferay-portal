@@ -307,27 +307,6 @@ public class ObjectDefinitionResourceImpl
 						objectView),
 					ObjectView.class);
 				panelCategoryKey = objectDefinition.getPanelCategoryKey();
-
-				String restContextPath = StringPool.BLANK;
-
-				if (!objectDefinition.isSystem()) {
-					restContextPath = objectDefinition.getRESTContextPath();
-				}
-				else {
-					SystemObjectDefinitionMetadata
-						systemObjectDefinitionMetadata =
-							_systemObjectDefinitionMetadataTracker.
-								getSystemObjectDefinitionMetadata(
-									objectDefinition.getName());
-
-					if (systemObjectDefinitionMetadata != null) {
-						restContextPath =
-							systemObjectDefinitionMetadata.getRESTContextPath();
-					}
-				}
-
-				parameterRequired = restContextPath.matches(".*/\\{\\w+}/.*");
-
 				pluralLabel = LocalizedMapUtil.getLanguageIdMap(
 					objectDefinition.getPluralLabelMap());
 				portlet = objectDefinition.getPortlet();
@@ -353,6 +332,31 @@ public class ObjectDefinitionResourceImpl
 
 				system = objectDefinition.isSystem();
 				titleObjectFieldId = objectDefinition.getTitleObjectFieldId();
+
+				setParameterRequired(
+					() -> {
+						String restContextPath = StringPool.BLANK;
+
+						if (!objectDefinition.isSystem()) {
+							restContextPath =
+								objectDefinition.getRESTContextPath();
+						}
+						else {
+							SystemObjectDefinitionMetadata
+								systemObjectDefinitionMetadata =
+									_systemObjectDefinitionMetadataTracker.
+										getSystemObjectDefinitionMetadata(
+											objectDefinition.getName());
+
+							if (systemObjectDefinitionMetadata != null) {
+								restContextPath =
+									systemObjectDefinitionMetadata.
+										getRESTContextPath();
+							}
+						}
+
+						return restContextPath.matches(".*/\\{\\w+}/.*");
+					});
 			}
 		};
 	}
