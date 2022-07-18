@@ -70,18 +70,6 @@ public class ObjectFieldSettingLocalServiceImpl
 	}
 
 	@Override
-	public ObjectFieldSetting deleteObjectFieldSetting(
-			long objectFieldSettingId)
-		throws PortalException {
-
-		ObjectFieldSetting objectFieldSetting =
-			objectFieldSettingPersistence.findByPrimaryKey(
-				objectFieldSettingId);
-
-		return objectFieldSettingPersistence.remove(objectFieldSetting);
-	}
-
-	@Override
 	public void deleteObjectFieldObjectFieldSetting(long objectFieldId)
 		throws PortalException {
 
@@ -97,6 +85,18 @@ public class ObjectFieldSettingLocalServiceImpl
 			_objectFilterLocalService.deleteObjectFieldObjectFilter(
 				objectField.getObjectFieldId());
 		}
+	}
+
+	@Override
+	public ObjectFieldSetting deleteObjectFieldSetting(
+			long objectFieldSettingId)
+		throws PortalException {
+
+		ObjectFieldSetting objectFieldSetting =
+			objectFieldSettingPersistence.findByPrimaryKey(
+				objectFieldSettingId);
+
+		return objectFieldSettingPersistence.remove(objectFieldSetting);
 	}
 
 	@Override

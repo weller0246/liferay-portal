@@ -228,9 +228,8 @@ public class ObjectFieldLocalServiceImpl
 				continue;
 			}
 
-			_objectFieldSettingLocalService.
-				deleteObjectFieldObjectFieldSetting(
-					objectField.getObjectFieldId());
+			_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
+				objectField.getObjectFieldId());
 
 			objectFieldPersistence.remove(objectField);
 		}
@@ -358,9 +357,8 @@ public class ObjectFieldLocalServiceImpl
 			objectFieldId);
 
 		objectField.setObjectFieldSettings(
-			_objectFieldSettingLocalService.
-				getObjectFieldObjectFieldSettings(
-					objectField.getObjectFieldId()));
+			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
+				objectField.getObjectFieldId()));
 
 		return objectField;
 	}
@@ -373,9 +371,8 @@ public class ObjectFieldLocalServiceImpl
 			objectDefinitionId, name);
 
 		objectField.setObjectFieldSettings(
-			_objectFieldSettingLocalService.
-				getObjectFieldObjectFieldSettings(
-					objectField.getObjectFieldId()));
+			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
+				objectField.getObjectFieldId()));
 
 		return objectField;
 	}
@@ -691,9 +688,8 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		objectField.setObjectFieldSettings(
-			_objectFieldSettingLocalService.
-				getObjectFieldObjectFieldSettings(
-					objectField.getObjectFieldId()));
+			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
+				objectField.getObjectFieldId()));
 	}
 
 	private void _deleteFileEntries(long objectDefinitionId, String name) {

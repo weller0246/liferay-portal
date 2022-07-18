@@ -110,9 +110,8 @@ public class AttachmentObjectFieldBusinessType
 		).build();
 
 		ListUtil.isNotEmptyForEach(
-			_objectFieldSettingLocalService.
-				getObjectFieldObjectFieldSettings(
-					objectField.getObjectFieldId()),
+			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
+				objectField.getObjectFieldId()),
 			objectFieldSetting -> properties.put(
 				objectFieldSetting.getName(), objectFieldSetting.getValue()));
 
