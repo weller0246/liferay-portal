@@ -337,21 +337,23 @@ public class LayoutImportController implements ImportController {
 			long layoutId = GetterUtil.getLong(
 				portletElement.attributeValue("layout-id"));
 
-			if (layoutId == 0) {
-				long plid = LayoutConstants.DEFAULT_PLID;
-
-				Layout layout = layouts.get(layoutId);
-
-				if (layout != null) {
-					plid = layout.getPlid();
-				}
-
-				portletDataContext.setPlid(plid);
-				portletDataContext.setPortletId(
-					portletElement.attributeValue("portlet-id"));
-
-				_portletImportController.deletePortletData(portletDataContext);
+			if (layoutId != 0) {
+				continue;
 			}
+
+			long plid = LayoutConstants.DEFAULT_PLID;
+
+			Layout layout = layouts.get(layoutId);
+
+			if (layout != null) {
+				plid = layout.getPlid();
+			}
+
+			portletDataContext.setPlid(plid);
+			portletDataContext.setPortletId(
+				portletElement.attributeValue("portlet-id"));
+
+			_portletImportController.deletePortletData(portletDataContext);
 		}
 	}
 
