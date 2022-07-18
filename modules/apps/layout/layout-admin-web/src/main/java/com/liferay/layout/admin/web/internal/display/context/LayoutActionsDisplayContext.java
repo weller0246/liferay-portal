@@ -65,7 +65,6 @@ public class LayoutActionsDisplayContext {
 						dropdownItem -> {
 							dropdownItem.setHref(
 								_getConfigureLayoutURL(layout));
-
 							dropdownItem.setIcon("cog");
 							dropdownItem.setLabel(
 								LanguageUtil.get(
