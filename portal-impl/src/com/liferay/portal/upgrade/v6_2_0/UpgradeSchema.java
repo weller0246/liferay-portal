@@ -64,8 +64,11 @@ public class UpgradeSchema extends UpgradeProcess {
 	private void _upgradeSchemaDefault() throws Exception {
 		String sql = StringBundler.concat(
 			"alter table JournalArticle add folderId LONG;",
+			//
 			"update JournalArticle set folderId = 0, treePath = '/';",
+			//
 			"alter table User_ add ldapServerId LONG;",
+			//
 			"update User_ set ldapServerId = -1;");
 
 		runSQL(sql);
@@ -74,10 +77,15 @@ public class UpgradeSchema extends UpgradeProcess {
 	private void _upgradeSchemaPostgreSQL() throws Exception {
 		String sql = StringBundler.concat(
 			"alter table JournalArticle add folderId LONG default 0;",
+			//
 			"alter table JournalArticle alter column folderId drop default;",
+			//
 			"alter table JournalArticle add treePath STRING default '/';",
+			//
 			"alter table JournalArticle alter column treePath drop default;",
+			//
 			"alter table User_ add ldapServerId LONG default -1;",
+			//
 			"alter table User_ alter column ldapServerId drop default;");
 
 		runSQL(sql);
