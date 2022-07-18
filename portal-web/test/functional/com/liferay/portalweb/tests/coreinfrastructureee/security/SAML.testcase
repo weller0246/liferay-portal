@@ -1517,7 +1517,7 @@ definition {
 			SAML.setupSP(
 				encryptionCertificate = "true",
 				samlEntityId = "samlsp",
-				spURL = "www.able.com:8080",
+				spURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 
 			SAML.connectSPAndIdP(
@@ -1764,7 +1764,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "tester",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Open portal and assert logged in") {
@@ -1851,7 +1851,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "tester",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Open site and assert logged in") {
@@ -1938,7 +1938,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "tester",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Open site and assert logged in") {
@@ -1976,7 +1976,7 @@ definition {
 				userEmailAddress = "test@liferay.com");
 
 			SAML.setupIDP(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				samlEntityId = "samlidp2",
 				userEmailAddress = "test@www.baker.com");
 		}
@@ -1985,7 +1985,7 @@ definition {
 			SAML.setupSP(
 				encryptionCertificate = "true",
 				samlEntityId = "samlsp",
-				spURL = "www.able.com:8080",
+				spURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 		}
 
@@ -2036,7 +2036,7 @@ definition {
 				userEmailAddress = "test@liferay.com");
 
 			SAML.addSPConfigurationsToIdentityProvider(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				nameIdentifierAttributeName = "emailAddress",
 				nameIdentifierFormat = "Email Address",
 				spAttributes = '''emailAddress
@@ -2062,7 +2062,7 @@ definition {
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 
 			User.logoutPG(specificURL = "http://www.able.com:8080");
 
@@ -2077,7 +2077,7 @@ definition {
 				newUserScreenName = "user2",
 				portalInstanceName = "www.baker.com",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Verify IdP is logged in at baker.com:8080") {
@@ -2191,7 +2191,7 @@ definition {
 			SAML.setupSP(
 				encryptionCertificate = "true",
 				samlEntityId = "samlsp",
-				spURL = "www.able.com:8080",
+				spURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 
 			SAML.connectSPAndIdP(
@@ -2389,8 +2389,7 @@ definition {
 				samlEntityId = "samlidp1",
 				userEmailAddress = "test@liferay.com");
 
-			SAML.setupIDP(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				samlEntityId = "samlidp2",
 				userEmailAddress = "test@www.baker.com");
 		}
@@ -2399,7 +2398,7 @@ definition {
 			SAML.setupSP(
 				encryptionCertificate = "true",
 				samlEntityId = "samlsp",
-				spURL = "www.able.com:8080",
+				spURL = "http://www.able.com:8080",
 				userEmailAddress = "test@www.able.com");
 		}
 
@@ -2452,7 +2451,7 @@ definition {
 				userEmailAddress = "test@liferay.com");
 
 			SAML.addSPConfigurationsToIdentityProvider(
-				idpURL = "www.baker.com:8080",
+				idpURL = "http://www.baker.com:8080",
 				nameIdentifierFormat = "Email Address",
 				spAttributes = '''emailAddress
 					firstName
@@ -3277,7 +3276,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 
 			User.logoutPG(specificURL = "http://www.able.com:8080");
 		}
@@ -3395,7 +3394,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 
 			User.logoutPG(specificURL = "http://www.able.com:8080");
 
@@ -3516,7 +3515,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and update user") {
@@ -3671,7 +3670,7 @@ definition {
 				newUserScreenName = "user_shared",
 				portalInstanceName = "localhost",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Assert user information") {
@@ -3702,7 +3701,7 @@ definition {
 				newUserScreenName = "user_shared",
 				portalInstanceName = "www.baker.com",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Assert user information") {
@@ -4614,7 +4613,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and assert message Resolving user with user field expression: emailAddress. On console") {
@@ -4726,7 +4725,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and assert Resolving user with user field expression: screenName. Message present on console") {
@@ -4880,7 +4879,7 @@ definition {
 				newUserScreenName = "user_shared",
 				portalInstanceName = "localhost",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and assert Resolving user with user field expression: screenName. Message present on console") {
@@ -4903,7 +4902,7 @@ definition {
 				newUserScreenName = "user_shared",
 				portalInstanceName = "www.baker.com",
 				samlMultiIdPs = "true",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 	}
 
@@ -4985,7 +4984,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and assert Resolving user with user field expression: uuid. Message present on console") {
@@ -5143,7 +5142,7 @@ definition {
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "user1",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Logout and view Resolving user with user field expression: uuid. Message on console") {
@@ -5359,7 +5358,7 @@ uuid''',
 				newUserPortalURL = "http://localhost:8080",
 				newUserScreenName = "tester",
 				portalInstanceName = "localhost",
-				spURL = "www.able.com:8080");
+				spURL = "http://www.able.com:8080");
 		}
 
 		task ("Open portal and assert logged in") {
