@@ -222,7 +222,6 @@ public class FragmentEntryInputTemplateNodeContextHelper {
 			if (fileSourceType != null) {
 				String fileName = null;
 				FileEntry fileEntry = null;
-
 				boolean selectFromDocumentLibrary = false;
 
 				if (Validator.isNotNull(value)) {

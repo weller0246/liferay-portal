@@ -112,7 +112,6 @@ public class AddInfoItemStrutsAction implements StrutsAction {
 		}
 
 		String redirect = null;
-
 		boolean success = false;
 
 		try {
