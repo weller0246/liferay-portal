@@ -68,7 +68,7 @@ public class UpgradeSchema extends UpgradeProcess {
 			"alter table User_ add ldapServerId LONG;",
 			"update User_ set ldapServerId = -1;");
 
-		runSQLTemplateString(sql, true);
+		runSQL(sql);
 	}
 
 	private void _upgradeSchemaPostgreSQL() throws Exception {
@@ -80,7 +80,7 @@ public class UpgradeSchema extends UpgradeProcess {
 			"alter table User_ add ldapServerId LONG default -1;",
 			"alter table User_ alter column ldapServerId drop default;");
 
-		runSQLTemplateString(sql, true);
+		runSQL(sql);
 	}
 
 }
