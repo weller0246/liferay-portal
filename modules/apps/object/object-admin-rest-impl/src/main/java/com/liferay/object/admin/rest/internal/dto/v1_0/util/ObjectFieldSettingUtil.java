@@ -94,11 +94,9 @@ public class ObjectFieldSettingUtil {
 					objectFilterLocalService.createObjectFilter(0L);
 
 				objectFilter.setFilterBy(
-					String.valueOf(
-						valueMap.get("filterBy")));
+					String.valueOf(valueMap.get("filterBy")));
 				objectFilter.setFilterType(
-					String.valueOf(
-						valueMap.get("filterType")));
+					String.valueOf(valueMap.get("filterType")));
 				objectFilter.setJSON(
 					String.valueOf(
 						JSONFactoryUtil.createJSONObject(

@@ -38,8 +38,7 @@ public class ObjectFilterUtil {
 				JSONUtil.put(
 					"filterBy", objectFilter.getFilterBy()
 				).put(
-					"filterType",
-					objectFilter.getFilterType()
+					"filterType", objectFilter.getFilterType()
 				).put(
 					"json",
 					(Map)ObjectMapperUtil.readValue(
