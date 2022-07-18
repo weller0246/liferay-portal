@@ -164,7 +164,6 @@ public class JournalPortlet extends MVCPortlet {
 			_ddmFormValuesToMapConverter);
 		renderRequest.setAttribute(
 			DDMWebConfiguration.class.getName(), _ddmWebConfiguration);
-		renderRequest.setAttribute(JournalWebKeys.ITEM_SELECTOR, _itemSelector);
 		renderRequest.setAttribute(
 			FFJournalAutoSaveDraftConfiguration.class.getName(),
 			_ffJournalAutoSaveDraftConfiguration);
@@ -176,6 +175,7 @@ public class JournalPortlet extends MVCPortlet {
 			_journalFileUploadsConfiguration);
 		renderRequest.setAttribute(
 			JournalWebConfiguration.class.getName(), _journalWebConfiguration);
+		renderRequest.setAttribute(JournalWebKeys.ITEM_SELECTOR, _itemSelector);
 		renderRequest.setAttribute(
 			JournalWebKeys.JOURNAL_CONTENT, _journalContent);
 		renderRequest.setAttribute(
