@@ -812,14 +812,14 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				getRequest(), formStyledLayoutStructureItem.getItemId());
 		}
 
-		Map<String, String> formParameterMap =
+		Map<String, String> infoFormParameterMap =
 			(Map<String, String>)SessionMessages.get(
 				getRequest(),
 				"infoFormParameterMap" +
 					formStyledLayoutStructureItem.getItemId());
 
 		SessionMessages.add(
-			getRequest(), "infoFormParameterMap", formParameterMap);
+			getRequest(), "infoFormParameterMap", infoFormParameterMap);
 
 		SessionMessages.remove(
 			getRequest(),
