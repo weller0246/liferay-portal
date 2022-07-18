@@ -16,7 +16,6 @@ package com.liferay.object.graphql.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.list.type.model.ListTypeDefinition;
-import com.liferay.list.type.model.ListTypeEntry;
 import com.liferay.list.type.service.ListTypeDefinitionLocalServiceUtil;
 import com.liferay.list.type.service.ListTypeEntryLocalServiceUtil;
 import com.liferay.object.constants.ObjectDefinitionConstants;
@@ -84,18 +83,18 @@ public class ObjectDefinitionGraphQLTest {
 				TestPropsValues.getUserId(),
 				LocalizedMapUtil.getLocalizedMap(_listFieldName));
 
-		for (String key : Arrays.asList("item1Key", "item2Key", "item3Key")) {
+		_listFieldValueKey = StringUtil.randomId();
+
+		for (String key :
+				Arrays.asList(
+					StringUtil.randomId(), StringUtil.randomId(),
+					_listFieldValueKey)) {
+
 			ListTypeEntryLocalServiceUtil.addListTypeEntry(
 				TestPropsValues.getUserId(),
 				listTypeDefinition.getListTypeDefinitionId(), key,
 				LocalizedMapUtil.getLocalizedMap(key));
 		}
-
-		ListTypeEntry listTypeEntry3 =
-			ListTypeEntryLocalServiceUtil.getListTypeEntry(
-				listTypeDefinition.getListTypeDefinitionId(), "item3key");
-
-		_listFieldValueKey = listTypeEntry3.getKey();
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
