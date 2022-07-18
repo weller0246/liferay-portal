@@ -228,10 +228,10 @@ public class ObjectFieldLocalServiceImpl
 				continue;
 			}
 
-			_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
-				objectField.getObjectFieldId());
-
 			objectFieldPersistence.remove(objectField);
+
+			_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
+				objectField);
 		}
 	}
 
@@ -730,6 +730,8 @@ public class ObjectFieldLocalServiceImpl
 			throw new RequiredObjectFieldException();
 		}
 
+		objectField = objectFieldPersistence.remove(objectField);
+
 		if (objectDefinition.getAccountEntryRestrictedObjectFieldId() ==
 				objectField.getObjectFieldId()) {
 
@@ -754,7 +756,7 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
-			objectField.getObjectFieldId());
+			objectField);
 
 		_objectLayoutColumnPersistence.removeByObjectFieldId(
 			objectField.getObjectFieldId());
@@ -765,8 +767,6 @@ public class ObjectFieldLocalServiceImpl
 		}
 
 		_objectViewLocalService.unassociateObjectField(objectField);
-
-		objectField = objectFieldPersistence.remove(objectField);
 
 		if ((Objects.equals(
 				objectDefinition.getExtensionDBTableName(),

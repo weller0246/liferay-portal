@@ -70,13 +70,11 @@ public class ObjectFieldSettingLocalServiceImpl
 	}
 
 	@Override
-	public void deleteObjectFieldObjectFieldSetting(long objectFieldId)
+	public void deleteObjectFieldObjectFieldSetting(ObjectField objectField)
 		throws PortalException {
 
-		objectFieldSettingPersistence.removeByObjectFieldId(objectFieldId);
-
-		ObjectField objectField = _objectFieldPersistence.findByPrimaryKey(
-			objectFieldId);
+		objectFieldSettingPersistence.removeByObjectFieldId(
+			objectField.getObjectFieldId());
 
 		if (Objects.equals(
 				objectField.getBusinessType(),
