@@ -99,7 +99,7 @@ public class ObjectFieldSettingUtil {
 				objectFilter.setFilterType(
 					String.valueOf(
 						valueMap.get("filterType")));
-				objectFilter.setJson(
+				objectFilter.setJSON(
 					String.valueOf(
 						JSONFactoryUtil.createJSONObject(
 							(Map)valueMap.get("json"))));

@@ -47,7 +47,7 @@ public class FiltersObjectFieldSettingsContributor
 
 			_objectFilterLocalService.addObjectFilter(
 				userId, objectFieldId, objectFilter.getFilterBy(),
-				objectFilter.getFilterType(), objectFilter.getJson());
+				objectFilter.getFilterType(), objectFilter.getJSON());
 		}
 	}
 

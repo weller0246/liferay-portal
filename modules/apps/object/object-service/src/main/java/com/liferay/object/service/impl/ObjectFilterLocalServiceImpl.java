@@ -54,7 +54,7 @@ public class ObjectFilterLocalServiceImpl
 		objectFilter.setObjectFieldId(objectFieldId);
 		objectFilter.setFilterBy(filterBy);
 		objectFilter.setFilterType(filterType);
-		objectFilter.setJson(json);
+		objectFilter.setJSON(json);
 
 		return objectFilterPersistence.update(objectFilter);
 	}

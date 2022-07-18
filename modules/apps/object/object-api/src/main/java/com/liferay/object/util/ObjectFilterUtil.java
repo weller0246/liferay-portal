@@ -43,7 +43,7 @@ public class ObjectFilterUtil {
 				).put(
 					"json",
 					(Map)ObjectMapperUtil.readValue(
-						Map.class, objectFilter.getJson())
+						Map.class, objectFilter.getJSON())
 				));
 		}
 
