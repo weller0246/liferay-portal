@@ -91,11 +91,11 @@ public class ObjectDefinitionGraphQLTest {
 				LocalizedMapUtil.getLocalizedMap(key));
 		}
 
-		ListTypeEntry testEntry3 =
+		ListTypeEntry listTypeEntry3 =
 			ListTypeEntryLocalServiceUtil.getListTypeEntry(
 				listTypeDefinition.getListTypeDefinitionId(), "item3key");
 
-		_listFieldValueKey = testEntry3.getKey();
+		_listFieldValueKey = listTypeEntry3.getKey();
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
