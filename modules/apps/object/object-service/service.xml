@@ -302,7 +302,7 @@
 		<column name="objectFieldId" type="long" />
 		<column name="filterBy" type="String" />
 		<column name="filterType" type="String" />
-		<column name="json" type="String" />
+		<column method-name="JSON" name="json" type="String" />
 
 		<!-- Finder methods -->
 
@@ -714,7 +714,7 @@
 
 		<column name="objectViewId" type="long" />
 		<column name="filterType" type="String" />
-		<column name="json" type="String" />
+		<column method-name="JSON" name="json" type="String" />
 		<column name="objectFieldName" type="String" />
 
 		<!-- Finder methods -->

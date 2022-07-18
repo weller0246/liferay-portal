@@ -77,7 +77,7 @@ public class ObjectFieldSettingUtil {
 
 			List<ObjectFilter> objectFilters = new ArrayList<>();
 
-			List<Object> values;
+			List<Object> values = null;
 
 			if (objectFieldSetting.getValue() instanceof Object[]) {
 				values = ListUtil.fromArray(
