@@ -154,14 +154,7 @@ public class ClientExtensionEntryLocalServiceImpl
 			ClientExtensionEntry clientExtensionEntry)
 		throws PortalException {
 
-		// Client Extension Entry
-
 		clientExtensionEntryPersistence.remove(clientExtensionEntry);
-
-		clientExtensionEntryLocalService.undeployClientExtensionEntry(
-			clientExtensionEntry);
-
-		// Resources
 
 		_resourceLocalService.deleteResource(
 			clientExtensionEntry.getCompanyId(),
@@ -169,11 +162,12 @@ public class ClientExtensionEntryLocalServiceImpl
 			ResourceConstants.SCOPE_INDIVIDUAL,
 			clientExtensionEntry.getClientExtensionEntryId());
 
-		// Client Extension Entry Rels
-
 		_clientExtensionEntryRelLocalService.deleteClientExtensionEntryRels(
 			clientExtensionEntry.getCompanyId(),
 			clientExtensionEntry.getExternalReferenceCode());
+
+		clientExtensionEntryLocalService.undeployClientExtensionEntry(
+			clientExtensionEntry);
 
 		return clientExtensionEntry;
 	}
