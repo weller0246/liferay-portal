@@ -82,7 +82,7 @@ public class ObjectFieldSettingLocalServiceImpl
 	}
 
 	@Override
-	public void deleteObjectFieldSettingByObjectFieldId(long objectFieldId)
+	public void deleteObjectFieldObjectFieldSetting(long objectFieldId)
 		throws PortalException {
 
 		objectFieldSettingPersistence.removeByObjectFieldId(objectFieldId);
@@ -107,7 +107,7 @@ public class ObjectFieldSettingLocalServiceImpl
 	}
 
 	@Override
-	public List<ObjectFieldSetting> getObjectFieldSettingsByObjectFieldId(
+	public List<ObjectFieldSetting> getObjectFieldObjectFieldSettings(
 		long objectFieldId) {
 
 		ObjectField objectField = _objectFieldPersistence.fetchByPrimaryKey(

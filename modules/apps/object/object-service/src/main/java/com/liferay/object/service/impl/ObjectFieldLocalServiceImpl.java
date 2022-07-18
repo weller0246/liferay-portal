@@ -229,7 +229,7 @@ public class ObjectFieldLocalServiceImpl
 			}
 
 			_objectFieldSettingLocalService.
-				deleteObjectFieldSettingByObjectFieldId(
+				deleteObjectFieldObjectFieldSetting(
 					objectField.getObjectFieldId());
 
 			objectFieldPersistence.remove(objectField);
@@ -268,7 +268,7 @@ public class ObjectFieldLocalServiceImpl
 		for (ObjectField objectField : objectFields) {
 			objectField.setObjectFieldSettings(
 				_objectFieldSettingLocalService.
-					getObjectFieldSettingsByObjectFieldId(
+					getObjectFieldObjectFieldSettings(
 						objectField.getObjectFieldId()));
 
 			if (Validator.isNotNull(objectField.getRelationshipType())) {
@@ -336,7 +336,7 @@ public class ObjectFieldLocalServiceImpl
 		for (ObjectField objectField : objectFields) {
 			objectField.setObjectFieldSettings(
 				_objectFieldSettingLocalService.
-					getObjectFieldSettingsByObjectFieldId(
+					getObjectFieldObjectFieldSettings(
 						objectField.getObjectFieldId()));
 		}
 
@@ -359,7 +359,7 @@ public class ObjectFieldLocalServiceImpl
 
 		objectField.setObjectFieldSettings(
 			_objectFieldSettingLocalService.
-				getObjectFieldSettingsByObjectFieldId(
+				getObjectFieldObjectFieldSettings(
 					objectField.getObjectFieldId()));
 
 		return objectField;
@@ -374,7 +374,7 @@ public class ObjectFieldLocalServiceImpl
 
 		objectField.setObjectFieldSettings(
 			_objectFieldSettingLocalService.
-				getObjectFieldSettingsByObjectFieldId(
+				getObjectFieldObjectFieldSettings(
 					objectField.getObjectFieldId()));
 
 		return objectField;
@@ -388,7 +388,7 @@ public class ObjectFieldLocalServiceImpl
 		for (ObjectField objectField : objectFields) {
 			objectField.setObjectFieldSettings(
 				_objectFieldSettingLocalService.
-					getObjectFieldSettingsByObjectFieldId(
+					getObjectFieldObjectFieldSettings(
 						objectField.getObjectFieldId()));
 		}
 
@@ -405,7 +405,7 @@ public class ObjectFieldLocalServiceImpl
 		for (ObjectField objectField : objectFields) {
 			objectField.setObjectFieldSettings(
 				_objectFieldSettingLocalService.
-					getObjectFieldSettingsByObjectFieldId(
+					getObjectFieldObjectFieldSettings(
 						objectField.getObjectFieldId()));
 		}
 
@@ -692,7 +692,7 @@ public class ObjectFieldLocalServiceImpl
 
 		objectField.setObjectFieldSettings(
 			_objectFieldSettingLocalService.
-				getObjectFieldSettingsByObjectFieldId(
+				getObjectFieldObjectFieldSettings(
 					objectField.getObjectFieldId()));
 	}
 
@@ -757,7 +757,7 @@ public class ObjectFieldLocalServiceImpl
 			objectFieldSettingFileSource = objectFieldSetting.getValue();
 		}
 
-		_objectFieldSettingLocalService.deleteObjectFieldSettingByObjectFieldId(
+		_objectFieldSettingLocalService.deleteObjectFieldObjectFieldSetting(
 			objectField.getObjectFieldId());
 
 		_objectLayoutColumnPersistence.removeByObjectFieldId(
