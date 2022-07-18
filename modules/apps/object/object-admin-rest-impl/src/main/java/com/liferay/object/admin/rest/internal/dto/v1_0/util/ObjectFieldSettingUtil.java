@@ -19,7 +19,6 @@ import com.liferay.object.admin.rest.dto.v1_0.ObjectStateFlow;
 import com.liferay.object.admin.rest.dto.v1_0.util.ObjectStateFlowUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.constants.ObjectFieldSettingConstants;
-import com.liferay.object.constants.ObjectFilterConstants;
 import com.liferay.object.model.ObjectFilter;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectFilterLocalService;
@@ -96,14 +95,14 @@ public class ObjectFieldSettingUtil {
 
 				objectFilter.setFilterBy(
 					String.valueOf(
-						valueMap.get(ObjectFilterConstants.FILTER_BY)));
+						valueMap.get("filterBy")));
 				objectFilter.setFilterType(
 					String.valueOf(
-						valueMap.get(ObjectFilterConstants.FILTER_TYPE)));
+						valueMap.get("filterType")));
 				objectFilter.setJson(
 					String.valueOf(
 						JSONFactoryUtil.createJSONObject(
-							(Map)valueMap.get(ObjectFilterConstants.JSON))));
+							(Map)valueMap.get("json"))));
 
 				objectFilters.add(objectFilter);
 			}

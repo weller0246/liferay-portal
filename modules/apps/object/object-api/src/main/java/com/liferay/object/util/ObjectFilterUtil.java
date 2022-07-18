@@ -14,7 +14,6 @@
 
 package com.liferay.object.util;
 
-import com.liferay.object.constants.ObjectFilterConstants;
 import com.liferay.object.model.ObjectFilter;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
@@ -37,12 +36,12 @@ public class ObjectFilterUtil {
 		for (ObjectFilter objectFilter : objectFilters) {
 			jsonArray.put(
 				JSONUtil.put(
-					ObjectFilterConstants.FILTER_BY, objectFilter.getFilterBy()
+					"filterBy", objectFilter.getFilterBy()
 				).put(
-					ObjectFilterConstants.FILTER_TYPE,
+					"filterType",
 					objectFilter.getFilterType()
 				).put(
-					ObjectFilterConstants.JSON,
+					"json",
 					(Map)ObjectMapperUtil.readValue(
 						Map.class, objectFilter.getJson())
 				));
