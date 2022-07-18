@@ -83,18 +83,12 @@ public class ObjectDefinitionGraphQLTest {
 				TestPropsValues.getUserId(),
 				LocalizedMapUtil.getLocalizedMap(_listFieldName));
 
+		_addListTypeEntry(listTypeDefinition, StringUtil.randomId());
+		_addListTypeEntry(listTypeDefinition, StringUtil.randomId());
+
 		_listFieldValueKey = StringUtil.randomId();
 
-		for (String key :
-				Arrays.asList(
-					StringUtil.randomId(), StringUtil.randomId(),
-					_listFieldValueKey)) {
-
-			ListTypeEntryLocalServiceUtil.addListTypeEntry(
-				TestPropsValues.getUserId(),
-				listTypeDefinition.getListTypeDefinitionId(), key,
-				LocalizedMapUtil.getLocalizedMap(key));
-		}
+		_addListTypeEntry(listTypeDefinition, _listFieldValueKey);
 
 		_objectDefinition =
 			ObjectDefinitionLocalServiceUtil.addCustomObjectDefinition(
@@ -407,6 +401,16 @@ public class ObjectDefinitionGraphQLTest {
 				"JSONObject/data", "JSONObject/c",
 				"JSONObject/update" + _objectDefinitionName,
 				"Object/" + _objectFieldName));
+	}
+
+	private void _addListTypeEntry(
+			ListTypeDefinition listTypeDefinition, String key)
+		throws Exception {
+
+		ListTypeEntryLocalServiceUtil.addListTypeEntry(
+			TestPropsValues.getUserId(),
+			listTypeDefinition.getListTypeDefinitionId(), key,
+			LocalizedMapUtil.getLocalizedMap(key));
 	}
 
 	private JSONObject _invoke(GraphQLField queryGraphQLField)
