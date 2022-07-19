@@ -383,7 +383,7 @@ public class FileImplTest {
 			LogEntry logEntry = logEntries.get(0);
 
 			Assert.assertEquals(
-				"Entry Name: ../bad.txt is not valid", logEntry.getMessage());
+				"Invalid entry name: ../bad.txt", logEntry.getMessage());
 		}
 		finally {
 			_fileImpl.deltree(testPath.toFile());

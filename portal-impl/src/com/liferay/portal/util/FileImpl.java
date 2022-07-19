@@ -785,10 +785,7 @@ public class FileImpl implements com.liferay.portal.kernel.util.File {
 						destination.getCanonicalPath() + File.separator)) {
 
 					if (_log.isWarnEnabled()) {
-						_log.warn(
-							StringBundler.concat(
-								"Entry Name: ", entry.getName(),
-								" is not valid"));
+						_log.warn("Invalid entry name: " + entry.getName());
 					}
 
 					continue;
