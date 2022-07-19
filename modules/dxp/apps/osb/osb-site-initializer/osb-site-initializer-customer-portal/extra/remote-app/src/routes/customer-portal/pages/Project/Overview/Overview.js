@@ -66,6 +66,7 @@ const Overview = () => {
 	useEffect(() => {
 		const getAllSubscriptions = async (accountKey) => {
 			const {data: dataAccountSubscriptions} = await client.query({
+				fetchPolicy: 'network-only',
 				query: getAccountSubscriptions,
 				variables: {
 					filter: `accountKey eq '${accountKey}'`,
