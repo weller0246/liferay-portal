@@ -23,6 +23,7 @@ import {actionTypes} from '../../../context/reducer';
 import {PRODUCT_TYPES, SUBSCRIPTIONS_STATUS} from '../../../utils/constants';
 import {getWebContents} from '../../../utils/getWebContents';
 import SupportOverview from './components/SupportOverview/';
+import './app.scss';
 
 const Overview = () => {
 	const [{project, subscriptionGroups}, dispatch] = useCustomerPortal();
