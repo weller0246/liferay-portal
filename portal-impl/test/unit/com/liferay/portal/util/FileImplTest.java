@@ -366,10 +366,8 @@ public class FileImplTest {
 
 			_fileImpl.unzip(zipFile, testChildPath.toFile());
 
-			Assert.assertTrue(
-				Files.exists(testChildPath.resolve("good.txt")));
-			Assert.assertFalse(
-				Files.exists(testPath.resolve("bad.txt")));
+			Assert.assertTrue(Files.exists(testChildPath.resolve("good.txt")));
+			Assert.assertFalse(Files.exists(testPath.resolve("bad.txt")));
 
 			List<LogEntry> logEntries = logCapture.getLogEntries();
 
