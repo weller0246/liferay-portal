@@ -126,29 +126,30 @@ public class CommonStylesUtil {
 						JSONArray validValuesJSONArray =
 							styleJSONObject.getJSONArray("validValues");
 
-						if (validValuesJSONArray != null) {
-							Iterator<JSONObject> validValuesIterator =
-								validValuesJSONArray.iterator();
-
-							validValuesIterator.forEachRemaining(
-								validValueJSONObject -> {
-									String label =
-										validValueJSONObject.getString("label");
-
-									if (!GetterUtil.getBoolean(
-											PropsUtil.get(
-												"feature.flag.LPS-143206")) &&
-										Objects.equals(label, "inherited")) {
-
-										label = "default";
-									}
-
-									validValueJSONObject.put(
-										"label",
-										LanguageUtil.get(
-											resourceBundle, label));
-								});
+						if (validValuesJSONArray == null) {
+							return;
 						}
+
+						Iterator<JSONObject> validValuesIterator =
+							validValuesJSONArray.iterator();
+
+						validValuesIterator.forEachRemaining(
+							validValueJSONObject -> {
+								String label =
+									validValueJSONObject.getString("label");
+
+								if (!GetterUtil.getBoolean(
+										PropsUtil.get(
+											"feature.flag.LPS-143206")) &&
+									Objects.equals(label, "inherited")) {
+
+									label = "default";
+								}
+
+								validValueJSONObject.put(
+									"label",
+									LanguageUtil.get(resourceBundle, label));
+							});
 					});
 			});
 
