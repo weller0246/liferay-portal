@@ -356,18 +356,18 @@ public class FileImplTest {
 	public void testUnzipZipSlipVulnerable() throws Exception {
 		Path testPath = Files.createTempDirectory(null);
 
-		Path testSubPath = Files.createTempDirectory(testPath, null);
+		Path testChildPath = Files.createTempDirectory(testPath, null);
 
 		File zipFile = _createZipFile(
-			testSubPath, "test_slip.zip", "../bad.txt", "good.txt");
+			testChildPath, "test_slip.zip", "../bad.txt", "good.txt");
 
 		try (LogCapture logCapture = LoggerTestUtil.configureJDKLogger(
 				FileImpl.class.getName(), Level.WARNING)) {
 
-			_fileImpl.unzip(zipFile, testSubPath.toFile());
+			_fileImpl.unzip(zipFile, testChildPath.toFile());
 
 			Assert.assertTrue(
-				Files.exists(testSubPath.resolve("good.txt")));
+				Files.exists(testChildPath.resolve("good.txt")));
 			Assert.assertFalse(
 				Files.exists(testPath.resolve("bad.txt")));
 
