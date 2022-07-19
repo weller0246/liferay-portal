@@ -48,9 +48,8 @@ public class CommerceInventoryReplenishmentItemLocalServiceImpl
 
 		User user = userLocalService.getUser(userId);
 
-		long companyId = user.getCompanyId();
-
-		_validateExternalReferenceCode(0, companyId, externalReferenceCode);
+		_validateExternalReferenceCode(
+			0, user.getCompanyId(), externalReferenceCode);
 
 		_validateQuantity(quantity);
 		_validateSku(sku);
@@ -64,8 +63,7 @@ public class CommerceInventoryReplenishmentItemLocalServiceImpl
 
 		commerceInventoryReplenishmentItem.setExternalReferenceCode(
 			externalReferenceCode);
-
-		commerceInventoryReplenishmentItem.setCompanyId(companyId);
+		commerceInventoryReplenishmentItem.setCompanyId(user.getCompanyId());
 		commerceInventoryReplenishmentItem.setUserId(userId);
 		commerceInventoryReplenishmentItem.setUserName(user.getFullName());
 		commerceInventoryReplenishmentItem.setCommerceInventoryWarehouseId(
