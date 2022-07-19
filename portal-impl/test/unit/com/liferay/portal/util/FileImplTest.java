@@ -354,11 +354,9 @@ public class FileImplTest {
 
 	@Test
 	public void testUnzipZipSlipVulnerable() throws Exception {
-		Path testPath = Files.createTempDirectory(
-			"testUnzipZipSlipVulnerable-testPath");
+		Path testPath = Files.createTempDirectory(null);
 
-		Path testSubPath = Files.createTempDirectory(
-			testPath, "testUnzipZipSlipVulnerable-testSubPath");
+		Path testSubPath = Files.createTempDirectory(testPath, null);
 
 		File zipFile = _createZipFile(
 			testSubPath, "test_slip.zip", "../bad.txt", "good.txt");
