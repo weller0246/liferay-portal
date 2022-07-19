@@ -75,10 +75,10 @@ public class MinifierUtil {
 	}
 
 	private static boolean _isLiferayResource(String resourceName) {
-		if (resourceName.startsWith(
-				Portal.PATH_MODULE + "/js/resolved-module/") ||
+		if (resourceName.startsWith(Portal.PATH_MODULE + "/admin-theme/") ||
 			resourceName.startsWith(Portal.PATH_MODULE + "/classic-theme/") ||
-			resourceName.startsWith(Portal.PATH_MODULE + "/admin-theme/") ||
+			resourceName.startsWith(
+				Portal.PATH_MODULE + "/js/resolved-module/") ||
 			_liferayServletContextsMap.containsKey(
 				_getServletContextPath(resourceName))) {
 
