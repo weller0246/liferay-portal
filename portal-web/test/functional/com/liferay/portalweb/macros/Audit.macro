@@ -90,7 +90,7 @@ definition {
 	}
 
 	macro searchViaKeywords {
-		AssertElementPresent(locator1 = "TextInput#SITE_SEARCH_KEYWORDS");
+		WaitForElementPresent(locator1 = "TextInput#SITE_SEARCH_KEYWORDS");
 
 		Type(
 			locator1 = "TextInput#SITE_SEARCH_KEYWORDS",
