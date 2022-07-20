@@ -394,7 +394,7 @@ export function ColorPicker({
 															) =>
 																event.preventDefault()
 															}
-															role="option"
+															roleItem="option"
 															value={token.label}
 														/>
 													)
