@@ -28,13 +28,10 @@ import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.Objects;
-import java.util.Optional;
-import java.util.ResourceBundle;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
@@ -95,11 +92,11 @@ public class FragmentConfigurationField {
 			return _getTextDefaultValue();
 		}
 
-		return Optional.ofNullable(
-			_defaultValue
-		).orElse(
-			StringPool.BLANK
-		);
+		if (Validator.isNotNull(_defaultValue)) {
+			return _defaultValue;
+		}
+
+		return StringPool.BLANK;
 	}
 
 	public FragmentConfigurationFieldDataType
@@ -210,10 +207,8 @@ public class FragmentConfigurationField {
 			return _defaultValue;
 		}
 
-		ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-			LocaleUtil.getMostRelevantLocale(), getClass());
-
-		return LanguageUtil.get(resourceBundle, _defaultValue, _defaultValue);
+		return LanguageUtil.get(
+			LocaleUtil.getMostRelevantLocale(), _defaultValue);
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
