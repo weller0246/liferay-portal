@@ -14,7 +14,6 @@
 
 import {openModal, openSimpleInputModal} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
 import openDeleteSiteNavigationMenuModal from './openDeleteSiteNavigationMenuModal';
 
 const ACTIONS = {
@@ -30,14 +29,13 @@ const ACTIONS = {
 	},
 
 	markAsPrimary(itemData) {
-		openConfirm({
-			message: itemData.confirmationMessage,
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed && !itemData.confirmationMessage) {
-					submitForm(document.hrefFm, itemData.markAsPrimaryURL);
-				}
-			},
-		});
+		if (
+			itemData.confirmationMessage &&
+			!confirm(itemData.confirmationMessage)
+		) {
+			return;
+		}
+		submitForm(document.hrefFm, itemData.markAsPrimaryURL);
 	},
 
 	markAsSecondary(itemData) {
