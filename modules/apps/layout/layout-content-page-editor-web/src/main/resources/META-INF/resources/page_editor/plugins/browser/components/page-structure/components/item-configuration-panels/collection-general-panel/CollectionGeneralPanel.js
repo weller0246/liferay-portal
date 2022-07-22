@@ -120,54 +120,50 @@ export function CollectionGeneralPanel({item}) {
 		);
 	};
 
-	const onPreventCollectionSelect = useCallback(
-		(callback) => {
-			const state = getState();
+	const shouldPreventCollectionSelect = () => {
+		const state = getState();
 
-			const isLinkedToFilter = Object.values(state.layoutData.items).some(
-				(layoutDataItem) => {
-					if (
-						layoutDataItem.type !== LAYOUT_DATA_ITEM_TYPES.fragment
-					) {
-						return false;
-					}
-
-					const fragmentEntryLink =
-						state.fragmentEntryLinks[
-							layoutDataItem.config.fragmentEntryLinkId
-						];
-
-					if (
-						fragmentEntryLink.fragmentEntryKey !==
-							COLLECTION_FILTER_FRAGMENT_ENTRY_KEY &&
-						fragmentEntryLink.fragmentEntryKey !==
-							COLLECTION_APPLIED_FILTERS_FRAGMENT_ENTRY_KEY
-					) {
-						return false;
-					}
-
-					return fragmentEntryLink.editableValues[
-						FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
-					]?.targetCollections?.includes(item.itemId);
+		const isLinkedToFilter = Object.values(state.layoutData.items).some(
+			(layoutDataItem) => {
+				if (layoutDataItem.type !== LAYOUT_DATA_ITEM_TYPES.fragment) {
+					return false;
 				}
-			);
 
-			if (isLinkedToFilter) {
-				openConfirmModal({
-					message: `${Liferay.Language.get(
-						'if-you-change-the-collection-you-unlink-the-collection-filter'
-					)}\n\n${Liferay.Language.get('do-you-want-to-continue')}`,
-					onConfirm: (isConfirmed) => {
-						callback(isConfirmed);
-					},
-				});
+				const fragmentEntryLink =
+					state.fragmentEntryLinks[
+						layoutDataItem.config.fragmentEntryLinkId
+					];
+
+				if (
+					fragmentEntryLink.fragmentEntryKey !==
+						COLLECTION_FILTER_FRAGMENT_ENTRY_KEY &&
+					fragmentEntryLink.fragmentEntryKey !==
+						COLLECTION_APPLIED_FILTERS_FRAGMENT_ENTRY_KEY
+				) {
+					return false;
+				}
+
+				return fragmentEntryLink.editableValues[
+					FREEMARKER_FRAGMENT_ENTRY_PROCESSOR
+				]?.targetCollections?.includes(item.itemId);
 			}
-			else {
-				callback(false);
-			}
-		},
-		[getState, item.itemId]
-	);
+		);
+
+		let result = false;
+
+		openConfirmModal({
+			message: `${Liferay.Language.get(
+				'if-you-change-the-collection-you-unlink-the-collection-filter'
+			)}\n\n${Liferay.Language.get('do-you-want-to-continue')}`,
+			onConfirm: (isConfirmed) => {
+				if (!isConfirmed && isLinkedToFilter) {
+					result = true;
+				}
+			},
+		});
+
+		return result;
+	};
 
 	const handleConfigurationChanged = useCallback(
 		(itemConfig) => {
@@ -237,10 +233,10 @@ export function CollectionGeneralPanel({item}) {
 							itemSelectorURL={config.collectionSelectorURL}
 							label={Liferay.Language.get('collection')}
 							onCollectionSelect={handleCollectionSelect}
-							onPreventCollectionSelect={
-								onPreventCollectionSelect
-							}
 							optionsMenuItems={optionsMenuItems}
+							shouldPreventCollectionSelect={
+								shouldPreventCollectionSelect
+							}
 						/>
 					)}
 

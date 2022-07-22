@@ -65,60 +65,58 @@ function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
 			message: currentAction.data.confirmationMessage,
 			onConfirm: (isConfirmed) => {
 				if (
-					isConfirmed &&
-					!currentAction.data &&
-					!currentAction.data.confirmationMessage
+					!isConfirmed &&
+					currentAction.data &&
+					currentAction.data.confirmationMessage
 				) {
-					if (currentAction.target === 'modal') {
-						event.preventDefault();
-
-						openModal({
-							size: currentAction.size || 'lg',
-							title: currentAction.title,
-							url: formattedHref,
-						});
-					}
-					else if (currentAction.target === 'sidePanel') {
-						event.preventDefault();
-
-						highlightItems([itemId]);
-						openSidePanel({
-							size: currentAction.size || 'lg',
-							title: currentAction.title,
-							url: formattedHref,
-						});
-					}
-					else if (
-						currentAction.target === 'async' ||
-						currentAction.target === 'headless'
-					) {
-						event.preventDefault();
-
-						executeAsyncItemAction(
-							formattedHref,
-							currentAction.method
-						).then(() => {
-							openToast({
-								message:
-									currentAction.data?.successMessage ||
-									Liferay.Language.get('action-completed'),
-								type: 'success',
-							});
-						});
-					}
-					else if (currentAction.onClick) {
-						event.preventDefault();
-
-						event.target.setAttribute(
-							'onClick',
-							currentAction.onClick
-						);
-						event.target.onclick();
-						event.target.removeAttribute('onClick');
-					}
+					return;
 				}
 			},
 		});
+
+		if (currentAction.target === 'modal') {
+			event.preventDefault();
+
+			openModal({
+				size: currentAction.size || 'lg',
+				title: currentAction.title,
+				url: formattedHref,
+			});
+		}
+		else if (currentAction.target === 'sidePanel') {
+			event.preventDefault();
+
+			highlightItems([itemId]);
+			openSidePanel({
+				size: currentAction.size || 'lg',
+				title: currentAction.title,
+				url: formattedHref,
+			});
+		}
+		else if (
+			currentAction.target === 'async' ||
+			currentAction.target === 'headless'
+		) {
+			event.preventDefault();
+
+			executeAsyncItemAction(formattedHref, currentAction.method).then(
+				() => {
+					openToast({
+						message:
+							currentAction.data?.successMessage ||
+							Liferay.Language.get('action-completed'),
+						type: 'success',
+					});
+				}
+			);
+		}
+		else if (currentAction.onClick) {
+			event.preventDefault();
+
+			event.target.setAttribute('onClick', currentAction.onClick);
+			event.target.onclick();
+			event.target.removeAttribute('onClick');
+		}
 	}
 
 	function isNotALink() {

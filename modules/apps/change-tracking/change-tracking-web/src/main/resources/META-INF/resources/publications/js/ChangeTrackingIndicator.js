@@ -767,21 +767,18 @@ export default function ChangeTrackingIndicator({
 	if (checkoutDropdownItem) {
 		dropdownItems.push({
 			label: checkoutDropdownItem.label,
-			onClick: () => {
-				if (!checkoutDropdownItem.confirmationMessage) {
-					navigate(checkoutDropdownItem.href, true);
-				}
-				else {
-					openConfirmModal({
-						message: checkoutDropdownItem.confirmationMessage,
-						onConfirm: (isConfirmed) => {
-							if (isConfirmed) {
-								navigate(checkoutDropdownItem.href, true);
-							}
-						},
-					});
-				}
-			},
+			onClick: () =>
+				openConfirmModal({
+					message: checkoutDropdownItem.confirmationMessage,
+					onConfirm: (isConfirmed) => {
+						if (
+							isConfirmed ||
+							!checkoutDropdownItem.confirmationMessage
+						) {
+							navigate(checkoutDropdownItem.href, true);
+						}
+					},
+				}),
 			symbolLeft: checkoutDropdownItem.symbolLeft,
 		});
 	}
