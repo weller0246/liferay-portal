@@ -138,18 +138,13 @@ AUI.add(
 				const cmd = MAP_CMD_REVISION[type];
 				const confirmText = MAP_TEXT_REVISION[type];
 
-				instance._openConfirm({
-					message: confirmText,
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							instance._updateRevision(
-								cmd,
-								event.layoutRevisionId,
-								event.layoutSetBranchId
-							);
-						}
-					},
-				});
+				if (confirm(confirmText)) {
+					instance._updateRevision(
+						cmd,
+						event.layoutRevisionId,
+						event.layoutSetBranchId
+					);
+				}
 			},
 
 			_onSubmit(event) {
@@ -207,15 +202,6 @@ AUI.add(
 					title: Liferay.Language.get('history'),
 					uri: StagingBar.viewHistoryURL,
 				});
-			},
-
-			_openConfirm({message, onConfirm}) {
-				if (Liferay.FeatureFlags.enableCustomDialogs) {
-					Liferay.Util.openConfirmModal({message, onConfirm});
-				}
-				else if (confirm(message)) {
-					onConfirm(true);
-				}
 			},
 
 			_updateRevision(cmd, layoutRevisionId, layoutSetBranchId) {
