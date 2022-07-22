@@ -14,29 +14,26 @@
 
 import {openSelectionModal} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteUserGroups') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isSelected) => {
-						if (isSelected) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								submitForm(form);
-							}
-						}
-					},
-				});
+					if (form) {
+						submitForm(form);
+					}
+				}
 			}
 		},
 		onCreateButtonClick(event, {item}) {
