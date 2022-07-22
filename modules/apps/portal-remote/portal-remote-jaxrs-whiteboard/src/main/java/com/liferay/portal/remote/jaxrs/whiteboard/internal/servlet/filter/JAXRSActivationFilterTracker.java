@@ -78,7 +78,7 @@ public class JAXRSActivationFilterTracker {
 			_readyServiceRegistration = _bundleContext.registerService(
 				Object.class, new Object(),
 				MapUtil.singletonDictionary(
-					_LIFERAY_JAXRS_WHITEBOARD_READY, true));
+					"liferay.jaxrs.whiteboard.ready", true));
 
 			_unregister();
 		}
@@ -91,9 +91,6 @@ public class JAXRSActivationFilterTracker {
 			_filterServiceRegistration = null;
 		}
 	}
-
-	private static final String _LIFERAY_JAXRS_WHITEBOARD_READY =
-		"liferay.jaxrs.whiteboard.ready";
 
 	private BundleContext _bundleContext;
 	private CountDownLatch _countDownLatch;
