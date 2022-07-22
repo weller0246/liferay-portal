@@ -16,17 +16,16 @@ import {getSpritemap} from '@liferay/frontend-icons-web';
 import {openModal} from 'frontend-js-web';
 
 import {openShareFormModal} from './components/share-form/openShareFormModal.es';
-import openConfirm from './openConfirm';
 
 const ACTIONS = {
 	delete({deleteFormInstanceURL}) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirm) =>
-				isConfirm && submitForm(document.hrefFm, deleteFormInstanceURL),
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			submitForm(document.hrefFm, deleteFormInstanceURL);
+		}
 	},
 
 	exportForm({exportFormURL}) {
