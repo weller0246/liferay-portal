@@ -19,8 +19,6 @@ import {
 	sub,
 } from 'frontend-js-web';
 
-import openConfirm from '../../common/js/openConfirm.es';
-
 export default function propsTransformer({
 	additionalProps: {
 		accountGroupName,
@@ -37,30 +35,29 @@ export default function propsTransformer({
 			const action = item?.data?.action;
 
 			if (action === 'removeAccountGroupAccountEntries') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-remove-the-selected-accounts'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-remove-the-selected-accounts'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								postForm(form, {
-									data: {
-										accountEntryIds: getCheckedCheckboxes(
-											form,
-											`${portletNamespace}allRowIds`
-										),
-									},
-									url: removeAccountGroupAccountEntriesURL,
-								});
-							}
-						}
-					},
-				});
+					if (form) {
+						postForm(form, {
+							data: {
+								accountEntryIds: getCheckedCheckboxes(
+									form,
+									`${portletNamespace}allRowIds`
+								),
+							},
+							url: removeAccountGroupAccountEntriesURL,
+						});
+					}
+				}
 			}
 		},
 		onCreateButtonClick: () => {
