@@ -14,7 +14,6 @@
 
 import {openModal} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
 import openDeleteLayoutModal from './openDeleteLayoutModal';
 
 const ACTIONS = {
@@ -38,16 +37,13 @@ const ACTIONS = {
 	},
 
 	discardDraft: ({discardDraftURL}) => {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					Liferay.Util.navigate(discardDraftURL);
-				}
-			},
-		});
+		const discardDraftMessage = Liferay.Language.get(
+			'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
+		);
+
+		if (confirm(discardDraftMessage)) {
+			Liferay.Util.navigate(discardDraftURL);
+		}
 	},
 
 	exportTranslation: ({exportTranslationURL}) => {
