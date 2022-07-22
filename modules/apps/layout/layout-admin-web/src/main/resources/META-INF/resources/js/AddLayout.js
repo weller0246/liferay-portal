@@ -12,7 +12,7 @@
  * details.
  */
 
-import {fetch, openToast} from 'frontend-js-web';
+import {openToast} from 'frontend-js-web';
 
 export default function ({namespace}) {
 	const addButton = document.getElementById(`${namespace}addButton`);
@@ -31,7 +31,7 @@ export default function ({namespace}) {
 
 		const formData = new FormData(form);
 
-		fetch(form.action, {
+		Liferay.Util.fetch(form.action, {
 			body: formData,
 			method: 'POST',
 		})

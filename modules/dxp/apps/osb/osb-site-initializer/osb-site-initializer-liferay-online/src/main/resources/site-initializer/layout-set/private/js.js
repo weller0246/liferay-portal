@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-import {fetch, openModal} from 'frontend-js-web';
+import {openModal} from 'frontend-js-web';
 
 let copySaved = '';
 
@@ -154,7 +154,7 @@ function createOrder(
 		commerceChannelId +
 		'/carts';
 
-	fetch(cartsURL, {
+	Liferay.Util.fetch(cartsURL, {
 		body: JSON.stringify({
 			accountId: commerceAccountId,
 			channelId: commerceChannelId,
@@ -176,7 +176,7 @@ function createOrder(
 				cartId +
 				'/items';
 
-			return fetch(cartURL, {
+			return Liferay.Util.fetch(cartURL, {
 				body: JSON.stringify({
 					options:
 						'[{"key":"admin-email-address","value":["' +
@@ -214,7 +214,7 @@ function createOrder(
 						cartId +
 						'/checkout';
 
-					return fetch(checkoutURL, {
+					return Liferay.Util.fetch(checkoutURL, {
 						headers: {
 							'Accept': 'application/json',
 							'Content-Type': 'application/json',

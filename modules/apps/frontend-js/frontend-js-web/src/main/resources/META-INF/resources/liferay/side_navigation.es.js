@@ -14,7 +14,6 @@
 
 import EventEmitter from './events/EventEmitter';
 import throttle from './throttle.es';
-import fetch from './util/fetch.es';
 
 /**
  * Options
@@ -417,7 +416,7 @@ SideNavigation.prototype = {
 			loading.innerHTML = instance.options.loadingIndicatorTPL;
 
 			sidebar.appendChild(loading);
-			instance._fetchPromise = fetch(url);
+			instance._fetchPromise = Liferay.Util.fetch(url);
 
 			instance._fetchPromise
 				.then((response) => {
