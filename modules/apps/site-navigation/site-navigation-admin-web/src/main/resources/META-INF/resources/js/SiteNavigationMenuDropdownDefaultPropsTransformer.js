@@ -33,19 +33,14 @@ const ACTIONS = {
 	},
 
 	markAsPrimary(itemData) {
-		if (itemData.confirmationMessage) {
-			openConfirmModal({
-				message: itemData.confirmationMessage,
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						submitForm(document.hrefFm, itemData.markAsPrimaryURL);
-					}
-				},
-			});
-		}
-		else {
-			submitForm(document.hrefFm, itemData.markAsPrimaryURL);
-		}
+		openConfirmModal({
+			message: itemData.confirmationMessage,
+			onConfirm: (isConfirmed) => {
+				if (isConfirmed && !itemData.confirmationMessage) {
+					submitForm(document.hrefFm, itemData.markAsPrimaryURL);
+				}
+			},
+		});
 	},
 
 	markAsSecondary(itemData) {

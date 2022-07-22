@@ -148,21 +148,16 @@ function ToolbarBody({className}) {
 	};
 
 	const onPublish = () => {
-		if (!config.masterUsed) {
-			setPublishPending(true);
-		}
-		else {
-			openConfirmModal({
-				message: Liferay.Language.get(
-					'changes-made-on-this-master-are-going-to-be-propagated-to-all-page-templates,-display-page-templates,-and-pages-using-it.are-you-sure-you-want-to-proceed'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						setPublishPending(true);
-					}
-				},
-			});
-		}
+		openConfirmModal({
+			message: Liferay.Language.get(
+				'changes-made-on-this-master-are-going-to-be-propagated-to-all-page-templates,-display-page-templates,-and-pages-using-it.are-you-sure-you-want-to-proceed'
+			),
+			onConfirm: (isConfirmed) => {
+				if (isConfirmed || !config.masterUsed) {
+					setPublishPending(true);
+				}
+			},
+		});
 	};
 
 	const onUndo = () => {

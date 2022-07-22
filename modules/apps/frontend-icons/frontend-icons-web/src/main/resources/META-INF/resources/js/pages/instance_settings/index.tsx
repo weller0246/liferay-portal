@@ -17,7 +17,7 @@ import {ClayDropDownWithItems} from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import ClayLayout from '@clayui/layout';
 import ClayPanel from '@clayui/panel';
-import {fetch, openConfirmModal, openToast, sub} from 'frontend-js-web';
+import {fetch, openToast, sub} from 'frontend-js-web';
 import React, {useMemo, useState} from 'react';
 
 import AddIconPackModal from './AddIconPackModal';
@@ -91,41 +91,41 @@ export default function InstanceIconConfiguration({
 	);
 
 	const handleDelete = (iconPackName: string) => {
-		openConfirmModal({
-			message: sub(
-				Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-the-x-icon-pack'
-				),
-				[iconPackName]
-			),
-			onConfirm: (isConfirmed: boolean) => {
-				if (isConfirmed) {
-					const formData = new FormData();
+		if (
+			!confirm(
+				sub(
+					Liferay.Language.get(
+						'are-you-sure-you-want-to-delete-the-x-icon-pack'
+					),
+					[iconPackName]
+				)
+			)
+		) {
+			return;
+		}
 
-					formData.append(portletNamespace + 'name', iconPackName);
+		const formData = new FormData();
 
-					return fetch(deleteIconsPackURL, {
-						body: formData,
-						method: 'post',
-					}).then(() => {
-						openToast({
-							message: Liferay.Language.get('icon-pack-deleted'),
-							title: Liferay.Language.get('success'),
-							toastProps: {
-								autoClose: 5000,
-							},
-							type: 'success',
-						});
+		formData.append(portletNamespace + 'name', iconPackName);
 
-						const newIcons = {...icons};
+		return fetch(deleteIconsPackURL, {body: formData, method: 'post'}).then(
+			() => {
+				openToast({
+					message: Liferay.Language.get('icon-pack-deleted'),
+					title: Liferay.Language.get('success'),
+					toastProps: {
+						autoClose: 5000,
+					},
+					type: 'success',
+				});
 
-						delete newIcons[iconPackName];
+				const newIcons = {...icons};
 
-						setIcons(newIcons);
-					});
-				}
-			},
-		});
+				delete newIcons[iconPackName];
+
+				setIcons(newIcons);
+			}
+		);
 	};
 
 	return (
