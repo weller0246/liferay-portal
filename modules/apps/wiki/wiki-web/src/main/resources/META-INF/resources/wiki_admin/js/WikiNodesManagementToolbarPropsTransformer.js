@@ -14,8 +14,6 @@
 
 import {postForm} from 'frontend-js-web';
 
-import openConfirm from '../../wiki/js/openConfirm';
-
 export default function propsTransformer({
 	additionalProps: {deleteNodesCmd, deleteNodesURL, trashEnabled},
 	portletNamespace,
@@ -25,27 +23,27 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deleteNodes') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-the-selected-entries'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed || trashEnabled) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					trashEnabled ||
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-the-selected-entries'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								postForm(form, {
-									data: {
-										cmd: deleteNodesCmd,
-									},
-									url: deleteNodesURL,
-								});
-							}
-						}
-					},
-				});
+					if (form) {
+						postForm(form, {
+							data: {
+								cmd: deleteNodesCmd,
+							},
+							url: deleteNodesURL,
+						});
+					}
+				}
 			}
 		},
 	};

@@ -14,8 +14,6 @@
 
 import {fetch, sub} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 const CONFIRM_DISCARD_IMAGES = Liferay.Language.get(
 	'uploads-are-in-progress-confirmation'
 );
@@ -140,21 +138,16 @@ class WikiPortlet {
 			newFormat
 		);
 
-		openConfirm({
-			message: confirmMessage,
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					const form = this.rootNode.querySelector(
-						`[name="${this._namespace}fm"]`
-					);
-					form.setAttribute('action', this._renderUrl);
-					this._save();
-				}
-				else {
-					formatSelect.selectedIndex = this.currentFormatIndex;
-				}
-			},
-		});
+		if (confirm(confirmMessage)) {
+			const form = this.rootNode.querySelector(
+				`[name="${this._namespace}fm"]`
+			);
+			form.setAttribute('action', this._renderUrl);
+			this._save();
+		}
+		else {
+			formatSelect.selectedIndex = this.currentFormatIndex;
+		}
 	}
 
 	/**
