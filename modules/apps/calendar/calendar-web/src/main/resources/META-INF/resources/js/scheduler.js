@@ -486,7 +486,7 @@ AUI.add(
 							);
 						}
 
-						if (Liferay.FeatureFlags['LPS-148659']) {
+						if (Liferay.FeatureFlags.enableCustomDialogs) {
 							Liferay.Util.openConfirmModal({
 								message: confirmationMessage,
 								onConfirm: (isConfirmed) => {

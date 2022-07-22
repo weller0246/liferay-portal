@@ -21,7 +21,7 @@ import {
 import openDeleteFragmentModal from './openDeleteFragmentModal';
 
 function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags['LPS-148659']) {
+	if (Liferay.FeatureFlags.enableCustomDialogs) {
 		openConfirmModal({message, onConfirm});
 	}
 	else if (confirm(message)) {
