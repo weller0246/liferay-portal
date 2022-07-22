@@ -112,21 +112,23 @@ export default function propsTransformer({
 	};
 
 	const deleteEntries = () => {
-		if (trashEnabled) {
-			processAction('move_to_trash', editEntryURL);
-		}
-		else {
-			openConfirmModal({
-				message: Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-the-selected-entries'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						processAction('delete', editEntryURL);
-					}
-				},
-			});
-		}
+		openConfirmModal({
+			message: Liferay.Language.get(
+				'are-you-sure-you-want-to-delete-the-selected-entries'
+			),
+			onConfirm: (isConfirmed) => {
+				let action;
+
+				if (trashEnabled) {
+					action = 'move_to_trash';
+				}
+				else if (isConfirmed) {
+					action = 'delete';
+				}
+
+				processAction(action, editEntryURL);
+			},
+		});
 	};
 
 	const editCategories = () => {

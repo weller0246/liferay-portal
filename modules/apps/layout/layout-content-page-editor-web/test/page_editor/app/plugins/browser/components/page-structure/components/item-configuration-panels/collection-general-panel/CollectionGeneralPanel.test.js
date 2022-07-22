@@ -360,10 +360,10 @@ describe('CollectionGeneralPanel', () => {
 
 		it('shows a confirmation when updating a collection linked to a filter', async () => {
 			CollectionSelector.mockImplementation(
-				({onPreventCollectionSelect}) => {
+				({shouldPreventCollectionSelect}) => {
 					useEffect(
 						() => {
-							onPreventCollectionSelect();
+							shouldPreventCollectionSelect();
 						},
 						// eslint-disable-next-line react-hooks/exhaustive-deps
 						[]

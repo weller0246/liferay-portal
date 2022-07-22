@@ -185,27 +185,25 @@ class WikiPortlet {
 	 * confirmation to the user.
 	 *
 	 * @protected
-	 * @return {void} Call the callback if there aren't temporal
-	 * images, and the user does not confirm she wants to lose them.
-	 * Otherwise, the callback will not be called.
+	 * @return {Boolean} False if there are temporal images and
+	 * user does not confirm she wants to lose them. True in other case.
 	 */
-	_maybeRemoveTempImages(callback) {
+	_removeTempImages() {
 		const tempImages = this.rootNode.querySelector('img[data-random-id]');
+		let discardTempImages = true;
 
 		if (tempImages && !!tempImages.length) {
-			openConfirmModal({
-				message: this._strings.confirmDiscardImages,
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						tempImages.forEach((node) => {
-							node.parentElement.remove();
-						});
-
-						callback();
-					}
-				},
-			});
+			if (confirm(this._strings.confirmDiscardImages)) {
+				tempImages.forEach((node) => {
+					node.parentElement.remove();
+				});
+			}
+			else {
+				discardTempImages = false;
+			}
 		}
+
+		return discardTempImages;
 	}
 
 	/**
@@ -216,7 +214,7 @@ class WikiPortlet {
 	_save() {
 		const namespace = this._namespace;
 
-		this._maybeRemoveTempImages(() => {
+		if (this._removeTempImages()) {
 			document.getElementById(
 				namespace + this._constants.CMD
 			).value = this._currentAction;
@@ -230,7 +228,7 @@ class WikiPortlet {
 			}
 
 			submitForm(document[`${namespace}fm`]);
-		});
+		}
 	}
 }
 

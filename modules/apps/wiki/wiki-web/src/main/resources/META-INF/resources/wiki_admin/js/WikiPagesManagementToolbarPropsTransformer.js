@@ -23,35 +23,27 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deletePages') {
-				const form = document.getElementById(`${portletNamespace}fm`);
+				openConfirmModal({
+					message: Liferay.Language.get(
+						'are-you-sure-you-want-to-delete-the-selected-entries'
+					),
+					onConfirm: (isConfirmed) => {
+						if (isConfirmed || trashEnabled) {
+							const form = document.getElementById(
+								`${portletNamespace}fm`
+							);
 
-				if (form) {
-					if (trashEnabled) {
-						postForm(form, {
-							data: {
-								cmd: deletePagesCmd,
-							},
-							url: deletePagesURL,
-						});
-					}
-					else {
-						openConfirmModal({
-							message: Liferay.Language.get(
-								'are-you-sure-you-want-to-delete-the-selected-entries'
-							),
-							onConfirm: (isConfirmed) => {
-								if (isConfirmed) {
-									postForm(form, {
-										data: {
-											cmd: deletePagesCmd,
-										},
-										url: deletePagesURL,
-									});
-								}
-							},
-						});
-					}
-				}
+							if (form) {
+								postForm(form, {
+									data: {
+										cmd: deletePagesCmd,
+									},
+									url: deletePagesURL,
+								});
+							}
+						}
+					},
+				});
 			}
 		},
 	};

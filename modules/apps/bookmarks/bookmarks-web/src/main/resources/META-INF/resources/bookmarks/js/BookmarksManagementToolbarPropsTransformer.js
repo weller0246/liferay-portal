@@ -45,19 +45,20 @@ export default function propsTransformer({
 			if (item?.data?.action === 'deleteEntries') {
 				if (trashEnabled) {
 					handleDelete();
+
+					return;
 				}
-				else {
-					openConfirmModal({
-						message: Liferay.Language.get(
-							'are-you-sure-you-want-to-delete-the-selected-entries'
-						),
-						onConfirm: (isConfirmed) => {
-							if (isConfirmed) {
-								handleDelete();
-							}
-						},
-					});
-				}
+
+				openConfirmModal({
+					message: Liferay.Language.get(
+						'are-you-sure-you-want-to-delete-the-selected-entries'
+					),
+					onConfirm: (isConfirmed) => {
+						if (isConfirmed) {
+							handleDelete();
+						}
+					},
+				});
 			}
 		},
 	};

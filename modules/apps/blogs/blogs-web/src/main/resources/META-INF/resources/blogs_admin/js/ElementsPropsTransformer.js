@@ -45,16 +45,13 @@ const ACTIONS = {
 	},
 
 	publishToLive(itemData) {
-		openConfirmModal({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-publish-to-live'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					this.send(itemData.publishEntryURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-publish-to-live')
+			)
+		) {
+			this.send(itemData.publishEntryURL);
+		}
 	},
 
 	send(url) {
