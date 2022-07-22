@@ -13,7 +13,7 @@
  */
 
 import ClayList from '@clayui/list';
-import {openConfirmModal, openToast} from 'frontend-js-web';
+import {openToast} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 import {DndProvider} from 'react-dnd';
@@ -22,15 +22,6 @@ import {HTML5Backend} from 'react-dnd-html5-backend';
 import {saveVariationsListPriorityService} from '../../api/index';
 import SortableListItem from './SortableListItem';
 import {buildItemsPriorityURL} from './utils/index';
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
-}
 
 const savePriority = async ({url}) => {
 	try {
@@ -93,16 +84,13 @@ const SortableList = ({items, namespace, savePriorityURL}) => {
 			return;
 		}
 
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					submitForm(document.hrefFm, deleteURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			submitForm(document.hrefFm, deleteURL);
+		}
 	};
 
 	return (
