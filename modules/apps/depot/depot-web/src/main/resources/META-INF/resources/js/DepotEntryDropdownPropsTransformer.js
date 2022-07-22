@@ -12,20 +12,13 @@
  * details.
  */
 
-import openConfirm from './openConfirm.es';
+import confirmDepotEntryDeletion from './confirmDepotEntryDeletion.es';
 
 const ACTIONS = {
 	deleteDepotEntry(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'removing-an-asset-library-can-affect-sites-that-use-the-contents-stored-in-it.-are-you-sure-you-want-to-continue-removing-this-asset-library'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					submitForm(document.hrefFm, itemData.deleteDepotEntryURL);
-				}
-			},
-		});
+		if (confirmDepotEntryDeletion()) {
+			submitForm(document.hrefFm, itemData.deleteDepotEntryURL);
+		}
 	},
 
 	openWindow(label, url) {

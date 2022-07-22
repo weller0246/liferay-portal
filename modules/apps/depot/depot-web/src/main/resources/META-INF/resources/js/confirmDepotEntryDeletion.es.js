@@ -12,15 +12,10 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
+export default function confirmDepotEntryDeletion() {
+	return confirm(
+		Liferay.Language.get(
+			'removing-an-asset-library-can-affect-sites-that-use-the-contents-stored-in-it.-are-you-sure-you-want-to-continue-removing-this-asset-library'
+		)
+	);
 }
-
-export default openConfirm;
