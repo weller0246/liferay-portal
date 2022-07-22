@@ -20,7 +20,6 @@ import React, {useContext} from 'react';
 
 import FrontendDataSetContext from '../FrontendDataSetContext';
 import {formatActionURL} from '../utils/index';
-import openConfirm from '../utils/openConfirm';
 import DefaultContent from './DefaultRenderer';
 
 function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
@@ -62,19 +61,13 @@ function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
 		currentAction.href && formatActionURL(currentAction.href, itemData);
 
 	function handleClickOnLink(event) {
-		openConfirm({
-			message: currentAction.data.confirmationMessage,
-			onConfirm: (isConfirmed) => {
-				if (
-					!isConfirmed &&
-					currentAction.data &&
-					currentAction.data.confirmationMessage
-				) {
-					return;
-				}
-			},
-		});
-
+		if (
+			currentAction.data &&
+			currentAction.data.confirmationMessage &&
+			!confirm(currentAction.data.confirmationMessage)
+		) {
+			return;
+		}
 		if (currentAction.target === 'modal') {
 			event.preventDefault();
 
@@ -142,14 +135,9 @@ function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
 								if (confirmMessage) {
 									event.preventDefault();
 
-									openConfirm({
-										message: confirmMessage,
-										onConfirm: (isConfirmed) => {
-											if (isConfirmed) {
-												navigate(formattedHref);
-											}
-										},
-									});
+									if (confirm(confirmMessage)) {
+										navigate(formattedHref);
+									}
 								}
 						  }
 				}
