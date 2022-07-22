@@ -86,13 +86,6 @@ function _renderSegmentEditComponent({
 }
 
 describe('SegmentEdit', () => {
-	beforeAll(() => {
-		window.Liferay = {
-			...Liferay,
-			FeatureFlags: {},
-		};
-	});
-
 	it('renders', () => {
 		const {asFragment} = _renderSegmentEditComponent();
 

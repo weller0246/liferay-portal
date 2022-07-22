@@ -119,13 +119,6 @@ describe('VariationsNav Initial State', () => {
 });
 
 describe('VariationsNav With segments', () => {
-	beforeAll(() => {
-		window.Liferay = {
-			...Liferay,
-			FeatureFlags: {},
-		};
-	});
-
 	beforeEach(() => {
 		window['openSelectSegmentsEntryDialogMethod'] = jest.fn();
 		window.confirm = jest.fn(() => true);
