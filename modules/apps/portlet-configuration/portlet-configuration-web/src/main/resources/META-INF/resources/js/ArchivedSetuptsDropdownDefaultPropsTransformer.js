@@ -12,20 +12,15 @@
  * details.
  */
 
-import openConfirm from './openConfirm';
-
 const ACTIONS = {
 	deleteArchivedSetups(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					this.send(itemData.deleteArchivedSetupsURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			this.send(itemData.deleteArchivedSetupsURL);
+		}
 	},
 
 	restoreArchivedSetup(itemData) {

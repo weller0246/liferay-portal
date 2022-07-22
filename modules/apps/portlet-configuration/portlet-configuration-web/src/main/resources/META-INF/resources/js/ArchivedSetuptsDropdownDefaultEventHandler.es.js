@@ -14,20 +14,15 @@
 
 import {DefaultEventHandler} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 class ArchivedSetuptsDropdownDefaultEventHandler extends DefaultEventHandler {
 	deleteArchivedSetups(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					this._send(itemData.deleteArchivedSetupsURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			this._send(itemData.deleteArchivedSetupsURL);
+		}
 	}
 
 	restoreArchivedSetup(itemData) {
