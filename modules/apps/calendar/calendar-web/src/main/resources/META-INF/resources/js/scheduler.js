@@ -486,20 +486,7 @@ AUI.add(
 							);
 						}
 
-						if (Liferay.FeatureFlags.enableCustomDialogs) {
-							Liferay.Util.openConfirmModal({
-								message: confirmationMessage,
-								onConfirm: (isConfirmed) => {
-									if (isConfirmed) {
-										remoteServices.deleteEvent(
-											schedulerEvent,
-											success
-										);
-									}
-								},
-							});
-						}
-						else if (confirm(confirmationMessage)) {
+						if (confirm(confirmationMessage)) {
 							remoteServices.deleteEvent(schedulerEvent, success);
 						}
 					}
