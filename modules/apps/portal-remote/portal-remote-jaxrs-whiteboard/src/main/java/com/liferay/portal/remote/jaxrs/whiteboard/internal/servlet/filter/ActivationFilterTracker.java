@@ -41,7 +41,7 @@ public class ActivationFilterTracker {
 		_countDownLatch = new CountDownLatch(1);
 
 		_filterServiceRegistration = bundleContext.registerService(
-			Filter.class, new ActivationFilter(this, bundleContext),
+			Filter.class, new ActivationFilter(bundleContext, this),
 			HashMapDictionaryBuilder.<String, Object>put(
 				"dispatcher", new String[] {"FORWARD", "REQUEST"}
 			).put(
@@ -78,7 +78,7 @@ public class ActivationFilterTracker {
 			_readyServiceRegistration = _bundleContext.registerService(
 				Object.class, new Object(),
 				MapUtil.singletonDictionary(
-					"liferay.jaxrs.whiteboard.ready", true));
+					_LIFERAY_JAXRS_WHITEBOARD_READY, true));
 
 			_unregister();
 		}
@@ -91,6 +91,9 @@ public class ActivationFilterTracker {
 			_filterServiceRegistration = null;
 		}
 	}
+
+	private static final String _LIFERAY_JAXRS_WHITEBOARD_READY =
+		"liferay.jaxrs.whiteboard.ready";
 
 	private BundleContext _bundleContext;
 	private CountDownLatch _countDownLatch;

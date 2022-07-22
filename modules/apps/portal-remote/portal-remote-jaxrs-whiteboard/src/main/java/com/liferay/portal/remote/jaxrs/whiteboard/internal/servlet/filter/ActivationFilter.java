@@ -38,11 +38,11 @@ import org.osgi.framework.BundleContext;
 public class ActivationFilter implements Filter {
 
 	public ActivationFilter(
-		ActivationFilterTracker activationFilterTracker,
-		BundleContext bundleContext) {
+		BundleContext bundleContext,
+		ActivationFilterTracker activationFilterTracker) {
 
-		_activationFilterTracker = activationFilterTracker;
 		_bundleContext = bundleContext;
+		_activationFilterTracker = activationFilterTracker;
 	}
 
 	@Override
