@@ -12,8 +12,6 @@
  * details.
  */
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
@@ -21,22 +19,21 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			const action = item?.data?.action;
 
 			if (action === 'deleteEntries') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-the-selected-entries'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-the-selected-entries'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								submitForm(form);
-							}
-						}
-					},
-				});
+					if (form) {
+						submitForm(form);
+					}
+				}
 			}
 		},
 	};
