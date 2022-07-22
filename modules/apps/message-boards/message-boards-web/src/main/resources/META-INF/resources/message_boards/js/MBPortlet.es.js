@@ -12,7 +12,9 @@
  * details.
  */
 
-import {fetch, openConfirmModal, openModal, sub} from 'frontend-js-web';
+import {fetch, openModal, sub} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 const RECENTLY_REMOVED_ATTACHMENTS = {
 	multiple: Liferay.Language.get('x-recently-removed-attachments'),

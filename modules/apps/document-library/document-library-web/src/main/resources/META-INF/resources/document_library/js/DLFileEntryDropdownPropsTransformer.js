@@ -15,10 +15,11 @@
 import {
 	addParams,
 	navigate,
-	openConfirmModal,
 	openModal,
 	openSelectionModal,
 } from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 const ACTIONS = {
 	checkin({checkinURL}, portletNamespace) {

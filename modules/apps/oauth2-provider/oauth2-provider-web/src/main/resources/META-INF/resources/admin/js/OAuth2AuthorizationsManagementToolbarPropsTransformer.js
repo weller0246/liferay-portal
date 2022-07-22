@@ -12,11 +12,9 @@
  * details.
  */
 
-import {
-	getCheckedCheckboxes,
-	openConfirmModal,
-	postForm,
-} from 'frontend-js-web';
+import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function propsTransformer({
 	additionalProps: {revokeOAuth2AuthorizationsURL},

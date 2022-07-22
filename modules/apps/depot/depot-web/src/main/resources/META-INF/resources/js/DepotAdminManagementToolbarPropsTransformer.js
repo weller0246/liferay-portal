@@ -14,10 +14,11 @@
 
 import {
 	getCheckedCheckboxes,
-	openConfirmModal,
 	openSimpleInputModal,
 	postForm,
 } from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function propsTransformer({
 	additionalProps: {deleteDepotEntriesURL},

@@ -12,7 +12,9 @@
  * details.
  */
 
-import {addParams, openConfirmModal, openSelectionModal} from 'frontend-js-web';
+import {addParams, openSelectionModal} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web'
 
 export default function ({
 	currentURL,

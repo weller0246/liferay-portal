@@ -12,8 +12,9 @@
  * details.
  */
 
-import {addParams, navigate, openConfirmModal} from 'frontend-js-web';
+import {addParams, navigate} from 'frontend-js-web';
 
+import {openConfirmModal} from 'frontend-js-web';
 import openDeleteLayoutModal from './openDeleteLayoutModal';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {

@@ -13,7 +13,6 @@
  */
 
 import {openConfirmModal} from 'frontend-js-web';
-
 import openDeleteStyleBookModal from './openDeleteSiteModal';
 
 const ACTIONS = {

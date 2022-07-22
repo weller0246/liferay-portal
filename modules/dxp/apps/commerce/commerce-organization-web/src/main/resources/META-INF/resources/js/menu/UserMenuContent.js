@@ -10,7 +10,7 @@
  */
 
 import ClayDropDown from '@clayui/drop-down';
-import {openConfirmModal, sub} from 'frontend-js-web';
+import {sub} from 'frontend-js-web';
 import React, {useContext} from 'react';
 
 import ChartContext from '../ChartContext';
@@ -21,13 +21,17 @@ import {
 } from '../data/users';
 import {ACTION_KEYS} from '../utils/constants';
 import {hasPermission} from '../utils/index';
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function AccountMenuContent({closeMenu, data, parentData}) {
 	const {chartInstanceRef} = useContext(ChartContext);
 
 	function handleDelete() {
 		openConfirmModal({
-			message: sub(Liferay.Language.get('x-will-be-deleted'), data.name),
+			message: sub(
+				Liferay.Language.get('x-will-be-deleted'),
+				data.name
+			),
 			onConfirm: (isConfirmed) => {
 				if (isConfirmed) {
 					deleteUser(data.id).then(() => {

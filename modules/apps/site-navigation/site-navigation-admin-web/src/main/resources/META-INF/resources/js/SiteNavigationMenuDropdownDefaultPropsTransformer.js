@@ -12,12 +12,9 @@
  * details.
  */
 
-import {
-	openConfirmModal,
-	openModal,
-	openSimpleInputModal,
-} from 'frontend-js-web';
+import {openModal, openSimpleInputModal} from 'frontend-js-web';
 
+import {openConfirmModal} from 'frontend-js-web';
 import openDeleteSiteNavigationMenuModal from './openDeleteSiteNavigationMenuModal';
 
 const ACTIONS = {

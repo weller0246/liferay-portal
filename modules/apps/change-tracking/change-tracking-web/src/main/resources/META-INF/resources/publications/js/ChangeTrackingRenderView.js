@@ -23,8 +23,10 @@ import ClayLink from '@clayui/link';
 import ClayNavigationBar from '@clayui/navigation-bar';
 import ClayTable from '@clayui/table';
 import classNames from 'classnames';
-import {fetch, openConfirmModal} from 'frontend-js-web';
+import {fetch} from 'frontend-js-web';
 import React, {useEffect, useRef, useState} from 'react';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 const LocalizationDropdown = ({
 	currentLocale,

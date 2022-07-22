@@ -138,7 +138,7 @@ AUI.add(
 				const cmd = MAP_CMD_REVISION[type];
 				const confirmText = MAP_TEXT_REVISION[type];
 
-				Liferay.Util.openConfirmModal({
+				instance._openConfirmModal({
 					message: confirmText,
 					onConfirm: (isConfirmed) => {
 						if (isConfirmed) {
@@ -207,6 +207,15 @@ AUI.add(
 					title: Liferay.Language.get('history'),
 					uri: StagingBar.viewHistoryURL,
 				});
+			},
+
+			_openConfirmModal({message, onConfirm}) {
+				if (Liferay.FeatureFlags['LPS-148659']) {
+					Liferay.Util.openConfirmModal({message, onConfirm});
+				}
+				else if (confirm(message)) {
+					onConfirm(true);
+				}
 			},
 
 			_updateRevision(cmd, layoutRevisionId, layoutSetBranchId) {

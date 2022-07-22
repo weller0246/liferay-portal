@@ -12,7 +12,9 @@
  * details.
  */
 
-import {delegate, openConfirmModal} from 'frontend-js-web';
+import {delegate} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function ({namespace}) {
 	const ratingSettingsContainer = document.getElementById(

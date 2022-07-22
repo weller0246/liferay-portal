@@ -12,11 +12,9 @@
  * details.
  */
 
-import {
-	createActionURL,
-	getCheckedCheckboxes,
-	openConfirmModal,
-} from 'frontend-js-web';
+import {createActionURL, getCheckedCheckboxes} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 const ACTIONS = {
 	deletePasswordPolicies(portletNamespace, basePortletURL) {

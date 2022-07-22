@@ -12,13 +12,9 @@
  * details.
  */
 
-import {
-	addParams,
-	openConfirmModal,
-	openModal,
-	openSelectionModal,
-} from 'frontend-js-web';
+import {addParams, openModal, openSelectionModal} from 'frontend-js-web';
 
+import {openConfirmModal} from 'frontend-js-web';
 import openDeleteArticleModal from './modals/openDeleteArticleModal';
 
 const ACTIONS = {

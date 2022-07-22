@@ -12,12 +12,9 @@
  * details.
  */
 
-import {
-	getCheckedCheckboxes,
-	openConfirmModal,
-	openSelectionModal,
-	sub,
-} from 'frontend-js-web';
+import {getCheckedCheckboxes, openSelectionModal, sub} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 function addEntity(portletNamespace, inputName, entity) {
 	const addUserIdsInput = document.getElementById(

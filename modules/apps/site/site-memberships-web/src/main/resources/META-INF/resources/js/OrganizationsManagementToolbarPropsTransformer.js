@@ -12,7 +12,9 @@
  * details.
  */
 
-import {openConfirmModal, openSelectionModal, sub} from 'frontend-js-web';
+import {openSelectionModal, sub} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const deleteSelectedOrganizations = () => {

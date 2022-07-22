@@ -12,7 +12,9 @@
  * details.
  */
 
-import {DefaultEventHandler, openConfirmModal} from 'frontend-js-web';
+import {DefaultEventHandler} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 class ArchivedSetuptsDropdownDefaultEventHandler extends DefaultEventHandler {
 	deleteArchivedSetups(itemData) {

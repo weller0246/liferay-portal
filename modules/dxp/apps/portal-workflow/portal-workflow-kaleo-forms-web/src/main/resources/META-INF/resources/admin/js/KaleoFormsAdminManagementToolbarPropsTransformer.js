@@ -9,7 +9,9 @@
  * distribution rights of the Software.
  */
 
-import {getCheckedCheckboxes, openConfirmModal} from 'frontend-js-web';
+import {getCheckedCheckboxes} from 'frontend-js-web';
+
+import {openConfirmModal} from 'frontend-js-web';
 
 export default function propsTransformer({
 	additionalProps: {deleteKaleoProcessURL},
