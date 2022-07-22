@@ -81,7 +81,7 @@ public class SharingButtonTag extends BaseSharingTag {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		if (_canShare(classNameId, getClassPK(), themeDisplay)) {
+		if (_containsSharePermission(classNameId, getClassPK(), themeDisplay)) {
 			sharingJavaScriptFactory.requestSharingJavascript();
 		}
 
@@ -96,7 +96,7 @@ public class SharingButtonTag extends BaseSharingTag {
 		}
 	}
 
-	private boolean _canShare(
+	private boolean _containsSharePermission(
 		long classNameId, long classPK, ThemeDisplay themeDisplay) {
 
 		SharingPermission sharingPermission =
