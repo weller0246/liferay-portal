@@ -12,20 +12,7 @@
  * details.
  */
 
-import {
-	getCheckedCheckboxes,
-	openConfirmModal,
-	postForm,
-} from 'frontend-js-web';
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
-}
+import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
@@ -36,30 +23,29 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			const action = data?.action;
 
 			if (action === 'deleteDispatchLogs') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								postForm(form, {
-									data: {
-										deleteDispatchLogIds: getCheckedCheckboxes(
-											form,
-											`${portletNamespace}allRowIds`
-										),
-									},
-									url: data?.deleteDispatchLogsURL,
-								});
-							}
-						}
-					},
-				});
+					if (form) {
+						postForm(form, {
+							data: {
+								deleteDispatchLogIds: getCheckedCheckboxes(
+									form,
+									`${portletNamespace}allRowIds`
+								),
+							},
+							url: data?.deleteDispatchLogsURL,
+						});
+					}
+				}
 			}
 		},
 	};
