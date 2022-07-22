@@ -11,8 +11,6 @@
 
 import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({
 	additionalProps: {deleteDDLRecordURL},
 	portletNamespace,
@@ -22,34 +20,33 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteRecords') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}searchContainerForm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}searchContainerForm`
+					);
 
-							const searchContainer = document.getElementById(
-								otherProps.searchContainerId
-							);
+					const searchContainer = document.getElementById(
+						otherProps.searchContainerId
+					);
 
-							if (form && searchContainer) {
-								postForm(form, {
-									data: {
-										ddlRecordIds: getCheckedCheckboxes(
-											searchContainer,
-											`${portletNamespace}allRowIds`
-										),
-									},
-									url: deleteDDLRecordURL,
-								});
-							}
-						}
-					},
-				});
+					if (form && searchContainer) {
+						postForm(form, {
+							data: {
+								ddlRecordIds: getCheckedCheckboxes(
+									searchContainer,
+									`${portletNamespace}allRowIds`
+								),
+							},
+							url: deleteDDLRecordURL,
+						});
+					}
+				}
 			}
 		},
 	};

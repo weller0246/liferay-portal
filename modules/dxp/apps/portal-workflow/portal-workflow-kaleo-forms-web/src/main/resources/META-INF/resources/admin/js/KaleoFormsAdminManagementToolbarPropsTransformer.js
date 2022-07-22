@@ -11,8 +11,6 @@
 
 import {getCheckedCheckboxes} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({
 	additionalProps: {deleteKaleoProcessURL},
 	portletNamespace,
@@ -22,43 +20,38 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteKaleoProcess') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							const searchContainer = document.getElementById(
-								otherProps.searchContainerId
-							);
+					const searchContainer = document.getElementById(
+						otherProps.searchContainerId
+					);
 
-							const kaleoProcessIdsElement = document.getElementById(
-								`${portletNamespace}kaleoProcessIds`
-							);
+					const kaleoProcessIdsElement = document.getElementById(
+						`${portletNamespace}kaleoProcessIds`
+					);
 
-							if (
-								!form ||
-								!searchContainer ||
-								!kaleoProcessIdsElement
-							) {
-								return;
-							}
+					if (!form || !searchContainer || !kaleoProcessIdsElement) {
+						return;
+					}
 
-							form.setAttribute('method', 'post');
+					form.setAttribute('method', 'post');
 
-							kaleoProcessIdsElement.value = getCheckedCheckboxes(
-								searchContainer,
-								`${portletNamespace}allRowIds`
-							);
+					kaleoProcessIdsElement.value = getCheckedCheckboxes(
+						searchContainer,
+						`${portletNamespace}allRowIds`
+					);
 
-							submitForm(form, deleteKaleoProcessURL);
-						}
-					},
-				});
+					submitForm(form, deleteKaleoProcessURL);
+				}
 			}
 		},
 	};
