@@ -26,48 +26,30 @@
  * details.
  */
 
-import openConfirm from '../util/openConfirm';
-
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const deleteAssetDisplayPageEntry = (itemData) => {
-		openConfirm({
-			message: itemData.deleteAssetDisplayPageEntryMessage,
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					const form = document.getElementById(
-						`${portletNamespace}fm`
-					);
+		if (confirm(itemData.deleteAssetDisplayPageEntryMessage)) {
+			const form = document.getElementById(`${portletNamespace}fm`);
 
-					if (form) {
-						submitForm(
-							form,
-							itemData?.deleteAssetDisplayPageEntryURL
-						);
-					}
-				}
-			},
-		});
+			if (form) {
+				submitForm(form, itemData?.deleteAssetDisplayPageEntryURL);
+			}
+		}
 	};
 	const updateAssetDisplayPageEntry = (itemData) => {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-do-not-want-to-set-a-display-page-template-for-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					const form = document.getElementById(
-						`${portletNamespace}fm`
-					);
+		if (
+			confirm(
+				Liferay.Language.get(
+					'are-you-sure-you-do-not-want-to-set-a-display-page-template-for-this'
+				)
+			)
+		) {
+			const form = document.getElementById(`${portletNamespace}fm`);
 
-					if (form) {
-						submitForm(
-							form,
-							itemData?.updateAssetDisplayPageEntryURL
-						);
-					}
-				}
-			},
-		});
+			if (form) {
+				submitForm(form, itemData?.updateAssetDisplayPageEntryURL);
+			}
+		}
 	};
 
 	return {

@@ -19,7 +19,6 @@ import {
 } from 'frontend-js-web';
 
 import openDeletePageTemplateModal from '../modal/openDeletePageTemplateModal';
-import openConfirm from '../util/openConfirm';
 
 const ACTIONS = {
 	copyMasterLayout({copyMasterLayoutURL}) {
@@ -40,28 +39,22 @@ const ACTIONS = {
 	},
 
 	discardDraft({discardDraftURL}) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					send(discardDraftURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get(
+					'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
+				)
+			)
+		) {
+			send(discardDraftURL);
+		}
 	},
 
 	markAsDefaultMasterLayout({markAsDefaultMasterLayoutURL, message}) {
 		if (message !== '') {
-			openConfirm({
-				message: Liferay.Language.get(message),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						send(markAsDefaultMasterLayoutURL);
-					}
-				},
-			});
+			if (confirm(Liferay.Language.get(message))) {
+				send(markAsDefaultMasterLayoutURL);
+			}
 		}
 		else {
 			send(markAsDefaultMasterLayoutURL);
