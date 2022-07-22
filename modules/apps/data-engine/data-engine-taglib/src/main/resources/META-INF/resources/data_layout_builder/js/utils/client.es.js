@@ -14,8 +14,6 @@
 
 import {fetch} from 'frontend-js-web';
 
-import openConfirm from './openConfirm.es';
-
 const HEADERS = {
 	'Accept': 'application/json',
 	'Accept-Language': Liferay.ThemeDisplay.getBCP47LanguageId(),
@@ -83,21 +81,18 @@ export function deleteItem(endpoint) {
 export function confirmDelete(endpoint) {
 	return (item) =>
 		new Promise((resolve, reject) => {
-			openConfirm({
-				message: Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-this'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						deleteItem(endpoint + item.id)
-							.then(() => resolve(true))
-							.catch((error) => reject(error));
-					}
-					else {
-						resolve(false);
-					}
-				},
-			});
+			const confirmed = confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			);
+
+			if (confirmed) {
+				deleteItem(endpoint + item.id)
+					.then(() => resolve(true))
+					.catch((error) => reject(error));
+			}
+			else {
+				resolve(false);
+			}
 		});
 }
 

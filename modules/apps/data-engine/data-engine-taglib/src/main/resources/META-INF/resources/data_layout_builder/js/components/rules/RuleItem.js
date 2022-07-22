@@ -26,7 +26,6 @@ import {
 	getOptionLabel,
 } from '../../utils/dataDefinition.es';
 import {getLocalizedValue} from '../../utils/lang.es';
-import openConfirm from '../../utils/openConfirm.es';
 import DropDown from '../drop-down/DropDown.es';
 
 const ACTION_LABELS = {
@@ -70,16 +69,13 @@ export default function RuleItem({loc, onDeleteRule, onEditRule, rule}) {
 		},
 		{
 			action: () => {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							onDeleteRule(loc);
-						}
-					},
-				});
+				const confirmed = confirm(
+					Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+				);
+
+				if (confirmed) {
+					onDeleteRule(loc);
+				}
 			},
 			name: Liferay.Language.get('delete'),
 		},
