@@ -14,8 +14,6 @@
 
 import {getCheckedCheckboxes} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({
 	additionalProps: {deleteRecordSetsURL},
 	portletNamespace,
@@ -25,46 +23,45 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteRecordSets') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-this'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-this'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
+
+					if (!form) {
+						return;
+					}
+
+					const searchContainer = form.querySelector(
+						`#${otherProps.searchContainerId}`
+					);
+
+					form.setAttribute('method', 'post');
+
+					if (searchContainer) {
+						const recordSetIds = form.querySelector(
+							`#${portletNamespace}recordSetIds`
+						);
+
+						if (recordSetIds) {
+							recordSetIds.setAttribute(
+								'value',
+								getCheckedCheckboxes(
+									searchContainer,
+									`${portletNamespace}allRowIds`
+								)
 							);
-
-							if (!form) {
-								return;
-							}
-
-							const searchContainer = form.querySelector(
-								`#${otherProps.searchContainerId}`
-							);
-
-							form.setAttribute('method', 'post');
-
-							if (searchContainer) {
-								const recordSetIds = form.querySelector(
-									`#${portletNamespace}recordSetIds`
-								);
-
-								if (recordSetIds) {
-									recordSetIds.setAttribute(
-										'value',
-										getCheckedCheckboxes(
-											searchContainer,
-											`${portletNamespace}allRowIds`
-										)
-									);
-								}
-							}
-
-							submitForm(form, deleteRecordSetsURL);
 						}
-					},
-				});
+					}
+
+					submitForm(form, deleteRecordSetsURL);
+				}
 			}
 		},
 	};
