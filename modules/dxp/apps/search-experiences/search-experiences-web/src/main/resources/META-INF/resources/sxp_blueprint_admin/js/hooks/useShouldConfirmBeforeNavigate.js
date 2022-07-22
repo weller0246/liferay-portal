@@ -11,17 +11,6 @@
 
 import {useEffect} from 'react';
 
-import {openConfirmModal} from 'frontend-js-web';
-
-function openConfirm({message, onConfirm}) {
-    if (Liferay.FeatureFlags.enableCustomDialogs) {
-        openConfirmModal({message, onConfirm});
-    }
-    else if (confirm(message)) {
-        onConfirm(true);
-    }
-}
-
 /**
  * This ensures that a confirmation appears upon navigating away if there are
  * warnings such as unsaved changes. It adds a listener to the window to
@@ -61,14 +50,9 @@ export default function useShouldConfirmBeforeNavigate(
 		// https://help.liferay.com/hc/en-us/articles/360030709511-Available-SPA-Lifecycle-Events
 
 		const handleBeforeNavigate = (event) => {
-			openConfirm({
-				message,
-				onConfirm: (isConfirmed) => {
-					if (!isConfirmed) {
-						event.originalEvent.preventDefault();
-					}
-				}
-			})
+			if (!confirm(message)) {
+				event.originalEvent.preventDefault();
+			}
 		};
 
 		if (requiresConfirmation) {

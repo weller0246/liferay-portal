@@ -9,20 +9,15 @@
  * distribution rights of the Software.
  */
 
-import openConfirm from './openConfirm';
-
 const ACTIONS = {
 	delete(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					this.send(itemData.deleteURL);
-				}
-			},
-		});
+		const message = Liferay.Language.get(
+			'are-you-sure-you-want-to-delete-this'
+		);
+
+		if (confirm(message)) {
+			this.send(itemData.deleteURL);
+		}
 	},
 
 	send(url) {
