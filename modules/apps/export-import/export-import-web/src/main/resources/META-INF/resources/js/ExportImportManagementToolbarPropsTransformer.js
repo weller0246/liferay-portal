@@ -12,50 +12,36 @@
  * details.
  */
 
-import {
-	getCheckedCheckboxes,
-	openConfirmModal,
-	postForm,
-} from 'frontend-js-web';
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
-}
+import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deleteEntries') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-the-selected-entries'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-the-selected-entries'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								postForm(form, {
-									data: {
-										cmd: 'delete',
-										deleteBackgroundTaskIds: getCheckedCheckboxes(
-											form,
-											`${portletNamespace}allRowIds`
-										),
-									},
-								});
-							}
-						}
-					},
-				});
+					if (form) {
+						postForm(form, {
+							data: {
+								cmd: 'delete',
+								deleteBackgroundTaskIds: getCheckedCheckboxes(
+									form,
+									`${portletNamespace}allRowIds`
+								),
+							},
+						});
+					}
+				}
 			}
 		},
 	};
