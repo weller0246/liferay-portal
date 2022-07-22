@@ -12,23 +12,15 @@
  * details.
  */
 
-import openConfirm from './openConfirm';
-
 const ACTIONS = {
 	deleteGroupOrganizations(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-delete-this'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					submitForm(
-						document.hrefFm,
-						itemData.deleteGroupOrganizationsURL
-					);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-delete-this')
+			)
+		) {
+			submitForm(document.hrefFm, itemData.deleteGroupOrganizationsURL);
+		}
 	},
 };
 export default function propsTransformer({
