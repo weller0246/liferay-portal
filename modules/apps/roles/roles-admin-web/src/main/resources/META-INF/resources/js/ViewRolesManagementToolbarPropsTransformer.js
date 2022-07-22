@@ -12,20 +12,7 @@
  * details.
  */
 
-import {
-	getCheckedCheckboxes,
-	openConfirmModal,
-	postForm,
-} from 'frontend-js-web';
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
-}
+import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
 export default function propsTransformer({
 	additionalProps: {deleteRolesURL},
@@ -46,21 +33,20 @@ export default function propsTransformer({
 				`${portletNamespace}allRowIds`
 			);
 
-			openConfirm({
-				message: Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-this-role?-task-assignments-may-be-deleted'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						postForm(form, {
-							data: {
-								deleteRoleIds,
-							},
-							url: deleteRolesURL,
-						});
-					}
-				},
-			});
+			if (
+				confirm(
+					Liferay.Language.get(
+						'are-you-sure-you-want-to-delete-this-role?-task-assignments-may-be-deleted'
+					)
+				)
+			) {
+				postForm(form, {
+					data: {
+						deleteRoleIds,
+					},
+					url: deleteRolesURL,
+				});
+			}
 		},
 	};
 }

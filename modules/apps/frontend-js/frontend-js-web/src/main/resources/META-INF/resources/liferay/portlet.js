@@ -428,16 +428,17 @@
 		function (portlet, skipConfirm, options) {
 			const instance = this;
 
-			const _openConfirm = ({message, onConfirm}) => {
-				if (Liferay.FeatureFlags.enableCustomDialogs) {
-					Liferay.Util.openConfirmModal({message, onConfirm});
-				}
-				else if (confirm(message)) {
-					onConfirm(true);
-				}
-			};
+			portlet = A.one(portlet);
 
-			const _removeComponent = () => {
+			if (
+				portlet &&
+				(skipConfirm ||
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-remove-this-component'
+						)
+					))
+			) {
 				const portletId = portlet.portletId;
 
 				const portletIndex = instance.list.indexOf(portletId);
@@ -453,26 +454,6 @@
 				Liferay.fire('destroyPortlet', options);
 
 				Liferay.fire('closePortlet', options);
-			};
-
-			portlet = A.one(portlet);
-
-			if (portlet) {
-				if (!skipConfirm) {
-					_openConfirm({
-						message: Liferay.Language.get(
-							'are-you-sure-you-want-to-remove-this-component'
-						),
-						onConfirm: (isConfirmed) => {
-							if (isConfirmed && portlet) {
-								_removeComponent();
-							}
-						},
-					});
-				}
-				else {
-					_removeComponent();
-				}
 			}
 			else {
 				A.config.win.focus();
