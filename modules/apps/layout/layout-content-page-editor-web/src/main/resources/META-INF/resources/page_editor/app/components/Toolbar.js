@@ -34,7 +34,6 @@ import selectCanPublish from '../selectors/selectCanPublish';
 import redo from '../thunks/redo';
 import undo from '../thunks/undo';
 import {useDropClear} from '../utils/drag-and-drop/useDragAndDrop';
-import openConfirm from '../utils/openConfirm';
 import EditModeSelector from './EditModeSelector';
 import ExperimentsLabel from './ExperimentsLabel';
 import NetworkStatusBar from './NetworkStatusBar';
@@ -135,29 +134,28 @@ function ToolbarBody({className}) {
 	);
 
 	const handleDiscardVariant = (event) => {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
-			),
-			onConfirm: (isConfirmed) => {
-				if (!isConfirmed) {
-					event.preventDefault();
-				}
-			},
-		});
+		if (
+			!confirm(
+				Liferay.Language.get(
+					'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
+				)
+			)
+		) {
+			event.preventDefault();
+		}
 	};
 
 	const onPublish = () => {
-		openConfirm({
-			message: Liferay.Language.get(
-				'changes-made-on-this-master-are-going-to-be-propagated-to-all-page-templates,-display-page-templates,-and-pages-using-it.are-you-sure-you-want-to-proceed'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed || !config.masterUsed) {
-					setPublishPending(true);
-				}
-			},
-		});
+		if (
+			!config.masterUsed ||
+			confirm(
+				Liferay.Language.get(
+					'changes-made-on-this-master-are-going-to-be-propagated-to-all-page-templates,-display-page-templates,-and-pages-using-it.are-you-sure-you-want-to-proceed'
+				)
+			)
+		) {
+			setPublishPending(true);
+		}
 	};
 
 	const onUndo = () => {
