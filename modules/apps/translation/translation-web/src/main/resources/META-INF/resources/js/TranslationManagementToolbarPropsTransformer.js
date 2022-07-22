@@ -14,8 +14,6 @@
 
 import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
-import openConfirm from './openConfirm';
-
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
@@ -25,30 +23,29 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			const action = data?.action;
 
 			if (action === 'deleteSelectedTranslationEntries') {
-				openConfirm({
-					message: Liferay.Language.get(
-						'are-you-sure-you-want-to-delete-the-selected-translations'
-					),
-					onConfirm: (isConfirmed) => {
-						if (isConfirmed) {
-							const form = document.getElementById(
-								`${portletNamespace}fm`
-							);
+				if (
+					confirm(
+						Liferay.Language.get(
+							'are-you-sure-you-want-to-delete-the-selected-translations'
+						)
+					)
+				) {
+					const form = document.getElementById(
+						`${portletNamespace}fm`
+					);
 
-							if (form) {
-								postForm(form, {
-									data: {
-										deleteEntryIds: getCheckedCheckboxes(
-											form,
-											`${portletNamespace}allRowIds`
-										),
-									},
-									url: data['delete-translation-entries-url'],
-								});
-							}
-						}
-					},
-				});
+					if (form) {
+						postForm(form, {
+							data: {
+								deleteEntryIds: getCheckedCheckboxes(
+									form,
+									`${portletNamespace}allRowIds`
+								),
+							},
+							url: data['delete-translation-entries-url'],
+						});
+					}
+				}
 			}
 		},
 	};

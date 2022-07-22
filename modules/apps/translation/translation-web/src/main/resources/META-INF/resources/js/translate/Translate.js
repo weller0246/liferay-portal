@@ -19,7 +19,6 @@ import {fetch, navigate} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useMemo, useReducer, useState} from 'react';
 
-import openConfirm from '../openConfirm';
 import TranslateActionBar from './components/TranslateActionBar/TranslateActionBar';
 import TranslateFieldSetEntries from './components/TranslateFieldSetEntries';
 import TranslateHeader from './components/TranslateHeader';
@@ -134,20 +133,16 @@ const Translate = ({
 
 		if (!state.formHasChanges) {
 			navigate(url);
-
-			return;
 		}
-
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-leave-the-page-you-may-lose-your-changes'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					navigate(url);
-				}
-			},
-		});
+		else if (
+			confirm(
+				Liferay.Language.get(
+					'are-you-sure-you-want-to-leave-the-page-you-may-lose-your-changes'
+				)
+			)
+		) {
+			navigate(url);
+		}
 	};
 
 	const handleOnSaveDraft = () => {
