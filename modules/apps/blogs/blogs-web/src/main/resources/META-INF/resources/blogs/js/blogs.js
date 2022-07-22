@@ -13,7 +13,7 @@
  */
 
 import {State} from '@liferay/frontend-js-state-web';
-import {openConfirmModal, toggleBoxes} from 'frontend-js-web';
+import {toggleBoxes} from 'frontend-js-web';
 import {
 	STR_NULL_IMAGE_FILE_ENTRY_ID,
 	imageSelectorImageAtom,
@@ -37,15 +37,6 @@ const STRINGS = {
 		'this-field-is-required-to-publish-the-entry'
 	),
 };
-
-function openConfirm({message, onConfirm}) {
-	if (Liferay.FeatureFlags.enableCustomDialogs) {
-		openConfirmModal({message, onConfirm});
-	}
-	else if (confirm(message)) {
-		onConfirm(true);
-	}
-}
 
 function addNamespace(object, namespace) {
 	return Object.entries(object).reduce((memo, [key, value]) => ({
@@ -222,18 +213,13 @@ export default class Blogs {
 		const tempImages = this._getTempImages();
 
 		if (tempImages.length) {
-			openConfirm({
-				message: this._config.strings.confirmDiscardImages,
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						tempImages.each((image) => {
-							image.parentElement.remove();
-						});
+			if (confirm(this._config.strings.confirmDiscardImages)) {
+				tempImages.each((image) => {
+					image.parentElement.remove();
+				});
 
-						instance._saveEntry(draft, ajax);
-					}
-				},
-			});
+				instance._saveEntry(draft, ajax);
+			}
 		}
 		else {
 			instance._saveEntry(draft, ajax);

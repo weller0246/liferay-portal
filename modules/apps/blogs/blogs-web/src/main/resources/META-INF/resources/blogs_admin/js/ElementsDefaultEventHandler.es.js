@@ -15,22 +15,15 @@
 import {DefaultEventHandler} from 'frontend-js-web';
 import {Config} from 'metal-state';
 
-import openConfirm from './openConfirm';
-
 class ElementsDefaultEventHandler extends DefaultEventHandler {
 	delete(itemData) {
 		const message = Liferay.Language.get(
 			'are-you-sure-you-want-to-delete-this'
 		);
 
-		openConfirm({
-			message,
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed || this.trashEnabled) {
-					this._send(itemData.deleteURL);
-				}
-			},
-		});
+		if (this.trashEnabled || confirm(message)) {
+			this._send(itemData.deleteURL);
+		}
 	}
 
 	permissions(itemData) {
@@ -48,16 +41,13 @@ class ElementsDefaultEventHandler extends DefaultEventHandler {
 	}
 
 	publishToLive(itemData) {
-		openConfirm({
-			message: Liferay.Language.get(
-				'are-you-sure-you-want-to-publish-to-live'
-			),
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					this._send(itemData.publishEntryURL);
-				}
-			},
-		});
+		if (
+			confirm(
+				Liferay.Language.get('are-you-sure-you-want-to-publish-to-live')
+			)
+		) {
+			this._send(itemData.publishEntryURL);
+		}
 	}
 
 	_send(url) {
