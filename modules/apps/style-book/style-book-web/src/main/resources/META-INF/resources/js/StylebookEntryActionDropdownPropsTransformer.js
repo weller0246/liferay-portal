@@ -12,11 +12,7 @@
  * details.
  */
 
-import {
-	openConfirmModal,
-	openSelectionModal,
-	openSimpleInputModal,
-} from 'frontend-js-web';
+import {openSelectionModal, openSimpleInputModal} from 'frontend-js-web';
 
 import openDeleteStyleBookModal from './openDeleteStyleBookModal';
 
@@ -42,14 +38,9 @@ const ACTIONS = {
 	},
 
 	markAsDefaultStyleBookEntry({markAsDefaultStyleBookEntryURL, message}) {
-		openConfirmModal({
-			message,
-			onConfirm: (isConfirmed) => {
-				if (isConfirmed) {
-					submitForm(document.hrefFm, markAsDefaultStyleBookEntryURL);
-				}
-			},
-		});
+		if (confirm(message)) {
+			submitForm(document.hrefFm, markAsDefaultStyleBookEntryURL);
+		}
 	},
 
 	renameStyleBookEntry(
