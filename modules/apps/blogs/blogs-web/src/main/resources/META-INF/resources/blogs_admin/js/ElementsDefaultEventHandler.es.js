@@ -17,21 +17,18 @@ import {Config} from 'metal-state';
 
 class ElementsDefaultEventHandler extends DefaultEventHandler {
 	delete(itemData) {
-		if (this.trashEnabled) {
-			this._send(itemData.deleteURL);
-		}
-		else {
-			openConfirmModal({
-				message: Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-this'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						this._send(itemData.deleteURL);
-					}
-				},
-			});
-		}
+		const message = Liferay.Language.get(
+			'are-you-sure-you-want-to-delete-this'
+		);
+
+		openConfirmModal({
+			message,
+			onConfirm: (isConfirmed) => {
+				if (isConfirmed || this.trashEnabled) {
+					this._send(itemData.deleteURL);
+				}
+			},
+		});
 	}
 
 	permissions(itemData) {

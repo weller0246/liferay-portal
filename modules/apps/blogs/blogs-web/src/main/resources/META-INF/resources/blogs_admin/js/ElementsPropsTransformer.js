@@ -16,21 +16,18 @@ import {openConfirmModal} from 'frontend-js-web';
 
 const ACTIONS = {
 	delete(itemData, trashEnabled) {
-		if (trashEnabled) {
-			this.send(itemData.deleteURL);
-		}
-		else {
-			openConfirmModal({
-				message: Liferay.Language.get(
-					'are-you-sure-you-want-to-delete-this'
-				),
-				onConfirm: (isConfirmed) => {
-					if (isConfirmed) {
-						this.send(itemData.deleteURL);
-					}
-				},
-			});
-		}
+		const message = Liferay.Language.get(
+			'are-you-sure-you-want-to-delete-this'
+		);
+
+		openConfirmModal({
+			message,
+			onConfirm: (isConfirmed) => {
+				if (isConfirmed || trashEnabled) {
+					this.send(itemData.deleteURL);
+				}
+			},
+		});
 	},
 
 	permissions(itemData) {

@@ -23,37 +23,27 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deleteNodes') {
-				const form = document.getElementById(`${portletNamespace}fm`);
+				openConfirmModal({
+					message: Liferay.Language.get(
+						'are-you-sure-you-want-to-delete-the-selected-entries'
+					),
+					onConfirm: (isConfirmed) => {
+						if (isConfirmed || trashEnabled) {
+							const form = document.getElementById(
+								`${portletNamespace}fm`
+							);
 
-				if (trashEnabled) {
-					if (form) {
-						postForm(form, {
-							data: {
-								cmd: deleteNodesCmd,
-							},
-							url: deleteNodesURL,
-						});
-					}
-				}
-				else {
-					openConfirmModal({
-						message: Liferay.Language.get(
-							'are-you-sure-you-want-to-delete-the-selected-entries'
-						),
-						onConfirm: (isConfirmed) => {
-							if (isConfirmed) {
-								if (form) {
-									postForm(form, {
-										data: {
-											cmd: deleteNodesCmd,
-										},
-										url: deleteNodesURL,
-									});
-								}
+							if (form) {
+								postForm(form, {
+									data: {
+										cmd: deleteNodesCmd,
+									},
+									url: deleteNodesURL,
+								});
 							}
-						},
-					});
-				}
+						}
+					},
+				});
 			}
 		},
 	};
