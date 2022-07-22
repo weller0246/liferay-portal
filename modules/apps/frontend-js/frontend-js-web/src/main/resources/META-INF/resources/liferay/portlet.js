@@ -459,7 +459,7 @@
 
 			if (portlet) {
 				if (!skipConfirm) {
-					_openConfirmModal({
+					_openConfirm({
 						message: Liferay.Language.get(
 							'are-you-sure-you-want-to-remove-this-component'
 						),

@@ -15,7 +15,7 @@
 import {DefaultEventHandler} from 'frontend-js-web';
 import {Config} from 'metal-state';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 class ElementsDefaultEventHandler extends DefaultEventHandler {
 	delete(itemData) {
@@ -23,7 +23,7 @@ class ElementsDefaultEventHandler extends DefaultEventHandler {
 			'are-you-sure-you-want-to-delete-this'
 		);
 
-		openConfirmModal({
+		openConfirm({
 			message,
 			onConfirm: (isConfirmed) => {
 				if (isConfirmed || this.trashEnabled) {
@@ -48,7 +48,7 @@ class ElementsDefaultEventHandler extends DefaultEventHandler {
 	}
 
 	publishToLive(itemData) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-publish-to-live'
 			),

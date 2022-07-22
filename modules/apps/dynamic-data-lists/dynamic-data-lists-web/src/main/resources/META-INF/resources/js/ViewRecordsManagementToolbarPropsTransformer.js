@@ -14,7 +14,7 @@
 
 import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 export default function propsTransformer({
 	additionalProps: {deleteRecordURL},
@@ -25,7 +25,7 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteRecords') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-this'
 					),

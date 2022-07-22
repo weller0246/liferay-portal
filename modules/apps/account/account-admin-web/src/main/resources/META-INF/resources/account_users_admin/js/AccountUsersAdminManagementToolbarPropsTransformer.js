@@ -20,7 +20,7 @@ import {
 	postForm,
 } from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../../common/js/openConfirm.es';
 
 const updateAccountUsers = (portletNamespace, url) => {
 	const form = document.getElementById(`${portletNamespace}fm`);
@@ -44,7 +44,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 	};
 
 	const deactivateAccountUsers = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-deactivate-the-selected-users'
 			),
@@ -60,7 +60,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 	};
 
 	const deleteAccountUsers = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-the-selected-users'
 			),

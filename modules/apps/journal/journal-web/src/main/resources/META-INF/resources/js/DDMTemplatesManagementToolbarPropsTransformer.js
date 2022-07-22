@@ -12,14 +12,14 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './modals/openConfirm';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
 		onActionButtonClick(event, {item}) {
 			if (item?.data?.action === 'deleteDDMTemplates') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-this'
 					),

@@ -26,7 +26,7 @@ import React, {useState} from 'react';
 
 import ChangeTrackingBaseScheduleView from './ChangeTrackingBaseScheduleView';
 import ChangeTrackingRenderView from './ChangeTrackingRenderView';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 class ChangeTrackingConflictsView extends ChangeTrackingBaseScheduleView {
 	constructor(props) {
@@ -296,7 +296,7 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirmModal({
+								openConfirm({
 									message: action.confirmationMessage,
 									onConfirm: (isConfirmed) =>
 										isConfirmed &&
@@ -389,7 +389,7 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirmModal({
+								openConfirm({
 									message: firstAction.confirmationMessage,
 									onConfirm: (isConfirmed) =>
 										isConfirmed &&
@@ -438,7 +438,7 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 				items.push({
 					label: action.label,
 					onClick: () =>
-						openConfirmModal({
+						openConfirm({
 							message: action.confirmationMessage,
 							onConfirm: (isConfirmed) =>
 								isConfirmed &&
@@ -463,7 +463,7 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirmModal({
+								openConfirm({
 									message: firstAction.confirmationMessage,
 									onConfirm: (isConfirmed) =>
 										isConfirmed &&

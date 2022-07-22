@@ -14,6 +14,15 @@
 
 import {openConfirmModal} from 'frontend-js-web';
 
+function openConfirm({message, onConfirm}) {
+	if (Liferay.FeatureFlags['LPS-148659']) {
+		openConfirmModal({message, onConfirm});
+	}
+	else if (confirm(message)) {
+		onConfirm(true);
+	}
+}
+
 export default function propsTransformer({
 	additionalProps: {deleteEntriesURL, inputId, inputValue, trashEnabled},
 	portletNamespace,
@@ -49,7 +58,7 @@ export default function propsTransformer({
 					return;
 				}
 
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-the-selected-entries'
 					),

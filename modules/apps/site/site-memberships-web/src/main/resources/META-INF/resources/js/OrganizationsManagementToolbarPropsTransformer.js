@@ -14,11 +14,11 @@
 
 import {openSelectionModal, sub} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const deleteSelectedOrganizations = () => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-this'
 			),

@@ -20,7 +20,7 @@ import FrontendDataSetContext from '../FrontendDataSetContext';
 import {ACTION_ITEM_TARGETS} from '../utils/actionItems/constants';
 import {formatActionURL} from '../utils/index';
 import {openPermissionsModal, resolveModalSize} from '../utils/modals/index';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../utils/openConfirm';
 import ViewsContext from '../views/ViewsContext';
 import ActionsDropdown from './ActionsDropdown';
 import QuickActions from './QuickActions';
@@ -84,7 +84,7 @@ export function handleAction(
 		toggleItemInlineEdit,
 	}
 ) {
-	openConfirmModal({
+	openConfirm({
 		message: confirmationMessage,
 		onConfirm: (isConfirmed) => {
 			if (isConfirmed) {

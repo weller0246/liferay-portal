@@ -19,7 +19,7 @@ import {
 } from 'frontend-js-web';
 
 import openDeletePageTemplateModal from '../modal/openDeletePageTemplateModal';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../util/openConfirm';
 
 const ACTIONS = {
 	copyMasterLayout({copyMasterLayoutURL}) {
@@ -40,7 +40,7 @@ const ACTIONS = {
 	},
 
 	discardDraft({discardDraftURL}) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-discard-current-draft-and-apply-latest-published-changes'
 			),
@@ -54,7 +54,7 @@ const ACTIONS = {
 
 	markAsDefaultMasterLayout({markAsDefaultMasterLayoutURL, message}) {
 		if (message !== '') {
-			openConfirmModal({
+			openConfirm({
 				message: Liferay.Language.get(message),
 				onConfirm: (isConfirmed) => {
 					if (isConfirmed) {

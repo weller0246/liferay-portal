@@ -20,7 +20,7 @@ import React, {useContext} from 'react';
 
 import FrontendDataSetContext from '../FrontendDataSetContext';
 import {formatActionURL} from '../utils/index';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../utils/openConfirm';
 import DefaultContent from './DefaultRenderer';
 
 function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
@@ -62,7 +62,7 @@ function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
 		currentAction.href && formatActionURL(currentAction.href, itemData);
 
 	function handleClickOnLink(event) {
-		openConfirmModal({
+		openConfirm({
 			message: currentAction.data.confirmationMessage,
 			onConfirm: (isConfirmed) => {
 				if (
@@ -142,7 +142,7 @@ function ActionLinkRenderer({actions, itemData, itemId, options, value}) {
 								if (confirmMessage) {
 									event.preventDefault();
 
-									openConfirmModal({
+									openConfirm({
 										message: confirmMessage,
 										onConfirm: (isConfirmed) => {
 											if (isConfirmed) {

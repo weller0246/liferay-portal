@@ -14,14 +14,14 @@
 
 import {getCheckedCheckboxes} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deleteImages') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-the-selected-images'
 					),

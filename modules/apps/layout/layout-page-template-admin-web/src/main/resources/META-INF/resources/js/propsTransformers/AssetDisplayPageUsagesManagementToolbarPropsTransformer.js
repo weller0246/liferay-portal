@@ -26,11 +26,11 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../util/openConfirm';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const deleteAssetDisplayPageEntry = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: itemData.deleteAssetDisplayPageEntryMessage,
 			onConfirm: (isConfirmed) => {
 				if (isConfirmed) {
@@ -49,7 +49,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 		});
 	};
 	const updateAssetDisplayPageEntry = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-do-not-want-to-set-a-display-page-template-for-this'
 			),

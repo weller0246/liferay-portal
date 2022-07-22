@@ -14,7 +14,7 @@
 
 import {openModal, openSimpleInputModal} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 import openDeleteSiteNavigationMenuModal from './openDeleteSiteNavigationMenuModal';
 
 const ACTIONS = {
@@ -30,7 +30,7 @@ const ACTIONS = {
 	},
 
 	markAsPrimary(itemData) {
-		openConfirmModal({
+		openConfirm({
 			message: itemData.confirmationMessage,
 			onConfirm: (isConfirmed) => {
 				if (isConfirmed && !itemData.confirmationMessage) {

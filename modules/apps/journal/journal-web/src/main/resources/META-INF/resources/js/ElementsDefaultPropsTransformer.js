@@ -14,7 +14,7 @@
 
 import {addParams, openModal, openSelectionModal} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './modals/openConfirm';
 import openDeleteArticleModal from './modals/openDeleteArticleModal';
 
 const ACTIONS = {
@@ -64,7 +64,7 @@ const ACTIONS = {
 			multiple: true,
 			onSelect: (selectedItems) => {
 				if (selectedItems?.length) {
-					openConfirmModal({
+					openConfirm({
 						message: Liferay.Language.get(
 							'are-you-sure-you-want-to-delete-the-selected-entries'
 						),
@@ -123,7 +123,7 @@ const ACTIONS = {
 	},
 
 	publishArticleToLive({itemData}) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-publish-the-selected-web-content'
 			),
@@ -133,7 +133,7 @@ const ACTIONS = {
 	},
 
 	publishFolderToLive({itemData}) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-publish-the-selected-folder'
 			),

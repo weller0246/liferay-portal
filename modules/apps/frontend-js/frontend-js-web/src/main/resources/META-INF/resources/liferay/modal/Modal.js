@@ -305,31 +305,27 @@ const Modal = ({
 };
 
 const openConfirmModal = ({message, onConfirm, title}) => {
-	if (Liferay.FeatureFlags['LPS-148659']) {
-		openModal({
-			bodyHTML: escapeHTML(message),
-			buttons: [
-				{
-					displayType: 'secondary',
-					label: Liferay.Language.get('cancel'),
-					type: 'cancel',
-				},
-				{
-					autoFocus: true,
-					label: Liferay.Language.get('ok'),
-					onClick: ({processClose}) => {
-						processClose();
+	openModal({
+		bodyHTML: escapeHTML(message),
+		buttons: [
+			{
+				displayType: 'secondary',
+				label: Liferay.Language.get('cancel'),
+				type: 'cancel',
+			},
+			{
+				autoFocus: true,
+				label: Liferay.Language.get('ok'),
+				onClick: ({processClose}) => {
+					processClose();
 
-						onConfirm(true);
-					},
+					onConfirm(true);
 				},
-			],
-			onClose: () => onConfirm(false),
-			title,
-		});
-	} else if (confirm(message)) {
-		onConfirm(true);
-	}
+			},
+		],
+		onClose: () => onConfirm(false),
+		title,
+	});
 };
 
 const openModal = (props) => {

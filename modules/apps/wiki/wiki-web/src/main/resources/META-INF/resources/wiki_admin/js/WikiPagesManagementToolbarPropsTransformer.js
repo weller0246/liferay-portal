@@ -14,7 +14,7 @@
 
 import {postForm} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web'
+import openConfirm from '../../wiki/js/openConfirm';
 
 export default function propsTransformer({
 	additionalProps: {deletePagesCmd, deletePagesURL, trashEnabled},
@@ -25,7 +25,7 @@ export default function propsTransformer({
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deletePages') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-the-selected-entries'
 					),

@@ -14,11 +14,11 @@
 
 import {createActionURL, getCheckedCheckboxes} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 const ACTIONS = {
 	deletePasswordPolicies(portletNamespace, basePortletURL) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-this'
 			),

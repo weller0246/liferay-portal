@@ -12,11 +12,11 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm.es';
 
 const ACTIONS = {
 	deleteDepotEntry(itemData) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'removing-an-asset-library-can-affect-sites-that-use-the-contents-stored-in-it.-are-you-sure-you-want-to-continue-removing-this-asset-library'
 			),

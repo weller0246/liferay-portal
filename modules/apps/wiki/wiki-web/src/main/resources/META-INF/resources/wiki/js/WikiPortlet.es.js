@@ -14,7 +14,7 @@
 
 import {fetch, sub} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 const CONFIRM_DISCARD_IMAGES = Liferay.Language.get(
 	'uploads-are-in-progress-confirmation'
@@ -140,7 +140,7 @@ class WikiPortlet {
 			newFormat
 		);
 
-		openConfirmModal({
+		openConfirm({
 			message: confirmMessage,
 			onConfirm: (isConfirmed) => {
 				if (isConfirmed) {

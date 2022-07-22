@@ -18,7 +18,7 @@ import React, {useContext, useState} from 'react';
 
 import SegmentsExperimentsContext from '../../../context.es';
 import {navigateToExperience} from '../../../util/navigation.es';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../../../util/openConfirm.es';
 import {indexToPercentageString} from '../../../util/percentages.es';
 
 function Variant({
@@ -151,7 +151,7 @@ function Variant({
 	);
 
 	function _handleDeletion() {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-this'
 			),

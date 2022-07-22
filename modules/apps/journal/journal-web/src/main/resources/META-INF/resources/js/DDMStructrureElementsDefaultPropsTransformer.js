@@ -14,11 +14,11 @@
 
 import {openModal} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './modals/openConfirm';
 
 const ACTIONS = {
 	deleteDDMStructure(itemData) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-this'
 			),

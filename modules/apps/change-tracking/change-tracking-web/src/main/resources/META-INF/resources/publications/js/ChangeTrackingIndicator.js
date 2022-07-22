@@ -26,7 +26,7 @@ import {ManagementToolbar} from 'frontend-js-components-web';
 import {fetch} from 'frontend-js-web';
 import React, {useCallback, useEffect, useState} from 'react';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 const PublicationsSearchContainer = ({
 	ascending,
@@ -770,7 +770,7 @@ export default function ChangeTrackingIndicator({
 		dropdownItems.push({
 			label: checkoutDropdownItem.label,
 			onClick: () =>
-				openConfirmModal({
+				openConfirm({
 					message: checkoutDropdownItem.confirmationMessage,
 					onConfirm: (isConfirmed) => {
 						if (

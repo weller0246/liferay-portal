@@ -12,11 +12,11 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './modals/openConfirm';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	const deleteArticles = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-the-selected-version'
 			),
@@ -35,7 +35,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 	};
 
 	const expireArticles = (itemData) => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-expire-the-selected-version'
 			),

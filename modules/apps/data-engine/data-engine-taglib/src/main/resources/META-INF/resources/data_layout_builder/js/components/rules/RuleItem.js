@@ -26,7 +26,7 @@ import {
 	getOptionLabel,
 } from '../../utils/dataDefinition.es';
 import {getLocalizedValue} from '../../utils/lang.es';
-import {openConfirmModal} from 'frontend-js-web'
+import openConfirm from '../../utils/openConfirm.es';
 import DropDown from '../drop-down/DropDown.es';
 
 const ACTION_LABELS = {
@@ -70,7 +70,7 @@ export default function RuleItem({loc, onDeleteRule, onEditRule, rule}) {
 		},
 		{
 			action: () => {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-this'
 					),

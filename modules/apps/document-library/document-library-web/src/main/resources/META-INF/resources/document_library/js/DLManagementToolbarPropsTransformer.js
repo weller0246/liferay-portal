@@ -21,7 +21,7 @@ import {
 } from 'frontend-js-web';
 
 import {collectDigitalSignature} from './digital-signature/DigitalSignatureUtil';
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 export default function propsTransformer({
 	additionalProps: {
@@ -112,7 +112,7 @@ export default function propsTransformer({
 	};
 
 	const deleteEntries = () => {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-delete-the-selected-entries'
 			),

@@ -14,7 +14,7 @@
 
 import {getCheckedCheckboxes, openSelectionModal, sub} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 function addEntity(portletNamespace, inputName, entity) {
 	const addUserIdsInput = document.getElementById(
@@ -33,7 +33,7 @@ function addEntity(portletNamespace, inputName, entity) {
 }
 
 function deleteEntities(portletNamespace, inputName) {
-	openConfirmModal({
+	openConfirm({
 		message: Liferay.Language.get('are-you-sure-you-want-to-delete-this'),
 		onConfirm: (isConfirmed) => {
 			if (isConfirmed) {

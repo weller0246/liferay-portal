@@ -14,7 +14,7 @@
 
 import {addParams, openSelectionModal} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web'
+import openConfirm from '../modals/openConfirm';
 
 export default function ({
 	currentURL,
@@ -33,7 +33,7 @@ export default function ({
 			return;
 		}
 
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'editing-the-current-template-deletes-all-unsaved-content'
 			),
@@ -141,7 +141,7 @@ export default function ({
 
 	if (editDDMTemplateButton) {
 		const editDDMTemplateButtonClick = () => {
-			openConfirmModal({
+			openConfirm({
 				message: Liferay.Language.get(
 					'editing-the-current-template-deletes-all-unsaved-content'
 				),

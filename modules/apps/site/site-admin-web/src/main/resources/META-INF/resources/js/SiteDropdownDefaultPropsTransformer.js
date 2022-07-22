@@ -12,7 +12,7 @@
  * details.
  */
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 import openDeleteStyleBookModal from './openDeleteSiteModal';
 
 const ACTIONS = {
@@ -21,7 +21,7 @@ const ACTIONS = {
 	},
 
 	deactivateSite(itemData) {
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Language.get(
 				'are-you-sure-you-want-to-deactivate-this'
 			),

@@ -38,7 +38,7 @@ import ClayTable from '@clayui/table';
 import {fetch, objectToFormData, sub} from 'frontend-js-web';
 import React, {useCallback, useRef, useState} from 'react';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from './openConfirm';
 
 const CollaboratorRow = ({
 	handleSelect,
@@ -595,7 +595,7 @@ const ManageCollaborators = ({
 						'you-are-inviting-user-x-who-does-not-have-access-to-publications'
 				  );
 
-		openConfirmModal({
+		openConfirm({
 			message: Liferay.Util.sub(
 				langKey,
 				publicationsUserRoleEmailAddresses.join(', ')
@@ -987,7 +987,7 @@ const ManageCollaborators = ({
 									<ClayButton
 										displayType="secondary"
 										onClick={() => {
-											openConfirmModal({
+											openConfirm({
 												message: Liferay.Language.get(
 													'discard-unsaved-changes'
 												),

@@ -18,12 +18,21 @@ import {
 	postForm,
 } from 'frontend-js-web';
 
+function openConfirm({message, onConfirm}) {
+	if (Liferay.FeatureFlags['LPS-148659']) {
+		openConfirmModal({message, onConfirm});
+	}
+	else if (confirm(message)) {
+		onConfirm(true);
+	}
+}
+
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
 		...otherProps,
 		onActionButtonClick: (event, {item}) => {
 			if (item?.data?.action === 'deleteEntries') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'staging-are-you-sure-you-want-to-delete-the-selected-entries'
 					),

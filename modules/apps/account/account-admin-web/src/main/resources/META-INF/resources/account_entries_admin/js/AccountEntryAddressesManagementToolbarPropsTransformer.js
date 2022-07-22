@@ -14,7 +14,7 @@
 
 import {getCheckedCheckboxes, postForm} from 'frontend-js-web';
 
-import {openConfirmModal} from 'frontend-js-web';
+import openConfirm from '../../common/js/openConfirm.es';
 
 export default function propsTransformer({portletNamespace, ...otherProps}) {
 	return {
@@ -25,7 +25,7 @@ export default function propsTransformer({portletNamespace, ...otherProps}) {
 			const action = data?.action;
 
 			if (action === 'deleteAccountEntryAddresses') {
-				openConfirmModal({
+				openConfirm({
 					message: Liferay.Language.get(
 						'are-you-sure-you-want-to-delete-this'
 					),
