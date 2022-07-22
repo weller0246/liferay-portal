@@ -26,7 +26,6 @@ import React, {useState} from 'react';
 
 import ChangeTrackingBaseScheduleView from './ChangeTrackingBaseScheduleView';
 import ChangeTrackingRenderView from './ChangeTrackingRenderView';
-import openConfirm from './openConfirm';
 
 class ChangeTrackingConflictsView extends ChangeTrackingBaseScheduleView {
 	constructor(props) {
@@ -296,15 +295,8 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirm({
-									message: action.confirmationMessage,
-									onConfirm: (isConfirmed) =>
-										isConfirmed &&
-										submitForm(
-											document.hrefFm,
-											action.href
-										),
-								})
+								confirm(action.confirmationMessage) &&
+								submitForm(document.hrefFm, action.href)
 							}
 						>
 							<span className="inline-item inline-item-before">
@@ -389,15 +381,8 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirm({
-									message: firstAction.confirmationMessage,
-									onConfirm: (isConfirmed) =>
-										isConfirmed &&
-										submitForm(
-											document.hrefFm,
-											firstAction.href
-										),
-								})
+								confirm(firstAction.confirmationMessage) &&
+								submitForm(document.hrefFm, firstAction.href)
 							}
 							small
 						>
@@ -438,12 +423,8 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 				items.push({
 					label: action.label,
 					onClick: () =>
-						openConfirm({
-							message: action.confirmationMessage,
-							onConfirm: (isConfirmed) =>
-								isConfirmed &&
-								submitForm(document.hrefFm, action.href),
-						}),
+						confirm(action.confirmationMessage) &&
+						submitForm(document.hrefFm, action.href),
 					symbolLeft: action.symbol,
 				});
 			}
@@ -463,15 +444,8 @@ const ConflictsTable = ({conflicts, spritemap}) => {
 						<ClayButton
 							displayType="secondary"
 							onClick={() =>
-								openConfirm({
-									message: firstAction.confirmationMessage,
-									onConfirm: (isConfirmed) =>
-										isConfirmed &&
-										submitForm(
-											document.hrefFm,
-											firstAction.href
-										),
-								})
+								confirm(firstAction.confirmationMessage) &&
+								submitForm(document.hrefFm, firstAction.href)
 							}
 							small
 						>

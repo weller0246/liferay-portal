@@ -38,8 +38,6 @@ import ClayTable from '@clayui/table';
 import {fetch, objectToFormData, sub} from 'frontend-js-web';
 import React, {useCallback, useRef, useState} from 'react';
 
-import openConfirm from './openConfirm';
-
 const CollaboratorRow = ({
 	handleSelect,
 	readOnly,
@@ -586,59 +584,58 @@ const ManageCollaborators = ({
 			userIds.push(selectedItemsKeys[i]);
 		}
 
-		const langKey =
-			publicationsUserRoleUserIds.length > 1
-				? Liferay.Language.get(
-						'you-are-inviting-users-x-who-do-not-have-access-to-publications'
-				  )
-				: Liferay.Language.get(
-						'you-are-inviting-user-x-who-does-not-have-access-to-publications'
-				  );
+		if (publicationsUserRoleUserIds.length) {
+			let key = Liferay.Language.get(
+				'you-are-inviting-user-x-who-does-not-have-access-to-publications'
+			);
 
-		openConfirm({
-			message: Liferay.Util.sub(
-				langKey,
-				publicationsUserRoleEmailAddresses.join(', ')
+			if (publicationsUserRoleUserIds.length > 1) {
+				key = Liferay.Language.get(
+					'you-are-inviting-users-x-who-do-not-have-access-to-publications'
+				);
+			}
+
+			if (
+				!confirm(
+					sub(key, publicationsUserRoleEmailAddresses.join(', '))
+				)
+			) {
+				return;
+			}
+		}
+
+		const updatedRolesKeys = Object.keys(updatedRoles);
+
+		for (let i = 0; i < updatedRolesKeys.length; i++) {
+			roleValues.push(updatedRoles[updatedRolesKeys[i]].value);
+			userIds.push(updatedRolesKeys[i]);
+		}
+
+		const formData = objectToFormData({
+			[`${namespace}publicationsUserRoleUserIds`]: publicationsUserRoleUserIds.join(
+				','
 			),
-			onConfirm: (isConfirmed) => {
-				if (publicationsUserRoleUserIds.length && isConfirmed) {
-					const updatedRolesKeys = Object.keys(updatedRoles);
-
-					for (let i = 0; i < updatedRolesKeys.length; i++) {
-						roleValues.push(
-							updatedRoles[updatedRolesKeys[i]].value
-						);
-						userIds.push(updatedRolesKeys[i]);
-					}
-
-					const formData = objectToFormData({
-						[`${namespace}publicationsUserRoleUserIds`]: publicationsUserRoleUserIds.join(
-							','
-						),
-						[`${namespace}roleValues`]: roleValues.join(','),
-						[`${namespace}userIds`]: userIds.join(','),
-					});
-
-					fetch(inviteUsersURL, {
-						body: formData,
-						method: 'POST',
-					})
-						.then((response) => response.json())
-						.then(({errorMessage, successMessage}) => {
-							if (errorMessage) {
-								showNotification(errorMessage, true);
-
-								return;
-							}
-
-							showNotification(successMessage);
-						})
-						.catch((error) => {
-							showNotification(error.message, true);
-						});
-				}
-			},
+			[`${namespace}roleValues`]: roleValues.join(','),
+			[`${namespace}userIds`]: userIds.join(','),
 		});
+
+		fetch(inviteUsersURL, {
+			body: formData,
+			method: 'POST',
+		})
+			.then((response) => response.json())
+			.then(({errorMessage, successMessage}) => {
+				if (errorMessage) {
+					showNotification(errorMessage, true);
+
+					return;
+				}
+
+				showNotification(successMessage);
+			})
+			.catch((error) => {
+				showNotification(error.message, true);
+			});
 	};
 
 	const updateRole = (role, user) => {
@@ -987,25 +984,20 @@ const ManageCollaborators = ({
 									<ClayButton
 										displayType="secondary"
 										onClick={() => {
-											openConfirm({
-												message: Liferay.Language.get(
-													'discard-unsaved-changes'
-												),
-												onConfirm: (isConfirmed) => {
-													if (
-														isConfirmed ||
-														(!Object.keys(
-															selectedItems
-														).length &&
-															!Object.keys(
-																updatedRoles
-															).length)
-													) {
-														onClose();
-														resetForm();
-													}
-												},
-											});
+											if (
+												(!Object.keys(selectedItems)
+													.length &&
+													!Object.keys(updatedRoles)
+														.length) ||
+												confirm(
+													Liferay.Language.get(
+														'discard-unsaved-changes'
+													)
+												)
+											) {
+												onClose();
+												resetForm();
+											}
 										}}
 									>
 										{Liferay.Language.get('cancel')}
