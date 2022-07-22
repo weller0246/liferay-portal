@@ -9,7 +9,7 @@
  * distribution rights of the Software.
  */
 
-AUI().use('escape', 'aui-lang', (A) => {
+ AUI().use('escape', 'aui-lang', (A) => {
 	const AEscape = A.Escape;
 
 	const TPL_TAG_FORM =
@@ -288,9 +288,7 @@ AUI().use('escape', 'aui-lang', (A) => {
 					if (isConfirmed) {
 						const parametersInput = A.one('.report-parameters');
 
-						const reportParameters = JSON.parse(
-							parametersInput.val()
-						);
+						const reportParameters = JSON.parse(parametersInput.val());
 
 						for (const i in reportParameters) {
 							const reportParameter = reportParameters[i];
@@ -311,8 +309,8 @@ AUI().use('escape', 'aui-lang', (A) => {
 
 						A.one(key).remove(true);
 					}
-				},
-			});
+				}
+			}
 		},
 
 		initialize(param) {
