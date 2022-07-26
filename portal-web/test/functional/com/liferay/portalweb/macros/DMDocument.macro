@@ -4013,7 +4013,7 @@ definition {
 
 		Click(locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_VERTICAL_ELLIPSIS");
 
-		AssertTextEquals.assertPartialText(
+		WaitForElementPresent(
 			locator1 = "MenuItem#DOWNLOAD",
 			value1 = "Download");
 
@@ -4049,7 +4049,7 @@ definition {
 
 		Click(locator1 = "DocumentsAndMedia#DESCRIPTIVE_LIST_DOCUMENT_VERTICAL_ELLIPSIS");
 
-		AssertTextEquals.assertPartialText(
+		WaitForElementPresent(
 			locator1 = "MenuItem#DOWNLOAD",
 			value1 = "Download");
 
