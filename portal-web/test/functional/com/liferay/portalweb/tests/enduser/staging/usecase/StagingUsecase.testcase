@@ -1044,6 +1044,7 @@ definition {
 	@description = "This is a use case for LPS-82757."
 	@priority = "3"
 	test PublishWebContentWithFeeds {
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "StagingUsecase#PublishWebContentWithFeeds";
 		property testray.component.names = "Web Content Administration";
 
