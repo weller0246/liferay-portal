@@ -116,7 +116,9 @@ definition {
 	@description = "This is a use case for LRQA-57574 TC-1: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and OAuth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled with a synced user on SP."
 	@priority = "4"
 	test AssertAuthorizationOnOAuth2WithSAMLConnectionWithExistingUser {
+		property oauth2.local.enabled = "true";
 		property portal.acceptance = "true";
+		property portal.ssl.enabled = "true";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithExistingUser";
 
 		task ("Logout") {
@@ -191,7 +193,7 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://www.able.com:9080",
-				callbackUri = '''http://martamedio.com/oauth2-tester/?url=${portalURL}&client_id=abc123''',
+				callbackUri = '''https://localhost:8443/?url=https://localhost:8443&client_id=abc123''',
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123");
@@ -230,6 +232,8 @@ definition {
 	@description = "This is a use case for LRQA-57574 TC-2: Combines SAML.CreateAndSyncUserAfterSAMLSetupWithMatchingScreenNameAttribute and OAuth2.AuthorizeExternalApplication to verify that the portal works when OAuth 2 and SAML are both enabled and authenticating with a user who is not synced to SP."
 	@priority = "4"
 	test AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser {
+		property oauth2.local.enabled = "true";
+		property portal.ssl.enabled = "true";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser";
 
 		task ("Logout") {
@@ -296,7 +300,7 @@ definition {
 			OAuth2.addAndEditExternalApplication(
 				applicationName = "Third-party Application",
 				baseURL = "http://www.able.com:9080",
-				callbackUri = '''http://martamedio.com/oauth2-tester/?url=${portalURL}&client_id=abc123''',
+				callbackUri = '''https://localhost:8443/?url=https://localhost:8443&client_id=abc123''',
 				clientId = "abc123",
 				clientProfile = "Web Application",
 				clientSecret = "abc123");
