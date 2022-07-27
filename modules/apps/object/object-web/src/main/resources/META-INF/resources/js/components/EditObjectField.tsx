@@ -465,6 +465,7 @@ export default function EditObjectField({
 		>
 			<Card title={Liferay.Language.get('basic-info')}>
 				<InputLocalized
+					disableFlag={values.system && objectName !== 'AccountEntry'}
 					disabled={
 						values.system && objectName !== 'AccountEntry'
 							? disabled
