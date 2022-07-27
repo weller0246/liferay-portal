@@ -14423,6 +14423,15 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 			</then>
 		</if>
 
+		<get-testcase-property property.name="user.time.zone" />
+
+		<if>
+			<isset property="user.time.zone" />
+			<then>
+				<update-user-timezone time.zone="${user.time.zone}" />
+			</then>
+		</if>
+
 		<antcall target="deploy-osgi-apps" />
 
 		<antcall target="hot-deploy-osgi-apps" />
@@ -14435,6 +14444,14 @@ module.framework.properties.blacklist.portal.profile.names=${blacklist.portal.pr
 			<istrue value="${liferay.data.guard.enabled}" />
 			<then>
 				<antcall target="deploy-data-guard" />
+			</then>
+		</if>
+
+		<get-testcase-property property.name="oauth2.local.enabled" />
+		<if>
+			<istrue value="${oauth2.local.enabled}" />
+			<then>
+				<ant antfile="build-test-oauth2.xml" target="prepare-oauth2-tester" />
 			</then>
 		</if>
 
