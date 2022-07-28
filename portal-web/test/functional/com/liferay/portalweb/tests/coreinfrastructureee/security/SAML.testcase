@@ -119,6 +119,7 @@ definition {
 		property oauth2.local.enabled = "true";
 		property portal.acceptance = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithExistingUser";
 
 		task ("Logout") {
@@ -234,6 +235,7 @@ definition {
 	test AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "SAML#AssertAuthorizationOnOAuth2WithSAMLConnectionWithoutExistingUser";
 
 		task ("Logout") {

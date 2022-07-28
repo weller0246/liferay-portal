@@ -27,6 +27,7 @@ definition {
 	test ApplicationCanBeAuthorizedWithoutUserSession {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ApplicationCanBeAuthorizedWithoutUserSession";
 
 		task ("Add and edit 2 external applications") {
@@ -91,6 +92,7 @@ definition {
 		property oauth2.local.enabled = "true";
 		property portal.acceptance = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ApplicationCanBeAuthorizedWithRememberDeviceEnabled";
 
 		task ("Add and edit an external application with remember device enabled") {
@@ -130,6 +132,7 @@ definition {
 	test ApplicationCannotBeAuthorizedWithClientSecretJWTWithoutJWTAssertion {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ApplicationCannotBeAuthorizedWithClientSecretJWTWithoutJWTAssertion";
 
 		task ("Add and edit an external application") {
@@ -242,6 +245,7 @@ definition {
 	test ApplicationCannotBeAuthorizedWithPrivateKeyJWTWithoutJWTAssertion {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ApplicationCannotBeAuthorizedWithPrivateKeyJWTWithoutJWTAssertion";
 
 		task ("Add and edit an external application") {
@@ -435,6 +439,7 @@ definition {
 		property oauth2.local.enabled = "true";
 		property portal.acceptance = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#AuthorizationCanBeRevokedViaKebabMenu";
 
 		task ("Add and edit an external application") {
@@ -490,6 +495,7 @@ definition {
 	test AuthorizationCanBeRevokedViaKebabMenuWithTrustedDevice {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#AuthorizationCanBeRevokedViaKebabMenuWithTrustedDevice";
 
 		task ("Add and edit an external application") {
@@ -888,6 +894,7 @@ definition {
 		property osgi.module.configuration.file.names = "com.liferay.oauth2.provider.rest.internal.spi.bearer.token.provider.configuration.DefaultBearerTokenProviderConfiguration.config:com.liferay.oauth2.provider.configuration.OAuth2ProviderConfiguration.config";
 		property osgi.module.configurations = "access.token.expires.in=&quot;30&quot;${line.separator}refresh.token.expires.in=&quot;60&quot;:oauth2.expired.authorizations.afterlife.duration=&quot;30&quot;${line.separator}oauth2.expired.authorizations.check.interval=&quot;30&quot;";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 
 		task ("Add a new OAuth 2 application") {
 			OAuth2.openSSLPage();
@@ -1079,6 +1086,7 @@ definition {
 		property oauth2.local.enabled = "true";
 		property portal.acceptance = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ExternalApplicationCanBeAuthorized";
 
 		task ("Add and edit an external application") {
@@ -1110,6 +1118,7 @@ definition {
 		property custom.properties = "virtual.hosts.default.site.name=Guest";
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#ExternalApplicationCanBeTrustedAndAuthorized";
 
 		task ("Add and edit an external trusted application") {
@@ -1638,6 +1647,7 @@ definition {
 		property osgi.module.configuration.file.names = "com.liferay.oauth2.provider.rest.internal.spi.bearer.token.provider.configuration.DefaultBearerTokenProviderConfiguration.config";
 		property osgi.module.configurations = "access.token.expires.in=&quot;8&quot;";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#RefreshTokenTimeCanBeSetExpiredAndRenewed";
 
 		task ("Add and edit an external application") {
@@ -1676,6 +1686,7 @@ definition {
 	test RememberDeviceExternalPropertyShouldBeVisible {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#RememberDeviceExternalPropertyShouldBeVisible";
 
 		task ("Add a new external application with remember device checked") {
@@ -1704,6 +1715,7 @@ definition {
 	test RememberDeviceShouldWorkWithMultipleAuthorizations {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#RememberDeviceShouldWorkWithMultipleAuthorizations";
 
 		task ("Add and edit 2 external applications") {
@@ -1765,6 +1777,7 @@ definition {
 	test RevokeAuthorizationViaKebabMenuWithRememberDevice {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#RevokeAuthorizationViaKebabMenuWithRememberDevice";
 
 		task ("Add and edit an external application") {
@@ -1959,6 +1972,7 @@ definition {
 	test TokenIntrospectionShouldWorkWithEmptyClientSecretForPKCE {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#TokenIntrospectionShouldWorkWithEmptyClientSecretForPKCE";
 
 		task ("Given: Add and edit an PKCE application") {
@@ -1990,6 +2004,7 @@ definition {
 	test TrustedExternalPropertyShouldBeVisible {
 		property oauth2.local.enabled = "true";
 		property portal.ssl.enabled = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OAuth2#TrustedExternalPropertyShouldBeVisible";
 
 		task ("Add a trusted OAuth 2 application") {
