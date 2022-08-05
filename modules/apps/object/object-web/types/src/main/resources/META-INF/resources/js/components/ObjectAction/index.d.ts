@@ -39,7 +39,7 @@ interface IProps {
 	objectDefinitionsRelationshipsURL: string;
 	readOnly?: boolean;
 	requestParams: {
-		method: 'GET' | 'POST' | 'DELETE' | 'PUT';
+		method: 'POST' | 'PUT';
 		url: string;
 	};
 	successMessage: string;
