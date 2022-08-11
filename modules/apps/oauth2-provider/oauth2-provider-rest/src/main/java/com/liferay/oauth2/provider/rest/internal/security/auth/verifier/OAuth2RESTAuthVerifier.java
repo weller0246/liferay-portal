@@ -89,6 +89,12 @@ public class OAuth2RESTAuthVerifier implements AuthVerifier {
 				accessTokenContent);
 
 			if (accessToken == null) {
+				HttpServletResponse httpServletResponse =
+					accessControlContext.getResponse();
+
+				httpServletResponse.setStatus(
+					HttpServletResponse.SC_UNAUTHORIZED);
+
 				authVerifierResult.setState(
 					AuthVerifierResult.State.INVALID_CREDENTIALS);
 
