@@ -1984,7 +1984,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		String json = SiteInitializerUtil.read(
 			resourcePath + "notification-template.json", _servletContext);
 
-		if (Validator.isNull(json)) {
+		if (json == null) {
 			return;
 		}
 
@@ -1993,17 +1993,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 		Enumeration<URL> enumeration = _bundle.findEntries(
 			resourcePath, "*.html", false);
 
-		if (enumeration != null) {
-			while (enumeration.hasMoreElements()) {
-				URL url = enumeration.nextElement();
+		if (enumeration == null) {
+			return;
+		}
 
-				bodyJSONObject.put(
-					FileUtil.getShortFileName(
-						FileUtil.stripExtension(url.getPath())),
-					StringUtil.replace(
-						StringUtil.read(url.openStream()), "[$", "$]",
-						documentsStringUtilReplaceValues));
-			}
+		while (enumeration.hasMoreElements()) {
+			URL url = enumeration.nextElement();
+
+			bodyJSONObject.put(
+				FileUtil.getShortFileName(
+					FileUtil.stripExtension(url.getPath())),
+				_replace(
+					StringUtil.read(url.openStream()), "[$", "$]",
+					documentsStringUtilReplaceValues));
 		}
 
 		JSONObject notificationTemplateJSONObject =
@@ -2049,7 +2051,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			resourcePath + "notification-template.object-actions.json",
 			_servletContext);
 
-		if (Validator.isNull(json)) {
+		if (json == null) {
 			return;
 		}
 

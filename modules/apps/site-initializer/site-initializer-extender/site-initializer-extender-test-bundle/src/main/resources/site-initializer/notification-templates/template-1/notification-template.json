@@ -6,7 +6,7 @@
 	},
 	"name": "Test Notification Template",
 	"subject": {
-		"en-US": "This is a subject for Test Notification Template"
+		"en-US": "This Is a Subject for Test Notification Template"
 	},
 	"to": {
 		"en-US": "test@liferay.com"
