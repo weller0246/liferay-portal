@@ -86,7 +86,6 @@ public abstract class BaseBackgroundTaskTestCase {
 
 		_companyId = RandomTestUtil.randomLong();
 		_groupId = RandomTestUtil.randomLong();
-
 		_principalName = String.valueOf(RandomTestUtil.randomLong());
 
 		User user = Mockito.mock(User.class);
