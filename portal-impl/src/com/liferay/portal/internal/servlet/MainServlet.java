@@ -346,7 +346,7 @@ public class MainServlet extends HttpServlet {
 					servletContext.getResourceAsStream(
 						"/WEB-INF/shielded-container-web.xml")));
 
-			_checkWebXmlSettings(
+			_checkWebXml(
 				StreamUtil.toString(
 					servletContext.getResourceAsStream("/WEB-INF/web.xml")));
 		}
@@ -619,24 +619,24 @@ public class MainServlet extends HttpServlet {
 	private void _checkShieldedContainerWebXml(String xml)
 		throws DocumentException {
 
-		Document doc = UnsecureSAXReaderUtil.read(xml);
+		Document document = UnsecureSAXReaderUtil.read(xml);
 
-		I18nServlet.setLanguageIds(doc.getRootElement());
+		I18nServlet.setLanguageIds(document.getRootElement());
 
 		I18nFilter.setLanguageIds(I18nServlet.getLanguageIds());
 	}
 
-	private void _checkWebXmlSettings(String xml) throws DocumentException {
-		Document doc = UnsecureSAXReaderUtil.read(xml);
+	private void _checkWebXml(String xml) throws DocumentException {
+		Document document = UnsecureSAXReaderUtil.read(xml);
 
-		Element root = doc.getRootElement();
+		Element rootElement = document.getRootElement();
 
 		int timeout = PropsValues.SESSION_TIMEOUT;
 
-		Element sessionConfig = root.element("session-config");
+		Element sessionConfigElement = rootElement.element("session-config");
 
-		if (sessionConfig != null) {
-			String sessionTimeout = sessionConfig.elementText(
+		if (sessionConfigElement != null) {
+			String sessionTimeout = sessionConfigElement.elementText(
 				"session-timeout");
 
 			timeout = GetterUtil.getInteger(sessionTimeout, timeout);
