@@ -102,7 +102,9 @@ public class MailEngineTest {
 			}
 			catch (Throwable throwable) {
 				Assert.assertEquals(
-					"com.liferay.portal.kernel.exception.PortalException: Unable to exceed maximum number of allowed mail messages",
+					"com.liferay.portal.kernel.exception.PortalException: " +
+						"Unable to exceed maximum number of allowed mail " +
+							"messages",
 					throwable.getMessage());
 			}
 
@@ -119,7 +121,9 @@ public class MailEngineTest {
 			}
 			catch (Throwable throwable) {
 				Assert.assertEquals(
-					"com.liferay.portal.kernel.exception.PortalException: Unable to exceed maximum number of allowed mail messages",
+					"com.liferay.portal.kernel.exception.PortalException: " +
+						"Unable to exceed maximum number of allowed mail " +
+							"messages",
 					throwable.getMessage());
 			}
 		}
