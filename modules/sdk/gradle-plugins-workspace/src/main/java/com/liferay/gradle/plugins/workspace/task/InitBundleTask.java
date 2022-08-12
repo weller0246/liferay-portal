@@ -57,9 +57,8 @@ public class InitBundleTask extends JavaExec {
 		}
 		catch (Exception exception) {
 			throw new GradleException(
-				"Failed to initialize bundle base on '" +
-					getFile().getAbsolutePath() +
-						". Please remove this file and try again.",
+				"Unable to initialize bundle base on " + getFile() +
+					". Please remove this file and try again.",
 				exception);
 		}
 	}
