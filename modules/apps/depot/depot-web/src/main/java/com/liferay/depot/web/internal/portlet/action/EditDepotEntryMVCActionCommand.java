@@ -132,22 +132,18 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 		for (int i = 0; parameterMap.containsKey("mimeType_" + i); i++) {
 			String mimeType = null;
 
-			String[] mimeTypeValues = parameterMap.get("mimeType_" + i);
+			String[] mimeTypes = parameterMap.get("mimeType_" + i);
 
-			if ((mimeTypeValues.length != 0) &&
-				Validator.isNotNull(mimeTypeValues[0])) {
-
-				mimeType = mimeTypeValues[0];
+			if ((mimeTypes.length != 0) && Validator.isNotNull(mimeTypes[0])) {
+				mimeType = mimeTypes[0];
 			}
 
 			Long size = null;
 
-			String[] sizeValues = parameterMap.get("size_" + i);
+			String[] sizes = parameterMap.get("size_" + i);
 
-			if ((sizeValues.length != 0) &&
-				Validator.isNotNull(sizeValues[0])) {
-
-				size = GetterUtil.getLong(sizeValues[0]);
+			if ((sizes.length != 0) && Validator.isNotNull(sizes[0])) {
+				size = GetterUtil.getLong(sizes[0]);
 			}
 
 			if ((mimeType != null) || (size != null)) {
