@@ -849,7 +849,7 @@ public class ObjectEntryLocalServiceTest {
 		_objectDefinitionLocalService.publishCustomObjectDefinition(
 			user.getUserId(), customObjectDefinition.getObjectDefinitionId());
 
-		long invalidAccountEntryId = -1;
+		long invalidAccountEntryId = RandomTestUtil.randomLong();
 
 		try {
 			_objectEntryLocalService.addObjectEntry(
