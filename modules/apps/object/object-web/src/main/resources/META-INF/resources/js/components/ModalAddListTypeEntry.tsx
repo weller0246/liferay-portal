@@ -123,6 +123,7 @@ const ModalAddListTypeEntry: React.FC<IProps> = ({
 						label={Liferay.Language.get('name')}
 						onChange={(value, locale) => {
 							setValues({name_i18n: value});
+
 							handleLocaleChange(locale);
 						}}
 						required
