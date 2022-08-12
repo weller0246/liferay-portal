@@ -1698,15 +1698,15 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 		download.dest(destinationDir);
 
-		String bundleUrl = workspaceExtension.getBundleUrl();
+		String bundleURLString = workspaceExtension.getBundleUrl();
 
-		if (Objects.isNull(bundleUrl)) {
+		if (Objects.isNull(bundleURLString)) {
 			return;
 		}
 
 		try {
-			if (bundleUrl.startsWith("file:")) {
-				URL url = new URL(bundleUrl);
+			if (bundleURLString.startsWith("file:")) {
+				URL url = new URL(bundleURLString);
 
 				File file = new File(url.getFile());
 
@@ -1714,13 +1714,13 @@ public class RootProjectConfigurator implements Plugin<Project> {
 
 				URI uri = file.toURI();
 
-				bundleUrl = uri.toASCIIString();
+				bundleURLString = uri.toASCIIString();
 			}
 			else {
-				bundleUrl = bundleUrl.replace(" ", "%20");
+				bundleURLString = bundleURLString.replace(" ", "%20");
 			}
 
-			download.src(bundleUrl);
+			download.src(bundleURLString);
 		}
 		catch (MalformedURLException malformedURLException) {
 			throw new GradleException(
