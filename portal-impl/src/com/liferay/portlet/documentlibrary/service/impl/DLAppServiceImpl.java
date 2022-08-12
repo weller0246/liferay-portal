@@ -1343,7 +1343,7 @@ public class DLAppServiceImpl extends DLAppServiceBaseImpl {
 					TemporaryFileEntryRepository.class.getName())) {
 
 				if (_log.isDebugEnabled()) {
-					_log.debug("Skipping Temporary Repository");
+					_log.debug("Skipping temporary file entry repository");
 				}
 
 				continue;
