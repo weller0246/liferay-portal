@@ -48,8 +48,10 @@ const ModalAddListTypeEntry: React.FC<IProps> = ({
 		setSelectedLocale(value);
 
 		const localeDropdown = document.querySelector('.dropdown-menu.show');
-		const inputLocale = document.querySelector('#locale');
+
 		localeDropdown?.classList.add('hide');
+
+		const inputLocale = document.querySelector('#locale');
 
 		if (inputLocale instanceof HTMLElement) {
 			inputLocale.focus();
