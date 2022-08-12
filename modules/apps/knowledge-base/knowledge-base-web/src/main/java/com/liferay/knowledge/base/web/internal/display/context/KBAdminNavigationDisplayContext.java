@@ -285,12 +285,12 @@ public class KBAdminNavigationDisplayContext {
 		JSONArray articleNavigationJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
-		List<KBArticle> childKBArticle = KBArticleServiceUtil.getKBArticles(
+		List<KBArticle> kbArticles = KBArticleServiceUtil.getKBArticles(
 			parentKBArticle.getGroupId(), parentKBArticle.getResourcePrimKey(),
 			QueryUtil.ALL_POS, QueryUtil.ALL_POS, WorkflowConstants.STATUS_ANY,
 			new KBArticleTitleComparator(true));
 
-		for (KBArticle kbArticle : childKBArticle) {
+		for (KBArticle kbArticle : kbArticles) {
 			articleNavigationJSONArray.put(
 				JSONUtil.put(
 					"children", _getChildKBArticlesJSONArray(kbArticle)
