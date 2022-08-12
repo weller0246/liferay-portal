@@ -68,11 +68,10 @@ public class VerifyBundleTask extends Verify {
 			File srcFile = getSrc();
 
 			throw new GradleException(
-				"Invalid checksum for file '" + srcFile.getName() +
-					"'. Expected " + getChecksum().toLowerCase() + " but got " +
-						calculatedChecksum.toLowerCase() +
-							". Please remove file from " +
-								srcFile.getAbsolutePath() + " and try again.");
+				"Invalid checksum for " + srcFile.getName() + ". Expected " +
+					getChecksum().toLowerCase() + ", but got " +
+						calculatedChecksum.toLowerCase() + ". Please remove " +
+							srcFile.getAbsolutePath() + " and try again.");
 		}
 	}
 
