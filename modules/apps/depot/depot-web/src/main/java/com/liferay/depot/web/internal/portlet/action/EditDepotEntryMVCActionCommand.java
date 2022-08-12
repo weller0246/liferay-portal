@@ -130,9 +130,9 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 		Map<String, String[]> parameterMap = actionRequest.getParameterMap();
 
 		for (int i = 0; parameterMap.containsKey("mimeType_" + i); i++) {
-			String[] mimeTypeValues = parameterMap.get("mimeType_" + i);
-
 			String mimeType = null;
+
+			String[] mimeTypeValues = parameterMap.get("mimeType_" + i);
 
 			if ((mimeTypeValues.length != 0) &&
 				Validator.isNotNull(mimeTypeValues[0])) {
@@ -140,9 +140,9 @@ public class EditDepotEntryMVCActionCommand extends BaseMVCActionCommand {
 				mimeType = mimeTypeValues[0];
 			}
 
-			String[] sizeValues = parameterMap.get("size_" + i);
-
 			Long size = null;
+
+			String[] sizeValues = parameterMap.get("size_" + i);
 
 			if ((sizeValues.length != 0) &&
 				Validator.isNotNull(sizeValues[0])) {
