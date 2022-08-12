@@ -189,7 +189,7 @@ public class ObjectServiceUpgradeStepRegistrator
 				ObjectFieldUpgradeProcess());
 
 		registry.register(
-			"3.19.3", "3.19.4",
+			"3.19.3", "3.20.0",
 			UpgradeProcessFactory.alterColumnType(
 				"ObjectViewFilterColumn", "json", "TEXT"));
 	}
