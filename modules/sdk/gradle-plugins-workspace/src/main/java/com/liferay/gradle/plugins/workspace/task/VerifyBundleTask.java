@@ -75,14 +75,14 @@ public class VerifyBundleTask extends Verify {
 		}
 	}
 
-	private String _toHex(byte[] barr) {
-		StringBuilder result = new StringBuilder();
+	private String _toHex(byte[] bytes) {
+		StringBuilder stringBuilder = new StringBuilder();
 
-		for (byte b : barr) {
-			result.append(String.format("%02X", b));
+		for (byte b : bytes) {
+			stringBuilder.append(String.format("%02X", b));
 		}
 
-		return result.toString();
+		return stringBuilder.toString();
 	}
 
 }
