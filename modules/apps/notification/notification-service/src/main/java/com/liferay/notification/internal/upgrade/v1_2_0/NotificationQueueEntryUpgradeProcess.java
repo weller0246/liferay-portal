@@ -17,6 +17,8 @@ package com.liferay.notification.internal.upgrade.v1_2_0;
 import com.liferay.notification.constants.NotificationsQueryEntryConstants;
 import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -28,8 +30,6 @@ public class NotificationQueueEntryUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		alterTableAddColumn("NotificationQueueEntry", "status", "INTEGER");
-
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select notificationQueueEntryId, sent from " +
 					"NotificationQueueEntry");
@@ -57,6 +57,14 @@ public class NotificationQueueEntryUpgradeProcess extends UpgradeProcess {
 
 			preparedStatement2.executeBatch();
 		}
+	}
+
+	@Override
+	protected UpgradeStep[] getPreUpgradeSteps() {
+		return new UpgradeStep[] {
+			UpgradeProcessFactory.addColumns(
+				"NotificationQueueEntry", "status INTEGER")
+		};
 	}
 
 }
