@@ -35,7 +35,7 @@ public abstract class BaseExceptionMapper<T extends Throwable>
 	public Response toResponse(T exception) {
 		Problem problem = null;
 
-		if (isSanitizedMapper()) {
+		if (isSanitize()) {
 			problem = _getSanitizedProblem(exception);
 		}
 		else {
@@ -67,7 +67,7 @@ public abstract class BaseExceptionMapper<T extends Throwable>
 
 	protected abstract Problem getProblem(T exception);
 
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return true;
 	}
 

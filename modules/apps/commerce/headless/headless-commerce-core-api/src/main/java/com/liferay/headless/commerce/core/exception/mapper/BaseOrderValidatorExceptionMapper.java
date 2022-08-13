@@ -65,7 +65,7 @@ public class BaseOrderValidatorExceptionMapper
 	}
 
 	@Override
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return false;
 	}
 

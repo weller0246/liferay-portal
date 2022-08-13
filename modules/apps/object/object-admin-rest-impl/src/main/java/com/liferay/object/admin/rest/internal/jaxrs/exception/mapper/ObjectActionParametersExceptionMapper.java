@@ -58,7 +58,7 @@ public class ObjectActionParametersExceptionMapper
 	}
 
 	@Override
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return false;
 	}
 

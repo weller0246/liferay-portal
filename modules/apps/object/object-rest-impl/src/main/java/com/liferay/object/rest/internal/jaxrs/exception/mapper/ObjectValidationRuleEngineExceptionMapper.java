@@ -37,7 +37,7 @@ public class ObjectValidationRuleEngineExceptionMapper
 	}
 
 	@Override
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return false;
 	}
 

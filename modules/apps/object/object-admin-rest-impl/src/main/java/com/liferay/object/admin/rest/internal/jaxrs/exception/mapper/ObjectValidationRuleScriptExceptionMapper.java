@@ -61,7 +61,7 @@ public class ObjectValidationRuleScriptExceptionMapper
 	}
 
 	@Override
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return false;
 	}
 

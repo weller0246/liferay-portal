@@ -38,7 +38,7 @@ public class ObjectEntryManagerHttpExceptionMapper
 	}
 
 	@Override
-	protected boolean isSanitizedMapper() {
+	protected boolean isSanitize() {
 		return false;
 	}
 
