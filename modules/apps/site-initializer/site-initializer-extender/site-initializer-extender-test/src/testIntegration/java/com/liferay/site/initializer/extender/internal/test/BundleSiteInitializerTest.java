@@ -259,7 +259,7 @@ public class BundleSiteInitializerTest {
 			_assertPortletSettings(group);
 			_assertClientExtension(group);
 			_assertSAPEntries(group);
-			_assertSegmentsEntry(group.getGroupId());
+			_assertSegmentsEntries(group.getGroupId());
 			_assertSiteConfiguration(group.getGroupId());
 			_assertSiteSettings(group.getGroupId());
 			_assertSiteNavigationMenu(group);
@@ -1386,7 +1386,7 @@ public class BundleSiteInitializerTest {
 			allowedServiceSignatures2.size());
 	}
 
-	private void _assertSegmentsEntry(Long groupId) {
+	private void _assertSegmentsEntries(Long groupId) {
 		List<SegmentsEntry> segmentsEntries =
 			_segmentsEntryLocalService.getSegmentsEntries(
 				groupId, true, QueryUtil.ALL_POS, QueryUtil.ALL_POS, null);
