@@ -231,7 +231,6 @@ function CategorySelectorInput({
 
 		if (!multiple) {
 			setInputValue(newFieldValue[0]?.name);
-			setMatchingCategories([]);
 		}
 	};
 
@@ -272,7 +271,6 @@ function CategorySelectorInput({
 	const _handleSingleItemChange = (item) => {
 		setFieldValue(name, [{id: item.id, name: item.name}]);
 		setInputValue(item.name);
-		setMatchingCategories([]);
 		setAutocompleteDropdownActive(false);
 	};
 
