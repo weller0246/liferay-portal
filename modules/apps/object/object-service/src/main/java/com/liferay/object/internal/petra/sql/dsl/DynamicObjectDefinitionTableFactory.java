@@ -183,6 +183,9 @@ public class DynamicObjectDefinitionTableFactory {
 			expression = DSLFunctionFactoryUtil.sum(
 				(Expression<? extends Number>)column);
 		}
+		else {
+			throw new IllegalArgumentException("Invalid function " + function);
+		}
 
 		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
 			create(
