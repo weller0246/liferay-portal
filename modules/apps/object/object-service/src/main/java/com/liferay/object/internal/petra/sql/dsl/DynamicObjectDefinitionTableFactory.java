@@ -265,10 +265,10 @@ public class DynamicObjectDefinitionTableFactory {
 				(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
 					"filters"));
 
-		for (String oDataFilter : oDataFilterStrings) {
+		for (String oDataFilterString : oDataFilterStrings) {
 			predicate = predicate.and(
 				_filterPredicateFactory.create(
-					oDataFilter,
+					oDataFilterString,
 					relatedObjectDefinition.getObjectDefinitionId()));
 		}
 
