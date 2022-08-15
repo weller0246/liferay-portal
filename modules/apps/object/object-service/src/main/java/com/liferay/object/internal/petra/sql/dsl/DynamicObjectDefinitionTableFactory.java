@@ -27,17 +27,21 @@ import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectRelationshipLocalService;
-import com.liferay.object.util.ObjectFilterUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.DSLFunctionFactoryUtil;
 import com.liferay.petra.sql.dsl.DSLQueryFactoryUtil;
 import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.sql.dsl.query.JoinStep;
+import com.liferay.petra.string.StringBundler;
+import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.exception.PortalException;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.vulcan.util.ObjectMapperUtil;
+import com.liferay.portal.vulcan.util.TransformUtil;
 
 import java.math.BigDecimal;
 
@@ -51,6 +55,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -224,10 +229,8 @@ public class DynamicObjectDefinitionTableFactory {
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 		}
 
-		List<String> oDataFilterStrings =
-			ObjectFilterUtil.getODataFilterStrings(
-				(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
-					"filters"));
+		List<String> oDataFilterStrings = _getODataFilterStrings(
+			(List<ObjectFilter>)objectFieldSettingsValuesMap.get("filters"));
 
 		for (String oDataFilterString : oDataFilterStrings) {
 			predicate = predicate.and(
@@ -299,6 +302,55 @@ public class DynamicObjectDefinitionTableFactory {
 		}
 
 		return javaClass;
+	}
+
+	private List<String> _getODataFilterStrings(
+		List<ObjectFilter> objectFilters) {
+
+		// TODO Create filter parser classes for each one of the filter types
+		// and use a tracker or registry
+
+		List<String> oDataFilterStrings = new ArrayList<>();
+
+		if (objectFilters == null) {
+			return oDataFilterStrings;
+		}
+
+		for (ObjectFilter objectFilter : objectFilters) {
+			Map<String, Object> map = ObjectMapperUtil.readValue(
+				Map.class, objectFilter.getJSON());
+
+			if (map == null) {
+				continue;
+			}
+
+			Set<String> operators = map.keySet();
+
+			for (String operator : operators) {
+				Object object = map.get(operator);
+
+				if (object instanceof Object[]) {
+					String[] values = TransformUtil.transform(
+						(Object[])object,
+						value -> StringBundler.concat(
+							StringPool.APOSTROPHE, value,
+							StringPool.APOSTROPHE),
+						String.class);
+
+					object = StringBundler.concat(
+						StringPool.OPEN_PARENTHESIS,
+						ArrayUtil.toString(values, StringPool.BLANK),
+						StringPool.CLOSE_PARENTHESIS);
+				}
+
+				oDataFilterStrings.add(
+					StringBundler.concat(
+						objectFilter.getFilterBy(), StringPool.SPACE, operator,
+						StringPool.SPACE, object));
+			}
+		}
+
+		return oDataFilterStrings;
 	}
 
 	private Integer _getSQLType(String dbType) {

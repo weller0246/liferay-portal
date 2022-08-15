@@ -15,19 +15,13 @@
 package com.liferay.object.util;
 
 import com.liferay.object.model.ObjectFilter;
-import com.liferay.petra.string.StringBundler;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONUtil;
-import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
-import com.liferay.portal.vulcan.util.TransformUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Marcela Cunha
@@ -53,55 +47,6 @@ public class ObjectFilterUtil {
 		}
 
 		return jsonArray;
-	}
-
-	public static List<String> getODataFilterStrings(
-		List<ObjectFilter> objectFilters) {
-
-		// TODO Create filter parser classes for each one of the filter types
-		// and use a tracker or registry
-
-		List<String> oDataFilterStrings = new ArrayList<>();
-
-		if (objectFilters == null) {
-			return oDataFilterStrings;
-		}
-
-		for (ObjectFilter objectFilter : objectFilters) {
-			Map<String, Object> map = ObjectMapperUtil.readValue(
-				Map.class, objectFilter.getJSON());
-
-			if (map == null) {
-				continue;
-			}
-
-			Set<String> operators = map.keySet();
-
-			for (String operator : operators) {
-				Object object = map.get(operator);
-
-				if (object instanceof Object[]) {
-					String[] values = TransformUtil.transform(
-						(Object[])object,
-						value -> StringBundler.concat(
-							StringPool.APOSTROPHE, value,
-							StringPool.APOSTROPHE),
-						String.class);
-
-					object = StringBundler.concat(
-						StringPool.OPEN_PARENTHESIS,
-						ArrayUtil.toString(values, StringPool.BLANK),
-						StringPool.CLOSE_PARENTHESIS);
-				}
-
-				oDataFilterStrings.add(
-					StringBundler.concat(
-						objectFilter.getFilterBy(), StringPool.SPACE, operator,
-						StringPool.SPACE, object));
-			}
-		}
-
-		return oDataFilterStrings;
 	}
 
 }
