@@ -164,16 +164,12 @@ public class DynamicObjectDefinitionTableFactory {
 
 		Expression<?> expression = null;
 
-		if (function.equals("SUM")) {
-			expression = DSLFunctionFactoryUtil.sum(
+		if (function.equals("AVERAGE")) {
+			expression = DSLFunctionFactoryUtil.avg(
 				(Expression<? extends Number>)column);
 		}
 		else if (function.equals("COUNT")) {
 			expression = DSLFunctionFactoryUtil.count(column);
-		}
-		else if (function.equals("AVERAGE")) {
-			expression = DSLFunctionFactoryUtil.avg(
-				(Expression<? extends Number>)column);
 		}
 		else if (function.equals("MAX")) {
 			expression = DSLFunctionFactoryUtil.max(
@@ -182,6 +178,10 @@ public class DynamicObjectDefinitionTableFactory {
 		else if (function.equals("MIN")) {
 			expression = DSLFunctionFactoryUtil.min(
 				(Expression<? extends Comparable>)column);
+		}
+		else if (function.equals("SUM")) {
+			expression = DSLFunctionFactoryUtil.sum(
+				(Expression<? extends Number>)column);
 		}
 
 		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
