@@ -62,9 +62,7 @@ public class DefaultScalarDSLQueryAlias<T>
 		Consumer<String> consumer, ASTNodeListener astNodeListener) {
 
 		consumer.accept("(");
-
 		consumer.accept(_dslQuery.toSQL(astNodeListener));
-
 		consumer.accept(") as " + _name);
 	}
 
