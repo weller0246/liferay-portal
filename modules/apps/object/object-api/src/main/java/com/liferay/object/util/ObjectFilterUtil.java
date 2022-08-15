@@ -55,16 +55,16 @@ public class ObjectFilterUtil {
 		return jsonArray;
 	}
 
-	public static List<String> getODataFilters(
+	public static List<String> getODataFilterStrings(
 		List<ObjectFilter> objectFilters) {
 
 		// TODO Create filterParser classes for each one of filter types
 		// and use tracker or registry to get them
 
-		List<String> oDataFilters = new ArrayList<>();
+		List<String> oDataFilterStrings = new ArrayList<>();
 
 		if (objectFilters == null) {
-			return oDataFilters;
+			return oDataFilterStrings;
 		}
 
 		for (ObjectFilter objectFilter : objectFilters) {
@@ -97,14 +97,14 @@ public class ObjectFilterUtil {
 					object = sb.toString();
 				}
 
-				oDataFilters.add(
+				oDataFilterStrings.add(
 					StringBundler.concat(
 						objectFilter.getFilterBy(), StringPool.SPACE, operator,
 						StringPool.SPACE, object));
 			}
 		}
 
-		return oDataFilters;
+		return oDataFilterStrings;
 	}
 
 }

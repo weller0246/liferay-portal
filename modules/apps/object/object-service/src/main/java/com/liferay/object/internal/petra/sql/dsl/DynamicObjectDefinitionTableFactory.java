@@ -242,11 +242,11 @@ public class DynamicObjectDefinitionTableFactory {
 					dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 			}
 
-			List<String> oDataFilters = ObjectFilterUtil.getODataFilters(
+			List<String> oDataFilterStrings = ObjectFilterUtil.getODataFilterStrings(
 				(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
 					"filters"));
 
-			for (String oDataFilter : oDataFilters) {
+			for (String oDataFilter : oDataFilterStrings) {
 				predicate = predicate.and(
 					_filterPredicateFactory.create(
 						_filterParserProvider, oDataFilter,
