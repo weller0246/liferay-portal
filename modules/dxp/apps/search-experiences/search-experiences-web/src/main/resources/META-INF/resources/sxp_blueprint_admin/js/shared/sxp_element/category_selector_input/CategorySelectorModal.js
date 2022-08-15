@@ -10,7 +10,6 @@
  */
 
 import ClayButton from '@clayui/button';
-import ClayEmptyState from '@clayui/empty-state';
 import {ClayCheckbox, ClaySelect} from '@clayui/form';
 import ClayIcon from '@clayui/icon';
 import ClayModal, {useModal} from '@clayui/modal';
@@ -313,42 +312,30 @@ function CategorySelectorModal({
 			</ClayModal.Header>
 
 			<ClayModal.Body>
-				{tree.length ? (
-					<>
-						<label htmlFor="selectSite">
-							{Liferay.Language.get('select-site')}
-						</label>
+				<label htmlFor="selectSite">
+					{Liferay.Language.get('select-site')}
+				</label>
 
-						<ClaySelect
-							aria-label={Liferay.Language.get('select-site')}
-							id="selectSite"
-							onChange={_handleChangeCurrentSite}
-							value={currentSite.id}
-						>
-							<option hidden></option>
+				<ClaySelect
+					aria-label={Liferay.Language.get('select-site')}
+					id="selectSite"
+					onChange={_handleChangeCurrentSite}
+					value={currentSite.id}
+				>
+					<option hidden></option>
 
-							{tree.map((site) => (
-								<ClaySelect.Option
-									key={site.id}
-									label={
-										site.descriptiveName_i18n?.[locale] ||
-										site.descriptiveName ||
-										site.name
-									}
-									value={site.id}
-								/>
-							))}
-						</ClaySelect>
-					</>
-				) : (
-					<ClayEmptyState
-						description={Liferay.Language.get(
-							'an-error-has-occurred-and-we-were-unable-to-load-the-results'
-						)}
-						imgSrc="/o/admin-theme/images/states/empty_state.gif"
-						title={Liferay.Language.get('no-items-were-found')}
-					/>
-				)}
+					{tree.map((site) => (
+						<ClaySelect.Option
+							key={site.id}
+							label={
+								site.descriptiveName_i18n?.[locale] ||
+								site.descriptiveName ||
+								site.name
+							}
+							value={site.id}
+						/>
+					))}
+				</ClaySelect>
 
 				{currentSite.id && (
 					<div className="selector-modal-tree">
