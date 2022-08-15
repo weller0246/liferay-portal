@@ -116,7 +116,7 @@ public class DynamicObjectDefinitionTableFactory {
 			return;
 		}
 
-		Map<String, Object> objectFieldSettingsValuesMap = new HashMap<>();
+		Map<String, Object> objectFieldSettingsValues = new HashMap<>();
 
 		List<ObjectFieldSetting> objectFieldSettings =
 			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
@@ -124,12 +124,12 @@ public class DynamicObjectDefinitionTableFactory {
 
 		for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
 			if (!StringUtil.equals(objectFieldSetting.getName(), "filters")) {
-				objectFieldSettingsValuesMap.put(
+				objectFieldSettingsValues.put(
 					objectFieldSetting.getName(),
 					objectFieldSetting.getValue());
 			}
 			else {
-				objectFieldSettingsValuesMap.put(
+				objectFieldSettingsValues.put(
 					objectFieldSetting.getName(),
 					objectFieldSetting.getObjectFilters());
 			}
@@ -139,8 +139,7 @@ public class DynamicObjectDefinitionTableFactory {
 			_objectRelationshipLocalService.getObjectRelationship(
 				objectDefinition.getObjectDefinitionId(),
 				GetterUtil.getString(
-					objectFieldSettingsValuesMap.get(
-						"objectRelationshipName")));
+					objectFieldSettingsValues.get("objectRelationshipName")));
 
 		ObjectDefinition relatedObjectDefinition =
 			_objectDefinitionLocalService.getObjectDefinition(
@@ -161,7 +160,7 @@ public class DynamicObjectDefinitionTableFactory {
 
 		JoinStep joinStep = DSLQueryFactoryUtil.select(
 			_getFunctionExpression(
-				objectFieldSettingsValuesMap, relatedObjectDefinition,
+				objectFieldSettingsValues, relatedObjectDefinition,
 				relatedObjectDefinitionTable)
 		).from(
 			relatedObjectDefinitionTable
@@ -230,7 +229,7 @@ public class DynamicObjectDefinitionTableFactory {
 		}
 
 		List<String> oDataFilterStrings = _getODataFilterStrings(
-			(List<ObjectFilter>)objectFieldSettingsValuesMap.get("filters"));
+			(List<ObjectFilter>)objectFieldSettingsValues.get("filters"));
 
 		for (String oDataFilterString : oDataFilterStrings) {
 			predicate = predicate.and(
@@ -247,20 +246,20 @@ public class DynamicObjectDefinitionTableFactory {
 	}
 
 	private Expression<?> _getFunctionExpression(
-		Map<String, Object> objectFieldSettingsValuesMap,
+		Map<String, Object> objectFieldSettingsValues,
 		ObjectDefinition relatedObjectDefinition,
 		DynamicObjectDefinitionTable relatedObjectDefinitionTable) {
 
 		Column<?, ?> column = null;
 
 		String function = GetterUtil.getString(
-			objectFieldSettingsValuesMap.get("function"));
+			objectFieldSettingsValues.get("function"));
 
 		if (!Objects.equals(function, "COUNT")) {
 			column = _objectFieldLocalService.getColumn(
 				relatedObjectDefinition.getObjectDefinitionId(),
 				GetterUtil.getString(
-					objectFieldSettingsValuesMap.get("objectFieldName")));
+					objectFieldSettingsValues.get("objectFieldName")));
 		}
 		else {
 			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
