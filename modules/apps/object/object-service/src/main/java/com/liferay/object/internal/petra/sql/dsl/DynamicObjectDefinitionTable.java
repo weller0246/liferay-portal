@@ -97,17 +97,6 @@ public class DynamicObjectDefinitionTable
 		return sqlType;
 	}
 
-	public DynamicObjectDefinitionTable(
-		List<ObjectField> objectFields, String primaryKeyColumnName,
-		String tableName) {
-
-		super(tableName, () -> null);
-
-		_objectFields = objectFields;
-		_primaryKeyColumnName = primaryKeyColumnName;
-		_tableName = tableName;
-	}
-
 	public void addSelectExpression(Expression<?> selectExpression) {
 		_selectExpressions.add(selectExpression);
 	}
@@ -181,6 +170,17 @@ public class DynamicObjectDefinitionTable
 
 	public Expression<?>[] getSelectExpressions() {
 		return _selectExpressions.toArray(new Expression<?>[0]);
+	}
+
+	protected DynamicObjectDefinitionTable(
+		List<ObjectField> objectFields, String primaryKeyColumnName,
+		String tableName) {
+
+		super(tableName, () -> null);
+
+		_objectFields = objectFields;
+		_primaryKeyColumnName = primaryKeyColumnName;
+		_tableName = tableName;
 	}
 
 	private static String _getDataType(String type) {
