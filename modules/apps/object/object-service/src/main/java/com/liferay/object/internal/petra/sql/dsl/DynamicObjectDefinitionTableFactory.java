@@ -147,19 +147,16 @@ public class DynamicObjectDefinitionTableFactory {
 				relatedObjectDefinition.getObjectDefinitionId()),
 			relatedObjectDefinition.getDBTableName());
 
-		Expression<? extends Comparable> column = null;
+		Column<?, ?> column = null;
 
 		String function = GetterUtil.getString(
 			objectFieldSettingsValuesMap.get("function"));
 
 		if (!Objects.equals(function, "COUNT")) {
-			column =
-				(Expression<? extends Comparable>)
-					_objectFieldLocalService.getColumn(
-						relatedObjectDefinition.getObjectDefinitionId(),
-						GetterUtil.getString(
-							objectFieldSettingsValuesMap.get(
-								"objectFieldName")));
+			column = _objectFieldLocalService.getColumn(
+				relatedObjectDefinition.getObjectDefinitionId(),
+				GetterUtil.getString(
+					objectFieldSettingsValuesMap.get("objectFieldName")));
 		}
 		else {
 			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
@@ -179,10 +176,12 @@ public class DynamicObjectDefinitionTableFactory {
 				(Expression<? extends Number>)column);
 		}
 		else if (function.equals("MAX")) {
-			expression = DSLFunctionFactoryUtil.max(column);
+			expression = DSLFunctionFactoryUtil.max(
+				(Expression<? extends Comparable>)column);
 		}
 		else if (function.equals("MIN")) {
-			expression = DSLFunctionFactoryUtil.min(column);
+			expression = DSLFunctionFactoryUtil.min(
+				(Expression<? extends Comparable>)column);
 		}
 
 		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
