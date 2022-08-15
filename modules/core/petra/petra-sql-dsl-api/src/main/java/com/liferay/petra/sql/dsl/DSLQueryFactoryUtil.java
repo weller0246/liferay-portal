@@ -35,10 +35,10 @@ public class DSLQueryFactoryUtil {
 		return _DSL_QUERY_FACTORY.countDistinct(expression);
 	}
 
-	public static <T> Expression<T> scalarSubdSLQuery(
+	public static <T> Expression<T> scalarSubDSLQuery(
 		DSLQuery dslQuery, Class<T> javaType, String name, int sqlType) {
 
-		return _DSL_QUERY_FACTORY.scalarSubdSLQuery(
+		return _DSL_QUERY_FACTORY.scalarSubDSLQuery(
 			dslQuery, javaType, name, sqlType);
 	}
 

@@ -1104,8 +1104,8 @@ public class SQLDSLTest {
 
 	@Test
 	public void testScalarDSLQueryAlias() {
-		ScalarDSLQueryAlias scalarSubdSLQuery =
-			(ScalarDSLQueryAlias)DSLQueryFactoryUtil.scalarSubdSLQuery(
+		ScalarDSLQueryAlias scalarSubDSLQuery =
+			(ScalarDSLQueryAlias)DSLQueryFactoryUtil.scalarSubDSLQuery(
 				DSLQueryFactoryUtil.select(
 					DSLFunctionFactoryUtil.count(
 						MainExampleTable.INSTANCE.mainExampleIdColumn)
@@ -1117,14 +1117,14 @@ public class SQLDSLTest {
 		Assert.assertEquals(
 			"(select count(MainExample.mainExampleId) from MainExample" +
 				") as mainExampleField",
-			scalarSubdSLQuery.toString());
+			scalarSubDSLQuery.toString());
 
 		Assert.assertEquals(
 			"select count(MainExample.mainExampleId) from MainExample",
-			String.valueOf(scalarSubdSLQuery.getDSLQuery()));
-		Assert.assertEquals(Long.class, scalarSubdSLQuery.getJavaType());
-		Assert.assertEquals("mainExampleField", scalarSubdSLQuery.getName());
-		Assert.assertEquals(Types.BIGINT, scalarSubdSLQuery.getSQLType());
+			String.valueOf(scalarSubDSLQuery.getDSLQuery()));
+		Assert.assertEquals(Long.class, scalarSubDSLQuery.getJavaType());
+		Assert.assertEquals("mainExampleField", scalarSubDSLQuery.getName());
+		Assert.assertEquals(Types.BIGINT, scalarSubDSLQuery.getSQLType());
 	}
 
 	@Test

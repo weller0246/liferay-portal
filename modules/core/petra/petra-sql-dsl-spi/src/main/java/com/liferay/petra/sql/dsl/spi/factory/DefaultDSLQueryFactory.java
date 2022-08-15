@@ -49,7 +49,7 @@ public class DefaultDSLQueryFactory implements DSLQueryFactory {
 	}
 
 	@Override
-	public <T> Expression<T> scalarSubdSLQuery(
+	public <T> Expression<T> scalarSubDSLQuery(
 		DSLQuery dslQuery, Class<T> javaType, String name, int sqlType) {
 
 		return new DefaultScalarDSLQueryAlias<>(
