@@ -57,7 +57,6 @@ import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.odata.filter.ExpressionConvert;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.search.aggregation.Aggregations;
 import com.liferay.portal.search.aggregation.bucket.FilterAggregation;
 import com.liferay.portal.search.aggregation.bucket.NestedAggregation;
@@ -412,9 +411,7 @@ public class DefaultObjectEntryManagerImpl
 			companyId, objectDefinition, scopeKey, aggregation,
 			dtoConverterContext, pagination,
 			_filterPredicateFactory.create(
-				_filterParserProvider, filterString,
-				objectDefinition.getObjectDefinitionId(),
-				_objectFieldLocalService),
+				filterString, objectDefinition.getObjectDefinitionId()),
 			search, sorts);
 	}
 
@@ -796,9 +793,6 @@ public class DefaultObjectEntryManagerImpl
 		target = "(result.class.name=com.liferay.portal.kernel.search.filter.Filter)"
 	)
 	private ExpressionConvert<Filter> _expressionConvert;
-
-	@Reference
-	private FilterParserProvider _filterParserProvider;
 
 	@Reference
 	private FilterPredicateFactory _filterPredicateFactory;

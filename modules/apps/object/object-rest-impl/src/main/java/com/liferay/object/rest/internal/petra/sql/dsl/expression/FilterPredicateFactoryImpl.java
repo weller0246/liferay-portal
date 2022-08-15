@@ -28,6 +28,7 @@ import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.odata.filter.expression.Expression;
 
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Marco Leo
@@ -37,19 +38,15 @@ import org.osgi.service.component.annotations.Component;
 public class FilterPredicateFactoryImpl implements FilterPredicateFactory {
 
 	@Override
-	public Predicate create(
-		FilterParserProvider filterParserProvider, String filterString,
-		long objectDefinitionId,
-		ObjectFieldLocalService objectFieldLocalService) {
-
+	public Predicate create(String filterString, long objectDefinitionId) {
 		if (Validator.isNull(filterString)) {
 			return null;
 		}
 
 		try {
-			FilterParser filterParser = filterParserProvider.provide(
+			FilterParser filterParser = _filterParserProvider.provide(
 				new ObjectEntryEntityModel(
-					objectFieldLocalService.getObjectFields(
+					_objectFieldLocalService.getObjectFields(
 						objectDefinitionId)));
 
 			Filter oDataFilter = new Filter(filterParser.parse(filterString));
@@ -58,7 +55,7 @@ public class FilterPredicateFactoryImpl implements FilterPredicateFactory {
 
 			return (Predicate)expression.accept(
 				new PredicateExpressionVisitorImpl(
-					objectDefinitionId, objectFieldLocalService));
+					objectDefinitionId, _objectFieldLocalService));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -69,5 +66,11 @@ public class FilterPredicateFactoryImpl implements FilterPredicateFactory {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		FilterPredicateFactoryImpl.class);
+
+	@Reference
+	private FilterParserProvider _filterParserProvider;
+
+	@Reference
+	private ObjectFieldLocalService _objectFieldLocalService;
 
 }

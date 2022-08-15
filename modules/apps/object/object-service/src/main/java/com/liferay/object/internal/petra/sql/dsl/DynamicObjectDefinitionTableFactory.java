@@ -37,7 +37,6 @@ import com.liferay.petra.sql.dsl.query.JoinStep;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 
 import java.sql.Types;
 
@@ -242,16 +241,16 @@ public class DynamicObjectDefinitionTableFactory {
 					dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 			}
 
-			List<String> oDataFilterStrings = ObjectFilterUtil.getODataFilterStrings(
-				(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
-					"filters"));
+			List<String> oDataFilterStrings =
+				ObjectFilterUtil.getODataFilterStrings(
+					(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
+						"filters"));
 
 			for (String oDataFilter : oDataFilterStrings) {
 				predicate = predicate.and(
 					_filterPredicateFactory.create(
-						_filterParserProvider, oDataFilter,
-						relatedObjectDefinition.getObjectDefinitionId(),
-						_objectFieldLocalService));
+						oDataFilter,
+						relatedObjectDefinition.getObjectDefinitionId()));
 			}
 
 			dynamicObjectDefinitionTable.addSelectExpression(
@@ -265,13 +264,6 @@ public class DynamicObjectDefinitionTableFactory {
 		}
 
 		return dynamicObjectDefinitionTable;
-	}
-
-	@Reference(unbind = "-")
-	private void _setFilterParserProvider(
-		FilterParserProvider filterParserProvider) {
-
-		_filterParserProvider = filterParserProvider;
 	}
 
 	@Reference(unbind = "-")
@@ -309,7 +301,6 @@ public class DynamicObjectDefinitionTableFactory {
 		_filterPredicateFactory = filterPredicateFactory;
 	}
 
-	private static FilterParserProvider _filterParserProvider;
 	private static FilterPredicateFactory _filterPredicateFactory;
 	private static ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private static ObjectFieldLocalService _objectFieldLocalService;

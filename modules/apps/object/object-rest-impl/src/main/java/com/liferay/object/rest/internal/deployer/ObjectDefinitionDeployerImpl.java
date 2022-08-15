@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapDictionaryBuilder;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOContributor;
 
 import java.lang.reflect.Method;
@@ -207,8 +206,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				GraphQLDTOContributor.class,
 				ObjectDefinitionGraphQLDTOContributor.of(
-					_filterParserProvider, _filterPredicateFactory,
-					objectDefinition,
+					_filterPredicateFactory, objectDefinition,
 					_objectEntryManagerTracker.getObjectEntryManager(
 						objectDefinition.getStorageType()),
 					_objectFieldLocalService, _objectRelationshipLocalService,
@@ -334,9 +332,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Reference
 	private ConfigurationAdmin _configurationAdmin;
-
-	@Reference
-	private FilterParserProvider _filterParserProvider;
 
 	@Reference
 	private FilterPredicateFactory _filterPredicateFactory;

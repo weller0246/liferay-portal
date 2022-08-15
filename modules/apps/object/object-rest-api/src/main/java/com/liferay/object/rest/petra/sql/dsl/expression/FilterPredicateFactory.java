@@ -14,18 +14,13 @@
 
 package com.liferay.object.rest.petra.sql.dsl.expression;
 
-import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.petra.sql.dsl.expression.Predicate;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 
 /**
  * @author Gabriel Albuquerque
  */
 public interface FilterPredicateFactory {
 
-	public Predicate create(
-		FilterParserProvider filterParserProvider, String filterString,
-		long objectDefinitionId,
-		ObjectFieldLocalService objectFieldLocalService);
+	public Predicate create(String filterString, long objectDefinitionId);
 
 }

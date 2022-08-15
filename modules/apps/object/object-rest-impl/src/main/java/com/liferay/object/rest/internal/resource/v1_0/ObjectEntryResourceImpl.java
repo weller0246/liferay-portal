@@ -34,7 +34,6 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -223,10 +222,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			contextCompany.getCompanyId(), _objectDefinition, null, aggregation,
 			_getDTOConverterContext(null), pagination,
 			_filterPredicateFactory.create(
-				_filterParserProvider,
 				ParamUtil.getString(contextHttpServletRequest, "filter"),
-				_objectDefinition.getObjectDefinitionId(),
-				_objectFieldLocalService),
+				_objectDefinition.getObjectDefinitionId()),
 			search, sorts);
 	}
 
@@ -270,10 +267,8 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			contextCompany.getCompanyId(), _objectDefinition, scopeKey,
 			aggregation, _getDTOConverterContext(null), pagination,
 			_filterPredicateFactory.create(
-				_filterParserProvider,
 				ParamUtil.getString(contextHttpServletRequest, "filter"),
-				_objectDefinition.getObjectDefinitionId(),
-				_objectFieldLocalService),
+				_objectDefinition.getObjectDefinitionId()),
 			search, sorts);
 	}
 
@@ -476,9 +471,6 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 
 		throw new NotFoundException("Missing parameter \"objectDefinitionId\"");
 	}
-
-	@Reference
-	private FilterParserProvider _filterParserProvider;
 
 	@Reference
 	private FilterPredicateFactory _filterPredicateFactory;

@@ -35,7 +35,6 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.odata.entity.EntityModel;
-import com.liferay.portal.odata.filter.FilterParserProvider;
 import com.liferay.portal.vulcan.aggregation.Aggregation;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOContributor;
@@ -66,7 +65,6 @@ public class ObjectDefinitionGraphQLDTOContributor
 	implements GraphQLDTOContributor<Map<String, Object>, Map<String, Object>> {
 
 	public static ObjectDefinitionGraphQLDTOContributor of(
-		FilterParserProvider filterParserProvider,
 		FilterPredicateFactory filterPredicateFactory,
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
@@ -158,13 +156,13 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 		return new ObjectDefinitionGraphQLDTOContributor(
 			objectDefinition.getCompanyId(),
-			new ObjectEntryEntityModel(objectFields), filterParserProvider,
-			filterPredicateFactory, graphQLDTOProperties,
+			new ObjectEntryEntityModel(objectFields), filterPredicateFactory,
+			graphQLDTOProperties,
 			StringUtil.removeSubstring(
 				objectDefinition.getPKObjectFieldName(), "c_"),
-			objectDefinition, objectEntryManager, objectFieldLocalService,
-			objectScopeProvider, relationshipGraphQLDTOProperties,
-			objectDefinition.getShortName(), objectDefinition.getName());
+			objectDefinition, objectEntryManager, objectScopeProvider,
+			relationshipGraphQLDTOProperties, objectDefinition.getShortName(),
+			objectDefinition.getName());
 	}
 
 	@Override
@@ -212,10 +210,8 @@ public class ObjectDefinitionGraphQLDTOContributor
 			(String)dtoConverterContext.getAttribute("scopeKey"), aggregation,
 			dtoConverterContext, pagination,
 			_filterPredicateFactory.create(
-				_filterParserProvider,
 				(String)dtoConverterContext.getAttribute("filter"),
-				_objectDefinition.getObjectDefinitionId(),
-				_objectFieldLocalService),
+				_objectDefinition.getObjectDefinitionId()),
 			search, sorts);
 
 		Collection<ObjectEntry> items = page.getItems();
@@ -329,25 +325,21 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 	private ObjectDefinitionGraphQLDTOContributor(
 		long companyId, EntityModel entityModel,
-		FilterParserProvider filterParserProvider,
 		FilterPredicateFactory filterPredicateFactory,
 		List<GraphQLDTOProperty> graphQLDTOProperties, String idName,
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
-		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
 		List<GraphQLDTOProperty> relationshipGraphQLDTOProperties,
 		String resourceName, String typeName) {
 
 		_companyId = companyId;
 		_entityModel = entityModel;
-		_filterParserProvider = filterParserProvider;
 		_filterPredicateFactory = filterPredicateFactory;
 		_graphQLDTOProperties = graphQLDTOProperties;
 		_idName = idName;
 		_objectDefinition = objectDefinition;
 		_objectEntryManager = objectEntryManager;
-		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
 		_relationshipGraphQLDTOProperties = relationshipGraphQLDTOProperties;
 		_resourceName = resourceName;
@@ -421,13 +413,11 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 	private final long _companyId;
 	private final EntityModel _entityModel;
-	private final FilterParserProvider _filterParserProvider;
 	private final FilterPredicateFactory _filterPredicateFactory;
 	private final List<GraphQLDTOProperty> _graphQLDTOProperties;
 	private final String _idName;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntryManager _objectEntryManager;
-	private final ObjectFieldLocalService _objectFieldLocalService;
 	private final ObjectScopeProvider _objectScopeProvider;
 	private final List<GraphQLDTOProperty> _relationshipGraphQLDTOProperties;
 	private final String _resourceName;
