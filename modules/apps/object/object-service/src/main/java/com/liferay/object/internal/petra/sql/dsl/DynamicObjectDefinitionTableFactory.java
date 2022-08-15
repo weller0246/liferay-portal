@@ -209,11 +209,6 @@ public class DynamicObjectDefinitionTableFactory {
 						objectRelationship.getDBTableName());
 
 			Column<DynamicObjectRelationshipMappingTable, Long>
-				primaryKeyColumn1 =
-					dynamicObjectRelationshipMappingTable.
-						getPrimaryKeyColumn1();
-
-			Column<DynamicObjectRelationshipMappingTable, Long>
 				primaryKeyColumn2 =
 					dynamicObjectRelationshipMappingTable.
 						getPrimaryKeyColumn2();
@@ -222,6 +217,11 @@ public class DynamicObjectDefinitionTableFactory {
 				dynamicObjectRelationshipMappingTable,
 				primaryKeyColumn2.eq(
 					relatedObjectDefinitionTable.getPrimaryKeyColumn()));
+
+			Column<DynamicObjectRelationshipMappingTable, Long>
+				primaryKeyColumn1 =
+					dynamicObjectRelationshipMappingTable.
+						getPrimaryKeyColumn1();
 
 			predicate = primaryKeyColumn1.eq(
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn());
