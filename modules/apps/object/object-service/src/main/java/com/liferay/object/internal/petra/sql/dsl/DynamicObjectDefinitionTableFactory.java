@@ -130,7 +130,7 @@ public class DynamicObjectDefinitionTableFactory {
 			}
 		}
 
-		ObjectRelationship relationship =
+		ObjectRelationship objectRelationship =
 			_objectRelationshipLocalService.getObjectRelationship(
 				objectDefinition.getObjectDefinitionId(),
 				GetterUtil.getString(
@@ -139,7 +139,7 @@ public class DynamicObjectDefinitionTableFactory {
 
 		ObjectDefinition relatedObjectDefinition =
 			_objectDefinitionLocalService.getObjectDefinition(
-				relationship.getObjectDefinitionId2());
+				objectRelationship.getObjectDefinitionId2());
 
 		DynamicObjectDefinitionTable relatedObjectDefinitionTable = create(
 			relatedObjectDefinition,
@@ -214,11 +214,11 @@ public class DynamicObjectDefinitionTableFactory {
 		Predicate predicate = null;
 
 		if (Objects.equals(
-				relationship.getType(),
+				objectRelationship.getType(),
 				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
 
 			ObjectField relatedField = _objectFieldLocalService.getObjectField(
-				relationship.getObjectFieldId2());
+				objectRelationship.getObjectFieldId2());
 
 			Column<DynamicObjectDefinitionTable, Long>
 				relatedObjectDefinitionColumn =
@@ -231,7 +231,7 @@ public class DynamicObjectDefinitionTableFactory {
 				dynamicObjectDefinitionTable.getPrimaryKeyColumn());
 		}
 		else if (Objects.equals(
-					relationship.getType(),
+					objectRelationship.getType(),
 					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
 
 			DynamicObjectRelationshipMappingTable
@@ -239,7 +239,7 @@ public class DynamicObjectDefinitionTableFactory {
 					new DynamicObjectRelationshipMappingTable(
 						objectDefinition.getPKObjectFieldDBColumnName(),
 						relatedObjectDefinition.getPKObjectFieldDBColumnName(),
-						relationship.getDBTableName());
+						objectRelationship.getDBTableName());
 
 			Column<DynamicObjectRelationshipMappingTable, Long>
 				primaryKeyColumn1 =
