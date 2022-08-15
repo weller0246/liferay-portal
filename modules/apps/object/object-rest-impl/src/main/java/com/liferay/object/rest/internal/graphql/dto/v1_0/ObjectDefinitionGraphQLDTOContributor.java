@@ -159,13 +159,12 @@ public class ObjectDefinitionGraphQLDTOContributor
 		return new ObjectDefinitionGraphQLDTOContributor(
 			objectDefinition.getCompanyId(),
 			new ObjectEntryEntityModel(objectFields), filterParserProvider,
-			graphQLDTOProperties,
+			filterPredicateFactory, graphQLDTOProperties,
 			StringUtil.removeSubstring(
 				objectDefinition.getPKObjectFieldName(), "c_"),
 			objectDefinition, objectEntryManager, objectFieldLocalService,
-			objectScopeProvider, filterPredicateFactory,
-			relationshipGraphQLDTOProperties, objectDefinition.getShortName(),
-			objectDefinition.getName());
+			objectScopeProvider, relationshipGraphQLDTOProperties,
+			objectDefinition.getShortName(), objectDefinition.getName());
 	}
 
 	@Override
@@ -331,25 +330,25 @@ public class ObjectDefinitionGraphQLDTOContributor
 	private ObjectDefinitionGraphQLDTOContributor(
 		long companyId, EntityModel entityModel,
 		FilterParserProvider filterParserProvider,
+		FilterPredicateFactory filterPredicateFactory,
 		List<GraphQLDTOProperty> graphQLDTOProperties, String idName,
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectScopeProvider objectScopeProvider,
-		FilterPredicateFactory filterPredicateFactory,
 		List<GraphQLDTOProperty> relationshipGraphQLDTOProperties,
 		String resourceName, String typeName) {
 
 		_companyId = companyId;
 		_entityModel = entityModel;
 		_filterParserProvider = filterParserProvider;
+		_filterPredicateFactory = filterPredicateFactory;
 		_graphQLDTOProperties = graphQLDTOProperties;
 		_idName = idName;
 		_objectDefinition = objectDefinition;
 		_objectEntryManager = objectEntryManager;
 		_objectFieldLocalService = objectFieldLocalService;
 		_objectScopeProvider = objectScopeProvider;
-		_filterPredicateFactory = filterPredicateFactory;
 		_relationshipGraphQLDTOProperties = relationshipGraphQLDTOProperties;
 		_resourceName = resourceName;
 		_typeName = typeName;
