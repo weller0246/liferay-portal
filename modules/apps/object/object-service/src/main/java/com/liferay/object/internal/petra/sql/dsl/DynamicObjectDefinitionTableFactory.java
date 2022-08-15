@@ -123,15 +123,15 @@ public class DynamicObjectDefinitionTableFactory {
 				objectField.getObjectFieldId());
 
 		for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
-			if (!StringUtil.equals(objectFieldSetting.getName(), "filters")) {
+			if (StringUtil.equals(objectFieldSetting.getName(), "filters")) {
 				objectFieldSettingsValues.put(
 					objectFieldSetting.getName(),
-					objectFieldSetting.getValue());
+					objectFieldSetting.getObjectFilters());
 			}
 			else {
 				objectFieldSettingsValues.put(
 					objectFieldSetting.getName(),
-					objectFieldSetting.getObjectFilters());
+					objectFieldSetting.getValue());
 			}
 		}
 
