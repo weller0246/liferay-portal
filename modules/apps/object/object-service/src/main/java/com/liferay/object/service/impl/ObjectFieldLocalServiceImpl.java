@@ -462,21 +462,18 @@ public class ObjectFieldLocalServiceImpl
 				objectField.getDBTableName(),
 				objectDefinition.getDBTableName())) {
 
-			return DynamicObjectDefinitionTableFactory.
-				createDynamicObjectDefinitionTable(
-					objectDefinition,
-					objectFieldLocalService.getObjectFields(
-						objectDefinitionId, objectDefinition.getDBTableName()),
-					objectDefinition.getDBTableName());
-		}
-
-		return DynamicObjectDefinitionTableFactory.
-			createDynamicObjectDefinitionTable(
+			return _dynamicObjectDefinitionTableFactory.create(
 				objectDefinition,
 				objectFieldLocalService.getObjectFields(
-					objectDefinitionId,
-					objectDefinition.getExtensionDBTableName()),
-				objectDefinition.getExtensionDBTableName());
+					objectDefinitionId, objectDefinition.getDBTableName()),
+				objectDefinition.getDBTableName());
+		}
+
+		return _dynamicObjectDefinitionTableFactory.create(
+			objectDefinition,
+			objectFieldLocalService.getObjectFields(
+				objectDefinitionId, objectDefinition.getExtensionDBTableName()),
+			objectDefinition.getExtensionDBTableName());
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1036,6 +1033,10 @@ public class ObjectFieldLocalServiceImpl
 
 	@Reference
 	private DLFileEntryLocalService _dlFileEntryLocalService;
+
+	@Reference
+	private DynamicObjectDefinitionTableFactory
+		_dynamicObjectDefinitionTableFactory;
 
 	@Reference
 	private ListTypeEntryLocalService _listTypeEntryLocalService;

@@ -51,13 +51,14 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Gabriel Albuquerque
  */
-@Component(immediate = true, service = {})
+@Component(
+	immediate = true, service = DynamicObjectDefinitionTableFactory.class
+)
 public class DynamicObjectDefinitionTableFactory {
 
-	public static DynamicObjectDefinitionTable
-			createDynamicObjectDefinitionTable(
-				ObjectDefinition objectDefinition,
-				List<ObjectField> objectFields, String tableName)
+	public DynamicObjectDefinitionTable create(
+			ObjectDefinition objectDefinition, List<ObjectField> objectFields,
+			String tableName)
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
@@ -119,12 +120,11 @@ public class DynamicObjectDefinitionTableFactory {
 				_objectDefinitionLocalService.getObjectDefinition(
 					relationship.getObjectDefinitionId2());
 
-			DynamicObjectDefinitionTable relatedObjectDefinitionTable =
-				createDynamicObjectDefinitionTable(
-					relatedObjectDefinition,
-					_objectFieldLocalService.getObjectFields(
-						relatedObjectDefinition.getObjectDefinitionId()),
-					relatedObjectDefinition.getDBTableName());
+			DynamicObjectDefinitionTable relatedObjectDefinitionTable = create(
+				relatedObjectDefinition,
+				_objectFieldLocalService.getObjectFields(
+					relatedObjectDefinition.getObjectDefinitionId()),
+				relatedObjectDefinition.getDBTableName());
 
 			Expression<? extends Comparable> column = null;
 
@@ -165,7 +165,7 @@ public class DynamicObjectDefinitionTableFactory {
 			}
 
 			DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
-				createDynamicObjectDefinitionTable(
+				create(
 					relatedObjectDefinition,
 					_objectFieldLocalService.getObjectFields(
 						relatedObjectDefinition.getObjectDefinitionId()),
@@ -266,47 +266,19 @@ public class DynamicObjectDefinitionTableFactory {
 		return dynamicObjectDefinitionTable;
 	}
 
-	@Reference(unbind = "-")
-	private void _setObjectDefinitionLocalService(
-		ObjectDefinitionLocalService objectDefinitionLocalService) {
+	@Reference
+	private FilterPredicateFactory _filterPredicateFactory;
 
-		_objectDefinitionLocalService = objectDefinitionLocalService;
-	}
+	@Reference
+	private ObjectDefinitionLocalService _objectDefinitionLocalService;
 
-	@Reference(unbind = "-")
-	private void _setObjectFieldLocalService(
-		ObjectFieldLocalService objectFieldLocalService) {
+	@Reference
+	private ObjectFieldLocalService _objectFieldLocalService;
 
-		_objectFieldLocalService = objectFieldLocalService;
-	}
+	@Reference
+	private ObjectFieldSettingLocalService _objectFieldSettingLocalService;
 
-	@Reference(unbind = "-")
-	private void _setObjectFieldSettingLocalService(
-		ObjectFieldSettingLocalService objectFieldSettingLocalService) {
-
-		_objectFieldSettingLocalService = objectFieldSettingLocalService;
-	}
-
-	@Reference(unbind = "-")
-	private void _setObjectRelationshipLocalService(
-		ObjectRelationshipLocalService objectRelationshipLocalService) {
-
-		_objectRelationshipLocalService = objectRelationshipLocalService;
-	}
-
-	@Reference(unbind = "-")
-	private void _setPredicateFactory(
-		FilterPredicateFactory filterPredicateFactory) {
-
-		_filterPredicateFactory = filterPredicateFactory;
-	}
-
-	private static FilterPredicateFactory _filterPredicateFactory;
-	private static ObjectDefinitionLocalService _objectDefinitionLocalService;
-	private static ObjectFieldLocalService _objectFieldLocalService;
-	private static ObjectFieldSettingLocalService
-		_objectFieldSettingLocalService;
-	private static ObjectRelationshipLocalService
-		_objectRelationshipLocalService;
+	@Reference
+	private ObjectRelationshipLocalService _objectRelationshipLocalService;
 
 }

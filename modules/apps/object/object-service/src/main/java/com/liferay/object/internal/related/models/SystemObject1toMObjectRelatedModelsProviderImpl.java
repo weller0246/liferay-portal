@@ -56,6 +56,7 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		implements ObjectRelatedModelsProvider<T> {
 
 	public SystemObject1toMObjectRelatedModelsProviderImpl(
+		DynamicObjectDefinitionTableFactory dynamicObjectDefinitionTableFactory,
 		ObjectDefinition objectDefinition,
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectFieldLocalService objectFieldLocalService,
@@ -63,6 +64,8 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
+		_dynamicObjectDefinitionTableFactory =
+			dynamicObjectDefinitionTableFactory;
 		_objectDefinition = objectDefinition;
 		_objectEntryLocalService = objectEntryLocalService;
 		_objectFieldLocalService = objectFieldLocalService;
@@ -282,13 +285,12 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		// TODO Cache this across the cluster with proper invalidation when the
 		// object definition or its object fields are updated
 
-		return DynamicObjectDefinitionTableFactory.
-			createDynamicObjectDefinitionTable(
-				_objectDefinition,
-				_objectFieldLocalService.getObjectFields(
-					_objectDefinition.getObjectDefinitionId(),
-					_objectDefinition.getExtensionDBTableName()),
-				_objectDefinition.getExtensionDBTableName());
+		return _dynamicObjectDefinitionTableFactory.create(
+			_objectDefinition,
+			_objectFieldLocalService.getObjectFields(
+				_objectDefinition.getObjectDefinitionId(),
+				_objectDefinition.getExtensionDBTableName()),
+			_objectDefinition.getExtensionDBTableName());
 	}
 
 	private GroupByStep _getGroupByStep(
@@ -353,6 +355,8 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		);
 	}
 
+	private final DynamicObjectDefinitionTableFactory
+		_dynamicObjectDefinitionTableFactory;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectFieldLocalService _objectFieldLocalService;

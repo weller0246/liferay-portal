@@ -1277,12 +1277,11 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
-		return DynamicObjectDefinitionTableFactory.
-			createDynamicObjectDefinitionTable(
-				objectDefinition,
-				_objectFieldPersistence.findByODI_DTN(
-					objectDefinitionId, objectDefinition.getDBTableName()),
-				objectDefinition.getDBTableName());
+		return _dynamicObjectDefinitionTableFactory.create(
+			objectDefinition,
+			_objectFieldPersistence.findByODI_DTN(
+				objectDefinitionId, objectDefinition.getDBTableName()),
+			objectDefinition.getDBTableName());
 	}
 
 	private DynamicObjectDefinitionTable
@@ -1295,13 +1294,11 @@ public class ObjectEntryLocalServiceImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
-		return DynamicObjectDefinitionTableFactory.
-			createDynamicObjectDefinitionTable(
-				objectDefinition,
-				_objectFieldPersistence.findByODI_DTN(
-					objectDefinitionId,
-					objectDefinition.getExtensionDBTableName()),
-				objectDefinition.getExtensionDBTableName());
+		return _dynamicObjectDefinitionTableFactory.create(
+			objectDefinition,
+			_objectFieldPersistence.findByODI_DTN(
+				objectDefinitionId, objectDefinition.getExtensionDBTableName()),
+			objectDefinition.getExtensionDBTableName());
 	}
 
 	private GroupByStep _getManyToManyRelatedObjectEntriesGroupByStep(
@@ -2568,6 +2565,10 @@ public class ObjectEntryLocalServiceImpl
 
 	@Reference
 	private DLFolderLocalService _dlFolderLocalService;
+
+	@Reference
+	private DynamicObjectDefinitionTableFactory
+		_dynamicObjectDefinitionTableFactory;
 
 	@Reference
 	private GroupLocalService _groupLocalService;

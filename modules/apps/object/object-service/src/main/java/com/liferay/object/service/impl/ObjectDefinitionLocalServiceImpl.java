@@ -883,12 +883,11 @@ public class ObjectDefinitionLocalServiceImpl
 		throws PortalException {
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
-			DynamicObjectDefinitionTableFactory.
-				createDynamicObjectDefinitionTable(
-					objectDefinition,
-					_objectFieldPersistence.findByODI_DTN(
-						objectDefinition.getObjectDefinitionId(), dbTableName),
-					dbTableName);
+			_dynamicObjectDefinitionTableFactory.create(
+				objectDefinition,
+				_objectFieldPersistence.findByODI_DTN(
+					objectDefinition.getObjectDefinitionId(), dbTableName),
+				dbTableName);
 
 		runSQL(dynamicObjectDefinitionTable.getCreateTableSQL());
 	}
@@ -1375,6 +1374,10 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
+
+	@Reference
+	private DynamicObjectDefinitionTableFactory
+		_dynamicObjectDefinitionTableFactory;
 
 	@Reference
 	private DynamicQueryBatchIndexingActionableFactory

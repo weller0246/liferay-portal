@@ -48,6 +48,7 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		implements ObjectRelatedModelsProvider<T> {
 
 	public SystemObjectMtoMObjectRelatedModelsProviderImpl(
+		DynamicObjectDefinitionTableFactory dynamicObjectDefinitionTableFactory,
 		ObjectDefinition objectDefinition,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectFieldLocalService objectFieldLocalService,
@@ -55,6 +56,8 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
+		_dynamicObjectDefinitionTableFactory =
+			dynamicObjectDefinitionTableFactory;
 		_objectDefinition = objectDefinition;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectFieldLocalService = objectFieldLocalService;
@@ -268,13 +271,12 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 				objectRelationship.getObjectDefinitionId2());
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
-			DynamicObjectDefinitionTableFactory.
-				createDynamicObjectDefinitionTable(
-					objectDefinition2,
-					_objectFieldLocalService.getObjectFields(
-						objectRelationship.getObjectDefinitionId2(),
-						objectDefinition2.getDBTableName()),
-					objectDefinition2.getDBTableName());
+			_dynamicObjectDefinitionTableFactory.create(
+				objectDefinition2,
+				_objectFieldLocalService.getObjectFields(
+					objectRelationship.getObjectDefinitionId2(),
+					objectDefinition2.getDBTableName()),
+				objectDefinition2.getDBTableName());
 
 		DynamicObjectRelationshipMappingTable
 			dynamicObjectRelationshipMappingTable =
@@ -323,6 +325,8 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		);
 	}
 
+	private final DynamicObjectDefinitionTableFactory
+		_dynamicObjectDefinitionTableFactory;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectFieldLocalService _objectFieldLocalService;
