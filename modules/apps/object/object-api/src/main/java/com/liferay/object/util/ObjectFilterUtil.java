@@ -58,8 +58,8 @@ public class ObjectFilterUtil {
 	public static List<String> getODataFilterStrings(
 		List<ObjectFilter> objectFilters) {
 
-		// TODO Create filterParser classes for each one of filter types
-		// and use tracker or registry to get them
+		// TODO Create filter parser classes for each one of the filter types
+		// and use a tracker or registry
 
 		List<String> oDataFilterStrings = new ArrayList<>();
 
@@ -68,17 +68,17 @@ public class ObjectFilterUtil {
 		}
 
 		for (ObjectFilter objectFilter : objectFilters) {
-			Map<String, Object> objectFilterMap = ObjectMapperUtil.readValue(
+			Map<String, Object> map = ObjectMapperUtil.readValue(
 				Map.class, objectFilter.getJSON());
 
-			if (objectFilterMap == null) {
+			if (map == null) {
 				continue;
 			}
 
-			Set<String> operators = objectFilterMap.keySet();
+			Set<String> operators = map.keySet();
 
 			for (String operator : operators) {
-				Object object = objectFilterMap.get(operator);
+				Object object = map.get(operator);
 
 				if (object instanceof Object[]) {
 					String[] values = TransformUtil.transform(
@@ -88,13 +88,10 @@ public class ObjectFilterUtil {
 							StringPool.APOSTROPHE),
 						String.class);
 
-					StringBundler sb = new StringBundler(values.length + 2);
-
-					sb.append(StringPool.OPEN_PARENTHESIS);
-					sb.append(ArrayUtil.toString(values, StringPool.BLANK));
-					sb.append(StringPool.CLOSE_PARENTHESIS);
-
-					object = sb.toString();
+					object = StringBundler.concat(
+						StringPool.OPEN_PARENTHESIS,
+						ArrayUtil.toString(values, StringPool.BLANK),
+						StringPool.CLOSE_PARENTHESIS);
 				}
 
 				oDataFilterStrings.add(
