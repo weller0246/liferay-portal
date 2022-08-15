@@ -273,6 +273,15 @@ function CategorySelectorInput({
 
 	const _handleMultiInputValueBlur = () => {
 		setFieldTouched(name);
+
+		if (inputValue.trim()) {
+			_handleMultiItemsChange([
+				...value,
+				{id: inputValue.trim(), name: inputValue.trim()},
+			]);
+		}
+
+		setInputValue('');
 	};
 
 	const _handleMultiInputValueChange = (newValue) => {
