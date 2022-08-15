@@ -122,9 +122,9 @@ public class DynamicObjectDefinitionTable
 	}
 
 	public Column<DynamicObjectDefinitionTable, ?> createColumn(
-		String name, Class<?> javaType, int sqlType) {
+		String name, Class<?> javaClass, int sqlType) {
 
-		return createColumn(name, javaType, sqlType, Column.FLAG_DEFAULT);
+		return createColumn(name, javaClass, sqlType, Column.FLAG_DEFAULT);
 	}
 
 	/**
