@@ -77,193 +77,196 @@ public class DynamicObjectDefinitionTableFactory {
 			Types.BIGINT, Column.FLAG_DEFAULT);
 
 		for (ObjectField objectField : objectFields) {
-			if (!Objects.equals(
-					objectField.getBusinessType(),
-					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION)) {
-
-				dynamicObjectDefinitionTable.addColumn(
-					objectField.getDBColumnName(),
-					_getJavaClass(objectField.getDBType()),
-					_getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT);
-
-				continue;
-			}
-
-			Map<String, Object> objectFieldSettingsValuesMap = new HashMap<>();
-
-			List<ObjectFieldSetting> objectFieldSettings =
-				_objectFieldSettingLocalService.
-					getObjectFieldObjectFieldSettings(
-						objectField.getObjectFieldId());
-
-			for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
-				if (!StringUtil.equals(
-						objectFieldSetting.getName(), "filters")) {
-
-					objectFieldSettingsValuesMap.put(
-						objectFieldSetting.getName(),
-						objectFieldSetting.getValue());
-				}
-				else {
-					objectFieldSettingsValuesMap.put(
-						objectFieldSetting.getName(),
-						objectFieldSetting.getObjectFilters());
-				}
-			}
-
-			ObjectRelationship relationship =
-				_objectRelationshipLocalService.getObjectRelationship(
-					objectDefinition.getObjectDefinitionId(),
-					GetterUtil.getString(
-						objectFieldSettingsValuesMap.get(
-							"objectRelationshipName")));
-
-			ObjectDefinition relatedObjectDefinition =
-				_objectDefinitionLocalService.getObjectDefinition(
-					relationship.getObjectDefinitionId2());
-
-			DynamicObjectDefinitionTable relatedObjectDefinitionTable = create(
-				relatedObjectDefinition,
-				_objectFieldLocalService.getObjectFields(
-					relatedObjectDefinition.getObjectDefinitionId()),
-				relatedObjectDefinition.getDBTableName());
-
-			Expression<? extends Comparable> column = null;
-
-			String function = GetterUtil.getString(
-				objectFieldSettingsValuesMap.get("function"));
-
-			if (!Objects.equals(function, "COUNT")) {
-				column =
-					(Expression<? extends Comparable>)
-						_objectFieldLocalService.getColumn(
-							relatedObjectDefinition.getObjectDefinitionId(),
-							GetterUtil.getString(
-								objectFieldSettingsValuesMap.get(
-									"objectFieldName")));
-			}
-			else {
-				column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
-			}
-
-			Expression<?> expression = null;
-
-			if (function.equals("SUM")) {
-				expression = DSLFunctionFactoryUtil.sum(
-					(Expression<? extends Number>)column);
-			}
-			else if (function.equals("COUNT")) {
-				expression = DSLFunctionFactoryUtil.count(column);
-			}
-			else if (function.equals("AVERAGE")) {
-				expression = DSLFunctionFactoryUtil.avg(
-					(Expression<? extends Number>)column);
-			}
-			else if (function.equals("MAX")) {
-				expression = DSLFunctionFactoryUtil.max(column);
-			}
-			else if (function.equals("MIN")) {
-				expression = DSLFunctionFactoryUtil.min(column);
-			}
-
-			DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
-				create(
-					relatedObjectDefinition,
-					_objectFieldLocalService.getObjectFields(
-						relatedObjectDefinition.getObjectDefinitionId()),
-					relatedObjectDefinition.getExtensionDBTableName());
-
-			JoinStep joinStep = DSLQueryFactoryUtil.select(
-				expression
-			).from(
-				relatedObjectDefinitionTable
-			).innerJoinON(
-				relatedObjectDefinitionExtensionTable,
-				relatedObjectDefinitionExtensionTable.getPrimaryKeyColumn(
-				).eq(
-					relatedObjectDefinitionTable.getPrimaryKeyColumn()
-				)
-			);
-
-			if (!relatedObjectDefinition.isSystem()) {
-				joinStep = joinStep.innerJoinON(
-					ObjectEntryTable.INSTANCE,
-					ObjectEntryTable.INSTANCE.objectEntryId.eq(
-						relatedObjectDefinitionTable.getPrimaryKeyColumn()));
-			}
-
-			Predicate predicate = null;
-
-			if (Objects.equals(
-					relationship.getType(),
-					ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
-
-				ObjectField relatedField =
-					_objectFieldLocalService.getObjectField(
-						relationship.getObjectFieldId2());
-
-				Column<DynamicObjectDefinitionTable, Long>
-					relatedObjectDefinitionColumn =
-						(Column<DynamicObjectDefinitionTable, Long>)
-							_objectFieldLocalService.getColumn(
-								relatedObjectDefinition.getObjectDefinitionId(),
-								relatedField.getName());
-
-				predicate = relatedObjectDefinitionColumn.eq(
-					dynamicObjectDefinitionTable.getPrimaryKeyColumn());
-			}
-			else if (Objects.equals(
-						relationship.getType(),
-						ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
-
-				DynamicObjectRelationshipMappingTable
-					dynamicObjectRelationshipMappingTable =
-						new DynamicObjectRelationshipMappingTable(
-							objectDefinition.getPKObjectFieldDBColumnName(),
-							relatedObjectDefinition.
-								getPKObjectFieldDBColumnName(),
-							relationship.getDBTableName());
-
-				Column<DynamicObjectRelationshipMappingTable, Long>
-					primaryKeyColumn1 =
-						dynamicObjectRelationshipMappingTable.
-							getPrimaryKeyColumn1();
-
-				Column<DynamicObjectRelationshipMappingTable, Long>
-					primaryKeyColumn2 =
-						dynamicObjectRelationshipMappingTable.
-							getPrimaryKeyColumn2();
-
-				joinStep = joinStep.innerJoinON(
-					dynamicObjectRelationshipMappingTable,
-					primaryKeyColumn2.eq(
-						relatedObjectDefinitionTable.getPrimaryKeyColumn()));
-
-				predicate = primaryKeyColumn1.eq(
-					dynamicObjectDefinitionTable.getPrimaryKeyColumn());
-			}
-
-			List<String> oDataFilterStrings =
-				ObjectFilterUtil.getODataFilterStrings(
-					(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
-						"filters"));
-
-			for (String oDataFilter : oDataFilterStrings) {
-				predicate = predicate.and(
-					_filterPredicateFactory.create(
-						oDataFilter,
-						relatedObjectDefinition.getObjectDefinitionId()));
-			}
-
-			dynamicObjectDefinitionTable.addSelectExpression(
-				DSLQueryFactoryUtil.scalarSubDSLQuery(
-					joinStep.where(predicate),
-					_getJavaClass(objectField.getDBType()),
-					objectField.getName(),
-					_getSQLType(objectField.getDBType())));
+			_addObjectField(
+				dynamicObjectDefinitionTable, objectDefinition, objectField);
 		}
 
 		return dynamicObjectDefinitionTable;
+	}
+
+	private void _addObjectField(
+			DynamicObjectDefinitionTable dynamicObjectDefinitionTable,
+			ObjectDefinition objectDefinition, ObjectField objectField)
+		throws PortalException {
+
+		if (!Objects.equals(
+				objectField.getBusinessType(),
+				ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION)) {
+
+			dynamicObjectDefinitionTable.addColumn(
+				objectField.getDBColumnName(),
+				_getJavaClass(objectField.getDBType()),
+				_getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT);
+
+			return;
+		}
+
+		Map<String, Object> objectFieldSettingsValuesMap = new HashMap<>();
+
+		List<ObjectFieldSetting> objectFieldSettings =
+			_objectFieldSettingLocalService.getObjectFieldObjectFieldSettings(
+				objectField.getObjectFieldId());
+
+		for (ObjectFieldSetting objectFieldSetting : objectFieldSettings) {
+			if (!StringUtil.equals(objectFieldSetting.getName(), "filters")) {
+				objectFieldSettingsValuesMap.put(
+					objectFieldSetting.getName(),
+					objectFieldSetting.getValue());
+			}
+			else {
+				objectFieldSettingsValuesMap.put(
+					objectFieldSetting.getName(),
+					objectFieldSetting.getObjectFilters());
+			}
+		}
+
+		ObjectRelationship relationship =
+			_objectRelationshipLocalService.getObjectRelationship(
+				objectDefinition.getObjectDefinitionId(),
+				GetterUtil.getString(
+					objectFieldSettingsValuesMap.get(
+						"objectRelationshipName")));
+
+		ObjectDefinition relatedObjectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				relationship.getObjectDefinitionId2());
+
+		DynamicObjectDefinitionTable relatedObjectDefinitionTable = create(
+			relatedObjectDefinition,
+			_objectFieldLocalService.getObjectFields(
+				relatedObjectDefinition.getObjectDefinitionId()),
+			relatedObjectDefinition.getDBTableName());
+
+		Expression<? extends Comparable> column = null;
+
+		String function = GetterUtil.getString(
+			objectFieldSettingsValuesMap.get("function"));
+
+		if (!Objects.equals(function, "COUNT")) {
+			column =
+				(Expression<? extends Comparable>)
+					_objectFieldLocalService.getColumn(
+						relatedObjectDefinition.getObjectDefinitionId(),
+						GetterUtil.getString(
+							objectFieldSettingsValuesMap.get(
+								"objectFieldName")));
+		}
+		else {
+			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
+		}
+
+		Expression<?> expression = null;
+
+		if (function.equals("SUM")) {
+			expression = DSLFunctionFactoryUtil.sum(
+				(Expression<? extends Number>)column);
+		}
+		else if (function.equals("COUNT")) {
+			expression = DSLFunctionFactoryUtil.count(column);
+		}
+		else if (function.equals("AVERAGE")) {
+			expression = DSLFunctionFactoryUtil.avg(
+				(Expression<? extends Number>)column);
+		}
+		else if (function.equals("MAX")) {
+			expression = DSLFunctionFactoryUtil.max(column);
+		}
+		else if (function.equals("MIN")) {
+			expression = DSLFunctionFactoryUtil.min(column);
+		}
+
+		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
+			create(
+				relatedObjectDefinition,
+				_objectFieldLocalService.getObjectFields(
+					relatedObjectDefinition.getObjectDefinitionId()),
+				relatedObjectDefinition.getExtensionDBTableName());
+
+		JoinStep joinStep = DSLQueryFactoryUtil.select(
+			expression
+		).from(
+			relatedObjectDefinitionTable
+		).innerJoinON(
+			relatedObjectDefinitionExtensionTable,
+			relatedObjectDefinitionExtensionTable.getPrimaryKeyColumn(
+			).eq(
+				relatedObjectDefinitionTable.getPrimaryKeyColumn()
+			)
+		);
+
+		if (!relatedObjectDefinition.isSystem()) {
+			joinStep = joinStep.innerJoinON(
+				ObjectEntryTable.INSTANCE,
+				ObjectEntryTable.INSTANCE.objectEntryId.eq(
+					relatedObjectDefinitionTable.getPrimaryKeyColumn()));
+		}
+
+		Predicate predicate = null;
+
+		if (Objects.equals(
+				relationship.getType(),
+				ObjectRelationshipConstants.TYPE_ONE_TO_MANY)) {
+
+			ObjectField relatedField = _objectFieldLocalService.getObjectField(
+				relationship.getObjectFieldId2());
+
+			Column<DynamicObjectDefinitionTable, Long>
+				relatedObjectDefinitionColumn =
+					(Column<DynamicObjectDefinitionTable, Long>)
+						_objectFieldLocalService.getColumn(
+							relatedObjectDefinition.getObjectDefinitionId(),
+							relatedField.getName());
+
+			predicate = relatedObjectDefinitionColumn.eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn());
+		}
+		else if (Objects.equals(
+					relationship.getType(),
+					ObjectRelationshipConstants.TYPE_MANY_TO_MANY)) {
+
+			DynamicObjectRelationshipMappingTable
+				dynamicObjectRelationshipMappingTable =
+					new DynamicObjectRelationshipMappingTable(
+						objectDefinition.getPKObjectFieldDBColumnName(),
+						relatedObjectDefinition.getPKObjectFieldDBColumnName(),
+						relationship.getDBTableName());
+
+			Column<DynamicObjectRelationshipMappingTable, Long>
+				primaryKeyColumn1 =
+					dynamicObjectRelationshipMappingTable.
+						getPrimaryKeyColumn1();
+
+			Column<DynamicObjectRelationshipMappingTable, Long>
+				primaryKeyColumn2 =
+					dynamicObjectRelationshipMappingTable.
+						getPrimaryKeyColumn2();
+
+			joinStep = joinStep.innerJoinON(
+				dynamicObjectRelationshipMappingTable,
+				primaryKeyColumn2.eq(
+					relatedObjectDefinitionTable.getPrimaryKeyColumn()));
+
+			predicate = primaryKeyColumn1.eq(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn());
+		}
+
+		List<String> oDataFilterStrings =
+			ObjectFilterUtil.getODataFilterStrings(
+				(List<ObjectFilter>)objectFieldSettingsValuesMap.get(
+					"filters"));
+
+		for (String oDataFilter : oDataFilterStrings) {
+			predicate = predicate.and(
+				_filterPredicateFactory.create(
+					oDataFilter,
+					relatedObjectDefinition.getObjectDefinitionId()));
+		}
+
+		dynamicObjectDefinitionTable.addSelectExpression(
+			DSLQueryFactoryUtil.scalarSubDSLQuery(
+				joinStep.where(predicate),
+				_getJavaClass(objectField.getDBType()), objectField.getName(),
+				_getSQLType(objectField.getDBType())));
 	}
 
 	private Class<?> _getJavaClass(String type) {
