@@ -949,7 +949,6 @@ public class SQLDSLTest {
 	public void testPredicateNot() {
 		Predicate leftPredicate =
 			MainExampleTable.INSTANCE.mainExampleIdColumn.gte(1L);
-
 		Predicate rightPredicate =
 			MainExampleTable.INSTANCE.mainExampleIdColumn.lte(3L);
 
@@ -1115,16 +1114,15 @@ public class SQLDSLTest {
 				Long.class, "mainExampleField", Types.BIGINT);
 
 		Assert.assertEquals(
-			"(select count(MainExample.mainExampleId) from MainExample" +
-				") as mainExampleField",
-			scalarSubDSLQuery.toString());
-
-		Assert.assertEquals(
 			"select count(MainExample.mainExampleId) from MainExample",
 			String.valueOf(scalarSubDSLQuery.getDSLQuery()));
 		Assert.assertEquals(Long.class, scalarSubDSLQuery.getJavaType());
 		Assert.assertEquals("mainExampleField", scalarSubDSLQuery.getName());
 		Assert.assertEquals(Types.BIGINT, scalarSubDSLQuery.getSQLType());
+		Assert.assertEquals(
+			"(select count(MainExample.mainExampleId) from MainExample" +
+				") as mainExampleField",
+			scalarSubDSLQuery.toString());
 	}
 
 	@Test
