@@ -25,14 +25,7 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.math.BigDecimal;
-
-import java.sql.Blob;
-import java.sql.Clob;
-import java.sql.Types;
-
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -77,43 +70,8 @@ public class DynamicObjectDefinitionTable
 		return sql;
 	}
 
-	public static Class<?> getJavaClass(String type) {
-		Class<?> javaClass = _javaClasses.get(type);
-
-		if (javaClass == null) {
-			throw new IllegalArgumentException("Invalid type " + type);
-		}
-
-		return javaClass;
-	}
-
-	public static Integer getSQLType(String type) {
-		Integer sqlType = _sqlTypes.get(type);
-
-		if (sqlType == null) {
-			throw new IllegalArgumentException("Invalid type " + type);
-		}
-
-		return sqlType;
-	}
-
 	public void addSelectExpression(Expression<?> selectExpression) {
 		_selectExpressions.add(selectExpression);
-	}
-
-	public Column<DynamicObjectDefinitionTable, ?> createColumn(
-		ObjectField objectField) {
-
-		return createColumn(
-			objectField.getDBColumnName(),
-			_javaClasses.get(objectField.getDBType()),
-			_sqlTypes.get(objectField.getDBType()), Column.FLAG_DEFAULT);
-	}
-
-	public Column<DynamicObjectDefinitionTable, ?> createColumn(
-		String name, Class<?> javaClass, int sqlType) {
-
-		return createColumn(name, javaClass, sqlType, Column.FLAG_DEFAULT);
 	}
 
 	/**
@@ -183,6 +141,17 @@ public class DynamicObjectDefinitionTable
 		_tableName = tableName;
 	}
 
+	protected Column<DynamicObjectDefinitionTable, ?> addColumn(
+		String name, Class<?> javaClass, int sqlType, int flags) {
+
+		Column<DynamicObjectDefinitionTable, ?> column = createColumn(
+			name, javaClass, sqlType, flags);
+
+		addSelectExpression(column);
+
+		return column;
+	}
+
 	private static String _getDataType(String type) {
 		String dataType = _dataTypes.get(type);
 
@@ -230,45 +199,6 @@ public class DynamicObjectDefinitionTable
 		"Long", "LONG"
 	).put(
 		"String", "VARCHAR(280)"
-	).build();
-	private static final Map<String, Class<?>> _javaClasses =
-		HashMapBuilder.<String, Class<?>>put(
-			"BigDecimal", BigDecimal.class
-		).put(
-			"Blob", Blob.class
-		).put(
-			"Boolean", Boolean.class
-		).put(
-			"Clob", Clob.class
-		).put(
-			"Date", Date.class
-		).put(
-			"Double", Double.class
-		).put(
-			"Integer", Integer.class
-		).put(
-			"Long", Long.class
-		).put(
-			"String", String.class
-		).build();
-	private static final Map<String, Integer> _sqlTypes = HashMapBuilder.put(
-		"BigDecimal", Types.DECIMAL
-	).put(
-		"Blob", Types.BLOB
-	).put(
-		"Boolean", Types.BOOLEAN
-	).put(
-		"Clob", Types.CLOB
-	).put(
-		"Date", Types.DATE
-	).put(
-		"Double", Types.DOUBLE
-	).put(
-		"Integer", Types.INTEGER
-	).put(
-		"Long", Types.BIGINT
-	).put(
-		"String", Types.VARCHAR
 	).build();
 
 	private final List<ObjectField> _objectFields;

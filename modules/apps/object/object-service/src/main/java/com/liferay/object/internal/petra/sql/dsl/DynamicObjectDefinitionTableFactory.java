@@ -36,10 +36,16 @@ import com.liferay.petra.sql.dsl.expression.Predicate;
 import com.liferay.petra.sql.dsl.query.JoinStep;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.GetterUtil;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.StringUtil;
 
+import java.math.BigDecimal;
+
+import java.sql.Blob;
+import java.sql.Clob;
 import java.sql.Types;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,23 +72,19 @@ public class DynamicObjectDefinitionTableFactory {
 				objectFields, objectDefinition.getPKObjectFieldDBColumnName(),
 				tableName);
 
-		dynamicObjectDefinitionTable.addSelectExpression(
-			dynamicObjectDefinitionTable.createColumn(
-				dynamicObjectDefinitionTable.getPrimaryKeyColumnName(),
-				Long.class, Types.BIGINT));
+		dynamicObjectDefinitionTable.addColumn(
+			dynamicObjectDefinitionTable.getPrimaryKeyColumnName(), Long.class,
+			Types.BIGINT, Column.FLAG_DEFAULT);
 
 		for (ObjectField objectField : objectFields) {
 			if (!Objects.equals(
 					objectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION)) {
 
-				dynamicObjectDefinitionTable.addSelectExpression(
-					dynamicObjectDefinitionTable.createColumn(
-						objectField.getDBColumnName(),
-						DynamicObjectDefinitionTable.getJavaClass(
-							objectField.getDBType()),
-						DynamicObjectDefinitionTable.getSQLType(
-							objectField.getDBType())));
+				dynamicObjectDefinitionTable.addColumn(
+					objectField.getDBColumnName(),
+					_getJavaClass(objectField.getDBType()),
+					_getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT);
 
 				continue;
 			}
@@ -256,15 +258,73 @@ public class DynamicObjectDefinitionTableFactory {
 			dynamicObjectDefinitionTable.addSelectExpression(
 				DSLQueryFactoryUtil.scalarSubDSLQuery(
 					joinStep.where(predicate),
-					DynamicObjectDefinitionTable.getJavaClass(
-						objectField.getDBType()),
+					_getJavaClass(objectField.getDBType()),
 					objectField.getName(),
-					DynamicObjectDefinitionTable.getSQLType(
-						objectField.getDBType())));
+					_getSQLType(objectField.getDBType())));
 		}
 
 		return dynamicObjectDefinitionTable;
 	}
+
+	private Class<?> _getJavaClass(String type) {
+		Class<?> javaClass = _javaClasses.get(type);
+
+		if (javaClass == null) {
+			throw new IllegalArgumentException("Invalid type " + type);
+		}
+
+		return javaClass;
+	}
+
+	private Integer _getSQLType(String type) {
+		Integer sqlType = _sqlTypes.get(type);
+
+		if (sqlType == null) {
+			throw new IllegalArgumentException("Invalid type " + type);
+		}
+
+		return sqlType;
+	}
+
+	private static final Map<String, Class<?>> _javaClasses =
+		HashMapBuilder.<String, Class<?>>put(
+			"BigDecimal", BigDecimal.class
+		).put(
+			"Blob", Blob.class
+		).put(
+			"Boolean", Boolean.class
+		).put(
+			"Clob", Clob.class
+		).put(
+			"Date", Date.class
+		).put(
+			"Double", Double.class
+		).put(
+			"Integer", Integer.class
+		).put(
+			"Long", Long.class
+		).put(
+			"String", String.class
+		).build();
+	private static final Map<String, Integer> _sqlTypes = HashMapBuilder.put(
+		"BigDecimal", Types.DECIMAL
+	).put(
+		"Blob", Types.BLOB
+	).put(
+		"Boolean", Types.BOOLEAN
+	).put(
+		"Clob", Types.CLOB
+	).put(
+		"Date", Types.DATE
+	).put(
+		"Double", Types.DOUBLE
+	).put(
+		"Integer", Types.INTEGER
+	).put(
+		"Long", Types.BIGINT
+	).put(
+		"String", Types.VARCHAR
+	).build();
 
 	@Reference
 	private FilterPredicateFactory _filterPredicateFactory;
