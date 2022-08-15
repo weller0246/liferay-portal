@@ -39,6 +39,7 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.vulcan.util.ObjectMapperUtil;
 import com.liferay.portal.vulcan.util.TransformUtil;
@@ -50,6 +51,7 @@ import java.sql.Clob;
 import java.sql.Types;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -308,11 +310,11 @@ public class DynamicObjectDefinitionTableFactory {
 		// TODO Create filter parser classes for each one of the filter types
 		// and use a tracker or registry
 
-		List<String> oDataFilterStrings = new ArrayList<>();
-
-		if (objectFilters == null) {
-			return oDataFilterStrings;
+		if (ListUtil.isEmpty(objectFilters)) {
+			return Collections.emptyList();
 		}
+
+		List<String> oDataFilterStrings = new ArrayList<>();
 
 		for (ObjectFilter objectFilter : objectFilters) {
 			Map<String, Object> map = ObjectMapperUtil.readValue(
