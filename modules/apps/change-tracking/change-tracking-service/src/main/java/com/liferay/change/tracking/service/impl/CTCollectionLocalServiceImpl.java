@@ -484,20 +484,20 @@ public class CTCollectionLocalServiceImpl
 				"Change tracking collection " + ctCollection + " is read only");
 		}
 
+		Map<Long, List<CTEntry>> ctEntriesMap = new HashMap<>();
+
 		List<CTEntry> discardCTEntries =
 			ctCollectionLocalService.getDiscardCTEntries(
 				ctCollectionId, modelClassNameId, modelClassPK);
 
-		Map<Long, List<CTEntry>> ctEntryMap = new HashMap<>();
-
 		for (CTEntry ctEntry : discardCTEntries) {
-			List<CTEntry> ctEntries = ctEntryMap.computeIfAbsent(
+			List<CTEntry> ctEntries = ctEntriesMap.computeIfAbsent(
 				ctEntry.getModelClassNameId(), key -> new ArrayList<>());
 
 			ctEntries.add(ctEntry);
 		}
 
-		for (Map.Entry<Long, List<CTEntry>> entry : ctEntryMap.entrySet()) {
+		for (Map.Entry<Long, List<CTEntry>> entry : ctEntriesMap.entrySet()) {
 			_discardCTEntries(ctCollection, entry.getKey(), entry.getValue());
 		}
 	}
@@ -525,12 +525,12 @@ public class CTCollectionLocalServiceImpl
 		Map<Long, Set<Long>> enclosureMap = CTEnclosureUtil.getEnclosureMap(
 			ctClosure, modelClassNameId, modelClassPK);
 
-		for (Map.Entry<Long, Long> parentEntry :
+		for (Map.Entry<Long, Long> entry :
 				CTEnclosureUtil.getEnclosureParentEntries(
 					ctClosure, enclosureMap)) {
 
-			long classNameId = parentEntry.getKey();
-			long classPK = parentEntry.getValue();
+			long classNameId = entry.getKey();
+			long classPK = entry.getValue();
 
 			int count = _ctEntryPersistence.countByC_MCNI_MCPK(
 				ctCollectionId, classNameId, classPK);
@@ -743,12 +743,12 @@ public class CTCollectionLocalServiceImpl
 		Map<Long, Set<Long>> enclosureMap = CTEnclosureUtil.getEnclosureMap(
 			ctClosure, modelClassNameId, modelClassPK);
 
-		for (Map.Entry<Long, Long> parentEntry :
+		for (Map.Entry<Long, Long> entry :
 				CTEnclosureUtil.getEnclosureParentEntries(
 					ctClosure, enclosureMap)) {
 
 			int count = _ctEntryPersistence.countByC_MCNI_MCPK(
-				ctCollectionId, parentEntry.getKey(), parentEntry.getValue());
+				ctCollectionId, entry.getKey(), entry.getValue());
 
 			if (count > 0) {
 				return false;
