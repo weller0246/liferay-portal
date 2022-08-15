@@ -207,11 +207,12 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			_bundleContext.registerService(
 				GraphQLDTOContributor.class,
 				ObjectDefinitionGraphQLDTOContributor.of(
-					_filterParserProvider, objectDefinition,
+					_filterParserProvider, _filterPredicateFactory,
+					objectDefinition,
 					_objectEntryManagerTracker.getObjectEntryManager(
 						objectDefinition.getStorageType()),
 					_objectFieldLocalService, _objectRelationshipLocalService,
-					objectScopeProvider, _filterPredicateFactory),
+					objectScopeProvider),
 				HashMapDictionaryBuilder.<String, Object>put(
 					"dto.name", objectDefinition.getDBTableName()
 				).build()));

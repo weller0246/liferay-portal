@@ -67,12 +67,12 @@ public class ObjectDefinitionGraphQLDTOContributor
 
 	public static ObjectDefinitionGraphQLDTOContributor of(
 		FilterParserProvider filterParserProvider,
+		FilterPredicateFactory filterPredicateFactory,
 		ObjectDefinition objectDefinition,
 		ObjectEntryManager objectEntryManager,
 		ObjectFieldLocalService objectFieldLocalService,
 		ObjectRelationshipLocalService objectRelationshipLocalService,
-		ObjectScopeProvider objectScopeProvider,
-		FilterPredicateFactory filterPredicateFactory) {
+		ObjectScopeProvider objectScopeProvider) {
 
 		List<GraphQLDTOProperty> graphQLDTOProperties = new ArrayList<>();
 
