@@ -111,12 +111,12 @@ public class SQLDSLTest {
 					assertClasses.add(DefaultColumnAlias.class);
 					assertClasses.add(DefaultOrderByExpression.class);
 					assertClasses.add(DefaultPredicate.class);
-					assertClasses.add(DefaultScalarDSLQueryAlias.class);
 
 					Collections.addAll(
 						assertClasses,
 						DefaultPredicate.class.getDeclaredClasses());
 
+					assertClasses.add(DefaultScalarDSLQueryAlias.class);
 					assertClasses.add(DSLFunction.class);
 					assertClasses.add(DSLFunctionType.class);
 					assertClasses.add(DSLFunctionFactoryUtil.class);
