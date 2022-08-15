@@ -147,46 +147,6 @@ public class DynamicObjectDefinitionTableFactory {
 				relatedObjectDefinition.getObjectDefinitionId()),
 			relatedObjectDefinition.getDBTableName());
 
-		Column<?, ?> column = null;
-
-		String function = GetterUtil.getString(
-			objectFieldSettingsValuesMap.get("function"));
-
-		if (!Objects.equals(function, "COUNT")) {
-			column = _objectFieldLocalService.getColumn(
-				relatedObjectDefinition.getObjectDefinitionId(),
-				GetterUtil.getString(
-					objectFieldSettingsValuesMap.get("objectFieldName")));
-		}
-		else {
-			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
-		}
-
-		Expression<?> expression = null;
-
-		if (function.equals("AVERAGE")) {
-			expression = DSLFunctionFactoryUtil.avg(
-				(Expression<? extends Number>)column);
-		}
-		else if (function.equals("COUNT")) {
-			expression = DSLFunctionFactoryUtil.count(column);
-		}
-		else if (function.equals("MAX")) {
-			expression = DSLFunctionFactoryUtil.max(
-				(Expression<? extends Comparable>)column);
-		}
-		else if (function.equals("MIN")) {
-			expression = DSLFunctionFactoryUtil.min(
-				(Expression<? extends Comparable>)column);
-		}
-		else if (function.equals("SUM")) {
-			expression = DSLFunctionFactoryUtil.sum(
-				(Expression<? extends Number>)column);
-		}
-		else {
-			throw new IllegalArgumentException("Invalid function " + function);
-		}
-
 		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
 			create(
 				relatedObjectDefinition,
@@ -195,7 +155,9 @@ public class DynamicObjectDefinitionTableFactory {
 				relatedObjectDefinition.getExtensionDBTableName());
 
 		JoinStep joinStep = DSLQueryFactoryUtil.select(
-			expression
+			_getFunctionExpression(
+				objectFieldSettingsValuesMap, relatedObjectDefinition,
+				relatedObjectDefinitionTable)
 		).from(
 			relatedObjectDefinitionTable
 		).innerJoinON(
@@ -279,6 +241,53 @@ public class DynamicObjectDefinitionTableFactory {
 				joinStep.where(predicate),
 				_getJavaClass(objectField.getDBType()), objectField.getName(),
 				_getSQLType(objectField.getDBType())));
+	}
+
+	private Expression<?> _getFunctionExpression(
+		Map<String, Object> objectFieldSettingsValuesMap,
+		ObjectDefinition relatedObjectDefinition,
+		DynamicObjectDefinitionTable relatedObjectDefinitionTable) {
+
+		Column<?, ?> column = null;
+
+		String function = GetterUtil.getString(
+			objectFieldSettingsValuesMap.get("function"));
+
+		if (!Objects.equals(function, "COUNT")) {
+			column = _objectFieldLocalService.getColumn(
+				relatedObjectDefinition.getObjectDefinitionId(),
+				GetterUtil.getString(
+					objectFieldSettingsValuesMap.get("objectFieldName")));
+		}
+		else {
+			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
+		}
+
+		if (function.equals("AVERAGE")) {
+			return DSLFunctionFactoryUtil.avg(
+				(Expression<? extends Number>)column);
+		}
+
+		if (function.equals("COUNT")) {
+			return DSLFunctionFactoryUtil.count(column);
+		}
+
+		if (function.equals("MAX")) {
+			return DSLFunctionFactoryUtil.max(
+				(Expression<? extends Comparable>)column);
+		}
+
+		if (function.equals("MIN")) {
+			return DSLFunctionFactoryUtil.min(
+				(Expression<? extends Comparable>)column);
+		}
+
+		if (function.equals("SUM")) {
+			return DSLFunctionFactoryUtil.sum(
+				(Expression<? extends Number>)column);
+		}
+
+		throw new IllegalArgumentException("Invalid function " + function);
 	}
 
 	private Class<?> _getJavaClass(String dbType) {
