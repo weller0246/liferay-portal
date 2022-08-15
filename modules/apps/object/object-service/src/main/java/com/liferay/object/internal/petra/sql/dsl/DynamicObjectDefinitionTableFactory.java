@@ -150,7 +150,6 @@ public class DynamicObjectDefinitionTableFactory {
 			_objectFieldLocalService.getObjectFields(
 				relatedObjectDefinition.getObjectDefinitionId()),
 			relatedObjectDefinition.getDBTableName());
-
 		DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
 			create(
 				relatedObjectDefinition,
