@@ -45,6 +45,7 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.Types;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -72,31 +73,40 @@ public class DynamicObjectDefinitionTableFactory {
 				objectFields, objectDefinition.getPKObjectFieldDBColumnName(),
 				tableName);
 
-		dynamicObjectDefinitionTable.addColumn(
-			dynamicObjectDefinitionTable.getPrimaryKeyColumnName(), Long.class,
-			Types.BIGINT, Column.FLAG_DEFAULT);
+		List<Expression<?>> selectExpressions = new ArrayList<>();
+
+		selectExpressions.add(
+			dynamicObjectDefinitionTable.createColumn(
+				dynamicObjectDefinitionTable.getPrimaryKeyColumnName(),
+				Long.class, Types.BIGINT, Column.FLAG_DEFAULT));
 
 		for (ObjectField objectField : objectFields) {
 			_addObjectField(
-				dynamicObjectDefinitionTable, objectDefinition, objectField);
+				dynamicObjectDefinitionTable, objectDefinition, objectField,
+				selectExpressions);
 		}
+
+		dynamicObjectDefinitionTable.setSelectExpressions(
+			selectExpressions.toArray(new Expression<?>[0]));
 
 		return dynamicObjectDefinitionTable;
 	}
 
 	private void _addObjectField(
 			DynamicObjectDefinitionTable dynamicObjectDefinitionTable,
-			ObjectDefinition objectDefinition, ObjectField objectField)
+			ObjectDefinition objectDefinition, ObjectField objectField,
+			List<Expression<?>> selectExpressions)
 		throws PortalException {
 
 		if (!Objects.equals(
 				objectField.getBusinessType(),
 				ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION)) {
 
-			dynamicObjectDefinitionTable.addColumn(
-				objectField.getDBColumnName(),
-				_getJavaClass(objectField.getDBType()),
-				_getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT);
+			selectExpressions.add(
+				dynamicObjectDefinitionTable.createColumn(
+					objectField.getDBColumnName(),
+					_getJavaClass(objectField.getDBType()),
+					_getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT));
 
 			return;
 		}
@@ -262,7 +272,7 @@ public class DynamicObjectDefinitionTableFactory {
 					relatedObjectDefinition.getObjectDefinitionId()));
 		}
 
-		dynamicObjectDefinitionTable.addSelectExpression(
+		selectExpressions.add(
 			DSLQueryFactoryUtil.scalarSubDSLQuery(
 				joinStep.where(predicate),
 				_getJavaClass(objectField.getDBType()), objectField.getName(),

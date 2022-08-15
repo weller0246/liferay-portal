@@ -25,7 +25,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -68,10 +67,6 @@ public class DynamicObjectDefinitionTable
 		}
 
 		return sql;
-	}
-
-	public void addSelectExpression(Expression<?> selectExpression) {
-		_selectExpressions.add(selectExpression);
 	}
 
 	/**
@@ -127,7 +122,7 @@ public class DynamicObjectDefinitionTable
 	}
 
 	public Expression<?>[] getSelectExpressions() {
-		return _selectExpressions.toArray(new Expression<?>[0]);
+		return _selectExpressions;
 	}
 
 	protected DynamicObjectDefinitionTable(
@@ -141,15 +136,15 @@ public class DynamicObjectDefinitionTable
 		_tableName = tableName;
 	}
 
-	protected Column<DynamicObjectDefinitionTable, ?> addColumn(
-		String name, Class<?> javaClass, int sqlType, int flags) {
+	@Override
+	protected <C> Column<DynamicObjectDefinitionTable, C> createColumn(
+		String name, Class<C> javaClass, int sqlType, int flags) {
 
-		Column<DynamicObjectDefinitionTable, ?> column = createColumn(
-			name, javaClass, sqlType, flags);
+		return super.createColumn(name, javaClass, sqlType, flags);
+	}
 
-		addSelectExpression(column);
-
-		return column;
+	protected void setSelectExpressions(Expression<?>[] selectExpressions) {
+		_selectExpressions = selectExpressions;
 	}
 
 	private static String _getDataType(String type) {
@@ -203,7 +198,7 @@ public class DynamicObjectDefinitionTable
 
 	private final List<ObjectField> _objectFields;
 	private final String _primaryKeyColumnName;
-	private final List<Expression<?>> _selectExpressions = new ArrayList<>();
+	private Expression<?>[] _selectExpressions;
 	private final String _tableName;
 
 }
