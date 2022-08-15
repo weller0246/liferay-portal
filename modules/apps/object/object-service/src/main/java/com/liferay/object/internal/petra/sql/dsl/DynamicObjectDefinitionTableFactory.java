@@ -279,21 +279,23 @@ public class DynamicObjectDefinitionTableFactory {
 				_getSQLType(objectField.getDBType())));
 	}
 
-	private Class<?> _getJavaClass(String type) {
-		Class<?> javaClass = _javaClasses.get(type);
+	private Class<?> _getJavaClass(String dbType) {
+		Class<?> javaClass = _javaClasses.get(dbType);
 
 		if (javaClass == null) {
-			throw new IllegalArgumentException("Invalid type " + type);
+			throw new IllegalArgumentException(
+				"Invalid database type " + dbType);
 		}
 
 		return javaClass;
 	}
 
-	private Integer _getSQLType(String type) {
-		Integer sqlType = _sqlTypes.get(type);
+	private Integer _getSQLType(String dbType) {
+		Integer sqlType = _sqlTypes.get(dbType);
 
 		if (sqlType == null) {
-			throw new IllegalArgumentException("Invalid type " + type);
+			throw new IllegalArgumentException(
+				"Invalid database type " + dbType);
 		}
 
 		return sqlType;
