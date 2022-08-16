@@ -28,7 +28,6 @@ import com.liferay.knowledge.base.util.comparator.KBObjectsModifiedDateComparato
 import com.liferay.knowledge.base.util.comparator.KBObjectsPriorityComparator;
 import com.liferay.knowledge.base.util.comparator.KBObjectsTitleComparator;
 import com.liferay.knowledge.base.util.comparator.KBObjectsViewCountComparator;
-import com.liferay.knowledge.base.web.internal.constants.KBField;
 import com.liferay.knowledge.base.web.internal.search.KBSearcher;
 import com.liferay.petra.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.bean.BeanParamUtil;
@@ -281,7 +280,7 @@ public class KBArticleItemSelectorViewDisplayContext {
 
 			if (Objects.equals(_getOrderByCol(), "id")) {
 				sort = new Sort(
-					Field.getSortableFieldName(KBField.KB_ARTICLE_ID),
+					Field.getSortableFieldName("kbArticleId"),
 					Sort.STRING_TYPE, !orderByAsc);
 			}
 			else if (Objects.equals(_getOrderByCol(), "modified-date")) {
@@ -388,7 +387,7 @@ public class KBArticleItemSelectorViewDisplayContext {
 		searchContext.setAttribute(
 			Field.STATUS, _infoItemItemSelectorCriterion.getStatus());
 		searchContext.setAttribute(Field.TITLE, getKeywords());
-		searchContext.setAttribute(KBField.KB_ARTICLE_ID, getKeywords());
+		searchContext.setAttribute("kbArticleId", getKeywords());
 		searchContext.setAttribute("head", Boolean.TRUE);
 		searchContext.setAttribute("latest", Boolean.TRUE);
 		searchContext.setAttribute(
