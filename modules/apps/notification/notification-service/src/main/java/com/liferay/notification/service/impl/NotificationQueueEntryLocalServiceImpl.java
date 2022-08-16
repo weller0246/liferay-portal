@@ -173,7 +173,7 @@ public class NotificationQueueEntryLocalServiceImpl
 
 	@Override
 	public void sendNotificationQueueEntries() throws PortalException {
-		List<NotificationQueueEntry> notificationQueueEntries;
+		List<NotificationQueueEntry> notificationQueueEntries = null;
 
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-159052"))) {
 			notificationQueueEntries =
