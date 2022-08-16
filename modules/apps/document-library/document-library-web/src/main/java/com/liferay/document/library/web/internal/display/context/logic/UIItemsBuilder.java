@@ -528,6 +528,9 @@ public class UIItemsBuilder {
 		else if (_isMoveToTheRecycleBinActionAvailable()) {
 			cmd = Constants.MOVE_TO_TRASH;
 		}
+		else {
+			return null;
+		}
 
 		String mvcActionCommandName = "/document_library/edit_file_entry";
 
