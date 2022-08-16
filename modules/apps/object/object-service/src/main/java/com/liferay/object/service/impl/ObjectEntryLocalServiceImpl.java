@@ -1915,11 +1915,11 @@ public class ObjectEntryLocalServiceImpl
 				javaTypeClass = column.getJavaType();
 			}
 			else if (selectExpression instanceof ScalarDSLQueryAlias) {
-				ScalarDSLQueryAlias scalar =
+				ScalarDSLQueryAlias scalarDSLQueryAlias =
 					(ScalarDSLQueryAlias)selectExpressions[i];
 
-				columnName = scalar.getName();
-				javaTypeClass = scalar.getJavaType();
+				columnName = scalarDSLQueryAlias.getName();
+				javaTypeClass = scalarDSLQueryAlias.getJavaType();
 			}
 
 			if (columnName.endsWith(StringPool.UNDERLINE)) {
