@@ -1036,8 +1036,8 @@ public class EditAssetListDisplayContext {
 					if (assetRendererFactory == null) {
 						if (_log.isDebugEnabled()) {
 							_log.debug(
-								"Unable to get AssetRendererFactory by " +
-									"classNameId: " + classNameId);
+								"Unable to get asset renderer factory for " +
+									"class name ID " + classNameId);
 						}
 
 						continue;
