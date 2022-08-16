@@ -2059,39 +2059,7 @@ public class ObjectEntryLocalServiceImpl
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				while (resultSet.next()) {
-					Object[] result = new Object[selectExpressions.length];
-
-					for (int i = 0; i < selectExpressions.length; i++) {
-						Expression<?> selectExpression = selectExpressions[i];
-
-						if (selectExpression instanceof Column) {
-							Column<?, ?> column =
-								(Column<?, ?>)selectExpressions[i];
-
-							String columnName = column.getName();
-
-							result[i] = _getValue(
-								resultSet, columnName, column.getSQLType());
-						}
-						else if (selectExpression instanceof
-									ScalarDSLQueryAlias) {
-
-							ScalarDSLQueryAlias scalarDSLQueryAlias =
-								(ScalarDSLQueryAlias)selectExpressions[i];
-
-							String columnName = scalarDSLQueryAlias.getName();
-
-							result[i] = _getValue(
-								resultSet, columnName,
-								scalarDSLQueryAlias.getSQLType());
-
-							if (result[i] == null) {
-								result[i] = "0";
-							}
-						}
-					}
-
-					results.add(result);
+					results.add(_list(resultSet, selectExpressions));
 				}
 			}
 		}
@@ -2114,6 +2082,41 @@ public class ObjectEntryLocalServiceImpl
 		}
 
 		return results;
+	}
+
+	private Object[] _list(
+			ResultSet resultSet, Expression<?>[] selectExpressions)
+		throws SQLException {
+
+		Object[] result = new Object[selectExpressions.length];
+
+		for (int i = 0; i < selectExpressions.length; i++) {
+			Expression<?> selectExpression = selectExpressions[i];
+
+			if (selectExpression instanceof Column) {
+				Column<?, ?> column = (Column<?, ?>)selectExpressions[i];
+
+				String columnName = column.getName();
+
+				result[i] = _getValue(
+					resultSet, columnName, column.getSQLType());
+			}
+			else if (selectExpression instanceof ScalarDSLQueryAlias) {
+				ScalarDSLQueryAlias scalarDSLQueryAlias =
+					(ScalarDSLQueryAlias)selectExpressions[i];
+
+				String columnName = scalarDSLQueryAlias.getName();
+
+				result[i] = _getValue(
+					resultSet, columnName, scalarDSLQueryAlias.getSQLType());
+
+				if (result[i] == null) {
+					result[i] = "0";
+				}
+			}
+		}
+
+		return result;
 	}
 
 	private void _putValue(
