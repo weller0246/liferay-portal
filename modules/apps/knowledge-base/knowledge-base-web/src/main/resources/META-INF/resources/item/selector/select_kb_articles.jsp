@@ -33,7 +33,7 @@ KBArticleItemSelectorViewDisplayContext kbArticleItemSelectorViewDisplayContext 
 	/>
 
 	<liferay-ui:search-container
-		emptyResultsMessage="no-knowledge-base-article-was-found"
+		emptyResultsMessage="no-knowledge-base-articles-were-found"
 		id="articles"
 		searchContainer="<%= kbArticleItemSelectorViewDisplayContext.getSearchContainer() %>"
 	>
