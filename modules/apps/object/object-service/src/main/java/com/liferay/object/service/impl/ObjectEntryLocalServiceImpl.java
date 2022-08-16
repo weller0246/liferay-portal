@@ -1311,7 +1311,7 @@ public class ObjectEntryLocalServiceImpl
 	private Expression<?> _getFunctionExpression(
 		Map<String, Object> objectFieldSettingsValues,
 		ObjectDefinition relatedObjectDefinition,
-		DynamicObjectDefinitionTable relatedObjectDefinitionTable) {
+		DynamicObjectDefinitionTable relatedDynamicObjectDefinitionTable) {
 
 		Column<?, ?> column = null;
 
@@ -1325,7 +1325,7 @@ public class ObjectEntryLocalServiceImpl
 					objectFieldSettingsValues.get("objectFieldName")));
 		}
 		else {
-			column = relatedObjectDefinitionTable.getPrimaryKeyColumn();
+			column = relatedDynamicObjectDefinitionTable.getPrimaryKeyColumn();
 		}
 
 		if (function.equals("AVERAGE")) {
@@ -1682,38 +1682,42 @@ public class ObjectEntryLocalServiceImpl
 				_objectDefinitionPersistence.findByPrimaryKey(
 					objectRelationship.getObjectDefinitionId2());
 
-			DynamicObjectDefinitionTable relatedObjectDefinitionTable =
+			DynamicObjectDefinitionTable relatedDynamicObjectDefinitionTable =
 				new DynamicObjectDefinitionTable(
 					relatedObjectDefinition,
 					_objectFieldLocalService.getObjectFields(
 						relatedObjectDefinition.getObjectDefinitionId()),
 					relatedObjectDefinition.getDBTableName());
-			DynamicObjectDefinitionTable relatedObjectDefinitionExtensionTable =
-				new DynamicObjectDefinitionTable(
-					relatedObjectDefinition,
-					_objectFieldLocalService.getObjectFields(
-						relatedObjectDefinition.getObjectDefinitionId()),
-					relatedObjectDefinition.getExtensionDBTableName());
+			DynamicObjectDefinitionTable
+				relatedExtensionDynamicObjectDefinitionTable =
+					new DynamicObjectDefinitionTable(
+						relatedObjectDefinition,
+						_objectFieldLocalService.getObjectFields(
+							relatedObjectDefinition.getObjectDefinitionId()),
+						relatedObjectDefinition.getExtensionDBTableName());
 
 			JoinStep joinStep = DSLQueryFactoryUtil.select(
 				_getFunctionExpression(
 					objectFieldSettingsValues, relatedObjectDefinition,
-					relatedObjectDefinitionTable)
+					relatedDynamicObjectDefinitionTable)
 			).from(
-				relatedObjectDefinitionTable
+				relatedDynamicObjectDefinitionTable
 			).innerJoinON(
-				relatedObjectDefinitionExtensionTable,
-				relatedObjectDefinitionExtensionTable.getPrimaryKeyColumn(
-				).eq(
-					relatedObjectDefinitionTable.getPrimaryKeyColumn()
-				)
+				relatedExtensionDynamicObjectDefinitionTable,
+				relatedExtensionDynamicObjectDefinitionTable.
+					getPrimaryKeyColumn(
+					).eq(
+						relatedDynamicObjectDefinitionTable.
+							getPrimaryKeyColumn()
+					)
 			);
 
 			if (!relatedObjectDefinition.isSystem()) {
 				joinStep = joinStep.innerJoinON(
 					ObjectEntryTable.INSTANCE,
 					ObjectEntryTable.INSTANCE.objectEntryId.eq(
-						relatedObjectDefinitionTable.getPrimaryKeyColumn()));
+						relatedDynamicObjectDefinitionTable.
+							getPrimaryKeyColumn()));
 			}
 
 			Predicate predicate = null;
@@ -1756,7 +1760,8 @@ public class ObjectEntryLocalServiceImpl
 				joinStep = joinStep.innerJoinON(
 					dynamicObjectRelationshipMappingTable,
 					primaryKeyColumn2.eq(
-						relatedObjectDefinitionTable.getPrimaryKeyColumn()));
+						relatedDynamicObjectDefinitionTable.
+							getPrimaryKeyColumn()));
 
 				Column<DynamicObjectRelationshipMappingTable, Long>
 					primaryKeyColumn1 =
