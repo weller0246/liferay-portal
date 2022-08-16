@@ -17,7 +17,6 @@ package com.liferay.object.internal.related.models;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.RequiredObjectRelationshipException;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
-import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTableFactory;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectRelationshipMappingTable;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectRelationship;
@@ -48,7 +47,6 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		implements ObjectRelatedModelsProvider<T> {
 
 	public SystemObjectMtoMObjectRelatedModelsProviderImpl(
-		DynamicObjectDefinitionTableFactory dynamicObjectDefinitionTableFactory,
 		ObjectDefinition objectDefinition,
 		ObjectDefinitionLocalService objectDefinitionLocalService,
 		ObjectFieldLocalService objectFieldLocalService,
@@ -56,8 +54,6 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
-		_dynamicObjectDefinitionTableFactory =
-			dynamicObjectDefinitionTableFactory;
 		_objectDefinition = objectDefinition;
 		_objectDefinitionLocalService = objectDefinitionLocalService;
 		_objectFieldLocalService = objectFieldLocalService;
@@ -271,7 +267,7 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 				objectRelationship.getObjectDefinitionId2());
 
 		DynamicObjectDefinitionTable dynamicObjectDefinitionTable =
-			_dynamicObjectDefinitionTableFactory.create(
+			new DynamicObjectDefinitionTable(
 				objectDefinition2,
 				_objectFieldLocalService.getObjectFields(
 					objectRelationship.getObjectDefinitionId2(),
@@ -325,8 +321,6 @@ public class SystemObjectMtoMObjectRelatedModelsProviderImpl
 		);
 	}
 
-	private final DynamicObjectDefinitionTableFactory
-		_dynamicObjectDefinitionTableFactory;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectDefinitionLocalService _objectDefinitionLocalService;
 	private final ObjectFieldLocalService _objectFieldLocalService;

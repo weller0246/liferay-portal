@@ -15,16 +15,23 @@
 package com.liferay.object.internal.petra.sql.dsl;
 
 import com.liferay.object.constants.ObjectFieldConstants;
+import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.base.BaseTable;
-import com.liferay.petra.sql.dsl.expression.Expression;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 
+import java.math.BigDecimal;
+
+import java.sql.Blob;
+import java.sql.Clob;
+import java.sql.Types;
+
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -69,6 +76,57 @@ public class DynamicObjectDefinitionTable
 		return sql;
 	}
 
+	public static Class<?> getJavaClass(String type) {
+		Class<?> javaClass = _javaClasses.get(type);
+
+		if (javaClass == null) {
+			throw new IllegalArgumentException("Invalid type " + type);
+		}
+
+		return javaClass;
+	}
+
+	public static Integer getSQLType(String type) {
+		Integer sqlType = _sqlTypes.get(type);
+
+		if (sqlType == null) {
+			throw new IllegalArgumentException("Invalid type " + type);
+		}
+
+		return sqlType;
+	}
+
+	public DynamicObjectDefinitionTable(
+		ObjectDefinition objectDefinition, List<ObjectField> objectFields,
+		String tableName) {
+
+		super(tableName, () -> null);
+
+		_objectDefinition = objectDefinition;
+		_objectFields = objectFields;
+		_tableName = tableName;
+
+		_primaryKeyColumnName = objectDefinition.getPKObjectFieldDBColumnName();
+
+		createColumn(
+			_primaryKeyColumnName, Long.class, Types.BIGINT,
+			Column.FLAG_PRIMARY);
+
+		for (ObjectField objectField : objectFields) {
+			if (Objects.equals(
+					objectField.getBusinessType(),
+					ObjectFieldConstants.BUSINESS_TYPE_AGGREGATION)) {
+
+				continue;
+			}
+
+			createColumn(
+				objectField.getDBColumnName(),
+				getJavaClass(objectField.getDBType()),
+				getSQLType(objectField.getDBType()), Column.FLAG_DEFAULT);
+		}
+	}
+
 	/**
 	 * @see com.liferay.portal.tools.service.builder.ServiceBuilder#_getCreateTableSQL(
 	 *      com.liferay.portal.tools.service.builder.Entity)
@@ -108,6 +166,10 @@ public class DynamicObjectDefinitionTable
 		return sql;
 	}
 
+	public ObjectDefinition getObjectDefinition() {
+		return _objectDefinition;
+	}
+
 	public List<ObjectField> getObjectFields() {
 		return _objectFields;
 	}
@@ -121,30 +183,11 @@ public class DynamicObjectDefinitionTable
 		return _primaryKeyColumnName;
 	}
 
-	public Expression<?>[] getSelectExpressions() {
-		return _selectExpressions;
-	}
-
-	protected DynamicObjectDefinitionTable(
-		List<ObjectField> objectFields, String primaryKeyColumnName,
-		String tableName) {
-
-		super(tableName, () -> null);
-
-		_objectFields = objectFields;
-		_primaryKeyColumnName = primaryKeyColumnName;
-		_tableName = tableName;
-	}
-
 	@Override
 	protected <C> Column<DynamicObjectDefinitionTable, C> createColumn(
 		String name, Class<C> javaClass, int sqlType, int flags) {
 
 		return super.createColumn(name, javaClass, sqlType, flags);
-	}
-
-	protected void setSelectExpressions(Expression<?>[] selectExpressions) {
-		_selectExpressions = selectExpressions;
 	}
 
 	private static String _getDataType(String type) {
@@ -195,10 +238,49 @@ public class DynamicObjectDefinitionTable
 	).put(
 		"String", "VARCHAR(280)"
 	).build();
+	private static final Map<String, Class<?>> _javaClasses =
+		HashMapBuilder.<String, Class<?>>put(
+			"BigDecimal", BigDecimal.class
+		).put(
+			"Blob", Blob.class
+		).put(
+			"Boolean", Boolean.class
+		).put(
+			"Clob", Clob.class
+		).put(
+			"Date", Date.class
+		).put(
+			"Double", Double.class
+		).put(
+			"Integer", Integer.class
+		).put(
+			"Long", Long.class
+		).put(
+			"String", String.class
+		).build();
+	private static final Map<String, Integer> _sqlTypes = HashMapBuilder.put(
+		"BigDecimal", Types.DECIMAL
+	).put(
+		"Blob", Types.BLOB
+	).put(
+		"Boolean", Types.BOOLEAN
+	).put(
+		"Clob", Types.CLOB
+	).put(
+		"Date", Types.DATE
+	).put(
+		"Double", Types.DOUBLE
+	).put(
+		"Integer", Types.INTEGER
+	).put(
+		"Long", Types.BIGINT
+	).put(
+		"String", Types.VARCHAR
+	).build();
 
+	private final ObjectDefinition _objectDefinition;
 	private final List<ObjectField> _objectFields;
 	private final String _primaryKeyColumnName;
-	private Expression<?>[] _selectExpressions;
 	private final String _tableName;
 
 }

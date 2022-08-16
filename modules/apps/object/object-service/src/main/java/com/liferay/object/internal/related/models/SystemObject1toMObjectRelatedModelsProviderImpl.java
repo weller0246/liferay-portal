@@ -17,7 +17,6 @@ package com.liferay.object.internal.related.models;
 import com.liferay.object.constants.ObjectRelationshipConstants;
 import com.liferay.object.exception.RequiredObjectRelationshipException;
 import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTable;
-import com.liferay.object.internal.petra.sql.dsl.DynamicObjectDefinitionTableFactory;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
@@ -56,7 +55,6 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		implements ObjectRelatedModelsProvider<T> {
 
 	public SystemObject1toMObjectRelatedModelsProviderImpl(
-		DynamicObjectDefinitionTableFactory dynamicObjectDefinitionTableFactory,
 		ObjectDefinition objectDefinition,
 		ObjectEntryLocalService objectEntryLocalService,
 		ObjectFieldLocalService objectFieldLocalService,
@@ -64,8 +62,6 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		PersistedModelLocalServiceRegistry persistedModelLocalServiceRegistry,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
-		_dynamicObjectDefinitionTableFactory =
-			dynamicObjectDefinitionTableFactory;
 		_objectDefinition = objectDefinition;
 		_objectEntryLocalService = objectEntryLocalService;
 		_objectFieldLocalService = objectFieldLocalService;
@@ -285,7 +281,7 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		// TODO Cache this across the cluster with proper invalidation when the
 		// object definition or its object fields are updated
 
-		return _dynamicObjectDefinitionTableFactory.create(
+		return new DynamicObjectDefinitionTable(
 			_objectDefinition,
 			_objectFieldLocalService.getObjectFields(
 				_objectDefinition.getObjectDefinitionId(),
@@ -355,8 +351,6 @@ public class SystemObject1toMObjectRelatedModelsProviderImpl
 		);
 	}
 
-	private final DynamicObjectDefinitionTableFactory
-		_dynamicObjectDefinitionTableFactory;
 	private final ObjectDefinition _objectDefinition;
 	private final ObjectEntryLocalService _objectEntryLocalService;
 	private final ObjectFieldLocalService _objectFieldLocalService;
