@@ -116,8 +116,8 @@ class CollapseProvider {
 			});
 
 			panel.classList.add(CssClass.COLLAPSING);
-			panel.style.removeProperty(dimension);
 		}
+		panel.style.removeProperty(dimension);
 	};
 
 	show = ({panel, trigger}: {panel?: any; trigger?: any}) => {
