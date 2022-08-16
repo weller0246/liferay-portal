@@ -66,9 +66,7 @@ public class WorkflowMetricsIndexCreator {
 				countSearchRequest.setIndexNames(
 					_processWorkflowMetricsIndex.getIndexName(
 						company.getCompanyId()));
-
 				countSearchRequest.setQuery(_queries.booleanQuery());
-
 				countSearchRequest.setTypes(
 					_processWorkflowMetricsIndex.getIndexType());
 
