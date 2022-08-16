@@ -387,8 +387,8 @@ public class KBArticleItemSelectorViewDisplayContext {
 		searchContext.setAttribute(
 			Field.STATUS, _infoItemItemSelectorCriterion.getStatus());
 		searchContext.setAttribute(Field.TITLE, getKeywords());
-		searchContext.setAttribute("kbArticleId", getKeywords());
 		searchContext.setAttribute("head", Boolean.TRUE);
+		searchContext.setAttribute("kbArticleId", getKeywords());
 		searchContext.setAttribute("latest", Boolean.TRUE);
 		searchContext.setAttribute(
 			"params",
