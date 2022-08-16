@@ -2076,13 +2076,14 @@ public class ObjectEntryLocalServiceImpl
 						else if (selectExpression instanceof
 									ScalarDSLQueryAlias) {
 
-							ScalarDSLQueryAlias scalar =
+							ScalarDSLQueryAlias scalarDSLQueryAlias =
 								(ScalarDSLQueryAlias)selectExpressions[i];
 
-							String columnName = scalar.getName();
+							String columnName = scalarDSLQueryAlias.getName();
 
 							result[i] = _getValue(
-								resultSet, columnName, scalar.getSQLType());
+								resultSet, columnName,
+								scalarDSLQueryAlias.getSQLType());
 
 							if (result[i] == null) {
 								result[i] = "0";
