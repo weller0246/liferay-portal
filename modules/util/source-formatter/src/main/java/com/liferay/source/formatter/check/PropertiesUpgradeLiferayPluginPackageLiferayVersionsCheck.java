@@ -41,7 +41,7 @@ public class PropertiesUpgradeLiferayPluginPackageLiferayVersionsCheck
 	}
 
 	@Override
-	protected boolean skipFix(String absolutePath) {
+	protected boolean isSkipFix(String absolutePath) {
 		if (!absolutePath.contains("/modules/")) {
 			return true;
 		}
