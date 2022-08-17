@@ -220,7 +220,7 @@ definition {
 				workflowStatus = "Approved");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -349,7 +349,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -459,7 +459,7 @@ definition {
 				workflowStatus = "Approved");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -578,7 +578,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -673,7 +673,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -794,7 +794,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -928,7 +928,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -1053,7 +1053,7 @@ definition {
 
 		task ("Export content page template") {
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
@@ -1147,7 +1147,7 @@ definition {
 			Navigator.gotoNavNested(navNested = "Page Template Collection");
 
 			PageTemplatesAdmin.gotoPageTemplateEllipsisItem(
-				menuItem = "Export",
+				item = "Export",
 				pageTemplateName = "Page Template Name");
 
 			DownloadTempFile();
