@@ -117,6 +117,7 @@ class CollapseProvider {
 
 			panel.classList.add(CssClass.COLLAPSING);
 		}
+
 		panel.style.removeProperty(dimension);
 	};
 
