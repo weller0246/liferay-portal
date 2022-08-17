@@ -179,7 +179,7 @@ public class DataSourceFactoryImpl implements DataSourceFactory {
 			}
 		}
 
-		if (Boolean.getBoolean("jdbc.datasource.anti.time.drift")) {
+		if (Boolean.getBoolean("jdbc.data.source.anti.time.drift")) {
 			DBType dbType = DBManagerUtil.getDBType(
 				DialectDetector.getDialect(dataSource));
 
