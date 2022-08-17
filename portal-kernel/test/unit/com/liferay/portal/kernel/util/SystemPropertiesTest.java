@@ -112,7 +112,7 @@ public class SystemPropertiesTest {
 			SystemProperties.class, "_load",
 			new Class<?>[] {URL.class, Properties.class},
 			SystemProperties.class.getResource(
-				"dependencies/multiline-comment.properties"),
+				"dependencies/system.properties"),
 			properties);
 
 		Assert.assertEquals(_TEST_VALUE, properties.get(_TEST_KEY));
