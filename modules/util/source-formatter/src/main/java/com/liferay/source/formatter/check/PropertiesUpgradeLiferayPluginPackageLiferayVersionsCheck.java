@@ -40,6 +40,7 @@ public class PropertiesUpgradeLiferayPluginPackageLiferayVersionsCheck
 			upgradeToVersionParts[0], ".", upgradeToVersionParts[1], ".0");
 	}
 
+	@Override
 	protected boolean skipFix(String absolutePath) {
 		if (!absolutePath.contains("/modules/")) {
 			return true;
