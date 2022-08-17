@@ -808,7 +808,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		accountEntryModel.setUuid(uuid);
-
 		accountEntryModel.setExternalReferenceCode(uuid);
 
 		return accountEntryModel;
@@ -868,7 +867,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		addressModel.setUuid(uuid);
-
 		addressModel.setExternalReferenceCode(uuid);
 
 		return addressModel;
@@ -1290,7 +1288,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceCatalogModel.setUuid(uuid);
-
 		commerceCatalogModel.setExternalReferenceCode(uuid);
 
 		return commerceCatalogModel;
@@ -1381,7 +1378,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceChannelModel.setUuid(uuid);
-
 		commerceChannelModel.setExternalReferenceCode(uuid);
 
 		return commerceChannelModel;
@@ -1535,7 +1531,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceInventoryWarehouseItemModel.setUuid(uuid);
-
 		commerceInventoryWarehouseItemModel.setExternalReferenceCode(uuid);
 
 		return commerceInventoryWarehouseItemModel;
@@ -1584,7 +1579,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceInventoryWarehouseModel.setUuid(uuid);
-
 		commerceInventoryWarehouseModel.setExternalReferenceCode(uuid);
 
 		return commerceInventoryWarehouseModel;
@@ -1789,7 +1783,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceOrderItemModel.setUuid(uuid);
-
 		commerceOrderItemModel.setExternalReferenceCode(uuid);
 
 		return commerceOrderItemModel;
@@ -1850,7 +1843,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commerceOrderModel.setUuid(uuid);
-
 		commerceOrderModel.setExternalReferenceCode(uuid);
 
 		return commerceOrderModel;
@@ -1976,7 +1968,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commercePriceEntryModel.setUuid(uuid);
-
 		commercePriceEntryModel.setExternalReferenceCode(uuid);
 
 		return commercePriceEntryModel;
@@ -2027,7 +2018,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		commercePriceListModel.setUuid(uuid);
-
 		commercePriceListModel.setExternalReferenceCode(uuid);
 
 		return commercePriceListModel;
@@ -2461,7 +2451,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cpAttachmentFileEntryModel.setUuid(uuid);
-
 		cpAttachmentFileEntryModel.setExternalReferenceCode(uuid);
 
 		return cpAttachmentFileEntryModel;
@@ -2736,7 +2725,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cpInstanceModel.setUuid(uuid);
-
 		cpInstanceModel.setExternalReferenceCode(uuid);
 
 		_cpInstanceModels.put(cpDefinitionId, cpInstanceModel);
@@ -2847,7 +2835,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cpOptionModel.setUuid(uuid);
-
 		cpOptionModel.setExternalReferenceCode(uuid);
 
 		return cpOptionModel;
@@ -2886,7 +2873,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cpOptionValueModel.setUuid(uuid);
-
 		cpOptionValueModel.setExternalReferenceCode(uuid);
 
 		return cpOptionValueModel;
@@ -2922,7 +2908,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cProductModel.setUuid(uuid);
-
 		cProductModel.setExternalReferenceCode(uuid);
 
 		return cProductModel;
@@ -3043,7 +3028,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		cpTaxCategoryModel.setUuid(uuid);
-
 		cpTaxCategoryModel.setExternalReferenceCode(uuid);
 
 		return cpTaxCategoryModel;
@@ -3715,7 +3699,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		dlFileEntryModel.setUuid(uuid);
-
 		dlFileEntryModel.setExternalReferenceCode(uuid);
 
 		return dlFileEntryModel;
@@ -4326,7 +4309,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		journalArticleModel.setUuid(uuid);
-
 		journalArticleModel.setExternalReferenceCode(uuid);
 
 		return journalArticleModel;
@@ -5896,7 +5878,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		assetCategoryModel.setUuid(uuid);
-
 		assetCategoryModel.setExternalReferenceCode(uuid);
 
 		return assetCategoryModel;
@@ -5984,7 +5965,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		assetVocabularyModel.setUuid(uuid);
-
 		assetVocabularyModel.setExternalReferenceCode(uuid);
 
 		return assetVocabularyModel;
@@ -6025,7 +6005,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		blogsEntryModel.setUuid(uuid);
-
 		blogsEntryModel.setExternalReferenceCode(uuid);
 
 		return blogsEntryModel;
@@ -6706,7 +6685,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		mBMessageModel.setUuid(uuid);
-
 		mBMessageModel.setExternalReferenceCode(uuid);
 
 		return mBMessageModel;
@@ -6971,7 +6949,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		userModel.setUuid(uuid);
-
 		userModel.setExternalReferenceCode(uuid);
 
 		return userModel;
@@ -7008,7 +6985,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		wikiNodeModel.setUuid(uuid);
-
 		wikiNodeModel.setExternalReferenceCode(uuid);
 
 		return wikiNodeModel;
@@ -7057,7 +7033,6 @@ public class DataFactory {
 		String uuid = SequentialUUID.generate();
 
 		wikiPageModel.setUuid(uuid);
-
 		wikiPageModel.setExternalReferenceCode(uuid);
 
 		return wikiPageModel;
