@@ -1058,11 +1058,11 @@ public class ObjectEntryDisplayContext {
 		}
 		else {
 			if (value instanceof Double) {
-				DecimalFormat defaultDecimalFormat =
+				DecimalFormat decimalFormat =
 					NumericDDMFormFieldUtil.getDecimalFormat(
 						_objectRequestHelper.getLocale());
 
-				value = defaultDecimalFormat.format(value);
+				value = decimalFormat.format(value);
 			}
 
 			ddmFormFieldValue.setValue(
