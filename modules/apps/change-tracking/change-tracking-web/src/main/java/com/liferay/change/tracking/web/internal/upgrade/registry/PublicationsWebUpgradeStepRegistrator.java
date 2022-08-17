@@ -19,6 +19,7 @@ import com.liferay.change.tracking.service.CTCollectionLocalService;
 import com.liferay.change.tracking.service.CTPreferencesLocalService;
 import com.liferay.change.tracking.web.internal.configuration.helper.CTSettingsConfigurationHelper;
 import com.liferay.change.tracking.web.internal.upgrade.v1_0_3.PublicationsConfigurationPortletUpgradeProcess;
+import com.liferay.change.tracking.web.internal.upgrade.v1_0_3.PublicationsUserRoleUpgradeProcess;
 import com.liferay.change.tracking.web.internal.upgrade.v1_0_4.PublicationsRolePermissionsUpgradeProcess;
 import com.liferay.change.tracking.web.internal.upgrade.v1_0_5.PublicationsAdminRoleNameUpgradeProcess;
 import com.liferay.change.tracking.web.internal.upgrade.v1_0_7.PublicationsEnabledUpgradeProcess;
@@ -71,16 +72,14 @@ public class PublicationsWebUpgradeStepRegistrator
 
 			});
 
-		registry.register(
-			"1.0.1", "1.0.2",
-			new com.liferay.change.tracking.web.internal.upgrade.v1_0_2.
-				PublicationsUserRoleUpgradeProcess(
-					_companyLocalService, _resourceActions,
-					_resourcePermissionLocalService, _roleLocalService,
-					_userLocalService));
+		registry.register("1.0.1", "1.0.2", new DummyUpgradeStep());
 
 		registry.register(
 			"1.0.2", "1.0.3",
+			new PublicationsUserRoleUpgradeProcess(
+				_companyLocalService, _resourceActions,
+				_resourcePermissionLocalService, _roleLocalService,
+				_userLocalService),
 			new PublicationsConfigurationPortletUpgradeProcess(
 				_resourceActionLocalService, _resourcePermissionLocalService));
 
