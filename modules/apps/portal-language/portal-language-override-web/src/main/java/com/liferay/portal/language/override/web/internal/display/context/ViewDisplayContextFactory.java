@@ -215,15 +215,16 @@ public class ViewDisplayContextFactory {
 	}
 
 	private String _getLanguageIdsString(
-		Set<String> languageIds, String selectedLanguageId) {
+		Set<String> overrideLanguageIds, String selectedLanguageId) {
 
-		if (languageIds.isEmpty()) {
+		if (overrideLanguageIds.isEmpty()) {
 			return StringPool.BLANK;
 		}
 
-		StringBundler sb = new StringBundler((2 * languageIds.size()) - 1);
+		StringBundler sb = new StringBundler(
+			(2 * overrideLanguageIds.size()) - 1);
 
-		Iterator<String> iterator = languageIds.iterator();
+		Iterator<String> iterator = overrideLanguageIds.iterator();
 
 		while (iterator.hasNext()) {
 			String overrideLanguageId = iterator.next();
