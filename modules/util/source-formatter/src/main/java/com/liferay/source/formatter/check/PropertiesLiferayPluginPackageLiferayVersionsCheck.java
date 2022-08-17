@@ -48,7 +48,7 @@ public class PropertiesLiferayPluginPackageLiferayVersionsCheck
 	}
 
 	protected boolean skipFix(String absolutePath) {
-		if (!isPortalSource() || !isModulesApp(absolutePath, false)) {
+		if (!isModulesApp(absolutePath, false) || !isPortalSource()) {
 			return true;
 		}
 
