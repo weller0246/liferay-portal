@@ -278,7 +278,7 @@ public class SampleSQLBuilder {
 		Thread thread = new Thread(
 			() -> {
 				try (CSVFileWriter csvFileWriter = new CSVFileWriter(
-						_OUTPUT_DIR);
+						new File(_OUTPUT_DIR));
 					Writer sampleSQLWriter = new UnsyncTeeWriter(
 						new UnsyncBufferedWriter(
 							charPipe.getWriter(), _WRITER_BUFFER_SIZE),

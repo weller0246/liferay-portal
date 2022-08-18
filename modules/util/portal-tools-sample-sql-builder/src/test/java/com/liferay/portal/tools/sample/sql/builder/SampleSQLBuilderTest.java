@@ -89,7 +89,6 @@ public class SampleSQLBuilderTest {
 
 			System.setProperty(
 				"sample-sql-properties", tempPropertiesFile.getAbsolutePath());
-
 			System.setProperty("user.dir", tempDir.getAbsolutePath());
 
 			new SampleSQLBuilder();
