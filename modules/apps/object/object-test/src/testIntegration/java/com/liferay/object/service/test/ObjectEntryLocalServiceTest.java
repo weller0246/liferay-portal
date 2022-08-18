@@ -1093,7 +1093,7 @@ public class ObjectEntryLocalServiceTest {
 	}
 
 	@Test
-	public void testExtensionDynamicObjectDefinitionTableValues()
+	public void testGetExtensionDynamicObjectDefinitionTableValues()
 		throws Exception {
 
 		ObjectDefinition objectDefinition =
