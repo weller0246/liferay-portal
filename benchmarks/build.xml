@@ -27,10 +27,10 @@
 		<if>
 			<istrue value="${sample.sql.output.merge}" />
 			<then>
-				<echo>Sample SQL Build Successful! Use ${basedir}/sample-${sample.sql.db.type}.sql to insert into database.</echo>
+				<echo>Use ${basedir}/sample-${sample.sql.db.type}.sql to load the database.</echo>
 			</then>
 			<else>
-				<echo>Sample SQL Build Successful! Use sql files in ${basedir}/output to insert into database.</echo>
+				<echo>Use SQL files in ${basedir}/output to load the database.</echo>
 			</else>
 		</if>
 	</target>
