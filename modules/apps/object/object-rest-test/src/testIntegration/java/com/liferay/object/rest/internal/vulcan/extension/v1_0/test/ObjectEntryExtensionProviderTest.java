@@ -165,7 +165,7 @@ public class ObjectEntryExtensionProviderTest {
 	public void testSetAndGetExtendedProperties() throws Exception {
 		UserAccount userAccount = new UserAccount() {
 			{
-				setId(_user.getUserId());
+				id = _user.getUserId();
 			}
 		};
 
