@@ -490,11 +490,11 @@ public class ObjectFieldLocalServiceImpl
 
 		ObjectField newObjectField = (ObjectField)oldObjectField.clone();
 
-		_validateDefaultValue(
-			businessType, defaultValue, listTypeDefinitionId, state);
 		_validateExternalReferenceCode(
 			newObjectField.getObjectFieldId(), newObjectField.getCompanyId(),
 			externalReferenceCode, newObjectField.getObjectDefinitionId());
+		_validateDefaultValue(
+			businessType, defaultValue, listTypeDefinitionId, state);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
