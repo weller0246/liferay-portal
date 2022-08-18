@@ -493,6 +493,7 @@ public class ObjectFieldLocalServiceImpl
 		_validateExternalReferenceCode(
 			newObjectField.getObjectFieldId(), newObjectField.getCompanyId(),
 			externalReferenceCode, newObjectField.getObjectDefinitionId());
+
 		_validateDefaultValue(
 			businessType, defaultValue, listTypeDefinitionId, state);
 		_validateIndexed(
