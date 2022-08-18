@@ -46,8 +46,6 @@ public class DTOMapperImpl implements DTOMapper {
 	protected void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
-		_serviceListener = new DTOConverterServiceListener();
-
 		bundleContext.addServiceListener(
 			_serviceListener,
 			"(objectClass=" + DTOConverter.class.getName() + ")");
@@ -61,7 +59,8 @@ public class DTOMapperImpl implements DTOMapper {
 	private BundleContext _bundleContext;
 	private final Map<String, String> _externalInternalDTOClassNameMap =
 		new HashMap<>();
-	private ServiceListener _serviceListener;
+	private final ServiceListener _serviceListener =
+		new DTOConverterServiceListener();
 
 	private class DTOConverterServiceListener implements ServiceListener {
 
