@@ -169,7 +169,7 @@ public class ObjectEntryExtensionProviderTest {
 			}
 		};
 
-		_testSetAndGetExtendedProperties(
+		_testSetExtendedProperties(
 			userAccount,
 			HashMapBuilder.<String, Serializable>put(
 				"boolean", true
@@ -180,7 +180,7 @@ public class ObjectEntryExtensionProviderTest {
 			).put(
 				"precisionDecimal", 100.5
 			).build());
-		_testSetAndGetExtendedProperties(
+		_testSetExtendedProperties(
 			userAccount,
 			HashMapBuilder.<String, Serializable>put(
 				"boolean", false
@@ -218,7 +218,7 @@ public class ObjectEntryExtensionProviderTest {
 		Assert.assertEquals(expectedRequired, propertyDefinition.isRequired());
 	}
 
-	private void _testSetAndGetExtendedProperties(
+	private void _testSetExtendedProperties(
 			UserAccount userAccount, Map<String, Serializable> values)
 		throws Exception {
 
