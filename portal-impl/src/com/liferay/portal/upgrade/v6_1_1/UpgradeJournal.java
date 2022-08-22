@@ -95,6 +95,14 @@ public class UpgradeJournal extends UpgradeProcess {
 				"<dynamic-content><![CDATA[", "]]></dynamic-content>"
 			});
 
+		content.replaceAll(
+			"<dynamic-content id=\"([0-9]+)\">",
+			"<dynamic-content id=\"$1\"><![CDATA[");
+
+		content.replaceAll(
+			"<dynamic-content id=\"([0-9]+)\"><![CDATA[<![CDATA[",
+			"<dynamic-content id=\"$1\"><![CDATA[");
+
 		for (String languageId : PropsValues.LOCALES) {
 			content = StringUtil.replace(
 				content, "<dynamic-content language-id=\"" + languageId + "\">",
