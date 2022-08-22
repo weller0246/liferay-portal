@@ -15,10 +15,8 @@
 --%>
 
 <%
-String defaultLanguageId = LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault());
-
 Locale[] availableLocales = {LocaleUtil.getSiteDefault()};
-
+String defaultLanguageId = LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault());
 boolean hasDDMDocumentLibraryDataType = false;
 
 if (Validator.isNotNull(script)) {
