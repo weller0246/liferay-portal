@@ -170,10 +170,9 @@ public class TestrayBuild implements Comparable<TestrayBuild> {
 		try {
 			return new URL(
 				JenkinsResultsParserUtil.combine(
-					"https://", matcher.group("topLevelMasterHostname"),
-					".liferay.com/userContent/jobs/",
-					matcher.group("topLevelJobName"), "/builds/",
-					matcher.group("topLevelBuildNumber"),
+					"http://", matcher.group("topLevelMasterHostname"),
+					"/userContent/jobs/", matcher.group("topLevelJobName"),
+					"/builds/", matcher.group("topLevelBuildNumber"),
 					"/build-report.json.gz"));
 		}
 		catch (MalformedURLException malformedURLException) {
