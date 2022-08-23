@@ -200,11 +200,11 @@ public class SalesforceObjectEntryManagerImplTest {
 			},
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		String expectedTitle = RandomTestUtil.randomString();
-
 		Map<String, Object> properties = objectEntry.getProperties();
 
-		properties.put("title", expectedTitle);
+		String title = RandomTestUtil.randomString();
+
+		properties.put("title", title);
 
 		objectEntry = _objectEntryManager.addOrUpdateObjectEntry(
 			TestPropsValues.getCompanyId(), dtoConverterContext,
@@ -212,7 +212,7 @@ public class SalesforceObjectEntryManagerImplTest {
 			objectEntry, ObjectDefinitionConstants.SCOPE_COMPANY);
 
 		Assert.assertEquals(
-			expectedTitle,
+			title,
 			MapUtil.getString(objectEntry.getProperties(), "title"));
 
 		_objectEntryManager.deleteObjectEntry(
@@ -225,14 +225,14 @@ public class SalesforceObjectEntryManagerImplTest {
 	public void testGetObjectEntry() throws Exception {
 		DTOConverterContext dtoConverterContext = _getDTOConverterContext();
 
-		String expectedTitle = RandomTestUtil.randomString();
+		String title = RandomTestUtil.randomString();
 
 		ObjectEntry objectEntry = _objectEntryManager.addObjectEntry(
 			_getDTOConverterContext(), _objectDefinition,
 			new ObjectEntry() {
 				{
 					properties = HashMapBuilder.<String, Object>put(
-						"title", expectedTitle
+						"title", title
 					).build();
 				}
 			},
@@ -244,7 +244,7 @@ public class SalesforceObjectEntryManagerImplTest {
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
 		Assert.assertEquals(
-			expectedTitle,
+			title,
 			MapUtil.getString(objectEntry.getProperties(), "title"));
 
 		_objectEntryManager.deleteObjectEntry(
