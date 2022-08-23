@@ -36,7 +36,8 @@ export default function ({
 		openInitialSuccessToast();
 
 		fetchData(
-			`/o/search-experiences-rest/v1.0/sxp-blueprints/${sxpBlueprintId}`
+			`/o/search-experiences-rest/v1.0/sxp-blueprints/${sxpBlueprintId}`,
+			{headers: {'X-Liferay-Accept-All-Languages': true}}
 		)
 			.then((responseContent) => setResource(responseContent))
 			.catch(() => setResource({}));
