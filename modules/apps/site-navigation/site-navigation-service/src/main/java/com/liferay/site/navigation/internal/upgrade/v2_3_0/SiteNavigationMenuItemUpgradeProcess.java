@@ -14,7 +14,6 @@
 
 package com.liferay.site.navigation.internal.upgrade.v2_3_0;
 
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -36,8 +35,7 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 					"select siteNavigationMenuItemId, typeSettings from " +
 						"SiteNavigationMenuItem where type_ = 'display_page'");
 			PreparedStatement updatePreparedStatement =
-				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-					connection,
+				connection.prepareStatement(
 					"update SiteNavigationMenuItem set type_ = ? where " +
 						"siteNavigationMenuItemId = ?");
 			ResultSet resultSet = selectPreparedStatement.executeQuery()) {
@@ -61,10 +59,8 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 
 				updatePreparedStatement.setLong(2, siteNavigationMenuItemId);
 
-				updatePreparedStatement.addBatch();
+				updatePreparedStatement.executeUpdate();
 			}
-
-			updatePreparedStatement.executeBatch();
 		}
 	}
 
