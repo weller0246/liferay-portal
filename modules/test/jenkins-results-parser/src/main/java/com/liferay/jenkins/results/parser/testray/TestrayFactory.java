@@ -116,15 +116,15 @@ public class TestrayFactory {
 		AxisTestClassGroup axisTestClassGroup, TestClass testClass) {
 
 		if (testrayBuild == null) {
-			throw new RuntimeException("Please set a Testray build");
+			throw new RuntimeException("Testray build is null");
 		}
 
 		if (topLevelBuild == null) {
-			throw new RuntimeException("Please set a top level build");
+			throw new RuntimeException("Top level build is null");
 		}
 
 		if (axisTestClassGroup == null) {
-			throw new RuntimeException("Please set an axis test class group");
+			throw new RuntimeException("Axis test class group is null");
 		}
 
 		if (testClass != null) {
