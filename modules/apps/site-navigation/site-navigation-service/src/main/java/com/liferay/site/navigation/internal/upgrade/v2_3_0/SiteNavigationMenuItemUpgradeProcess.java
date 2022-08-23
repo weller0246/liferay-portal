@@ -43,9 +43,14 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 			ResultSet resultSet = selectPreparedStatement.executeQuery()) {
 
 			while (resultSet.next()) {
+				long siteNavigationMenuItemId = resultSet.getLong(
+					"siteNavigationMenuItemId");
+
+				String typeSettings = resultSet.getString("typeSettings");
+
 				UnicodeProperties typeSettingsUnicodeProperties =
 					UnicodePropertiesBuilder.fastLoad(
-						resultSet.getString("typeSettings")
+						typeSettings
 					).build();
 
 				long classNameId = GetterUtil.getLong(
@@ -54,8 +59,7 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 				updatePreparedStatement.setString(
 					1, PortalUtil.getClassName(classNameId));
 
-				updatePreparedStatement.setLong(
-					2, resultSet.getLong("siteNavigationMenuItemId"));
+				updatePreparedStatement.setLong(2, siteNavigationMenuItemId);
 
 				updatePreparedStatement.addBatch();
 			}
