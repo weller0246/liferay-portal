@@ -58,12 +58,12 @@ if (Validator.isNotNull(script)) {
 >
 	<c:if test="<%= hasDDMDocumentLibraryDataType %>">
 		<div class="alert alert-info ddm-documents-and-media-field lfr-message-response">
-			<liferay-ui:message key="document-permissions-are-not-inherited-from-the-dynamic-data-list-record" />
+			<liferay-ui:message key="document-permissions-are-not-inherited-from-the-DDL-record" />
 		</div>
 	</c:if>
 
 	<div class="alert alert-info ddm-documents-and-media-field hide lfr-message-response">
-		<liferay-ui:message key="document-permissions-are-not-inherited-from-the-dynamic-data-list-record" />
+		<liferay-ui:message key="document-permissions-are-not-inherited-from-the-DDL-record" />
 	</div>
 
 	<liferay-ui:section>
