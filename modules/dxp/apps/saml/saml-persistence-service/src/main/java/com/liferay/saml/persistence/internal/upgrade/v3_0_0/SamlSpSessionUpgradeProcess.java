@@ -16,7 +16,6 @@ package com.liferay.saml.persistence.internal.upgrade.v3_0_0;
 
 import com.liferay.counter.kernel.service.CounterLocalServiceUtil;
 import com.liferay.petra.string.StringBundler;
-import com.liferay.portal.kernel.dao.jdbc.AutoBatchPreparedStatementUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 import com.liferay.portal.kernel.util.LoggingTimer;
 
@@ -46,13 +45,6 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 
 			int latestSamlPeerBindingId = _getLatestSamlPeerBindingId();
 
-			String sql = StringBundler.concat(
-				"insert into SamlPeerBinding (samlPeerBindingId, companyId, ",
-				"createDate, userId, userName, deleted, samlNameIdFormat, ",
-				"samlNameIdNameQualifier, samlNameIdSpNameQualifier, ",
-				"samlNameIdSpProvidedId, samlNameIdValue, samlPeerEntityId) ",
-				"values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-
 			try (PreparedStatement preparedStatement =
 					connection.prepareStatement(
 						StringBundler.concat(
@@ -64,10 +56,7 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 							"companyId, userId, userName, nameIdFormat, ",
 							"nameIdNameQualifier, nameIdValue, ",
 							"samlIdpEntityId"));
-				ResultSet resultSet = preparedStatement.executeQuery();
-				PreparedStatement insertPreparedStatement =
-					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection, sql)) {
+				ResultSet resultSet = preparedStatement.executeQuery()) {
 
 				while (resultSet.next()) {
 					int samlSpSessionId = resultSet.getInt("samlSpSessionId");
@@ -86,24 +75,34 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 						samlSpSessionId + -samlSpSessionIdOffset +
 							latestSamlPeerBindingId;
 
-					insertPreparedStatement.setInt(1, samlPeerBindingId);
+					String sql = StringBundler.concat(
+						"insert into SamlPeerBinding (samlPeerBindingId, ",
+						"companyId, createDate, userId, userName, deleted, ",
+						"samlNameIdFormat, samlNameIdNameQualifier, ",
+						"samlNameIdSpNameQualifier, samlNameIdSpProvidedId, ",
+						"samlNameIdValue, samlPeerEntityId) values (?, ?, ?, ",
+						"?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-					insertPreparedStatement.setLong(2, companyId);
-					insertPreparedStatement.setTimestamp(3, createDate);
-					insertPreparedStatement.setLong(4, userId);
-					insertPreparedStatement.setString(5, userName);
-					insertPreparedStatement.setBoolean(6, false);
-					insertPreparedStatement.setString(7, nameIdFormat);
-					insertPreparedStatement.setString(8, nameIdNameQualifier);
-					insertPreparedStatement.setString(9, null);
-					insertPreparedStatement.setString(10, null);
-					insertPreparedStatement.setString(11, nameIdValue);
-					insertPreparedStatement.setString(12, samlIdpEntityId);
+					try (PreparedStatement insertPreparedStatement =
+							connection.prepareStatement(sql)) {
 
-					insertPreparedStatement.addBatch();
+						insertPreparedStatement.setInt(1, samlPeerBindingId);
+						insertPreparedStatement.setLong(2, companyId);
+						insertPreparedStatement.setTimestamp(3, createDate);
+						insertPreparedStatement.setLong(4, userId);
+						insertPreparedStatement.setString(5, userName);
+						insertPreparedStatement.setBoolean(6, false);
+						insertPreparedStatement.setString(7, nameIdFormat);
+						insertPreparedStatement.setString(
+							8, nameIdNameQualifier);
+						insertPreparedStatement.setString(9, null);
+						insertPreparedStatement.setString(10, null);
+						insertPreparedStatement.setString(11, nameIdValue);
+						insertPreparedStatement.setString(12, samlIdpEntityId);
+
+						insertPreparedStatement.executeUpdate();
+					}
 				}
-
-				insertPreparedStatement.executeBatch();
 			}
 
 			runSQL(
