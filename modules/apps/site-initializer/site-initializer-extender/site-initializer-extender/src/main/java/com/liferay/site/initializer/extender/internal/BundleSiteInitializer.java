@@ -3107,24 +3107,22 @@ public class BundleSiteInitializer implements SiteInitializer {
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = jsonArray.getJSONObject(i);
 
+			Dictionary<String, Object> properties = new HashMapDictionary<>();
+
 			JSONObject propertiesJSONObject = jsonObject.getJSONObject(
 				"properties");
 
 			Iterator<String> iterator = propertiesJSONObject.keys();
 
-			Dictionary<String, Object> configurationProperties =
-				new HashMapDictionary<>();
-
 			while (iterator.hasNext()) {
 				String key = iterator.next();
 
-				configurationProperties.put(
-					key, propertiesJSONObject.getString(key));
+				properties.put(key, propertiesJSONObject.getString(key));
 			}
 
 			_configurationProvider.saveGroupConfiguration(
 				serviceContext.getScopeGroupId(), jsonObject.getString("pid"),
-				configurationProperties);
+				properties);
 		}
 	}
 
