@@ -19,7 +19,7 @@ String defaultLanguageId = LocaleUtil.toLanguageId(LocaleUtil.getSiteDefault());
 
 Locale[] availableLocales = {LocaleUtil.getSiteDefault()};
 
-boolean hasDDMDocumentLibraryDataType = false;
+boolean hasDocumentsAndMediaField = false;
 
 if (Validator.isNotNull(script)) {
 	try {
@@ -29,7 +29,7 @@ if (Validator.isNotNull(script)) {
 			String dataType = ddmFormField.getType();
 
 			if (dataType.equals("ddm-documentlibrary")) {
-				hasDDMDocumentLibraryDataType = true;
+				hasDocumentsAndMediaField = true;
 			}
 		}
 
@@ -58,7 +58,7 @@ if (Validator.isNotNull(script)) {
 	names='<%= LanguageUtil.get(request, "view[action]") + "," + LanguageUtil.get(request, "source") %>'
 	refresh="<%= false %>"
 >
-	<c:if test="<%= hasDDMDocumentLibraryDataType %>">
+	<c:if test="<%= hasDocumentsAndMediaField %>">
 		<div class="alert alert-info ddm-documents-and-media-field lfr-message-response">
 			<liferay-ui:message key="document-permissions-are-not-inherited-from-the-DDL-record" />
 		</div>
