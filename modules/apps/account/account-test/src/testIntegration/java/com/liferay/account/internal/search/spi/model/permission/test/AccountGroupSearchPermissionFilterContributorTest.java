@@ -72,12 +72,11 @@ public class AccountGroupSearchPermissionFilterContributorTest {
 	public void testWhenHasAccountEntryViewAccountGroupsPermissionSearch()
 		throws Exception {
 
-		AccountEntry accountEntry = AccountEntryTestUtil.addAccountEntry(
-			_accountEntryLocalService);
-
 		AccountGroup accountGroup = AccountGroupTestUtil.addAccountGroup(
 			_accountGroupLocalService, RandomTestUtil.randomString(),
 			RandomTestUtil.randomString());
+		AccountEntry accountEntry = AccountEntryTestUtil.addAccountEntry(
+			_accountEntryLocalService);
 
 		_accountGroupRelLocalService.addAccountGroupRel(
 			accountGroup.getAccountGroupId(), AccountEntry.class.getName(),
