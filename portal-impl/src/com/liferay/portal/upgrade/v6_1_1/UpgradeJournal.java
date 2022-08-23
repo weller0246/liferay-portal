@@ -95,11 +95,11 @@ public class UpgradeJournal extends UpgradeProcess {
 				"<dynamic-content><![CDATA[", "]]></dynamic-content>"
 			});
 
-		content.replaceAll(
+		content = content.replaceAll(
 			"<dynamic-content id=\"([0-9]+)\">",
 			"<dynamic-content id=\"$1\"><![CDATA[");
 
-		content.replaceAll(
+		content = content.replaceAll(
 			"<dynamic-content id=\"([0-9]+)\"><!\\[CDATA\\[<!\\[CDATA\\[",
 			"<dynamic-content id=\"$1\"><![CDATA[");
 
