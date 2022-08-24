@@ -185,7 +185,9 @@ public class ComboServlet extends HttpServlet {
 				extension = pathExtension;
 			}
 
-			if (!extension.equals(pathExtension)) {
+			if (!modulePath.startsWith(_WEB_SERVER_SERVLET_FILE_ENTRY_PREFIX) &&
+				!extension.equals(pathExtension)) {
+
 				httpServletResponse.setHeader(
 					HttpHeaders.CACHE_CONTROL,
 					HttpHeaders.CACHE_CONTROL_NO_CACHE_VALUE);
@@ -505,6 +507,10 @@ public class ComboServlet extends HttpServlet {
 			moduleName = moduleName.substring(0, index);
 		}
 
+		if (moduleName.startsWith(_WEB_SERVER_SERVLET_FILE_ENTRY_PREFIX)) {
+			return true;
+		}
+
 		boolean validModuleExtension = false;
 
 		String[] fileExtensions = PrefsPropsUtil.getStringArray(
@@ -549,6 +555,9 @@ public class ComboServlet extends HttpServlet {
 	private static final String _JAVASCRIPT_MINIFIED_DASH_SUFFIX = "-min.js";
 
 	private static final String _JAVASCRIPT_MINIFIED_DOT_SUFFIX = ".min.js";
+
+	private static final String _WEB_SERVER_SERVLET_FILE_ENTRY_PREFIX =
+		"/documents/d/";
 
 	private static final Log _log = LogFactoryUtil.getLog(ComboServlet.class);
 
