@@ -359,6 +359,10 @@ definition {
 				locator1 = "Breadcrumb#BREADCRUMB_ENTRY",
 				value1 = "Sites and Libraries");
 
+			WaitForElementPresent(
+				key_siteName = "${siteName}",
+				locator1 = "ItemSelector#SITE_SELECTOR");
+
 			AssertClick(
 				key_siteName = "${siteName}",
 				locator1 = "ItemSelector#SITE_SELECTOR",
