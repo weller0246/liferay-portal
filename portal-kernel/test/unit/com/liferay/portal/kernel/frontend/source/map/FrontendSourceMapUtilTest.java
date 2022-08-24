@@ -52,6 +52,8 @@ public class FrontendSourceMapUtilTest {
 			"Hello World!",
 			FrontendSourceMapUtil.stripJSSourceMapping(
 				"Hello World!//# sourceMappingURL=main.js.map"));
+		Assert.assertEquals(
+			null, FrontendSourceMapUtil.stripJSSourceMapping(null));
 	}
 
 	@Test
