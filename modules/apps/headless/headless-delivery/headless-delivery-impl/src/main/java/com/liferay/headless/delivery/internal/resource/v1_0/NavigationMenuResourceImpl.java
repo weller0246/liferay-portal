@@ -514,6 +514,7 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 					NavigationMenuItem.class);
 				type = _toType(siteNavigationMenuItem.getType());
 				url = unicodeProperties.getProperty("url");
+
 				useCustomName = Boolean.valueOf(
 					unicodeProperties.getProperty("useCustomName"));
 
