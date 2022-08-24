@@ -234,22 +234,19 @@ public class ExportConfigurationMVCResourceCommand
 			}
 		}
 
-		String fileName;
+		String fileName = "liferay-site-settings.zip";
 
 		if (Objects.equals(
-				ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
+				ConfigurationAdminPortletKeys.INSTANCE_SETTINGS,
 				themeDisplay.getPpid())) {
-
-			fileName = "liferay-system-settings.zip";
-		}
-		else if (Objects.equals(
-					ConfigurationAdminPortletKeys.INSTANCE_SETTINGS,
-					themeDisplay.getPpid())) {
 
 			fileName = "liferay-instance-settings.zip";
 		}
-		else {
-			fileName = "liferay-site-settings.zip";
+		else if (Objects.equals(
+					ConfigurationAdminPortletKeys.SYSTEM_SETTINGS,
+					themeDisplay.getPpid())) {
+
+			fileName = "liferay-system-settings.zip";
 		}
 
 		PortletResponseUtil.sendFile(
