@@ -35,12 +35,10 @@ public class FrontendSourceMapUtilTest {
 		Assert.assertEquals(
 			"Hello World!",
 			FrontendSourceMapUtil.stripCSSSourceMapping("Hello World!"));
-
 		Assert.assertEquals(
 			"Hello World!",
 			FrontendSourceMapUtil.stripCSSSourceMapping(
 				"Hello World!/*# sourceMappingURL=main.css.map */"));
-
 		Assert.assertEquals(
 			null, FrontendSourceMapUtil.stripCSSSourceMapping(null));
 	}
@@ -50,7 +48,6 @@ public class FrontendSourceMapUtilTest {
 		Assert.assertEquals(
 			"Hello World!",
 			FrontendSourceMapUtil.stripJSSourceMapping("Hello World!"));
-
 		Assert.assertEquals(
 			"Hello World!",
 			FrontendSourceMapUtil.stripJSSourceMapping(
@@ -59,10 +56,9 @@ public class FrontendSourceMapUtilTest {
 
 	@Test
 	public void testTransferCSS() throws IOException {
-		String input = "Hello World!/*# sourceMappingURL=main.css.map */";
-
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-			input.getBytes(StandardCharsets.UTF_8));
+			"Hello World!/*# sourceMappingURL=main.css.map */".getBytes(
+				StandardCharsets.UTF_8));
 
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
@@ -76,10 +72,9 @@ public class FrontendSourceMapUtilTest {
 
 	@Test
 	public void testTransferJS() throws IOException {
-		String input = "Hello World!//# sourceMappingURL=main.js.map";
-
 		ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(
-			input.getBytes(StandardCharsets.UTF_8));
+			"Hello World!//# sourceMappingURL=main.js.map".getBytes(
+				StandardCharsets.UTF_8));
 
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
