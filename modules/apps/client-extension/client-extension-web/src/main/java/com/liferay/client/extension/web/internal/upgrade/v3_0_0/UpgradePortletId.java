@@ -84,9 +84,9 @@ public class UpgradePortletId extends BasePortletIdUpgradeProcess {
 					"ClientExtensionEntry")) {
 
 			while (resultSet.next()) {
-				long companyId = resultSet.getLong("companyId");
 				String externalReferenceCode = resultSet.getString(
 					"externalReferenceCode");
+				long companyId = resultSet.getLong("companyId");
 
 				portletIds.add(
 					new String[] {
