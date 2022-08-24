@@ -69,10 +69,10 @@ public class StringUtilTest {
 					assertMethods.removeAll(
 						Arrays.asList(
 							StringUtil.class.getDeclaredMethod(
-								"read", ClassLoader.class, String.class,
-								boolean.class),
+								"read", ClassLoader.class, String.class),
 							StringUtil.class.getDeclaredMethod(
-								"read", ClassLoader.class, String.class)));
+								"read", ClassLoader.class, String.class,
+								boolean.class)));
 
 					return assertMethods;
 				}
