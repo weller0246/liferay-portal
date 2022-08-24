@@ -55,36 +55,36 @@ public class UpgradePortletId extends BasePortletIdUpgradeProcess {
 	}
 
 	private void _removeDuplicatePortletPreferences() throws SQLException {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select ownerId, ownerType, plid from PortletPreferences " +
 					"where portletId = '176'");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			PreparedStatement deletePreparedStatement =
+			ResultSet resultSet = preparedStatement1.executeQuery();
+			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
 					"delete from PortletPreferences where ownerId = ? and " +
 						"ownerType = ? and plid = ? and portletId = ?")) {
 
 			while (resultSet.next()) {
-				deletePreparedStatement.setLong(1, resultSet.getLong(1));
-				deletePreparedStatement.setInt(2, resultSet.getInt(2));
-				deletePreparedStatement.setLong(3, resultSet.getLong(3));
-				deletePreparedStatement.setString(
+				preparedStatement2.setLong(1, resultSet.getLong(1));
+				preparedStatement2.setInt(2, resultSet.getInt(2));
+				preparedStatement2.setLong(3, resultSet.getLong(3));
+				preparedStatement2.setString(
 					4, LicenseManagerPortletKeys.LICENSE_MANAGER);
 
-				deletePreparedStatement.addBatch();
+				preparedStatement2.addBatch();
 			}
 
-			deletePreparedStatement.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 
 	private void _removeDuplicateResourcePermissions() throws SQLException {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select companyId, scope, primKey, roleId from " +
 					"ResourcePermission where name = '176'");
-			ResultSet resultSet = preparedStatement.executeQuery();
-			PreparedStatement deletePreparedStatement =
+			ResultSet resultSet = preparedStatement1.executeQuery();
+			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
 					"delete from ResourcePermission where companyId = ? and " +
@@ -92,17 +92,17 @@ public class UpgradePortletId extends BasePortletIdUpgradeProcess {
 							"?")) {
 
 			while (resultSet.next()) {
-				deletePreparedStatement.setLong(1, resultSet.getLong(1));
-				deletePreparedStatement.setString(
+				preparedStatement2.setLong(1, resultSet.getLong(1));
+				preparedStatement2.setString(
 					2, LicenseManagerPortletKeys.LICENSE_MANAGER);
-				deletePreparedStatement.setInt(3, resultSet.getInt(2));
-				deletePreparedStatement.setString(4, resultSet.getString(3));
-				deletePreparedStatement.setLong(5, resultSet.getLong(4));
+				preparedStatement2.setInt(3, resultSet.getInt(2));
+				preparedStatement2.setString(4, resultSet.getString(3));
+				preparedStatement2.setLong(5, resultSet.getLong(4));
 
-				deletePreparedStatement.addBatch();
+				preparedStatement2.addBatch();
 			}
 
-			deletePreparedStatement.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 

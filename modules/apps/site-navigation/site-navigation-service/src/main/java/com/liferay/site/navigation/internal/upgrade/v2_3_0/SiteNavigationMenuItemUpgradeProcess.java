@@ -31,16 +31,15 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try (PreparedStatement selectPreparedStatement =
-				connection.prepareStatement(
-					"select siteNavigationMenuItemId, typeSettings from " +
-						"SiteNavigationMenuItem where type_ = 'display_page'");
-			PreparedStatement updatePreparedStatement =
+		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
+				"select siteNavigationMenuItemId, typeSettings from " +
+					"SiteNavigationMenuItem where type_ = 'display_page'");
+			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
 					"update SiteNavigationMenuItem set type_ = ? where " +
 						"siteNavigationMenuItemId = ?");
-			ResultSet resultSet = selectPreparedStatement.executeQuery()) {
+			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			while (resultSet.next()) {
 				UnicodeProperties typeSettingsUnicodeProperties =
@@ -51,16 +50,16 @@ public class SiteNavigationMenuItemUpgradeProcess extends UpgradeProcess {
 				long classNameId = GetterUtil.getLong(
 					typeSettingsUnicodeProperties.getProperty("classNameId"));
 
-				updatePreparedStatement.setString(
+				preparedStatement2.setString(
 					1, PortalUtil.getClassName(classNameId));
 
-				updatePreparedStatement.setLong(
+				preparedStatement2.setLong(
 					2, resultSet.getLong("siteNavigationMenuItemId"));
 
-				updatePreparedStatement.addBatch();
+				preparedStatement2.addBatch();
 			}
 
-			updatePreparedStatement.executeBatch();
+			preparedStatement2.executeBatch();
 		}
 	}
 
