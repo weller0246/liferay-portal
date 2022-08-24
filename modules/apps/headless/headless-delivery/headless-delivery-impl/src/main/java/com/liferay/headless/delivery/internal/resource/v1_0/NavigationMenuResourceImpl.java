@@ -514,7 +514,6 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 					NavigationMenuItem.class);
 				type = _toType(siteNavigationMenuItem.getType());
 				url = unicodeProperties.getProperty("url");
-
 				useCustomName = Boolean.valueOf(
 					unicodeProperties.getProperty("useCustomName"));
 
@@ -524,6 +523,24 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 
 						return LocaleUtil.toW3cLanguageIds(
 							locales.toArray(new Locale[localizedMap.size()]));
+					});
+				setContentURL(
+					() -> {
+						if (Objects.equals(type, FileEntry.class.getName())) {
+							type = DLFileEntry.class.getName();
+						}
+
+						DTOConverter<?, ?> dtoConverter =
+							_dtoConverterRegistry.getDTOConverter(type);
+
+						if (dtoConverter == null) {
+							return null;
+						}
+
+						return dtoConverter.getJaxRsLink(
+							GetterUtil.getLong(
+								unicodeProperties.getProperty("classPK")),
+							contextUriInfo);
 					});
 				setLink(
 					() -> {
@@ -606,25 +623,6 @@ public class NavigationMenuResourceImpl extends BaseNavigationMenuResourceImpl {
 							"headless-delivery", BaseSitePageResourceImpl.class,
 							"getSiteSitePage", contextUriInfo,
 							arguments.toArray(new Object[0]));
-					});
-
-				setContentURL(
-					() -> {
-						if (Objects.equals(type, FileEntry.class.getName())) {
-							type = DLFileEntry.class.getName();
-						}
-
-						DTOConverter<?, ?> dtoConverter =
-							_dtoConverterRegistry.getDTOConverter(type);
-
-						if (dtoConverter == null) {
-							return null;
-						}
-
-						return dtoConverter.getJaxRsLink(
-							GetterUtil.getLong(
-								unicodeProperties.getProperty("classPK")),
-							contextUriInfo);
 					});
 			}
 		};
