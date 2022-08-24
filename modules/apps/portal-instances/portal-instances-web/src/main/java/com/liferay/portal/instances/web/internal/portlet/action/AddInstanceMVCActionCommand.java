@@ -92,13 +92,12 @@ public class AddInstanceMVCActionCommand extends BaseMVCActionCommand {
 	}
 
 	private void _addInstance(ActionRequest actionRequest) throws Exception {
+		String webId = ParamUtil.getString(actionRequest, "webId");
 		String virtualHostname = ParamUtil.getString(
 			actionRequest, "virtualHostname");
 		String mx = ParamUtil.getString(actionRequest, "mx");
 		int maxUsers = ParamUtil.getInteger(actionRequest, "maxUsers");
 		boolean active = ParamUtil.getBoolean(actionRequest, "active");
-
-		String webId = ParamUtil.getString(actionRequest, "webId");
 
 		Company company = _companyService.addCompany(
 			webId, virtualHostname, mx, false, maxUsers, active);
