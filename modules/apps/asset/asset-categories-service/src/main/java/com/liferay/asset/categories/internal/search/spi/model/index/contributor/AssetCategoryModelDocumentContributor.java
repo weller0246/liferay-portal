@@ -23,7 +23,6 @@ import com.liferay.portal.kernel.search.Document;
 import com.liferay.portal.kernel.search.Field;
 import com.liferay.portal.kernel.util.Html;
 import com.liferay.portal.kernel.util.LocaleUtil;
-import com.liferay.portal.kernel.util.Localization;
 import com.liferay.portal.kernel.util.LocalizationUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
@@ -68,14 +67,13 @@ public class AssetCategoryModelDocumentContributor
 		document.addKeyword(
 			Field.ASSET_VOCABULARY_ID, assetCategory.getVocabularyId());
 
-		Localization localization = LocalizationUtil.getLocalization();
-
-		String[] availableLanguageIds = localization.getAvailableLanguageIds(
-			assetCategory.getDescription());
+		String[] availableLanguageIds =
+			LocalizationUtil.getAvailableLanguageIds(
+				assetCategory.getDescription());
 
 		for (String availableLanguageId : availableLanguageIds) {
 			document.addText(
-				localization.getLocalizedName(
+				LocalizationUtil.getLocalizedName(
 					Field.DESCRIPTION, availableLanguageId),
 				_html.stripHtml(
 					assetCategory.getDescription(availableLanguageId)));
