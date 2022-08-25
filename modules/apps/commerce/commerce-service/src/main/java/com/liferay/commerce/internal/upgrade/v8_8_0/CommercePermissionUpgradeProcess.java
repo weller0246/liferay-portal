@@ -58,36 +58,38 @@ public class CommercePermissionUpgradeProcess extends UpgradeProcess {
 						"com.liferay.commerce.account",
 						"MANAGE_AVAILABLE_ACCOUNTS");
 
-				if ((resourceAction != null) &&
-					_resourcePermissionLocalService.hasActionId(
+				if ((resourceAction == null) ||
+					!_resourcePermissionLocalService.hasActionId(
 						resourcePermission, resourceAction)) {
 
-					ResourceAction organizationResourceAction =
-						_resourceActionLocalService.fetchResourceAction(
-							Organization.class.getName(),
-							"MANAGE_AVAILABLE_ACCOUNTS");
-
-					if ((organizationResourceAction != null) &&
-						_resourcePermissionLocalService.hasActionId(
-							resourcePermission, resourceAction)) {
-
-						Role role = _roleLocalService.getRole(
-							resourcePermission.getRoleId());
-
-						_resourcePermissionLocalService.addResourcePermissions(
-							Organization.class.getName(), role.getName(),
-							resourcePermission.getScope(),
-							organizationResourceAction.getBitwiseValue());
-
-						_resourcePermissionLocalService.
-							removeResourcePermissions(
-								resourcePermission.getCompanyId(),
-								resourcePermission.getName(),
-								resourcePermission.getScope(),
-								resourcePermission.getRoleId(),
-								"MANAGE_AVAILABLE_ACCOUNTS");
-					}
+					continue;
 				}
+
+				ResourceAction organizationResourceAction =
+					_resourceActionLocalService.fetchResourceAction(
+						Organization.class.getName(),
+						"MANAGE_AVAILABLE_ACCOUNTS");
+
+				if ((organizationResourceAction == null) ||
+					!_resourcePermissionLocalService.hasActionId(
+						resourcePermission, resourceAction)) {
+
+					continue;
+				}
+
+				Role role = _roleLocalService.getRole(
+					resourcePermission.getRoleId());
+
+				_resourcePermissionLocalService.addResourcePermissions(
+					Organization.class.getName(), role.getName(),
+					resourcePermission.getScope(),
+					organizationResourceAction.getBitwiseValue());
+
+				_resourcePermissionLocalService.removeResourcePermissions(
+					resourcePermission.getCompanyId(),
+					resourcePermission.getName(), resourcePermission.getScope(),
+					resourcePermission.getRoleId(),
+					"MANAGE_AVAILABLE_ACCOUNTS");
 			}
 		}
 	}
