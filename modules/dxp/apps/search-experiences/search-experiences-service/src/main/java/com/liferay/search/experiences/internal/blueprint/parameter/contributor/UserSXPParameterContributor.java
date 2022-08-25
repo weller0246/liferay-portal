@@ -221,7 +221,6 @@ public class UserSXPParameterContributor implements SXPParameterContributor {
 		}
 
 		List<Long> assetCategoryIds = new ArrayList<>();
-
 		List<Long> parentAssetCategoryIds = new ArrayList<>();
 
 		for (AssetCategory assetCategory : assetCategories) {
@@ -239,7 +238,6 @@ public class UserSXPParameterContributor implements SXPParameterContributor {
 			new LongArraySXPParameter(
 				"user.asset_category_ids", true,
 				assetCategoryIds.toArray(new Long[0])));
-
 		sxpParameters.add(
 			new LongArraySXPParameter(
 				"user.parent_asset_category_ids", true,
