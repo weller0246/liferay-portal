@@ -151,6 +151,8 @@ public class LayoutActionDropdownItemsProvider {
 
 							dropdownItem.setLabel(label);
 
+							dropdownItem.setTarget(layout.getTarget());
+
 							if (layout.isTypeContent() &&
 								!GetterUtil.getBoolean(
 									draftLayout.getTypeSettingsProperty(
