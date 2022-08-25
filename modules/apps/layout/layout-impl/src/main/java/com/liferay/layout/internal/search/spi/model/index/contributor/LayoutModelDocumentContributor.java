@@ -157,6 +157,8 @@ public class LayoutModelDocumentContributor
 				serviceContext.getRequest(), "p_l_id=" + layout.getPlid(),
 				false);
 
+			httpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
+
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)httpServletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
@@ -164,7 +166,6 @@ public class LayoutModelDocumentContributor
 			themeDisplay.setLayout(layout);
 			themeDisplay.setPlid(layout.getPlid());
 
-			httpServletRequest.setAttribute(WebKeys.LAYOUT, layout);
 			httpServletRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, themeDisplay);
 
