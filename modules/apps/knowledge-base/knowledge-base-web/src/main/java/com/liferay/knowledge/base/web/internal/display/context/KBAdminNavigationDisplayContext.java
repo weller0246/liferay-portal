@@ -240,7 +240,7 @@ public class KBAdminNavigationDisplayContext {
 				).put(
 					"key", "template"
 				).put(
-					"navigationItems", _getTemplatesNavigationJSONArray()
+					"navigationItems", _getNavigationItemsJSONArray()
 				).put(
 					"title", LanguageUtil.get(_httpServletRequest, "templates")
 				));
@@ -410,8 +410,8 @@ public class KBAdminNavigationDisplayContext {
 		return articleNavigationJSONArray;
 	}
 
-	private JSONArray _getTemplatesNavigationJSONArray() {
-		JSONArray templateNavigationJSONArray =
+	private JSONArray _getNavigationItemsJSONArray() {
+		JSONArray navigationItemsJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
 		List<KBTemplate> kbTemplates =
@@ -421,7 +421,7 @@ public class KBAdminNavigationDisplayContext {
 				new KBTemplateTitleComparator(true));
 
 		for (KBTemplate kbTemplate : kbTemplates) {
-			templateNavigationJSONArray.put(
+			navigationItemsJSONArray.put(
 				JSONUtil.put(
 					"href",
 					PortletURLBuilder.createRenderURL(
@@ -438,7 +438,7 @@ public class KBAdminNavigationDisplayContext {
 				));
 		}
 
-		return templateNavigationJSONArray;
+		return navigationItemsJSONArray;
 	}
 
 	private final HttpServletRequest _httpServletRequest;
