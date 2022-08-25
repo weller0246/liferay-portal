@@ -475,6 +475,7 @@ public class UserSXPParameterContributor implements SXPParameterContributor {
 			new LongArraySXPParameter(
 				"user.active_segment_entry_ids", true,
 				ArrayUtil.toLongArray(segmentsEntryIds)));
+
 		sxpParameters.add(
 			new IntegerSXPParameter(
 				"user.age", true, _getAge(user.getBirthday())));
