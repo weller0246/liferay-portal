@@ -379,15 +379,19 @@ public class BatchBuild extends BaseBuild {
 				for (int i = 0; i < runsJSONArray.length(); i++) {
 					JSONObject runJSONObject = runsJSONArray.getJSONObject(i);
 
-					if (runJSONObject.getInt("number") == getBuildNumber()) {
-						String url = runJSONObject.getString("url");
-
-						if (!hasBuildURL(url) &&
-							!foundDownstreamBuildURLs.contains(url)) {
-
-							foundDownstreamBuildURLs.add(url);
-						}
+					if (runJSONObject.getInt("number") != getBuildNumber()) {
+						continue;
 					}
+
+					String url = runJSONObject.getString("url");
+
+					if (hasBuildURL(url) ||
+						foundDownstreamBuildURLs.contains(url)) {
+
+						continue;
+					}
+
+					foundDownstreamBuildURLs.add(url);
 				}
 			}
 		}
