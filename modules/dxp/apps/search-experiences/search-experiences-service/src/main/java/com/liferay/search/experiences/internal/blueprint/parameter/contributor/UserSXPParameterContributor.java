@@ -563,10 +563,6 @@ public class UserSXPParameterContributor implements SXPParameterContributor {
 		List<AssetTag> assetTags = _assetTagLocalService.getTags(
 			user.getModelClassName(), user.getPrimaryKey());
 
-		if (assetTags.isEmpty()) {
-			return new String[0];
-		}
-
 		return ListUtil.toArray(assetTags, AssetTag.NAME_ACCESSOR);
 	}
 
