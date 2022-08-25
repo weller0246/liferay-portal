@@ -292,8 +292,7 @@ public class KBAdminNavigationDisplayContext {
 	private JSONArray _getChildKBArticlesJSONArray(KBArticle parentKBArticle)
 		throws PortalException {
 
-		JSONArray childrenJSONArray =
-			JSONFactoryUtil.createJSONArray();
+		JSONArray childrenJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<KBArticle> kbArticles = KBArticleServiceUtil.getKBArticles(
 			parentKBArticle.getGroupId(), parentKBArticle.getResourcePrimKey(),
@@ -321,9 +320,7 @@ public class KBAdminNavigationDisplayContext {
 		return childrenJSONArray;
 	}
 
-	private JSONArray _getChildrenJSONArray()
-		throws PortalException {
-ren
+	private JSONArray _getChildrenJSONArray() throws PortalException {
 		return JSONUtil.put(
 			JSONUtil.put(
 				"children",
@@ -348,8 +345,7 @@ ren
 	private JSONArray _getChildrenJSONArray(long parentFolderId)
 		throws PortalException {
 
-		JSONArray childrenJSONArray =
-			JSONFactoryUtil.createJSONArray();
+		JSONArray childrenJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<Object> kbObjects = KBFolderServiceUtil.getKBFoldersAndKBArticles(
 			_themeDisplay.getScopeGroupId(), parentFolderId,
@@ -357,15 +353,13 @@ ren
 			new KBObjectsPriorityComparator<>(true));
 
 		for (Object kbObject : kbObjects) {
-			JSONObject jsonObject =
-				JSONFactoryUtil.createJSONObject();
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
 
 			if (kbObject instanceof KBFolder) {
 				KBFolder kbFolder = (KBFolder)kbObject;
 
 				jsonObject.put(
-					"children",
-					_getChildrenJSONArray(kbFolder.getKbFolderId())
+					"children", _getChildrenJSONArray(kbFolder.getKbFolderId())
 				).put(
 					"href",
 					PortletURLBuilder.createRenderURL(
