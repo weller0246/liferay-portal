@@ -183,7 +183,7 @@ public class KBAdminNavigationDisplayContext {
 				!mvcPath.equals("/admin/view_kb_templates.jsp")) {
 
 				active = true;
-				navigationItemsJSONArray = _getKBArticleNavigationJSONArray();
+				navigationItemsJSONArray = _getChildrenJSONArray();
 			}
 
 			verticalNavigationItems.add(
@@ -292,7 +292,7 @@ public class KBAdminNavigationDisplayContext {
 	private JSONArray _getChildKBArticlesJSONArray(KBArticle parentKBArticle)
 		throws PortalException {
 
-		JSONArray articleNavigationJSONArray =
+		JSONArray childrenJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
 		List<KBArticle> kbArticles = KBArticleServiceUtil.getKBArticles(
@@ -301,7 +301,7 @@ public class KBAdminNavigationDisplayContext {
 			new KBArticleTitleComparator(true));
 
 		for (KBArticle kbArticle : kbArticles) {
-			articleNavigationJSONArray.put(
+			childrenJSONArray.put(
 				JSONUtil.put(
 					"children", _getChildKBArticlesJSONArray(kbArticle)
 				).put(
@@ -318,16 +318,16 @@ public class KBAdminNavigationDisplayContext {
 				));
 		}
 
-		return articleNavigationJSONArray;
+		return childrenJSONArray;
 	}
 
-	private JSONArray _getKBArticleNavigationJSONArray()
+	private JSONArray _getChildrenJSONArray()
 		throws PortalException {
-
+ren
 		return JSONUtil.put(
 			JSONUtil.put(
 				"children",
-				_getKBArticleNavigationJSONArray(
+				_getChildrenJSONArray(
 					KBFolderConstants.DEFAULT_PARENT_FOLDER_ID)
 			).put(
 				"href",
@@ -345,10 +345,10 @@ public class KBAdminNavigationDisplayContext {
 			));
 	}
 
-	private JSONArray _getKBArticleNavigationJSONArray(long parentFolderId)
+	private JSONArray _getChildrenJSONArray(long parentFolderId)
 		throws PortalException {
 
-		JSONArray articleNavigationJSONArray =
+		JSONArray childrenJSONArray =
 			JSONFactoryUtil.createJSONArray();
 
 		List<Object> kbObjects = KBFolderServiceUtil.getKBFoldersAndKBArticles(
@@ -357,15 +357,15 @@ public class KBAdminNavigationDisplayContext {
 			new KBObjectsPriorityComparator<>(true));
 
 		for (Object kbObject : kbObjects) {
-			JSONObject articleNavigationJSONObject =
+			JSONObject jsonObject =
 				JSONFactoryUtil.createJSONObject();
 
 			if (kbObject instanceof KBFolder) {
 				KBFolder kbFolder = (KBFolder)kbObject;
 
-				articleNavigationJSONObject.put(
+				jsonObject.put(
 					"children",
-					_getKBArticleNavigationJSONArray(kbFolder.getKbFolderId())
+					_getChildrenJSONArray(kbFolder.getKbFolderId())
 				).put(
 					"href",
 					PortletURLBuilder.createRenderURL(
@@ -388,7 +388,7 @@ public class KBAdminNavigationDisplayContext {
 			else {
 				KBArticle kbArticle = (KBArticle)kbObject;
 
-				articleNavigationJSONObject.put(
+				jsonObject.put(
 					"children", _getChildKBArticlesJSONArray(kbArticle)
 				).put(
 					"href",
@@ -404,10 +404,10 @@ public class KBAdminNavigationDisplayContext {
 				);
 			}
 
-			articleNavigationJSONArray.put(articleNavigationJSONObject);
+			childrenJSONArray.put(jsonObject);
 		}
 
-		return articleNavigationJSONArray;
+		return childrenJSONArray;
 	}
 
 	private JSONArray _getNavigationItemsJSONArray() {
