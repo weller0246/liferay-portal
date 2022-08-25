@@ -37,10 +37,8 @@ public class SamlIdpSpSessionUpgradeProcess extends UpgradeProcess {
 
 			runSQL("delete from SamlPeerBinding");
 
-			int samlIdpSpSessionIdOffset = _getSamlIdpSpSessionIdOffset();
-
 			int latestSamlPeerBindingId = _getLatestSamlPeerBindingId();
-
+			int samlIdpSpSessionIdOffset = _getSamlIdpSpSessionIdOffset();
 			String sql1 = StringBundler.concat(
 				"select min(samlIdpSpSessionId) as samlIdpSpSessionId, ",
 				"companyId, min(createDate) as createDate, userId, userName, ",

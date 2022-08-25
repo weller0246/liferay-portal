@@ -41,10 +41,8 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 					"SamlPeerBinding.samlPeerBindingId not in (select ",
 					"samlPeerBindingId from SamlIdpSpSession)"));
 
-			int samlSpSessionIdOffset = _getSamlSpSessionIdOffset();
-
 			int latestSamlPeerBindingId = _getLatestSamlPeerBindingId();
-
+			int samlSpSessionIdOffset = _getSamlSpSessionIdOffset();
 			String sql1 = StringBundler.concat(
 				"select min(samlSpSessionId) as samlSpSessionId, companyId, ",
 				"min(createDate) as createDate, userId, userName, ",
