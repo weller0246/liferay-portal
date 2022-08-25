@@ -411,8 +411,7 @@ public class KBAdminNavigationDisplayContext {
 	}
 
 	private JSONArray _getNavigationItemsJSONArray() {
-		JSONArray navigationItemsJSONArray =
-			JSONFactoryUtil.createJSONArray();
+		JSONArray navigationItemsJSONArray = JSONFactoryUtil.createJSONArray();
 
 		List<KBTemplate> kbTemplates =
 			KBTemplateServiceUtil.getGroupKBTemplates(
