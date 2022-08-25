@@ -263,7 +263,7 @@ public class PreviewImageJournalArticleContentDashboardItemActionProviderTest {
 			FileUtil.getBytes(
 				classLoader.getResourceAsStream(
 					"com/liferay/content/dashboard/journal/internal/item" +
-						"/action/provider/test/test.jpg")),
+						"/action/provider/test/dependencies/test.jpg")),
 			false);
 
 		return tempFile;
