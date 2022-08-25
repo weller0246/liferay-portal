@@ -45,14 +45,14 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 
 			int latestSamlPeerBindingId = _getLatestSamlPeerBindingId();
 
-			String sql1 = StringBundler.concat(
+			String sql2 = StringBundler.concat(
 				"insert into SamlPeerBinding (samlPeerBindingId, companyId, ",
 				"createDate, userId, userName, deleted, samlNameIdFormat, ",
 				"samlNameIdNameQualifier, samlNameIdSpNameQualifier, ",
 				"samlNameIdSpProvidedId, samlNameIdValue, samlPeerEntityId) ",
 				"values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-			String sql2 = StringBundler.concat(
+			String sql1 = StringBundler.concat(
 				"select min(samlSpSessionId) as samlSpSessionId, companyId, ",
 				"min(createDate) as createDate, userId, userName, ",
 				"nameIdFormat, nameIdNameQualifier, nameIdValue, ",
@@ -61,11 +61,11 @@ public class SamlSpSessionUpgradeProcess extends UpgradeProcess {
 				"nameIdValue, samlIdpEntityId");
 
 			try (PreparedStatement preparedStatement1 =
-					connection.prepareStatement(sql2);
+					connection.prepareStatement(sql1);
 				ResultSet resultSet = preparedStatement1.executeQuery();
 				PreparedStatement preparedStatement2 =
 					AutoBatchPreparedStatementUtil.concurrentAutoBatch(
-						connection, sql1)) {
+						connection, sql2)) {
 
 				while (resultSet.next()) {
 					preparedStatement2.setInt(
