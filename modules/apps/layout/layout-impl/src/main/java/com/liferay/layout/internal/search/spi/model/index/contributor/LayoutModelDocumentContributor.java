@@ -190,7 +190,6 @@ public class LayoutModelDocumentContributor
 			MockContextHelper mockContextHelper = new MockContextHelper(
 				layout,
 				_userLocalService.fetchDefaultUser(layout.getCompanyId()));
-
 			long segmentsExperienceId =
 				_segmentsExperienceLocalService.
 					fetchDefaultSegmentsExperienceId(layout.getPlid());
@@ -200,8 +199,8 @@ public class LayoutModelDocumentContributor
 
 				try {
 					content = _getLayoutContent(
-						mockContextHelper, layoutPageTemplateStructure, locale,
-						serviceContext, segmentsExperienceId);
+						layoutPageTemplateStructure, locale, mockContextHelper,
+						segmentsExperienceId, serviceContext);
 				}
 				catch (Exception exception) {
 					if (_log.isWarnEnabled()) {
@@ -284,29 +283,27 @@ public class LayoutModelDocumentContributor
 	}
 
 	private String _getLayoutContent(
-			MockContextHelper mockContextHelper,
 			LayoutPageTemplateStructure layoutPageTemplateStructure,
-			Locale locale, ServiceContext originalServiceContext,
-			long segmentsExperienceId)
+			Locale locale, MockContextHelper mockContextHelper,
+			long segmentsExperienceId, ServiceContext serviceContext)
 		throws PortalException {
 
-		HttpServletResponse httpServletResponse =
-			new DummyHttpServletResponse();
-
-		HttpServletRequest httpServletRequest =
-			mockContextHelper.getHttpServletRequest(
-				httpServletResponse, locale);
-
-		ServiceContext mockServiceContext = ServiceContextFactory.getInstance(
-			httpServletRequest);
-
-		PermissionChecker originalPermissionChecker =
+		PermissionChecker permissionChecker =
 			PermissionThreadLocal.getPermissionChecker();
 
 		try {
-			ServiceContextThreadLocal.pushServiceContext(mockServiceContext);
 			PermissionThreadLocal.setPermissionChecker(
 				mockContextHelper.getPermissionChecker());
+
+			HttpServletResponse httpServletResponse =
+				new DummyHttpServletResponse();
+
+			HttpServletRequest httpServletRequest =
+				mockContextHelper.getHttpServletRequest(
+					httpServletResponse, locale);
+
+			ServiceContextThreadLocal.pushServiceContext(
+				ServiceContextFactory.getInstance(httpServletRequest));
 
 			return LayoutPageTemplateStructureRenderUtil.renderLayoutContent(
 				_fragmentRendererController, httpServletRequest,
@@ -314,15 +311,13 @@ public class LayoutModelDocumentContributor
 				FragmentEntryLinkConstants.VIEW, locale, segmentsExperienceId);
 		}
 		finally {
+			PermissionThreadLocal.setPermissionChecker(permissionChecker);
+
 			ServiceContextThreadLocal.popServiceContext();
 
-			if (originalServiceContext != null) {
-				ServiceContextThreadLocal.pushServiceContext(
-					originalServiceContext);
+			if (serviceContext != null) {
+				ServiceContextThreadLocal.pushServiceContext(serviceContext);
 			}
-
-			PermissionThreadLocal.setPermissionChecker(
-				originalPermissionChecker);
 		}
 	}
 
