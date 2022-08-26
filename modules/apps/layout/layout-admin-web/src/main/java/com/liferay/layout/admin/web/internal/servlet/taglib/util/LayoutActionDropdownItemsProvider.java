@@ -150,8 +150,9 @@ public class LayoutActionDropdownItemsProvider {
 							}
 
 							dropdownItem.setLabel(label);
-
-							dropdownItem.setTarget(layout.getTarget());
+							dropdownItem.setTarget(
+								HtmlUtil.escape(
+									layout.getTypeSettingsProperty("target")));
 
 							if (layout.isTypeContent() &&
 								!GetterUtil.getBoolean(
