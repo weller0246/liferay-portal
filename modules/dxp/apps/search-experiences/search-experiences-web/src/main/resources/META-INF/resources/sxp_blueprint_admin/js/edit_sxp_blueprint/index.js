@@ -16,6 +16,7 @@ import ErrorBoundary from '../shared/ErrorBoundary';
 import ThemeContext from '../shared/ThemeContext';
 import {COPY_BUTTON_CSS_CLASS} from '../utils/constants';
 import {fetchData} from '../utils/fetch';
+import {renameKeys, transformLocale} from '../utils/language';
 import {openInitialSuccessToast} from '../utils/toasts';
 import EditSXPBlueprintForm from './EditSXPBlueprintForm';
 
@@ -64,9 +65,15 @@ export default function ({
 					<EditSXPBlueprintForm
 						entityJSON={resource.entityJSON}
 						initialConfiguration={resource.configuration}
-						initialDescription={resource.description_i18n}
+						initialDescription={renameKeys(
+							resource.description_i18n,
+							transformLocale
+						)}
 						initialSXPElementInstances={resource.elementInstances}
-						initialTitle={resource.title_i18n}
+						initialTitle={renameKeys(
+							resource.title_i18n,
+							transformLocale
+						)}
 						sxpBlueprintId={sxpBlueprintId}
 					/>
 				</ErrorBoundary>

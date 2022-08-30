@@ -40,6 +40,22 @@ export function formatLocaleWithUnderscores(locale) {
 }
 
 /**
+ * Converts some of the more unique regional locales that differ from
+ * the expected format.
+ *
+ * @param {string} locale Language identifier
+ * @returns {string}
+ */
+export function transformLocale(locale) {
+	const languages = {
+		'zh-Hans-CN': 'zh-CN',
+		'zh-Hant-TW': 'zh-TW',
+	};
+
+	return languages[locale] || locale;
+}
+
+/**
  * Function to return a new object with renamed keys.
  *
  * Example:
