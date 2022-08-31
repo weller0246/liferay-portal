@@ -47,7 +47,6 @@ public class RankingIndexWriterImplTest extends BaseRankingsIndexTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexWriterImpl, "_rankingToDocumentTranslator",
 			_rankingToDocumentTranslator);
-
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexWriterImpl, "_searchEngineAdapter",
 			searchEngineAdapter);

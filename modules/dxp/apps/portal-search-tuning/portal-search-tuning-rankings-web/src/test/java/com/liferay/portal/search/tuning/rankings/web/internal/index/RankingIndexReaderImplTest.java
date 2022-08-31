@@ -47,10 +47,8 @@ public class RankingIndexReaderImplTest extends BaseRankingsIndexTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexReaderImpl, "_documentToRankingTranslator",
 			_documentToRankingTranslator);
-
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexReaderImpl, "_queries", queries);
-
 		ReflectionTestUtil.setFieldValue(
 			_rankingIndexReaderImpl, "_searchEngineAdapter",
 			searchEngineAdapter);
