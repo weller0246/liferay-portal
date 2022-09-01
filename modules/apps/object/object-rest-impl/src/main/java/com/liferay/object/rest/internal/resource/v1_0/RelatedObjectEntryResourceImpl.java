@@ -34,6 +34,7 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 import java.net.URI;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
