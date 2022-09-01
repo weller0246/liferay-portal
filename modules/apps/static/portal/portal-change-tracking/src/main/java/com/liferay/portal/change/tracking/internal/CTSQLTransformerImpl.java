@@ -351,11 +351,14 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 
 		serializer.writeLong(bundle.getLastModified());
 
-		Map<String, String> snapshotSQLCache = new HashMap<>(_transformedSQLs);
+		Map<String, String> snapshotTransformedSQLs = new HashMap<>(
+			_transformedSQLs);
 
-		serializer.writeInt(snapshotSQLCache.size());
+		serializer.writeInt(snapshotTransformedSQLs.size());
 
-		for (Map.Entry<String, String> entry : snapshotSQLCache.entrySet()) {
+		for (Map.Entry<String, String> entry :
+				snapshotTransformedSQLs.entrySet()) {
+
 			serializer.writeString(entry.getKey());
 
 			serializer.writeString(entry.getValue());
