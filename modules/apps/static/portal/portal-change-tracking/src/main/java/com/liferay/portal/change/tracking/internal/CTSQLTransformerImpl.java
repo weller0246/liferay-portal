@@ -196,10 +196,10 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 	public void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
-		_sqlCache = new LRUMap<>(
+		_transformedSQLs = new LRUMap<>(
 			PropsValues.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE);
 
-		_loadCache();
+		_loadTransformedSQLs();
 
 		_ctServiceServiceTracker = new ServiceTracker<>(
 			_bundleContext, (Class<CTService<?>>)(Class<?>)CTService.class,
@@ -233,7 +233,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 		long ctCollectionId = CTCollectionThreadLocal.getCTCollectionId();
 
 		if (ctCollectionId == 0) {
-			String transformedSQL = _sqlCache.get(sql);
+			String transformedSQL = _transformedSQLs.get(sql);
 
 			if (transformedSQL != null) {
 				return transformedSQL;
@@ -251,7 +251,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 		}
 
 		if (!foundTable) {
-			_sqlCache.put(sql, sql);
+			_transformedSQLs.put(sql, sql);
 
 			return sql;
 		}
@@ -279,7 +279,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			}
 
 			if (ctCollectionId == 0) {
-				_sqlCache.put(sql, transformedSQL);
+				_transformedSQLs.put(sql, transformedSQL);
 			}
 
 			return transformedSQL;
@@ -298,16 +298,16 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			sql, "LIKE ? ESCAPE '\\'", "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'");
 	}
 
-	private void _loadCache() {
-		File sqlCacheFile = _bundleContext.getDataFile(_SQL_CACHE_FILE_NAME);
+	private void _loadTransformedSQLs() {
+		File transformedSQLsFile = _bundleContext.getDataFile(_TRANSFORMED_SQLS_FILE_NAME);
 
-		if (!sqlCacheFile.exists()) {
+		if (!transformedSQLsFile.exists()) {
 			return;
 		}
 
 		try {
 			Deserializer deserializer = new Deserializer(
-				ByteBuffer.wrap(FileUtil.getBytes(sqlCacheFile)));
+				ByteBuffer.wrap(FileUtil.getBytes(transformedSQLsFile)));
 
 			Bundle bundle = _bundleContext.getBundle();
 
@@ -318,7 +318,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			int size = deserializer.readInt();
 
 			for (int i = 0; i < size; i++) {
-				_sqlCache.put(
+				_transformedSQLs.put(
 					deserializer.readString(), deserializer.readString());
 			}
 		}
@@ -326,12 +326,12 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			_log.error("Unable to load cache", ioException);
 		}
 		finally {
-			sqlCacheFile.delete();
+			transformedSQLsFile.delete();
 		}
 	}
 
 	private void _saveCache() {
-		if (_sqlCache.isEmpty()) {
+		if (_transformedSQLs.isEmpty()) {
 			return;
 		}
 
@@ -341,7 +341,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 
 		serializer.writeLong(bundle.getLastModified());
 
-		Map<String, String> snapshotSQLCache = new HashMap<>(_sqlCache);
+		Map<String, String> snapshotSQLCache = new HashMap<>(_transformedSQLs);
 
 		serializer.writeInt(snapshotSQLCache.size());
 
@@ -351,15 +351,15 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			serializer.writeString(entry.getValue());
 		}
 
-		File sqlCacheFile = _bundleContext.getDataFile(_SQL_CACHE_FILE_NAME);
+		File transformedSQLsFile = _bundleContext.getDataFile(_TRANSFORMED_SQLS_FILE_NAME);
 
-		try (OutputStream outputStream = new FileOutputStream(sqlCacheFile)) {
+		try (OutputStream outputStream = new FileOutputStream(transformedSQLsFile)) {
 			serializer.writeTo(outputStream);
 		}
 		catch (IOException ioException) {
 			_log.error("Unable to write cache file", ioException);
 
-			sqlCacheFile.delete();
+			transformedSQLsFile.delete();
 		}
 	}
 
@@ -371,7 +371,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			sql, "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'", "LIKE ? ESCAPE '\\'");
 	}
 
-	private static final String _SQL_CACHE_FILE_NAME = "sqlCacheFile";
+	private static final String _TRANSFORMED_SQLS_FILE_NAME = "transformedSQLsFile";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CTSQLTransformerImpl.class);
@@ -383,7 +383,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 		new ConcurrentHashMap<>();
 	private ServiceTracker<?, ?> _ctServiceServiceTracker;
 	private ServiceTracker<?, ?> _releaseServiceTracker;
-	private LRUMap<String, String> _sqlCache;
+	private LRUMap<String, String> _transformedSQLs;
 
 	private abstract static class BaseStatementVisitor
 		implements ExpressionVisitor, FromItemVisitor, ItemsListVisitor,
