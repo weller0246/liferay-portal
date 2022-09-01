@@ -267,8 +267,8 @@ public class UpdatePortletsHighlightedConfigurationMVCActionCommand
 
 		Set<String> portletIds = new TreeSet<>(defaultHighlightedPortletIds);
 
-		portletIds.removeAll(nonhighlightedPortletIds);
 		portletIds.addAll(highlightedPortletIds);
+		portletIds.removeAll(nonhighlightedPortletIds);
 
 		return JSONUtil.put(
 			"highlightedPortlets",
