@@ -216,6 +216,7 @@ definition {
 	@priority = "5"
 	test AssertAutomaticSiteTemplatePropagation {
 		property database.types = "mysql";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "CPSitetemplates#AssertAutomaticSiteTemplatePropagation";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
@@ -458,6 +459,7 @@ definition {
 	@priority = "5"
 	test AssertSiteTemplatePropagationWhenOpeningSite {
 		property database.types = "mysql";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "CPSitetemplates#AssertSiteTemplatePropagationWhenOpeningSite";
 
 		var siteName = TestCase.getSiteName(siteName = "${siteName}");
