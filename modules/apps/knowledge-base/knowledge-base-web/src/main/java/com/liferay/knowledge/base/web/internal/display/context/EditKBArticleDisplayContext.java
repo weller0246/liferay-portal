@@ -58,9 +58,9 @@ import javax.portlet.PortletConfig;
 /**
  * @author Adolfo Pérez
  */
-public class KBEditArticleDisplayContext {
+public class EditKBArticleDisplayContext {
 
-	public KBEditArticleDisplayContext(
+	public EditKBArticleDisplayContext(
 		KBGroupServiceConfiguration kbGroupServiceConfiguration,
 		LiferayPortletRequest liferayPortletRequest,
 		LiferayPortletResponse liferayPortletResponse,

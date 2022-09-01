@@ -17,24 +17,24 @@
 <%@ include file="/admin/common/init.jsp" %>
 
 <%
-KBEditArticleDisplayContext kbEditArticleDisplayContext = new KBEditArticleDisplayContext(kbGroupServiceConfiguration, liferayPortletRequest, liferayPortletResponse, portletConfig);
+EditKBArticleDisplayContext editKBArticleDisplayContext = new EditKBArticleDisplayContext(kbGroupServiceConfiguration, liferayPortletRequest, liferayPortletResponse, portletConfig);
 
-if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
+if (editKBArticleDisplayContext.isPortletTitleBasedNavigation()) {
 	portletDisplay.setShowBackIcon(true);
-	portletDisplay.setURLBack(kbEditArticleDisplayContext.getRedirect());
+	portletDisplay.setURLBack(editKBArticleDisplayContext.getRedirect());
 
-	renderResponse.setTitle(kbEditArticleDisplayContext.getHeaderTitle());
+	renderResponse.setTitle(editKBArticleDisplayContext.getHeaderTitle());
 }
 %>
 
-<c:if test="<%= kbEditArticleDisplayContext.isNavigationBarVisible() %>">
+<c:if test="<%= editKBArticleDisplayContext.isNavigationBarVisible() %>">
 	<div class="management-bar management-bar-light navbar navbar-expand-md">
 		<clay:container-fluid>
 			<ul class="m-auto navbar-nav"></ul>
 
 			<ul class="middle navbar-nav">
 				<li class="nav-item">
-					<aui:workflow-status id="<%= String.valueOf(kbEditArticleDisplayContext.getResourcePrimKey()) %>" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= kbEditArticleDisplayContext.getKBArticleStatus() %>" version="<%= kbEditArticleDisplayContext.getKBArticleVersion() %>" />
+					<aui:workflow-status id="<%= String.valueOf(editKBArticleDisplayContext.getResourcePrimKey()) %>" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= editKBArticleDisplayContext.getKBArticleStatus() %>" version="<%= editKBArticleDisplayContext.getKBArticleVersion() %>" />
 				</li>
 			</ul>
 
@@ -43,23 +43,23 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 	</div>
 </c:if>
 
-<c:if test="<%= !kbEditArticleDisplayContext.isHeaderVisible() %>">
+<c:if test="<%= !editKBArticleDisplayContext.isHeaderVisible() %>">
 	<liferay-ui:header
-		backURL="<%= kbEditArticleDisplayContext.getRedirect() %>"
+		backURL="<%= editKBArticleDisplayContext.getRedirect() %>"
 		localizeTitle="<%= false %>"
-		title="<%= kbEditArticleDisplayContext.getHeaderTitle() %>"
+		title="<%= editKBArticleDisplayContext.getHeaderTitle() %>"
 	/>
 </c:if>
 
-<div <%= kbEditArticleDisplayContext.getFormCssClass() %>>
-	<aui:form action="<%= kbEditArticleDisplayContext.getUpdateKBArticleURL() %>" method="post" name="fm">
-		<aui:input name="redirect" type="hidden" value="<%= kbEditArticleDisplayContext.getRedirect() %>" />
+<div <%= editKBArticleDisplayContext.getFormCssClass() %>>
+	<aui:form action="<%= editKBArticleDisplayContext.getUpdateKBArticleURL() %>" method="post" name="fm">
+		<aui:input name="redirect" type="hidden" value="<%= editKBArticleDisplayContext.getRedirect() %>" />
 		<aui:input name="workflowAction" type="hidden" value="<%= WorkflowConstants.ACTION_SAVE_DRAFT %>" />
 
 		<div class="lfr-form-content">
-			<c:if test="<%= kbEditArticleDisplayContext.isWorkflowStatusVisible() %>">
+			<c:if test="<%= editKBArticleDisplayContext.isWorkflowStatusVisible() %>">
 				<div class="text-center">
-					<aui:workflow-status id="<%= String.valueOf(kbEditArticleDisplayContext.getResourcePrimKey()) %>" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= kbEditArticleDisplayContext.getKBArticleStatus() %>" version="<%= kbEditArticleDisplayContext.getKBArticleVersion() %>" />
+					<aui:workflow-status id="<%= String.valueOf(editKBArticleDisplayContext.getResourcePrimKey()) %>" showIcon="<%= false %>" showLabel="<%= false %>" status="<%= editKBArticleDisplayContext.getKBArticleStatus() %>" version="<%= editKBArticleDisplayContext.getKBArticleVersion() %>" />
 				</div>
 			</c:if>
 
@@ -104,33 +104,33 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 			<liferay-asset:asset-tags-error />
 
 			<c:choose>
-				<c:when test="<%= kbEditArticleDisplayContext.isApproved() %>">
+				<c:when test="<%= editKBArticleDisplayContext.isApproved() %>">
 					<div class="alert alert-info">
 						<liferay-ui:message key="a-new-version-is-created-automatically-if-this-content-is-modified" />
 					</div>
 				</c:when>
-				<c:when test="<%= kbEditArticleDisplayContext.isPending() %>">
+				<c:when test="<%= editKBArticleDisplayContext.isPending() %>">
 					<div class="alert alert-info">
 						<liferay-ui:message key="there-is-a-publication-workflow-in-process" />
 					</div>
 				</c:when>
 			</c:choose>
 
-			<aui:model-context bean="<%= kbEditArticleDisplayContext.getKBArticle() %>" model="<%= KBArticle.class %>" />
+			<aui:model-context bean="<%= editKBArticleDisplayContext.getKBArticle() %>" model="<%= KBArticle.class %>" />
 
 			<aui:fieldset-group markupView="lexicon">
 				<aui:fieldset>
 					<h1 class="kb-title">
-						<aui:input autocomplete="off" label='<%= LanguageUtil.get(request, "title") %>' name="title" required="<%= true %>" type="text" value="<%= HtmlUtil.escape(kbEditArticleDisplayContext.getKBArticleTitle()) %>" />
+						<aui:input autocomplete="off" label='<%= LanguageUtil.get(request, "title") %>' name="title" required="<%= true %>" type="text" value="<%= HtmlUtil.escape(editKBArticleDisplayContext.getKBArticleTitle()) %>" />
 					</h1>
 
 					<div class="kb-entity-body">
 						<liferay-editor:editor
-							contents="<%= kbEditArticleDisplayContext.getContent() %>"
+							contents="<%= editKBArticleDisplayContext.getContent() %>"
 							editorName="<%= kbGroupServiceConfiguration.getEditorName() %>"
 							fileBrowserParams='<%=
 								HashMapBuilder.put(
-									"resourcePrimKey", String.valueOf(kbEditArticleDisplayContext.getResourcePrimKey())
+									"resourcePrimKey", String.valueOf(editKBArticleDisplayContext.getResourcePrimKey())
 								).build()
 							%>'
 							name="contentEditor"
@@ -153,7 +153,7 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 					<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="custom-fields">
 						<liferay-expando:custom-attribute-list
 							className="<%= KBArticle.class.getName() %>"
-							classPK="<%= kbEditArticleDisplayContext.getKBArticleId() %>"
+							classPK="<%= editKBArticleDisplayContext.getKBArticleId() %>"
 							editable="<%= true %>"
 							label="<%= true %>"
 						/>
@@ -163,46 +163,46 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="categorization">
 					<liferay-asset:asset-categories-selector
 						className="<%= KBArticle.class.getName() %>"
-						classPK="<%= kbEditArticleDisplayContext.getKBArticleClassPK() %>"
+						classPK="<%= editKBArticleDisplayContext.getKBArticleClassPK() %>"
 						visibilityTypes="<%= AssetVocabularyConstants.VISIBILITY_TYPES %>"
 					/>
 
 					<liferay-asset:asset-tags-selector
 						className="<%= KBArticle.class.getName() %>"
-						classPK="<%= kbEditArticleDisplayContext.getKBArticleClassPK() %>"
+						classPK="<%= editKBArticleDisplayContext.getKBArticleClassPK() %>"
 					/>
 				</aui:fieldset>
 
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="related-assets">
 					<liferay-asset:input-asset-links
 						className="<%= KBArticle.class.getName() %>"
-						classPK="<%= kbEditArticleDisplayContext.getKBArticleClassPK() %>"
+						classPK="<%= editKBArticleDisplayContext.getKBArticleClassPK() %>"
 					/>
 				</aui:fieldset>
 
 				<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="configuration">
-					<aui:input cssClass="input-medium" data-custom-url="<%= false %>" disabled="<%= kbEditArticleDisplayContext.isURLTitleDisabled() %>" helpMessage='<%= LanguageUtil.format(request, "for-example-x", "<em>/introduction-to-service-builder</em>") %>' ignoreRequestValue="<%= true %>" label="friendly-url" name="urlTitle" placeholder="sample-article-url-title" prefix="<%= kbEditArticleDisplayContext.getURLTitlePrefix() %>" type="text" value="<%= kbEditArticleDisplayContext.getKBArticleURLTitle() %>" />
+					<aui:input cssClass="input-medium" data-custom-url="<%= false %>" disabled="<%= editKBArticleDisplayContext.isURLTitleDisabled() %>" helpMessage='<%= LanguageUtil.format(request, "for-example-x", "<em>/introduction-to-service-builder</em>") %>' ignoreRequestValue="<%= true %>" label="friendly-url" name="urlTitle" placeholder="sample-article-url-title" prefix="<%= editKBArticleDisplayContext.getURLTitlePrefix() %>" type="text" value="<%= editKBArticleDisplayContext.getKBArticleURLTitle() %>" />
 
-					<c:if test="<%= kbEditArticleDisplayContext.isKBArticleDescriptionEnabled() %>">
+					<c:if test="<%= editKBArticleDisplayContext.isKBArticleDescriptionEnabled() %>">
 						<aui:input name="description" />
 					</c:if>
 
-					<c:if test="<%= kbEditArticleDisplayContext.isSourceURLEnabled() %>">
+					<c:if test="<%= editKBArticleDisplayContext.isSourceURLEnabled() %>">
 						<aui:input label="source-url" name="sourceURL" />
 					</c:if>
 
-					<c:if test="<%= kbEditArticleDisplayContext.hasKBArticleSections() %>">
+					<c:if test="<%= editKBArticleDisplayContext.hasKBArticleSections() %>">
 						<aui:model-context bean="<%= null %>" model="<%= KBArticle.class %>" />
 
 						<aui:select ignoreRequestValue="<%= true %>" multiple="<%= true %>" name="sections">
 
 							<%
-							Map<String, String> availableSections = kbEditArticleDisplayContext.getAvailableKBArticleSections();
+							Map<String, String> availableSections = editKBArticleDisplayContext.getAvailableKBArticleSections();
 
 							for (Map.Entry<String, String> entry : availableSections.entrySet()) {
 							%>
 
-								<aui:option label="<%= HtmlUtil.escape(entry.getKey()) %>" selected="<%= kbEditArticleDisplayContext.isKBArticleSectionSelected(entry.getValue()) %>" value="<%= HtmlUtil.escape(entry.getValue()) %>" />
+								<aui:option label="<%= HtmlUtil.escape(entry.getKey()) %>" selected="<%= editKBArticleDisplayContext.isKBArticleSectionSelected(entry.getValue()) %>" value="<%= HtmlUtil.escape(entry.getValue()) %>" />
 
 							<%
 							}
@@ -210,11 +210,11 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 
 						</aui:select>
 
-						<aui:model-context bean="<%= kbEditArticleDisplayContext.getKBArticle() %>" model="<%= KBArticle.class %>" />
+						<aui:model-context bean="<%= editKBArticleDisplayContext.getKBArticle() %>" model="<%= KBArticle.class %>" />
 					</c:if>
 				</aui:fieldset>
 
-				<c:if test="<%= kbEditArticleDisplayContext.getKBArticle() == null %>">
+				<c:if test="<%= editKBArticleDisplayContext.getKBArticle() == null %>">
 					<aui:fieldset collapsed="<%= true %>" collapsible="<%= true %>" label="permissions">
 						<liferay-ui:input-permissions
 							modelName="<%= KBArticle.class.getName() %>"
@@ -223,11 +223,11 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 				</c:if>
 
 				<div class="kb-submit-buttons sheet-footer">
-					<aui:button disabled="<%= kbEditArticleDisplayContext.isPending() %>" name="publishButton" type="submit" value="<%= kbEditArticleDisplayContext.getPublishButtonLabel() %>" />
+					<aui:button disabled="<%= editKBArticleDisplayContext.isPending() %>" name="publishButton" type="submit" value="<%= editKBArticleDisplayContext.getPublishButtonLabel() %>" />
 
-					<aui:button primary="<%= false %>" type="submit" value="<%= kbEditArticleDisplayContext.getSaveButtonLabel() %>" />
+					<aui:button primary="<%= false %>" type="submit" value="<%= editKBArticleDisplayContext.getSaveButtonLabel() %>" />
 
-					<aui:button href="<%= kbEditArticleDisplayContext.getRedirect() %>" type="cancel" />
+					<aui:button href="<%= editKBArticleDisplayContext.getRedirect() %>" type="cancel" />
 				</div>
 			</aui:fieldset-group>
 		</div>
@@ -235,7 +235,7 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 </div>
 
 <script>
-	<c:if test="<%= kbEditArticleDisplayContext.getKBArticle() == null %>">
+	<c:if test="<%= editKBArticleDisplayContext.getKBArticle() == null %>">
 		var titleInput = document.getElementById('<portlet:namespace />title');
 		var urlTitleInput = document.getElementById('<portlet:namespace />urlTitle');
 
@@ -266,7 +266,7 @@ if (kbEditArticleDisplayContext.isPortletTitleBasedNavigation()) {
 					'<%= WorkflowConstants.ACTION_PUBLISH %>';
 			}
 
-			<c:if test="<%= kbEditArticleDisplayContext.getKBArticle() == null %>">
+			<c:if test="<%= editKBArticleDisplayContext.getKBArticle() == null %>">
 				var customUrl = urlTitleInput.dataset.customUrl;
 
 				if (customUrl === 'false') {
