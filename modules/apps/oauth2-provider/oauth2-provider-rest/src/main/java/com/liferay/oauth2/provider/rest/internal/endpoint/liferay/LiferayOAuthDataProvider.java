@@ -894,11 +894,11 @@ public class LiferayOAuthDataProvider
 
 		oAuth2Authorization.setRefreshTokenContent(refreshToken.getTokenKey());
 
-		Date createDate = _fromCXFTime(refreshToken.getIssuedAt());
+		Date createDate = _toDate(refreshToken.getIssuedAt());
 
 		oAuth2Authorization.setRefreshTokenCreateDate(createDate);
 
-		Date expirationDate = _fromCXFTime(
+		Date expirationDate = _toDate(
 			refreshToken.getIssuedAt() + refreshToken.getExpiresIn());
 
 		oAuth2Authorization.setRefreshTokenExpirationDate(expirationDate);
@@ -991,7 +991,7 @@ public class LiferayOAuthDataProvider
 		serverAccessToken.setTokenType(accessToken.getTokenType());
 	}
 
-	private Date _fromCXFTime(long issuedAt) {
+	private Date _toDate(long issuedAt) {
 		return new Date(issuedAt * 1000);
 	}
 
@@ -1300,8 +1300,8 @@ public class LiferayOAuthDataProvider
 	private void _transactionalSaveServerAccessToken(
 		ServerAccessToken serverAccessToken) {
 
-		Date createDate = _fromCXFTime(serverAccessToken.getIssuedAt());
-		Date expirationDate = _fromCXFTime(
+		Date createDate = _toDate(serverAccessToken.getIssuedAt());
+		Date expirationDate = _toDate(
 			serverAccessToken.getIssuedAt() + serverAccessToken.getExpiresIn());
 
 		if (serverAccessToken.getRefreshToken() != null) {
