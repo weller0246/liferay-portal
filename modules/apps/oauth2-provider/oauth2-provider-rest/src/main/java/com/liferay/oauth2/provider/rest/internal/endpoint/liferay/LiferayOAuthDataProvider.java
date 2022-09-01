@@ -908,9 +908,8 @@ public class LiferayOAuthDataProvider
 	}
 
 	private void _convertToJWTAccessToken(ServerAccessToken serverAccessToken) {
-		JwtClaims claims = createJwtAccessToken(serverAccessToken);
-
-		String jose = processJwtAccessToken(claims);
+		String jose = processJwtAccessToken(
+			createJwtAccessToken(serverAccessToken));
 
 		if (isPersistJwtEncoding()) {
 			serverAccessToken.setTokenKey(jose);
