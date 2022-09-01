@@ -928,6 +928,11 @@ public class LiferayOAuthDataProvider
 		ServerAccessToken serverAccessToken = createNewAccessToken(
 			client, userSubject);
 
+		Map<String, String> extraProperties =
+			serverAccessToken.getExtraProperties();
+
+		extraProperties.putAll(properties);
+
 		serverAccessToken.setAudiences(audiences);
 		serverAccessToken.setClientCodeVerifier(clientCodeVerifier);
 		serverAccessToken.setGrantCode(grantCode);
@@ -936,11 +941,6 @@ public class LiferayOAuthDataProvider
 		serverAccessToken.setResponseType(responseType);
 		serverAccessToken.setScopes(oAuthPermissions);
 		serverAccessToken.setSubject(userSubject);
-
-		Map<String, String> extraProperties =
-			serverAccessToken.getExtraProperties();
-
-		extraProperties.putAll(properties);
 
 		return serverAccessToken;
 	}
