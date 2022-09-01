@@ -145,8 +145,43 @@ public class DefaultAnnouncementsDisplayContext
 			}
 		}
 		else {
-			_announcementScopes =
-				_combinedSegmentsEntryRoleAndAnnouncementScopes();
+			LinkedHashMap<Long, long[]> announcementScopes =
+				AnnouncementsUtil.getAnnouncementScopes(
+					_announcementsRequestHelper.getUser());
+
+			if (_segmentsConfigurationProvider.isRoleSegmentationEnabled(
+					_announcementsRequestHelper.getCompanyId())) {
+
+				long roleClassNameId = PortalUtil.getClassNameId(
+					Role.class.getName());
+
+				Set<Long> roleIds = SetUtil.fromArray(
+					announcementScopes.get(roleClassNameId));
+
+				long[] segmentsEntryIds =
+					_segmentsEntryRetriever.getSegmentsEntryIds(
+						_announcementsRequestHelper.getScopeGroupId(),
+						_themeDisplay.getUserId(),
+						_requestContextMapper.map(_httpServletRequest),
+						new long[0]);
+
+				for (long segmentsEntryId : segmentsEntryIds) {
+					List<SegmentsEntryRole> segmentsEntryRoles =
+						SegmentsEntryRoleLocalServiceUtil.getSegmentsEntryRoles(
+							segmentsEntryId);
+
+					for (SegmentsEntryRole segmentsEntryRole :
+							segmentsEntryRoles) {
+
+						roleIds.add(segmentsEntryRole.getRoleId());
+					}
+				}
+
+				announcementScopes.put(
+					roleClassNameId, ArrayUtil.toLongArray(roleIds));
+			}
+
+			_announcementScopes = announcementScopes;
 		}
 
 		_announcementScopes.put(0L, new long[] {0});
@@ -431,45 +466,6 @@ public class DefaultAnnouncementsDisplayContext
 		}
 
 		return false;
-	}
-
-	private LinkedHashMap<Long, long[]>
-			_combinedSegmentsEntryRoleAndAnnouncementScopes()
-		throws PortalException {
-
-		LinkedHashMap<Long, long[]> announcementScopes =
-			AnnouncementsUtil.getAnnouncementScopes(
-				_announcementsRequestHelper.getUser());
-
-		if (!_segmentsConfigurationProvider.isRoleSegmentationEnabled(
-				_announcementsRequestHelper.getCompanyId())) {
-
-			return announcementScopes;
-		}
-
-		long roleClassNameId = PortalUtil.getClassNameId(Role.class.getName());
-
-		Set<Long> roleIds = SetUtil.fromArray(
-			announcementScopes.get(roleClassNameId));
-
-		long[] segmentsEntryIds = _segmentsEntryRetriever.getSegmentsEntryIds(
-			_announcementsRequestHelper.getScopeGroupId(),
-			_themeDisplay.getUserId(),
-			_requestContextMapper.map(_httpServletRequest), new long[0]);
-
-		for (long segmentsEntryId : segmentsEntryIds) {
-			List<SegmentsEntryRole> segmentsEntryRoles =
-				SegmentsEntryRoleLocalServiceUtil.getSegmentsEntryRoles(
-					segmentsEntryId);
-
-			for (SegmentsEntryRole segmentsEntryRole : segmentsEntryRoles) {
-				roleIds.add(segmentsEntryRole.getRoleId());
-			}
-		}
-
-		announcementScopes.put(roleClassNameId, ArrayUtil.toLongArray(roleIds));
-
-		return announcementScopes;
 	}
 
 	private int _getFlag() {
