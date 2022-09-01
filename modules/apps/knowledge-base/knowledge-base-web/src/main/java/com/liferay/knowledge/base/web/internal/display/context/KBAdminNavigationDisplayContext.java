@@ -357,14 +357,14 @@ public class KBAdminNavigationDisplayContext {
 
 		JSONArray childrenJSONArray = JSONFactoryUtil.createJSONArray();
 
+		KBDropdownItemsProvider kbDropdownItemsProvider =
+			new KBDropdownItemsProvider(
+				_liferayPortletRequest, _liferayPortletResponse);
+
 		List<Object> kbObjects = KBFolderServiceUtil.getKBFoldersAndKBArticles(
 			_themeDisplay.getScopeGroupId(), parentFolderId,
 			WorkflowConstants.STATUS_ANY, QueryUtil.ALL_POS, QueryUtil.ALL_POS,
 			new KBObjectsPriorityComparator<>(true));
-
-		KBDropdownItemsProvider kbDropdownItemsProvider =
-			new KBDropdownItemsProvider(
-				_liferayPortletRequest, _liferayPortletResponse);
 
 		for (Object kbObject : kbObjects) {
 			JSONObject jsonObject = JSONFactoryUtil.createJSONObject();
