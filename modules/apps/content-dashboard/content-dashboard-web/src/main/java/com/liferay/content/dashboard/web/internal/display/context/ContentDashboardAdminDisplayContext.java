@@ -239,13 +239,13 @@ public class ContentDashboardAdminDisplayContext {
 						InfoItemReference infoItemReference =
 							contentDashboardItemSubtype.getInfoItemReference();
 
-						Class<?> genericClass = GenericUtil.getGenericClass(
-							contentDashboardItemSubtype);
-
 						ClassNameClassPKInfoItemIdentifier
 							classNameClassPKInfoItemIdentifier =
 								(ClassNameClassPKInfoItemIdentifier)
 									infoItemReference.getInfoItemIdentifier();
+
+						Class<?> genericClass = GenericUtil.getGenericClass(
+							contentDashboardItemSubtype);
 
 						return JSONUtil.put(
 							"className", infoItemReference.getClassName()
