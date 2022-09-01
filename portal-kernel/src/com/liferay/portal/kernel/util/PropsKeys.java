@@ -388,6 +388,9 @@ public interface PropsKeys {
 
 	public static final String CDN_HOST_HTTPS = "cdn.host.https";
 
+	public static final String CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE =
+		"change.tracking.sql.transformer.cache.size";
+
 	public static final String CLUSTER_LINK_AUTODETECT_ADDRESS =
 		"cluster.link.autodetect.address";
 
@@ -538,9 +541,6 @@ public interface PropsKeys {
 	public static final String COUNTER_INCREMENT = "counter.increment";
 
 	public static final String COUNTER_INCREMENT_PREFIX = "counter.increment.";
-
-	public static final String CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE =
-		"change.tracking.sql.transformer.cache.size";
 
 	public static final String CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED =
 		"custom.sql.auto.escape.wildcards.enabled";

@@ -344,6 +344,11 @@ public class PropsValues {
 	public static final String CDN_HOST_HTTPS = PropsUtil.get(
 		PropsKeys.CDN_HOST_HTTPS);
 
+	public static int CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE =
+		GetterUtil.getInteger(
+			PropsUtil.get(
+				PropsKeys.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE));
+
 	public static final boolean CLUSTER_LINK_ENABLED = GetterUtil.getBoolean(
 		PropsUtil.get(PropsKeys.CLUSTER_LINK_ENABLED));
 
@@ -461,9 +466,6 @@ public class PropsValues {
 
 	public static final int COUNTER_INCREMENT = GetterUtil.getInteger(
 		PropsUtil.get(PropsKeys.COUNTER_INCREMENT));
-
-	public static int CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE = GetterUtil.getInteger(
-		PropsUtil.get(PropsKeys.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE));
 
 	public static final String CUSTOM_SQL_FUNCTION_ISNOTNULL = PropsUtil.get(
 		PropsKeys.CUSTOM_SQL_FUNCTION_ISNOTNULL);

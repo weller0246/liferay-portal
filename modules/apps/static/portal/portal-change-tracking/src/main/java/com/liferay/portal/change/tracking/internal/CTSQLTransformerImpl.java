@@ -196,7 +196,8 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 	public void activate(BundleContext bundleContext) throws Exception {
 		_bundleContext = bundleContext;
 
-		_sqlCache = new LRUMap<>(PropsValues.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE);
+		_sqlCache = new LRUMap<>(
+			PropsValues.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE);
 
 		_loadCache();
 
