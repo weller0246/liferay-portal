@@ -101,16 +101,13 @@ public class RelatedObjectEntryResourceImpl
 			_objectDefinitionLocalService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId1());
 
-		String objectDefinitionRESTContextPath =
-			objectDefinition.getRESTContextPath();
-
 		URI baseURI = uriInfo.getBaseUri();
 
 		String path = baseURI.getPath();
 
 		String endpointBasePath = path.split("/")[2];
 
-		if (!objectDefinitionRESTContextPath.equals(endpointBasePath)) {
+		if (!Objects.equals(objectDefinition.getRESTContextPath(), endpointBasePath)) {
 			objectDefinition =
 				_objectDefinitionLocalService.getObjectDefinition(
 					objectRelationship.getObjectDefinitionId2());
