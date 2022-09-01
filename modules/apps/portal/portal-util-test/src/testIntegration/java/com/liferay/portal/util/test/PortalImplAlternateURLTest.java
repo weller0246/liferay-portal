@@ -105,6 +105,26 @@ public class PortalImplAlternateURLTest {
 	}
 
 	@Test
+	public void testAlternateURLWithFriendlyURL() throws Exception {
+		_testAlternateURLWithFriendlyURL(
+			"liferay.com",
+			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
+			LocaleUtil.US, LocaleUtil.BRAZIL, "/pt-BR");
+		_testAlternateURLWithFriendlyURL(
+			"liferay.com",
+			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
+			LocaleUtil.US, LocaleUtil.SPAIN, "/es");
+		_testAlternateURLWithFriendlyURL(
+			"localhost",
+			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
+			LocaleUtil.US, LocaleUtil.BRAZIL, "/pt-BR");
+		_testAlternateURLWithFriendlyURL(
+			"localhost",
+			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
+			LocaleUtil.US, LocaleUtil.SPAIN, "/es");
+	}
+
+	@Test
 	public void testAlternativeVirtualHostDefaultPortalLocaleAlternateURL()
 		throws Exception {
 
@@ -131,26 +151,6 @@ public class PortalImplAlternateURLTest {
 	public void testDefaultPortalLocaleAlternateURL() throws Exception {
 		_testAlternateURL(
 			"localhost", null, null, LocaleUtil.US, StringPool.BLANK);
-	}
-
-	@Test
-	public void testlocalhostLocalizedSiteDefaultSiteLocaleAlternateURLFriendlyURL()
-		throws Exception {
-
-		_testAlternateURLWithFriendlyURL(
-			"localhost",
-			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
-			LocaleUtil.US, LocaleUtil.SPAIN, "/es");
-	}
-
-	@Test
-	public void testlocalhostNoLocalizedSiteDefaultSiteLocaleAlternateURLFriendlyURL()
-		throws Exception {
-
-		_testAlternateURLWithFriendlyURL(
-			"localhost",
-			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
-			LocaleUtil.US, LocaleUtil.BRAZIL, "/pt-BR");
 	}
 
 	@Test
@@ -206,26 +206,6 @@ public class PortalImplAlternateURLTest {
 			"liferay.com",
 			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
 			LocaleUtil.SPAIN, LocaleUtil.SPAIN, StringPool.BLANK);
-	}
-
-	@Test
-	public void testNonlocalhostLocalizedSiteDefaultSiteLocaleAlternateURLFriendlyURL()
-		throws Exception {
-
-		_testAlternateURLWithFriendlyURL(
-			"liferay.com",
-			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
-			LocaleUtil.US, LocaleUtil.SPAIN, "/es");
-	}
-
-	@Test
-	public void testNonlocalhostNoLocalizedSiteDefaultSiteLocaleAlternateURLFriendlyURL()
-		throws Exception {
-
-		_testAlternateURLWithFriendlyURL(
-			"liferay.com",
-			Arrays.asList(LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY),
-			LocaleUtil.US, LocaleUtil.BRAZIL, "/pt-BR");
 	}
 
 	private String _generateAssetPublisherContentURL(
