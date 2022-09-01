@@ -652,12 +652,12 @@ public class LiferayOAuthDataProvider
 	@Activate
 	@SuppressWarnings("unchecked")
 	protected void activate(Map<String, Object> properties) {
-		_oAuth2AuthorizationServerConfiguration =
-			ConfigurableUtil.createConfigurable(
-				OAuth2AuthorizationServerConfiguration.class, properties);
 		_oAuth2AuthorizationFlowConfiguration =
 			ConfigurableUtil.createConfigurable(
 				OAuth2AuthorizationFlowConfiguration.class, properties);
+		_oAuth2AuthorizationServerConfiguration =
+			ConfigurableUtil.createConfigurable(
+				OAuth2AuthorizationServerConfiguration.class, properties);
 		_oAuth2ProviderConfiguration = ConfigurableUtil.createConfigurable(
 			OAuth2ProviderConfiguration.class, properties);
 
@@ -668,22 +668,22 @@ public class LiferayOAuthDataProvider
 	protected JwtClaims createJwtAccessToken(
 		ServerAccessToken serverAccessToken) {
 
-		// Override this method to fix a bug in cxf.
-		// Scopes in JWT claim should be a string.
+		// Fix a bug in CXF. Scopes in JWT claim should be a string.
 
 		JwtClaims jwtClaims = super.createJwtAccessToken(serverAccessToken);
 
-		List<OAuthPermission> scopes = serverAccessToken.getScopes();
+		List<OAuthPermission> oAuthPermissions = serverAccessToken.getScopes();
 
-		if (!scopes.isEmpty()) {
+		if (!oAuthPermissions.isEmpty()) {
 			jwtClaims.setClaim(
 				OAuthConstants.SCOPE,
-				OAuthUtils.convertPermissionsToScope(scopes));
+				OAuthUtils.convertPermissionsToScope(oAuthPermissions));
 		}
 
 		return jwtClaims;
 	}
 
+	@Override
 	protected ServerAccessToken createNewAccessToken(
 		Client client, UserSubject userSubject) {
 
@@ -701,7 +701,7 @@ public class LiferayOAuthDataProvider
 	protected ServerAccessToken doCreateAccessToken(
 		AccessTokenRegistration accessTokenRegistration) {
 
-		ServerAccessToken serverAccessToken = _createOpaqueAccessToken(
+		ServerAccessToken serverAccessToken = _createOpaqueServerAccessToken(
 			accessTokenRegistration.getAudiences(),
 			accessTokenRegistration.getClient(),
 			accessTokenRegistration.getClientCodeVerifier(),
@@ -808,18 +808,18 @@ public class LiferayOAuthDataProvider
 		Client client, RefreshToken oldRefreshToken,
 		List<String> restrictedScopes) {
 
-		List<OAuthPermission> scopes = null;
+		List<OAuthPermission> oAuthPermissions = null;
 
 		if (restrictedScopes.isEmpty()) {
-			scopes = (oldRefreshToken.getScopes() != null) ?
+			oAuthPermissions = (oldRefreshToken.getScopes() != null) ?
 				new ArrayList<>(oldRefreshToken.getScopes()) : null;
 		}
 		else {
-			scopes = convertScopeToPermissions(client, restrictedScopes);
+			oAuthPermissions = convertScopeToPermissions(client, restrictedScopes);
 
 			List<OAuthPermission> originalScopes = oldRefreshToken.getScopes();
 
-			if (!originalScopes.containsAll(scopes)) {
+			if (!originalScopes.containsAll(oAuthPermissions)) {
 				throw new OAuthServiceException("Invalid scopes");
 			}
 		}
@@ -827,11 +827,11 @@ public class LiferayOAuthDataProvider
 		List<String> audiences = (oldRefreshToken.getAudiences() != null) ?
 			new ArrayList<>(oldRefreshToken.getAudiences()) : null;
 
-		ServerAccessToken serverAccessToken = _createOpaqueAccessToken(
+		ServerAccessToken serverAccessToken = _createOpaqueServerAccessToken(
 			audiences, client, oldRefreshToken.getClientCodeVerifier(),
 			oldRefreshToken.getGrantCode(), oldRefreshToken.getGrantType(),
 			oldRefreshToken.getNonce(), oldRefreshToken.getExtraProperties(),
-			oldRefreshToken.getResponseType(), scopes,
+			oldRefreshToken.getResponseType(), oAuthPermissions,
 			oldRefreshToken.getSubject());
 
 		_customizeServerAccessToken(Collections.emptyMap(), serverAccessToken);
@@ -850,16 +850,17 @@ public class LiferayOAuthDataProvider
 
 	@Override
 	protected String processJwtAccessToken(JwtClaims jwtClaims) {
-		OAuthJoseJwtProducer processor = getJwtAccessTokenProducer();
+		OAuthJoseJwtProducer oAuthJoseJwtProducer = getJwtAccessTokenProducer();
 
-		// Override this method to fix another bug in cxf.
-		// https://datatracker.ietf.org/doc/html/rfc9068#section-2.1
+		// Fix a bug in CXF. See
+		// https://datatracker.ietf.org/doc/html/rfc9068#section-2.1.
 
 		JwsHeaders jwsHeaders = new JwsHeaders();
 
 		jwsHeaders.setHeader("typ", "at+jwt");
 
-		return processor.processJwt(new JwtToken(jwsHeaders, jwtClaims));
+		return oAuthJoseJwtProducer.processJwt(
+			new JwtToken(jwsHeaders, jwtClaims));
 	}
 
 	@Override
@@ -905,7 +906,7 @@ public class LiferayOAuthDataProvider
 			oAuth2Authorization);
 	}
 
-	protected void setJwtAccessTokenProducer() {
+	private void _setJwtAccessTokenProducer() {
 		OAuthJoseJwtProducer oAuthJoseJwtProducer = new OAuthJoseJwtProducer();
 
 		oAuthJoseJwtProducer.setSignatureProvider(
@@ -930,7 +931,7 @@ public class LiferayOAuthDataProvider
 		}
 	}
 
-	private ServerAccessToken _createOpaqueAccessToken(
+	private ServerAccessToken _createOpaqueServerAccessToken(
 		List<String> audiences, Client client, String clientCodeVerifier,
 		String grantCode, String grantType, String nonce,
 		Map<String, String> properties, String responseType,
@@ -1089,7 +1090,7 @@ public class LiferayOAuthDataProvider
 		setGrantLifetime(
 			_oAuth2AuthorizationFlowConfiguration.authorizationCodeGrantTTL());
 
-		setJwtAccessTokenProducer();
+		_setJwtAccessTokenProducer();
 
 		setUseJwtFormatForAccessTokens(
 			_oAuth2AuthorizationServerConfiguration.issueJWTAccessToken());
