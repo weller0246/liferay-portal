@@ -929,13 +929,13 @@ public class LiferayOAuthDataProvider
 			client, userSubject);
 
 		serverAccessToken.setAudiences(audiences);
-		serverAccessToken.setGrantType(grantType);
-		serverAccessToken.setScopes(oAuthPermissions);
-		serverAccessToken.setSubject(userSubject);
 		serverAccessToken.setClientCodeVerifier(clientCodeVerifier);
+		serverAccessToken.setGrantCode(grantCode);
+		serverAccessToken.setGrantType(grantType);
 		serverAccessToken.setNonce(nonce);
 		serverAccessToken.setResponseType(responseType);
-		serverAccessToken.setGrantCode(grantCode);
+		serverAccessToken.setScopes(oAuthPermissions);
+		serverAccessToken.setSubject(userSubject);
 
 		Map<String, String> extraProperties =
 			serverAccessToken.getExtraProperties();
