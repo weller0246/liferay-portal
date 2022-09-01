@@ -2087,7 +2087,7 @@ public abstract class TopLevelBuild extends BaseBuild {
 			}
 		}
 
-		Map<String, String> urlAxisNameMap = new HashMap<>();
+		Map<String, String> urlAxisNames = new HashMap<>();
 
 		int i = consoleText.lastIndexOf("\nstop-current-job:");
 
@@ -2114,16 +2114,15 @@ public abstract class TopLevelBuild extends BaseBuild {
 			}
 
 			if (downstreamBuildURLs.contains(url) ||
-				urlAxisNameMap.containsKey(url)) {
+				urlAxisNames.containsKey(url)) {
 
 				continue;
 			}
 
-			urlAxisNameMap.put(
-				url, downstreamBuildURLMatcher.group("axisName"));
+			urlAxisNames.put(url, downstreamBuildURLMatcher.group("axisName"));
 		}
 
-		addDownstreamBuilds(urlAxisNameMap);
+		addDownstreamBuilds(urlAxisNames);
 	}
 
 	private Map<Map<String, String>, Integer> _getSlaveUsageByLabels() {

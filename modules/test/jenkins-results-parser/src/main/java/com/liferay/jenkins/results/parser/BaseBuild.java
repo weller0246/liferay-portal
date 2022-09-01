@@ -59,13 +59,12 @@ import org.json.JSONObject;
  */
 public abstract class BaseBuild implements Build {
 
-	public void addDownstreamBuilds(Map<String, String> urlAxisNameMap) {
+	public void addDownstreamBuilds(Map<String, String> urlAxisNames) {
 		final Build thisBuild = this;
 
-		List<Callable<Build>> callables = new ArrayList<>(
-			urlAxisNameMap.size());
+		List<Callable<Build>> callables = new ArrayList<>(urlAxisNames.size());
 
-		for (Map.Entry<String, String> urlEntry : urlAxisNameMap.entrySet()) {
+		for (Map.Entry<String, String> urlEntry : urlAxisNames.entrySet()) {
 			String url = urlEntry.getKey();
 
 			try {
@@ -115,13 +114,13 @@ public abstract class BaseBuild implements Build {
 
 	@Override
 	public void addDownstreamBuilds(String... urls) {
-		Map<String, String> urlAxisNameMap = new HashMap<>();
+		Map<String, String> urlAxisNames = new HashMap<>();
 
 		for (String url : urls) {
-			urlAxisNameMap.put(url, null);
+			urlAxisNames.put(url, null);
 		}
 
-		addDownstreamBuilds(urlAxisNameMap);
+		addDownstreamBuilds(urlAxisNames);
 	}
 
 	public abstract void addTimelineData(BaseBuild.TimelineData timelineData);
