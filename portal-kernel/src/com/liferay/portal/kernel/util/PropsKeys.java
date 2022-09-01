@@ -539,8 +539,8 @@ public interface PropsKeys {
 
 	public static final String COUNTER_INCREMENT_PREFIX = "counter.increment.";
 
-	public static final String CT_SQL_TRANSFORMER_CACHE_SIZE =
-		"ct.sql.transformer.cache.size";
+	public static final String CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE =
+		"change.tracking.sql.transformer.cache.size";
 
 	public static final String CUSTOM_SQL_AUTO_ESCAPE_WILDCARDS_ENABLED =
 		"custom.sql.auto.escape.wildcards.enabled";
