@@ -332,6 +332,14 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 		}
 	}
 
+	/**
+	 * See https://github.com/JSQLParser/JSqlParser/issues/832
+	 */
+	private String _unescape(String sql) {
+		return StringUtil.replace(
+			sql, "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'", "LIKE ? ESCAPE '\\'");
+	}
+
 	private void _writeTransformedSQLsFile() {
 		if (_transformedSQLs.isEmpty()) {
 			return;
@@ -367,14 +375,6 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 
 			transformedSQLsFile.delete();
 		}
-	}
-
-	/**
-	 * See https://github.com/JSQLParser/JSqlParser/issues/832
-	 */
-	private String _unescape(String sql) {
-		return StringUtil.replace(
-			sql, "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'", "LIKE ? ESCAPE '\\'");
 	}
 
 	private static final String _TRANSFORMED_SQLS_FILE_NAME =
