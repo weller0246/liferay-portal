@@ -76,14 +76,11 @@ public class KBAdminNavigationDisplayContext {
 
 		_kbArticleURLHelper = new KBArticleURLHelper(
 			renderRequest, renderResponse);
-
 		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
 			(PortletRequest)_httpServletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_REQUEST));
-
 		_liferayPortletResponse = LiferayPortletUtil.getLiferayPortletResponse(
 			renderResponse);
-
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 	}
