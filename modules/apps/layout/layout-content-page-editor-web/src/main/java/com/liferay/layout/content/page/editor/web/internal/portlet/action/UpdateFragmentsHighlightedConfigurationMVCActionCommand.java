@@ -175,7 +175,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 		DropZoneLayoutStructureItem masterDropZoneLayoutStructureItem =
 			_getMasterDropZoneLayoutStructureItem(themeDisplay);
 
-		Map<String, JSONObject> highlightedFragmentJSONObjectMap =
+		Map<String, JSONObject> highlightedFragmentJSONObjects =
 			new TreeMap<>();
 
 		for (String key : highlightedFragmentEntryKeys) {
@@ -213,7 +213,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 					themeDisplay.getLocale(),
 					(String)layoutElementMap.get("languageKey"));
 
-				highlightedFragmentJSONObjectMap.put(
+				highlightedFragmentJSONObjects.put(
 					label,
 					JSONUtil.put(
 						"fragmentEntryKey", key
@@ -235,7 +235,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 				String label = fragmentRenderer.getLabel(
 					themeDisplay.getLocale());
 
-				highlightedFragmentJSONObjectMap.put(
+				highlightedFragmentJSONObjects.put(
 					label,
 					JSONUtil.put(
 						"fragmentEntryKey", fragmentRenderer.getKey()
@@ -258,7 +258,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 					groupId, key, themeDisplay.getLocale());
 
 			if (fragmentEntry != null) {
-				highlightedFragmentJSONObjectMap.put(
+				highlightedFragmentJSONObjects.put(
 					fragmentEntry.getName(),
 					JSONUtil.put(
 						"fragmentEntryKey", fragmentEntry.getFragmentEntryKey()
@@ -295,7 +295,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 				continue;
 			}
 
-			highlightedFragmentJSONObjectMap.put(
+			highlightedFragmentJSONObjects.put(
 				fragmentComposition.getName(),
 				JSONUtil.put(
 					"fragmentEntryKey",
@@ -317,7 +317,7 @@ public class UpdateFragmentsHighlightedConfigurationMVCActionCommand
 		}
 
 		List<JSONObject> sortedHighlightedFragments = new ArrayList<>(
-			highlightedFragmentJSONObjectMap.values());
+			highlightedFragmentJSONObjects.values());
 
 		return JSONUtil.putAll(
 			sortedHighlightedFragments.toArray(new JSONObject[0]));

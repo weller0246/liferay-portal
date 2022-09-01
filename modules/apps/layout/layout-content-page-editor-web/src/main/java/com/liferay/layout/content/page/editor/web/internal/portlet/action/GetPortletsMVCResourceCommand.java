@@ -134,7 +134,6 @@ public class GetPortletsMVCResourceCommand extends BaseMVCResourceCommand {
 				portalPreferences.getValues(
 					ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET,
 					"nonhighlightedPortletIds", new String[0])));
-
 		highlightedPortletIds.addAll(
 			SetUtil.fromArray(
 				portalPreferences.getValues(
