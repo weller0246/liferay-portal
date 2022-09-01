@@ -299,7 +299,8 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 	}
 
 	private void _loadTransformedSQLs() {
-		File transformedSQLsFile = _bundleContext.getDataFile(_TRANSFORMED_SQLS_FILE_NAME);
+		File transformedSQLsFile = _bundleContext.getDataFile(
+			_TRANSFORMED_SQLS_FILE_NAME);
 
 		if (!transformedSQLsFile.exists()) {
 			return;
@@ -351,9 +352,12 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			serializer.writeString(entry.getValue());
 		}
 
-		File transformedSQLsFile = _bundleContext.getDataFile(_TRANSFORMED_SQLS_FILE_NAME);
+		File transformedSQLsFile = _bundleContext.getDataFile(
+			_TRANSFORMED_SQLS_FILE_NAME);
 
-		try (OutputStream outputStream = new FileOutputStream(transformedSQLsFile)) {
+		try (OutputStream outputStream = new FileOutputStream(
+				transformedSQLsFile)) {
+
 			serializer.writeTo(outputStream);
 		}
 		catch (IOException ioException) {
@@ -371,7 +375,8 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			sql, "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'", "LIKE ? ESCAPE '\\'");
 	}
 
-	private static final String _TRANSFORMED_SQLS_FILE_NAME = "transformedSQLsFile";
+	private static final String _TRANSFORMED_SQLS_FILE_NAME =
+		"transformedSQLsFile";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CTSQLTransformerImpl.class);
