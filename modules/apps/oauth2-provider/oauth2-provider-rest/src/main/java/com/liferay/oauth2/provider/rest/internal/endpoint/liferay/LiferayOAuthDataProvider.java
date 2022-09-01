@@ -952,6 +952,11 @@ public class LiferayOAuthDataProvider
 		BearerTokenProvider.AccessToken accessToken = fromCXFAccessToken(
 			serverAccessToken);
 
+		UserSubject userSubject = serverAccessToken.getSubject();
+
+		userSubject.setId(String.valueOf(accessToken.getUserId()));
+		userSubject.setLogin(accessToken.getUserName());
+
 		OAuth2Application oAuth2Application =
 			accessToken.getOAuth2Application();
 
@@ -984,11 +989,6 @@ public class LiferayOAuthDataProvider
 				serverAccessToken.getClient(), accessToken.getScopes()));
 		serverAccessToken.setTokenKey(accessToken.getTokenKey());
 		serverAccessToken.setTokenType(accessToken.getTokenType());
-
-		UserSubject userSubject = serverAccessToken.getSubject();
-
-		userSubject.setId(String.valueOf(accessToken.getUserId()));
-		userSubject.setLogin(accessToken.getUserName());
 	}
 
 	private Date _fromCXFTime(long issuedAt) {
