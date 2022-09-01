@@ -815,7 +815,8 @@ public class LiferayOAuthDataProvider
 				new ArrayList<>(oldRefreshToken.getScopes()) : null;
 		}
 		else {
-			oAuthPermissions = convertScopeToPermissions(client, restrictedScopes);
+			oAuthPermissions = convertScopeToPermissions(
+				client, restrictedScopes);
 
 			List<OAuthPermission> originalScopes = oldRefreshToken.getScopes();
 
@@ -904,18 +905,6 @@ public class LiferayOAuthDataProvider
 
 		_oAuth2AuthorizationLocalService.updateOAuth2Authorization(
 			oAuth2Authorization);
-	}
-
-	private void _setJwtAccessTokenProducer() {
-		OAuthJoseJwtProducer oAuthJoseJwtProducer = new OAuthJoseJwtProducer();
-
-		oAuthJoseJwtProducer.setSignatureProvider(
-			JwsUtils.getSignatureProvider(
-				JwkUtils.readJwkKey(
-					_oAuth2AuthorizationServerConfiguration.
-						jwtAccessTokenSigningJSONWebKey())));
-
-		super.setJwtAccessTokenProducer(oAuthJoseJwtProducer);
 	}
 
 	private void _convertToJWTAccessToken(ServerAccessToken serverAccessToken) {
@@ -1291,6 +1280,18 @@ public class LiferayOAuthDataProvider
 			String.valueOf(companyId));
 
 		return userSubject;
+	}
+
+	private void _setJwtAccessTokenProducer() {
+		OAuthJoseJwtProducer oAuthJoseJwtProducer = new OAuthJoseJwtProducer();
+
+		oAuthJoseJwtProducer.setSignatureProvider(
+			JwsUtils.getSignatureProvider(
+				JwkUtils.readJwkKey(
+					_oAuth2AuthorizationServerConfiguration.
+						jwtAccessTokenSigningJSONWebKey())));
+
+		super.setJwtAccessTokenProducer(oAuthJoseJwtProducer);
 	}
 
 	private long _toCXFTime(Date dateCreated) {
