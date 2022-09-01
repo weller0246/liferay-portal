@@ -709,10 +709,10 @@ public class LiferayOAuthDataProvider
 			accessTokenRegistration.getGrantType(),
 			accessTokenRegistration.getNonce(),
 			accessTokenRegistration.getExtraProperties(),
-			accessTokenRegistration.getResponseType(),
 			convertScopeToPermissions(
 				accessTokenRegistration.getClient(),
 				accessTokenRegistration.getApprovedScope()),
+			accessTokenRegistration.getResponseType(),
 			accessTokenRegistration.getSubject());
 
 		MessageContext messageContext = getMessageContext();
@@ -832,7 +832,7 @@ public class LiferayOAuthDataProvider
 			audiences, client, oldRefreshToken.getClientCodeVerifier(),
 			oldRefreshToken.getGrantCode(), oldRefreshToken.getGrantType(),
 			oldRefreshToken.getNonce(), oldRefreshToken.getExtraProperties(),
-			oldRefreshToken.getResponseType(), oAuthPermissions,
+			oAuthPermissions, oldRefreshToken.getResponseType(),
 			oldRefreshToken.getSubject());
 
 		_customizeServerAccessToken(Collections.emptyMap(), serverAccessToken);
@@ -922,15 +922,15 @@ public class LiferayOAuthDataProvider
 	private ServerAccessToken _createOpaqueServerAccessToken(
 		List<String> audiences, Client client, String clientCodeVerifier,
 		String grantCode, String grantType, String nonce,
-		Map<String, String> properties, String responseType,
-		List<OAuthPermission> scopes, UserSubject userSubject) {
+		Map<String, String> properties, List<OAuthPermission> oAuthPermissions,
+		String responseType, UserSubject userSubject) {
 
 		ServerAccessToken serverAccessToken = createNewAccessToken(
 			client, userSubject);
 
 		serverAccessToken.setAudiences(audiences);
 		serverAccessToken.setGrantType(grantType);
-		serverAccessToken.setScopes(scopes);
+		serverAccessToken.setScopes(oAuthPermissions);
 		serverAccessToken.setSubject(userSubject);
 		serverAccessToken.setClientCodeVerifier(clientCodeVerifier);
 		serverAccessToken.setNonce(nonce);
