@@ -991,10 +991,6 @@ public class LiferayOAuthDataProvider
 		serverAccessToken.setTokenType(accessToken.getTokenType());
 	}
 
-	private Date _toDate(long issuedAt) {
-		return new Date(issuedAt * 1000);
-	}
-
 	private Collection<LiferayOAuth2Scope> _getLiferayOAuth2Scopes(
 		long oAuth2ApplicationScopeAliasesId, List<String> scopeAliases) {
 
@@ -1295,6 +1291,10 @@ public class LiferayOAuthDataProvider
 
 	private long _toCXFTime(Date dateCreated) {
 		return dateCreated.getTime() / 1000;
+	}
+
+	private Date _toDate(long issuedAt) {
+		return new Date(issuedAt * 1000);
 	}
 
 	private void _transactionalSaveServerAccessToken(
