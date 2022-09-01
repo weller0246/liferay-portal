@@ -199,7 +199,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 		_transformedSQLs = new LRUMap<>(
 			PropsValues.CHANGE_TRACKING_SQL_TRANSFORMER_CACHE_SIZE);
 
-		_loadTransformedSQLs();
+		_readTransformedSQLsFile();
 
 		_ctServiceServiceTracker = new ServiceTracker<>(
 			_bundleContext, (Class<CTService<?>>)(Class<?>)CTService.class,
@@ -221,7 +221,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 	}
 
 	public void deactivate() {
-		_saveCache();
+		_writeTransformedSQLsFile();
 
 		_ctServiceServiceTracker.close();
 
@@ -298,7 +298,7 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			sql, "LIKE ? ESCAPE '\\'", "LIKE '[$LFR_LIKE_ESCAPE_STRING$]'");
 	}
 
-	private void _loadTransformedSQLs() {
+	private void _readTransformedSQLsFile() {
 		File transformedSQLsFile = _bundleContext.getDataFile(
 			_TRANSFORMED_SQLS_FILE_NAME);
 
@@ -324,14 +324,15 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			}
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to load cache", ioException);
+			_log.error(
+				"Unable to load " + _TRANSFORMED_SQLS_FILE_NAME, ioException);
 		}
 		finally {
 			transformedSQLsFile.delete();
 		}
 	}
 
-	private void _saveCache() {
+	private void _writeTransformedSQLsFile() {
 		if (_transformedSQLs.isEmpty()) {
 			return;
 		}
@@ -361,7 +362,8 @@ public class CTSQLTransformerImpl implements CTSQLTransformer {
 			serializer.writeTo(outputStream);
 		}
 		catch (IOException ioException) {
-			_log.error("Unable to write cache file", ioException);
+			_log.error(
+				"Unable to write " + _TRANSFORMED_SQLS_FILE_NAME, ioException);
 
 			transformedSQLsFile.delete();
 		}
