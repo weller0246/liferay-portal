@@ -214,11 +214,11 @@ public class OrganizationODataRetrieverTest {
 			PermissionThreadLocal.getPermissionChecker();
 
 		try {
-			User organizationUser = UserTestUtil.addOrganizationUser(
+			User user = UserTestUtil.addOrganizationUser(
 				organization, RoleConstants.ORGANIZATION_USER);
 
 			PermissionThreadLocal.setPermissionChecker(
-				PermissionCheckerFactoryUtil.create(organizationUser));
+				PermissionCheckerFactoryUtil.create(user));
 
 			int count = _oDataRetriever.getResultsCount(
 				TestPropsValues.getCompanyId(), filterString,
