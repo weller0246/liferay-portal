@@ -456,7 +456,10 @@ renderResponse.setTitle(headerTitle);
 										try {
 											ddmFormValues = dlEditFileEntryDisplayContext.getDDMFormValues(ddmStructure, fileVersionId);
 										}
-										catch (Exception e) {
+										catch (Exception exception) {
+											if (_log.isWarnEnabled()) {
+												_log.warn(exception);
+											}
 										}
 								%>
 
@@ -481,8 +484,8 @@ renderResponse.setTitle(headerTitle);
 										localizable = false;
 									}
 								}
-								catch (Exception e) {
-									_log.error(e);
+								catch (Exception exception) {
+									_log.error(exception);
 								}
 								%>
 
