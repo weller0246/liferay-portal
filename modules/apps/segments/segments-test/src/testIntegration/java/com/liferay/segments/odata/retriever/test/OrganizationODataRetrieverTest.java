@@ -198,7 +198,7 @@ public class OrganizationODataRetrieverTest {
 
 		Region region = regions.get(0);
 
-		Organization organization1 = _organizationLocalService.addOrganization(
+		Organization organization = _organizationLocalService.addOrganization(
 			TestPropsValues.getUserId(),
 			OrganizationConstants.DEFAULT_PARENT_ORGANIZATION_ID,
 			RandomTestUtil.randomString(),
@@ -215,7 +215,7 @@ public class OrganizationODataRetrieverTest {
 
 		try {
 			User organizationUser = UserTestUtil.addOrganizationUser(
-				organization1, RoleConstants.ORGANIZATION_USER);
+				organization, RoleConstants.ORGANIZATION_USER);
 
 			PermissionThreadLocal.setPermissionChecker(
 				PermissionCheckerFactoryUtil.create(organizationUser));
@@ -230,7 +230,7 @@ public class OrganizationODataRetrieverTest {
 				TestPropsValues.getCompanyId(), filterString,
 				LocaleUtil.getDefault(), QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			Assert.assertEquals(organization1, organizations.get(0));
+			Assert.assertEquals(organization, organizations.get(0));
 		}
 		finally {
 			PermissionThreadLocal.setPermissionChecker(
