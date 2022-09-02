@@ -813,7 +813,7 @@ public class ObjectEntryLocalServiceImpl
 					_fillPredicate(objectDefinitionId, predicate, search)
 				).and(
 					_getPermissionWherePredicate(
-						groupId, dynamicObjectDefinitionTable)
+						dynamicObjectDefinitionTable, groupId)
 				)
 			).orderBy(
 				orderByExpressions
@@ -875,7 +875,7 @@ public class ObjectEntryLocalServiceImpl
 				_fillPredicate(objectDefinitionId, predicate, search)
 			).and(
 				_getPermissionWherePredicate(
-					groupId, dynamicObjectDefinitionTable)
+					dynamicObjectDefinitionTable, groupId)
 			)
 		);
 
@@ -1695,9 +1695,9 @@ public class ObjectEntryLocalServiceImpl
 		);
 	}
 
-	private Expression<Boolean> _getPermissionWherePredicate(
-		long groupId,
-		DynamicObjectDefinitionTable dynamicObjectDefinitionTable) {
+	private Predicate _getPermissionWherePredicate(
+		DynamicObjectDefinitionTable dynamicObjectDefinitionTable,
+		long groupId) {
 
 		ObjectDefinition objectDefinition =
 			dynamicObjectDefinitionTable.getObjectDefinition();
