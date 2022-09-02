@@ -104,15 +104,12 @@ public class BindSegmentsCompanyConfigurationMVCActionCommandTest {
 			MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 				new MockLiferayPortletActionRequest();
 
-			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-				new MockLiferayPortletActionResponse();
-
 			mockLiferayPortletActionRequest.setParameter(
 				"roleSegmentationEnabled", "on");
 
 			_mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
-				mockLiferayPortletActionResponse);
+				new MockLiferayPortletActionResponse());
 
 			Configuration configuration = _getSegmentsCompanyConfiguration(
 				TestPropsValues.getCompanyId());
@@ -139,15 +136,12 @@ public class BindSegmentsCompanyConfigurationMVCActionCommandTest {
 			MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 				new MockLiferayPortletActionRequest();
 
-			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-				new MockLiferayPortletActionResponse();
-
 			mockLiferayPortletActionRequest.setParameter(
 				"segmentationEnabled", "off");
 
 			_mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
-				mockLiferayPortletActionResponse);
+				new MockLiferayPortletActionResponse());
 
 			Configuration configuration = _getSegmentsCompanyConfiguration(
 				TestPropsValues.getCompanyId());
@@ -173,15 +167,12 @@ public class BindSegmentsCompanyConfigurationMVCActionCommandTest {
 			MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 				new MockLiferayPortletActionRequest();
 
-			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-				new MockLiferayPortletActionResponse();
-
 			mockLiferayPortletActionRequest.setParameter(
 				"segmentationEnabled", "on");
 
 			_mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
-				mockLiferayPortletActionResponse);
+				new MockLiferayPortletActionResponse());
 
 			Configuration configuration = _getSegmentsCompanyConfiguration(
 				TestPropsValues.getCompanyId());
