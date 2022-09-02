@@ -501,7 +501,6 @@ public class JSONServerServletTest {
 		mockHttpServletRequest.setPathInfo(
 			"/fruit/supercalifragilisticexpialidocious/something/to/say/when" +
 				"/you/have/nothing/to/say");
-
 		mockHttpServletRequest.setQueryString("a=b&c=d&e=f");
 
 		mockHttpServletResponse = new MockHttpServletResponse();
