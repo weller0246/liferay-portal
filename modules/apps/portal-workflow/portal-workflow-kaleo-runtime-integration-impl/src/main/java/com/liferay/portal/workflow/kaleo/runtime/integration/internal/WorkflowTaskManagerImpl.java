@@ -875,7 +875,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 				return Collections.emptyList();
 			}
 
-			Set<User> assignableUsers = new TreeSet<>(
+			Set<User> allowedUsers = new TreeSet<>(
 				new UserScreenNameComparator(true));
 
 			long assignedUserId = _getAssignedUserId(workflowTaskId);
@@ -890,11 +890,11 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 					kaleoTaskAssignments) {
 
 				_populateAllowedUsers(
-					actionType, assignableUsers, assignedUserId,
+					actionType, allowedUsers, assignedUserId,
 					kaleoTaskAssignment, kaleoTaskInstanceToken);
 			}
 
-			return ListUtil.fromCollection(assignableUsers);
+			return ListUtil.fromCollection(allowedUsers);
 		}
 		catch (WorkflowException workflowException) {
 			throw workflowException;
