@@ -72,11 +72,11 @@ public class BindSegmentsCompanyConfigurationMVCActionCommandTest {
 			MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 				new MockLiferayPortletActionRequest();
 
-			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-				new MockLiferayPortletActionResponse();
-
 			mockLiferayPortletActionRequest.setParameter(
 				"roleSegmentationEnabled", "off");
+
+			MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
+				new MockLiferayPortletActionResponse();
 
 			_mvcActionCommand.processAction(
 				mockLiferayPortletActionRequest,
