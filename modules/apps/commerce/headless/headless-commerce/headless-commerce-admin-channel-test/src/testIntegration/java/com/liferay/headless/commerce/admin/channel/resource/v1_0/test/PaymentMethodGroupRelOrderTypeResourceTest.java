@@ -71,13 +71,12 @@ public class PaymentMethodGroupRelOrderTypeResourceTest
 
 	@Test
 	public void testDeletePaymentMethodGroupRelOrderType() throws Exception {
-		long commercePaymentMethodGroupRelId = _getId();
+		long id = _getId();
 
-		_addPaymentMethodGroupRelOrderType(commercePaymentMethodGroupRelId);
+		_addPaymentMethodGroupRelOrderType(id);
 
 		paymentMethodGroupRelOrderTypeResource.
-			deletePaymentMethodGroupRelOrderType(
-				commercePaymentMethodGroupRelId);
+			deletePaymentMethodGroupRelOrderType(id);
 	}
 
 	@Ignore
