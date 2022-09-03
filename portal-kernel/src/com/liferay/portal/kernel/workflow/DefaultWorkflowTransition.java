@@ -44,7 +44,7 @@ public class DefaultWorkflowTransition implements WorkflowTransition {
 		Language language = LanguageUtil.getLanguage();
 
 		return HtmlUtil.escape(
-			language.get(locale, (_name != null) ? _name : _PROCEED_KEY));
+			language.get(locale, (_name != null) ? _name : "proceed"));
 	}
 
 	@Override
@@ -82,8 +82,6 @@ public class DefaultWorkflowTransition implements WorkflowTransition {
 	public void setTargetNodeName(String targetNodeName) {
 		_targetNodeName = targetNodeName;
 	}
-
-	private static final String _PROCEED_KEY = "proceed";
 
 	private Map<Locale, String> _labelMap;
 	private String _name;
