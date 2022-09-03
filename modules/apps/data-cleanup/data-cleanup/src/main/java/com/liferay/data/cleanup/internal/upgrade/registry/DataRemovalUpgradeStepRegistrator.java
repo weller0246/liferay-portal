@@ -56,16 +56,15 @@ public class DataRemovalUpgradeStepRegistrator
 				_persistenceManager, DataRemovalConfiguration.class);
 
 			_removeModuleData(
-				_dataRemovalConfiguration::removeExpiredJournalArticles,
-				"com.liferay.journal.service",
-				() -> new ExpiredJournalArticleUpgradeProcess(
-					_journalArticleLocalService));
-
-			_removeModuleData(
 				_dataRemovalConfiguration::removePublishedCTSContentData,
 				"com.liferay.change.tracking.store.service",
 				() -> new PublishedCTSContentDataUpgradeProcess(
 					_ctsContentLocalService, _portal));
+			_removeModuleData(
+				_dataRemovalConfiguration::removeExpiredJournalArticles,
+				"com.liferay.journal.service",
+				() -> new ExpiredJournalArticleUpgradeProcess(
+					_journalArticleLocalService));
 		}
 		catch (Exception exception) {
 			ReflectionUtil.throwException(exception);
