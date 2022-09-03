@@ -54,7 +54,6 @@ public class PoshiScriptParserUtil {
 			Character c1 = content.charAt(i);
 
 			Character c2 = null;
-
 			Character c3 = null;
 
 			if ((i + 2) < content.length()) {
