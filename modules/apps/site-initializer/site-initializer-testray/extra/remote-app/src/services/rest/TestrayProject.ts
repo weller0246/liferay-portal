@@ -12,6 +12,7 @@
  * details.
  */
 
+import i18n from '../../i18n';
 import yupSchema from '../../schema/yup';
 import Rest from './Rest';
 import {testrayBuildRest} from './TestrayBuild';
@@ -33,7 +34,9 @@ class TestrayProjectImpl extends Rest<Project, TestrayProject> {
 
 		if (hasBuildsInProjectId) {
 			throw new Error(
-				'the-project-cannot-be-deleted-because-it-has-associated-builds'
+				i18n.translate(
+					'the-project-cannot-be-deleted-because-it-has-associated-builds'
+				)
 			);
 		}
 	}
