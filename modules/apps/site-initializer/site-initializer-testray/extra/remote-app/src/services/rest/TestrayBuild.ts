@@ -15,12 +15,13 @@
 import {CategoryOptions} from '../../pages/Project/Routines/Builds/BuildForm/BuildFormRun';
 import yupSchema from '../../schema/yup';
 import {TEST_STATUS} from '../../util/constants';
+import {searchUtil} from '../../util/search';
 import Rest from './Rest';
 import {testrayCaseResultRest} from './TestrayCaseResult';
 import {testrayFactorRest} from './TestrayFactor';
 import {testrayRunRest} from './TestrayRun';
 
-import type {TestrayBuild} from './types';
+import type {APIResponse, TestrayBuild, TestrayRoutine} from './types';
 
 type Build = typeof yupSchema.build.__outputType & {projectId: number};
 
@@ -72,6 +73,12 @@ class TestrayBuildRest extends Rest<Build, TestrayBuild> {
 				({factorOption}) => factorOption
 			);
 
+			const testrayRunName = factorOptionsList.join(' | ');
+
+			if (!testrayRunName) {
+				return build;
+			}
+
 			const testrayRun = await testrayRunRest.create({
 				buildId: build.id,
 				description: undefined,
@@ -106,7 +113,31 @@ class TestrayBuildRest extends Rest<Build, TestrayBuild> {
 			runIndex++;
 		}
 
-		return build as TestrayBuild;
+		return build;
+	}
+
+	public async hasBuildsInProjectId(projectId: number): Promise<boolean> {
+		const routineResponse = await this.fetcher<APIResponse<TestrayRoutine>>(
+			`/routines?filter=${searchUtil.eq(
+				'projectId',
+				projectId
+			)}&fields=id`
+		);
+
+		const [routine] = routineResponse?.items || [];
+
+		if (!routine) {
+			return false;
+		}
+
+		const buildResponse = await this.fetcher<APIResponse<TestrayBuild>>(
+			`/${this.uri}?filter=${searchUtil.eq(
+				'routineId',
+				routine.id
+			)}&fields=id`
+		);
+
+		return !!buildResponse?.totalCount;
 	}
 }
 
