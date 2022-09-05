@@ -117,6 +117,7 @@ interface ObjectDefinition {
 	parameterRequired?: boolean;
 	pluralLabel: LocalizedValue<string>;
 	portlet: boolean;
+	restContextPath: string;
 	scope: string;
 	status: {
 		code: number;
@@ -135,6 +136,7 @@ interface ObjectFieldSetting {
 		| string
 		| number
 		| boolean
+		| NameValueObject[]
 		| ObjectFieldFilterSetting[]
 		| ObjectFieldPicklistSetting;
 }
@@ -257,6 +259,11 @@ interface PredefinedValue {
 
 interface LabelValueObject {
 	label: string;
+	value: string;
+}
+
+interface NameValueObject {
+	name: string;
 	value: string;
 }
 
