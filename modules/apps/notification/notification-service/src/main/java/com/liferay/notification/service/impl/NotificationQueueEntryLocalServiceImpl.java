@@ -221,7 +221,8 @@ public class NotificationQueueEntryLocalServiceImpl
 				notificationQueueEntry.setStatus(
 					NotificationQueueEntryConstants.STATUS_FAILED);
 
-				notificationQueueEntry.persist();
+				notificationQueueEntryPersistence.update(
+					notificationQueueEntry);
 			}
 		}
 	}
