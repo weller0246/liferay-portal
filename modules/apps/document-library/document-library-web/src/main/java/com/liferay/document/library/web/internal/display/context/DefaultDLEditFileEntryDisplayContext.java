@@ -416,7 +416,7 @@ public class DefaultDLEditFileEntryDisplayContext
 		DynamicServletRequest dynamicServletRequest = new DynamicServletRequest(
 			httpServletRequest, new HashMap<>());
 
-		String namespace = String.valueOf(structureId) + StringPool.UNDERLINE;
+		String namespace = structureId + StringPool.UNDERLINE;
 
 		Map<String, String[]> parameterMap =
 			httpServletRequest.getParameterMap();
@@ -469,9 +469,7 @@ public class DefaultDLEditFileEntryDisplayContext
 		Enumeration<String> enumeration =
 			_httpServletRequest.getParameterNames();
 
-		String namespace =
-			String.valueOf(ddmStructure.getStructureId()) +
-				StringPool.UNDERLINE;
+		String namespace = ddmStructure.getStructureId() + StringPool.UNDERLINE;
 
 		while (enumeration.hasMoreElements()) {
 			String parameterName = enumeration.nextElement();
@@ -504,7 +502,7 @@ public class DefaultDLEditFileEntryDisplayContext
 	private final FileVersion _fileVersion;
 	private final FileVersionDisplayContextHelper
 		_fileVersionDisplayContextHelper;
-	private HttpServletRequest _httpServletRequest;
+	private final HttpServletRequest _httpServletRequest;
 	private Boolean _neverExpire;
 	private Boolean _neverReview;
 	private final boolean _showSelectFolder;
