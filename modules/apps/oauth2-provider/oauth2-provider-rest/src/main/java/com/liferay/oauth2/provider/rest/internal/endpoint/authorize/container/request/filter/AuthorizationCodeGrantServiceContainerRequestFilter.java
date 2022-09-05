@@ -88,9 +88,8 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 			return;
 		}
 
-		String clientId = ParamUtil.getString(_httpServletRequest, "client_id");
-
 		User user = _getUser();
+		String clientId = ParamUtil.getString(_httpServletRequest, "client_id");
 
 		OAuth2Application oAuth2Application =
 			_oAuth2ApplicationLocalService.fetchOAuth2Application(
@@ -133,8 +132,8 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 
 			if (promptNone) {
 				_abortWithoutPrompt(
-					containerRequestContext, oAuth2Application,
-					"interaction_required");
+					containerRequestContext, "interaction_required",
+					oAuth2Application);
 			}
 			else {
 				containerRequestContext.abortWith(
@@ -148,7 +147,7 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 
 		if (promptNone) {
 			_abortWithoutPrompt(
-				containerRequestContext, oAuth2Application, "login_required");
+				containerRequestContext, "login_required", oAuth2Application);
 
 			return;
 		}
@@ -197,20 +196,19 @@ public class AuthorizationCodeGrantServiceContainerRequestFilter
 	}
 
 	private void _abortWithoutPrompt(
-		ContainerRequestContext containerRequestContext,
-		OAuth2Application oAuth2Application, String error) {
+		ContainerRequestContext containerRequestContext, String error,
+		OAuth2Application oAuth2Application) {
 
 		if (oAuth2Application == null) {
 			return;
 		}
 
-		List<String> redirectURIsList = oAuth2Application.getRedirectURIsList();
-
-		String firstRedirectURL = redirectURIsList.get(0);
-
 		StringBundler sb = new StringBundler(5);
 
-		sb.append(firstRedirectURL);
+		List<String> redirectURIsList = oAuth2Application.getRedirectURIsList();
+
+		sb.append(redirectURIsList.get(0));
+
 		sb.append("?error=");
 		sb.append(error);
 
