@@ -20,7 +20,12 @@
 SegmentsExperimentDisplayContext segmentsExperimentDisplayContext = (SegmentsExperimentDisplayContext)request.getAttribute(SegmentsExperimentWebKeys.SEGMENTS_EXPERIMENT_DISPLAY_CONTEXT);
 %>
 
-<!-- need this section wrap to avoid React complaining from the side_navigation.es.js node removal -->
+<%--
+
+// Wrap with a section prevent React from complaining about side_navigation.es.js
+
+--%>
+
 <section>
 	<div class="inline-item my-5 p-5 w-100">
 		<span aria-hidden="true" class="loading-animation"></span>
