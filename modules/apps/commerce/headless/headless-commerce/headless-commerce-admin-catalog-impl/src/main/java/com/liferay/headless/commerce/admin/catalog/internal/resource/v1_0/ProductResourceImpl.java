@@ -486,10 +486,10 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 				cpDefinition.getMetaDescriptionMap());
 		}
 
-		Map<String, String> metaKeywordMap = product.getMetaKeyword();
+		Map<String, String> metaKeywordsMap = product.getMetaKeyword();
 
-		if ((cpDefinition != null) && (metaKeywordMap == null)) {
-			metaKeywordMap = LanguageUtils.getLanguageIdMap(
+		if ((cpDefinition != null) && (metaKeywordsMap == null)) {
+			metaKeywordsMap = LanguageUtils.getLanguageIdMap(
 				cpDefinition.getMetaKeywordsMap());
 		}
 
@@ -514,7 +514,7 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 			LanguageUtils.getLocalizedMap(urlTitleMap),
 			LanguageUtils.getLocalizedMap(metaTitleMap),
 			LanguageUtils.getLocalizedMap(metaDescriptionMap),
-			LanguageUtils.getLocalizedMap(metaKeywordMap),
+			LanguageUtils.getLocalizedMap(metaKeywordsMap),
 			product.getProductType(), ignoreSKUCombinations,
 			GetterUtil.getBoolean(shippingConfiguration.getShippable(), true),
 			GetterUtil.getBoolean(
@@ -1169,10 +1169,10 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 				cpDefinition.getMetaDescriptionMap());
 		}
 
-		Map<String, String> metaKeywordMap = product.getMetaKeyword();
+		Map<String, String> metaKeywordsMap = product.getMetaKeyword();
 
-		if ((cpDefinition != null) && (metaKeywordMap == null)) {
-			metaKeywordMap = LanguageUtils.getLanguageIdMap(
+		if ((cpDefinition != null) && (metaKeywordsMap == null)) {
+			metaKeywordsMap = LanguageUtils.getLanguageIdMap(
 				cpDefinition.getMetaKeywordsMap());
 		}
 
@@ -1184,7 +1184,7 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 			LanguageUtils.getLocalizedMap(urlTitleMap),
 			LanguageUtils.getLocalizedMap(metaTitleMap),
 			LanguageUtils.getLocalizedMap(metaDescriptionMap),
-			LanguageUtils.getLocalizedMap(metaKeywordMap),
+			LanguageUtils.getLocalizedMap(metaKeywordsMap),
 			cpDefinition.isIgnoreSKUCombinations(),
 			cpDefinition.getDDMStructureKey(), true,
 			displayDateConfig.getMonth(), displayDateConfig.getDay(),
