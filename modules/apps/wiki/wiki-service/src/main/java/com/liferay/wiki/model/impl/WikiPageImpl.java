@@ -188,8 +188,7 @@ public class WikiPageImpl extends WikiPageBaseImpl {
 			return portletFileEntryByExternalReferenceCode;
 		}
 
-		throw new PageAttachmentException(
-			"This file attachment does not belong to this wiki page");
+		throw new PageAttachmentException();
 	}
 
 	@Override
