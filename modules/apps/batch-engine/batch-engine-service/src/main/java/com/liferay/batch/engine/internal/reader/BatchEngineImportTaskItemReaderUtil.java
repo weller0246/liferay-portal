@@ -152,27 +152,23 @@ public class BatchEngineImportTaskItemReaderUtil {
 				DeserializationContext deserializationContext)
 			throws IOException {
 
-			Map<String, Object> map;
-
 			try {
-				map = deserializationContext.readValue(
+				return deserializationContext.readValue(
 					jsonParser, LinkedHashMap.class);
 			}
 			catch (Exception exception) {
-				map = new LinkedHashMap<>();
+				Map<String, Object> map = new LinkedHashMap<>();
 
-				String mapString = jsonParser.getValueAsString();
+				String string = jsonParser.getValueAsString();
 
-				for (String entryString :
-						mapString.split(StringPool.RETURN_NEW_LINE)) {
+				for (String line : string.split(StringPool.RETURN_NEW_LINE)) {
+					String[] lineParts = line.split(StringPool.COLON);
 
-					String[] keyValue = entryString.split(StringPool.COLON);
-
-					map.put(keyValue[0], keyValue[1]);
+					map.put(lineParts[0], lineParts[1]);
 				}
-			}
 
-			return map;
+				return map;
+			}
 		}
 
 		protected MapStdDeserializer(Class<?> clazz) {
