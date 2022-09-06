@@ -262,8 +262,8 @@ public class EditorTag extends BaseValidatorTagSupport {
 		_resizable = resizable;
 	}
 
-	public void setResizeDirection(String resizeDir) {
-		_resizeDirection = resizeDir;
+	public void setResizeDirection(String resizeDirection) {
+		_resizeDirection = resizeDirection;
 	}
 
 	public void setShowSource(boolean showSource) {
