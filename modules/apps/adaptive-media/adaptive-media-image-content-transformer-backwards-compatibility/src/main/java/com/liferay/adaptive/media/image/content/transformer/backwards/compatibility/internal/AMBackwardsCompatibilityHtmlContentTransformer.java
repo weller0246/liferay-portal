@@ -72,7 +72,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 			return null;
 		}
 
-		if (!html.contains("<img") || !html.contains("/documents/")) {
+		if (!html.contains("/documents/") || !html.contains("<img")) {
 			return html;
 		}
 
@@ -202,7 +202,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 	private String _transform(String imgElementString, String src)
 		throws PortalException {
 
-		if (src.startsWith("data:image/") || !src.contains("/documents")) {
+		if (!src.contains("/documents") || src.startsWith("data:image/")) {
 			return imgElementString;
 		}
 
