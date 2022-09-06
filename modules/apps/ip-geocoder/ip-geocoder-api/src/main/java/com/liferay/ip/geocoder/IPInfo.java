@@ -21,111 +21,26 @@ import com.liferay.petra.string.StringBundler;
  */
 public class IPInfo {
 
-	public IPInfo(
-		String city, String countryCode, String countryName, String ipAddress,
-		float latitude, float longitude, String postalCode, String regionCode,
-		String regionName) {
-
-		_city = city;
+	public IPInfo(String countryCode, String ipAddress) {
 		_countryCode = countryCode;
-		_countryName = countryName;
 		_ipAddress = ipAddress;
-		_latitude = latitude;
-		_longitude = longitude;
-		_postalCode = postalCode;
-		_regionCode = regionCode;
-		_regionName = regionName;
-	}
-
-	public String getCity() {
-		return _city;
 	}
 
 	public String getCountryCode() {
 		return _countryCode;
 	}
 
-	public String getCountryName() {
-		return _countryName;
-	}
-
-	public String getIpAddress() {
+	public String getIPAddress() {
 		return _ipAddress;
-	}
-
-	public float getLatitude() {
-		return _latitude;
-	}
-
-	public float getLongitude() {
-		return _longitude;
-	}
-
-	public String getPostalCode() {
-		return _postalCode;
-	}
-
-	public String getRegionCode() {
-		return _regionCode;
-	}
-
-	public String getRegionName() {
-		return _regionName;
-	}
-
-	public void setCity(String city) {
-		_city = city;
-	}
-
-	public void setCountryCode(String countryCode) {
-		_countryCode = countryCode;
-	}
-
-	public void setCountryName(String countryName) {
-		_countryName = countryName;
-	}
-
-	public void setIpAddress(String ipAddress) {
-		_ipAddress = ipAddress;
-	}
-
-	public void setLatitude(float latitude) {
-		_latitude = latitude;
-	}
-
-	public void setLongitude(float longitude) {
-		_longitude = longitude;
-	}
-
-	public void setPostalCode(String postalCode) {
-		_postalCode = postalCode;
-	}
-
-	public void setRegionCode(String regionCode) {
-		_regionCode = regionCode;
-	}
-
-	public void setRegionName(String regionName) {
-		_regionName = regionName;
 	}
 
 	@Override
 	public String toString() {
 		return StringBundler.concat(
-			"{city=", _city, ", countryCode=", _countryCode, ", countryName=",
-			_countryName, ", ipAddress=", _ipAddress, ", latitude=", _latitude,
-			", longitude=", _longitude, ", postalCode=", _postalCode,
-			", regionCode=", _regionCode, ", regionName=", _regionName, "}");
+			"{countryCode=", _countryCode, ", ipAddress=", _ipAddress, "}");
 	}
 
-	private String _city;
-	private String _countryCode;
-	private String _countryName;
-	private String _ipAddress;
-	private float _latitude;
-	private float _longitude;
-	private String _postalCode;
-	private String _regionCode;
-	private String _regionName;
+	private final String _countryCode;
+	private final String _ipAddress;
 
 }

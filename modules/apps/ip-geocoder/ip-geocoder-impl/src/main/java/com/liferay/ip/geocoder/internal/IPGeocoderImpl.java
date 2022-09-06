@@ -16,23 +16,23 @@ package com.liferay.ip.geocoder.internal;
 
 import com.liferay.ip.geocoder.IPGeocoder;
 import com.liferay.ip.geocoder.IPInfo;
+import com.liferay.ip.geocoder.internal.configuration.IPGeocoderConfiguration;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.Validator;
 
-import com.maxmind.geoip.Location;
-import com.maxmind.geoip.LookupService;
+import com.maxmind.db.CHMCache;
+import com.maxmind.geoip2.DatabaseReader;
+import com.maxmind.geoip2.exception.AddressNotFoundException;
+import com.maxmind.geoip2.model.CountryResponse;
+import com.maxmind.geoip2.record.Country;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
-import java.net.URL;
-import java.net.URLConnection;
+import java.net.InetAddress;
 
 import java.util.Map;
 
@@ -44,14 +44,11 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
 
-import org.tukaani.xz.XZInputStream;
-
 /**
  * @author Brian Wing Shun Chan
- * @author Julio Camarero
  */
 @Component(
-	configurationPid = "com.liferay.ip.geocoder.internal.IPGeocoderConfiguration",
+	configurationPid = "com.liferay.ip.geocoder.internal.configuration.IPGeocoderConfiguration",
 	configurationPolicy = ConfigurationPolicy.OPTIONAL, name = "IPGeocoder",
 	service = IPGeocoder.class
 )
@@ -59,28 +56,14 @@ public class IPGeocoderImpl implements IPGeocoder {
 
 	@Override
 	public IPInfo getIPInfo(HttpServletRequest httpServletRequest) {
-		LookupService lookupService = _getLookupService();
-
 		String ipAddress = _getIPAddress(httpServletRequest);
 
-		Location location = lookupService.getLocation(ipAddress);
-
-		if (location == null) {
-			return new IPInfo(
-				null, null, null, ipAddress, 0, 0, null, null, null);
-		}
-
-		return new IPInfo(
-			location.city, location.countryCode, location.countryName,
-			ipAddress, location.latitude, location.longitude,
-			location.postalCode, location.region,
-			com.maxmind.geoip.regionName.regionNameByCode(
-				location.countryCode, location.region));
+		return new IPInfo(_getCountryCode(ipAddress), ipAddress);
 	}
 
 	@Modified
 	public void modified(Map<String, String> properties) {
-		_lookupService = null;
+		_databaseReader = null;
 		_properties = properties;
 	}
 
@@ -91,125 +74,117 @@ public class IPGeocoderImpl implements IPGeocoder {
 
 	@Deactivate
 	protected void deactivate(Map<String, String> properties) {
-		_lookupService = null;
+		_databaseReader = null;
 		_properties = null;
 	}
 
-	private String _getIPAddress(HttpServletRequest httpServletRequest) {
-		return httpServletRequest.getRemoteAddr();
+	private String _getCountryCode(String ipAddress) {
+		try {
+			InetAddress inetAddress = InetAddress.getByName(ipAddress);
+
+			if (inetAddress.isAnyLocalAddress() ||
+				inetAddress.isLoopbackAddress()) {
+
+				return null;
+			}
+
+			DatabaseReader databaseReader = _getDatabaseReader();
+
+			CountryResponse countryResponse = databaseReader.country(
+				inetAddress);
+
+			if (countryResponse == null) {
+				return null;
+			}
+
+			Country country = countryResponse.getCountry();
+
+			return country.getIsoCode();
+		}
+		catch (AddressNotFoundException addressNotFoundException) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(addressNotFoundException);
+			}
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
+			}
+		}
+
+		return null;
 	}
 
-	private File _getIPGeocoderFile(
-			String filePath, String fileURL, boolean forceDownload)
-		throws IOException {
+	private DatabaseReader _getDatabaseReader() {
+		DatabaseReader databaseReader = _databaseReader;
 
-		File file = new File(filePath);
-
-		if (file.exists() && !forceDownload) {
-			return file;
+		if (databaseReader != null) {
+			return databaseReader;
 		}
 
 		synchronized (this) {
-			if (_log.isInfoEnabled()) {
-				_log.info("Downloading " + fileURL);
+			if (databaseReader != null) {
+				return databaseReader;
 			}
 
-			URL url = new URL(fileURL);
+			try {
+				databaseReader = new DatabaseReader.Builder(
+					_getFile()
+				).withCache(
+					new CHMCache()
+				).build();
 
-			URLConnection urlConnection = url.openConnection();
+				_databaseReader = databaseReader;
 
-			File xzFile = new File(
-				System.getProperty("java.io.tmpdir") +
-					"/liferay/geoip/GeoIPCity.dat.xz");
+				return databaseReader;
+			}
+			catch (IOException ioException) {
+				_log.error("Unable to activate IP Geocoder", ioException);
 
-			_write(xzFile, urlConnection.getInputStream());
+				throw new RuntimeException(
+					"Unable to activate IP Geocoder", ioException);
+			}
+		}
+	}
 
-			_write(file, new XZInputStream(new FileInputStream(xzFile)));
+	private File _getFile() throws IOException {
+		IPGeocoderConfiguration igGeocoderConfiguration =
+			ConfigurableUtil.createConfigurable(
+				IPGeocoderConfiguration.class, _properties);
+
+		if (Validator.isNotNull(igGeocoderConfiguration.filePath())) {
+			File file = new File(igGeocoderConfiguration.filePath());
+
+			if (file.exists()) {
+				if (_log.isInfoEnabled()) {
+					_log.info("Use file " + igGeocoderConfiguration.filePath());
+				}
+
+				return file;
+			}
+		}
+
+		Class<?> clazz = getClass();
+
+		File file = FileUtil.createTempFile(
+			clazz.getResourceAsStream("/com.maxmind.geolite2.country.mmdb"));
+
+		if (_log.isInfoEnabled()) {
+			_log.info("Use temp file " + file);
 		}
 
 		return file;
 	}
 
-	private LookupService _getLookupService() {
-		LookupService lookupService = _lookupService;
+	private String _getIPAddress(HttpServletRequest httpServletRequest) {
+		//return "142.251.134.142";
 
-		if (lookupService != null) {
-			return lookupService;
-		}
-
-		IPGeocoderConfiguration igGeocoderConfiguration =
-			ConfigurableUtil.createConfigurable(
-				IPGeocoderConfiguration.class, _properties);
-
-		String filePath = igGeocoderConfiguration.filePath();
-
-		if ((filePath == null) || filePath.equals("")) {
-			filePath =
-				System.getProperty("java.io.tmpdir") +
-					"/liferay/geoip/GeoIPCity.dat";
-		}
-
-		if (_log.isInfoEnabled()) {
-			_log.info("File " + filePath);
-		}
-
-		try {
-			File ipGeocoderFile = _getIPGeocoderFile(
-				filePath, igGeocoderConfiguration.fileURL(), false);
-
-			lookupService = new LookupService(
-				ipGeocoderFile, LookupService.GEOIP_MEMORY_CACHE);
-
-			_lookupService = lookupService;
-
-			return lookupService;
-		}
-		catch (IOException ioException) {
-			_log.error("Unable to activate IP Geocoder", ioException);
-
-			throw new RuntimeException(
-				"Unable to activate IP Geocoder", ioException);
-		}
-	}
-
-	private void _write(File file, InputStream inputStream) throws IOException {
-		File parentFile = file.getParentFile();
-
-		if (parentFile == null) {
-			return;
-		}
-
-		try {
-			if (!parentFile.exists()) {
-				parentFile.mkdirs();
-			}
-		}
-		catch (SecurityException securityException) {
-
-			// We may have the permission to write a specific file without
-			// having the permission to check if the parent file exists
-
-		}
-
-		BufferedInputStream bufferedInputStream = new BufferedInputStream(
-			inputStream);
-		BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(
-			new FileOutputStream(file));
-
-		int i = 0;
-
-		while ((i = bufferedInputStream.read()) != -1) {
-			bufferedOutputStream.write(i);
-		}
-
-		bufferedOutputStream.flush();
-
-		bufferedInputStream.close();
+		return httpServletRequest.getRemoteAddr();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(IPGeocoderImpl.class);
 
-	private volatile LookupService _lookupService;
+	private volatile DatabaseReader _databaseReader;
 	private volatile Map<String, String> _properties;
 
 }

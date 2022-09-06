@@ -12,33 +12,30 @@
  * details.
  */
 
-package com.liferay.ip.geocoder.internal;
+package com.liferay.ip.geocoder.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
+import com.liferay.portal.configuration.metatype.annotations.ExtendedAttributeDefinition;
 import com.liferay.portal.configuration.metatype.annotations.ExtendedObjectClassDefinition;
 
 /**
- * @author Julio Camarero
+ * @author Brian Wing Shun Chan
  */
-@ExtendedObjectClassDefinition(category = "ip-geocoder")
+@ExtendedObjectClassDefinition(category = "third-party")
 @Meta.OCD(
-	id = "com.liferay.ip.geocoder.internal.IPGeocoderConfiguration",
+	id = "com.liferay.ip.geocoder.internal.configuration.IPGeocoderConfiguration",
 	localization = "content/Language", name = "ip-geocoder-configuration-name"
 )
 public interface IPGeocoderConfiguration {
 
+	@ExtendedAttributeDefinition(
+		descriptionArguments = "maxmind.com", requiredInput = true
+	)
 	@Meta.AD(
-		description = "file-path-description", name = "file-path",
+		description = "file-path-description[ip-geocoder]", name = "file-path",
 		required = false
 	)
 	public String filePath();
-
-	@Meta.AD(
-		deflt = "http://cdn.mirrors.liferay.com/geolite.maxmind.com/download/geoip/database/GeoLiteCity.dat.xz",
-		description = "file-url-description", name = "file-url",
-		required = false
-	)
-	public String fileURL();
 
 }
