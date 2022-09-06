@@ -437,6 +437,27 @@ public class ConfigurationPersistenceManager
 		}
 	}
 
+	private boolean _insertConfiguration(
+			Connection connection, String pid, String configuration)
+		throws IOException {
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				_db.buildSQL(
+					"insert into Configuration_ (configurationId, dictionary" +
+						") values (?, ?)"))) {
+
+			preparedStatement.setString(1, pid);
+			preparedStatement.setString(2, configuration);
+
+			preparedStatement.executeUpdate();
+		}
+		catch (SQLException sqlException) {
+			return false;
+		}
+
+		return true;
+	}
+
 	private Dictionary<Object, Object> _overrideDictionary(
 		String pid, Dictionary<Object, Object> dictionary) {
 
@@ -497,40 +518,42 @@ public class ConfigurationPersistenceManager
 
 		ConfigurationHandler.write(unsyncByteArrayOutputStream, dictionary);
 
+		String configuration = unsyncByteArrayOutputStream.toString();
+
 		try (Connection connection = _dataSource.getConnection()) {
-			connection.setAutoCommit(false);
-
-			try (PreparedStatement preparedStatement1 =
-					connection.prepareStatement(
-						_db.buildSQL(
-							"update Configuration_ set dictionary = ? where " +
-								"configurationId = ?"))) {
-
-				preparedStatement1.setString(
-					1, unsyncByteArrayOutputStream.toString());
-				preparedStatement1.setString(2, pid);
-
-				if (preparedStatement1.executeUpdate() == 0) {
-					try (PreparedStatement preparedStatement2 =
-							connection.prepareStatement(
-								_db.buildSQL(
-									"insert into Configuration_ (" +
-										"configurationId, dictionary) values " +
-											"(?, ?)"))) {
-
-						preparedStatement2.setString(1, pid);
-						preparedStatement2.setString(
-							2, unsyncByteArrayOutputStream.toString());
-
-						preparedStatement2.executeUpdate();
-					}
+			if (_dictionaries.containsKey(pid)) {
+				if (!_updateConfiguration(connection, pid, configuration)) {
+					_insertConfiguration(connection, pid, configuration);
 				}
 			}
-
-			connection.commit();
+			else {
+				if (!_insertConfiguration(connection, pid, configuration)) {
+					_updateConfiguration(connection, pid, configuration);
+				}
+			}
 		}
 		catch (SQLException sqlException) {
 			ReflectionUtil.throwException(sqlException);
+		}
+	}
+
+	private boolean _updateConfiguration(
+			Connection connection, String pid, String configuration)
+		throws IOException, SQLException {
+
+		try (PreparedStatement preparedStatement = connection.prepareStatement(
+				_db.buildSQL(
+					"update Configuration_ set dictionary = ? where " +
+						"configurationId = ?"))) {
+
+			preparedStatement.setString(1, configuration);
+			preparedStatement.setString(2, pid);
+
+			if (preparedStatement.executeUpdate() == 0) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 
