@@ -205,7 +205,7 @@ public class AMBackwardsCompatibilityHtmlContentTransformer
 		// Check if the src starts with "data:image/" first because "data:image"
 		// indicates a Base64 URL which can potentially be millions of
 		// characters. So it is faster to run startsWith first to return early
-		// on these Strings first so that we don't have to do a 'contains' over
+		// on these strings first so that we do not have to call "contains" over
 		// a very long string.
 
 		if (src.startsWith("data:image/")) {
