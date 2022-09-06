@@ -106,9 +106,9 @@ public class WikiPageAttachmentResourceTest
 					testDeleteSiteWikiPageByExternalReferenceCodeWikiPageExternalReferenceCodeWikiPageAttachmentByExternalReferenceCode_getWikiPageExternalReferenceCode(),
 					RandomTestUtil.randomString()));
 
-		// Wiki attachment associated to a different wiki page
+		// Wiki page attachment associated to a different wiki page
 
-		WikiPage prevWikiPage = _wikiPage;
+		WikiPage previousWikiPage = _wikiPage;
 
 		WikiPageAttachment wikiPageAttachment =
 			testDeleteSiteWikiPageByExternalReferenceCodeWikiPageExternalReferenceCodeWikiPageAttachmentByExternalReferenceCode_addWikiPageAttachment();
@@ -118,7 +118,7 @@ public class WikiPageAttachmentResourceTest
 			wikiPageAttachmentResource.
 				deleteSiteWikiPageByExternalReferenceCodeWikiPageExternalReferenceCodeWikiPageAttachmentByExternalReferenceCodeHttpResponse(
 					testDeleteSiteWikiPageByExternalReferenceCodeWikiPageExternalReferenceCodeWikiPageAttachmentByExternalReferenceCode_getSiteId(),
-					prevWikiPage.getExternalReferenceCode(),
+					previousWikiPage.getExternalReferenceCode(),
 					wikiPageAttachment.getExternalReferenceCode()));
 	}
 
