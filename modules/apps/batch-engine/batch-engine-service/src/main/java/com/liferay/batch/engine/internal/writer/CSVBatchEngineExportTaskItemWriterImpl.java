@@ -101,8 +101,7 @@ public class CSVBatchEngineExportTaskItemWriterImpl
 			if (value instanceof Date) {
 				value = dateFormat.format((Date)value);
 			}
-
-			if (value instanceof Map) {
+			else if (value instanceof Map) {
 				Map<String, Object> map = (Map<String, Object>)value;
 
 				StringBundler sb = new StringBundler();
