@@ -136,7 +136,7 @@
 			<type>boolean</type>
 		</attribute>
 		<attribute>
-			<description>Set editor's resizing directions. The default value is <![CDATA[<code>vertical</code>]]>. Possible values are <![CDATA[<code>vertical</code>]]>, <![CDATA[<code>horizontal</code>]]> and <![CDATA[<code>both</code>]]>.</description>
+			<description>The resize direction for the input editor. The default value is <![CDATA[<code>vertical</code>]]>. Possible values are <![CDATA[<code>both</code>]]>, <![CDATA[<code>horizontal</code>]]>, and <![CDATA[<code>vertical</code>]]>.</description>
 			<name>resizeDirection</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
