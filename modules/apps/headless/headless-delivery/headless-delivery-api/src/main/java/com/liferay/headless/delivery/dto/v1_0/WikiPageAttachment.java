@@ -151,7 +151,7 @@ public class WikiPageAttachment implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected String encodingFormat;
 
-	@Schema(description = "The wiki page attachment's external reference code.")
+	@Schema
 	public String getExternalReferenceCode() {
 		return externalReferenceCode;
 	}
@@ -175,9 +175,7 @@ public class WikiPageAttachment implements Serializable {
 		}
 	}
 
-	@GraphQLField(
-		description = "The wiki page attachment's external reference code."
-	)
+	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String externalReferenceCode;
 
