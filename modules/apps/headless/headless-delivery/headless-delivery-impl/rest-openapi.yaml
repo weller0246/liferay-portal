@@ -5270,8 +5270,6 @@ components:
                     readOnly: true
                     type: string
                 externalReferenceCode:
-                    description:
-                        The wiki page attachment's external reference code.
                     type: string
                 fileExtension:
                     description:
