@@ -1,5 +1,5 @@
 configurations {
-	country
+	geolite2
 }
 
 dependencies {
@@ -17,13 +17,13 @@ dependencies {
 	compileOnly project(":apps:static:portal-configuration:portal-configuration-metatype-api")
 	compileOnly project(":core:petra:petra-function")
 
-	country ext: "mmdb", group: "com.liferay", name: "com.maxmind.geolite2.country", version: "2022-09-02"
+	geolite2 ext: "mmdb", group: "com.liferay", name: "com.maxmind.geolite2.country", version: "2022-09-02"
 }
 
 jar {
 	doFirst {
 		copy {
-			from configurations.country.singleFile
+			from configurations.geolite2.singleFile
 			into temporaryDir
 		}
 	}
