@@ -242,8 +242,8 @@ public class ObjectEntryOpenAPIResourceImpl
 				parameter.getName(),
 				new Parameter() {
 					{
-						name(finalParameterName);
 						in(parameter.getIn());
+						name(finalParameterName);
 						required(parameter.getRequired());
 						schema(parameter.getSchema());
 					}

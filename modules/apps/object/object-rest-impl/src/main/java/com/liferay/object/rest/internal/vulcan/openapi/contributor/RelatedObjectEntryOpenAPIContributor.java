@@ -195,8 +195,8 @@ public class RelatedObjectEntryOpenAPIContributor
 					parameterName,
 					new Parameter() {
 						{
-							name(parameterName);
 							in("path");
+							name(parameterName);
 							required(true);
 						}
 					});
