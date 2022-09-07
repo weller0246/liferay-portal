@@ -210,14 +210,6 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		String parameterName = systemObjectDefinitionExternalType + "Id";
 
-		ApiResponses apiResponses = new ApiResponses();
-
-		ApiResponse apiResponse = new ApiResponse();
-
-		apiResponse.setContent(_getContent(objectRelationship));
-
-		apiResponses.setDefault(apiResponse);
-
 		return new Operation() {
 			{
 				operationId(
@@ -234,7 +226,18 @@ public class RelatedObjectEntryOpenAPIContributor
 								required(true);
 							}
 						}));
-				responses(apiResponses);
+				responses(
+					new ApiResponses() {
+						{
+							setDefault(
+								new ApiResponse() {
+									{
+										setContent(
+											_getContent(objectRelationship));
+									}
+								});
+						}
+					});
 				tags(
 					Collections.singletonList(
 						_getContentType(systemObjectDefinitionMetadata)));
