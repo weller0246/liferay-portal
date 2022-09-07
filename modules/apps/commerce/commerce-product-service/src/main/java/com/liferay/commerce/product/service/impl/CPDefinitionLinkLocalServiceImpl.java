@@ -18,6 +18,7 @@ import com.liferay.commerce.product.model.CPDefinition;
 import com.liferay.commerce.product.model.CPDefinitionLink;
 import com.liferay.commerce.product.model.CProduct;
 import com.liferay.commerce.product.service.CPDefinitionLocalService;
+import com.liferay.commerce.product.service.CProductLocalService;
 import com.liferay.commerce.product.service.base.CPDefinitionLinkLocalServiceBaseImpl;
 import com.liferay.commerce.product.service.persistence.CPDefinitionPersistence;
 import com.liferay.commerce.product.service.persistence.CProductPersistence;
@@ -83,7 +84,7 @@ public class CPDefinitionLinkLocalServiceImpl
 
 		cpDefinitionLink = cpDefinitionLinkPersistence.update(cpDefinitionLink);
 
-		CProduct cProduct = _cProductPersistence.findByPrimaryKey(cProductId);
+		CProduct cProduct = _cProductLocalService.getCProduct(cProductId);
 
 		reindexCPDefinition(cProduct.getPublishedCPDefinitionId());
 
@@ -125,7 +126,7 @@ public class CPDefinitionLinkLocalServiceImpl
 		_expandoRowLocalService.deleteRows(
 			cpDefinitionLink.getCPDefinitionLinkId());
 
-		CProduct cProduct = _cProductPersistence.findByPrimaryKey(
+		CProduct cProduct = _cProductLocalService.getCProduct(
 			cpDefinitionLink.getCProductId());
 
 		reindexCPDefinition(cProduct.getPublishedCPDefinitionId());
@@ -302,8 +303,7 @@ public class CPDefinitionLinkLocalServiceImpl
 				}
 			}
 
-			CProduct cProduct = _cProductPersistence.findByPrimaryKey(
-				cProductId);
+			CProduct cProduct = _cProductLocalService.getCProduct(cProductId);
 
 			reindexCPDefinition(cProduct.getPublishedCPDefinitionId());
 		}
@@ -325,6 +325,9 @@ public class CPDefinitionLinkLocalServiceImpl
 
 	@BeanReference(type = CPDefinitionPersistence.class)
 	private CPDefinitionPersistence _cpDefinitionPersistence;
+
+	@BeanReference(type = CProductLocalService.class)
+	private CProductLocalService _cProductLocalService;
 
 	@BeanReference(type = CProductPersistence.class)
 	private CProductPersistence _cProductPersistence;
