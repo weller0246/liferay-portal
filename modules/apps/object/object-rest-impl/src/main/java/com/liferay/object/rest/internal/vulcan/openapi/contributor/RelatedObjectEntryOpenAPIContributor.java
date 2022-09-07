@@ -210,15 +210,6 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		String parameterName = systemObjectDefinitionExternalType + "Id";
 
-		List<Parameter> parameters = Collections.singletonList(
-			new Parameter() {
-				{
-					in("path");
-					name(parameterName);
-					required(true);
-				}
-			});
-
 		ApiResponses apiResponses = new ApiResponses();
 
 		ApiResponse apiResponse = new ApiResponse();
@@ -234,7 +225,15 @@ public class RelatedObjectEntryOpenAPIContributor
 						"get", systemObjectDefinitionMetadata.getName(),
 						StringUtil.upperCaseFirstLetter(
 							objectRelationship.getName())));
-				parameters(parameters);
+				parameters(
+					Collections.singletonList(
+						new Parameter() {
+							{
+								in("path");
+								name(parameterName);
+								required(true);
+							}
+						}));
 				responses(apiResponses);
 				tags(
 					Collections.singletonList(
