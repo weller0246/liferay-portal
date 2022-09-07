@@ -251,12 +251,12 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 	private JSONObject _getAssetVocabulariesJSONObject(
 		ContentDashboardItem contentDashboardItem, Locale locale) {
 
-		List<AssetCategory> assetCategoriesList =
+		List<AssetCategory> assetCategories =
 			contentDashboardItem.getAssetCategories();
 
 		Map<Long, Map<String, Object>> assetVocabulariesMap = new HashMap<>();
 
-		for (AssetCategory assetCategory : assetCategoriesList) {
+		for (AssetCategory assetCategory : assetCategories) {
 			assetVocabulariesMap.computeIfAbsent(
 				assetCategory.getVocabularyId(),
 				vocabularyId -> _getAssetVocabularyData(
@@ -267,10 +267,10 @@ public class GetContentDashboardItemInfoMVCResourceCommand
 			Map<String, Object> assetVocabularyData = assetVocabulariesMap.get(
 				assetCategory.getVocabularyId());
 
-			List<String> assetCategories =
+			List<String> assetCategoryTitles =
 				(List<String>)assetVocabularyData.get("categories");
 
-			assetCategories.add(assetCategory.getTitle(locale));
+			assetCategoryTitles.add(assetCategory.getTitle(locale));
 		}
 
 		return JSONFactoryUtil.createJSONObject(assetVocabulariesMap);
