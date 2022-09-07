@@ -120,10 +120,6 @@ jest.mock(
 		},
 	})
 );
-jest.mock('frontend-js-web', () => ({
-	...jest.requireActual('frontend-js-web'),
-	sub: jest.fn((langKey, args) => [langKey, args].join('-')),
-}));
 
 const renderComponent = ({
 	fragmentEntryKey = 'textFragment',
@@ -233,6 +229,10 @@ describe('FormInputGeneralPanel', () => {
 	});
 
 	it('shows configuration fieldset when fragment is mapped', () => {
+		Liferay.Util.sub.mockImplementation((langKey, args) =>
+			[langKey, args].join('-')
+		);
+
 		renderComponent({mappedFieldId: 'requiredField'});
 
 		expect(

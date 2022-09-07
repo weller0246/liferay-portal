@@ -15,7 +15,6 @@
 import ClayAlert from '@clayui/alert';
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput, ClaySelect, ClayToggle} from '@clayui/form';
-import {sub} from 'frontend-js-web';
 import React, {useEffect, useState} from 'react';
 
 import FieldList from './FieldList';
@@ -340,11 +339,14 @@ function SortConfigurationOptions({
 					onClick={_handleSwitchView}
 					small
 				>
-					{sub(Liferay.Language.get('switch-to-x-view'), [
-						view.value === VIEWS.NEW.value
-							? VIEWS.CLASSIC.label
-							: VIEWS.NEW.label,
-					])}
+					{Liferay.Util.sub(
+						Liferay.Language.get('switch-to-x-view'),
+						[
+							view.value === VIEWS.NEW.value
+								? VIEWS.CLASSIC.label
+								: VIEWS.NEW.label,
+						]
+					)}
 				</ClayButton>
 			</div>
 

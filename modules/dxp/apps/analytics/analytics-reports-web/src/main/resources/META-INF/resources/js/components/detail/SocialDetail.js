@@ -12,7 +12,6 @@
 import ClayList from '@clayui/list';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import className from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useMemo, useRef, useState} from 'react';
 
@@ -176,7 +175,7 @@ export default function SocialDetail({
 			<TotalCount
 				className="c-mb-2"
 				dataProvider={trafficVolumeDataProvider}
-				label={sub(Liferay.Language.get('traffic-volume'))}
+				label={Liferay.Util.sub(Liferay.Language.get('traffic-volume'))}
 				popoverHeader={Liferay.Language.get('traffic-volume')}
 				popoverMessage={Liferay.Language.get(
 					'traffic-volume-is-the-number-of-page-views-coming-from-one-channel'
@@ -187,7 +186,7 @@ export default function SocialDetail({
 			<TotalCount
 				className="c-mb-3"
 				dataProvider={trafficShareDataProvider}
-				label={sub(Liferay.Language.get('traffic-share'))}
+				label={Liferay.Util.sub(Liferay.Language.get('traffic-share'))}
 				percentage={true}
 				popoverHeader={Liferay.Language.get('traffic-share')}
 				popoverMessage={Liferay.Language.get(

@@ -33,15 +33,6 @@ jest.mock(
 	() => jest.fn()
 );
 
-jest.mock('frontend-js-web', () => ({
-	...jest.requireActual('frontend-js-web'),
-	sub: jest.fn((langKey, args) => {
-		const nextArgs = Array.isArray(args) ? args : [args];
-
-		return [langKey, ...nextArgs].join('-');
-	}),
-}));
-
 const renderComponent = ({
 	activeItemId = null,
 	hasUpdatePermissions = true,
@@ -50,6 +41,12 @@ const renderComponent = ({
 	rootItemChildren = ['01-container'],
 	viewportSize = VIEWPORT_SIZES.desktop,
 } = {}) => {
+	Liferay.Util.sub.mockImplementation((langKey, args) => {
+		const nextArgs = Array.isArray(args) ? args : [args];
+
+		return [langKey, ...nextArgs].join('-');
+	});
+
 	const mockDispatch = jest.fn((a) => {
 		if (typeof a === 'function') {
 			return a(mockDispatch);

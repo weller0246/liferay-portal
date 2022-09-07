@@ -13,7 +13,6 @@
  */
 
 import {ClayButtonWithIcon} from '@clayui/button';
-import {sub} from 'frontend-js-web';
 import React, {useMemo, useState} from 'react';
 
 import {ReorderSetsModal} from '../../../app/components/ReorderSetsModal';
@@ -242,7 +241,7 @@ export default function FragmentsSidebar() {
 								? 'cards2'
 								: 'list'
 						}
-						title={sub(
+						title={Liferay.Util.sub(
 							Liferay.Language.get('switch-to-x-view'),
 							displayStyle === FRAGMENTS_DISPLAY_STYLES.LIST
 								? Liferay.Language.get('card')

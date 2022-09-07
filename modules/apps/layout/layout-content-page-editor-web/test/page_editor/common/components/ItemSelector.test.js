@@ -37,11 +37,6 @@ jest.mock(
 	})
 );
 
-jest.mock('frontend-js-web', () => ({
-	...jest.requireActual('frontend-js-web'),
-	sub: jest.fn((langKey, args) => langKey.replace('x', args)),
-}));
-
 function renderItemSelector({
 	pageContents = [],
 	selectedItemClassPK = '',
@@ -50,6 +45,10 @@ function renderItemSelector({
 	const state = {
 		pageContents,
 	};
+
+	Liferay.Util.sub.mockImplementation((langKey, args) =>
+		langKey.replace('x', args)
+	);
 
 	return render(
 		<StoreAPIContextProvider dispatch={() => {}} getState={() => state}>

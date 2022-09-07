@@ -15,7 +15,6 @@
 import ClayAlert from '@clayui/alert';
 import ClayLoadingIndicator from '@clayui/loading-indicator';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import React, {useMemo} from 'react';
 
 import {FRAGMENT_ENTRY_TYPES} from '../../../../../../app/config/constants/fragmentEntryTypes';
@@ -311,7 +310,10 @@ export function FormInputGeneralPanel({item}) {
 		<>
 			<div className="mb-3">
 				<Collapse
-					label={sub(Liferay.Language.get('x-options'), fragmentName)}
+					label={Liferay.Util.sub(
+						Liferay.Language.get('x-options'),
+						fragmentName
+					)}
 					open
 				>
 					{!isCaptchaInput && (
@@ -332,7 +334,7 @@ export function FormInputGeneralPanel({item}) {
 						isCaptchaInput) && (
 						<>
 							<span className="sr-only">
-								{sub(
+								{Liferay.Util.sub(
 									Liferay.Language.get('x-configuration'),
 									fragmentName
 								)}

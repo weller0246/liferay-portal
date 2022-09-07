@@ -19,7 +19,6 @@ import ClayLayout from '@clayui/layout';
 import ClayList from '@clayui/list';
 import ClayPanel from '@clayui/panel';
 import ClayProgressBar from '@clayui/progress-bar';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useEffect, useMemo, useState} from 'react';
 
@@ -60,7 +59,7 @@ export default function IssuesList() {
 		<>
 			{localizedIssues && !loading && (
 				<ClayAlert className="mb-4" displayType="info" variant="stripe">
-					{sub(
+					{Liferay.Util.sub(
 						Liferay.Language.get(
 							'showing-data-from-x-relaunch-to-update-data'
 						),
@@ -176,7 +175,7 @@ const Section = ({section}) => {
 			<ClayPanel.Body>
 				{sectionTotal === '0' ? (
 					<div className="text-secondary">
-						{sub(
+						{Liferay.Util.sub(
 							Liferay.Language.get(
 								'there-are-no-x-related-issues'
 							),

@@ -15,7 +15,6 @@
 import ClayForm, {ClayCheckbox, ClayInput} from '@clayui/form';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -59,7 +58,7 @@ export function NoPaginationOptions({
 
 		if (totalNumberOfItems) {
 			if (initialNumberOfItems > totalNumberOfItems) {
-				errorMessage = sub(
+				errorMessage = Liferay.Util.sub(
 					PAGINATION_ERROR_MESSAGES.maximumItems,
 					totalNumberOfItems
 				);
@@ -103,7 +102,7 @@ export function NoPaginationOptions({
 
 			{displayAllItems && (
 				<p className="mt-1 small text-secondary">
-					{sub(
+					{Liferay.Util.sub(
 						Liferay.Language.get(
 							'this-setting-can-affect-page-performance-severely-if-the-number-of-collection-items-is-above-x.-we-strongly-recommend-using-pagination-instead'
 						),
@@ -137,7 +136,7 @@ export function NoPaginationOptions({
 					/>
 
 					<p className="mt-1 small text-secondary">
-						{sub(
+						{Liferay.Util.sub(
 							Liferay.Language.get(
 								'setting-a-value-above-x-can-affect-page-performance-severely'
 							),

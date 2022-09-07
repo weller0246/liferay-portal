@@ -15,7 +15,7 @@
 import ClayButton from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
 import ClayModal, {useModal} from '@clayui/modal';
-import {openSelectionModal, sub} from 'frontend-js-web';
+import {openSelectionModal} from 'frontend-js-web';
 import React, {useState} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
@@ -95,7 +95,7 @@ const ImagePicker = ({
 			onClose: () => onBlur(event),
 			onSelect: handleFieldChanged,
 			selectEventName: `${portletNamespace}selectDocumentLibrary`,
-			title: sub(
+			title: Liferay.Util.sub(
 				Liferay.Language.get('select-x'),
 				Liferay.Language.get('image')
 			),

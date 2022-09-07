@@ -12,8 +12,6 @@
  * details.
  */
 
-import {sub} from 'frontend-js-web';
-
 import {VIEWPORT_SIZES} from '../config/constants/viewportSizes';
 import {config} from '../config/index';
 
@@ -36,5 +34,8 @@ export function getResetLabelByViewport(selectedViewportSize) {
 			].label;
 	}
 
-	return sub(Liferay.Language.get('reset-to-x-value'), previousViewport);
+	return Liferay.Util.sub(
+		Liferay.Language.get('reset-to-x-value'),
+		previousViewport
+	);
 }

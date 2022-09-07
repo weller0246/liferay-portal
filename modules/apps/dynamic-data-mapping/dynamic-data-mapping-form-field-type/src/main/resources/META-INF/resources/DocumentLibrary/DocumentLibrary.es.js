@@ -24,7 +24,7 @@ import {
 	useConfig,
 	useFormState,
 } from 'data-engine-js-components-web';
-import {openSelectionModal, sub} from 'frontend-js-web';
+import {openSelectionModal} from 'frontend-js-web';
 import React, {useEffect, useMemo, useState} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
@@ -376,7 +376,7 @@ const Main = ({
 			onClose: () => onBlur(event),
 			onSelect: handleFieldChanged,
 			selectEventName: `${portletNamespace}selectDocumentLibrary`,
-			title: sub(
+			title: Liferay.Util.sub(
 				Liferay.Language.get('select-x'),
 				Liferay.Language.get('document')
 			),
@@ -417,7 +417,7 @@ const Main = ({
 			return false;
 		}
 
-		const errorMessage = sub(
+		const errorMessage = Liferay.Util.sub(
 			Liferay.Language.get(
 				'please-enter-a-file-with-a-valid-file-size-no-larger-than-x'
 			),

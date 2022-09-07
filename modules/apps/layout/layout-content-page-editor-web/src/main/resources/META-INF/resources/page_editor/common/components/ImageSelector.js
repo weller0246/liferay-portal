@@ -14,7 +14,6 @@
 
 import {ClayButtonWithIcon} from '@clayui/button';
 import ClayForm, {ClayInput} from '@clayui/form';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -77,7 +76,7 @@ export function ImageSelector({
 							}
 							small
 							symbol={hasImageTitle ? 'change' : 'plus'}
-							title={sub(
+							title={Liferay.Util.sub(
 								hasImageTitle
 									? Liferay.Language.get('change-x')
 									: Liferay.Language.get('select-x'),

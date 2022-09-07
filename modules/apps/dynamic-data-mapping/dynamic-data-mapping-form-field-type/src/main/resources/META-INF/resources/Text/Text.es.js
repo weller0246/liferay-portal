@@ -17,7 +17,6 @@ import ClayDropDown from '@clayui/drop-down';
 import {ClayInput} from '@clayui/form';
 import {usePrevious} from '@liferay/frontend-js-react-web';
 import {normalizeFieldName} from 'data-engine-js-components-web';
-import {sub} from 'frontend-js-web';
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
 
 import {FieldBase} from '../FieldBase/ReactFieldBase.es';
@@ -40,7 +39,7 @@ const CounterContainer = ({
 		return null;
 	}
 
-	const message = sub(
+	const message = Liferay.Util.sub(
 		Liferay.Language.get('x-of-x-characters'),
 		counter,
 		maxLength

@@ -12,7 +12,7 @@
  * details.
  */
 
-import {openModal, sub} from 'frontend-js-web';
+import {openModal} from 'frontend-js-web';
 
 export default function openDeleteArticleModal({onDelete}) {
 	openModal({
@@ -35,7 +35,7 @@ export default function openDeleteArticleModal({onDelete}) {
 			},
 		],
 		status: 'danger',
-		title: sub(
+		title: Liferay.Util.sub(
 			Liferay.Language.get('delete-x'),
 			Liferay.Language.get('web-content')
 		),

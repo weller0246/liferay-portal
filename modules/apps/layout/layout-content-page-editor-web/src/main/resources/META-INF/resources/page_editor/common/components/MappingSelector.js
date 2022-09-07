@@ -14,7 +14,6 @@
 
 import ClayForm, {ClaySelectWithOption} from '@clayui/form';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -392,7 +391,7 @@ function MappingSelector({fieldType, mappedItem, onMappingSelect}) {
 						}}
 						options={[
 							{
-								label: sub(
+								label: Liferay.Util.sub(
 									Liferay.Language.get('x-default'),
 									selectedMappingTypes.subtype
 										? selectedMappingTypes.subtype.label

@@ -14,7 +14,6 @@
 
 import ClayForm, {ClayCheckbox, ClayInput} from '@clayui/form';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useEffect, useState} from 'react';
 
@@ -48,7 +47,7 @@ export function PaginationOptions({
 		let errorMessage = null;
 
 		if (isMaximumValuePerPageError) {
-			errorMessage = sub(
+			errorMessage = Liferay.Util.sub(
 				PAGINATION_ERROR_MESSAGES.maximumItemsPerPage,
 				config.searchContainerPageMaxDelta
 			);
@@ -160,7 +159,7 @@ export function PaginationOptions({
 							}
 						)}
 					>
-						{sub(
+						{Liferay.Util.sub(
 							Liferay.Language.get('x-items-maximum'),
 							config.searchContainerPageMaxDelta
 						)}

@@ -19,7 +19,6 @@ import ClayModal from '@clayui/modal';
 import ClayToolbar from '@clayui/toolbar';
 import {useIsMounted} from '@liferay/frontend-js-react-web';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import React, {useEffect, useRef, useState} from 'react';
 
 import {useSelector} from '../../../../../app/contexts/StoreContext';
@@ -257,13 +256,13 @@ const FilterInformationToolbar = ({
 								ref={filterInformationMessageElementRef}
 							>
 								{totalNumberOfItems === 1
-									? sub(
+									? Liferay.Util.sub(
 											Liferay.Language.get(
 												'there-is-1-result-for-x'
 											),
 											filterInformationMessage
 									  )
-									: sub(
+									: Liferay.Util.sub(
 											Liferay.Language.get(
 												'there-are-x-results-for-x'
 											),

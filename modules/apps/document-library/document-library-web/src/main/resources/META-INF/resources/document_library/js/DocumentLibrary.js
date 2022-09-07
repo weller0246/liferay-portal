@@ -12,7 +12,7 @@
  * details.
  */
 
-import {buildFragment, openSelectionModal, sub} from 'frontend-js-web';
+import {buildFragment, openSelectionModal} from 'frontend-js-web';
 
 export default function DocumentLibrary({
 	editEntryUrl,
@@ -132,7 +132,7 @@ export default function DocumentLibrary({
 			},
 			selectEventName: `${namespace}selectFolder`,
 			size: 'lg',
-			title: sub(dialogTitle, [selectedItems]),
+			title: Liferay.Util.sub(dialogTitle, [selectedItems]),
 			url: selectFolderURL,
 		});
 	};

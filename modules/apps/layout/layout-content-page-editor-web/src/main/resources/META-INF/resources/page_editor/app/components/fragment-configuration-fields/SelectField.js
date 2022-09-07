@@ -16,7 +16,6 @@ import ClayButton from '@clayui/button';
 import ClayDropDown from '@clayui/drop-down';
 import ClayForm, {ClayCheckbox, ClaySelectWithOption} from '@clayui/form';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useState} from 'react';
 
@@ -136,7 +135,10 @@ const MultiSelect = ({
 			label;
 	}
 	else if (nextValue.length > 1) {
-		label = sub(Liferay.Language.get('x-selected'), nextValue.length);
+		label = Liferay.Util.sub(
+			Liferay.Language.get('x-selected'),
+			nextValue.length
+		);
 	}
 
 	const items = options.map((option) => {

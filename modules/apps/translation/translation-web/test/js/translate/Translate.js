@@ -135,12 +135,11 @@ const baseProps = {
 
 const renderComponent = (props) => render(<Translate {...props} />);
 
-jest.mock('frontend-js-web', () => ({
-	...jest.requireActual('frontend-js-web'),
-	sub: jest.fn((langKey, ...args) => [langKey, ...args].join('-')),
-}));
-
 describe('Translate', () => {
+	Liferay.Util.sub.mockImplementation((langKey, ...args) =>
+		[langKey, ...args].join('-')
+	);
+
 	Liferay.Util.unescapeHTML =
 		Liferay.Util.unescapeHTML ||
 		jest.fn((string) =>

@@ -29,11 +29,6 @@ jest.mock(
 	})
 );
 
-jest.mock('frontend-js-web', () => ({
-	...jest.requireActual('frontend-js-web'),
-	sub: jest.fn((langKey, args) => [langKey, ...args].join('-')),
-}));
-
 describe('CollectionSelector', () => {
 	afterEach(() => {
 		openItemSelector.mockClear();
@@ -42,6 +37,10 @@ describe('CollectionSelector', () => {
 	it('uses custom item selector URL when present in the collection item context', () => {
 		const CUSTOM_COLLECTION_SELECTOR_URL = 'CUSTOM_COLLECTION_SELECTOR_URL';
 		const DEFAULT_ITEM_SELECTOR_URL = 'DEFAULT_ITEM_SELECTOR_URL';
+
+		Liferay.Util.sub.mockImplementation((langKey, args) =>
+			[langKey, ...args].join('-')
+		);
 
 		render(
 			<StoreAPIContextProvider dispatch={() => {}} getState={() => ({})}>
@@ -73,6 +72,10 @@ describe('CollectionSelector', () => {
 	it('uses passed item selector URL when not inside a collection item context', () => {
 		const DEFAULT_ITEM_SELECTOR_URL = 'DEFAULT_ITEM_SELECTOR_URL';
 
+		Liferay.Util.sub.mockImplementation((langKey, args) =>
+			[langKey, ...args].join('-')
+		);
+
 		render(
 			<StoreAPIContextProvider dispatch={() => {}} getState={() => ({})}>
 				<CollectionSelector
@@ -95,6 +98,10 @@ describe('CollectionSelector', () => {
 	});
 
 	it('does not show collection prefilter label when the filter is not configured', () => {
+		Liferay.Util.sub.mockImplementation((langKey, args) =>
+			[langKey, ...args].join('-')
+		);
+
 		render(
 			<StoreAPIContextProvider dispatch={() => {}} getState={() => ({})}>
 				<CollectionSelector label="" onCollectionSelect={() => {}} />
@@ -107,6 +114,10 @@ describe('CollectionSelector', () => {
 	});
 
 	it('shows collection prefilter label when the filter is not configured', () => {
+		Liferay.Util.sub.mockImplementation((langKey, args) =>
+			[langKey, ...args].join('-')
+		);
+
 		render(
 			<StoreAPIContextProvider dispatch={() => {}} getState={() => ({})}>
 				<CollectionSelector

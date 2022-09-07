@@ -9,7 +9,6 @@
  * distribution rights of the Software.
  */
 
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useContext, useMemo} from 'react';
 
@@ -87,7 +86,7 @@ export default function Main({
 			<TotalCount
 				className="mb-2"
 				dataProvider={totalViewsDataProvider}
-				label={sub(Liferay.Language.get('total-views'))}
+				label={Liferay.Util.sub(Liferay.Language.get('total-views'))}
 				popoverHeader={Liferay.Language.get('total-views')}
 				popoverMessage={Liferay.Language.get(
 					'this-number-refers-to-the-total-number-of-views-since-the-content-was-published'
@@ -98,7 +97,9 @@ export default function Main({
 				<TotalCount
 					className="mb-2"
 					dataProvider={totalReadsDataProvider}
-					label={sub(Liferay.Language.get('total-reads'))}
+					label={Liferay.Util.sub(
+						Liferay.Language.get('total-reads')
+					)}
 					popoverHeader={Liferay.Language.get('total-reads')}
 					popoverMessage={Liferay.Language.get(
 						'this-number-refers-to-the-total-number-of-reads-since-the-content-was-published'

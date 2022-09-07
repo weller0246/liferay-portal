@@ -13,7 +13,6 @@
  */
 
 import ClayForm, {ClayCheckbox, ClaySelectWithOption} from '@clayui/form';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useMemo} from 'react';
 
@@ -256,7 +255,7 @@ export function RowGeneralPanel({item}) {
 							label:
 								option === CUSTOM_ROW
 									? Liferay.Language.get('custom')
-									: sub(
+									: Liferay.Util.sub(
 											getModulesPerRowOptionLabel(option),
 											option
 									  ),

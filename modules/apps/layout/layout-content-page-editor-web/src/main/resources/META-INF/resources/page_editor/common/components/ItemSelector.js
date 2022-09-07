@@ -16,7 +16,6 @@ import {ClayButtonWithIcon} from '@clayui/button';
 import {ClayDropDownWithItems} from '@clayui/drop-down';
 import ClayForm, {ClayInput} from '@clayui/form';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import PropTypes from 'prop-types';
 import React, {useCallback} from 'react';
 
@@ -105,7 +104,7 @@ export default function ItemSelector({
 						type: 'divider',
 					},
 					{
-						label: `${sub(
+						label: `${Liferay.Util.sub(
 							Liferay.Language.get('select-x'),
 							label
 						)}...`,
@@ -147,7 +146,10 @@ export default function ItemSelector({
 			}
 
 			menuItems.push({
-				label: sub(Liferay.Language.get('remove-x'), label),
+				label: Liferay.Util.sub(
+					Liferay.Language.get('remove-x'),
+					label
+				),
 				onClick: () => onItemSelect({}),
 				symbolLeft:
 					label === Liferay.Language.get('collection')
@@ -184,7 +186,7 @@ export default function ItemSelector({
 
 	const selectContentButtonIcon = selectedItem?.title ? 'change' : 'plus';
 
-	const selectContentButtonLabel = sub(
+	const selectContentButtonLabel = Liferay.Util.sub(
 		selectedItem?.title
 			? Liferay.Language.get('change-x')
 			: Liferay.Language.get('select-x'),
@@ -208,7 +210,7 @@ export default function ItemSelector({
 								openModal();
 							}
 						}}
-						placeholder={sub(
+						placeholder={Liferay.Util.sub(
 							Liferay.Language.get('select-x'),
 							label
 						)}
@@ -264,14 +266,14 @@ export default function ItemSelector({
 							}}
 							trigger={
 								<ClayButtonWithIcon
-									aria-label={sub(
+									aria-label={Liferay.Util.sub(
 										Liferay.Language.get('view-x-options'),
 										label
 									)}
 									displayType="secondary"
 									small
 									symbol="ellipsis-v"
-									title={sub(
+									title={Liferay.Util.sub(
 										Liferay.Language.get('view-x-options'),
 										label
 									)}

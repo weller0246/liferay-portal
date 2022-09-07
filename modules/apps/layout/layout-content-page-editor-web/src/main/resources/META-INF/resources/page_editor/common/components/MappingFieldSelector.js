@@ -14,7 +14,6 @@
 
 import ClayForm, {ClaySelect} from '@clayui/form';
 import classNames from 'classnames';
-import {sub} from 'frontend-js-web';
 import React from 'react';
 
 import {EDITABLE_TYPES} from '../../app/config/constants/editableTypes';
@@ -93,7 +92,7 @@ export default function MappingFieldSelector({
 			{hasWarnings && (
 				<ClayForm.FeedbackGroup>
 					<ClayForm.FeedbackItem>
-						{sub(
+						{Liferay.Util.sub(
 							Liferay.Language.get(
 								'no-fields-are-available-for-x-editable'
 							),
