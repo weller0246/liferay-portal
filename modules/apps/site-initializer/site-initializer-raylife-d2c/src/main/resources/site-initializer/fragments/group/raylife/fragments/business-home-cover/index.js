@@ -45,6 +45,7 @@ const getQuoteForm = fragmentElement.querySelector('#get-quote-form');
 const newQuoteButton = fragmentElement.querySelector('#new-quote-button');
 const newQuoteContainer = fragmentElement.querySelector('#new-quote');
 const newQuoteFormContainer = fragmentElement.querySelector('.new-quote-form');
+const pathContext = Liferay.ThemeDisplay.getPathContext();
 const retrieveQuoteButton = fragmentElement.querySelector(
 	'#retrieve-quote-button'
 );
@@ -95,7 +96,8 @@ continueQuoteButton.onclick = async function () {
 	}
 
 	const raylifeApplicationResponse = await fetchHeadless(
-		`o/c/raylifeapplications/?filter=email eq '${emailInput.value}'`
+		pathContext +
+			`/o/c/raylifeapplications/?filter=email eq '${emailInput.value}'`
 	);
 
 	if (!raylifeApplicationResponse.items.length) {
