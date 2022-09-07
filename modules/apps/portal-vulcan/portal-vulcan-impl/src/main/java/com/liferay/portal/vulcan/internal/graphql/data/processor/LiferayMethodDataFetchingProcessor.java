@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.graphql.servlet.data.processor;
+package com.liferay.portal.vulcan.internal.graphql.data.processor;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

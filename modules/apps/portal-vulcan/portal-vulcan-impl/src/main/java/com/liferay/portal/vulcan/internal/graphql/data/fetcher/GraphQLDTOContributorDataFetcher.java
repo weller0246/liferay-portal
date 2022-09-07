@@ -12,11 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.graphql.servlet.data.fetcher;
+package com.liferay.portal.vulcan.internal.graphql.data.fetcher;
 
 import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOContributor;
 import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOProperty;
-import com.liferay.portal.vulcan.internal.graphql.servlet.data.processor.GraphQLDTOContributorDataFetchingProcessor;
+import com.liferay.portal.vulcan.internal.graphql.data.processor.GraphQLDTOContributorDataFetchingProcessor;
 
 import graphql.schema.DataFetcher;
 import graphql.schema.DataFetchingEnvironment;

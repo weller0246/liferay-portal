@@ -47,10 +47,10 @@ import com.liferay.portal.vulcan.graphql.dto.v1_0.Creator;
 import com.liferay.portal.vulcan.graphql.servlet.ServletData;
 import com.liferay.portal.vulcan.internal.configuration.VulcanConfiguration;
 import com.liferay.portal.vulcan.internal.configuration.util.ConfigurationUtil;
-import com.liferay.portal.vulcan.internal.graphql.servlet.data.fetcher.GraphQLDTOContributorDataFetcher;
-import com.liferay.portal.vulcan.internal.graphql.servlet.data.fetcher.LiferayMethodDataFetcher;
-import com.liferay.portal.vulcan.internal.graphql.servlet.data.processor.GraphQLDTOContributorDataFetchingProcessor;
-import com.liferay.portal.vulcan.internal.graphql.servlet.data.processor.LiferayMethodDataFetchingProcessor;
+import com.liferay.portal.vulcan.internal.graphql.data.fetcher.GraphQLDTOContributorDataFetcher;
+import com.liferay.portal.vulcan.internal.graphql.data.fetcher.LiferayMethodDataFetcher;
+import com.liferay.portal.vulcan.internal.graphql.data.processor.GraphQLDTOContributorDataFetchingProcessor;
+import com.liferay.portal.vulcan.internal.graphql.data.processor.LiferayMethodDataFetchingProcessor;
 import com.liferay.portal.vulcan.internal.graphql.util.GraphQLUtil;
 import com.liferay.portal.vulcan.multipart.MultipartBody;
 
