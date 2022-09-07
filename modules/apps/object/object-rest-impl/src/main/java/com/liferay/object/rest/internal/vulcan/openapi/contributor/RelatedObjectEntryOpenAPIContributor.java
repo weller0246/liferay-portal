@@ -107,36 +107,45 @@ public class RelatedObjectEntryOpenAPIContributor
 			for (ObjectRelationship systemObjectRelationship :
 					systemObjectRelationships) {
 
-				ObjectDefinition objectDefinition =
-					_objectDefinitionLocalService.getObjectDefinition(
-						systemObjectRelationship.getObjectDefinitionId2());
-
-				openAPI.schema(
-					objectDefinition.getShortName(),
-					_getObjectDefinitionSchema(objectDefinition));
-
-				Paths paths = openAPI.getPaths();
-
-				paths.addPathItem(
-					StringBundler.concat(
-						StringPool.SLASH, _getJaxRsVersion(uriInfo),
-						StringPool.SLASH,
-						_getSystemObjectBasePath(
-							systemObjectDefinitionMetadata),
-						StringPool.SLASH,
-						_getSystemObjectDefinitionPathName(
-							systemObjectDefinitionMetadata),
-						StringPool.SLASH, systemObjectRelationship.getName()),
-					new PathItem() {
-						{
-							get(
-								_getOperation(
-									systemObjectRelationship,
-									systemObjectDefinitionMetadata));
-						}
-					});
+				_contribute(
+					openAPI, systemObjectDefinitionMetadata,
+					systemObjectRelationship, uriInfo);
 			}
 		}
+	}
+
+	private void _contribute(
+			OpenAPI openAPI,
+			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata,
+			ObjectRelationship systemObjectRelationship, UriInfo uriInfo)
+		throws Exception {
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				systemObjectRelationship.getObjectDefinitionId2());
+
+		openAPI.schema(
+			objectDefinition.getShortName(),
+			_getObjectDefinitionSchema(objectDefinition));
+
+		Paths paths = openAPI.getPaths();
+
+		paths.addPathItem(
+			StringBundler.concat(
+				StringPool.SLASH, _getJaxRsVersion(uriInfo), StringPool.SLASH,
+				_getSystemObjectBasePath(systemObjectDefinitionMetadata),
+				StringPool.SLASH,
+				_getSystemObjectDefinitionPathName(
+					systemObjectDefinitionMetadata),
+				StringPool.SLASH, systemObjectRelationship.getName()),
+			new PathItem() {
+				{
+					get(
+						_getOperation(
+							systemObjectRelationship,
+							systemObjectDefinitionMetadata));
+				}
+			});
 	}
 
 	private String _getExternalType(
