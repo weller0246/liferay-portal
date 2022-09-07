@@ -64,11 +64,11 @@ public class ConfigurationOverridePropertiesUtil {
 						key.substring(0, index), pid -> new HashMap<>());
 
 				try {
-					String valueContent = properties.getProperty(key);
+					String valueString = properties.getProperty(key);
 
-					Object value = ConfigurationHandler.read(valueContent);
+					Object value = ConfigurationHandler.read(valueString);
 
-					if ((value == null) && !valueContent.isEmpty()) {
+					if ((value == null) && !valueString.isEmpty()) {
 						_log.error(
 							"Key " + key + " is overrided with a non-empty " +
 								"content but decoded into a null value, " +
