@@ -148,6 +148,29 @@ public class RelatedObjectEntryOpenAPIContributor
 			});
 	}
 
+	private Content _getContent(ObjectRelationship objectRelationship)
+		throws Exception {
+
+		Content content = new Content();
+
+		MediaType mediaType = new MediaType();
+
+		Schema schema = new Schema();
+
+		ObjectDefinition objectDefinition =
+			_objectDefinitionLocalService.getObjectDefinition(
+				objectRelationship.getObjectDefinitionId2());
+
+		schema.set$ref(objectDefinition.getShortName());
+
+		mediaType.setSchema(schema);
+
+		content.addMediaType("application/json", mediaType);
+		content.addMediaType("application/xml", mediaType);
+
+		return content;
+	}
+
 	private String _getContentType(
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
@@ -203,30 +226,13 @@ public class RelatedObjectEntryOpenAPIContributor
 			}
 		};
 
-		MediaType mediaType = new MediaType();
-
-		ObjectDefinition objectDefinition =
-			_objectDefinitionLocalService.getObjectDefinition(
-				objectRelationship.getObjectDefinitionId2());
-
-		Schema schema = new Schema();
-
-		schema.set$ref(objectDefinition.getShortName());
-
-		mediaType.setSchema(schema);
-
-		Content content = new Content();
-
-		content.addMediaType("application/json", mediaType);
-		content.addMediaType("application/xml", mediaType);
-
-		ApiResponse defaultResponse = new ApiResponse();
-
-		defaultResponse.setContent(content);
-
 		ApiResponses apiResponses = new ApiResponses();
 
-		apiResponses.setDefault(defaultResponse);
+		ApiResponse apiResponse = new ApiResponse();
+
+		apiResponse.setContent(_getContent(objectRelationship));
+
+		apiResponses.setDefault(apiResponse);
 
 		return new Operation() {
 			{
