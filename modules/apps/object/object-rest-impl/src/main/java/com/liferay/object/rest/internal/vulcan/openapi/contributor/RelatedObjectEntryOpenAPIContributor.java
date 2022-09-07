@@ -148,7 +148,7 @@ public class RelatedObjectEntryOpenAPIContributor
 			});
 	}
 
-	private String _getExternalType(
+	private String _getContentType(
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
 		DTOConverter<?, ?> dtoConverter = _dtoConverterRegistry.getDTOConverter(
@@ -185,7 +185,7 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		String systemObjectDefinitionExternalType =
 			StringUtil.lowerCaseFirstLetter(
-				_getExternalType(systemObjectDefinitionMetadata));
+				_getContentType(systemObjectDefinitionMetadata));
 
 		String parameterName = systemObjectDefinitionExternalType + "Id";
 
@@ -239,7 +239,7 @@ public class RelatedObjectEntryOpenAPIContributor
 				responses(apiResponses);
 				tags(
 					Collections.singletonList(
-						_getExternalType(systemObjectDefinitionMetadata)));
+						_getContentType(systemObjectDefinitionMetadata)));
 			}
 		};
 	}
@@ -288,7 +288,7 @@ public class RelatedObjectEntryOpenAPIContributor
 		return StringBundler.concat(
 			StringPool.OPEN_CURLY_BRACE,
 			StringUtil.lowerCaseFirstLetter(
-				_getExternalType(systemObjectDefinitionMetadata)),
+				_getContentType(systemObjectDefinitionMetadata)),
 			"Id}");
 	}
 
