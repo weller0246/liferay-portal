@@ -74,9 +74,29 @@ public class RelatedObjectEntryOpenAPIContributor
 		}
 
 		List<SystemObjectDefinitionMetadata> systemObjectDefinitionMetadatas =
-			_getSystemObjectDefinitionsMetadata(
+			TransformUtil.transform(
 				_objectDefinitionLocalService.getSystemObjectDefinitions(),
-				uriInfo);
+				objectDefinition -> {
+					SystemObjectDefinitionMetadata
+						systemObjectDefinitionMetadata =
+							_systemObjectDefinitionMetadataTracker.
+								getSystemObjectDefinitionMetadata(
+									objectDefinition.getName());
+
+					URI uri = uriInfo.getBaseUri();
+
+					String path = uri.getPath();
+
+					if (path.contains(
+							_getSystemObjectBasePath(
+								systemObjectDefinitionMetadata.
+									getRESTContextPath()))) {
+
+						return systemObjectDefinitionMetadata;
+					}
+
+					return null;
+				});
 
 		for (SystemObjectDefinitionMetadata systemObjectDefinitionMetadata :
 				systemObjectDefinitionMetadatas) {
@@ -277,34 +297,6 @@ public class RelatedObjectEntryOpenAPIContributor
 			StringUtil.lowerCaseFirstLetter(
 				_getExternalType(systemObjectDefinitionMetadata)),
 			"Id}");
-	}
-
-	private List<SystemObjectDefinitionMetadata>
-		_getSystemObjectDefinitionsMetadata(
-			List<ObjectDefinition> systemObjectDefinitions, UriInfo uriInfo) {
-
-		return TransformUtil.transform(
-			systemObjectDefinitions,
-			objectDefinition -> {
-				SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
-					_systemObjectDefinitionMetadataTracker.
-						getSystemObjectDefinitionMetadata(
-							objectDefinition.getName());
-
-				URI uri = uriInfo.getBaseUri();
-
-				String path = uri.getPath();
-
-				if (path.contains(
-						_getSystemObjectBasePath(
-							systemObjectDefinitionMetadata.
-								getRESTContextPath()))) {
-
-					return systemObjectDefinitionMetadata;
-				}
-
-				return null;
-			});
 	}
 
 	private List<ObjectRelationship> _getSystemObjectRelationships(
