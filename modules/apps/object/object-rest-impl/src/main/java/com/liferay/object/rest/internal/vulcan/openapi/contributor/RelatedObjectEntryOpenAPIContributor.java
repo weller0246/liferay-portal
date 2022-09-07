@@ -23,7 +23,6 @@ import com.liferay.object.system.SystemObjectDefinitionMetadata;
 import com.liferay.object.system.SystemObjectDefinitionMetadataTracker;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.util.GetterUtil;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.util.PropsUtil;
@@ -284,26 +283,28 @@ public class RelatedObjectEntryOpenAPIContributor
 		_getSystemObjectDefinitionsMetadata(
 			List<ObjectDefinition> systemObjectDefinitions, UriInfo uriInfo) {
 
-		return ListUtil.filter(
-			TransformUtil.transform(
-				systemObjectDefinitions,
-				this::_getSystemObjectDefinitionsMetadata),
-			systemObjectDefinitionMetadata -> {
+		return TransformUtil.transform(
+			systemObjectDefinitions,
+			objectDefinition -> {
+				SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
+					_systemObjectDefinitionMetadataTracker.
+						getSystemObjectDefinitionMetadata(
+							objectDefinition.getName());
+
 				URI uri = uriInfo.getBaseUri();
 
 				String path = uri.getPath();
 
-				return path.contains(
-					_getSystemObjectBasePath(
-						systemObjectDefinitionMetadata.getRESTContextPath()));
+				if (path.contains(
+						_getSystemObjectBasePath(
+							systemObjectDefinitionMetadata.
+								getRESTContextPath()))) {
+
+					return systemObjectDefinitionMetadata;
+				}
+
+				return null;
 			});
-	}
-
-	private SystemObjectDefinitionMetadata _getSystemObjectDefinitionsMetadata(
-		ObjectDefinition objectDefinition) {
-
-		return _systemObjectDefinitionMetadataTracker.
-			getSystemObjectDefinitionMetadata(objectDefinition.getName());
 	}
 
 	private List<ObjectRelationship> _getSystemObjectRelationships(
