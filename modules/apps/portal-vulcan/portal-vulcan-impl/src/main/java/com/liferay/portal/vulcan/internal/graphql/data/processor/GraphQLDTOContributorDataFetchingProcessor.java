@@ -97,10 +97,10 @@ public class GraphQLDTOContributorDataFetchingProcessor {
 	}
 
 	public Page<Object> list(
-			List<String> aggregations, String filter,
+			List<String> aggregations, String filterString,
 			GraphQLDTOContributor graphQLDTOContributor,
 			HttpServletRequest httpServletRequest, int page, int pageSize,
-			String scopeKey, String search, String sort)
+			String scopeKey, String search, String sortsString)
 		throws Exception {
 
 		Aggregation aggregation = null;
@@ -121,15 +121,17 @@ public class GraphQLDTOContributorDataFetchingProcessor {
 				HashMapBuilder.<String, Serializable>put(
 					"companyId", CompanyThreadLocal.getCompanyId()
 				).put(
-					"filter", filter
+					"filter", filterString
 				).put(
 					"scopeKey", scopeKey
 				).build()),
 			_getFilter(
-				acceptLanguage, graphQLDTOContributor.getEntityModel(), filter),
+				acceptLanguage, graphQLDTOContributor.getEntityModel(),
+				filterString),
 			Pagination.of(page, pageSize), search,
 			_getSorts(
-				acceptLanguage, graphQLDTOContributor.getEntityModel(), sort));
+				acceptLanguage, graphQLDTOContributor.getEntityModel(),
+				sortsString));
 	}
 
 	public Object update(
