@@ -123,12 +123,6 @@ public class RelatedObjectEntryOpenAPIContributor
 		};
 	}
 
-	private String _getBaseUriPath(UriInfo uriInfo) {
-		URI baseURI = uriInfo.getBaseUri();
-
-		return baseURI.getPath();
-	}
-
 	private String _getExternalType(
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
@@ -294,9 +288,15 @@ public class RelatedObjectEntryOpenAPIContributor
 			TransformUtil.transform(
 				systemObjectDefinitions,
 				this::_getSystemObjectDefinitionsMetadata),
-			systemObjectDefinitionMetadata ->
-				_shouldGenerateSystemObjectEndpoints(
-					systemObjectDefinitionMetadata, uriInfo));
+			systemObjectDefinitionMetadata -> {
+				URI uri = uriInfo.getBaseUri();
+
+				String path = uri.getPath();
+
+				return path.contains(
+					_getSystemObjectBasePath(
+						systemObjectDefinitionMetadata.getRESTContextPath()));
+			});
 	}
 
 	private SystemObjectDefinitionMetadata _getSystemObjectDefinitionsMetadata(
@@ -318,17 +318,6 @@ public class RelatedObjectEntryOpenAPIContributor
 		}
 
 		return Collections.emptyList();
-	}
-
-	private boolean _shouldGenerateSystemObjectEndpoints(
-		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata,
-		UriInfo uriInfo) {
-
-		String baseURIPath = _getBaseUriPath(uriInfo);
-
-		return baseURIPath.contains(
-			_getSystemObjectBasePath(
-				systemObjectDefinitionMetadata.getRESTContextPath()));
 	}
 
 	@Reference
