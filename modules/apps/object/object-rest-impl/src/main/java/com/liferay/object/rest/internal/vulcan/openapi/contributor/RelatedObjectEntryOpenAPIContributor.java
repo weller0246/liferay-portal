@@ -45,7 +45,6 @@ import io.swagger.v3.oas.models.responses.ApiResponses;
 
 import java.net.URI;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -211,18 +210,14 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		String parameterName = systemObjectDefinitionExternalType + "Id";
 
-		List<Parameter> parameters = new ArrayList<Parameter>() {
-			{
-				add(
-					new Parameter() {
-						{
-							in("path");
-							name(parameterName);
-							required(true);
-						}
-					});
-			}
-		};
+		List<Parameter> parameters = Collections.singletonList(
+			new Parameter() {
+				{
+					in("path");
+					name(parameterName);
+					required(true);
+				}
+			});
 
 		ApiResponses apiResponses = new ApiResponses();
 
