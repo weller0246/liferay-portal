@@ -247,15 +247,13 @@ public class RelatedObjectEntryOpenAPIContributor
 	private String _getSystemObjectBasePath(
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
-		String systemObjectRestContextPath =
+		String restContextPath =
 			systemObjectDefinitionMetadata.getRESTContextPath();
 
-		String[] systemObjectRestContextPathSplit =
-			systemObjectRestContextPath.split(StringPool.SLASH);
+		String[] restContextPathParts = restContextPath.split(StringPool.SLASH);
 
 		return StringUtil.lowerCaseFirstLetter(
-			systemObjectRestContextPathSplit
-				[systemObjectRestContextPathSplit.length - 1]);
+			restContextPathParts[restContextPathParts.length - 1]);
 	}
 
 	private ObjectDefinition _getSystemObjectDefinition(
