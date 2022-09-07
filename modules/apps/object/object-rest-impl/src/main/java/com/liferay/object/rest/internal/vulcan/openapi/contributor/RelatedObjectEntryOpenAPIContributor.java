@@ -118,28 +118,25 @@ public class RelatedObjectEntryOpenAPIContributor
 				Paths paths = openAPI.getPaths();
 
 				paths.addPathItem(
-					_getPath(
-						systemObjectRelationship,
-						systemObjectDefinitionMetadata, uriInfo),
-					_createPathItem(
-						systemObjectRelationship,
-						systemObjectDefinitionMetadata));
+					StringBundler.concat(
+						StringPool.SLASH, _getJaxRsVersion(uriInfo),
+						StringPool.SLASH,
+						_getSystemObjectBasePath(
+							systemObjectDefinitionMetadata),
+						StringPool.SLASH,
+						_getSystemObjectDefinitionPathName(
+							systemObjectDefinitionMetadata),
+						StringPool.SLASH, systemObjectRelationship.getName()),
+					new PathItem() {
+						{
+							get(
+								_getOperation(
+									systemObjectRelationship,
+									systemObjectDefinitionMetadata));
+						}
+					});
 			}
 		}
-	}
-
-	private PathItem _createPathItem(
-			ObjectRelationship objectRelationship,
-			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata)
-		throws Exception {
-
-		return new PathItem() {
-			{
-				get(
-					_getOperation(
-						objectRelationship, systemObjectDefinitionMetadata));
-			}
-		};
 	}
 
 	private String _getExternalType(
@@ -236,19 +233,6 @@ public class RelatedObjectEntryOpenAPIContributor
 						_getExternalType(systemObjectDefinitionMetadata)));
 			}
 		};
-	}
-
-	private String _getPath(
-		ObjectRelationship objectRelationship,
-		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata,
-		UriInfo uriInfo) {
-
-		return StringBundler.concat(
-			StringPool.SLASH, _getJaxRsVersion(uriInfo), StringPool.SLASH,
-			_getSystemObjectBasePath(systemObjectDefinitionMetadata),
-			StringPool.SLASH,
-			_getSystemObjectDefinitionPathName(systemObjectDefinitionMetadata),
-			StringPool.SLASH, objectRelationship.getName());
 	}
 
 	private String _getSystemObjectBasePath(
