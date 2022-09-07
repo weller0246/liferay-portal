@@ -448,11 +448,10 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 			expectedJSONArray.put(version.toJSONObject());
 		}
 
-		JSONArray latestVersionsJSONArray = jsonObject.getJSONArray(
-			"allVersions");
+		JSONArray actualJSONArray = jsonObject.getJSONArray("allVersions");
 
 		Assert.assertEquals(
-			expectedJSONArray.toString(), latestVersionsJSONArray.toString());
+			expectedJSONArray.toString(), actualJSONArray.toString());
 	}
 
 	private void _assertContentDashboardItemLatestVersions(
@@ -463,17 +462,14 @@ public class GetContentDashboardItemInfoMVCResourceCommandTest {
 
 		ContentDashboardItem.Version version = versions.get(0);
 
-		JSONObject expectedVersionJSONObject = version.toJSONObject();
+		JSONObject expectedJSONObject = version.toJSONObject();
 
-		JSONArray latestVersionsJSONArray = jsonObject.getJSONArray(
-			"latestVersions");
+		JSONArray actualJSONArray = jsonObject.getJSONArray("latestVersions");
 
-		JSONObject actualVersionJSONObject =
-			latestVersionsJSONArray.getJSONObject(0);
+		JSONObject actualJSONObject = actualJSONArray.getJSONObject(0);
 
 		Assert.assertEquals(
-			expectedVersionJSONObject.toString(),
-			actualVersionJSONObject.toString());
+			expectedJSONObject.toString(), actualJSONObject.toString());
 	}
 
 	private MockLiferayResourceRequest _getMockLiferayResourceRequest(
