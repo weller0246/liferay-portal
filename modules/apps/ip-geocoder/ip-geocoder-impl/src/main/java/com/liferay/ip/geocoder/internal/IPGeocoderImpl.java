@@ -21,6 +21,7 @@ import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.FileUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.Validator;
 
 import com.maxmind.db.CHMCache;
@@ -43,6 +44,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.ConfigurationPolicy;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Modified;
+import org.osgi.service.component.annotations.Reference;
 
 /**
  * @author Brian Wing Shun Chan
@@ -177,7 +179,20 @@ public class IPGeocoderImpl implements IPGeocoder {
 	}
 
 	private String _getIPAddress(HttpServletRequest httpServletRequest) {
-		//return "142.251.134.142";
+
+		// diplomatie.gouv.fr resolves to 77.158.88.130
+		// gov.uk resolves to 151.101.192.144
+		// state.gov resolves to 34.233.79.178
+
+		HttpServletRequest originalHttpServletRequest =
+			_portal.getOriginalServletRequest(httpServletRequest);
+
+		String mockIPGeocoderRemoteAddr =
+			originalHttpServletRequest.getParameter("mockIPGeocoderRemoteAddr");
+
+		if (mockIPGeocoderRemoteAddr != null) {
+			return mockIPGeocoderRemoteAddr;
+		}
 
 		return httpServletRequest.getRemoteAddr();
 	}
@@ -185,6 +200,10 @@ public class IPGeocoderImpl implements IPGeocoder {
 	private static final Log _log = LogFactoryUtil.getLog(IPGeocoderImpl.class);
 
 	private volatile DatabaseReader _databaseReader;
+
+	@Reference
+	private Portal _portal;
+
 	private volatile Map<String, String> _properties;
 
 }
