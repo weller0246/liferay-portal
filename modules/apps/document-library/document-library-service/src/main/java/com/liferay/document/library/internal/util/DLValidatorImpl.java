@@ -96,19 +96,17 @@ public final class DLValidatorImpl implements DLValidator {
 
 	@Override
 	public Map<String, Long> getMimeTypeSizeLimit(long groupId) {
-		long companyId = _getCompanyId(groupId);
-
 		Map<String, Long> mimeTypeSizeLimit = new HashMap<>(
 			_dlSizeLimitManagedServiceFactory.getGroupMimeTypeSizeLimit(
 				groupId));
 
 		Map<String, Long> companyMimeTypeSizeLimit =
 			_dlSizeLimitManagedServiceFactory.getCompanyMimeTypeSizeLimit(
-				companyId);
+				_getCompanyId(groupId));
 
 		companyMimeTypeSizeLimit.forEach(
 			(key, value) -> mimeTypeSizeLimit.merge(
-				key, value, (v1, v2) -> _min(v1, v2)));
+				key, value, (value1, value2) -> _min(value1, value2)));
 
 		return mimeTypeSizeLimit;
 	}
