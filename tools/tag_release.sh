@@ -22,7 +22,7 @@ function main {
 		local hash=$(git rev-parse HEAD)
 		local release_info_version_trivial=$(get_property "release.info.version.trivial")
 
-		if [ branch != "master" ]
+		if [ ${branch} != "master" ]
 		then
 			release_info_version_trivial=$((${release_info_version_trivial} - 1))
 
@@ -33,14 +33,14 @@ function main {
 
 		push_tag 7.4.3.${release_info_version_trivial}-ga${release_info_version_trivial} ${hash}
 
-		if [ branch != "master" ]
+		if [ ${branch} != "master" ]
 		then
 			delete_branch release-7.4.13.${release_info_version_trivial}
 		fi
 
 		cd ../liferay-portal-ee
 
-		if [ branch != "master" ]
+		if [ ${branch} != "master" ]
 		then
 			git fetch -f ../liferay-portal ${hash}:release-7.4.13.${release_info_version_trivial}
 		else
@@ -51,7 +51,7 @@ function main {
 
 		push_tag 7.4.13-u${release_info_version_trivial} ${hash}
 
-		if [ branch != "master" ]
+		if [ ${branch} != "master" ]
 		then
 			delete_branch release-7.4.13.${release_info_version_trivial}
 		fi
