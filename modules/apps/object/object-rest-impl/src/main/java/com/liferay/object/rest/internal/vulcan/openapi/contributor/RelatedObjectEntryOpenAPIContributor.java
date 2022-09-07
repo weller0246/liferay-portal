@@ -204,11 +204,11 @@ public class RelatedObjectEntryOpenAPIContributor
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata)
 		throws Exception {
 
-		String systemObjectDefinitionExternalType =
+		String lowerCaseFirstLetterContentType =
 			StringUtil.lowerCaseFirstLetter(
 				_getContentType(systemObjectDefinitionMetadata));
 
-		String parameterName = systemObjectDefinitionExternalType + "Id";
+		String parameterName = lowerCaseFirstLetterContentType + "Id";
 
 		return new Operation() {
 			{
