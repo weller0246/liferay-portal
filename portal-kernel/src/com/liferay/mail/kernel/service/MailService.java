@@ -17,7 +17,6 @@ package com.liferay.mail.kernel.service;
 import com.liferay.mail.kernel.model.Account;
 import com.liferay.mail.kernel.model.Filter;
 import com.liferay.mail.kernel.model.MailMessage;
-import com.liferay.portal.kernel.change.tracking.CTAware;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.exception.SystemException;
 import com.liferay.portal.kernel.transaction.Transactional;
@@ -29,7 +28,6 @@ import javax.mail.Session;
 /**
  * @author Brian Wing Shun Chan
  */
-@CTAware
 @Transactional(rollbackFor = {PortalException.class, SystemException.class})
 public interface MailService {
 
