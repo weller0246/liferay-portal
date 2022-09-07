@@ -153,7 +153,6 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 	protected void activate(Map<String, Object> properties) {
 		_ddmDataProviderConfiguration = ConfigurableUtil.createConfigurable(
 			DDMDataProviderConfiguration.class, properties);
-
 		_portalCache =
 			(PortalCache<String, DDMDataProviderResponse>)
 				_multiVMPool.getPortalCache(
