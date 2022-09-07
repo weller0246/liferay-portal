@@ -17,10 +17,7 @@ package com.liferay.address.web.internal.application.list;
 import com.liferay.address.web.internal.constants.AddressPortletKeys;
 import com.liferay.application.list.BasePanelApp;
 import com.liferay.application.list.PanelApp;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Portlet;
-import com.liferay.portal.kernel.security.permission.PermissionChecker;
 import com.liferay.portal.kernel.util.PortletCategoryKeys;
 
 import org.osgi.service.component.annotations.Component;
@@ -42,13 +39,6 @@ public class CountriesManagementAdminPanelApp extends BasePanelApp {
 	@Override
 	public String getPortletId() {
 		return AddressPortletKeys.COUNTRIES_MANAGEMENT_ADMIN;
-	}
-
-	@Override
-	public boolean isShow(PermissionChecker permissionChecker, Group group)
-		throws PortalException {
-
-		return super.isShow(permissionChecker, group);
 	}
 
 	@Override
