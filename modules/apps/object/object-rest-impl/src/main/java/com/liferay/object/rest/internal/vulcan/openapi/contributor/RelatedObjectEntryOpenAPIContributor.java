@@ -47,7 +47,6 @@ import java.net.URI;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -212,10 +211,9 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		String parameterName = systemObjectDefinitionExternalType + "Id";
 
-		Map<String, Parameter> parameters = new HashMap<String, Parameter>() {
+		List<Parameter> parameters = new ArrayList<Parameter>() {
 			{
-				put(
-					parameterName,
+				add(
 					new Parameter() {
 						{
 							in("path");
@@ -241,7 +239,7 @@ public class RelatedObjectEntryOpenAPIContributor
 						"get", systemObjectDefinitionMetadata.getName(),
 						StringUtil.upperCaseFirstLetter(
 							objectRelationship.getName())));
-				parameters(new ArrayList<>(parameters.values()));
+				parameters(parameters);
 				responses(apiResponses);
 				tags(
 					Collections.singletonList(

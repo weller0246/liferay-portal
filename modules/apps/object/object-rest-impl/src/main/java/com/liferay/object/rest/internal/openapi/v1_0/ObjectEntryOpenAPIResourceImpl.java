@@ -214,7 +214,7 @@ public class ObjectEntryOpenAPIResourceImpl
 		String httpMethod, ObjectRelationship objectRelationship,
 		ObjectDefinition relatedObjectDefinition, Operation operation) {
 
-		Map<String, Parameter> parameters = new HashMap<>();
+		List<Parameter> parameters = new ArrayList<>();
 
 		for (Parameter parameter : operation.getParameters()) {
 			String parameterName = parameter.getName();
@@ -238,8 +238,7 @@ public class ObjectEntryOpenAPIResourceImpl
 
 			String finalParameterName = parameterName;
 
-			parameters.put(
-				parameter.getName(),
+			parameters.add(
 				new Parameter() {
 					{
 						in(parameter.getIn());
@@ -258,7 +257,7 @@ public class ObjectEntryOpenAPIResourceImpl
 						StringUtil.upperCaseFirstLetter(
 							objectRelationship.getName()),
 						relatedObjectDefinition.getShortName()));
-				parameters(new ArrayList<>(parameters.values()));
+				parameters(parameters);
 				responses(operation.getResponses());
 				tags(operation.getTags());
 			}
