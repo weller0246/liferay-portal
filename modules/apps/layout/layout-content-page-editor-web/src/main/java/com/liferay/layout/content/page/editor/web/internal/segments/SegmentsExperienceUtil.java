@@ -415,7 +415,7 @@ public class SegmentsExperienceUtil {
 			newFragmentEntryLink.setSegmentsExperienceId(
 				targetSegmentsExperienceId);
 
-			String newNamespace = StringUtil.randomId();
+			String newNamespace = fragmentEntryLink.getNamespace();
 
 			newFragmentEntryLink.setEditableValues(
 				_getNewEditableValues(
