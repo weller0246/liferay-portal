@@ -136,7 +136,7 @@ public class ObjectEntriesTableFDSView extends BaseTableFDSView {
 	private void _addFDSTableSchemaField(
 		String businessType, String contentRenderer, String dbType,
 		FDSTableSchemaBuilder fdsTableSchemaBuilder, String fieldName,
-		String label, boolean sortable, boolean localizeLabel) {
+		String label, boolean localizeLabel, boolean sortable) {
 
 		FDSTableSchemaField fdsTableSchemaField = new FDSTableSchemaField();
 
@@ -152,8 +152,8 @@ public class ObjectEntriesTableFDSView extends BaseTableFDSView {
 
 			stringFDSTableSchemaField.setFieldName(fieldName);
 			stringFDSTableSchemaField.setLabel(label);
-			stringFDSTableSchemaField.setTruncate(true);
 			stringFDSTableSchemaField.setLocalizeLabel(localizeLabel);
+			stringFDSTableSchemaField.setTruncate(true);
 
 			fdsTableSchemaBuilder.add(stringFDSTableSchemaField);
 
@@ -246,7 +246,7 @@ public class ObjectEntriesTableFDSView extends BaseTableFDSView {
 				fdsTableSchemaBuilder,
 				_getFieldName(
 					objectField.getBusinessType(), objectField.getName()),
-				label, objectField.isIndexed(), false);
+				label, false, objectField.isIndexed());
 		}
 		else if (Objects.equals(
 					objectField.getRelationshipType(),
