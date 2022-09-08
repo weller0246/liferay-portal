@@ -260,6 +260,11 @@ public class AccountGroupLocalServiceImpl
 		AccountGroup accountGroup = accountGroupPersistence.fetchByPrimaryKey(
 			accountGroupId);
 
+		int nameMaxLength = ModelHintsUtil.getMaxLength(
+			AccountGroup.class.getName(), "name");
+
+		name = StringUtil.shorten(name, nameMaxLength);
+
 		_validateName(name);
 
 		accountGroup.setDescription(description);
