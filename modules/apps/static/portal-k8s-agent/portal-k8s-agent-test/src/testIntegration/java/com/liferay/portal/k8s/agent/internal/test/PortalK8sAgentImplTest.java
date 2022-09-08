@@ -128,8 +128,8 @@ public class PortalK8sAgentImplTest {
 
 		_agentConfigurationHolder = new CreatingConfigurationHolder(
 			_configurationAdmin , PortalK8sAgentConfiguration.class.getName());
-		_portalK8sConfigMapModifierHolder =
-			new PortalK8sConfigMapModifierHolder(_bundleContext);
+		_portalK8sConfigMapModifierCloseableHolder =
+			new PortalK8sConfigMapModifierCloseableHolder(_bundleContext);
 
 		_agentConfigurationHolder.update(
 			HashMapDictionaryBuilder.<String, Object>put(
@@ -149,7 +149,7 @@ public class PortalK8sAgentImplTest {
 			).build());
 
 		_portalK8sConfigMapModifier =
-			_portalK8sConfigMapModifierHolder.waitForService(2000);
+			_portalK8sConfigMapModifierCloseableHolder.waitForService(2000);
 
 		Assert.assertNotNull(_portalK8sConfigMapModifier);
 	}
@@ -162,7 +162,7 @@ public class PortalK8sAgentImplTest {
 
 		_kubernetesMockServer.destroy();
 
-		_portalK8sConfigMapModifierHolder.close();
+		_portalK8sConfigMapModifierCloseableHolder.close();
 	}
 
 	@Test
@@ -332,12 +332,12 @@ public class PortalK8sAgentImplTest {
 		}
 	}
 
-	public static class PortalK8sConfigMapModifierHolder
+	public static class PortalK8sConfigMapModifierCloseableHolder
 		extends CloseableHolder
 			<ServiceTracker
 				<PortalK8sConfigMapModifier, PortalK8sConfigMapModifier>> {
 
-		public PortalK8sConfigMapModifierHolder(
+		public PortalK8sConfigMapModifierCloseableHolder(
 				BundleContext bundleContext)
 			throws Exception {
 
@@ -384,7 +384,7 @@ public class PortalK8sAgentImplTest {
 	private static NamespacedKubernetesClient _kubernetesMockClient;
 	private static KubernetesMockServer _kubernetesMockServer;
 	private static PortalK8sConfigMapModifier _portalK8sConfigMapModifier;
-	private static PortalK8sConfigMapModifierHolder
-		_portalK8sConfigMapModifierHolder;
+	private static PortalK8sConfigMapModifierCloseableHolder
+		_portalK8sConfigMapModifierCloseableHolder;
 
 }
