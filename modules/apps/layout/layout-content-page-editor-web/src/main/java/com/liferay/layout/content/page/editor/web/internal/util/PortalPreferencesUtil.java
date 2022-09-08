@@ -57,10 +57,10 @@ public class PortalPreferencesUtil {
 	private static String[] _removeNumberPrefix(String[] numberedValues) {
 		String[] sortedValues = new String[numberedValues.length];
 
-		Map<String, String> numberValueMap = new HashMap<>();
+		Map<String, String> numberValuesMap = new HashMap<>();
 
 		for (String numberedValue : numberedValues) {
-			numberValueMap.put(
+			numberValuesMap.put(
 				numberedValue.substring(
 					0, numberedValue.indexOf(StringPool.DOUBLE_DOLLAR)),
 				numberedValue.substring(
@@ -68,7 +68,7 @@ public class PortalPreferencesUtil {
 		}
 
 		for (int i = 0; i < numberedValues.length; i++) {
-			sortedValues[i] = numberValueMap.get(String.valueOf(i));
+			sortedValues[i] = numberValuesMap.get(String.valueOf(i));
 		}
 
 		return sortedValues;

@@ -93,15 +93,15 @@ public class PortletCategoryManager {
 				themeDisplay.getCompanyId(), themeDisplay.getLayout(),
 				rootPortletCategory, themeDisplay.getLayoutTypePortlet());
 
-		Map<String, JSONObject> portletCategoryJSONObjectMap =
-			_getPortletCategoryJSONObjectMap(
+		Map<String, JSONObject> portletCategoryJSONObjectsMap =
+			_getPortletCategoryJSONObjectsMap(
 				_getHighlightedPortletIds(
 					httpServletRequest, highlightedPortletCategory),
 				httpServletRequest, portletCategory, themeDisplay);
 
 		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-158737"))) {
 			return JSONUtil.toJSONArray(
-				new ArrayList<>(portletCategoryJSONObjectMap.values()),
+				new ArrayList<>(portletCategoryJSONObjectsMap.values()),
 				portletCategoryJSONObject -> portletCategoryJSONObject);
 		}
 
@@ -111,7 +111,7 @@ public class PortletCategoryManager {
 
 		if (sortedPortletCategoryKeys.isEmpty()) {
 			return JSONUtil.toJSONArray(
-				new ArrayList<>(portletCategoryJSONObjectMap.values()),
+				new ArrayList<>(portletCategoryJSONObjectsMap.values()),
 				portletCategoryJSONObject -> portletCategoryJSONObject);
 		}
 
@@ -120,7 +120,7 @@ public class PortletCategoryManager {
 
 		for (String portletCategoryKey : sortedPortletCategoryKeys) {
 			JSONObject portletCategoryJSONObject =
-				portletCategoryJSONObjectMap.remove(portletCategoryKey);
+				portletCategoryJSONObjectsMap.remove(portletCategoryKey);
 
 			if (portletCategoryJSONObject == null) {
 				continue;
@@ -130,7 +130,7 @@ public class PortletCategoryManager {
 		}
 
 		sortedPortletCategoryJSONObjectsList.addAll(
-			portletCategoryJSONObjectMap.values());
+			portletCategoryJSONObjectsMap.values());
 
 		return JSONUtil.toJSONArray(
 			sortedPortletCategoryJSONObjectsList,
@@ -171,13 +171,13 @@ public class PortletCategoryManager {
 		return highlightedPortletIds;
 	}
 
-	private Map<String, JSONObject> _getPortletCategoryJSONObjectMap(
+	private Map<String, JSONObject> _getPortletCategoryJSONObjectsMap(
 			Set<String> highlightedPortletIds,
 			HttpServletRequest httpServletRequest,
 			PortletCategory portletCategory, ThemeDisplay themeDisplay)
 		throws Exception {
 
-		Map<String, JSONObject> portletCategoryJSONObjectMap =
+		Map<String, JSONObject> portletCategoryJSONObjectsMap =
 			new LinkedHashMap<>();
 
 		List<PortletCategory> portletCategories = ListUtil.fromCollection(
@@ -196,14 +196,14 @@ public class PortletCategoryManager {
 				currentPortletCategory.getPath(), new String[] {"/", "."},
 				new String[] {"-", "-"});
 
-			portletCategoryJSONObjectMap.put(
+			portletCategoryJSONObjectsMap.put(
 				portletCategoryKey,
 				JSONUtil.put(
 					"categories",
 					() -> {
 						Map<String, JSONObject>
 							childPortletCategoryJSONObjectsMap =
-								_getPortletCategoryJSONObjectMap(
+								_getPortletCategoryJSONObjectsMap(
 									highlightedPortletIds, httpServletRequest,
 									currentPortletCategory, themeDisplay);
 
@@ -224,7 +224,7 @@ public class PortletCategoryManager {
 				));
 		}
 
-		return portletCategoryJSONObjectMap;
+		return portletCategoryJSONObjectsMap;
 	}
 
 	private String _getPortletCategoryTitle(

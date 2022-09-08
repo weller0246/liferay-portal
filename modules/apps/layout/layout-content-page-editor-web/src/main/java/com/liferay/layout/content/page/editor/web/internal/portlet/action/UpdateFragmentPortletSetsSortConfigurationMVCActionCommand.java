@@ -185,7 +185,6 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommand
 
 		String fragmentCollectionKeys = ParamUtil.getString(
 			actionRequest, "fragmentCollectionKeys");
-
 		String portletCategoryKeys = ParamUtil.getString(
 			actionRequest, "portletCategoryKeys");
 
