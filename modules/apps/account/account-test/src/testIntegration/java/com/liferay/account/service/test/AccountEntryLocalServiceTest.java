@@ -160,12 +160,10 @@ public class AccountEntryLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
-			String message = exception.getMessage();
+		catch (AccountEntryNameException accountEntryNameException) {
+			String message = accountEntryNameException.getMessage();
 
 			Assert.assertTrue(message.contains("Name is null"));
-
-			Assert.assertTrue(exception instanceof AccountEntryNameException);
 		}
 
 		AccountEntry accountEntry = _addAccountEntry();
@@ -181,12 +179,10 @@ public class AccountEntryLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
-			String message = exception.getMessage();
+		catch (AccountEntryNameException accountEntryNameException) {
+			String message = accountEntryNameException.getMessage();
 
 			Assert.assertTrue(message.contains("Name is null"));
-
-			Assert.assertTrue(exception instanceof AccountEntryNameException);
 		}
 	}
 

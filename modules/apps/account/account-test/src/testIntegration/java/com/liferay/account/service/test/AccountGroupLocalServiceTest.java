@@ -77,12 +77,10 @@ public class AccountGroupLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
-			String message = exception.getMessage();
+		catch (AccountGroupNameException accountGroupNameException) {
+			String message = accountGroupNameException.getMessage();
 
 			Assert.assertTrue(message.contains("Name is null"));
-
-			Assert.assertTrue(exception instanceof AccountGroupNameException);
 		}
 
 		AccountGroup accountGroup = _addAccountGroup();
@@ -93,12 +91,10 @@ public class AccountGroupLocalServiceTest {
 
 			Assert.fail();
 		}
-		catch (Exception exception) {
-			String message = exception.getMessage();
+		catch (AccountGroupNameException accountGroupNameException) {
+			String message = accountGroupNameException.getMessage();
 
 			Assert.assertTrue(message.contains("Name is null"));
-
-			Assert.assertTrue(exception instanceof AccountGroupNameException);
 		}
 	}
 
