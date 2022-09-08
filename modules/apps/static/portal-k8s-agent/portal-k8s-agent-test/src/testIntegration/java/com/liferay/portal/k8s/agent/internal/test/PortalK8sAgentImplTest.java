@@ -105,9 +105,9 @@ public class PortalK8sAgentImplTest {
 				public MockResponse dispatch(RecordedRequest request)
 					throws InterruptedException {
 
-					try (ThreadContextClassLoaderSwappingHolder
-							threadContextClassLoaderSwappingHolder =
-								new ThreadContextClassLoaderSwappingHolder(
+					try (ThreadContextClassLoaderCloseableHolder
+							threadContextClassLoaderCloseableHolder =
+								new ThreadContextClassLoaderCloseableHolder(
 									DefaultKubernetesClient.class)) {
 
 						return super.dispatch(request);
