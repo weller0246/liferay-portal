@@ -73,6 +73,13 @@ public class AccountGroupLocalServiceImpl
 			long userId, String description, String name)
 		throws PortalException {
 
+		int nameMaxLength = ModelHintsUtil.getMaxLength(
+			AccountGroup.class.getName(), "name");
+
+		name = StringUtil.shorten(name, nameMaxLength);
+
+		_validateName(name);
+
 		long accountGroupId = counterLocalService.increment();
 
 		AccountGroup accountGroup = accountGroupPersistence.create(
@@ -86,14 +93,6 @@ public class AccountGroupLocalServiceImpl
 
 		accountGroup.setDefaultAccountGroup(false);
 		accountGroup.setDescription(description);
-
-		int nameMaxLength = ModelHintsUtil.getMaxLength(
-			AccountGroup.class.getName(), "name");
-
-		name = StringUtil.shorten(name, nameMaxLength);
-
-		_validateName(name);
-
 		accountGroup.setName(name);
 
 		accountGroup.setType(AccountConstants.ACCOUNT_GROUP_TYPE_STATIC);
@@ -257,15 +256,15 @@ public class AccountGroupLocalServiceImpl
 			long accountGroupId, String description, String name)
 		throws PortalException {
 
-		AccountGroup accountGroup = accountGroupPersistence.fetchByPrimaryKey(
-			accountGroupId);
-
 		int nameMaxLength = ModelHintsUtil.getMaxLength(
 			AccountGroup.class.getName(), "name");
 
 		name = StringUtil.shorten(name, nameMaxLength);
 
 		_validateName(name);
+
+		AccountGroup accountGroup = accountGroupPersistence.fetchByPrimaryKey(
+			accountGroupId);
 
 		accountGroup.setDescription(description);
 		accountGroup.setName(name);
