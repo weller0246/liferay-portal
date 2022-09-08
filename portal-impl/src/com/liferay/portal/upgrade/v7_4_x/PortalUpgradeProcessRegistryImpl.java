@@ -202,7 +202,9 @@ public class PortalUpgradeProcessRegistryImpl
 			UpgradeProcessFactory.dropColumns("Company", "system"));
 
 		upgradeVersionTreeMap.put(
-			new Version(18, 0, 0), new UpgradeAddressListTypeId());
+			new Version(18, 0, 0),
+			UpgradeProcessFactory.alterColumnName(
+				"Address", "typeId", "listTypeId LONG"));
 	}
 
 }
