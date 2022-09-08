@@ -88,10 +88,6 @@ public class AddressDisplay {
 	private AddressDisplay() {
 		_addressId = 0;
 		_city = StringPool.BLANK;
-		_name = StringPool.BLANK;
-		_region = null;
-		_street = StringPool.BLANK;
-		_type = StringPool.BLANK;
 
 		ListType listType = ListTypeLocalServiceUtil.getListType(
 			"billing-and-shipping",
@@ -99,6 +95,10 @@ public class AddressDisplay {
 
 		_listTypeId = listType.getListTypeId();
 
+		_name = StringPool.BLANK;
+		_region = null;
+		_street = StringPool.BLANK;
+		_type = StringPool.BLANK;
 		_zip = StringPool.BLANK;
 	}
 
