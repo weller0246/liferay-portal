@@ -24,7 +24,6 @@ import com.liferay.account.service.persistence.AccountGroupRelPersistence;
 import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.ResourceConstants;
 import com.liferay.portal.kernel.model.SystemEventConstants;
 import com.liferay.portal.kernel.model.User;
@@ -46,7 +45,6 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
@@ -72,11 +70,6 @@ public class AccountGroupLocalServiceImpl
 	public AccountGroup addAccountGroup(
 			long userId, String description, String name)
 		throws PortalException {
-
-		int nameMaxLength = ModelHintsUtil.getMaxLength(
-			AccountGroup.class.getName(), "name");
-
-		name = StringUtil.shorten(name, nameMaxLength);
 
 		_validateName(name);
 
@@ -255,11 +248,6 @@ public class AccountGroupLocalServiceImpl
 	public AccountGroup updateAccountGroup(
 			long accountGroupId, String description, String name)
 		throws PortalException {
-
-		int nameMaxLength = ModelHintsUtil.getMaxLength(
-			AccountGroup.class.getName(), "name");
-
-		name = StringUtil.shorten(name, nameMaxLength);
 
 		_validateName(name);
 
