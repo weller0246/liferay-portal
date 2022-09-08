@@ -127,7 +127,7 @@ public class PortalK8sAgentImplTest {
 		_kubernetesMockClient = _kubernetesMockServer.createClient();
 
 		_agentConfigurationHolder = new CreatingConfigurationHolder(
-			_configurationAdmin , PortalK8sAgentConfiguration.class.getName());
+			_configurationAdmin, PortalK8sAgentConfiguration.class.getName());
 		_portalK8sConfigMapModifierCloseableHolder =
 			new PortalK8sConfigMapModifierCloseableHolder(_bundleContext);
 
@@ -292,7 +292,7 @@ public class PortalK8sAgentImplTest {
 
 		try (ConfigurationHolder configurationHolder =
 				new AwaitingConfigurationHolder(
-					_bundleContext, _configurationAdmin , "test.pid", 10000,
+					_bundleContext, _configurationAdmin, "test.pid", 10000,
 					TimeUnit.MILLISECONDS)) {
 
 			Dictionary<String, Object> properties =
