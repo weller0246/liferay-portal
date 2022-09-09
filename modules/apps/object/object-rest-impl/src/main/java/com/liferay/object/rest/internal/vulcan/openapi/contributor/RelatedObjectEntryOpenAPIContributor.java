@@ -150,7 +150,7 @@ public class RelatedObjectEntryOpenAPIContributor
 		paths.addPathItem(
 			StringBundler.concat(
 				name, StringPool.SLASH,
-				_getIdParameterTemplate(objectDefinition.getShortName()),
+				_getIdParameterTemplate(objectDefinition.getShortName())),
 			new PathItem() {
 				{
 					put(
@@ -271,28 +271,23 @@ public class RelatedObjectEntryOpenAPIContributor
 		ObjectRelationship objectRelationship,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
-		String upperCaseFirstLetterObjectRelationShipName =
-			StringUtil.upperCaseFirstLetter(
-				objectRelationship.getName());
+		String upperCaseFirstLetterObjectRelationshipName =
+			StringUtil.upperCaseFirstLetter(objectRelationship.getName());
+
+		DTOConverter<?, ?> dtoConverter = _dtoConverterRegistry.getDTOConverter(
+			systemObjectDefinitionMetadata.getModelClassName());
 
 		return new Operation() {
 			{
-				operationId("put" + upperCaseFirstLetterObjectRelationShipName);
+				operationId("put" + upperCaseFirstLetterObjectRelationshipName);
 				parameters(
 					Arrays.asList(
 						new Parameter() {
 							{
 								in("path");
-
-								DTOConverter<?, ?> dtoConverter =
-									_dtoConverterRegistry.getDTOConverter(
-										systemObjectDefinitionMetadata.
-											getModelClassName());
-
 								name(
 									_getIdParameterName(
 										dtoConverter.getContentType()));
-
 								required(true);
 							}
 						},
