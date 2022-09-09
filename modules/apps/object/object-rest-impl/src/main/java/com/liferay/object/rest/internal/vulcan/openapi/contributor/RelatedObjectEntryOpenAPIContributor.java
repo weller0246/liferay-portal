@@ -129,14 +129,16 @@ public class RelatedObjectEntryOpenAPIContributor
 
 		Paths paths = openAPI.getPaths();
 
+		String name = StringBundler.concat(
+			StringPool.SLASH, _getJaxRsVersion(uriInfo), StringPool.SLASH,
+			_getSystemObjectBasePath(systemObjectDefinitionMetadata),
+			StringPool.SLASH,
+			_getIdParameterTemplate(
+				_getContentType(systemObjectDefinitionMetadata)),
+			StringPool.SLASH, systemObjectRelationship.getName());
+
 		paths.addPathItem(
-			StringBundler.concat(
-				StringPool.SLASH, _getJaxRsVersion(uriInfo), StringPool.SLASH,
-				_getSystemObjectBasePath(systemObjectDefinitionMetadata),
-				StringPool.SLASH,
-				_getSystemObjectDefinitionPathName(
-					systemObjectDefinitionMetadata),
-				StringPool.SLASH, systemObjectRelationship.getName()),
+			name,
 			new PathItem() {
 				{
 					get(
@@ -145,16 +147,9 @@ public class RelatedObjectEntryOpenAPIContributor
 							systemObjectDefinitionMetadata));
 				}
 			});
-
 		paths.addPathItem(
 			StringBundler.concat(
-				StringPool.SLASH, _getJaxRsVersion(uriInfo), StringPool.SLASH,
-				_getSystemObjectBasePath(systemObjectDefinitionMetadata),
-				StringPool.SLASH,
-				_getSystemObjectDefinitionPathName(
-					systemObjectDefinitionMetadata),
-				StringPool.SLASH, systemObjectRelationship.getName(),
-				StringPool.SLASH,
+				name, StringPool.SLASH,
 				_getObjectDefinitionPathName(objectDefinition)),
 			new PathItem() {
 				{
@@ -369,13 +364,6 @@ public class RelatedObjectEntryOpenAPIContributor
 		}
 
 		return null;
-	}
-
-	private String _getSystemObjectDefinitionPathName(
-		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
-
-		return _getIdParameterTemplate(
-			_getContentType(systemObjectDefinitionMetadata));
 	}
 
 	private List<ObjectRelationship> _getSystemObjectRelationships(
