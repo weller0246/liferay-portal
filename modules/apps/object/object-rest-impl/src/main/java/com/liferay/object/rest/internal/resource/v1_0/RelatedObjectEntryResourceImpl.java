@@ -125,7 +125,7 @@ public class RelatedObjectEntryResourceImpl
 				objectRelationship.getObjectDefinitionId1());
 
 		if (Objects.equals(
-				_getRestContextPath(objectDefinition), restContextPath)) {
+				_getRESTContextPath(objectDefinition), restContextPath)) {
 
 			return objectDefinition;
 		}
@@ -212,7 +212,7 @@ public class RelatedObjectEntryResourceImpl
 			objectRelationship.getObjectDefinitionId2());
 	}
 
-	private String _getRestContextPath(ObjectDefinition objectDefinition) {
+	private String _getRESTContextPath(ObjectDefinition objectDefinition) {
 		if (objectDefinition.isSystem()) {
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata =
 				_systemObjectDefinitionMetadataTracker.
