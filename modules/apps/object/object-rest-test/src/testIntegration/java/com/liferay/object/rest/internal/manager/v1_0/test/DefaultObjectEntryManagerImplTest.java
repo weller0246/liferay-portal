@@ -278,30 +278,6 @@ public class DefaultObjectEntryManagerImplTest {
 			HashMapBuilder.put(
 				"filter",
 				_buildInExpressionFilterString(
-					oneToManyRelationshipFieldName.substring(
-						oneToManyRelationshipFieldName.lastIndexOf("_") + 1),
-					true,
-					MapUtil.getString(
-						objectEntry1.getProperties(),
-						oneToManyRelationshipFieldName))
-			).build(),
-			objectEntry1);
-		_testGetObjectEntries(
-			HashMapBuilder.put(
-				"filter",
-				_buildInExpressionFilterString(
-					oneToManyRelationshipFieldName.substring(
-						oneToManyRelationshipFieldName.lastIndexOf("_") + 1),
-					false,
-					MapUtil.getString(
-						objectEntry1.getProperties(),
-						oneToManyRelationshipFieldName))
-			).build(),
-			objectEntry2);
-		_testGetObjectEntries(
-			HashMapBuilder.put(
-				"filter",
-				_buildInExpressionFilterString(
 					"picklistObjectFieldName", true, picklistObjectFieldValue1)
 			).build(),
 			objectEntry1);
@@ -325,6 +301,30 @@ public class DefaultObjectEntryManagerImplTest {
 				_buildLambdaExpressionFilterString(
 					"status", false, WorkflowConstants.STATUS_APPROVED)
 			).build());
+		_testGetObjectEntries(
+			HashMapBuilder.put(
+				"filter",
+				_buildInExpressionFilterString(
+					oneToManyRelationshipFieldName.substring(
+						oneToManyRelationshipFieldName.lastIndexOf("_") + 1),
+					true,
+					MapUtil.getString(
+						objectEntry1.getProperties(),
+						oneToManyRelationshipFieldName))
+			).build(),
+			objectEntry1);
+		_testGetObjectEntries(
+			HashMapBuilder.put(
+				"filter",
+				_buildInExpressionFilterString(
+					oneToManyRelationshipFieldName.substring(
+						oneToManyRelationshipFieldName.lastIndexOf("_") + 1),
+					false,
+					MapUtil.getString(
+						objectEntry1.getProperties(),
+						oneToManyRelationshipFieldName))
+			).build(),
+			objectEntry2);
 		_testGetObjectEntries(
 			HashMapBuilder.put(
 				"search", picklistObjectFieldValue1
