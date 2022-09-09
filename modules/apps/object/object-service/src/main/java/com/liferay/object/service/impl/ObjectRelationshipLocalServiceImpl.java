@@ -532,11 +532,10 @@ public class ObjectRelationshipLocalServiceImpl
 
 		Column<DynamicObjectRelationshipMappingTable, Long> primaryKeyColumn1 =
 			dynamicObjectRelationshipMappingTable.getPrimaryKeyColumn1();
-
 		Column<DynamicObjectRelationshipMappingTable, Long> primaryKeyColumn2 =
 			dynamicObjectRelationshipMappingTable.getPrimaryKeyColumn2();
 
-		int objectRelationshipMappingTableValuesCount = dslQueryCount(
+		int count = dslQueryCount(
 			DSLQueryFactoryUtil.count(
 			).from(
 				dynamicObjectRelationshipMappingTable
@@ -548,7 +547,7 @@ public class ObjectRelationshipLocalServiceImpl
 				)
 			));
 
-		if (objectRelationshipMappingTableValuesCount > 0) {
+		if (count > 0) {
 			return true;
 		}
 
