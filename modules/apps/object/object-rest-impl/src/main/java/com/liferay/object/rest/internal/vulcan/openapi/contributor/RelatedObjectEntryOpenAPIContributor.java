@@ -198,11 +198,8 @@ public class RelatedObjectEntryOpenAPIContributor
 			SystemObjectDefinitionMetadata systemObjectDefinitionMetadata)
 		throws Exception {
 
-		String lowerCaseFirstLetterContentType =
-			StringUtil.lowerCaseFirstLetter(
-				_getContentType(systemObjectDefinitionMetadata));
-
-		String parameterName = lowerCaseFirstLetterContentType + "Id";
+		String parameterName = _getIdParameterName(
+			_getContentType(systemObjectDefinitionMetadata));
 
 		return new Operation() {
 			{
