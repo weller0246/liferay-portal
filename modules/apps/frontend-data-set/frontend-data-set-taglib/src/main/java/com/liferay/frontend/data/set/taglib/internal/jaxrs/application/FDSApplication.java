@@ -196,11 +196,9 @@ public class FDSApplication extends Application {
 				ServletContextUtil.getFDSSettingsNamespace(
 					httpServletRequest, fdsName);
 
-			String customViews = portalPreferences.getValue(
-				fdsSettingsNamespace, "customViews", "{}");
-
 			JSONObject customViewsJSONObject = _jsonFactory.createJSONObject(
-				customViews);
+				portalPreferences.getValue(
+					fdsSettingsNamespace, "customViews", "{}"));
 
 			JSONObject customViewJSONObject = _jsonFactory.createJSONObject(
 				customViewJSON);
