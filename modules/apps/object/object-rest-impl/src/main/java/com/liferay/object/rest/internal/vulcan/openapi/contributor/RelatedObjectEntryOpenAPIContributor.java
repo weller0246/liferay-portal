@@ -150,7 +150,7 @@ public class RelatedObjectEntryOpenAPIContributor
 		paths.addPathItem(
 			StringBundler.concat(
 				name, StringPool.SLASH,
-				_getObjectDefinitionPathName(objectDefinition)),
+				_getIdParameterTemplate(objectDefinition.getShortName()),
 			new PathItem() {
 				{
 					put(
@@ -249,12 +249,6 @@ public class RelatedObjectEntryOpenAPIContributor
 		String path = uriInfo.getPath();
 
 		return path.split(StringPool.SLASH)[0];
-	}
-
-	private String _getObjectDefinitionPathName(
-		ObjectDefinition objectDefinition) {
-
-		return _getIdParameterTemplate(objectDefinition.getShortName());
 	}
 
 	private Schema _getObjectDefinitionSchema(ObjectDefinition objectDefinition)
