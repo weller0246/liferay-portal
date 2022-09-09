@@ -103,13 +103,11 @@ public class ServicePreActionTest {
 		LayoutTestUtil.addTypePortletLayout(
 			_group.getGroupId(), "Page not visible", false, null, false, true);
 
-		_mockHttpServletRequest.setRequestURI(
-			_portal.getPathMain() + "/portal/login");
-
 		_mockHttpServletRequest.setAttribute(WebKeys.COMPANY, _company);
-
 		_mockHttpServletRequest.setAttribute(
 			WebKeys.VIRTUAL_HOST_LAYOUT_SET, _group.getPublicLayoutSet());
+		_mockHttpServletRequest.setRequestURI(
+			_portal.getPathMain() + "/portal/login");
 	}
 
 	@Test
