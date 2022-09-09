@@ -271,14 +271,13 @@ public class RelatedObjectEntryOpenAPIContributor
 		ObjectRelationship objectRelationship,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
+		String upperCaseFirstLetterObjectRelationShipName =
+			StringUtil.upperCaseFirstLetter(
+				objectRelationship.getName());
+
 		return new Operation() {
 			{
-				String upperCaseFirstLetterObjectRelationShipName =
-					StringUtil.upperCaseFirstLetter(
-						objectRelationship.getName());
-
 				operationId("put" + upperCaseFirstLetterObjectRelationShipName);
-
 				parameters(
 					Arrays.asList(
 						new Parameter() {
