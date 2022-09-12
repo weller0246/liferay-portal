@@ -761,6 +761,8 @@ public class ObjectRelatedModelsProviderTest {
 
 		try {
 			_userLocalService.getUser(userIds[0]);
+
+			Assert.fail();
 		}
 		catch (NoSuchUserException noSuchUserException) {
 			Assert.assertEquals(
@@ -820,6 +822,8 @@ public class ObjectRelatedModelsProviderTest {
 
 		try {
 			_userLocalService.getUser(userIds[1]);
+
+			Assert.fail();
 		}
 		catch (NoSuchUserException noSuchUserException) {
 			Assert.assertEquals(
