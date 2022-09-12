@@ -132,7 +132,7 @@ public class ObjectRelationshipLocalServiceImpl
 					"insert into ", objectRelationship.getDBTableName(), " (",
 					pkObjectFieldDBColumnNames.get(
 						"pkObjectFieldDBColumnName1"),
-					" , ",
+					", ",
 					pkObjectFieldDBColumnNames.get(
 						"pkObjectFieldDBColumnName2"),
 					") values (", primaryKey1, ", ", primaryKey2, ")"));
