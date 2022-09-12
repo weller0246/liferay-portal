@@ -83,6 +83,9 @@ public class JournalArticleModelDocumentContributor
 			journalArticle.getDDMStructureKey(), true);
 
 		if (ddmStructure != null) {
+			document.addKeyword(
+				Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
+
 			ddmFormValues = _ddmFieldLocalService.getDDMFormValues(
 				ddmStructure.getDDMForm(), journalArticle.getId());
 
@@ -99,6 +102,9 @@ public class JournalArticleModelDocumentContributor
 							LocaleUtil.toLanguageId(contentAvailableLocale)),
 						content);
 				}
+
+				_ddmIndexer.addAttributes(
+					document, ddmStructure, ddmFormValues);
 			}
 		}
 
@@ -198,16 +204,6 @@ public class JournalArticleModelDocumentContributor
 
 		document.addNumber(
 			"versionCount", GetterUtil.getDouble(journalArticle.getVersion()));
-
-		if (ddmStructure != null) {
-			document.addKeyword(
-				Field.CLASS_TYPE_ID, ddmStructure.getStructureId());
-
-			if (ddmFormValues != null) {
-				_ddmIndexer.addAttributes(
-					document, ddmStructure, ddmFormValues);
-			}
-		}
 
 		if (_log.isDebugEnabled()) {
 			_log.debug("Document " + journalArticle + " indexed successfully");
