@@ -1208,13 +1208,13 @@ public class CommerceOrderLocalServiceImpl
 			commerceOrderLocalService.getCommerceOrdersByBillingAddress(
 				addressId);
 
-		updateCommerceOrderAddresses(commerceOrders, addressId);
+		_updateCommerceOrderAddresses(commerceOrders, addressId);
 
 		commerceOrders =
 			commerceOrderLocalService.getCommerceOrdersByShippingAddress(
 				addressId);
 
-		updateCommerceOrderAddresses(commerceOrders, addressId);
+		_updateCommerceOrderAddresses(commerceOrders, addressId);
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -1957,7 +1957,7 @@ public class CommerceOrderLocalServiceImpl
 		return commerceOrderPersistence.update(commerceOrder);
 	}
 
-	protected void updateCommerceOrderAddresses(
+	private void _updateCommerceOrderAddresses(
 			List<CommerceOrder> commerceOrders, long addressId)
 		throws PortalException {
 
