@@ -1467,23 +1467,20 @@ public class ObjectEntryLocalServiceImpl
 		Column<DynamicObjectRelationshipMappingTable, Long> primaryKeyColumn2 =
 			dynamicObjectRelationshipMappingTable.getPrimaryKeyColumn2();
 
-		Column<DynamicObjectDefinitionTable, Long> objectDefinitionPKColumn =
-			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
-
 		return fromStep.from(
 			dynamicObjectDefinitionTable
 		).innerJoinON(
 			ObjectEntryTable.INSTANCE,
-			ObjectEntryTable.INSTANCE.objectEntryId.eq(objectDefinitionPKColumn)
+			ObjectEntryTable.INSTANCE.objectEntryId.eq(primaryKeyColumn1)
 		).innerJoinON(
 			extensionDynamicObjectDefinitionTable,
 			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
 			).eq(
-				objectDefinitionPKColumn
+				primaryKeyColumn1
 			)
 		).leftJoinOn(
 			dynamicObjectRelationshipMappingTable,
-			primaryKeyColumn2.eq(objectDefinitionPKColumn)
+			primaryKeyColumn2.eq(primaryKeyColumn1)
 		).where(
 			ObjectEntryTable.INSTANCE.groupId.eq(
 				groupId
@@ -1501,7 +1498,7 @@ public class ObjectEntryLocalServiceImpl
 
 					return _inlineSQLHelper.getPermissionWherePredicate(
 						objectDefinition2.getClassName(),
-						objectDefinitionPKColumn);
+						primaryKeyColumn1);
 				}
 			).and(
 				() -> {
@@ -1509,7 +1506,7 @@ public class ObjectEntryLocalServiceImpl
 						return primaryKeyColumn1.eq(primaryKey);
 					}
 
-					return objectDefinitionPKColumn.notIn(
+					return primaryKeyColumn1.notIn(
 						DSLQueryFactoryUtil.select(
 							primaryKeyColumn2
 						).from(
@@ -1523,7 +1520,7 @@ public class ObjectEntryLocalServiceImpl
 					if (objectDefinition1.getObjectDefinitionId() ==
 							objectDefinition2.getObjectDefinitionId()) {
 
-						return objectDefinitionPKColumn.neq(primaryKey);
+						return primaryKeyColumn1.neq(primaryKey);
 					}
 
 					return null;
