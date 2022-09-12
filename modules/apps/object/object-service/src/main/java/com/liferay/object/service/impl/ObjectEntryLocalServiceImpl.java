@@ -1497,8 +1497,7 @@ public class ObjectEntryLocalServiceImpl
 					}
 
 					return _inlineSQLHelper.getPermissionWherePredicate(
-						objectDefinition2.getClassName(),
-						primaryKeyColumn1);
+						objectDefinition2.getClassName(), primaryKeyColumn1);
 				}
 			).and(
 				() -> {
@@ -1656,19 +1655,19 @@ public class ObjectEntryLocalServiceImpl
 		ObjectField objectField = _objectFieldPersistence.fetchByPrimaryKey(
 			objectRelationship.getObjectFieldId2());
 
-		Column<DynamicObjectDefinitionTable, Long> objectDefinitionPKColumn =
+		Column<DynamicObjectDefinitionTable, Long> primaryKeyColumn =
 			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
 
 		return fromStep.from(
 			dynamicObjectDefinitionTable
 		).innerJoinON(
 			ObjectEntryTable.INSTANCE,
-			ObjectEntryTable.INSTANCE.objectEntryId.eq(objectDefinitionPKColumn)
+			ObjectEntryTable.INSTANCE.objectEntryId.eq(primaryKeyColumn)
 		).innerJoinON(
 			extensionDynamicObjectDefinitionTable,
 			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
 			).eq(
-				objectDefinitionPKColumn
+				primaryKeyColumn
 			)
 		).where(
 			ObjectEntryTable.INSTANCE.groupId.eq(
@@ -1681,33 +1680,28 @@ public class ObjectEntryLocalServiceImpl
 					objectRelationship.getObjectDefinitionId2())
 			).and(
 				() -> {
-					Column<DynamicObjectDefinitionTable, Long>
-						primaryKeyColumn = null;
+					Column<DynamicObjectDefinitionTable, Long> column = null;
 
 					if (Objects.equals(
 							objectField.getDBTableName(),
 							dynamicObjectDefinitionTable.getName())) {
 
-						primaryKeyColumn =
-							(Column<DynamicObjectDefinitionTable, Long>)
-								dynamicObjectDefinitionTable.getColumn(
-									objectField.getDBColumnName());
+						column = primaryKeyColumn;
 					}
 					else {
-						primaryKeyColumn =
-							(Column<DynamicObjectDefinitionTable, Long>)
-								extensionDynamicObjectDefinitionTable.getColumn(
-									objectField.getDBColumnName());
+						column =
+							extensionDynamicObjectDefinitionTable.
+								getPrimaryKeyColumn();
 					}
 
-					return primaryKeyColumn.eq(related ? primaryKey : 0L);
+					return column.eq(related ? primaryKey : 0L);
 				}
 			).and(
 				() -> {
 					if (objectRelationship.getObjectDefinitionId1() ==
 							objectRelationship.getObjectDefinitionId2()) {
 
-						return objectDefinitionPKColumn.neq(primaryKey);
+						return primaryKeyColumn.neq(primaryKey);
 					}
 
 					return null;
@@ -1723,8 +1717,7 @@ public class ObjectEntryLocalServiceImpl
 							objectRelationship.getObjectDefinitionId2());
 
 					return _inlineSQLHelper.getPermissionWherePredicate(
-						objectDefinition2.getClassName(),
-						objectDefinitionPKColumn);
+						objectDefinition2.getClassName(), primaryKeyColumn);
 				}
 			)
 		);
