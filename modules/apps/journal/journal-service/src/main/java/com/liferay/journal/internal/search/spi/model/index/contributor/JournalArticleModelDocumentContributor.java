@@ -75,12 +75,12 @@ public class JournalArticleModelDocumentContributor
 
 		Localization localization = LocalizationUtil.getLocalization();
 
+		DDMFormValues ddmFormValues = null;
+
 		DDMStructure ddmStructure = _ddmStructureLocalService.fetchStructure(
 			_portal.getSiteGroupId(journalArticle.getGroupId()),
 			_portal.getClassNameId(JournalArticle.class),
 			journalArticle.getDDMStructureKey(), true);
-
-		DDMFormValues ddmFormValues = null;
 
 		if (ddmStructure != null) {
 			ddmFormValues = _ddmFieldLocalService.getDDMFormValues(
