@@ -757,19 +757,6 @@ public class ObjectRelatedModelsProviderTest {
 				requiredObjectRelationshipException.getMessage());
 		}
 
-		_userLocalService.deleteUser(userIds[0]);
-
-		try {
-			_userLocalService.getUser(userIds[0]);
-
-			Assert.fail();
-		}
-		catch (NoSuchUserException noSuchUserException) {
-			Assert.assertEquals(
-				"No User exists with the primary key " + userIds[0],
-				noSuchUserException.getMessage());
-		}
-
 		objectRelationship =
 			_objectRelationshipLocalService.updateObjectRelationship(
 				objectRelationship.getObjectRelationshipId(), 0,
