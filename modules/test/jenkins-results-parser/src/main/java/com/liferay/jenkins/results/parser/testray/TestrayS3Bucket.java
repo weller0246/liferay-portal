@@ -77,13 +77,13 @@ public class TestrayS3Bucket {
 		return testrayS3Bucket;
 	}
 
-	public static boolean googleCredentialsAvailable() {
-		return googleCredentialsAvailable(null);
+	public static boolean hasGoogleApplicationCredentials() {
+		return hasGoogleApplicationCredentials(null);
 	}
 
-	public static boolean googleCredentialsAvailable(String name) {
-		if (_googleCredentialsAvailable != null) {
-			return _googleCredentialsAvailable;
+	public static boolean hasGoogleApplicationCredentials(String name) {
+		if (_hasGoogleApplicationCredentials != null) {
+			return _hasGoogleApplicationCredentials;
 		}
 
 		String googleApplicationCredentials = System.getenv(
@@ -95,9 +95,9 @@ public class TestrayS3Bucket {
 			System.out.println(
 				"WARNING: GOOGLE_APPLICATION_CREDENTIALS is not set");
 
-			_googleCredentialsAvailable = false;
+			_hasGoogleApplicationCredentials = false;
 
-			return _googleCredentialsAvailable;
+			return _hasGoogleApplicationCredentials;
 		}
 
 		File googleApplicationCredentialsFile = new File(
@@ -109,9 +109,9 @@ public class TestrayS3Bucket {
 					"WARNING: GOOGLE_APPLICATION_CREDENTIALS=",
 					googleApplicationCredentials, " does not exist"));
 
-			_googleCredentialsAvailable = false;
+			_hasGoogleApplicationCredentials = false;
 
-			return _googleCredentialsAvailable;
+			return _hasGoogleApplicationCredentials;
 		}
 
 		try {
@@ -124,7 +124,7 @@ public class TestrayS3Bucket {
 					"INFO: Using GOOGLE_APPLICATION_CREDENTIALS=",
 					googleApplicationCredentials));
 
-			_googleCredentialsAvailable = true;
+			_hasGoogleApplicationCredentials = true;
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();
@@ -135,10 +135,10 @@ public class TestrayS3Bucket {
 					googleApplicationCredentials,
 					" is configured incorrectly"));
 
-			_googleCredentialsAvailable = false;
+			_hasGoogleApplicationCredentials = false;
 		}
 
-		return _googleCredentialsAvailable;
+		return _hasGoogleApplicationCredentials;
 	}
 
 	public TestrayS3Object createTestrayS3Object(String key, File file) {
@@ -328,7 +328,7 @@ public class TestrayS3Bucket {
 
 	private static final Pattern _fileNamePattern = Pattern.compile(
 		".*\\.(?!gz)(?<fileExtension>([^\\.]+))(?<gzipFileExtension>\\.gz)?");
-	private static Boolean _googleCredentialsAvailable;
+	private static Boolean _hasGoogleApplicationCredentials;
 	private static final Map<String, TestrayS3Bucket> _testrayS3Buckets =
 		new HashMap<>();
 

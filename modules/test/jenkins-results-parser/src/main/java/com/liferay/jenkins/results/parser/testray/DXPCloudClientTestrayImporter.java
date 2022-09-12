@@ -580,7 +580,7 @@ public class DXPCloudClientTestrayImporter {
 			testrayS3BucketName = TestrayS3Bucket.DEFAULT_BUCKET_NAME;
 		}
 
-		if (TestrayS3Bucket.googleCredentialsAvailable(testrayS3BucketName)) {
+		if (TestrayS3Bucket.hasGoogleApplicationCredentials(testrayS3BucketName)) {
 			_testrayS3Bucket = TestrayS3Bucket.getInstance(testrayS3BucketName);
 		}
 
