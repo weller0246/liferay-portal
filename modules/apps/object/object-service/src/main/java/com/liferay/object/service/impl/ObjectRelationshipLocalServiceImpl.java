@@ -582,11 +582,10 @@ public class ObjectRelationshipLocalServiceImpl
 				"Names must be less than 41 characters");
 		}
 
-		int objectRelationshipCount =
-			objectRelationshipPersistence.countByODI1_N(
-				objectDefinitionId1, name);
+		int count = objectRelationshipPersistence.countByODI1_N(
+			objectDefinitionId1, name);
 
-		if (objectRelationshipCount > 0) {
+		if (count > 0) {
 			throw new DuplicateObjectRelationshipException(
 				"Duplicate name " + name);
 		}
@@ -623,7 +622,7 @@ public class ObjectRelationshipLocalServiceImpl
 				type, ObjectRelationshipConstants.TYPE_MANY_TO_MANY) ||
 			Objects.equals(type, ObjectRelationshipConstants.TYPE_ONE_TO_ONE)) {
 
-			int count = objectRelationshipPersistence.countByODI1_ODI2_N_T(
+			count = objectRelationshipPersistence.countByODI1_ODI2_N_T(
 				objectDefinitionId2, objectDefinitionId1, name, type);
 
 			if (count > 0) {
