@@ -155,4 +155,4 @@ export GOOGLE_APPLICATION_CREDENTIALS=/home/user/Downloads/service-account-file.
 
 See this [article](https://cloud.google.com/docs/authentication/getting-started) for more details on how to setup google cloud.
 
-Your google account needs read/write access to the bucket selected by `testrayS3BucketName`. By default the [testray-results](https://console.cloud.google.com/storage/browser/testray-results) bucket will be used. In order to get access please contact IT for access.
+Your Google account needs read/write access to the bucket selected by `testrayS3BucketName`. By default the [testray-results](https://console.cloud.google.com/storage/browser/testray-results) bucket will be used. Contact IT for access.
