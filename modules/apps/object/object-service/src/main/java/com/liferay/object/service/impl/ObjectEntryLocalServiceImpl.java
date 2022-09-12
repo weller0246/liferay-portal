@@ -1444,8 +1444,9 @@ public class ObjectEntryLocalServiceImpl
 		DynamicObjectDefinitionTable extensionDynamicObjectDefinitionTable =
 			_getExtensionDynamicObjectDefinitionTable(objectDefinitionId2);
 
-		Column<DynamicObjectDefinitionTable, Long> objectDefinitionPKColumn =
-			dynamicObjectDefinitionTable.getPrimaryKeyColumn();
+		Column<DynamicObjectDefinitionTable, Long>
+			dynamicObjectDefinitionTablePrimaryKeyColumn =
+				dynamicObjectDefinitionTable.getPrimaryKeyColumn();
 
 		ObjectDefinition objectDefinition1 =
 			_objectDefinitionPersistence.fetchByPrimaryKey(objectDefinitionId1);
@@ -1474,16 +1475,17 @@ public class ObjectEntryLocalServiceImpl
 			dynamicObjectDefinitionTable
 		).innerJoinON(
 			ObjectEntryTable.INSTANCE,
-			ObjectEntryTable.INSTANCE.objectEntryId.eq(objectDefinitionPKColumn)
+			ObjectEntryTable.INSTANCE.objectEntryId.eq(
+				dynamicObjectDefinitionTablePrimaryKeyColumn)
 		).innerJoinON(
 			extensionDynamicObjectDefinitionTable,
 			extensionDynamicObjectDefinitionTable.getPrimaryKeyColumn(
 			).eq(
-				objectDefinitionPKColumn
+				dynamicObjectDefinitionTablePrimaryKeyColumn
 			)
 		).leftJoinOn(
 			dynamicObjectRelationshipMappingTable,
-			primaryKeyColumn2.eq(objectDefinitionPKColumn)
+			primaryKeyColumn2.eq(dynamicObjectDefinitionTablePrimaryKeyColumn)
 		).where(
 			ObjectEntryTable.INSTANCE.groupId.eq(
 				groupId
@@ -1501,7 +1503,7 @@ public class ObjectEntryLocalServiceImpl
 
 					return _inlineSQLHelper.getPermissionWherePredicate(
 						objectDefinition2.getClassName(),
-						objectDefinitionPKColumn);
+						dynamicObjectDefinitionTablePrimaryKeyColumn);
 				}
 			).and(
 				() -> {
@@ -1509,7 +1511,7 @@ public class ObjectEntryLocalServiceImpl
 						return primaryKeyColumn1.eq(primaryKey);
 					}
 
-					return objectDefinitionPKColumn.notIn(
+					return dynamicObjectDefinitionTablePrimaryKeyColumn.notIn(
 						DSLQueryFactoryUtil.select(
 							primaryKeyColumn2
 						).from(
@@ -1523,7 +1525,8 @@ public class ObjectEntryLocalServiceImpl
 					if (objectDefinition1.getObjectDefinitionId() ==
 							objectDefinition2.getObjectDefinitionId()) {
 
-						return objectDefinitionPKColumn.neq(primaryKey);
+						return dynamicObjectDefinitionTablePrimaryKeyColumn.neq(
+							primaryKey);
 					}
 
 					return null;
