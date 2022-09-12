@@ -109,7 +109,7 @@ public class AssetListEntryServiceTest {
 	}
 
 	@Test
-	public void testAssetEntrySelectionAllowSameAssetEntryForDifferentSegmentsEntries()
+	public void testAssetEntrySelectionAllowsSameAssetEntryForDifferentSegmentsEntries()
 		throws PortalException {
 
 		ServiceContext serviceContext =
