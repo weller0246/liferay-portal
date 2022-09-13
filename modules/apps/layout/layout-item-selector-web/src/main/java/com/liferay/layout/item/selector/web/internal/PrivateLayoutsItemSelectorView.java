@@ -79,7 +79,7 @@ public class PrivateLayoutsItemSelectorView
 
 		Group group = themeDisplay.getScopeGroup();
 
-		if (!group.isPrivateLayoutsEnabled() && !group.isLayoutSetPrototype()) {
+		if (!group.isLayoutSetPrototype() && !group.isPrivateLayoutsEnabled()) {
 			return false;
 		}
 
