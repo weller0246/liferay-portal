@@ -289,7 +289,7 @@ public class BatchEngineAutoDeployListenerTest {
 	}
 
 	@Test
-	public void testWithTraditionalData() throws Exception {
+	public void testWithSingleData() throws Exception {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
