@@ -40,7 +40,6 @@ import com.liferay.object.util.LocalizedMapUtil;
 import com.liferay.object.util.ObjectFieldUtil;
 import com.liferay.petra.sql.dsl.Column;
 import com.liferay.petra.sql.dsl.Table;
-import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.dao.db.DBInspector;
 import com.liferay.portal.kernel.dao.jdbc.DataAccess;
 import com.liferay.portal.kernel.language.LanguageUtil;
@@ -1018,8 +1017,8 @@ public class ObjectDefinitionLocalServiceTest {
 		try {
 			objectDefinition =
 				_objectDefinitionLocalService.updateCustomObjectDefinition(
-					StringPool.BLANK, objectDefinition.getObjectDefinitionId(),
-					0, RandomTestUtil.randomLong(), RandomTestUtil.randomLong(),
+					null, objectDefinition.getObjectDefinitionId(), 0,
+					RandomTestUtil.randomLong(), RandomTestUtil.randomLong(),
 					false, objectDefinition.isActive(), true, false,
 					LocalizedMapUtil.getLocalizedMap("Able"), "Able", null,
 					null, false, LocalizedMapUtil.getLocalizedMap("Ables"),
@@ -1041,7 +1040,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
-				StringPool.BLANK, objectDefinition.getObjectDefinitionId(), 0,
+				null, objectDefinition.getObjectDefinitionId(), 0,
 				objectField.getObjectFieldId(), objectField.getObjectFieldId(),
 				false, objectDefinition.isActive(), true, false,
 				LocalizedMapUtil.getLocalizedMap("Able"), "Able", null, null,
@@ -1080,8 +1079,8 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
-				StringPool.BLANK, objectDefinition.getObjectDefinitionId(), 0,
-				0, 0, false, objectDefinition.isActive(), true, false,
+				null, objectDefinition.getObjectDefinitionId(), 0, 0, 0, false,
+				objectDefinition.isActive(), true, false,
 				LocalizedMapUtil.getLocalizedMap("Baker"), "Baker", null, null,
 				false, LocalizedMapUtil.getLocalizedMap("Bakers"),
 				objectDefinition.getScope());
@@ -1101,10 +1100,10 @@ public class ObjectDefinitionLocalServiceTest {
 
 		objectDefinition =
 			_objectDefinitionLocalService.updateCustomObjectDefinition(
-				StringPool.BLANK, objectDefinition.getObjectDefinitionId(), 0,
-				0, 0, false, true, true, false,
-				LocalizedMapUtil.getLocalizedMap("Charlie"), "Charlie", null,
-				null, false, LocalizedMapUtil.getLocalizedMap("Charlies"),
+				null, objectDefinition.getObjectDefinitionId(), 0, 0, 0, false,
+				true, true, false, LocalizedMapUtil.getLocalizedMap("Charlie"),
+				"Charlie", null, null, false,
+				LocalizedMapUtil.getLocalizedMap("Charlies"),
 				objectDefinition.getScope());
 
 		Assert.assertTrue(objectDefinition.isActive());
@@ -1478,8 +1477,8 @@ public class ObjectDefinitionLocalServiceTest {
 		try {
 			objectDefinition2 =
 				_objectDefinitionLocalService.updateCustomObjectDefinition(
-					StringPool.BLANK, objectDefinition2.getObjectDefinitionId(),
-					0, objectRelationship.getObjectFieldId2(), 0, false,
+					null, objectDefinition2.getObjectDefinitionId(), 0,
+					objectRelationship.getObjectFieldId2(), 0, false,
 					objectDefinition2.isActive(), true, false,
 					LocalizedMapUtil.getLocalizedMap("Able"), "Able", null,
 					null, false, LocalizedMapUtil.getLocalizedMap("Ables"),
