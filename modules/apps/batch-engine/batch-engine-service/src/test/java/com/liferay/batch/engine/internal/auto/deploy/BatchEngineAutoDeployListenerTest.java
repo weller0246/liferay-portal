@@ -79,6 +79,15 @@ public class BatchEngineAutoDeployListenerTest {
 				}
 
 			});
+		ReflectionTestUtil.setFieldValue(
+			_batchEngineAutoDeployListener,
+			"_batchEngineImportTaskLocalService",
+			_batchEngineImportTaskLocalService);
+		ReflectionTestUtil.setFieldValue(
+			_batchEngineAutoDeployListener, "_file", FileImpl.getInstance());
+		ReflectionTestUtil.setFieldValue(
+			_batchEngineAutoDeployListener, "_portalExecutorManager",
+			_portalExecutorManager);
 
 		Mockito.when(
 			_batchEngineImportTaskLocalService.addBatchEngineImportTask(
@@ -136,14 +145,6 @@ public class BatchEngineAutoDeployListenerTest {
 			}
 		);
 
-		ReflectionTestUtil.setFieldValue(
-			_batchEngineAutoDeployListener,
-			"_batchEngineImportTaskLocalService",
-			_batchEngineImportTaskLocalService);
-
-		ReflectionTestUtil.setFieldValue(
-			_batchEngineAutoDeployListener, "_file", FileImpl.getInstance());
-
 		Mockito.when(
 			_portalExecutorManager.getPortalExecutor(Mockito.anyString())
 		).thenReturn(
@@ -165,10 +166,6 @@ public class BatchEngineAutoDeployListenerTest {
 
 			}
 		);
-
-		ReflectionTestUtil.setFieldValue(
-			_batchEngineAutoDeployListener, "_portalExecutorManager",
-			_portalExecutorManager);
 	}
 
 	@Test
