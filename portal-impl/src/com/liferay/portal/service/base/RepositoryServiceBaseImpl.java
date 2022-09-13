@@ -222,6 +222,6 @@ public abstract class RepositoryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RepositoryLocalServiceBaseImpl.class);
+		RepositoryServiceBaseImpl.class);
 
 }

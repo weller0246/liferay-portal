@@ -240,6 +240,6 @@ public abstract class CommerceAddressRestrictionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceAddressRestrictionLocalServiceBaseImpl.class);
+		CommerceAddressRestrictionServiceBaseImpl.class);
 
 }

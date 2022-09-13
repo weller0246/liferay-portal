@@ -228,6 +228,6 @@ public abstract class DLFileShortcutServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLFileShortcutLocalServiceBaseImpl.class);
+		DLFileShortcutServiceBaseImpl.class);
 
 }

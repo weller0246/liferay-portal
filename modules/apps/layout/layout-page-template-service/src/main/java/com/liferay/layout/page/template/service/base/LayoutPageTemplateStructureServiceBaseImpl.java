@@ -156,6 +156,6 @@ public abstract class LayoutPageTemplateStructureServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutPageTemplateStructureLocalServiceBaseImpl.class);
+		LayoutPageTemplateStructureServiceBaseImpl.class);
 
 }

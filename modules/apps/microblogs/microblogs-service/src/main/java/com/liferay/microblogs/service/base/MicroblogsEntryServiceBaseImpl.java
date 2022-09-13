@@ -152,6 +152,6 @@ public abstract class MicroblogsEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MicroblogsEntryLocalServiceBaseImpl.class);
+		MicroblogsEntryServiceBaseImpl.class);
 
 }

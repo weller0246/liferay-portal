@@ -586,6 +586,6 @@ public abstract class ExportImportConfigurationServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ExportImportConfigurationLocalServiceBaseImpl.class);
+		ExportImportConfigurationServiceBaseImpl.class);
 
 }

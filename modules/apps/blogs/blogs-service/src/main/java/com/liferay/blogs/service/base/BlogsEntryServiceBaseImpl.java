@@ -150,6 +150,6 @@ public abstract class BlogsEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BlogsEntryLocalServiceBaseImpl.class);
+		BlogsEntryServiceBaseImpl.class);
 
 }

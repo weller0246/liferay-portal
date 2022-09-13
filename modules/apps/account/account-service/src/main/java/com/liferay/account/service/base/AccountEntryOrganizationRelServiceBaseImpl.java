@@ -156,6 +156,6 @@ public abstract class AccountEntryOrganizationRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AccountEntryOrganizationRelLocalServiceBaseImpl.class);
+		AccountEntryOrganizationRelServiceBaseImpl.class);
 
 }

@@ -146,6 +146,6 @@ public abstract class TrashEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		TrashEntryLocalServiceBaseImpl.class);
+		TrashEntryServiceBaseImpl.class);
 
 }

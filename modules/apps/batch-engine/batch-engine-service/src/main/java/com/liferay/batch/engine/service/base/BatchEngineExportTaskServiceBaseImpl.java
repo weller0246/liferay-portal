@@ -151,6 +151,6 @@ public abstract class BatchEngineExportTaskServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BatchEngineExportTaskLocalServiceBaseImpl.class);
+		BatchEngineExportTaskServiceBaseImpl.class);
 
 }

@@ -180,6 +180,6 @@ public abstract class CommerceTaxFixedRateServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceTaxFixedRateLocalServiceBaseImpl.class);
+		CommerceTaxFixedRateServiceBaseImpl.class);
 
 }

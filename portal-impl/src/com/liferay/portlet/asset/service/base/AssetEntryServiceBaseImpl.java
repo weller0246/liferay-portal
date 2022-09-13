@@ -248,6 +248,6 @@ public abstract class AssetEntryServiceBaseImpl
 	protected AssetTagPersistence assetTagPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetEntryLocalServiceBaseImpl.class);
+		AssetEntryServiceBaseImpl.class);
 
 }

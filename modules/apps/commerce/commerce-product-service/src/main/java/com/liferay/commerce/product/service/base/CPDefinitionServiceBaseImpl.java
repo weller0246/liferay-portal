@@ -278,6 +278,6 @@ public abstract class CPDefinitionServiceBaseImpl
 		cpDefinitionLocalizationPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDefinitionLocalServiceBaseImpl.class);
+		CPDefinitionServiceBaseImpl.class);
 
 }

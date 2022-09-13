@@ -251,6 +251,6 @@ public abstract class ResourcePermissionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ResourcePermissionLocalServiceBaseImpl.class);
+		ResourcePermissionServiceBaseImpl.class);
 
 }

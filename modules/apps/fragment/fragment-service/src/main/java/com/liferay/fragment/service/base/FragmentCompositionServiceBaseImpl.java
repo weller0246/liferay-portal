@@ -149,6 +149,6 @@ public abstract class FragmentCompositionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		FragmentCompositionLocalServiceBaseImpl.class);
+		FragmentCompositionServiceBaseImpl.class);
 
 }

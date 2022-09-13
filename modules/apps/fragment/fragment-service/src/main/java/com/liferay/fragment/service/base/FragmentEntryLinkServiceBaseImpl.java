@@ -153,6 +153,6 @@ public abstract class FragmentEntryLinkServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		FragmentEntryLinkLocalServiceBaseImpl.class);
+		FragmentEntryLinkServiceBaseImpl.class);
 
 }

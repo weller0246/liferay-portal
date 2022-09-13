@@ -150,6 +150,6 @@ public abstract class WikiPageServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		WikiPageLocalServiceBaseImpl.class);
+		WikiPageServiceBaseImpl.class);
 
 }

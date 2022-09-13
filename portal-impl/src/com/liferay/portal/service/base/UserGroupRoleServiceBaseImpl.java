@@ -250,6 +250,6 @@ public abstract class UserGroupRoleServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UserGroupRoleLocalServiceBaseImpl.class);
+		UserGroupRoleServiceBaseImpl.class);
 
 }

@@ -148,6 +148,6 @@ public abstract class CTCollectionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CTCollectionLocalServiceBaseImpl.class);
+		CTCollectionServiceBaseImpl.class);
 
 }

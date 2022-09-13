@@ -176,6 +176,6 @@ public abstract class CommerceMLForecastAlertEntryServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceMLForecastAlertEntryLocalServiceBaseImpl.class);
+		CommerceMLForecastAlertEntryServiceBaseImpl.class);
 
 }

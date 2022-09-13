@@ -153,6 +153,6 @@ public abstract class BackgroundTaskServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BackgroundTaskLocalServiceBaseImpl.class);
+		BackgroundTaskServiceBaseImpl.class);
 
 }

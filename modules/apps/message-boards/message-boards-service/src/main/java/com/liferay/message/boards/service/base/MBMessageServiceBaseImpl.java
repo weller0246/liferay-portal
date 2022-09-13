@@ -150,6 +150,6 @@ public abstract class MBMessageServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MBMessageLocalServiceBaseImpl.class);
+		MBMessageServiceBaseImpl.class);
 
 }

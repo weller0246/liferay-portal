@@ -146,6 +146,6 @@ public abstract class KBCommentServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KBCommentLocalServiceBaseImpl.class);
+		KBCommentServiceBaseImpl.class);
 
 }

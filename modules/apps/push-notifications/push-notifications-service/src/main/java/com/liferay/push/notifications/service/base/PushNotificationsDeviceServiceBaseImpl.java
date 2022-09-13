@@ -155,6 +155,6 @@ public abstract class PushNotificationsDeviceServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PushNotificationsDeviceLocalServiceBaseImpl.class);
+		PushNotificationsDeviceServiceBaseImpl.class);
 
 }

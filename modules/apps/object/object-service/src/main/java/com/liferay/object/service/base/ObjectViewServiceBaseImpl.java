@@ -146,6 +146,6 @@ public abstract class ObjectViewServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectViewLocalServiceBaseImpl.class);
+		ObjectViewServiceBaseImpl.class);
 
 }

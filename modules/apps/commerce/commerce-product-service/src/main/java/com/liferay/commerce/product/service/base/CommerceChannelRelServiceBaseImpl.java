@@ -253,6 +253,6 @@ public abstract class CommerceChannelRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceChannelRelLocalServiceBaseImpl.class);
+		CommerceChannelRelServiceBaseImpl.class);
 
 }

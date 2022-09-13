@@ -149,6 +149,6 @@ public abstract class ListTypeDefinitionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ListTypeDefinitionLocalServiceBaseImpl.class);
+		ListTypeDefinitionServiceBaseImpl.class);
 
 }

@@ -222,6 +222,6 @@ public abstract class OrgLaborServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OrgLaborLocalServiceBaseImpl.class);
+		OrgLaborServiceBaseImpl.class);
 
 }

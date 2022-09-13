@@ -228,6 +228,6 @@ public abstract class CPMeasurementUnitServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPMeasurementUnitLocalServiceBaseImpl.class);
+		CPMeasurementUnitServiceBaseImpl.class);
 
 }

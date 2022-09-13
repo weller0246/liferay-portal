@@ -152,6 +152,6 @@ public abstract class BookmarksFolderServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BookmarksFolderLocalServiceBaseImpl.class);
+		BookmarksFolderServiceBaseImpl.class);
 
 }

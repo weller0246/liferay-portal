@@ -146,6 +146,6 @@ public abstract class CTProcessServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CTProcessLocalServiceBaseImpl.class);
+		CTProcessServiceBaseImpl.class);
 
 }

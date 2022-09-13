@@ -146,6 +146,6 @@ public abstract class ObjectEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectEntryLocalServiceBaseImpl.class);
+		ObjectEntryServiceBaseImpl.class);
 
 }

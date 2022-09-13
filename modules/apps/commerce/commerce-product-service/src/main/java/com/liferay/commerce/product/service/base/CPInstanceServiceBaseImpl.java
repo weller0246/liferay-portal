@@ -245,6 +245,6 @@ public abstract class CPInstanceServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPInstanceLocalServiceBaseImpl.class);
+		CPInstanceServiceBaseImpl.class);
 
 }

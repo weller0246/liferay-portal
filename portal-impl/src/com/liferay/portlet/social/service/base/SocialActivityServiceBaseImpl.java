@@ -250,6 +250,6 @@ public abstract class SocialActivityServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SocialActivityLocalServiceBaseImpl.class);
+		SocialActivityServiceBaseImpl.class);
 
 }

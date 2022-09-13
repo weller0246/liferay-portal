@@ -235,6 +235,6 @@ public abstract class CPSpecificationOptionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPSpecificationOptionLocalServiceBaseImpl.class);
+		CPSpecificationOptionServiceBaseImpl.class);
 
 }

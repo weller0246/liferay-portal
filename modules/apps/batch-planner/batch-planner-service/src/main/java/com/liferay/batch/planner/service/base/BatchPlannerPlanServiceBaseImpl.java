@@ -148,6 +148,6 @@ public abstract class BatchPlannerPlanServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BatchPlannerPlanLocalServiceBaseImpl.class);
+		BatchPlannerPlanServiceBaseImpl.class);
 
 }

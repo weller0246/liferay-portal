@@ -151,6 +151,6 @@ public abstract class ObjectValidationRuleServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectValidationRuleLocalServiceBaseImpl.class);
+		ObjectValidationRuleServiceBaseImpl.class);
 
 }

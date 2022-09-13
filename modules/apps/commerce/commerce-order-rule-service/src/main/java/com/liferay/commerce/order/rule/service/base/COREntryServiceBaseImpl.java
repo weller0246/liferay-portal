@@ -169,6 +169,6 @@ public abstract class COREntryServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		COREntryLocalServiceBaseImpl.class);
+		COREntryServiceBaseImpl.class);
 
 }

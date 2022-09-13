@@ -150,6 +150,6 @@ public abstract class JournalFeedServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		JournalFeedLocalServiceBaseImpl.class);
+		JournalFeedServiceBaseImpl.class);
 
 }

@@ -151,6 +151,6 @@ public abstract class NotificationTemplateServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		NotificationTemplateLocalServiceBaseImpl.class);
+		NotificationTemplateServiceBaseImpl.class);
 
 }

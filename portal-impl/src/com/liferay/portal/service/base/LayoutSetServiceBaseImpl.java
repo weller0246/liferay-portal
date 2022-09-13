@@ -222,6 +222,6 @@ public abstract class LayoutSetServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutSetLocalServiceBaseImpl.class);
+		LayoutSetServiceBaseImpl.class);
 
 }

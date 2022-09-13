@@ -152,6 +152,6 @@ public abstract class StyleBookEntryServiceBaseImpl
 	protected StyleBookEntryVersionPersistence styleBookEntryVersionPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		StyleBookEntryLocalServiceBaseImpl.class);
+		StyleBookEntryServiceBaseImpl.class);
 
 }

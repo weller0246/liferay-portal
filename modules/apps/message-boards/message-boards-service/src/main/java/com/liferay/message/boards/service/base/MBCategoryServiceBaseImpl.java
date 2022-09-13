@@ -150,6 +150,6 @@ public abstract class MBCategoryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		MBCategoryLocalServiceBaseImpl.class);
+		MBCategoryServiceBaseImpl.class);
 
 }

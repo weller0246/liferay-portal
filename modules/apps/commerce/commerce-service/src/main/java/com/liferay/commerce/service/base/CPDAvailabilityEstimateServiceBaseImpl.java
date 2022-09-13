@@ -234,6 +234,6 @@ public abstract class CPDAvailabilityEstimateServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDAvailabilityEstimateLocalServiceBaseImpl.class);
+		CPDAvailabilityEstimateServiceBaseImpl.class);
 
 }

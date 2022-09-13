@@ -218,6 +218,6 @@ public abstract class PortletServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PortletLocalServiceBaseImpl.class);
+		PortletServiceBaseImpl.class);
 
 }

@@ -156,6 +156,6 @@ public abstract class ScreensDDMStructureVersionServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ScreensDDMStructureVersionLocalServiceBaseImpl.class);
+		ScreensDDMStructureVersionServiceBaseImpl.class);
 
 }

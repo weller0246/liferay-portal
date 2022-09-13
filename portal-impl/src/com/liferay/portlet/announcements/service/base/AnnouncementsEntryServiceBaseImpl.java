@@ -253,6 +253,6 @@ public abstract class AnnouncementsEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AnnouncementsEntryLocalServiceBaseImpl.class);
+		AnnouncementsEntryServiceBaseImpl.class);
 
 }

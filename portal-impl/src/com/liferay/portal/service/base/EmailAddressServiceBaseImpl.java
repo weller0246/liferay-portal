@@ -226,6 +226,6 @@ public abstract class EmailAddressServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EmailAddressLocalServiceBaseImpl.class);
+		EmailAddressServiceBaseImpl.class);
 
 }

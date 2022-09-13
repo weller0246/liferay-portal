@@ -188,6 +188,6 @@ public abstract class DLAppServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLAppLocalServiceBaseImpl.class);
+		DLAppServiceBaseImpl.class);
 
 }

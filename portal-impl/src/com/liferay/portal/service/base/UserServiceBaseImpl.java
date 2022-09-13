@@ -259,6 +259,6 @@ public abstract class UserServiceBaseImpl
 	protected UserGroupPersistence userGroupPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		UserLocalServiceBaseImpl.class);
+		UserServiceBaseImpl.class);
 
 }

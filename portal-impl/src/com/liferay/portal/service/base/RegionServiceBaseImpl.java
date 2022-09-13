@@ -242,6 +242,6 @@ public abstract class RegionServiceBaseImpl
 	protected RegionLocalizationPersistence regionLocalizationPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RegionLocalServiceBaseImpl.class);
+		RegionServiceBaseImpl.class);
 
 }

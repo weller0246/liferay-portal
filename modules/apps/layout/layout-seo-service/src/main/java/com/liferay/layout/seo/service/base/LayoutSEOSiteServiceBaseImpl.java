@@ -148,6 +148,6 @@ public abstract class LayoutSEOSiteServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LayoutSEOSiteLocalServiceBaseImpl.class);
+		LayoutSEOSiteServiceBaseImpl.class);
 
 }

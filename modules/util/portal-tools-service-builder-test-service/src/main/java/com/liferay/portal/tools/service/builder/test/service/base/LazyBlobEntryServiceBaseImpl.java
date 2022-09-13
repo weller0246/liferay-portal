@@ -227,6 +227,6 @@ public abstract class LazyBlobEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		LazyBlobEntryLocalServiceBaseImpl.class);
+		LazyBlobEntryServiceBaseImpl.class);
 
 }

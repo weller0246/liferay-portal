@@ -250,6 +250,6 @@ public abstract class AssetVocabularyServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetVocabularyLocalServiceBaseImpl.class);
+		AssetVocabularyServiceBaseImpl.class);
 
 }

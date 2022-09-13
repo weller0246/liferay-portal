@@ -171,6 +171,6 @@ public abstract class CommerceAddressServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceAddressLocalServiceBaseImpl.class);
+		CommerceAddressServiceBaseImpl.class);
 
 }

@@ -248,6 +248,6 @@ public abstract class CommerceShippingOptionAccountEntryRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceShippingOptionAccountEntryRelLocalServiceBaseImpl.class);
+		CommerceShippingOptionAccountEntryRelServiceBaseImpl.class);
 
 }

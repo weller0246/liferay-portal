@@ -142,6 +142,6 @@ public abstract class AppServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AppLocalServiceBaseImpl.class);
+		AppServiceBaseImpl.class);
 
 }

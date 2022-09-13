@@ -484,6 +484,6 @@ public abstract class RatingsEntryServiceBaseImpl
 	protected UserFinder userFinder;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RatingsEntryLocalServiceBaseImpl.class);
+		RatingsEntryServiceBaseImpl.class);
 
 }

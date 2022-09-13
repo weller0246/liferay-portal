@@ -251,6 +251,6 @@ public abstract class PortletPreferencesServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PortletPreferencesLocalServiceBaseImpl.class);
+		PortletPreferencesServiceBaseImpl.class);
 
 }

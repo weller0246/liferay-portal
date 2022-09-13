@@ -146,6 +146,6 @@ public abstract class DispatchLogServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DispatchLogLocalServiceBaseImpl.class);
+		DispatchLogServiceBaseImpl.class);
 
 }

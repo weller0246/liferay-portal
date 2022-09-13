@@ -163,6 +163,6 @@ public abstract class CommercePriceListCommerceAccountGroupRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommercePriceListCommerceAccountGroupRelLocalServiceBaseImpl.class);
+		CommercePriceListCommerceAccountGroupRelServiceBaseImpl.class);
 
 }

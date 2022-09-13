@@ -152,6 +152,6 @@ public abstract class AssetDisplayPageEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetDisplayPageEntryLocalServiceBaseImpl.class);
+		AssetDisplayPageEntryServiceBaseImpl.class);
 
 }

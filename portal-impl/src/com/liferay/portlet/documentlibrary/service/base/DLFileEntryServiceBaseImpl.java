@@ -245,6 +245,6 @@ public abstract class DLFileEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLFileEntryLocalServiceBaseImpl.class);
+		DLFileEntryServiceBaseImpl.class);
 
 }

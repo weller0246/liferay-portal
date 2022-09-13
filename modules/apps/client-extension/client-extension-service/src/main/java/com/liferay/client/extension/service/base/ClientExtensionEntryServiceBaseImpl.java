@@ -152,6 +152,6 @@ public abstract class ClientExtensionEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ClientExtensionEntryLocalServiceBaseImpl.class);
+		ClientExtensionEntryServiceBaseImpl.class);
 
 }

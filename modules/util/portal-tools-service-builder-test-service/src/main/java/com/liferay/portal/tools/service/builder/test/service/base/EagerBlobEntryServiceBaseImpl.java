@@ -227,6 +227,6 @@ public abstract class EagerBlobEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		EagerBlobEntryLocalServiceBaseImpl.class);
+		EagerBlobEntryServiceBaseImpl.class);
 
 }

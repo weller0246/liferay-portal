@@ -149,6 +149,6 @@ public abstract class AccountEntryUserRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AccountEntryUserRelLocalServiceBaseImpl.class);
+		AccountEntryUserRelServiceBaseImpl.class);
 
 }

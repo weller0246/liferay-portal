@@ -157,6 +157,6 @@ public abstract class CommerceNotificationTemplateServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceNotificationTemplateLocalServiceBaseImpl.class);
+		CommerceNotificationTemplateServiceBaseImpl.class);
 
 }

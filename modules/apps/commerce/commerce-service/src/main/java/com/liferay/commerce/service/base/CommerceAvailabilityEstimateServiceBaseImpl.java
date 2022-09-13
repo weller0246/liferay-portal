@@ -242,6 +242,6 @@ public abstract class CommerceAvailabilityEstimateServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceAvailabilityEstimateLocalServiceBaseImpl.class);
+		CommerceAvailabilityEstimateServiceBaseImpl.class);
 
 }

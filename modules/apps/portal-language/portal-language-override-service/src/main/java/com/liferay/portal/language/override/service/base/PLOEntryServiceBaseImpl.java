@@ -146,6 +146,6 @@ public abstract class PLOEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PLOEntryLocalServiceBaseImpl.class);
+		PLOEntryServiceBaseImpl.class);
 
 }

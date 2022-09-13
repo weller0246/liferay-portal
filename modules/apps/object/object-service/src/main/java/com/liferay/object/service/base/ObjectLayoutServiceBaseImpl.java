@@ -148,6 +148,6 @@ public abstract class ObjectLayoutServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectLayoutLocalServiceBaseImpl.class);
+		ObjectLayoutServiceBaseImpl.class);
 
 }

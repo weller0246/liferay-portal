@@ -179,6 +179,6 @@ public abstract class CommerceTermEntryRelServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceTermEntryRelLocalServiceBaseImpl.class);
+		CommerceTermEntryRelServiceBaseImpl.class);
 
 }

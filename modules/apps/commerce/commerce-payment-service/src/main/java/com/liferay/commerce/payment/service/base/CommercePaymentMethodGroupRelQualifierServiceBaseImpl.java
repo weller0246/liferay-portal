@@ -158,6 +158,6 @@ public abstract class CommercePaymentMethodGroupRelQualifierServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommercePaymentMethodGroupRelQualifierLocalServiceBaseImpl.class);
+		CommercePaymentMethodGroupRelQualifierServiceBaseImpl.class);
 
 }

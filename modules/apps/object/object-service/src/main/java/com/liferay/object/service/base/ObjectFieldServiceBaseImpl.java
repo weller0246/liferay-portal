@@ -146,6 +146,6 @@ public abstract class ObjectFieldServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectFieldLocalServiceBaseImpl.class);
+		ObjectFieldServiceBaseImpl.class);
 
 }

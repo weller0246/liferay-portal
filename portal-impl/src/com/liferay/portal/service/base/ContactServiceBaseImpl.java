@@ -218,6 +218,6 @@ public abstract class ContactServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ContactLocalServiceBaseImpl.class);
+		ContactServiceBaseImpl.class);
 
 }

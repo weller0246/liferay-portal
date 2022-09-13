@@ -256,6 +256,6 @@ public abstract class OrganizationServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OrganizationLocalServiceBaseImpl.class);
+		OrganizationServiceBaseImpl.class);
 
 }

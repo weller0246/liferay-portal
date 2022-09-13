@@ -266,6 +266,6 @@ public abstract class CPInstanceOptionValueRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPInstanceOptionValueRelLocalServiceBaseImpl.class);
+		CPInstanceOptionValueRelServiceBaseImpl.class);
 
 }

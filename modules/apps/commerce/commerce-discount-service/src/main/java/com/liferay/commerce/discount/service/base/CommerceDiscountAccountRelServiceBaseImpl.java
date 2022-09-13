@@ -161,6 +161,6 @@ public abstract class CommerceDiscountAccountRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceDiscountAccountRelLocalServiceBaseImpl.class);
+		CommerceDiscountAccountRelServiceBaseImpl.class);
 
 }

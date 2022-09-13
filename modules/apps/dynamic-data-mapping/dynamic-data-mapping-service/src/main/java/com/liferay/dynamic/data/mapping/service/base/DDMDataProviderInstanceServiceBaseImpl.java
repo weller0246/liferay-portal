@@ -159,6 +159,6 @@ public abstract class DDMDataProviderInstanceServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DDMDataProviderInstanceLocalServiceBaseImpl.class);
+		DDMDataProviderInstanceServiceBaseImpl.class);
 
 }

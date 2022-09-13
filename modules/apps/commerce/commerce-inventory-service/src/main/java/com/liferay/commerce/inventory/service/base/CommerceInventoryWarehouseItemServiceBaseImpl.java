@@ -162,6 +162,6 @@ public abstract class CommerceInventoryWarehouseItemServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceInventoryWarehouseItemLocalServiceBaseImpl.class);
+		CommerceInventoryWarehouseItemServiceBaseImpl.class);
 
 }

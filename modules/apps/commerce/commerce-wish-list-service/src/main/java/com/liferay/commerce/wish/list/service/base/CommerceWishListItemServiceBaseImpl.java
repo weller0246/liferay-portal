@@ -152,6 +152,6 @@ public abstract class CommerceWishListItemServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceWishListItemLocalServiceBaseImpl.class);
+		CommerceWishListItemServiceBaseImpl.class);
 
 }

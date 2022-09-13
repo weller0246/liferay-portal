@@ -259,6 +259,6 @@ public abstract class CPAttachmentFileEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPAttachmentFileEntryLocalServiceBaseImpl.class);
+		CPAttachmentFileEntryServiceBaseImpl.class);
 
 }

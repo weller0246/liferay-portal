@@ -146,6 +146,6 @@ public abstract class KBTemplateServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KBTemplateLocalServiceBaseImpl.class);
+		KBTemplateServiceBaseImpl.class);
 
 }

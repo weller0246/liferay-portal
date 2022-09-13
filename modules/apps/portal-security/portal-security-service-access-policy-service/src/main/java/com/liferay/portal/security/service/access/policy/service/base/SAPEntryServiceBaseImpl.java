@@ -146,6 +146,6 @@ public abstract class SAPEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SAPEntryLocalServiceBaseImpl.class);
+		SAPEntryServiceBaseImpl.class);
 
 }

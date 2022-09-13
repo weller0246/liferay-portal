@@ -168,6 +168,6 @@ public abstract class CommerceTaxMethodServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceTaxMethodLocalServiceBaseImpl.class);
+		CommerceTaxMethodServiceBaseImpl.class);
 
 }

@@ -242,6 +242,6 @@ public abstract class CountryServiceBaseImpl
 	protected CountryLocalizationPersistence countryLocalizationPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CountryLocalServiceBaseImpl.class);
+		CountryServiceBaseImpl.class);
 
 }

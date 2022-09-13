@@ -250,6 +250,6 @@ public abstract class AssetCategoryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetCategoryLocalServiceBaseImpl.class);
+		AssetCategoryServiceBaseImpl.class);
 
 }

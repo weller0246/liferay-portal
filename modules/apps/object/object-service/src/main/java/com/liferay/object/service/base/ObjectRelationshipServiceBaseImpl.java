@@ -149,6 +149,6 @@ public abstract class ObjectRelationshipServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectRelationshipLocalServiceBaseImpl.class);
+		ObjectRelationshipServiceBaseImpl.class);
 
 }

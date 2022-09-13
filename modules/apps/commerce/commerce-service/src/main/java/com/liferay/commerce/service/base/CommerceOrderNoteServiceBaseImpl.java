@@ -228,6 +228,6 @@ public abstract class CommerceOrderNoteServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceOrderNoteLocalServiceBaseImpl.class);
+		CommerceOrderNoteServiceBaseImpl.class);
 
 }

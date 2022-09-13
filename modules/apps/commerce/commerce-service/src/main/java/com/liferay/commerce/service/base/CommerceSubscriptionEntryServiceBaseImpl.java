@@ -264,6 +264,6 @@ public abstract class CommerceSubscriptionEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceSubscriptionEntryLocalServiceBaseImpl.class);
+		CommerceSubscriptionEntryServiceBaseImpl.class);
 
 }

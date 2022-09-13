@@ -150,6 +150,6 @@ public abstract class KBFolderServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		KBFolderLocalServiceBaseImpl.class);
+		KBFolderServiceBaseImpl.class);
 
 }

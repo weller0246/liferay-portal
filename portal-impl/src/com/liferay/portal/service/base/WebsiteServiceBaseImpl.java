@@ -218,6 +218,6 @@ public abstract class WebsiteServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		WebsiteLocalServiceBaseImpl.class);
+		WebsiteServiceBaseImpl.class);
 
 }

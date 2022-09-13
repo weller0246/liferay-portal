@@ -235,6 +235,6 @@ public abstract class CPDefinitionOptionRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDefinitionOptionRelLocalServiceBaseImpl.class);
+		CPDefinitionOptionRelServiceBaseImpl.class);
 
 }

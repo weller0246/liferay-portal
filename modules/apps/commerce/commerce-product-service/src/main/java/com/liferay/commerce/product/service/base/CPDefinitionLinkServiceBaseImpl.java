@@ -227,6 +227,6 @@ public abstract class CPDefinitionLinkServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDefinitionLinkLocalServiceBaseImpl.class);
+		CPDefinitionLinkServiceBaseImpl.class);
 
 }

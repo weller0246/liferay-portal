@@ -147,6 +147,6 @@ public abstract class AuditEventServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AuditEventLocalServiceBaseImpl.class);
+		AuditEventServiceBaseImpl.class);
 
 }

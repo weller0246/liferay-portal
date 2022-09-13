@@ -130,6 +130,6 @@ public abstract class FlagsEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		FlagsEntryLocalServiceBaseImpl.class);
+		FlagsEntryServiceBaseImpl.class);
 
 }

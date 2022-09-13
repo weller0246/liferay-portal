@@ -157,6 +157,6 @@ public abstract class CommerceShippingFixedOptionQualifierServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceShippingFixedOptionQualifierLocalServiceBaseImpl.class);
+		CommerceShippingFixedOptionQualifierServiceBaseImpl.class);
 
 }

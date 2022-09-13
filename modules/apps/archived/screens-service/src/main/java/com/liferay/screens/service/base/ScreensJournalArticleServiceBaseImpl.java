@@ -153,6 +153,6 @@ public abstract class ScreensJournalArticleServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ScreensJournalArticleLocalServiceBaseImpl.class);
+		ScreensJournalArticleServiceBaseImpl.class);
 
 }

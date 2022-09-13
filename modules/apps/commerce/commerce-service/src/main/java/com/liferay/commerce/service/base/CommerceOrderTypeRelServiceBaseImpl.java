@@ -232,6 +232,6 @@ public abstract class CommerceOrderTypeRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceOrderTypeRelLocalServiceBaseImpl.class);
+		CommerceOrderTypeRelServiceBaseImpl.class);
 
 }

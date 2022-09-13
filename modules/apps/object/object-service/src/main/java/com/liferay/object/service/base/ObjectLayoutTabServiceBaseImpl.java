@@ -144,6 +144,6 @@ public abstract class ObjectLayoutTabServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectLayoutTabLocalServiceBaseImpl.class);
+		ObjectLayoutTabServiceBaseImpl.class);
 
 }

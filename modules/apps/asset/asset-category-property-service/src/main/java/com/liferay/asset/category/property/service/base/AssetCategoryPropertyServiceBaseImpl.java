@@ -155,6 +155,6 @@ public abstract class AssetCategoryPropertyServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetCategoryPropertyLocalServiceBaseImpl.class);
+		AssetCategoryPropertyServiceBaseImpl.class);
 
 }

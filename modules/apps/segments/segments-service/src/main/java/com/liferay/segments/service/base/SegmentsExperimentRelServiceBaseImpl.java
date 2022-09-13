@@ -151,6 +151,6 @@ public abstract class SegmentsExperimentRelServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		SegmentsExperimentRelLocalServiceBaseImpl.class);
+		SegmentsExperimentRelServiceBaseImpl.class);
 
 }

@@ -148,6 +148,6 @@ public abstract class AssetListEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		AssetListEntryLocalServiceBaseImpl.class);
+		AssetListEntryServiceBaseImpl.class);
 
 }

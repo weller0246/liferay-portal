@@ -144,6 +144,6 @@ public abstract class ObjectViewColumnServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectViewColumnLocalServiceBaseImpl.class);
+		ObjectViewColumnServiceBaseImpl.class);
 
 }

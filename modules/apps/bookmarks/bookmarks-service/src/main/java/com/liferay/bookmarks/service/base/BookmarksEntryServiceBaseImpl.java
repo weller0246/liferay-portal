@@ -148,6 +148,6 @@ public abstract class BookmarksEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		BookmarksEntryLocalServiceBaseImpl.class);
+		BookmarksEntryServiceBaseImpl.class);
 
 }

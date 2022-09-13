@@ -148,6 +148,6 @@ public abstract class ObjectActionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ObjectActionLocalServiceBaseImpl.class);
+		ObjectActionServiceBaseImpl.class);
 
 }

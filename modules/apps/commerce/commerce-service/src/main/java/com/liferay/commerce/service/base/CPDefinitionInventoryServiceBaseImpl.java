@@ -233,6 +233,6 @@ public abstract class CPDefinitionInventoryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDefinitionInventoryLocalServiceBaseImpl.class);
+		CPDefinitionInventoryServiceBaseImpl.class);
 
 }

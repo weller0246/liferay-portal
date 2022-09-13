@@ -223,6 +223,6 @@ public abstract class CPOptionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPOptionLocalServiceBaseImpl.class);
+		CPOptionServiceBaseImpl.class);
 
 }

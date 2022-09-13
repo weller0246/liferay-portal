@@ -187,6 +187,6 @@ public abstract class ThemeServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		ThemeLocalServiceBaseImpl.class);
+		ThemeServiceBaseImpl.class);
 
 }

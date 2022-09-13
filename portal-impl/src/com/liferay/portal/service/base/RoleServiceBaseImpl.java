@@ -247,6 +247,6 @@ public abstract class RoleServiceBaseImpl
 	protected UserPersistence userPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RoleLocalServiceBaseImpl.class);
+		RoleServiceBaseImpl.class);
 
 }

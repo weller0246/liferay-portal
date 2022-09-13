@@ -152,6 +152,6 @@ public abstract class DDLRecordSetServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DDLRecordSetLocalServiceBaseImpl.class);
+		DDLRecordSetServiceBaseImpl.class);
 
 }

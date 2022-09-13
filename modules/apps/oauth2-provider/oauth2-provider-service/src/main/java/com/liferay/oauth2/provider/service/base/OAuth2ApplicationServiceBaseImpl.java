@@ -149,6 +149,6 @@ public abstract class OAuth2ApplicationServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OAuth2ApplicationLocalServiceBaseImpl.class);
+		OAuth2ApplicationServiceBaseImpl.class);
 
 }

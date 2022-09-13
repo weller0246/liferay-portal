@@ -148,6 +148,6 @@ public abstract class RedirectEntryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		RedirectEntryLocalServiceBaseImpl.class);
+		RedirectEntryServiceBaseImpl.class);
 
 }

@@ -152,6 +152,6 @@ public abstract class CalendarResourceServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CalendarResourceLocalServiceBaseImpl.class);
+		CalendarResourceServiceBaseImpl.class);
 
 }

@@ -250,6 +250,6 @@ public abstract class PasswordPolicyServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PasswordPolicyLocalServiceBaseImpl.class);
+		PasswordPolicyServiceBaseImpl.class);
 
 }

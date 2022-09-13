@@ -251,6 +251,6 @@ public abstract class CPTaxCategoryServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPTaxCategoryLocalServiceBaseImpl.class);
+		CPTaxCategoryServiceBaseImpl.class);
 
 }

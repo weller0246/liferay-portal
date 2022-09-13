@@ -227,6 +227,6 @@ public abstract class DLFileVersionServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLFileVersionLocalServiceBaseImpl.class);
+		DLFileVersionServiceBaseImpl.class);
 
 }

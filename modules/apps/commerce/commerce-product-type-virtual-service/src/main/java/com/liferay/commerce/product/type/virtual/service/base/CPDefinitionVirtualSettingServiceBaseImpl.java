@@ -175,6 +175,6 @@ public abstract class CPDefinitionVirtualSettingServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CPDefinitionVirtualSettingLocalServiceBaseImpl.class);
+		CPDefinitionVirtualSettingServiceBaseImpl.class);
 
 }

@@ -217,6 +217,6 @@ public abstract class PhoneServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		PhoneLocalServiceBaseImpl.class);
+		PhoneServiceBaseImpl.class);
 
 }

@@ -256,6 +256,6 @@ public abstract class DLFileEntryTypeServiceBaseImpl
 	protected DLFolderPersistence dlFolderPersistence;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		DLFileEntryTypeLocalServiceBaseImpl.class);
+		DLFileEntryTypeServiceBaseImpl.class);
 
 }

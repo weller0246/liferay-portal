@@ -185,6 +185,6 @@ public abstract class CommerceTaxFixedRateAddressRelServiceBaseImpl
 	protected com.liferay.portal.kernel.service.UserService userService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		CommerceTaxFixedRateAddressRelLocalServiceBaseImpl.class);
+		CommerceTaxFixedRateAddressRelServiceBaseImpl.class);
 
 }

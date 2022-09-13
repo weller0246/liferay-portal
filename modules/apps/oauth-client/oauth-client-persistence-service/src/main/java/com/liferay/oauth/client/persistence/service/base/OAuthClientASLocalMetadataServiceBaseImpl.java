@@ -156,6 +156,6 @@ public abstract class OAuthClientASLocalMetadataServiceBaseImpl
 		counterLocalService;
 
 	private static final Log _log = LogFactoryUtil.getLog(
-		OAuthClientASLocalMetadataLocalServiceBaseImpl.class);
+		OAuthClientASLocalMetadataServiceBaseImpl.class);
 
 }
