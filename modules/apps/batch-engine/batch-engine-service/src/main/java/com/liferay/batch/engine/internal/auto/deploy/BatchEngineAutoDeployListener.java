@@ -367,46 +367,45 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 
 				String zipEntryName = zipEntry.getName();
 
-				if (Objects.equals(zipEntryName, "batch-engine.json") ||
-					zipEntryName.endsWith("/batch-engine.json")) {
+				if (!Objects.equals(zipEntryName, "batch-engine.json") &&
+					!zipEntryName.endsWith("/batch-engine.json")) {
 
-					_batchEngineZipEntryPair = new BatchEngineZipEntryPair(
-						_zipFile);
+					_previousFileEntry = zipEntry;
 
-					_batchEngineZipEntryPair.setConfigurationZipEntry(zipEntry);
-
-					ZipEntry dataZipEntry = null;
-
-					if ((_previousFileEntry != null) &&
-						!StringUtil.contains(
-							_previousFileEntry.getName(),
-							"batch-engine.json")) {
-
-						dataZipEntry = _previousFileEntry;
-						_previousFileEntry = null;
-					}
-					else if (_enumeration.hasMoreElements()) {
-						dataZipEntry = _enumeration.nextElement();
-					}
-
-					if (dataZipEntry != null) {
-						String dataZipEntryName = dataZipEntry.getName();
-
-						String prefix = zipEntryName.substring(
-							0,
-							zipEntryName.length() -
-								"batch-engine.json".length());
-
-						if (dataZipEntryName.startsWith(prefix)) {
-							_batchEngineZipEntryPair.setDataZipEntry(
-								dataZipEntry);
-						}
-					}
-
-					return true;
+					continue;
 				}
 
-				_previousFileEntry = zipEntry;
+				_batchEngineZipEntryPair = new BatchEngineZipEntryPair(
+					_zipFile);
+
+				_batchEngineZipEntryPair.setConfigurationZipEntry(zipEntry);
+
+				ZipEntry dataZipEntry = null;
+
+				if ((_previousFileEntry != null) &&
+					!StringUtil.contains(
+						_previousFileEntry.getName(), "batch-engine.json")) {
+
+					dataZipEntry = _previousFileEntry;
+					_previousFileEntry = null;
+				}
+				else if (_enumeration.hasMoreElements()) {
+					dataZipEntry = _enumeration.nextElement();
+				}
+
+				if (dataZipEntry != null) {
+					String dataZipEntryName = dataZipEntry.getName();
+
+					String prefix = zipEntryName.substring(
+						0,
+						zipEntryName.length() - "batch-engine.json".length());
+
+					if (dataZipEntryName.startsWith(prefix)) {
+						_batchEngineZipEntryPair.setDataZipEntry(dataZipEntry);
+					}
+				}
+
+				return true;
 			}
 
 			return false;
