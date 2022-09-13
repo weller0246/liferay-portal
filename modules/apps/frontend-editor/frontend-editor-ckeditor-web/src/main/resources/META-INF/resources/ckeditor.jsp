@@ -54,7 +54,7 @@ if (Validator.isNotNull(onInitMethod)) {
 }
 
 String placeholder = GetterUtil.getString((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":placeholder"));
-String required = GetterUtil.getString((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":required"));
+boolean required = GetterUtil.getBoolean((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":required"));
 boolean skipEditorLoading = GetterUtil.getBoolean((String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":skipEditorLoading"));
 String toolbarSet = (String)request.getAttribute(CKEditorConstants.ATTRIBUTE_NAMESPACE + ":toolbarSet");
 
@@ -108,7 +108,7 @@ if (inlineEdit && Validator.isNotNull(inlineEditSaveURL)) {
 		<label class="control-label" for="<%= HtmlUtil.escapeAttribute(name) %>">
 			<liferay-ui:message key="<%= placeholder %>" />
 
-			<c:if test="<%= Boolean.parseBoolean(required) %>">
+			<c:if test="<%= required %>">
 				<span class="text-warning">*</span>
 			</c:if>
 		</label>
