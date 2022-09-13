@@ -807,9 +807,11 @@ import org.osgi.service.component.annotations.Reference;
 		 */
 		@Override
 		public PersistedModel deletePersistedModel(PersistedModel persistedModel) throws PortalException {
-			if (_log.isWarnEnabled()) {
-				_log.warn("Implement ${entity.name}LocalServiceImpl#delete${entity.name}(${entity.name}) to avoid orphaned data");
-			}
+			<#if serviceBuilder.isVersionGTE_7_4_0()>
+				if (_log.isWarnEnabled()) {
+					_log.warn("Implement ${entity.name}LocalServiceImpl#delete${entity.name}(${entity.name}) to avoid orphaned data");
+				}
+			</#if>
 
 			return ${entity.variableName}LocalService.delete${entity.name}((${entity.name})persistedModel);
 		}
