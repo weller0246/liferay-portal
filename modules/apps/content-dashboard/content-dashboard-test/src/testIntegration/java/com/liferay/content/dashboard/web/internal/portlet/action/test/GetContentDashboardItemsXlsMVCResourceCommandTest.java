@@ -14,9 +14,6 @@
 
 package com.liferay.content.dashboard.web.internal.portlet.action.test;
 
-/**
- * @author Yurena Cabrera
- */
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.content.dashboard.web.test.util.ContentDashboardTestUtil;
 import com.liferay.document.library.kernel.model.DLFileEntry;
