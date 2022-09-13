@@ -70,11 +70,12 @@ public class MBModerationConditionEvaluator implements ConditionEvaluator {
 
 		User user = _userLocalService.getUser(userId);
 
-		for (String authorizedDomain :
-				mbModerationGroupConfiguration.authorizedDomains()) {
+		for (String authorizedDomainName :
+				mbModerationGroupConfiguration.authorizedDomainNames()) {
 
-			if (Validator.isNotNull(authorizedDomain) &&
-				StringUtil.endsWith(user.getEmailAddress(), authorizedDomain)) {
+			if (Validator.isNotNull(authorizedDomainName) &&
+				StringUtil.endsWith(
+					user.getEmailAddress(), "@" + authorizedDomainName)) {
 
 				return "approve";
 			}
