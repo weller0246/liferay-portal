@@ -122,7 +122,8 @@ public class DefaultObjectEntryManagerImplTest {
 	public void setUp() throws Exception {
 		_objectDefinition1 = _createObjectDefinition(
 			Arrays.asList(
-				new TextObjectFieldBuilder().labelMap(
+				new TextObjectFieldBuilder(
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).objectFieldSettings(
@@ -141,7 +142,8 @@ public class DefaultObjectEntryManagerImplTest {
 
 		_objectDefinition2 = _createObjectDefinition(
 			Arrays.asList(
-				new AttachmentObjectFieldBuilder().labelMap(
+				new AttachmentObjectFieldBuilder(
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).name(
@@ -154,7 +156,8 @@ public class DefaultObjectEntryManagerImplTest {
 							"fileSource", "documentsAndMedia"),
 						_createObjectFieldSetting("maximumFileSize", "100"))
 				).build(),
-				new PicklistObjectFieldBuilder().labelMap(
+				new PicklistObjectFieldBuilder(
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).listTypeDefinitionId(
@@ -166,7 +169,8 @@ public class DefaultObjectEntryManagerImplTest {
 				).name(
 					"picklistObjectFieldName"
 				).build(),
-				new RichTextObjectFieldBuilder().labelMap(
+				new RichTextObjectFieldBuilder(
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).objectFieldSettings(
@@ -174,7 +178,8 @@ public class DefaultObjectEntryManagerImplTest {
 				).name(
 					"richTextObjectFieldName"
 				).build(),
-				new TextObjectFieldBuilder().labelMap(
+				new TextObjectFieldBuilder(
+				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).objectFieldSettings(
