@@ -689,6 +689,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			EmptyCollectionOptions emptyCollectionOptions, JspWriter jspWriter)
 		throws Exception {
 
+		jspWriter.write("<div class=\"c-empty-state\">");
+		jspWriter.write("<div class=\"c-empty-state-text\">");
+
 		String message = LanguageUtil.get(getRequest(), "no-results-found");
 
 		if ((emptyCollectionOptions != null) &&
@@ -711,9 +714,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			}
 		}
 
-		jspWriter.write("<div class=\"c-empty-state\">");
-		jspWriter.write("<div class=\"c-empty-state-text\">");
 		jspWriter.write(message);
+
 		jspWriter.write("</div></div>");
 	}
 
