@@ -33,6 +33,7 @@ import com.liferay.portal.kernel.test.portlet.MockLiferayResourceResponse;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.rule.DeleteAfterTestRun;
 import com.liferay.portal.kernel.test.util.GroupTestUtil;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.ServiceContextTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -81,7 +82,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup(
 			TestPropsValues.getCompanyId(), TestPropsValues.getUserId(), 0,
-			"MyScope");
+			RandomTestUtil.randomString());
 	}
 
 	@Test
@@ -130,7 +131,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 
 			HSSFWorkbook actualWorkbook = new HSSFWorkbook(actualInputStream);
 
-			_assertWorkbooks(actualWorkbook, expectedWorkbook);
+			_assertWorkbooks(expectedWorkbook, actualWorkbook);
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
