@@ -157,8 +157,8 @@ public class BatchEngineAutoDeployListenerTest {
 			new Answer<Future<?>>() {
 
 				public Future<?> answer(InvocationOnMock invocationOnMock) {
-					Runnable runnable =
-						(Runnable)invocationOnMock.getArgument(0);
+					Runnable runnable = (Runnable)invocationOnMock.getArgument(
+						0);
 
 					runnable.run();
 
@@ -326,14 +326,14 @@ public class BatchEngineAutoDeployListenerTest {
 		return path.toFile();
 	}
 
-	private BatchEngineAutoDeployListener _batchEngineAutoDeployListener =
+	private final BatchEngineAutoDeployListener _batchEngineAutoDeployListener =
 		new BatchEngineAutoDeployListener();
 
 	@Mock
 	private BatchEngineImportTaskLocalService
 		_batchEngineImportTaskLocalService;
 
-	private List<BatchEngineImportTask> _batchEngineImportTasks =
+	private final List<BatchEngineImportTask> _batchEngineImportTasks =
 		new ArrayList<>();
 
 	@Mock
