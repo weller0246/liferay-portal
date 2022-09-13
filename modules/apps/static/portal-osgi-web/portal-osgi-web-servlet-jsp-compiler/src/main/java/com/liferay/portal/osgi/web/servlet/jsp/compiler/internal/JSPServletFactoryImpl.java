@@ -55,7 +55,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 
 	@Override
 	public Servlet createJSPServlet() {
-		return new JspServlet(_fragmentCountMap.keySet());
+		return new JspServlet(_fragmentCounts.keySet());
 	}
 
 	@Activate
@@ -81,7 +81,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 		JSPServletFactoryImpl.class);
 
 	private BundleTracker<Tracked> _bundleTracker;
-	private final Map<String, AtomicInteger> _fragmentCountMap =
+	private final Map<String, AtomicInteger> _fragmentCounts =
 		new HashMap<>();
 
 	private static class Tracked {
@@ -174,7 +174,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 					continue;
 				}
 
-				_fragmentCountMap.compute(
+				_fragmentCounts.compute(
 					tracked._symbolicName,
 					(symbolicName, count) -> {
 						if (add) {
