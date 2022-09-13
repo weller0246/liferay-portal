@@ -67,10 +67,6 @@ public class BatchEngineAutoDeployListenerTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.openMocks(this);
 
-		_batchEngineImportTasks = new ArrayList<>();
-
-		_batchEngineAutoDeployListener = new BatchEngineAutoDeployListener();
-
 		ReflectionTestUtil.setFieldValue(
 			_batchEngineAutoDeployListener, "_batchEngineImportTaskExecutor",
 			new BatchEngineImportTaskExecutor() {
@@ -332,13 +328,15 @@ public class BatchEngineAutoDeployListenerTest {
 		return path.toFile();
 	}
 
-	private BatchEngineAutoDeployListener _batchEngineAutoDeployListener;
+	private BatchEngineAutoDeployListener _batchEngineAutoDeployListener =
+		new BatchEngineAutoDeployListener();
 
 	@Mock
 	private BatchEngineImportTaskLocalService
 		_batchEngineImportTaskLocalService;
 
-	private List<BatchEngineImportTask> _batchEngineImportTasks;
+	private List<BatchEngineImportTask> _batchEngineImportTasks =
+		new ArrayList<>();
 
 	@Mock
 	private NoticeableExecutorService _noticeableExecutorService;
