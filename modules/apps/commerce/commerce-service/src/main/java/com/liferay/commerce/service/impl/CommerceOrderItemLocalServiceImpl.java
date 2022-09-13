@@ -950,6 +950,11 @@ public class CommerceOrderItemLocalServiceImpl
 
 		boolean discountChanged = _isDiscountChanged(
 			discountAmount, commerceOrderItem);
+		boolean priceChanged = _isPriceChanged(
+			finalPrice, promoPrice, unitPrice, commerceOrderItem);
+
+		commerceOrderItem.setDiscountAmount(
+			(BigDecimal)GetterUtil.get(discountAmount, BigDecimal.ZERO));
 
 		if (!commerceOrderItem.isDiscountManuallyAdjusted() &&
 			discountChanged) {
@@ -957,8 +962,6 @@ public class CommerceOrderItemLocalServiceImpl
 			commerceOrderItem.setDiscountManuallyAdjusted(true);
 		}
 
-		commerceOrderItem.setDiscountAmount(
-			(BigDecimal)GetterUtil.get(discountAmount, BigDecimal.ZERO));
 		commerceOrderItem.setDiscountPercentageLevel1(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel1, BigDecimal.ZERO));
@@ -971,13 +974,8 @@ public class CommerceOrderItemLocalServiceImpl
 		commerceOrderItem.setDiscountPercentageLevel4(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel4, BigDecimal.ZERO));
-
-		boolean priceChanged = _isPriceChanged(
-			finalPrice, promoPrice, unitPrice, commerceOrderItem);
-
 		commerceOrderItem.setFinalPrice(
 			(BigDecimal)GetterUtil.get(finalPrice, BigDecimal.ZERO));
-
 		commerceOrderItem.setManuallyAdjusted(true);
 
 		if (!commerceOrderItem.isPriceManuallyAdjusted() && priceChanged) {
@@ -1015,6 +1013,10 @@ public class CommerceOrderItemLocalServiceImpl
 
 		boolean discountChanged = _isDiscountChanged(
 			discountAmount, discountAmountWithTaxAmount, commerceOrderItem);
+		boolean priceChanged = _isPriceChanged(
+			finalPrice, finalPriceWithTaxAmount, promoPrice,
+			promoPriceWithTaxAmount, unitPrice, unitPriceWithTaxAmount,
+			commerceOrderItem);
 
 		commerceOrderItem.setDiscountAmount(
 			(BigDecimal)GetterUtil.get(discountAmount, BigDecimal.ZERO));
@@ -1040,35 +1042,23 @@ public class CommerceOrderItemLocalServiceImpl
 		commerceOrderItem.setDiscountPercentageLevel1WithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel1WithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setDiscountPercentageLevel2WithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel2WithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setDiscountPercentageLevel3WithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel3WithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setDiscountPercentageLevel4WithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				discountPercentageLevel4WithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setDiscountWithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				discountAmountWithTaxAmount, BigDecimal.ZERO));
-
-		boolean priceChanged = _isPriceChanged(
-			finalPrice, finalPriceWithTaxAmount, promoPrice,
-			promoPriceWithTaxAmount, unitPrice, unitPriceWithTaxAmount,
-			commerceOrderItem);
-
 		commerceOrderItem.setFinalPrice(
 			(BigDecimal)GetterUtil.get(finalPrice, BigDecimal.ZERO));
-
 		commerceOrderItem.setFinalPriceWithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				finalPriceWithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setManuallyAdjusted(true);
 
 		if (!commerceOrderItem.isPriceManuallyAdjusted() && priceChanged) {
@@ -1077,14 +1067,11 @@ public class CommerceOrderItemLocalServiceImpl
 
 		commerceOrderItem.setPromoPrice(
 			(BigDecimal)GetterUtil.get(promoPrice, BigDecimal.ZERO));
-
 		commerceOrderItem.setPromoPriceWithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				promoPriceWithTaxAmount, BigDecimal.ZERO));
-
 		commerceOrderItem.setUnitPrice(
 			(BigDecimal)GetterUtil.get(unitPrice, BigDecimal.ZERO));
-
 		commerceOrderItem.setUnitPriceWithTaxAmount(
 			(BigDecimal)GetterUtil.get(
 				unitPriceWithTaxAmount, BigDecimal.ZERO));
