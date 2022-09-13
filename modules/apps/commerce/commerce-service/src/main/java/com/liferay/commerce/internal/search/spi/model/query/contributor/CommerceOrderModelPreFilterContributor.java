@@ -54,24 +54,25 @@ public class CommerceOrderModelPreFilterContributor
 		long[] commerceAccountIds = GetterUtil.getLongValues(
 			searchContext.getAttribute("commerceAccountIds"), null);
 
-		if (commerceAccountIds != null) {
-			BooleanFilter commerceAccountIdBooleanFilter = new BooleanFilter();
+		if (commerceAccountIds == null) {
+			return;
+		}
 
-			for (long commerceAccountId : commerceAccountIds) {
-				Filter termFilter = new TermFilter(
-					"commerceAccountId", String.valueOf(commerceAccountId));
+		BooleanFilter commerceAccountIdBooleanFilter = new BooleanFilter();
 
-				commerceAccountIdBooleanFilter.add(
-					termFilter, BooleanClauseOccur.SHOULD);
-			}
+		for (long commerceAccountId : commerceAccountIds) {
+			Filter termFilter = new TermFilter(
+				"commerceAccountId", String.valueOf(commerceAccountId));
 
 			commerceAccountIdBooleanFilter.add(
-				new MissingFilter("commerceAccountId"),
-				BooleanClauseOccur.SHOULD);
-
-			booleanFilter.add(
-				commerceAccountIdBooleanFilter, BooleanClauseOccur.MUST);
+				termFilter, BooleanClauseOccur.SHOULD);
 		}
+
+		commerceAccountIdBooleanFilter.add(
+			new MissingFilter("commerceAccountId"), BooleanClauseOccur.SHOULD);
+
+		booleanFilter.add(
+			commerceAccountIdBooleanFilter, BooleanClauseOccur.MUST);
 	}
 
 	private void _filterByGroupIds(
