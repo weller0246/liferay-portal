@@ -1065,9 +1065,9 @@ public class ObjectDefinitionLocalServiceTest {
 				false, LocalizedMapUtil.getLocalizedMap("Ables"),
 				objectDefinition.getScope());
 
-		Assert.assertEquals(0, objectDefinition.getDescriptionObjectFieldId());
 		Assert.assertEquals(
 			externalReferenceCode, objectDefinition.getExternalReferenceCode());
+		Assert.assertEquals(0, objectDefinition.getDescriptionObjectFieldId());
 		Assert.assertEquals(0, objectDefinition.getTitleObjectFieldId());
 		Assert.assertFalse(objectDefinition.isActive());
 		Assert.assertEquals(
