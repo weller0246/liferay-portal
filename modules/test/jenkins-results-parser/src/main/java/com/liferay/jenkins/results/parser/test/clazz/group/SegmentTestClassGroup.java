@@ -131,6 +131,14 @@ public class SegmentTestClassGroup extends BaseTestClassGroup {
 	public String getTestCasePropertiesContent() {
 		StringBuilder sb = new StringBuilder();
 
+		File testBaseDir = getTestBaseDir();
+
+		if ((testBaseDir != null) && testBaseDir.exists()) {
+			sb.append("TEST_BASE_DIR_NAME=");
+			sb.append(JenkinsResultsParserUtil.getCanonicalPath(testBaseDir));
+			sb.append("\n");
+		}
+
 		Job job = getJob();
 
 		String companyDefaultLocale = job.getCompanyDefaultLocale();
@@ -138,14 +146,6 @@ public class SegmentTestClassGroup extends BaseTestClassGroup {
 		if (!JenkinsResultsParserUtil.isNullOrEmpty(companyDefaultLocale)) {
 			sb.append("TEST_COMPANY_DEFAULT_LOCALE=");
 			sb.append(companyDefaultLocale);
-			sb.append("\n");
-		}
-
-		File testBaseDir = getTestBaseDir();
-
-		if ((testBaseDir != null) && testBaseDir.exists()) {
-			sb.append("TEST_BASE_DIR_NAME=");
-			sb.append(JenkinsResultsParserUtil.getCanonicalPath(testBaseDir));
 			sb.append("\n");
 		}
 
