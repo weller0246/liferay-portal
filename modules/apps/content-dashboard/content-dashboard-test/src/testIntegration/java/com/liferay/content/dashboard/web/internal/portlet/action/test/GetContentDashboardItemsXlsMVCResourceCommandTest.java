@@ -155,10 +155,9 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 			Row actualWorkbookRow = actualWorkbookSheet.getRow(i);
 
 			for (short j = 0; j < firstWorkbookRow.getLastCellNum(); j++) {
-				Cell expectedWorkbookCell = expectedWorkbookRow.getCell(j);
-				Cell actualWorkbookCell = actualWorkbookRow.getCell(j);
-
 				String expectedWorkbookCellValue = StringPool.BLANK;
+
+				Cell expectedWorkbookCell = expectedWorkbookRow.getCell(j);
 
 				if (expectedWorkbookCell != null) {
 					expectedWorkbookCellValue =
@@ -166,6 +165,8 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 				}
 
 				String actualWorkbookCellValue = StringPool.BLANK;
+
+				Cell actualWorkbookCell = actualWorkbookRow.getCell(j);
 
 				if (actualWorkbookCell != null) {
 					actualWorkbookCellValue =
