@@ -122,7 +122,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 
 		_addWorkbookHeaders(workbookBuilder);
 
-		_addWorkbookRows(resourceRequest, locale, workbookBuilder);
+		_addWorkbookRows(locale, resourceRequest, workbookBuilder);
 
 		LocalDate localDate = LocalDate.now();
 
@@ -249,17 +249,17 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 	}
 
 	private void _addWorkbookRows(
-		ResourceRequest resourceRequest, Locale locale,
+		Locale locale, ResourceRequest resourceRequest,
 		WorkbookBuilder workbookBuilder) {
 
-		int indexSearchLimit =
+		int searchQueryResultWindowLimit =
 			_defaultSearchResultPermissionFilterConfiguration.
 				searchQueryResultWindowLimit();
 		int start = 0;
 
 		while (true) {
 			SearchResponse searchResponse = _getSearchResponse(
-				start + indexSearchLimit, resourceRequest, start);
+				start + searchQueryResultWindowLimit, resourceRequest, start);
 
 			List<Document> documents = searchResponse.getDocuments71();
 
@@ -279,11 +279,11 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 				}
 			}
 
-			if (documents.size() < indexSearchLimit) {
+			if (documents.size() < searchQueryResultWindowLimit) {
 				break;
 			}
 
-			start = start + indexSearchLimit;
+			start = start + searchQueryResultWindowLimit;
 		}
 	}
 
