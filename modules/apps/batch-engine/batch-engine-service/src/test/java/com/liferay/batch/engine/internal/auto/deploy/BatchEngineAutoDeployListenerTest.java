@@ -156,8 +156,9 @@ public class BatchEngineAutoDeployListenerTest {
 		).then(
 			new Answer<Future<?>>() {
 
-				public Future<?> answer(InvocationOnMock invocation) {
-					Runnable runnable = (Runnable)invocation.getArgument(0);
+				public Future<?> answer(InvocationOnMock invocationOnMock) {
+					Runnable runnable =
+						(Runnable)invocationOnMock.getArgument(0);
 
 					runnable.run();
 
