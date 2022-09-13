@@ -46,7 +46,6 @@ import com.liferay.portal.test.rule.PermissionCheckerMethodTestRule;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
 
 import java.util.Date;
 
@@ -112,26 +111,21 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 
 			DLFileEntryLocalServiceUtil.updateDLFileEntry(dlFileEntry);
 
-			ByteArrayOutputStream byteArrayOutputStream = _serveResource(
-				FileEntry.class.getName(), _group.getGroupId());
-
 			Class<?> clazz = getClass();
 
 			ClassLoader classLoader = clazz.getClassLoader();
 
-			InputStream expectedInputStream = classLoader.getResourceAsStream(
-				"com/liferay/content/dashboard/web/internal/portlet/action" +
-					"/test/dependencies/expected.xls");
+			ByteArrayOutputStream byteArrayOutputStream = _serveResource(
+				FileEntry.class.getName(), _group.getGroupId());
 
-			HSSFWorkbook expectedWorkbook = new HSSFWorkbook(
-				expectedInputStream);
-
-			InputStream actualInputStream = new ByteArrayInputStream(
-				byteArrayOutputStream.toByteArray());
-
-			HSSFWorkbook actualWorkbook = new HSSFWorkbook(actualInputStream);
-
-			_assertWorkbooks(expectedWorkbook, actualWorkbook);
+			_assertWorkbooks(
+				new HSSFWorkbook(
+					classLoader.getResourceAsStream(
+						"com/liferay/content/dashboard/web/internal/portlet" +
+							"/action/test/dependencies/expected.xls")),
+				new HSSFWorkbook(
+					new ByteArrayInputStream(
+						byteArrayOutputStream.toByteArray())));
 		}
 		finally {
 			ServiceContextThreadLocal.popServiceContext();
@@ -141,7 +135,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 	}
 
 	private void _assertWorkbooks(
-		Workbook actualWorkbook, Workbook expectedWorkbook) {
+		Workbook expectedWorkbook, Workbook actualWorkbook) {
 
 		Assert.assertEquals(
 			expectedWorkbook.getNumberOfSheets(),
