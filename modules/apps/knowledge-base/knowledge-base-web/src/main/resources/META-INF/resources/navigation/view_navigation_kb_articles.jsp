@@ -19,8 +19,8 @@
 <%
 KBArticleNavigationFragmentDisplayContext kbArticleNavigationFragmentDisplayContext = (KBArticleNavigationFragmentDisplayContext)request.getAttribute(KBArticleNavigationFragmentDisplayContext.class.getName());
 
-long parentResourcePrimKey = (long)request.getAttribute("view_navigation_kb_articles.jsp-parentResourcePrimKey");
 int level = GetterUtil.getInteger(request.getAttribute("view_navigation_kb_articles.jsp-level"));
+long parentResourcePrimKey = (long)request.getAttribute("view_navigation_kb_articles.jsp-parentResourcePrimKey");
 
 for (KBArticle kbArticle : kbArticleNavigationFragmentDisplayContext.getKBArticles(parentResourcePrimKey, level)) {
 %>
@@ -30,6 +30,7 @@ for (KBArticle kbArticle : kbArticleNavigationFragmentDisplayContext.getKBArticl
 			<c:choose>
 				<c:when test="<%= kbArticleNavigationFragmentDisplayContext.isSelected(kbArticle) %>">
 					<span class="sr-only"><liferay-ui:message key="current-article" /></span>
+
 					<%= HtmlUtil.escape(kbArticle.getTitle()) %>
 				</c:when>
 				<c:otherwise>
