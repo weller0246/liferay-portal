@@ -319,8 +319,7 @@ public class BatchEngineAutoDeployListenerTest {
 	private File _getFile(String fileName) throws Exception {
 		URL url = BatchEngineAutoDeployListenerTest.class.getResource(fileName);
 
-		Assert.assertEquals(
-			url + "is not file protocol", "file", url.getProtocol());
+		Assert.assertEquals("file", url.getProtocol());
 
 		Path path = Paths.get(url.toURI());
 
