@@ -122,14 +122,13 @@ public class DefaultObjectEntryManagerImplTest {
 	public void setUp() throws Exception {
 		_objectDefinition1 = _createObjectDefinition(
 			Arrays.asList(
-				new TextObjectFieldBuilder(
-				).labelMap(
+				new TextObjectFieldBuilder().labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
-				).objectFieldSettings(
-					Collections.emptyList()
 				).name(
 					"textObjectFieldName"
+				).objectFieldSettings(
+					Collections.emptyList()
 				).build()));
 
 		_setUpDTOConverterContext();
@@ -142,8 +141,7 @@ public class DefaultObjectEntryManagerImplTest {
 
 		_objectDefinition2 = _createObjectDefinition(
 			Arrays.asList(
-				new AttachmentObjectFieldBuilder(
-				).labelMap(
+				new AttachmentObjectFieldBuilder().labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).name(
@@ -156,38 +154,35 @@ public class DefaultObjectEntryManagerImplTest {
 							"fileSource", "documentsAndMedia"),
 						_createObjectFieldSetting("maximumFileSize", "100"))
 				).build(),
-				new PicklistObjectFieldBuilder(
+				new PicklistObjectFieldBuilder().indexed(
+					true
 				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
 				).listTypeDefinitionId(
 					_listTypeDefinition.getListTypeDefinitionId()
-				).indexed(
-					true
-				).objectFieldSettings(
-					Collections.emptyList()
 				).name(
 					"picklistObjectFieldName"
-				).build(),
-				new RichTextObjectFieldBuilder(
-				).labelMap(
-					LocalizedMapUtil.getLocalizedMap(
-						RandomTestUtil.randomString())
 				).objectFieldSettings(
 					Collections.emptyList()
+				).build(),
+				new RichTextObjectFieldBuilder().labelMap(
+					LocalizedMapUtil.getLocalizedMap(
+						RandomTestUtil.randomString())
 				).name(
 					"richTextObjectFieldName"
+				).objectFieldSettings(
+					Collections.emptyList()
 				).build(),
-				new TextObjectFieldBuilder(
+				new TextObjectFieldBuilder().indexed(
+					true
 				).labelMap(
 					LocalizedMapUtil.getLocalizedMap(
 						RandomTestUtil.randomString())
-				).objectFieldSettings(
-					Collections.emptyList()
-				).indexed(
-					true
 				).name(
 					"textObjectFieldName"
+				).objectFieldSettings(
+					Collections.emptyList()
 				).build()));
 
 		_objectRelationshipLocalService.addObjectRelationship(
