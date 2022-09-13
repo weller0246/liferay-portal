@@ -81,8 +81,7 @@ public class JSPServletFactoryImpl implements JSPServletFactory {
 		JSPServletFactoryImpl.class);
 
 	private BundleTracker<Tracked> _bundleTracker;
-	private final Map<String, AtomicInteger> _fragmentCounts =
-		new HashMap<>();
+	private final Map<String, AtomicInteger> _fragmentCounts = new HashMap<>();
 
 	private static class Tracked {
 
