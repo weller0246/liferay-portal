@@ -141,8 +141,8 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 			expectedWorkbook.getNumberOfSheets(),
 			actualWorkbook.getNumberOfSheets());
 
-		Sheet actualWorkbookSheet = actualWorkbook.getSheetAt(0);
 		Sheet expectedWorkbookSheet = expectedWorkbook.getSheetAt(0);
+		Sheet actualWorkbookSheet = actualWorkbook.getSheetAt(0);
 
 		Assert.assertEquals(
 			expectedWorkbookSheet.getLastRowNum(),
@@ -150,27 +150,26 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 
 		Row firstWorkbookRow = expectedWorkbookSheet.getRow(0);
 
-		short totalColumns = firstWorkbookRow.getLastCellNum();
-
 		for (int i = 0; i <= expectedWorkbookSheet.getLastRowNum(); i++) {
-			Row actualWorkbookRow = actualWorkbookSheet.getRow(i);
 			Row expectedWorkbookRow = expectedWorkbookSheet.getRow(i);
+			Row actualWorkbookRow = actualWorkbookSheet.getRow(i);
 
-			for (short j = 0; j < totalColumns; j++) {
-				Cell actualWorkbookCell = actualWorkbookRow.getCell(j);
+			for (short j = 0; j < firstWorkbookRow.getLastCellNum(); j++) {
 				Cell expectedWorkbookCell = expectedWorkbookRow.getCell(j);
+				Cell actualWorkbookCell = actualWorkbookRow.getCell(j);
 
-				String actualWorkbookCellValue = StringPool.BLANK;
 				String expectedWorkbookCellValue = StringPool.BLANK;
-
-				if (actualWorkbookCell != null) {
-					actualWorkbookCellValue =
-						actualWorkbookCell.getStringCellValue();
-				}
 
 				if (expectedWorkbookCell != null) {
 					expectedWorkbookCellValue =
 						expectedWorkbookCell.getStringCellValue();
+				}
+
+				String actualWorkbookCellValue = StringPool.BLANK;
+
+				if (actualWorkbookCell != null) {
+					actualWorkbookCellValue =
+						actualWorkbookCell.getStringCellValue();
 				}
 
 				Assert.assertEquals(
@@ -209,7 +208,6 @@ public class GetContentDashboardItemsXlsMVCResourceCommandTest {
 
 			mockLiferayResourceRequest.setAttribute(
 				WebKeys.THEME_DISPLAY, themeDisplay);
-
 			mockLiferayResourceRequest.setParameter(
 				"groupId", String.valueOf(groupId));
 			mockLiferayResourceRequest.setParameter("className", className);
