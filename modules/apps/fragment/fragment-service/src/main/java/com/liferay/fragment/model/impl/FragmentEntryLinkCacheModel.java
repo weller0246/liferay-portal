@@ -120,6 +120,8 @@ public class FragmentEntryLinkCacheModel
 		sb.append(js);
 		sb.append(", configuration=");
 		sb.append(configuration);
+		sb.append(", deleted=");
+		sb.append(deleted);
 		sb.append(", editableValues=");
 		sb.append(editableValues);
 		sb.append(", namespace=");
@@ -130,8 +132,6 @@ public class FragmentEntryLinkCacheModel
 		sb.append(rendererKey);
 		sb.append(", type=");
 		sb.append(type);
-		sb.append(", deleted=");
-		sb.append(deleted);
 		sb.append(", lastPropagationDate=");
 		sb.append(lastPropagationDate);
 		sb.append(", lastPublishDate=");
@@ -218,6 +218,8 @@ public class FragmentEntryLinkCacheModel
 			fragmentEntryLinkImpl.setConfiguration(configuration);
 		}
 
+		fragmentEntryLinkImpl.setDeleted(deleted);
+
 		if (editableValues == null) {
 			fragmentEntryLinkImpl.setEditableValues("");
 		}
@@ -242,7 +244,6 @@ public class FragmentEntryLinkCacheModel
 		}
 
 		fragmentEntryLinkImpl.setType(type);
-		fragmentEntryLinkImpl.setDeleted(deleted);
 
 		if (lastPropagationDate == Long.MIN_VALUE) {
 			fragmentEntryLinkImpl.setLastPropagationDate(null);
@@ -299,6 +300,8 @@ public class FragmentEntryLinkCacheModel
 		html = (String)objectInput.readObject();
 		js = (String)objectInput.readObject();
 		configuration = (String)objectInput.readObject();
+
+		deleted = objectInput.readBoolean();
 		editableValues = (String)objectInput.readObject();
 		namespace = objectInput.readUTF();
 
@@ -306,8 +309,6 @@ public class FragmentEntryLinkCacheModel
 		rendererKey = objectInput.readUTF();
 
 		type = objectInput.readInt();
-
-		deleted = objectInput.readBoolean();
 		lastPropagationDate = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 	}
@@ -383,6 +384,8 @@ public class FragmentEntryLinkCacheModel
 			objectOutput.writeObject(configuration);
 		}
 
+		objectOutput.writeBoolean(deleted);
+
 		if (editableValues == null) {
 			objectOutput.writeObject("");
 		}
@@ -407,8 +410,6 @@ public class FragmentEntryLinkCacheModel
 		}
 
 		objectOutput.writeInt(type);
-
-		objectOutput.writeBoolean(deleted);
 		objectOutput.writeLong(lastPropagationDate);
 		objectOutput.writeLong(lastPublishDate);
 	}
@@ -433,12 +434,12 @@ public class FragmentEntryLinkCacheModel
 	public String html;
 	public String js;
 	public String configuration;
+	public boolean deleted;
 	public String editableValues;
 	public String namespace;
 	public int position;
 	public String rendererKey;
 	public int type;
-	public boolean deleted;
 	public long lastPropagationDate;
 	public long lastPublishDate;
 

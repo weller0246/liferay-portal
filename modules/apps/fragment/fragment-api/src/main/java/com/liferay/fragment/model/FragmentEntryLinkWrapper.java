@@ -66,12 +66,12 @@ public class FragmentEntryLinkWrapper
 		attributes.put("html", getHtml());
 		attributes.put("js", getJs());
 		attributes.put("configuration", getConfiguration());
+		attributes.put("deleted", isDeleted());
 		attributes.put("editableValues", getEditableValues());
 		attributes.put("namespace", getNamespace());
 		attributes.put("position", getPosition());
 		attributes.put("rendererKey", getRendererKey());
 		attributes.put("type", getType());
-		attributes.put("deleted", isDeleted());
 		attributes.put("lastPropagationDate", getLastPropagationDate());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
@@ -202,6 +202,12 @@ public class FragmentEntryLinkWrapper
 			setConfiguration(configuration);
 		}
 
+		Boolean deleted = (Boolean)attributes.get("deleted");
+
+		if (deleted != null) {
+			setDeleted(deleted);
+		}
+
 		String editableValues = (String)attributes.get("editableValues");
 
 		if (editableValues != null) {
@@ -230,12 +236,6 @@ public class FragmentEntryLinkWrapper
 
 		if (type != null) {
 			setType(type);
-		}
-
-		Boolean deleted = (Boolean)attributes.get("deleted");
-
-		if (deleted != null) {
-			setDeleted(deleted);
 		}
 
 		Date lastPropagationDate = (Date)attributes.get("lastPropagationDate");
