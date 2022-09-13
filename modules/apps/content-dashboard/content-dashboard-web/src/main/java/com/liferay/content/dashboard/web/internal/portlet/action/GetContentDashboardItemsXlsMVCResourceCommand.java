@@ -135,8 +135,8 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 	}
 
 	private void _addWorkbookCell(
-		Locale locale, WorkbookBuilder workbookBuilder,
-		ContentDashboardItem<?> contentDashboardItem) {
+		ContentDashboardItem<?> contentDashboardItem, Locale locale,
+		WorkbookBuilder workbookBuilder) {
 
 		workbookBuilder.cell(
 			contentDashboardItem.getTitle(locale)
@@ -275,7 +275,7 @@ public class GetContentDashboardItemsXlsMVCResourceCommand
 					workbookBuilder.row();
 
 					_addWorkbookCell(
-						locale, workbookBuilder, contentDashboardItem);
+						contentDashboardItem, locale, workbookBuilder);
 				}
 			}
 
