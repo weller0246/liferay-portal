@@ -92,30 +92,32 @@ public class CommerceOrderModelPreFilterContributor
 		int[] orderStatuses = GetterUtil.getIntegerValues(
 			searchContext.getAttribute("orderStatuses"), null);
 
-		if (orderStatuses != null) {
-			BooleanFilter orderStatusesBooleanFilter = new BooleanFilter();
+		if (orderStatuses == null) {
+			return;
+		}
 
-			for (long orderStatus : orderStatuses) {
-				Filter termFilter = new TermFilter(
-					"orderStatus", String.valueOf(orderStatus));
+		BooleanFilter orderStatusesBooleanFilter = new BooleanFilter();
 
-				orderStatusesBooleanFilter.add(
-					termFilter, BooleanClauseOccur.SHOULD);
-			}
+		for (long orderStatus : orderStatuses) {
+			Filter termFilter = new TermFilter(
+				"orderStatus", String.valueOf(orderStatus));
 
 			orderStatusesBooleanFilter.add(
-				new MissingFilter("orderStatus"), BooleanClauseOccur.SHOULD);
+				termFilter, BooleanClauseOccur.SHOULD);
+		}
 
-			if (GetterUtil.getBoolean(
-					searchContext.getAttribute("negateOrderStatuses"))) {
+		orderStatusesBooleanFilter.add(
+			new MissingFilter("orderStatus"), BooleanClauseOccur.SHOULD);
 
-				booleanFilter.add(
-					orderStatusesBooleanFilter, BooleanClauseOccur.MUST_NOT);
-			}
-			else {
-				booleanFilter.add(
-					orderStatusesBooleanFilter, BooleanClauseOccur.MUST);
-			}
+		if (GetterUtil.getBoolean(
+				searchContext.getAttribute("negateOrderStatuses"))) {
+
+			booleanFilter.add(
+				orderStatusesBooleanFilter, BooleanClauseOccur.MUST_NOT);
+		}
+		else {
+			booleanFilter.add(
+				orderStatusesBooleanFilter, BooleanClauseOccur.MUST);
 		}
 	}
 
