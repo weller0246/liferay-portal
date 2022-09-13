@@ -96,38 +96,39 @@ public class BatchEngineAutoDeployListenerTest {
 		).then(
 			new Answer<BatchEngineImportTask>() {
 
-				public BatchEngineImportTask answer(InvocationOnMock invocation)
+				public BatchEngineImportTask answer(
+						InvocationOnMock invocationOnMock)
 					throws Throwable {
 
 					BatchEngineImportTask batchEngineImportTask =
 						new BatchEngineImportTaskImpl();
 
 					batchEngineImportTask.setCompanyId(
-						(long)invocation.getArguments()[2]);
+						(long)invocationOnMock.getArguments()[2]);
 					batchEngineImportTask.setBatchSize(
-						(long)invocation.getArguments()[3]);
+						(long)invocationOnMock.getArguments()[3]);
 					batchEngineImportTask.setCallbackURL(
-						(String)invocation.getArguments()[4]);
+						(String)invocationOnMock.getArguments()[4]);
 					batchEngineImportTask.setClassName(
-						(String)invocation.getArguments()[5]);
+						(String)invocationOnMock.getArguments()[5]);
 					batchEngineImportTask.setContentType(
-						(String)invocation.getArguments()[7]);
+						(String)invocationOnMock.getArguments()[7]);
 					batchEngineImportTask.setExecuteStatus(
-						(String)invocation.getArguments()[8]);
+						(String)invocationOnMock.getArguments()[8]);
 					batchEngineImportTask.setExternalReferenceCode(
-						(String)invocation.getArguments()[0]);
+						(String)invocationOnMock.getArguments()[0]);
 					batchEngineImportTask.setFieldNameMapping(
 						(Map<String, Serializable>)
-							invocation.getArguments()[9]);
+							invocationOnMock.getArguments()[9]);
 					batchEngineImportTask.setImportStrategy(
-						(int)invocation.getArguments()[10]);
+						(int)invocationOnMock.getArguments()[10]);
 					batchEngineImportTask.setOperation(
-						(String)invocation.getArguments()[11]);
+						(String)invocationOnMock.getArguments()[11]);
 					batchEngineImportTask.setParameters(
 						(Map<String, Serializable>)
-							invocation.getArguments()[9]);
+							invocationOnMock.getArguments()[9]);
 					batchEngineImportTask.setTaskItemDelegateName(
-						(String)invocation.getArguments()[12]);
+						(String)invocationOnMock.getArguments()[12]);
 
 					return batchEngineImportTask;
 				}
