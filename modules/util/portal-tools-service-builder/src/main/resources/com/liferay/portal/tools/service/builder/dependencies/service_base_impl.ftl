@@ -2152,7 +2152,7 @@ import org.osgi.service.component.annotations.Reference;
 		</#if>
 	</#list>
 
-	private static final Log _log = LogFactoryUtil.getLog(${entity.name}LocalServiceBaseImpl.class);
+	private static final Log _log = LogFactoryUtil.getLog(${entity.name}${sessionTypeName}ServiceBaseImpl.class);
 
 	<#if lazyBlobExists>
 		<#if dependencyInjectorDS>
