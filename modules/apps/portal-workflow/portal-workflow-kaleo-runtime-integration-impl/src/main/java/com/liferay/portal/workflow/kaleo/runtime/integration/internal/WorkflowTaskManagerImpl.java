@@ -919,23 +919,6 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 			kaleoTaskAssignment, executionContext);
 	}
 
-	private List<User> _getUserGroupRolesByGroupAndRole(
-			long groupId, long roleId)
-		throws PortalException {
-
-		List<User> users = new ArrayList<>();
-
-		List<UserGroupRole> userGroupGroupRoles =
-			_userGroupRoleLocalService.getUserGroupRolesByGroupAndRole(
-				groupId, roleId);
-
-		for (UserGroupRole userGroupRole : userGroupGroupRoles) {
-			users.add(userGroupRole.getUser());
-		}
-
-		return users;
-	}
-
 	private List<User> _getUsers(int actionType, long workflowTaskId)
 		throws WorkflowException {
 
@@ -977,6 +960,22 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 		catch (Exception exception) {
 			throw new WorkflowException(exception);
 		}
+	}
+
+	private List<User> _getUsers(long groupId, long roleId)
+		throws PortalException {
+
+		List<User> users = new ArrayList<>();
+
+		List<UserGroupRole> userGroupGroupRoles =
+			_userGroupRoleLocalService.getUserGroupRolesByGroupAndRole(
+				groupId, roleId);
+
+		for (UserGroupRole userGroupRole : userGroupGroupRoles) {
+			users.add(userGroupRole.getUser());
+		}
+
+		return users;
 	}
 
 	private boolean _hasAssignableUsers(
@@ -1117,7 +1116,7 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 				return;
 			}
 
-			List<User> userGroupRolesUsers = _getUserGroupRolesByGroupAndRole(
+			List<User> users = _getUsers(
 				kaleoTaskInstanceToken.getGroupId(),
 				kaleoTaskAssignment.getAssigneeClassPK());
 
@@ -1132,27 +1131,26 @@ public class WorkflowTaskManagerImpl implements WorkflowTaskManager {
 				for (Organization ancestorOrganization :
 						organization.getAncestors()) {
 
-					userGroupRolesUsers.addAll(
-						_getUserGroupRolesByGroupAndRole(
+					users.addAll(
+						_getUsers(
 							ancestorOrganization.getGroupId(),
 							kaleoTaskAssignment.getAssigneeClassPK()));
 				}
 			}
 
 			if (actionType == _ACTION_TYPE_ASSIGN) {
-				userGroupRolesUsers = ListUtil.filter(
-					userGroupRolesUsers,
+				users = ListUtil.filter(
+					users,
 					user ->
 						(user != null) && user.isActive() &&
 						(user.getUserId() != assignedUserId));
 			}
 			else {
-				userGroupRolesUsers = ListUtil.filter(
-					userGroupRolesUsers,
-					user -> (user != null) && user.isActive());
+				users = ListUtil.filter(
+					users, user -> (user != null) && user.isActive());
 			}
 
-			allowedUsers.addAll(userGroupRolesUsers);
+			allowedUsers.addAll(users);
 
 			List<User> userGroupGroupRolesUsers = Stream.of(
 				_userGroupGroupRoleLocalService.

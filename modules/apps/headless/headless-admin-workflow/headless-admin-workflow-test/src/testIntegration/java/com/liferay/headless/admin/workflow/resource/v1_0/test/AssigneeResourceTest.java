@@ -70,7 +70,6 @@ public class AssigneeResourceTest extends BaseAssigneeResourceTestCase {
 
 		Assignee assignee1 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
-
 		Assignee assignee2 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
 
@@ -96,7 +95,6 @@ public class AssigneeResourceTest extends BaseAssigneeResourceTestCase {
 
 		Assignee assignee1 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
-
 		Assignee assignee2 = testGetWorkflowTaskAssignableUsersPage_addAssignee(
 			workflowTaskId, randomAssignee());
 

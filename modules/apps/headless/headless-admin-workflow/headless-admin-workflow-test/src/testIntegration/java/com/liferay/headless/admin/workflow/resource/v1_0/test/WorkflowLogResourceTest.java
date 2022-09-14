@@ -73,7 +73,6 @@ public class WorkflowLogResourceTest extends BaseWorkflowLogResourceTestCase {
 
 		_administratorRole = _roleLocalService.getRole(
 			testGroup.getCompanyId(), RoleConstants.ADMINISTRATOR);
-
 		_workflowInstance = WorkflowInstanceTestUtil.addWorkflowInstance(
 			testGroup.getGroupId(), ObjectReviewedTestUtil.addObjectReviewed(),
 			_workflowDefinition);
