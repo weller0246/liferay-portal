@@ -762,6 +762,12 @@ public class AssetHelperImpl implements AssetHelper {
 			searchContext.setAttribute("showNonindexable", Boolean.TRUE);
 		}
 
+		if (GetterUtil.getBoolean(
+				assetEntryQuery.getAttribute("headOrShowNonIndexable"))) {
+
+			searchContext.setAttribute("headOrShowNonIndexable", Boolean.TRUE);
+		}
+
 		searchContext.setClassTypeIds(assetEntryQuery.getClassTypeIds());
 		searchContext.setEnd(end);
 		searchContext.setGroupIds(
