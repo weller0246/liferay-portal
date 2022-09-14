@@ -63,7 +63,7 @@ public class ColumnValuesExtractorTest {
 
 		Assert.assertEquals(values.toString(), 3, values.length);
 
-		CSVRecord csvRecord = _parseCSV((String)values[0]);
+		CSVRecord csvRecord = _toCSVRecord((String)values[0]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -74,7 +74,7 @@ public class ColumnValuesExtractorTest {
 
 		Assert.assertEquals(Integer.valueOf(5), values[1]);
 
-		csvRecord = _parseCSV((String)values[2]);
+		csvRecord = _toCSVRecord((String)values[2]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -117,7 +117,7 @@ public class ColumnValuesExtractorTest {
 
 		values = valuesList.get(1);
 
-		CSVRecord csvRecord = _parseCSV((String)values[0]);
+		CSVRecord csvRecord = _toCSVRecord((String)values[0]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -126,7 +126,7 @@ public class ColumnValuesExtractorTest {
 				arraysAggregator.doubles[i], Double.valueOf(csvRecord.get(i)));
 		}
 
-		csvRecord = _parseCSV((String)values[2]);
+		csvRecord = _toCSVRecord((String)values[2]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -144,15 +144,15 @@ public class ColumnValuesExtractorTest {
 		}
 	}
 
-	private CSVRecord _parseCSV(String stringToParse) throws Exception {
+	private CSVRecord _toCSVRecord(String value) throws Exception {
 		CSVParser csvParser = new CSVParser(
-			new StringReader(stringToParse), CSVFormat.DEFAULT);
+			new StringReader(value), CSVFormat.DEFAULT);
 
 		List<CSVRecord> records = csvParser.getRecords();
 
 		if (records.isEmpty()) {
 			throw new IllegalArgumentException(
-				"Unable to parse value " + stringToParse);
+				"Unable to parse value " + value);
 		}
 
 		return records.get(0);
