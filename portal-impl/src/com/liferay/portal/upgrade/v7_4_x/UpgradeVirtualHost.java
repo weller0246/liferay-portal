@@ -14,10 +14,10 @@
 
 package com.liferay.portal.upgrade.v7_4_x;
 
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.PreparedStatement;
@@ -45,7 +45,8 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 							"update VirtualHost set hostname = ? where " +
 								"virtualHostId = ?")) {
 
-					preparedStatement2.setString(1, StringUtil.toLowerCase(hostname));
+					preparedStatement2.setString(
+						1, StringUtil.toLowerCase(hostname));
 					preparedStatement2.setLong(2, virtualHostId);
 
 					preparedStatement2.executeUpdate();
@@ -53,8 +54,9 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 				catch (Exception exception) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
-							"Deleting duplicate virtual host " + virtualHostId +
-								" with hostname " + hostname);
+							StringBundler.concat(
+								"Deleting duplicate virtual host ",
+								virtualHostId, " with hostname ", hostname));
 					}
 
 					runSQL(
