@@ -22,11 +22,11 @@ import com.liferay.journal.util.comparator.ArticleVersionComparator;
 import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.service.persistence.change.tracking.CTPersistence;
+import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.MathUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.language.LanguageResources;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -76,25 +76,21 @@ public abstract class BaseJournalArticleVersionConstraintResolver
 				return latestProductionArticle.getVersion();
 			});
 
-		List<JournalArticle> articles = journalArticleLocalService.getArticles(
-			ctArticle.getGroupId(), ctArticle.getArticleId(), QueryUtil.ALL_POS,
-			QueryUtil.ALL_POS, new ArticleVersionComparator());
-
-		List<JournalArticle> ctCollectionArticles = new ArrayList<>();
-
-		for (JournalArticle article : articles) {
-			if (article.getCtCollectionId() == ctArticle.getCtCollectionId()) {
-				ctCollectionArticles.add(article);
-			}
-		}
+		List<JournalArticle> articles = ListUtil.filter(
+			journalArticleLocalService.getArticles(
+				ctArticle.getGroupId(), ctArticle.getArticleId(),
+				QueryUtil.ALL_POS, QueryUtil.ALL_POS,
+				new ArticleVersionComparator()),
+			article ->
+				article.getCtCollectionId() == ctArticle.getCtCollectionId());
 
 		double currentVersion = MathUtil.format(
-			latestVersion + (0.1 * ctCollectionArticles.size()), 1, 1);
+			latestVersion + (0.1 * articles.size()), 1, 1);
 
 		CTPersistence ctPersistence =
 			journalArticleLocalService.getCTPersistence();
 
-		for (JournalArticle article : ctCollectionArticles) {
+		for (JournalArticle article : articles) {
 			article.setVersion(currentVersion);
 
 			journalArticleLocalService.updateJournalArticle(article);
