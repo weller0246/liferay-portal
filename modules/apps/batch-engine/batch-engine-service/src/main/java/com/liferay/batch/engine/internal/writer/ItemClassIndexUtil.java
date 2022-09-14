@@ -68,8 +68,8 @@ public class ItemClassIndexUtil {
 						Class<?> fieldClass = field.getType();
 
 						if (!isMap(fieldClass) &&
-							!isSingleColumnAdoptableValue(fieldClass) &&
 							!isSingleColumnAdoptableArray(fieldClass) &&
+							!isSingleColumnAdoptableValue(fieldClass) &&
 							!Objects.equals(clazz, fieldClass)) {
 
 							index(fieldClass);
@@ -97,20 +97,20 @@ public class ItemClassIndexUtil {
 		return false;
 	}
 
-	public static boolean isMap(Class<?> valueClass) {
-		if (Objects.equals(valueClass, Map.class)) {
+	public static boolean isMap(Class<?> clazz) {
+		if (Objects.equals(clazz, Map.class)) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public static boolean isMultidimensionalArray(Class<?> valueClass) {
-		if (!valueClass.isArray()) {
+	public static boolean isMultidimensionalArray(Class<?> clazz) {
+		if (!clazz.isArray()) {
 			return false;
 		}
 
-		Class<?> componentTypeClass = valueClass.getComponentType();
+		Class<?> componentTypeClass = clazz.getComponentType();
 
 		if (!componentTypeClass.isArray()) {
 			return false;
@@ -130,21 +130,21 @@ public class ItemClassIndexUtil {
 		return true;
 	}
 
-	public static boolean isSingleColumnAdoptableArray(Class<?> valueClass) {
-		if (!valueClass.isArray()) {
+	public static boolean isSingleColumnAdoptableArray(Class<?> clazz) {
+		if (!clazz.isArray()) {
 			return false;
 		}
 
-		if (isSingleColumnAdoptableValue(valueClass.getComponentType())) {
+		if (isSingleColumnAdoptableValue(clazz.getComponentType())) {
 			return true;
 		}
 
 		return false;
 	}
 
-	public static boolean isSingleColumnAdoptableValue(Class<?> valueClass) {
-		if (!valueClass.isPrimitive() && !_objectTypes.contains(valueClass) &&
-			!Enum.class.isAssignableFrom(valueClass)) {
+	public static boolean isSingleColumnAdoptableValue(Class<?> clazz) {
+		if (!clazz.isPrimitive() && !_objectTypes.contains(clazz) &&
+			!Enum.class.isAssignableFrom(clazz)) {
 
 			return false;
 		}
