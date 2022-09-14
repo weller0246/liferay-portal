@@ -105,13 +105,10 @@ public class ColumnValuesExtractorTest {
 			},
 			columnValuesExtractor.getHeaders());
 
-		List<Object[]> rows = columnValuesExtractor.extractValues(
-			nestedObjectsAggregator);
-
 		List<Object[]> testResults = columnValuesExtractor.extractValues(
 			nestedObjectsAggregator);
 
-		Assert.assertFalse(rows.isEmpty());
+		Assert.assertFalse(testResults.isEmpty());
 
 		Object[] row = testResults.get(0);
 
