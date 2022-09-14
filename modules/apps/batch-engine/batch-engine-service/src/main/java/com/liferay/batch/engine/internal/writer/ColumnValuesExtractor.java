@@ -134,8 +134,8 @@ public class ColumnValuesExtractor {
 			}
 
 			columnDescriptors[localIndex] = ColumnDescriptor._from(
-				masterIndex++, _getUnsafeFunction(fieldsMap, fieldName), field,
-				parentColumnDescriptor);
+				 field, masterIndex++, parentColumnDescriptor,
+				 _getUnsafeFunction(fieldsMap, fieldName));
 
 			Class<?> fieldClass = field.getType();
 
@@ -345,11 +345,11 @@ public class ColumnValuesExtractor {
 				return false;
 			}
 
-			ColumnDescriptor other = (ColumnDescriptor)object;
+			ColumnDescriptor columnDescriptor = (ColumnDescriptor)object;
 
-			if (Objects.equals(_field, other._field) &&
+			if (Objects.equals(_field, columnDescriptor._field) &&
 				_parentColumnDescriptors.equals(
-					other._parentColumnDescriptors)) {
+					columnDescriptor._parentColumnDescriptors)) {
 
 				return true;
 			}
@@ -363,13 +363,13 @@ public class ColumnValuesExtractor {
 		}
 
 		private static ColumnDescriptor _from(
-			int index,
+			Field field, int index, ColumnDescriptor parentColumnDescriptor,
 			UnsafeFunction<Object, Object, ReflectiveOperationException>
-				unsafeFunction,
-			Field field, ColumnDescriptor parentColumnDescriptor) {
+				unsafeFunction
+			) {
 
 			ColumnDescriptor columnDescriptor = new ColumnDescriptor(
-				index, field, unsafeFunction);
+				field, index, unsafeFunction);
 
 			if (parentColumnDescriptor == null) {
 				return columnDescriptor;
@@ -381,12 +381,12 @@ public class ColumnValuesExtractor {
 		}
 
 		private ColumnDescriptor(
-			int index, Field field,
+			Field field, int index,
 			UnsafeFunction<Object, Object, ReflectiveOperationException>
 				unsafeFunction) {
 
-			_index = index;
 			_field = field;
+			_index = index;
 			_unsafeFunction = unsafeFunction;
 		}
 
