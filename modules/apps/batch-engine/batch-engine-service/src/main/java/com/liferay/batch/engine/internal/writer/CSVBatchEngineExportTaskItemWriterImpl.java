@@ -84,8 +84,8 @@ public class CSVBatchEngineExportTaskItemWriterImpl
 			"yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
 
 		for (Object item : items) {
-			for (Object[] row : _columnValuesExtractor.extractValues(item)) {
-				_write(dateFormat, row);
+			for (Object[] values : _columnValuesExtractor.extractValues(item)) {
+				_write(dateFormat, values);
 			}
 		}
 	}
