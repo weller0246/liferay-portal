@@ -360,29 +360,6 @@ public class FolderSearchFacetDisplayContextBuilder {
 			};
 
 	private static final Comparator<FolderSearchFacetTermDisplayContext>
-		_COMPARATOR_TERM_ASC =
-			new Comparator<FolderSearchFacetTermDisplayContext>() {
-
-				@Override
-				public int compare(
-					FolderSearchFacetTermDisplayContext displayContext1,
-					FolderSearchFacetTermDisplayContext displayContext2) {
-
-					int result = _compareDisplayNames(
-						displayContext1.getDisplayName(),
-						displayContext2.getDisplayName());
-
-					if (result == 0) {
-						return displayContext2.getFrequency() -
-							displayContext1.getFrequency();
-					}
-
-					return result;
-				}
-
-			};
-
-	private static final Comparator<FolderSearchFacetTermDisplayContext>
 		_COMPARATOR_FREQUENCY_DESC =
 			new Comparator<FolderSearchFacetTermDisplayContext>() {
 
@@ -399,6 +376,29 @@ public class FolderSearchFacetDisplayContextBuilder {
 						return _compareDisplayNames(
 							displayContext1.getDisplayName(),
 							displayContext2.getDisplayName());
+					}
+
+					return result;
+				}
+
+			};
+
+	private static final Comparator<FolderSearchFacetTermDisplayContext>
+		_COMPARATOR_TERM_ASC =
+			new Comparator<FolderSearchFacetTermDisplayContext>() {
+
+				@Override
+				public int compare(
+					FolderSearchFacetTermDisplayContext displayContext1,
+					FolderSearchFacetTermDisplayContext displayContext2) {
+
+					int result = _compareDisplayNames(
+						displayContext1.getDisplayName(),
+						displayContext2.getDisplayName());
+
+					if (result == 0) {
+						return displayContext2.getFrequency() -
+							displayContext1.getFrequency();
 					}
 
 					return result;
