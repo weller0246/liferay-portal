@@ -255,9 +255,9 @@ public class SystemProperties {
 			return null;
 		}
 
-		int startIndex = 0;
-
 		StringBundler sb = new StringBundler();
+
+		int startIndex = 0;
 
 		while ((startIndex = value.indexOf(
 					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE)) != -1) {
