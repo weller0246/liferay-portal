@@ -32,23 +32,24 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select virtualHostId, hostname from VirtualHost where " +
-					"hostname != LOWER(hostname)")) {
+					"hostname != LOWER(hostname)");
+			PreparedStatement preparedStatement2 = connection.prepareStatement(
+				"update VirtualHost set hostname = ? where virtualHostId = " +
+					"?")) {
 
 			ResultSet resultSet = preparedStatement1.executeQuery();
 
 			while (resultSet.next()) {
-				long virtualHostId = resultSet.getLong("virtualHostId");
 				String hostname = resultSet.getString("hostname");
 
-				try (PreparedStatement preparedStatement2 =
-						connection.prepareStatement(
-							"update VirtualHost set hostname = ? where " +
-								"virtualHostId = ?")) {
+				preparedStatement2.setString(
+					1, StringUtil.toLowerCase(hostname));
 
-					preparedStatement2.setString(
-						1, StringUtil.toLowerCase(hostname));
-					preparedStatement2.setLong(2, virtualHostId);
+				long virtualHostId = resultSet.getLong("virtualHostId");
 
+				preparedStatement2.setLong(2, virtualHostId);
+
+				try {
 					preparedStatement2.executeUpdate();
 				}
 				catch (Exception exception) {
