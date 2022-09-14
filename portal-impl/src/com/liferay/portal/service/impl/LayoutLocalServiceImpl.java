@@ -268,8 +268,8 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 		}
 
 		layoutLocalServiceHelper.validate(
-			groupId, privateLayout, layoutId, parentLayoutId, name, type,
-			classNameId, classPK, friendlyURLMap, serviceContext);
+			groupId, privateLayout, layoutId, parentLayoutId, classNameId,
+			classPK, name, type, friendlyURLMap, serviceContext);
 
 		Date date = new Date();
 
@@ -2698,9 +2698,9 @@ public class LayoutLocalServiceImpl extends LayoutLocalServiceBaseImpl {
 			groupId, privateLayout, layoutId);
 
 		layoutLocalServiceHelper.validate(
-			groupId, privateLayout, layoutId, parentLayoutId, name, type,
-			layout.getClassNameId(), layout.getClassPK(), friendlyURLMap,
-			serviceContext);
+			groupId, privateLayout, layoutId, parentLayoutId,
+			layout.getClassNameId(), layout.getClassPK(), name, type,
+			friendlyURLMap, serviceContext);
 
 		layoutLocalServiceHelper.validateParentLayoutId(
 			groupId, privateLayout, layoutId, parentLayoutId);
