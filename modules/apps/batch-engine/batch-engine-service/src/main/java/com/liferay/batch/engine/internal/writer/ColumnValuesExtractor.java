@@ -52,7 +52,7 @@ public class ColumnValuesExtractor {
 
 		List<Object[]> valuesList = new ArrayList<>();
 
-		Object[] values = _getBlanksArray(_columnDescriptors.length);
+		Object[] values = _getBlankValues(_columnDescriptors.length);
 
 		List<ColumnDescriptor> childFieldColumnDescriptors = new ArrayList<>();
 
@@ -76,7 +76,7 @@ public class ColumnValuesExtractor {
 			if (hash != childFieldColumnDescriptor._getParentHashCode()) {
 				hash = childFieldColumnDescriptor._getParentHashCode();
 
-				values = _getBlanksArray(_columnDescriptors.length);
+				values = _getBlankValues(_columnDescriptors.length);
 
 				valuesList.add(values);
 			}
@@ -110,7 +110,7 @@ public class ColumnValuesExtractor {
 		return newArray;
 	}
 
-	private Object[] _getBlanksArray(int size) {
+	private Object[] _getBlankValues(int size) {
 		Object[] objects = new Object[size];
 
 		Arrays.fill(objects, StringPool.BLANK);
