@@ -290,17 +290,17 @@ public class FolderSearchFacetDisplayContextBuilder {
 
 		if (_order.equals("count:asc")) {
 			folderSearchFacetTermDisplayContexts.sort(
-				_ASC_FREQUENCY_COMPARATOR);
+				_COMPARATOR_FREQUENCY_ASC);
 		}
 		else if (_order.equals("count:desc")) {
 			folderSearchFacetTermDisplayContexts.sort(
-				_DESC_FREQUENCY_COMPARATOR);
+				_COMPARATOR_FREQUENCY_DESC);
 		}
 		else if (_order.equals("key:asc")) {
-			folderSearchFacetTermDisplayContexts.sort(_ASC_TERM_COMPARATOR);
+			folderSearchFacetTermDisplayContexts.sort(_COMPARATOR_TERM_ASC);
 		}
 		else if (_order.equals("key:desc")) {
-			folderSearchFacetTermDisplayContexts.sort(_DESC_TERM_COMPARATOR);
+			folderSearchFacetTermDisplayContexts.sort(_COMPARATOR_TERM_DESC);
 		}
 
 		return folderSearchFacetTermDisplayContexts;
@@ -337,7 +337,7 @@ public class FolderSearchFacetDisplayContextBuilder {
 	}
 
 	private static final Comparator<FolderSearchFacetTermDisplayContext>
-		_ASC_FREQUENCY_COMPARATOR =
+		_COMPARATOR_FREQUENCY_ASC =
 			new Comparator<FolderSearchFacetTermDisplayContext>() {
 
 				public int compare(
@@ -360,7 +360,7 @@ public class FolderSearchFacetDisplayContextBuilder {
 			};
 
 	private static final Comparator<FolderSearchFacetTermDisplayContext>
-		_ASC_TERM_COMPARATOR =
+		_COMPARATOR_TERM_ASC =
 			new Comparator<FolderSearchFacetTermDisplayContext>() {
 
 				@Override
@@ -383,7 +383,7 @@ public class FolderSearchFacetDisplayContextBuilder {
 			};
 
 	private static final Comparator<FolderSearchFacetTermDisplayContext>
-		_DESC_FREQUENCY_COMPARATOR =
+		_COMPARATOR_FREQUENCY_DESC =
 			new Comparator<FolderSearchFacetTermDisplayContext>() {
 
 				@Override
@@ -407,7 +407,7 @@ public class FolderSearchFacetDisplayContextBuilder {
 			};
 
 	private static final Comparator<FolderSearchFacetTermDisplayContext>
-		_DESC_TERM_COMPARATOR =
+		_COMPARATOR_TERM_DESC =
 			new Comparator<FolderSearchFacetTermDisplayContext>() {
 
 				@Override
