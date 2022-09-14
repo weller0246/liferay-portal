@@ -212,11 +212,9 @@ public class ContactsUtil {
 
 		for (Address address : addresses) {
 			sb.append("ADR;TYPE=");
-
 			sb.append(
 				StringUtil.toUpperCase(
 					_getVCardListTypeName(address.getListType())));
-
 			sb.append(StringPool.COLON);
 			sb.append(StringPool.SEMICOLON);
 			sb.append(StringPool.SEMICOLON);
