@@ -130,7 +130,7 @@ public class CSVBatchEngineExportTaskItemWriterImplTest
 			for (int i = 0; i < fieldNames.size(); i++) {
 				String fieldName = fieldNames.get(i);
 
-				Field field = fieldMap.get(fieldName);
+				Field field = fieldsMap.get(fieldName);
 
 				if (Objects.equals(field.getType(), Map.class)) {
 					Map<?, ?> map = (Map<?, ?>)field.get(item);
@@ -195,7 +195,7 @@ public class CSVBatchEngineExportTaskItemWriterImplTest
 		try (CSVBatchEngineExportTaskItemWriterImpl
 				csvBatchEngineExportTaskItemWriterImpl =
 					new CSVBatchEngineExportTaskItemWriterImpl(
-						StringPool.COMMA, fieldMap, fieldNames,
+						StringPool.COMMA, fieldsMap, fieldNames,
 						unsyncByteArrayOutputStream, parameters)) {
 
 			for (Item[] items : getItemGroups()) {

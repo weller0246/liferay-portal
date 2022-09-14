@@ -41,10 +41,10 @@ import java.util.Set;
 public class ColumnValuesExtractor {
 
 	public ColumnValuesExtractor(
-		Map<String, Field> fieldMap, List<String> fieldNames) {
+		Map<String, Field> fieldsMap, List<String> fieldNames) {
 
 		_columnDescriptors = _getColumnDescriptors(
-			fieldMap, fieldNames, 0, null);
+			fieldsMap, fieldNames, 0, null);
 	}
 
 	public List<Object[]> extractValues(Object item)
@@ -119,7 +119,7 @@ public class ColumnValuesExtractor {
 	}
 
 	private ColumnDescriptor[] _getColumnDescriptors(
-		Map<String, Field> fieldMap, Collection<String> fieldNames,
+		Map<String, Field> fieldsMap, Collection<String> fieldNames,
 		int masterIndex, ColumnDescriptor parentColumnDescriptor) {
 
 		ColumnDescriptor[] columnDescriptors =
@@ -127,14 +127,14 @@ public class ColumnValuesExtractor {
 		int localIndex = 0;
 
 		for (String fieldName : fieldNames) {
-			Field field = fieldMap.get(fieldName);
+			Field field = fieldsMap.get(fieldName);
 
 			if (field == null) {
 				throw new IllegalArgumentException("Field " + fieldName);
 			}
 
 			columnDescriptors[localIndex] = ColumnDescriptor._from(
-				masterIndex++, _getUnsafeFunction(fieldMap, fieldName), field,
+				masterIndex++, _getUnsafeFunction(fieldsMap, fieldName), field,
 				parentColumnDescriptor);
 
 			Class<?> fieldClass = field.getType();
@@ -148,12 +148,12 @@ public class ColumnValuesExtractor {
 				continue;
 			}
 
-			Map<String, Field> childFieldMap = ItemClassIndexUtil.index(
+			Map<String, Field> childFieldsMap = ItemClassIndexUtil.index(
 				fieldClass);
 
 			ColumnDescriptor[] childFieldColumnDescriptors =
 				_getColumnDescriptors(
-					childFieldMap, _sort(childFieldMap.keySet()), localIndex,
+					childFieldsMap, _sort(childFieldsMap.keySet()), localIndex,
 					columnDescriptors[localIndex]);
 
 			columnDescriptors = _combine(
@@ -181,9 +181,9 @@ public class ColumnValuesExtractor {
 	}
 
 	private UnsafeFunction<Object, Object, ReflectiveOperationException>
-		_getUnsafeFunction(Map<String, Field> fieldMap, String fieldName) {
+		_getUnsafeFunction(Map<String, Field> fieldsMap, String fieldName) {
 
-		Field field = fieldMap.get(fieldName);
+		Field field = fieldsMap.get(fieldName);
 
 		if (field != null) {
 			Class<?> fieldClass = field.getType();
@@ -289,7 +289,7 @@ public class ColumnValuesExtractor {
 			};
 		}
 
-		Field propertiesField = fieldMap.get("properties");
+		Field propertiesField = fieldsMap.get("properties");
 
 		if (!ItemClassIndexUtil.isObjectEntryProperties(propertiesField)) {
 			throw new IllegalArgumentException(

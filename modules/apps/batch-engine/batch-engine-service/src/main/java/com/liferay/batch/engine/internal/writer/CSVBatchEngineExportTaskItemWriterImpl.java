@@ -46,7 +46,7 @@ public class CSVBatchEngineExportTaskItemWriterImpl
 	implements BatchEngineExportTaskItemWriter {
 
 	public CSVBatchEngineExportTaskItemWriterImpl(
-			String delimiter, Map<String, Field> fieldMap,
+			String delimiter, Map<String, Field> fieldsMap,
 			List<String> fieldNames, OutputStream outputStream,
 			Map<String, Serializable> parameters)
 		throws IOException {
@@ -63,7 +63,7 @@ public class CSVBatchEngineExportTaskItemWriterImpl
 			fieldNames, (value1, value2) -> value1.compareToIgnoreCase(value2));
 
 		_columnValuesExtractor = new ColumnValuesExtractor(
-			fieldMap, fieldNames);
+			fieldsMap, fieldNames);
 
 		if (Boolean.valueOf(
 				(String)parameters.getOrDefault(

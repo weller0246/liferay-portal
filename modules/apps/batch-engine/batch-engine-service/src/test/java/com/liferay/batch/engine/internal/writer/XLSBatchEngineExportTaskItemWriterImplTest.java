@@ -112,12 +112,12 @@ public class XLSBatchEngineExportTaskItemWriterImplTest
 					int index = fieldName.indexOf(CharPool.UNDERLINE);
 
 					if (index == -1) {
-						Field field = fieldMap.get(fieldName);
+						Field field = fieldsMap.get(fieldName);
 
 						values.add(field.get(item));
 					}
 					else {
-						Field field = fieldMap.get(
+						Field field = fieldsMap.get(
 							fieldName.substring(0, index));
 
 						Map<?, ?> valueMap = (Map<?, ?>)field.get(item);
@@ -229,7 +229,7 @@ public class XLSBatchEngineExportTaskItemWriterImplTest
 		try (XLSBatchEngineExportTaskItemWriterImpl
 				xlsBatchEngineExportTaskItemWriterImpl =
 					new XLSBatchEngineExportTaskItemWriterImpl(
-						fieldMap, fieldNames, unsyncByteArrayOutputStream)) {
+						fieldsMap, fieldNames, unsyncByteArrayOutputStream)) {
 
 			for (Item[] items : getItemGroups()) {
 				xlsBatchEngineExportTaskItemWriterImpl.write(

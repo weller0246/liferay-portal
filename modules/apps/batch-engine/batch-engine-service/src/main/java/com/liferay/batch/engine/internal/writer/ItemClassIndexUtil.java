@@ -43,7 +43,7 @@ public class ItemClassIndexUtil {
 		return _fieldsMap.computeIfAbsent(
 			itemClass,
 			clazz -> {
-				Map<String, Field> fieldMap = new HashMap<>();
+				Map<String, Field> fieldsMap = new HashMap<>();
 
 				while (clazz != Object.class) {
 					for (Field field : clazz.getDeclaredFields()) {
@@ -63,7 +63,7 @@ public class ItemClassIndexUtil {
 							continue;
 						}
 
-						fieldMap.put(name, field);
+						fieldsMap.put(name, field);
 
 						Class<?> fieldClass = field.getType();
 
@@ -85,7 +85,7 @@ public class ItemClassIndexUtil {
 					clazz = clazz.getSuperclass();
 				}
 
-				return fieldMap;
+				return fieldsMap;
 			});
 	}
 
