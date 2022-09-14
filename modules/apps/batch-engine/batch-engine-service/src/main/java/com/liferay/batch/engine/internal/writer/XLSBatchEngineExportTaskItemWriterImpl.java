@@ -69,8 +69,8 @@ public class XLSBatchEngineExportTaskItemWriterImpl
 	@Override
 	public void write(Collection<?> items) throws Exception {
 		for (Object item : items) {
-			for (Object[] row : _columnValuesExtractor.extractValues(item)) {
-				_write(row);
+			for (Object[] values : _columnValuesExtractor.extractValues(item)) {
+				_write(values);
 			}
 		}
 	}
