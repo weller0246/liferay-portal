@@ -43,10 +43,10 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 				try (PreparedStatement preparedStatement2 =
 						connection.prepareStatement(
 							StringBundler.concat(
-								"update VirtualHost set hostname = '",
-								StringUtil.toLowerCase(hostname),
-								"' where virtualHostId = ",
+								"update VirtualHost set hostname = ? where virtualHostId = ",
 								virtualHostId))) {
+
+					preparedStatement2.setString(1, StringUtil.toLowerCase(hostname));
 
 					preparedStatement2.executeUpdate();
 				}
