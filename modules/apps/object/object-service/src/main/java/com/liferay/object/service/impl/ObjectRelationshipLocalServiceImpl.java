@@ -27,6 +27,7 @@ import com.liferay.object.internal.petra.sql.dsl.DynamicObjectRelationshipMappin
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.model.ObjectRelationship;
+import com.liferay.object.model.ObjectRelationshipTable;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -336,6 +337,41 @@ public class ObjectRelationshipLocalServiceImpl
 					objectDefinitionId1, name),
 				noSuchObjectRelationshipException);
 		}
+	}
+
+	@Override
+	public ObjectRelationship getObjectRelationshipByObjectDefinitionId(
+			long objectDefinitionId, String objectRelationshipName)
+		throws Exception {
+
+		List<ObjectRelationship> objectRelationships = dslQuery(
+			DSLQueryFactoryUtil.select(
+			).from(
+				ObjectRelationshipTable.INSTANCE
+			).where(
+				ObjectRelationshipTable.INSTANCE.reverse.eq(
+					false
+				).and(
+					ObjectRelationshipTable.INSTANCE.name.eq(
+						objectRelationshipName
+					).and(
+						ObjectRelationshipTable.INSTANCE.objectDefinitionId1.eq(
+							objectDefinitionId
+						).or(
+							ObjectRelationshipTable.INSTANCE.
+								objectDefinitionId2.eq(objectDefinitionId)
+						)
+					)
+				)
+			));
+
+		if (objectRelationships.isEmpty()) {
+			throw new NoSuchObjectRelationshipException(
+				"No ObjectRelationship exists with the name " +
+					objectRelationshipName);
+		}
+
+		return objectRelationships.get(0);
 	}
 
 	@Override
