@@ -134,8 +134,8 @@ public class ColumnValuesExtractor {
 			}
 
 			columnDescriptors[localIndex] = ColumnDescriptor._from(
-				 field, masterIndex++, parentColumnDescriptor,
-				 _getUnsafeFunction(fieldsMap, fieldName));
+				field, masterIndex++, parentColumnDescriptor,
+				_getUnsafeFunction(fieldsMap, fieldName));
 
 			Class<?> fieldClass = field.getType();
 
@@ -365,8 +365,7 @@ public class ColumnValuesExtractor {
 		private static ColumnDescriptor _from(
 			Field field, int index, ColumnDescriptor parentColumnDescriptor,
 			UnsafeFunction<Object, Object, ReflectiveOperationException>
-				unsafeFunction
-			) {
+				unsafeFunction) {
 
 			ColumnDescriptor columnDescriptor = new ColumnDescriptor(
 				field, index, unsafeFunction);
