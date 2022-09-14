@@ -438,15 +438,11 @@ public interface FragmentEntryLinkLocalService
 	public PersistedModel getPersistedModel(Serializable primaryKeyObj)
 		throws PortalException;
 
-	public FragmentEntryLink markForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException;
-
-	public FragmentEntryLink unmarkForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException;
-
 	public void updateClassedModel(long plid);
+
+	public FragmentEntryLink updateDeleted(
+			long fragmentEntryLinkId, boolean deleted)
+		throws PortalException;
 
 	/**
 	 * Updates the fragment entry link in the database or adds it if it does not yet exist. Also notifies the appropriate model listeners.

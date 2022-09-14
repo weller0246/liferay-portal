@@ -642,26 +642,17 @@ public class FragmentEntryLinkLocalServiceWrapper
 	}
 
 	@Override
-	public FragmentEntryLink markForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _fragmentEntryLinkLocalService.markForDeleteFragmentEntryLink(
-			fragmentEntryLinkId);
-	}
-
-	@Override
-	public FragmentEntryLink unmarkForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws com.liferay.portal.kernel.exception.PortalException {
-
-		return _fragmentEntryLinkLocalService.unmarkForDeleteFragmentEntryLink(
-			fragmentEntryLinkId);
-	}
-
-	@Override
 	public void updateClassedModel(long plid) {
 		_fragmentEntryLinkLocalService.updateClassedModel(plid);
+	}
+
+	@Override
+	public FragmentEntryLink updateDeleted(
+			long fragmentEntryLinkId, boolean deleted)
+		throws com.liferay.portal.kernel.exception.PortalException {
+
+		return _fragmentEntryLinkLocalService.updateDeleted(
+			fragmentEntryLinkId, deleted);
 	}
 
 	/**

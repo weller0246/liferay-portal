@@ -563,23 +563,15 @@ public class FragmentEntryLinkLocalServiceUtil {
 		return getService().getPersistedModel(primaryKeyObj);
 	}
 
-	public static FragmentEntryLink markForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException {
-
-		return getService().markForDeleteFragmentEntryLink(fragmentEntryLinkId);
-	}
-
-	public static FragmentEntryLink unmarkForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException {
-
-		return getService().unmarkForDeleteFragmentEntryLink(
-			fragmentEntryLinkId);
-	}
-
 	public static void updateClassedModel(long plid) {
 		getService().updateClassedModel(plid);
+	}
+
+	public static FragmentEntryLink updateDeleted(
+			long fragmentEntryLinkId, boolean deleted)
+		throws PortalException {
+
+		return getService().updateDeleted(fragmentEntryLinkId, deleted);
 	}
 
 	/**
