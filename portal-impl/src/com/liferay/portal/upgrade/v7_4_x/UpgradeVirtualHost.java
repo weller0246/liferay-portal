@@ -17,7 +17,7 @@ package com.liferay.portal.upgrade.v7_4_x;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-import com.liferay.portal.kernel.util.StringBundler;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.util.StringUtil;
 
 import java.sql.PreparedStatement;
@@ -31,23 +31,22 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 	@Override
 	protected void doUpgrade() throws Exception {
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
-				"select * from VirtualHost where hostname != " +
-					"LOWER(hostname)")) {
+				"select virtualHostId, hostname from VirtualHost where " +
+					"hostname != LOWER(hostname)")) {
 
 			ResultSet resultSet = preparedStatement1.executeQuery();
 
 			while (resultSet.next()) {
-				String hostname = resultSet.getString("hostname");
-
 				long virtualHostId = resultSet.getLong("virtualHostId");
+				String hostname = resultSet.getString("hostname");
 
 				try (PreparedStatement preparedStatement2 =
 						connection.prepareStatement(
 							StringBundler.concat(
 								"update VirtualHost set hostname = '",
 								StringUtil.toLowerCase(hostname),
-								"' WHERE virtualHostId = ",
-								String.valueOf(virtualHostId)))) {
+								"' where virtualHostId = ",
+								virtualHostId))) {
 
 					preparedStatement2.executeUpdate();
 				}
