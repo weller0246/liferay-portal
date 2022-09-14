@@ -50,7 +50,7 @@ public class ColumnValuesExtractor {
 	public List<Object[]> extractValues(Object item)
 		throws ReflectiveOperationException {
 
-		List<Object[]> rows = new ArrayList<>();
+		List<Object[]> valuesList = new ArrayList<>();
 
 		Object[] values = _getBlanksArray(_columnDescriptors.length);
 
@@ -66,7 +66,7 @@ public class ColumnValuesExtractor {
 			values[columnDescriptor._index] = columnDescriptor._getValue(item);
 		}
 
-		rows.add(values);
+		valuesList.add(values);
 
 		int hash = -1;
 
@@ -78,14 +78,14 @@ public class ColumnValuesExtractor {
 
 				values = _getBlanksArray(_columnDescriptors.length);
 
-				rows.add(values);
+				valuesList.add(values);
 			}
 
 			values[childFieldColumnDescriptor._index] =
 				childFieldColumnDescriptor._getValue(item);
 		}
 
-		return rows;
+		return valuesList;
 	}
 
 	public String[] getHeaders() {
