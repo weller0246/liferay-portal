@@ -75,6 +75,9 @@ public class FragmentCollectionManager {
 		List<Map<String, Object>> allFragmentCollectionMapsList =
 			new ArrayList<>();
 
+		boolean hideInputFragments = ObjectUtil.hideInputFragments(
+			themeDisplay.getCompanyId());
+
 		PortalPreferences portalPreferences =
 			_portletPreferencesFactory.getPortalPreferences(httpServletRequest);
 
@@ -82,9 +85,6 @@ public class FragmentCollectionManager {
 			portalPreferences.getValues(
 				ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET,
 				"highlightedFragmentEntryKeys", new String[0]));
-
-		boolean hideInputFragments = ObjectUtil.hideInputFragments(
-			themeDisplay.getCompanyId());
 
 		if (includeSystem) {
 			allFragmentCollectionMapsList =
