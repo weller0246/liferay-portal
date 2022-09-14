@@ -174,11 +174,6 @@ public class XLSBatchEngineExportTaskItemWriterImplTest
 
 				cell.setCellValue((Date)value);
 			}
-			else if (value instanceof Number) {
-				Number cellValue = (Number)value;
-
-				cell.setCellValue(cellValue.doubleValue());
-			}
 			else if (value instanceof Map) {
 				Map<?, ?> map = (Map<?, ?>)value;
 
@@ -209,6 +204,11 @@ public class XLSBatchEngineExportTaskItemWriterImplTest
 				}
 
 				cell.setCellValue(sb.toString());
+			}
+			else if (value instanceof Number) {
+				Number cellValue = (Number)value;
+
+				cell.setCellValue(cellValue.doubleValue());
 			}
 			else {
 				if (value == null) {
