@@ -46,9 +46,10 @@ public class ClientExtensionEntryRelLocalServiceImpl
 			clientExtensionEntryRelPersistence.create(
 				counterLocalService.increment());
 
+		clientExtensionEntryRel.setGroupId(groupId);
+
 		User user = _userLocalService.getUser(userId);
 
-		clientExtensionEntryRel.setGroupId(groupId);
 		clientExtensionEntryRel.setCompanyId(user.getCompanyId());
 		clientExtensionEntryRel.setUserId(user.getUserId());
 		clientExtensionEntryRel.setUserName(user.getFullName());
