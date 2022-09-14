@@ -293,7 +293,7 @@ public class ColumnValuesExtractor {
 
 		if (!ItemClassIndexUtil.isObjectEntryProperties(propertiesField)) {
 			throw new IllegalArgumentException(
-				"Invalid field name : " + fieldName);
+				"Invalid field name: " + fieldName);
 		}
 
 		return new UnsafeFunction
