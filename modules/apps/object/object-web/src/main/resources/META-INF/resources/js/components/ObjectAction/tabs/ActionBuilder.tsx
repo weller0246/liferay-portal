@@ -429,7 +429,7 @@ export default function ActionBuilder({
 					title={`${Liferay.Language.get('warning')}:`}
 				>
 					{Liferay.Language.get(
-						'assigning-predefined-values-to-relationship-fields-is-not-supported'
+						'the-selected-object-definition-has-mandatory-relationship-fields'
 					)}
 				</ClayAlert>
 			)}
