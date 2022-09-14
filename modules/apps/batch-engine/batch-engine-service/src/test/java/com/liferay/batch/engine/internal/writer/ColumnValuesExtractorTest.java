@@ -166,8 +166,9 @@ public class ColumnValuesExtractorTest {
 
 		private ArraysAggregator(Double[] doubles, String[] strings) {
 			this.doubles = doubles;
-			length = strings.length;
 			this.strings = strings;
+
+			length = strings.length;
 		}
 
 	}
