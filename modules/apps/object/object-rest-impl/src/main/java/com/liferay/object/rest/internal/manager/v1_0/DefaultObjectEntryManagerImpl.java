@@ -827,10 +827,9 @@ public class DefaultObjectEntryManagerImpl
 
 		HashMap<String, Map<String, String>> actions = new HashMap<>();
 
-		Boolean addActions = (Boolean)dtoConverterContext.getAttribute(
-			"addActions");
+		if (GetterUtil.getBoolean(
+				dtoConverterContext.getAttribute("addActions"), true)) {
 
-		if ((addActions == null) || addActions) {
 			actions = HashMapBuilder.<String, Map<String, String>>put(
 				"delete",
 				() -> {
