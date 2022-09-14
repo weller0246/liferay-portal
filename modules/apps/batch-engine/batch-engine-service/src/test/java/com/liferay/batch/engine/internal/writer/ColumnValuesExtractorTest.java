@@ -105,20 +105,19 @@ public class ColumnValuesExtractorTest {
 			},
 			columnValuesExtractor.getHeaders());
 
-		List<Object[]> testResults = columnValuesExtractor.extractValues(
+		List<Object[]> valuesList = columnValuesExtractor.extractValues(
 			nestedObjectsAggregator);
 
-		Assert.assertFalse(testResults.isEmpty());
+		Assert.assertFalse(valuesList.isEmpty());
 
-		Object[] row = testResults.get(0);
+		Object[] values = valuesList.get(0);
 
-		Assert.assertEquals(Arrays.toString(row), 7, row.length);
+		Assert.assertEquals(Arrays.toString(values), 7, values.length);
+		Assert.assertEquals(Integer.valueOf(2), values[6]);
 
-		Assert.assertEquals(Integer.valueOf(2), row[6]);
+		values = valuesList.get(1);
 
-		row = testResults.get(1);
-
-		CSVRecord csvRecord = _parseCSV((String)row[0]);
+		CSVRecord csvRecord = _parseCSV((String)values[0]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -127,7 +126,7 @@ public class ColumnValuesExtractorTest {
 				arraysAggregator.doubles[i], Double.valueOf(csvRecord.get(i)));
 		}
 
-		csvRecord = _parseCSV((String)row[2]);
+		csvRecord = _parseCSV((String)values[2]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
