@@ -98,14 +98,14 @@ public class ColumnValuesExtractor {
 		return headers;
 	}
 
-	private <T> T[] _combine(T[] array1, T[] array2, int combinePos) {
+	private <T> T[] _combine(T[] array1, T[] array2, int index) {
 		Class<?> array1Class = array1.getClass();
 
 		T[] newArray = (T[])Array.newInstance(
 			array1Class.getComponentType(), array1.length + array2.length - 1);
 
 		System.arraycopy(array1, 0, newArray, 0, array1.length);
-		System.arraycopy(array2, 0, newArray, combinePos, array2.length);
+		System.arraycopy(array2, 0, newArray, index, array2.length);
 
 		return newArray;
 	}
@@ -122,9 +122,9 @@ public class ColumnValuesExtractor {
 		Map<String, Field> fieldMap, Collection<String> fieldNames,
 		int masterIndex, ColumnDescriptor parentColumnDescriptor) {
 
-		int localIndex = 0;
 		ColumnDescriptor[] columnDescriptors =
 			new ColumnDescriptor[fieldNames.size()];
+		int localIndex = 0;
 
 		for (String fieldName : fieldNames) {
 			Field field = fieldMap.get(fieldName);
@@ -139,9 +139,9 @@ public class ColumnValuesExtractor {
 
 			Class<?> fieldClass = field.getType();
 
-			if (ItemClassIndexUtil.isSingleColumnAdoptableValue(fieldClass) ||
+			if (ItemClassIndexUtil.isMap(fieldClass) ||
 				ItemClassIndexUtil.isSingleColumnAdoptableArray(fieldClass) ||
-				ItemClassIndexUtil.isMap(fieldClass)) {
+				ItemClassIndexUtil.isSingleColumnAdoptableValue(fieldClass)) {
 
 				localIndex++;
 
