@@ -126,10 +126,9 @@ public class RelatedObjectEntryOpenAPIContributor
 		OpenAPI objectEntryOpenAPI = _getObjectEntryOpenAPI(objectDefinition);
 
 		_copySchema(
-			_getSchemaName(objectDefinition), objectEntryOpenAPI, openAPI);
-
-		_copySchema(
 			_getPageSchemaName(objectDefinition), objectEntryOpenAPI, openAPI);
+		_copySchema(
+			_getSchemaName(objectDefinition), objectEntryOpenAPI, openAPI);
 
 		Paths paths = openAPI.getPaths();
 
