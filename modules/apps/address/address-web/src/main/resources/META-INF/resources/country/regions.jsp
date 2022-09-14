@@ -40,20 +40,20 @@ SearchContainer<Region> regionSearchContainer = RegionSearchContainerFactory.cre
 			>
 
 				<%
-				List<String> availableActionsList = new ArrayList<>();
+				List<String> availableActions = new ArrayList<>();
 
-				availableActionsList.add("deleteRegions");
+				availableActions.add("deleteRegions");
 
 				if (region.getActive()) {
-					availableActionsList.add("deactivateRegions");
+					availableActions.add("deactivateRegions");
 				}
 				else {
-					availableActionsList.add("activateRegions");
+					availableActions.add("activateRegions");
 				}
 
 				row.setData(
 					HashMapBuilder.<String, Object>put(
-						"actions", StringUtil.merge(availableActionsList)
+						"actions", StringUtil.merge(availableActions)
 					).build());
 				%>
 

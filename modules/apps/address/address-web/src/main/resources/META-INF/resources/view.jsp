@@ -40,20 +40,20 @@ SearchContainer<Country> countrySearchContainer = CountrySearchContainerFactory.
 			>
 
 				<%
-				List<String> availableActionsList = new ArrayList<>();
+				List<String> availableActions = new ArrayList<>();
 
-				availableActionsList.add("deleteCountries");
+				availableActions.add("deleteCountries");
 
 				if (country.getActive()) {
-					availableActionsList.add("deactivateCountries");
+					availableActions.add("deactivateCountries");
 				}
 				else {
-					availableActionsList.add("activateCountries");
+					availableActions.add("activateCountries");
 				}
 
 				row.setData(
 					HashMapBuilder.<String, Object>put(
-						"actions", StringUtil.merge(availableActionsList)
+						"actions", StringUtil.merge(availableActions)
 					).build());
 				%>
 
