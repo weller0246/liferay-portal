@@ -53,8 +53,8 @@ public class UpgradeVirtualHost extends UpgradeProcess {
 				catch (Exception exception) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
-							"Unable to convert virtual hostname to " +
-								"lowercase. Deleting entry instead.");
+							"Deleting duplicate virtual host " + virtualHostId +
+								" with hostname " + hostname);
 					}
 
 					runSQL(
