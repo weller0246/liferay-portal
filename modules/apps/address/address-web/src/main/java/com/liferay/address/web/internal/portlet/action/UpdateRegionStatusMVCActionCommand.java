@@ -59,9 +59,9 @@ public class UpdateRegionStatusMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		long[] regionIds = ParamUtil.getLongValues(actionRequest, "regionIds");
-
 		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
+		long[] regionIds = ParamUtil.getLongValues(actionRequest, "regionIds");
 
 		for (long regionId : regionIds) {
 			if (cmd.equals(Constants.DEACTIVATE)) {

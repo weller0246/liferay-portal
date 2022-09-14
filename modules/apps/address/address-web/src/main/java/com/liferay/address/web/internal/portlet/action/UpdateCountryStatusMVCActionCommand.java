@@ -59,10 +59,10 @@ public class UpdateCountryStatusMVCActionCommand
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
+		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
+
 		long[] countryIds = ParamUtil.getLongValues(
 			actionRequest, "countryIds");
-
-		String cmd = ParamUtil.getString(actionRequest, Constants.CMD);
 
 		for (long countryId : countryIds) {
 			if (cmd.equals(Constants.DEACTIVATE)) {
