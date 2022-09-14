@@ -19,6 +19,17 @@ package com.liferay.portal.kernel.workflow;
  */
 public class NoSuchWorkflowDefinitionException extends WorkflowException {
 
+	public NoSuchWorkflowDefinitionException() {
+	}
+
+	public NoSuchWorkflowDefinitionException(String msg) {
+		super(msg);
+	}
+
+	public NoSuchWorkflowDefinitionException(String msg, Throwable throwable) {
+		super(msg, throwable);
+	}
+
 	public NoSuchWorkflowDefinitionException(Throwable throwable) {
 		super(throwable);
 	}
