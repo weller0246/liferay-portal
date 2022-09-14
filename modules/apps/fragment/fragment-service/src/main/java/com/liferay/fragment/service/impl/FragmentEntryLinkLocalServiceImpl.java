@@ -429,32 +429,6 @@ public class FragmentEntryLinkLocalServiceImpl
 	}
 
 	@Override
-	public FragmentEntryLink markForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException {
-
-		FragmentEntryLink fragmentEntryLink =
-			fragmentEntryLinkPersistence.findByPrimaryKey(fragmentEntryLinkId);
-
-		fragmentEntryLink.setDeleted(true);
-
-		return fragmentEntryLinkPersistence.update(fragmentEntryLink);
-	}
-
-	@Override
-	public FragmentEntryLink unmarkForDeleteFragmentEntryLink(
-			long fragmentEntryLinkId)
-		throws PortalException {
-
-		FragmentEntryLink fragmentEntryLink =
-			fragmentEntryLinkPersistence.findByPrimaryKey(fragmentEntryLinkId);
-
-		fragmentEntryLink.setDeleted(false);
-
-		return fragmentEntryLinkPersistence.update(fragmentEntryLink);
-	}
-
-	@Override
 	public void updateClassedModel(long plid) {
 		try {
 			_layoutLocalService.updateStatus(
@@ -467,6 +441,19 @@ public class FragmentEntryLinkLocalServiceImpl
 				_log.debug(portalException);
 			}
 		}
+	}
+
+	@Override
+	public FragmentEntryLink updateDeleted(
+			long fragmentEntryLinkId, boolean deleted)
+		throws PortalException {
+
+		FragmentEntryLink fragmentEntryLink =
+			fragmentEntryLinkPersistence.findByPrimaryKey(fragmentEntryLinkId);
+
+		fragmentEntryLink.setDeleted(deleted);
+
+		return fragmentEntryLinkPersistence.update(fragmentEntryLink);
 	}
 
 	@Override
