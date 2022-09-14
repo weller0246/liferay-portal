@@ -54,16 +54,16 @@ public class ColumnValuesExtractorTest {
 			new String[] {"doubles", "length", "strings"},
 			columnValuesExtractor.getHeaders());
 
-		List<Object[]> rows = columnValuesExtractor.extractValues(
+		List<Object[]> valuesList = columnValuesExtractor.extractValues(
 			arraysAggregator);
 
-		Assert.assertFalse(rows.isEmpty());
+		Assert.assertFalse(valuesList.isEmpty());
 
-		Object[] objects = rows.get(0);
+		Object[] values = valuesList.get(0);
 
-		Assert.assertEquals(objects.toString(), 3, objects.length);
+		Assert.assertEquals(values.toString(), 3, values.length);
 
-		CSVRecord csvRecord = _parseCSV((String)objects[0]);
+		CSVRecord csvRecord = _parseCSV((String)values[0]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
@@ -72,9 +72,9 @@ public class ColumnValuesExtractorTest {
 				arraysAggregator.doubles[i], Double.valueOf(csvRecord.get(i)));
 		}
 
-		Assert.assertEquals(Integer.valueOf(5), objects[1]);
+		Assert.assertEquals(Integer.valueOf(5), values[1]);
 
-		csvRecord = _parseCSV((String)objects[2]);
+		csvRecord = _parseCSV((String)values[2]);
 
 		Assert.assertEquals(5, csvRecord.size());
 
