@@ -751,8 +751,8 @@ public class CTCollectionLocalServiceImpl
 
 			long modelClassNameId = ctEntry.getModelClassNameId();
 
-			if (modelClassNameIds.contains(modelClassNameId) ||
-				ctPersistences.containsKey(modelClassNameId)) {
+			if (ctPersistences.containsKey(modelClassNameId) ||
+				modelClassNameIds.contains(modelClassNameId)) {
 
 				continue;
 			}
