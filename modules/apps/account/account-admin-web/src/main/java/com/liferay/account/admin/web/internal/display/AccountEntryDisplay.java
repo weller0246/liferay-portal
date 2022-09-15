@@ -215,11 +215,9 @@ public class AccountEntryDisplay {
 
 	private AccountEntryDisplay(AccountEntry accountEntry) {
 		_accountEntry = accountEntry;
-
 		_accountEntryEmailAddressValidator =
 			AccountEntryEmailAddressValidatorFactoryUtil.create(
-				accountEntry.getCompanyId(), _accountEntry.getDomainsArray());
-
+				accountEntry.getCompanyId(), accountEntry.getDomainsArray());
 		_accountEntryId = accountEntry.getAccountEntryId();
 		_active = _isActive(accountEntry);
 		_defaultBillingAddress = accountEntry.getDefaultBillingAddress();
