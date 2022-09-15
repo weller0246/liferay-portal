@@ -1483,6 +1483,14 @@ definition {
 		AssertElementNotPresent(locator1 = "KnowledgeBase#DISPLAY_TITLE");
 	}
 
+	macro viewFieldRequiredAsterisk {
+		LexiconEntry.gotoAddMenuItem(menuItem = "Basic Article");
+
+		for (var fieldFieldLabel : list "${fieldLabel}") {
+			FormFields.viewRequiredAsteriskDataField(fieldFieldLabel = "${fieldFieldLabel}");
+		}
+	}
+
 	macro viewFriendlyURLCP {
 		Click(
 			key_rowEntry = "${kbArticleTitle}",
