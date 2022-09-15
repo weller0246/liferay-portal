@@ -743,8 +743,8 @@ public class CTCollectionLocalServiceImpl
 	public boolean hasUnapprovedChanges(long ctCollectionId)
 		throws SQLException {
 
-		HashSet<Long> nonworkflowModelMemo = new HashSet<>();
-		HashMap<Long, CTPersistence<?>> workflowModelCTPersistenceMap =
+		HashSet<Long> modelClassNameIds = new HashSet<>();
+		HashMap<Long, CTPersistence<?>> ctPersistences =
 			new HashMap<>();
 
 		for (CTEntry ctEntry :
@@ -752,8 +752,8 @@ public class CTCollectionLocalServiceImpl
 
 			long modelClassNameId = ctEntry.getModelClassNameId();
 
-			if (nonworkflowModelMemo.contains(modelClassNameId) ||
-				workflowModelCTPersistenceMap.containsKey(modelClassNameId)) {
+			if (modelClassNameIds.contains(modelClassNameId) ||
+				ctPersistences.containsKey(modelClassNameId)) {
 
 				continue;
 			}
@@ -778,16 +778,16 @@ public class CTCollectionLocalServiceImpl
 			if (tableColumnsMap.containsKey("status") &&
 				tableColumnsMap.containsKey("statusByUserId")) {
 
-				workflowModelCTPersistenceMap.putIfAbsent(
+				ctPersistences.putIfAbsent(
 					modelClassNameId, ctService.getCTPersistence());
 			}
 			else {
-				nonworkflowModelMemo.add(modelClassNameId);
+				modelClassNameIds.add(modelClassNameId);
 			}
 		}
 
 		for (Map.Entry<Long, CTPersistence<?>> entry :
-				workflowModelCTPersistenceMap.entrySet()) {
+				ctPersistences.entrySet()) {
 
 			CTPersistence<?> ctPersistence = entry.getValue();
 
