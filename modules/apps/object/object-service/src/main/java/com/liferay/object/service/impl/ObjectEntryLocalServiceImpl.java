@@ -1325,7 +1325,7 @@ public class ObjectEntryLocalServiceImpl
 			}
 		}
 
-		long searchLong = GetterUtil.get(search, 0L);
+		long searchLong = GetterUtil.getLong(search);
 
 		if (searchLong != 0L) {
 			searchPredicate = searchPredicate.or(

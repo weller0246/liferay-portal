@@ -26,17 +26,9 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 
 	@Override
 	protected void doUpgrade() throws Exception {
-		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				SQLTransformer.transform(
-					"update ObjectField set indexed = ?, indexedAsKeyWord = " +
-						"? where name = 'id' and indexed = [$FALSE$] and " +
-							"system_ = [$TRUE$]"))) {
-
-			preparedStatement.setBoolean(1, true);
-			preparedStatement.setBoolean(2, true);
-
-			preparedStatement.executeUpdate();
-		}
-	}
+		runSQL(
+			"update ObjectField set indexed = [$TRUE$], indexedAsKeyWord = " +
+				"[$TRUE$] where indexed = [$FALSE$] and name = 'id' and " +
+					"system_ = [$TRUE$]");
 
 }
