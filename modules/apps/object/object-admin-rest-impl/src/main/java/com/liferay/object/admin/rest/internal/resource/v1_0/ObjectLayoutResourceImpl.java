@@ -165,7 +165,7 @@ public class ObjectLayoutResourceImpl
 					ObjectDefinition.class.getName(),
 					serviceBuilderObjectLayout.getObjectDefinitionId())
 			).build(),
-			serviceBuilderObjectLayout);
+			_objectFieldLocalService, serviceBuilderObjectLayout);
 	}
 
 	private com.liferay.object.model.ObjectLayoutBox _toObjectLayoutBox(
