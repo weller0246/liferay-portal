@@ -225,7 +225,7 @@ public class BlogsEntryAssetRenderer
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse,
 			String noSuchEntryRedirect)
-		throws PortalException {
+		throws Exception {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)liferayPortletRequest.getAttribute(
@@ -236,7 +236,7 @@ public class BlogsEntryAssetRenderer
 
 	public String getURLViewInContext(
 			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
-		throws PortalException {
+		throws Exception {
 
 		if (_assetDisplayPageFriendlyURLProvider != null) {
 			String friendlyURL =

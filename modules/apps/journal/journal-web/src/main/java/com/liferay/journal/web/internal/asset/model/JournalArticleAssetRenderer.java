@@ -363,7 +363,7 @@ public class JournalArticleAssetRenderer
 			LiferayPortletRequest liferayPortletRequest,
 			LiferayPortletResponse liferayPortletResponse,
 			String noSuchEntryRedirect)
-		throws PortalException {
+		throws Exception {
 
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)liferayPortletRequest.getAttribute(
@@ -375,7 +375,7 @@ public class JournalArticleAssetRenderer
 	@Override
 	public String getURLViewInContext(
 			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
-		throws PortalException {
+		throws Exception {
 
 		if (!_isShowDisplayPage(themeDisplay.getScopeGroupId(), _article)) {
 			return _getHitLayoutURL(noSuchEntryRedirect, themeDisplay);
@@ -601,7 +601,7 @@ public class JournalArticleAssetRenderer
 
 	private String _getHitLayoutURL(
 			String noSuchEntryRedirect, ThemeDisplay themeDisplay)
-		throws PortalException {
+		throws Exception {
 
 		List<LayoutClassedModelUsage> layoutClassedModelUsages =
 			LayoutClassedModelUsageLocalServiceUtil.getLayoutClassedModelUsages(
@@ -644,7 +644,7 @@ public class JournalArticleAssetRenderer
 	}
 
 	private boolean _isShowDisplayPage(long groupId, JournalArticle article)
-		throws PortalException {
+		throws Exception {
 
 		AssetRendererFactory<JournalArticle> assetRendererFactory =
 			getAssetRendererFactory();

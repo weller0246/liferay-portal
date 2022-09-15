@@ -177,16 +177,18 @@ public class DDLRecordAssetRenderer extends BaseJSPAssetRenderer<DDLRecord> {
 
 	@Override
 	public String getURLViewInContext(
-		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		String noSuchEntryRedirect) {
+			LiferayPortletRequest liferayPortletRequest,
+			LiferayPortletResponse liferayPortletResponse,
+			String noSuchEntryRedirect)
+		throws Exception {
 
 		return noSuchEntryRedirect;
 	}
 
 	@Override
 	public String getURLViewInContext(
-		ThemeDisplay themeDisplay, String noSuchEntryRedirect) {
+			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
+		throws Exception {
 
 		return noSuchEntryRedirect;
 	}
