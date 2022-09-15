@@ -21,52 +21,51 @@ import com.liferay.portal.kernel.json.JSONUtil;
  */
 public class OAuthClientEntryConstants {
 
-	public static final String DEFAULT_OIDC_USER_INFO_MAPPER_JSON =
+	public static final String OIDC_USER_INFO_MAPPER_JSON = JSONUtil.put(
+		"address",
 		JSONUtil.put(
-			"address",
-			JSONUtil.put(
-				"addressType", ""
-			).put(
-				"city", "address->locality"
-			).put(
-				"country", "address->country"
-			).put(
-				"region", "address->region"
-			).put(
-				"street", "address->street_address"
-			).put(
-				"zip", "address->postal_code"
-			)
+			"addressType", ""
 		).put(
-			"contact", JSONUtil.put("birthdate", "birthdate")
+			"city", "address->locality"
 		).put(
-			"phone",
-			JSONUtil.put(
-				"phone", "phone_number"
-			).put(
-				"phoneType", ""
-			)
+			"country", "address->country"
 		).put(
-			"user",
-			JSONUtil.put(
-				"emailAddress", "email"
-			).put(
-				"firstName", "given_name"
-			).put(
-				"gender", "gender"
-			).put(
-				"jobTitle", ""
-			).put(
-				"languageId", "locale"
-			).put(
-				"lastName", "family_name"
-			).put(
-				"middleName", "middle_name"
-			).put(
-				"roles", ""
-			).put(
-				"screenName", ""
-			)
-		).toString();
+			"region", "address->region"
+		).put(
+			"street", "address->street_address"
+		).put(
+			"zip", "address->postal_code"
+		)
+	).put(
+		"contact", JSONUtil.put("birthdate", "birthdate")
+	).put(
+		"phone",
+		JSONUtil.put(
+			"phone", "phone_number"
+		).put(
+			"phoneType", ""
+		)
+	).put(
+		"user",
+		JSONUtil.put(
+			"emailAddress", "email"
+		).put(
+			"firstName", "given_name"
+		).put(
+			"gender", "gender"
+		).put(
+			"jobTitle", ""
+		).put(
+			"languageId", "locale"
+		).put(
+			"lastName", "family_name"
+		).put(
+			"middleName", "middle_name"
+		).put(
+			"roles", ""
+		).put(
+			"screenName", ""
+		)
+	).toString();
 
 }

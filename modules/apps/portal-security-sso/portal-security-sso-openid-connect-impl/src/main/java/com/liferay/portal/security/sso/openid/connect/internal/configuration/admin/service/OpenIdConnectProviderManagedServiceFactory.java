@@ -490,8 +490,7 @@ public class OpenIdConnectProviderManagedServiceFactory
 						defaultUserId,
 						_generateAuthRequestParametersJSON(properties),
 						authServerWellKnownURI, _generateInfoJSON(properties),
-						OAuthClientEntryConstants.
-							DEFAULT_OIDC_USER_INFO_MAPPER_JSON,
+						OAuthClientEntryConstants.OIDC_USER_INFO_MAPPER_JSON,
 						_generateTokenRequestParametersJSON(properties));
 			}
 			else {
