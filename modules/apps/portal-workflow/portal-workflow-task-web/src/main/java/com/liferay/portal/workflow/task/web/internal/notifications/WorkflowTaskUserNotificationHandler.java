@@ -106,15 +106,15 @@ public class WorkflowTaskUserNotificationHandler
 		ServiceContext serviceContext) {
 
 		try {
+			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+				userNotificationEvent.getPayload());
+
 			long ctCollectionId = jsonObject.getLong(
 				WorkflowConstants.CONTEXT_CT_COLLECTION_ID);
 
 			try (SafeCloseable safeCloseable =
 					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						ctCollectionId)) {
-
-				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-					userNotificationEvent.getPayload());
 
 				for (User user :
 						WorkflowTaskManagerUtil.getNotifiableUsers(
