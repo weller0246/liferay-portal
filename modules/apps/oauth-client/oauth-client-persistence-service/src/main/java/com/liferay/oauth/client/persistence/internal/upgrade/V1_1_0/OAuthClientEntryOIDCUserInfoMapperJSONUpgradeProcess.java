@@ -14,7 +14,7 @@
 
 package com.liferay.oauth.client.persistence.internal.upgrade.V1_1_0;
 
-import com.liferay.oauth.client.persistence.constants.OAuthClientPersistenceDefaultValues;
+import com.liferay.oauth.client.persistence.constants.OAuthClientEntryConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
 
 import java.sql.PreparedStatement;
@@ -41,7 +41,7 @@ public class OAuthClientEntryOIDCUserInfoMapperJSONUpgradeProcess
 
 					preparedStatement2.setString(
 						1,
-						OAuthClientPersistenceDefaultValues.
+						OAuthClientEntryConstants.
 							DEFAULT_OIDC_USER_INFO_MAPPER_JSON);
 					preparedStatement2.setLong(
 						2, resultSet.getLong("oAuthClientEntryId"));

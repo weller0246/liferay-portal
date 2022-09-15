@@ -19,7 +19,7 @@ import com.liferay.portal.kernel.json.JSONUtil;
 /**
  * @author Arthur Chan
  */
-public class OAuthClientPersistenceDefaultValues {
+public class OAuthClientEntryConstants {
 
 	public static final String DEFAULT_OIDC_USER_INFO_MAPPER_JSON =
 		JSONUtil.put(
