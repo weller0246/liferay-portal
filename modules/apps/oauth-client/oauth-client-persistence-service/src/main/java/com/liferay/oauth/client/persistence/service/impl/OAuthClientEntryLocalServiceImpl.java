@@ -104,9 +104,6 @@ public class OAuthClientEntryLocalServiceImpl
 		}
 
 		if (authServerWellKnownURI.contains("openid-configuration")) {
-
-			// OIDC client specific logic
-
 			_validateOIDCUserInfoMapperJSON(oidcUserInfoMapperJSON);
 		}
 		else {
@@ -267,9 +264,6 @@ public class OAuthClientEntryLocalServiceImpl
 		}
 
 		if (authServerWellKnownURI.contains("openid-configuration")) {
-
-			// OIDC client specific logic
-
 			_validateOIDCUserInfoMapperJSON(oidcUserInfoMapperJSON);
 		}
 		else {
