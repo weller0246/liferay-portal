@@ -743,9 +743,8 @@ public class CTCollectionLocalServiceImpl
 	public boolean hasUnapprovedChanges(long ctCollectionId)
 		throws SQLException {
 
-		HashMap<Long, CTPersistence<?>> ctPersistences =
-			new HashMap<>();
-		HashSet<Long> modelClassNameIds = new HashSet<>();
+		Map<Long, CTPersistence<?>> ctPersistences = new HashMap<>();
+		Set<Long> modelClassNameIds = new HashSet<>();
 
 		for (CTEntry ctEntry :
 				_ctEntryLocalService.getCTCollectionCTEntries(ctCollectionId)) {
