@@ -164,9 +164,13 @@ public interface AssetRenderer<T> extends Renderer {
 			String noSuchEntryRedirect)
 		throws Exception;
 
-	public String getURLViewInContext(
+	public default String getURLViewInContext(
 			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
-		throws Exception;
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
+	}
 
 	public default String getURLViewUsages(
 			HttpServletRequest httpServletRequest)
