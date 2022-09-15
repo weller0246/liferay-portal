@@ -76,6 +76,9 @@ public class GeneralSXPSearchRequestBodyContributor
 		}
 
 		if (generalConfiguration.getSearchableAssetTypes() != null) {
+			searchRequestBuilder.entryClassNames(
+				generalConfiguration.getSearchableAssetTypes());
+
 			searchRequestBuilder.modelIndexerClassNames(
 				generalConfiguration.getSearchableAssetTypes());
 		}
