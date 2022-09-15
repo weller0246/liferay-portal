@@ -14,7 +14,6 @@
 
 package com.liferay.oauth.client.persistence.internal.upgrade.registry;
 
-import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
 import com.liferay.portal.upgrade.registry.UpgradeStepRegistrator;
 
 import org.osgi.service.component.annotations.Component;
@@ -30,9 +29,6 @@ public class OAuthClientPersistenceServiceUpgradeStepRegistrator
 	public void register(Registry registry) {
 		registry.register(
 			"1.0.0", "1.1.0",
-			UpgradeProcessFactory.addColumns(
-				"OAuthClientEntry",
-				"oidcUserInfoMapperJSON VARCHAR(3999) null"),
 			new com.liferay.oauth.client.persistence.internal.upgrade.V1_1_0.
 				OAuthClientEntryOIDCUserInfoMapperJSONUpgradeProcess());
 	}

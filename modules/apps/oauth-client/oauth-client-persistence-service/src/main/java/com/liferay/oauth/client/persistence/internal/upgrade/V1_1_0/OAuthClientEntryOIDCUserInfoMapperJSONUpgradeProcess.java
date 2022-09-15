@@ -16,6 +16,8 @@ package com.liferay.oauth.client.persistence.internal.upgrade.V1_1_0;
 
 import com.liferay.oauth.client.persistence.constants.OAuthClientEntryConstants;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
+import com.liferay.portal.kernel.upgrade.UpgradeProcessFactory;
+import com.liferay.portal.kernel.upgrade.UpgradeStep;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -49,6 +51,14 @@ public class OAuthClientEntryOIDCUserInfoMapperJSONUpgradeProcess
 				}
 			}
 		}
+	}
+
+	@Override
+	protected UpgradeStep[] getPreUpgradeSteps() {
+		return new UpgradeStep[] {
+			UpgradeProcessFactory.addColumns(
+				"OAuthClientEntry", "oidcUserInfoMapperJSON VARCHAR(3999) null")
+		};
 	}
 
 }
