@@ -12,23 +12,29 @@
  * details.
  */
 
-package com.liferay.object.constants;
+package com.liferay.object.configuration;
+
+import aQute.bnd.annotation.metatype.Meta;
 
 /**
- * @author Brian Wing Shun Chan
+ * @author Raymond Augé
  */
-public class ObjectActionExecutorConstants {
+@Meta.OCD(
+	factory = true,
+	id = "com.liferay.object.configuration.FunctionObjectActionExecutorFactoryConfiguration"
+)
+public interface FunctionObjectActionExecutorFactoryConfiguration {
 
-	public static final String KEY_ADD_OBJECT_ENTRY = "add-object-entry";
+	@Meta.AD(required = false)
+	public String description();
 
-	public static final String KEY_FUNCTION = "function";
+	@Meta.AD(deflt = "0", required = false)
+	public int timeout();
 
-	public static final String KEY_GROOVY = "groovy";
+	@Meta.AD
+	public String resourcePath();
 
-	public static final String KEY_NOTIFICATION = "notification";
-
-	public static final String KEY_UPDATE_OBJECT_ENTRY = "update-object-entry";
-
-	public static final String KEY_WEBHOOK = "webhook";
+	@Meta.AD
+	public String oauth2Application();
 
 }
