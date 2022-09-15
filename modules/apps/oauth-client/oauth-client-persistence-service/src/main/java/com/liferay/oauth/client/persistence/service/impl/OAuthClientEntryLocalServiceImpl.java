@@ -430,26 +430,24 @@ public class OAuthClientEntryLocalServiceImpl
 	}
 
 	private void _validateOIDCUserInfoMapperJSON(
-			String mapperType, JSONObject oidcUserInfoMapperJSONObject,
-			String[] requiredMappings)
+			String key, JSONObject oidcUserInfoMapperJSONObject,
+			String[] requiredKeys)
 		throws Exception {
 
-		JSONObject mapperJSONObject = JSONObjectUtils.getJSONObject(
-			oidcUserInfoMapperJSONObject, mapperType);
+		JSONObject jsonObject = JSONObjectUtils.getJSONObject(
+			oidcUserInfoMapperJSONObject, key);
 
-		for (String requiredMapping : requiredMappings) {
-			if (Validator.isNull(
-					mapperJSONObject.getAsString(requiredMapping))) {
-
+		for (String requiredKey : requiredKeys) {
+			if (Validator.isNull(jsonObject.getAsString(requiredKey))) {
 				throw new OAuthClientEntryOIDCUserInfoMapperJSONException(
-					requiredMapping + " is required for " + mapperType);
+					requiredKey + " is required for " + key);
 			}
 		}
 
-		for (Object mappedClaim : mapperJSONObject.values()) {
-			if (!(mappedClaim instanceof String)) {
+		for (Object object : jsonObject.values()) {
+			if (!(object instanceof String)) {
 				throw new OAuthClientEntryOIDCUserInfoMapperJSONException(
-					"Mapped claim must be a String");
+					"Value is not a string");
 			}
 		}
 	}
