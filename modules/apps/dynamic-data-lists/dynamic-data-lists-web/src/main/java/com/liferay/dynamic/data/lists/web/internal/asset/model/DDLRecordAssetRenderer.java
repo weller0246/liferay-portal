@@ -186,14 +186,6 @@ public class DDLRecordAssetRenderer extends BaseJSPAssetRenderer<DDLRecord> {
 	}
 
 	@Override
-	public String getURLViewInContext(
-			ThemeDisplay themeDisplay, String noSuchEntryRedirect)
-		throws Exception {
-
-		return noSuchEntryRedirect;
-	}
-
-	@Override
 	public long getUserId() {
 		return _recordVersion.getUserId();
 	}
