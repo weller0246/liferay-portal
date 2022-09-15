@@ -1159,8 +1159,6 @@ public class ViewChangesDisplayContext {
 				Map<String, Object> modelAttributes =
 					model.getModelAttributes();
 
-				Integer status = (Integer)modelAttributes.get("status");
-
 				Date modifiedDate = ctEntry.getModifiedDate();
 
 				modelInfo._ctEntry = true;
@@ -1195,7 +1193,7 @@ public class ViewChangesDisplayContext {
 				).put(
 					"userId", ctEntry.getUserId()
 				).put(
-					"workflowStatus", status
+					"workflowStatus", (Integer)modelAttributes.get("status")
 				);
 
 				if (model instanceof GroupedModel) {

@@ -106,15 +106,15 @@ public class WorkflowTaskUserNotificationHandler
 		ServiceContext serviceContext) {
 
 		try {
-			JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-				userNotificationEvent.getPayload());
-
 			long ctCollectionId = jsonObject.getLong(
 				WorkflowConstants.CONTEXT_CT_COLLECTION_ID);
 
 			try (SafeCloseable safeCloseable =
 					CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
 						ctCollectionId)) {
+
+				JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
+					userNotificationEvent.getPayload());
 
 				for (User user :
 						WorkflowTaskManagerUtil.getNotifiableUsers(
@@ -142,10 +142,10 @@ public class WorkflowTaskUserNotificationHandler
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			userNotificationEvent.getPayload());
 
-		long workflowTaskId = jsonObject.getLong("workflowTaskId");
-
 		String notificationMessage = jsonObject.getString(
 			"notificationMessage");
+
+		long workflowTaskId = jsonObject.getLong("workflowTaskId");
 
 		if (workflowTaskId > 0) {
 			long ctCollectionId = jsonObject.getLong(
@@ -216,7 +216,7 @@ public class WorkflowTaskUserNotificationHandler
 	}
 
 	private WorkflowTask _fetchWorkflowTask(
-			long collectionId, long workflowTaskId)
+			long ctCollectionId, long workflowTaskId)
 		throws Exception {
 
 		if (workflowTaskId <= 0) {
@@ -225,7 +225,7 @@ public class WorkflowTaskUserNotificationHandler
 
 		try (SafeCloseable safeCloseable =
 				CTCollectionThreadLocal.setCTCollectionIdWithSafeCloseable(
-					collectionId)) {
+					ctCollectionId)) {
 
 			return WorkflowTaskManagerUtil.fetchWorkflowTask(workflowTaskId);
 		}
