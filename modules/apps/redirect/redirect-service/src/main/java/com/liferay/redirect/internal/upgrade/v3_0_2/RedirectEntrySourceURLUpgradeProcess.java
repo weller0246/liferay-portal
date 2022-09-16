@@ -79,13 +79,13 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 					if (sourceURL.equals(lowerCaseSourceURL)) {
 						redirectEntryIds.remove(lowerCaseSourceURL);
 					}
-					else if (_log.isWarnEnabled()) {
-						_log.warn(
+					else {
+						_log.error(
 							StringBundler.concat(
-								"Can not modify '", sourceURL, "' to '",
+								"Unable to modify ", sourceURL, " to ",
 								lowerCaseSourceURL,
-								"' because it is already in use in group: ",
-								groupId, " at id: ", redirectEntryId));
+								" because it is already used by redirect entry ",
+								redirectEntryId));
 					}
 				}
 			}
