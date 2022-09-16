@@ -93,14 +93,11 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 			for (Map<String, Long> redirectEntryIds :
 					_redirectEntryIds.values()) {
 
-				for (Map.Entry<String, Long> upgradeRedirectEntry :
+				for (Map.Entry<String, Long> entry :
 						redirectEntryIds.entrySet()) {
 
-					String lowerCaseSourceURL = upgradeRedirectEntry.getKey();
-					long redirectEntryId = upgradeRedirectEntry.getValue();
-
-					preparedStatement2.setString(1, lowerCaseSourceURL);
-					preparedStatement2.setLong(2, redirectEntryId);
+					preparedStatement2.setString(1, entry.getKey());
+					preparedStatement2.setLong(2, entry.getValue());
 
 					preparedStatement2.addBatch();
 				}
