@@ -14,10 +14,7 @@
 
 package com.liferay.object.internal.upgrade.v3_23_1;
 
-import com.liferay.portal.dao.orm.common.SQLTransformer;
 import com.liferay.portal.kernel.upgrade.UpgradeProcess;
-
-import java.sql.PreparedStatement;
 
 /**
  * @author José Ángel Jiménez
@@ -30,5 +27,6 @@ public class ObjectFieldUpgradeProcess extends UpgradeProcess {
 			"update ObjectField set indexed = [$TRUE$], indexedAsKeyWord = " +
 				"[$TRUE$] where indexed = [$FALSE$] and name = 'id' and " +
 					"system_ = [$TRUE$]");
+	}
 
 }
