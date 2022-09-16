@@ -38,7 +38,7 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select redirectEntryId, groupId, sourceURL from " +
-					"RedirectEntry ORDER BY redirectEntryId ASC");
+					"RedirectEntry order by BY redirectEntryId ASC");
 			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
@@ -52,35 +52,35 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 				long groupId = resultSet.getLong(2);
 				String sourceURL = resultSet.getString(3);
 
-				Set<String> groupSourceURLs;
-				Map<String, Long> groupSourceURLEntryIdMap;
+				Set<String> sourceURLs;
+				Map<String, Long> redirectEntryIds;
 
 				if (!_sourceURLs.containsKey(groupId)) {
-					groupSourceURLs = new HashSet<>();
-					groupSourceURLEntryIdMap = new LinkedHashMap<>();
+					sourceURLs = new HashSet<>();
+					redirectEntryIds = new LinkedHashMap<>();
 				}
 				else {
-					groupSourceURLs = _sourceURLs.get(groupId);
-					groupSourceURLEntryIdMap = _sourceURLEntryIdMap.get(
+					sourceURLs = _sourceURLs.get(groupId);
+					redirectEntryIds = _redirectEntryIds.get(
 						groupId);
 				}
 
 				String lowerCaseSourceURL = StringUtil.toLowerCase(sourceURL);
 
-				if (!groupSourceURLs.contains(lowerCaseSourceURL)) {
-					groupSourceURLs.add(lowerCaseSourceURL);
+				if (!sourceURLs.contains(lowerCaseSourceURL)) {
+					sourceURLs.add(lowerCaseSourceURL);
 
 					if (!sourceURL.equals(lowerCaseSourceURL)) {
-						groupSourceURLEntryIdMap.put(
+						redirectEntryIds.put(
 							lowerCaseSourceURL, redirectEntryId);
 					}
 
-					_sourceURLEntryIdMap.put(groupId, groupSourceURLEntryIdMap);
-					_sourceURLs.put(groupId, groupSourceURLs);
+					_redirectEntryIds.put(groupId, redirectEntryIds);
+					_sourceURLs.put(groupId, sourceURLs);
 				}
 				else {
 					if (sourceURL.equals(lowerCaseSourceURL)) {
-						groupSourceURLEntryIdMap.remove(lowerCaseSourceURL);
+						redirectEntryIds.remove(lowerCaseSourceURL);
 					}
 					else if (_log.isWarnEnabled()) {
 						_log.warn(
@@ -93,11 +93,11 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 				}
 			}
 
-			for (Map<String, Long> groupSourceURLEntryIdMap :
-					_sourceURLEntryIdMap.values()) {
+			for (Map<String, Long> redirectEntryIds :
+					_redirectEntryIds.values()) {
 
 				for (Map.Entry<String, Long> upgradeRedirectEntry :
-						groupSourceURLEntryIdMap.entrySet()) {
+						redirectEntryIds.entrySet()) {
 
 					String lowerCaseSourceURL = upgradeRedirectEntry.getKey();
 					long redirectEntryId = upgradeRedirectEntry.getValue();
@@ -116,7 +116,7 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 	private static final Log _log = LogFactoryUtil.getLog(
 		RedirectEntrySourceURLUpgradeProcess.class);
 
-	private final Map<Long, Map<String, Long>> _sourceURLEntryIdMap =
+	private final Map<Long, Map<String, Long>> _redirectEntryIds =
 		new LinkedHashMap<>();
 	private final Map<Long, Set<String>> _sourceURLs = new LinkedHashMap<>();
 
