@@ -748,9 +748,9 @@ public class AssetHelperImpl implements AssetHelper {
 		}
 
 		if (GetterUtil.getBoolean(
-				assetEntryQuery.getAttribute("headOrShowNonIndexable"))) {
+				assetEntryQuery.getAttribute("headOrShowNonindexable"))) {
 
-			searchContext.setAttribute("headOrShowNonIndexable", Boolean.TRUE);
+			searchContext.setAttribute("headOrShowNonindexable", Boolean.TRUE);
 		}
 
 		String paginationType = GetterUtil.getString(
