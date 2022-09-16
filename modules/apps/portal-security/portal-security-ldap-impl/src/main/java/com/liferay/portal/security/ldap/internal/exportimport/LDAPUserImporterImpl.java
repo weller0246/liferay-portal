@@ -602,7 +602,6 @@ public class LDAPUserImporterImpl implements LDAPUserImporter, UserImporter {
 	protected void activate() {
 		_companySecurityAuthType = GetterUtil.getString(
 			_props.get(PropsKeys.COMPANY_SECURITY_AUTH_TYPE));
-
 		_portalCache = (PortalCache<String, Long>)_singleVMPool.getPortalCache(
 			UserImporter.class.getName());
 	}
