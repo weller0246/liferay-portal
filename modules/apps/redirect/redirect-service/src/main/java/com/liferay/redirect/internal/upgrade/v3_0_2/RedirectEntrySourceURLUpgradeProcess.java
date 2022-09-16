@@ -38,7 +38,7 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 	protected void doUpgrade() throws Exception {
 		try (PreparedStatement preparedStatement1 = connection.prepareStatement(
 				"select redirectEntryId, groupId, sourceURL from " +
-					"RedirectEntry ORDER BY redirectentryid ASC");
+					"RedirectEntry ORDER BY redirectEntryId ASC");
 			PreparedStatement preparedStatement2 =
 				AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					connection,
