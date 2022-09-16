@@ -52,7 +52,8 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 				long groupId = resultSet.getLong(2);
 				String sourceURL = resultSet.getString(3);
 
-				Map<String, Long> redirectEntryIds = _redirectEntryIds.get(groupId);
+				Map<String, Long> redirectEntryIds = _redirectEntryIds.get(
+					groupId);
 				Set<String> sourceURLs = _sourceURLs.get(groupId);
 
 				if (redirectEntryIds == null) {
@@ -74,19 +75,20 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 						redirectEntryIds.put(
 							lowerCaseSourceURL, redirectEntryId);
 					}
+
+					continue;
+				}
+
+				if (sourceURL.equals(lowerCaseSourceURL)) {
+					redirectEntryIds.remove(lowerCaseSourceURL);
 				}
 				else {
-					if (sourceURL.equals(lowerCaseSourceURL)) {
-						redirectEntryIds.remove(lowerCaseSourceURL);
-					}
-					else {
-						_log.error(
-							StringBundler.concat(
-								"Unable to modify ", sourceURL, " to ",
-								lowerCaseSourceURL,
-								" because it is already used by redirect entry ",
-								redirectEntryId));
-					}
+					_log.error(
+						StringBundler.concat(
+							"Unable to modify ", sourceURL, " to ",
+							lowerCaseSourceURL,
+							" because it is already used by redirect entry ",
+							redirectEntryId));
 				}
 			}
 
