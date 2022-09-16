@@ -52,16 +52,17 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 				long groupId = resultSet.getLong(2);
 				String sourceURL = resultSet.getString(3);
 
-				Map<String, Long> redirectEntryIds;
-				Set<String> sourceURLs;
+				Map<String, Long> redirectEntryIds = _redirectEntryIds.get(groupId);
+				Set<String> sourceURLs = _sourceURLs.get(groupId);
 
-				if (!_sourceURLs.containsKey(groupId)) {
+				if (redirectEntryIds == null) {
 					redirectEntryIds = new LinkedHashMap<>();
+
+					_redirectEntryIds.put(groupId, redirectEntryIds);
+
 					sourceURLs = new HashSet<>();
-				}
-				else {
-					redirectEntryIds = _redirectEntryIds.get(groupId);
-					sourceURLs = _sourceURLs.get(groupId);
+
+					_sourceURLs.put(groupId, sourceURLs);
 				}
 
 				String lowerCaseSourceURL = StringUtil.toLowerCase(sourceURL);
@@ -73,9 +74,6 @@ public class RedirectEntrySourceURLUpgradeProcess extends UpgradeProcess {
 						redirectEntryIds.put(
 							lowerCaseSourceURL, redirectEntryId);
 					}
-
-					_redirectEntryIds.put(groupId, redirectEntryIds);
-					_sourceURLs.put(groupId, sourceURLs);
 				}
 				else {
 					if (sourceURL.equals(lowerCaseSourceURL)) {
