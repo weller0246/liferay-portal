@@ -29,13 +29,13 @@ import java.util.ArrayList;
  */
 public abstract class BaseUpgradeProcess extends UpgradeProcess {
 
-	protected void removeExpandoData(String expandoName) throws Exception {
-		String[] tableIds;
+	protected void removeExpandoData(String expandoTableName) throws Exception {
+		String[] expandoTableIds = null;
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"select tableId from ExpandoTable where name = ?")) {
 
-			preparedStatement.setString(1, expandoName);
+			preparedStatement.setString(1, expandoTableName);
 
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				ArrayList<String> ids = new ArrayList<>();
@@ -44,17 +44,17 @@ public abstract class BaseUpgradeProcess extends UpgradeProcess {
 					ids.add(resultSet.getString("tableId"));
 				}
 
-				tableIds = ids.toArray(new String[0]);
+				expandoTableIds = ids.toArray(new String[0]);
 			}
 		}
 
-		_deleteFrom("ExpandoColumn", "tableId", tableIds);
+		_deleteFrom("ExpandoColumn", "tableId", expandoTableIds);
 
-		_deleteFrom("ExpandoRow", "tableId", tableIds);
+		_deleteFrom("ExpandoRow", "tableId", expandoTableIds);
 
-		_deleteFrom("ExpandoTable", "tableId", tableIds);
+		_deleteFrom("ExpandoTable", "tableId", expandoTableIds);
 
-		_deleteFrom("ExpandoValue", "tableId", tableIds);
+		_deleteFrom("ExpandoValue", "tableId", expandoTableIds);
 	}
 
 	protected void removePortletData(

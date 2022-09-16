@@ -186,7 +186,7 @@ public class DataCleanupTest {
 
 	private void _testDeprecatedModulesUpgrade(
 			String propertyKey, String servletContextName, String sqlFilePath,
-			String portletPreferencePortletId, String expandoName)
+			String portletPreferencePortletId, String expandoTableName)
 		throws Exception {
 
 		if (Validator.isNotNull(sqlFilePath)) {
@@ -224,28 +224,27 @@ public class DataCleanupTest {
 			_layout = _layoutLocalService.updateLayout(_layout);
 		}
 
-		long tableId = 0;
-		long valueId = 0;
+		String expandoColumnName = "testColumn";
+		long expandoTableId = 0;
+		long expandoValueId = 0;
 
-		String columnName = "testColumn";
-
-		if (Validator.isNotNull(expandoName)) {
+		if (Validator.isNotNull(expandoTableName)) {
 			ClassName className = _classNameLocalService.addClassName(
-				expandoName + "test");
+				expandoTableName + "test");
 
 			ExpandoTable expandoTable = ExpandoTestUtil.addTable(
-				className.getClassNameId(), expandoName);
+				className.getClassNameId(), expandoTableName);
 
-			tableId = expandoTable.getTableId();
+			expandoTableId = expandoTable.getTableId();
 
 			ExpandoColumn expandoColumn = ExpandoTestUtil.addColumn(
-				expandoTable, columnName, ExpandoColumnConstants.STRING);
+				expandoTable, expandoColumnName, ExpandoColumnConstants.STRING);
 
 			ExpandoValue expandoValue = ExpandoTestUtil.addValue(
 				expandoTable, expandoColumn, className.getClassNameId(),
 				"testValue");
 
-			valueId = expandoValue.getValueId();
+			expandoValueId = expandoValue.getValueId();
 		}
 
 		Dictionary<String, Object> properties =
@@ -290,16 +289,19 @@ public class DataCleanupTest {
 				"abc,def", unicodeProperties.getProperty("test-property-5"));
 		}
 
-		if (Validator.isNotNull(expandoName)) {
+		if (Validator.isNotNull(expandoTableName)) {
 			Assert.assertEquals(
 				null,
-				_expandoColumnLocalService.getColumn(tableId, columnName));
+				_expandoColumnLocalService.getColumn(
+					expandoTableId, expandoColumnName));
 
 			Assert.assertEquals(
-				null, _expandoTableLocalService.fetchExpandoTable(tableId));
+				null,
+				_expandoTableLocalService.fetchExpandoTable(expandoTableId));
 
 			Assert.assertEquals(
-				null, _expandoValueLocalService.fetchExpandoValue(valueId));
+				null,
+				_expandoValueLocalService.fetchExpandoValue(expandoValueId));
 		}
 	}
 
