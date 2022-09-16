@@ -81,7 +81,6 @@ public class AddObjectEntryObjectActionExecutorImpl
 		ObjectDefinition sourceObjectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				payloadJSONObject.getLong("objectDefinitionId"));
-
 		User user = _userLocalService.getUser(userId);
 
 		ObjectEntryManager objectEntryManager =
