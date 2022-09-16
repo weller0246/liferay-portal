@@ -347,8 +347,7 @@ public class PortalHibernateConfiguration extends LocalSessionFactoryBean {
 				}
 			}
 			catch (Exception exception) {
-				_log.error(
-					"Unable to load hbm cache file for " + url, exception);
+				_log.error("Unable to load " + url, exception);
 			}
 		}
 
