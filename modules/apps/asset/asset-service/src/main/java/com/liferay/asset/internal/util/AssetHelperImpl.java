@@ -747,6 +747,12 @@ public class AssetHelperImpl implements AssetHelper {
 				"ddmStructureFieldValue", ddmStructureFieldValue);
 		}
 
+		if (GetterUtil.getBoolean(
+				assetEntryQuery.getAttribute("headOrShowNonIndexable"))) {
+
+			searchContext.setAttribute("headOrShowNonIndexable", Boolean.TRUE);
+		}
+
 		String paginationType = GetterUtil.getString(
 			assetEntryQuery.getPaginationType(), "more");
 
@@ -760,12 +766,6 @@ public class AssetHelperImpl implements AssetHelper {
 				assetEntryQuery.getAttribute("showNonindexable"))) {
 
 			searchContext.setAttribute("showNonindexable", Boolean.TRUE);
-		}
-
-		if (GetterUtil.getBoolean(
-				assetEntryQuery.getAttribute("headOrShowNonIndexable"))) {
-
-			searchContext.setAttribute("headOrShowNonIndexable", Boolean.TRUE);
 		}
 
 		searchContext.setClassTypeIds(assetEntryQuery.getClassTypeIds());
