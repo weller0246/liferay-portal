@@ -234,12 +234,6 @@ create table NullConvertibleEntry (
 	name VARCHAR(75) null
 );
 
-create table RedundantIndexEntry (
-	redundantIndexEntryId LONG not null primary key,
-	companyId LONG,
-	name VARCHAR(75) null
-);
-
 create table RenameFinderColumnEntry (
 	renameFinderColumnEntryId LONG not null primary key,
 	groupId LONG,
