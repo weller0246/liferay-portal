@@ -101,7 +101,10 @@ public class PushNotificationsDeviceLocalServiceImpl
 			long[] toUserIds, JSONObject payloadJSONObject)
 		throws PortalException {
 
-		for (String platform : _getServiceTrackerMap().keySet()) {
+		ServiceTrackerMap<String, PushNotificationsSender> serviceTrackerMap =
+			_getServiceTrackerMap();
+
+		for (String platform : serviceTrackerMap.keySet()) {
 			List<String> tokens = new ArrayList<>();
 
 			List<PushNotificationsDevice> pushNotificationsDevices =
@@ -127,8 +130,11 @@ public class PushNotificationsDeviceLocalServiceImpl
 			String platform, List<String> tokens, JSONObject payloadJSONObject)
 		throws PortalException {
 
+		ServiceTrackerMap<String, PushNotificationsSender> serviceTrackerMap =
+			_getServiceTrackerMap();
+
 		PushNotificationsSender pushNotificationsSender =
-			_getServiceTrackerMap().getService(platform);
+			serviceTrackerMap.getService(platform);
 
 		if (pushNotificationsSender == null) {
 			return;
