@@ -42,10 +42,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@BeforeClass
-	public static void setUpClass()
-		throws IllegalAccessException, InstantiationException,
-			   InvocationTargetException, NoSuchMethodException {
-
+	public static void setUpClass() throws Exception {
 		Class<?> clazz =
 			UpdateFragmentPortletSetsSortConfigurationMVCActionCommand.class;
 
@@ -73,7 +70,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize0NewSize1Add1()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"A"},
@@ -83,7 +80,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize2Add3And4()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "b", "C", "D"},
@@ -93,7 +90,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize2Swap1And2()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"b", "a"},
@@ -103,7 +100,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize2SwapNone()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "b"},
@@ -113,7 +110,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize3Add1()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"A", "b", "c"},
@@ -124,7 +121,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize3Add2()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "B", "c"},
@@ -135,7 +132,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize3Add3()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "b", "C"},
@@ -146,7 +143,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize5Add1And3And5()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"A", "b", "C", "d", "E"},
@@ -157,7 +154,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize5Add1And3And5Swap2And4()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"A", "d", "C", "b", "E"},
@@ -168,7 +165,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize2NewSize5Swap2And4()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "d", "c", "b", "e"},
@@ -179,7 +176,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize3NewSize2Swap1And2()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"b", "a", "c"},
@@ -190,7 +187,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize3NewSize2Swap1And3()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"c", "b", "a"},
@@ -201,7 +198,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize3NewSize2Swap2And3()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "c", "b"},
@@ -212,7 +209,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize4NewSize3Add5Swap2And4()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"a", "d", "c", "b", "E"},
@@ -223,7 +220,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 
 	@Test
 	public void testMergeFragmentCollectionKeysOldSize5NewSize3Swap1And3And5()
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		Assert.assertArrayEquals(
 			new String[] {"c", "b", "e", "d", "a"},
@@ -235,7 +232,7 @@ public class UpdateFragmentPortletSetsSortConfigurationMVCActionCommandTest {
 	private static String[] _mergeFragmentCollectionKeys(
 			List<String> newFragmentCollectionKeys,
 			List<String> oldFragmentCollectionKeys)
-		throws IllegalAccessException, InvocationTargetException {
+		throws Exception {
 
 		return (String[])_mergeFragmentCollectionKeysMethod.invoke(
 			_updateFragmentPortletSetsSortConfigurationMVCActionCommand,

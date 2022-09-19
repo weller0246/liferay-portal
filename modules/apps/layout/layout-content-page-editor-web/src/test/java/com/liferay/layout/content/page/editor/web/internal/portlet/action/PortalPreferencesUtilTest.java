@@ -40,8 +40,8 @@ public class PortalPreferencesUtilTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
-	public void testUpdateAndGetSortedPreferencesValues() {
-		PortalPreferences portalPreferences = new MockPortalPreferencesImpl();
+	public void testUpdateAndGetSortedPortalPreferencesValues() {
+		PortalPreferences portalPreferences = new TestPortalPreferencesImpl();
 
 		PortalPreferencesUtil.updateSortedPortalPreferencesValues(
 			portalPreferences, RandomTestUtil.randomString(),
@@ -64,7 +64,7 @@ public class PortalPreferencesUtilTest {
 				RandomTestUtil.randomString()));
 	}
 
-	private static class MockPortalPreferencesImpl
+	private static class TestPortalPreferencesImpl
 		extends PortalPreferencesImpl {
 
 		@Override
