@@ -74,13 +74,8 @@ public class GeneralSXPSearchRequestBodyContributorTest {
 		SearchRequest searchRequest = _searchRequestBuilder.build();
 
 		Assert.assertEquals(
-			"Expected asset types to be set in searchRequest." +
-				"getEntryClassNames",
 			searchableAssetTypes, searchRequest.getEntryClassNames());
-
 		Assert.assertEquals(
-			"Expected asset types to be set in searchRequest." +
-				"modelIndexerClassNames",
 			searchableAssetTypes, searchRequest.getModelIndexerClassNames());
 	}
 
