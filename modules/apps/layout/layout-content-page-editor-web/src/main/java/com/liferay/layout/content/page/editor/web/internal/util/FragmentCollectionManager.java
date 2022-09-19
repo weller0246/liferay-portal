@@ -637,9 +637,6 @@ public class FragmentCollectionManager {
 	private FragmentCompositionService _fragmentCompositionService;
 
 	@Reference
-	private FragmentEntryLinkManager _fragmentEntryLinkManager;
-
-	@Reference
 	private FragmentEntryService _fragmentEntryService;
 
 	@Reference
