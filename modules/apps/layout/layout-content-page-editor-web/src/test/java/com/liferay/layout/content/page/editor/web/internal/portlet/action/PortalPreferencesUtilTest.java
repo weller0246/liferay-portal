@@ -14,7 +14,7 @@
 
 package com.liferay.layout.content.page.editor.web.internal.portlet.action;
 
-import com.liferay.layout.content.page.editor.web.internal.util.PortalPreferencesUtil;
+import com.liferay.layout.util.PortalPreferencesUtil;
 import com.liferay.portal.kernel.portlet.PortalPreferences;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.util.ListUtil;
