@@ -89,14 +89,11 @@ public class RedirectEntryLocalServiceImpl
 			boolean permanent, String sourceURL, ServiceContext serviceContext)
 		throws PortalException {
 
-		String normalizedSourceURL =
-			_friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
+		sourceURL = _friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
 
-		_validate(destinationURL, normalizedSourceURL);
+		_validate(destinationURL, sourceURL);
 
-		if (redirectEntryPersistence.fetchByG_S(groupId, normalizedSourceURL) !=
-				null) {
-
+		if (redirectEntryPersistence.fetchByG_S(groupId, sourceURL) != null) {
 			throw new DuplicateRedirectEntrySourceURLException();
 		}
 
@@ -112,7 +109,7 @@ public class RedirectEntryLocalServiceImpl
 		redirectEntry.setDestinationURL(destinationURL);
 		redirectEntry.setExpirationDate(expirationDate);
 		redirectEntry.setPermanent(permanent);
-		redirectEntry.setSourceURL(normalizedSourceURL);
+		redirectEntry.setSourceURL(sourceURL);
 
 		redirectEntry = redirectEntryPersistence.update(redirectEntry);
 
@@ -130,7 +127,7 @@ public class RedirectEntryLocalServiceImpl
 
 		RedirectNotFoundEntry redirectNotFoundEntry =
 			_redirectNotFoundEntryLocalService.fetchRedirectNotFoundEntry(
-				groupId, normalizedSourceURL);
+				groupId, sourceURL);
 
 		if (redirectNotFoundEntry != null) {
 			_redirectNotFoundEntryLocalService.deleteRedirectNotFoundEntry(
@@ -148,15 +145,14 @@ public class RedirectEntryLocalServiceImpl
 			boolean updateChainedRedirectEntries, ServiceContext serviceContext)
 		throws PortalException {
 
-		String normalizedSourceURL =
-			_friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
+		sourceURL = _friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
 
 		_checkDestinationURLMustNotBeEqualToSourceURL(
-			destinationURL, groupBaseURL, normalizedSourceURL);
+			destinationURL, groupBaseURL, sourceURL);
 
 		RedirectEntry redirectEntry = addRedirectEntry(
-			groupId, destinationURL, expirationDate, permanent,
-			normalizedSourceURL, serviceContext);
+			groupId, destinationURL, expirationDate, permanent, sourceURL,
+			serviceContext);
 
 		_checkChainedRedirectEntries(groupBaseURL, redirectEntry);
 
@@ -259,16 +255,15 @@ public class RedirectEntryLocalServiceImpl
 			boolean permanent, String sourceURL)
 		throws PortalException {
 
-		String normalizedSourceURL =
-			_friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
+		sourceURL = _friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
 
-		_validate(destinationURL, normalizedSourceURL);
+		_validate(destinationURL, sourceURL);
 
 		RedirectEntry redirectEntry = getRedirectEntry(redirectEntryId);
 
 		RedirectEntry existingRedirectEntry =
 			redirectEntryPersistence.fetchByG_S(
-				redirectEntry.getGroupId(), normalizedSourceURL);
+				redirectEntry.getGroupId(), sourceURL);
 
 		if ((existingRedirectEntry != null) &&
 			(existingRedirectEntry.getRedirectEntryId() != redirectEntryId)) {
@@ -279,7 +274,7 @@ public class RedirectEntryLocalServiceImpl
 		redirectEntry.setDestinationURL(destinationURL);
 		redirectEntry.setExpirationDate(expirationDate);
 		redirectEntry.setPermanent(permanent);
-		redirectEntry.setSourceURL(normalizedSourceURL);
+		redirectEntry.setSourceURL(sourceURL);
 
 		return redirectEntryPersistence.update(redirectEntry);
 	}
@@ -292,16 +287,15 @@ public class RedirectEntryLocalServiceImpl
 			boolean updateChainedRedirectEntries)
 		throws PortalException {
 
-		String normalizedSourceURL =
-			_friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
+		sourceURL = _friendlyURLNormalizer.normalizeWithEncoding(sourceURL);
 
 		_checkDestinationURLMustNotBeEqualToSourceURL(
-			destinationURL, groupBaseURL, normalizedSourceURL);
+			destinationURL, groupBaseURL, sourceURL);
 
 		RedirectEntry redirectEntry =
 			redirectEntryLocalService.updateRedirectEntry(
 				redirectEntryId, destinationURL, expirationDate, permanent,
-				normalizedSourceURL);
+				sourceURL);
 
 		_checkChainedRedirectEntries(groupBaseURL, redirectEntry);
 
