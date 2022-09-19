@@ -318,7 +318,7 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 				themeDisplay.getCompanyId(), portletId);
 
 			if ((portlet == null) ||
-				((layout.isTypeContent() || layout.isTypeAssetDisplay()) &&
+				((layout.isTypeAssetDisplay() || layout.isTypeContent()) &&
 				 ArrayUtil.contains(
 					 _UNSUPPORTED_PORTLETS_NAMES, portlet.getPortletName()))) {
 
