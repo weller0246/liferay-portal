@@ -473,13 +473,13 @@ public class DefaultObjectEntryManagerImplTest {
 				Assert.assertEquals(link.getLabel(), dlFileEntry.getFileName());
 
 				com.liferay.portal.kernel.repository.model.FileEntry
-					serviceBuilderFileEntry = _dlAppService.getFileEntry(
+					repositoryFileEntry = _dlAppService.getFileEntry(
 						fileEntry.getId());
 
 				Assert.assertEquals(
 					_dlURLHelper.getDownloadURL(
-						serviceBuilderFileEntry,
-						serviceBuilderFileEntry.getFileVersion(), null,
+						repositoryFileEntry,
+						repositoryFileEntry.getFileVersion(), null,
 						StringPool.BLANK),
 					link.getHref());
 			}
