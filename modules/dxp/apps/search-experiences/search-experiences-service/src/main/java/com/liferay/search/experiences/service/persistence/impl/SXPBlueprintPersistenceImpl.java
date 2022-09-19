@@ -3946,9 +3946,6 @@ public class SXPBlueprintPersistenceImpl
 	@Reference
 	protected FinderCache finderCache;
 
-	@Reference
-	private volatile List<Sanitizer> _sanitizers;
-
 	private static final String _SQL_SELECT_SXPBLUEPRINT =
 		"SELECT sxpBlueprint FROM SXPBlueprint sxpBlueprint";
 
@@ -4005,6 +4002,9 @@ public class SXPBlueprintPersistenceImpl
 
 	@Reference
 	private PortalUUID _portalUUID;
+
+	@Reference
+	private volatile List<Sanitizer> _sanitizers;
 
 	@Reference
 	private SXPBlueprintModelArgumentsResolver

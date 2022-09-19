@@ -1575,9 +1575,6 @@ public class CTermEntryLocalizationPersistenceImpl
 	@Reference
 	protected FinderCache finderCache;
 
-	@Reference
-	private volatile List<Sanitizer> _sanitizers;
-
 	private static final String _SQL_SELECT_CTERMENTRYLOCALIZATION =
 		"SELECT cTermEntryLocalization FROM CTermEntryLocalization cTermEntryLocalization";
 
@@ -1606,6 +1603,9 @@ public class CTermEntryLocalizationPersistenceImpl
 	protected FinderCache getFinderCache() {
 		return finderCache;
 	}
+
+	@Reference
+	private volatile List<Sanitizer> _sanitizers;
 
 	@Reference
 	private CTermEntryLocalizationModelArgumentsResolver
