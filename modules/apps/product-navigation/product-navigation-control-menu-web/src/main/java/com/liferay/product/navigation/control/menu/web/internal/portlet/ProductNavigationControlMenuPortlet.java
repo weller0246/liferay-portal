@@ -65,9 +65,9 @@ public class ProductNavigationControlMenuPortlet extends MVCPortlet {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws IOException, PortletException {
 
+		resourceRequest.setAttribute(AssetWebKeys.ASSET_HELPER, _assetHelper);
 		resourceRequest.setAttribute(
 			PortletCategoryManager.class.getName(), _portletCategoryManager);
-		resourceRequest.setAttribute(AssetWebKeys.ASSET_HELPER, _assetHelper);
 
 		super.serveResource(resourceRequest, resourceResponse);
 	}
