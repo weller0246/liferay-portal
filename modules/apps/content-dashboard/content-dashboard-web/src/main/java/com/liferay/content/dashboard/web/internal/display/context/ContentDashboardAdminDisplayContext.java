@@ -246,10 +246,10 @@ public class ContentDashboardAdminDisplayContext {
 						InfoItemReference infoItemReference =
 							contentDashboardItemSubtype.getInfoItemReference();
 
+						long classPK = infoItemReference.getClassPK();
+
 						InfoItemIdentifier infoItemIdentifier =
 							infoItemReference.getInfoItemIdentifier();
-
-						long classPK = infoItemReference.getClassPK();
 
 						if (infoItemIdentifier instanceof
 								ClassNameClassPKInfoItemIdentifier) {
