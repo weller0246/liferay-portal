@@ -22,8 +22,6 @@ import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.module.configuration.ConfigurationProviderUtil;
 import com.liferay.portal.kernel.servlet.HttpHeaders;
@@ -174,22 +172,14 @@ public class SalesforceHttp {
 			(response.getResponseCode() >=
 				HttpURLConnection.HTTP_MULT_CHOICE)) {
 
-			if (_log.isDebugEnabled()) {
-				_log.debug(
-					StringBundler.concat(
-						"Unexpected response status ",
-						response.getResponseCode(), " with response message: ",
-						new String(bytes)));
-			}
-
 			throw new ObjectEntryManagerHttpException(
-				"Request to Salesforce failed");
+				StringBundler.concat(
+					"Unexpected response code ", response.getResponseCode(),
+					" with response message: ", new String(bytes)));
 		}
 
 		return bytes;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(SalesforceHttp.class);
 
 	@Reference
 	private Http _http;
