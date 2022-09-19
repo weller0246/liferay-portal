@@ -336,7 +336,7 @@ public class ObjectEntryDTOConverter
 				long fileEntryId = GetterUtil.getLong(
 					values.get(objectField.getName()));
 
-				if (fileEntryId == 0L) {
+				if (fileEntryId == 0) {
 					continue;
 				}
 
