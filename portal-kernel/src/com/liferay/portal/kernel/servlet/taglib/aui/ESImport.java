@@ -26,7 +26,7 @@ public final class ESImport {
 	 *
 	 * JavaScript equivalent would be:
 	 *
-	 * 		import {symbol} from module;
+	 * import {symbol} from module;
 	 *
 	 * @review
 	 */
@@ -40,7 +40,7 @@ public final class ESImport {
 	 *
 	 * JavaScript equivalent would be:
 	 *
-	 * 		import {symbol as alias} from module;
+	 * import {symbol as alias} from module;
 	 *
 	 * @review
 	 */

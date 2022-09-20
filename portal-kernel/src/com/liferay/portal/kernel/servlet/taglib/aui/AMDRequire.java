@@ -36,7 +36,7 @@ public final class AMDRequire {
 	 *
 	 * JavaScript equivalent would be:
 	 *
-	 * 		Liferay.Loader.require('module', function(alias) {});
+	 * Liferay.Loader.require('module', function(alias) {});
 	 *
 	 * @review
 	 */
