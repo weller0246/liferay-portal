@@ -171,7 +171,8 @@ public class ObjectRelationshipLocalServiceImpl
 			objectRelationshipPersistence.findByPrimaryKey(
 				objectRelationshipId);
 
-		return deleteObjectRelationship(objectRelationship);
+		return objectRelationshipLocalService.deleteObjectRelationship(
+			objectRelationship);
 	}
 
 	@Indexable(type = IndexableType.DELETE)
