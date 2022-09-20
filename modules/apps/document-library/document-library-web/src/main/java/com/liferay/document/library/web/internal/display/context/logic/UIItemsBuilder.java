@@ -226,7 +226,7 @@ public class UIItemsBuilder {
 
 		StringBundler sb = new StringBundler(5);
 
-		sb.append("Liferay.Util.openConfirmModal({message:'");
+		sb.append("Liferay.Util.openConfirmModal({message: '");
 		sb.append(
 			UnicodeLanguageUtil.get(
 				_resourceBundle, "are-you-sure-you-want-to-delete-this"));
