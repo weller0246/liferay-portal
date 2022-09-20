@@ -60,7 +60,6 @@ import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.security.permission.ActionKeys;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.language.LanguageResources;
@@ -72,6 +71,7 @@ import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 import com.liferay.portal.vulcan.util.SearchUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -198,25 +198,25 @@ public class ObjectDefinitionResourceImpl
 		if (!Validator.isBlank(objectDefinition.getExternalReferenceCode())) {
 			serviceBuilderObjectDefinition =
 				_objectDefinitionService.updateExternalReferenceCode(
-					objectDefinition.getExternalReferenceCode(),
-					serviceBuilderObjectDefinition.getObjectDefinitionId());
+					serviceBuilderObjectDefinition.getObjectDefinitionId(),
+					objectDefinition.getExternalReferenceCode());
 		}
 
-		com.liferay.object.model.ObjectField titleObjectField =
+		com.liferay.object.model.ObjectField serviceBuilderObjectField =
 			_objectFieldLocalService.fetchObjectField(
 				serviceBuilderObjectDefinition.getObjectDefinitionId(),
 				objectDefinition.getTitleObjectFieldName());
 
-		if (titleObjectField != null) {
+		if (serviceBuilderObjectField != null) {
 			serviceBuilderObjectDefinition =
 				_objectDefinitionService.updateTitleObjectFieldId(
 					serviceBuilderObjectDefinition.getObjectDefinitionId(),
-					titleObjectField.getObjectFieldId());
+					serviceBuilderObjectField.getObjectFieldId());
 		}
 
 		_addObjectDefinitionResources(
-			serviceBuilderObjectDefinition.getObjectDefinitionId(),
 			objectDefinition.getObjectActions(),
+			serviceBuilderObjectDefinition.getObjectDefinitionId(),
 			objectDefinition.getObjectLayouts(),
 			objectDefinition.getObjectRelationships(),
 			objectDefinition.getObjectViews());
@@ -237,6 +237,8 @@ public class ObjectDefinitionResourceImpl
 			Long objectDefinitionId, ObjectDefinition objectDefinition)
 		throws Exception {
 
+		// TODO Move logic to service
+
 		if (!Validator.isBlank(objectDefinition.getStorageType())) {
 			throw new ObjectDefinitionStorageTypeException();
 		}
@@ -248,12 +250,13 @@ public class ObjectDefinitionResourceImpl
 
 		long titleObjectFieldId = 0;
 
-		com.liferay.object.model.ObjectField titleObjectField =
+		com.liferay.object.model.ObjectField titleServiceBuilderObjectField =
 			_objectFieldLocalService.fetchObjectField(
 				objectDefinitionId, objectDefinition.getTitleObjectFieldName());
 
-		if (titleObjectField != null) {
-			titleObjectFieldId = titleObjectField.getObjectFieldId();
+		if (titleServiceBuilderObjectField != null) {
+			titleObjectFieldId =
+				titleServiceBuilderObjectField.getObjectFieldId();
 		}
 
 		if (serviceBuilderObjectDefinition.isSystem()) {
@@ -288,13 +291,11 @@ public class ObjectDefinitionResourceImpl
 					objectDefinition.getPluralLabel()),
 				objectDefinition.getScope());
 
-		ObjectField[] objectFields = objectDefinition.getObjectFields();
-
-		List<com.liferay.object.model.ObjectField> existingObjectFields =
-			ListUtil.copy(
+		List<com.liferay.object.model.ObjectField> serviceBuilderObjectFields =
+			new ArrayList<>(
 				_objectFieldLocalService.getObjectFields(objectDefinitionId));
 
-		for (ObjectField objectField : objectFields) {
+		for (ObjectField objectField : objectDefinition.getObjectFields()) {
 			_objectFieldLocalService.updateObjectField(
 				contextUser.getUserId(), objectDefinitionId,
 				GetterUtil.getLong(objectField.getId()),
@@ -317,22 +318,24 @@ public class ObjectDefinitionResourceImpl
 							objectFieldSetting, _objectFieldSettingLocalService,
 							_objectFilterLocalService)));
 
-			existingObjectFields.removeIf(
-				existingObjectField -> Objects.equals(
-					existingObjectField.getName(), objectField.getName()));
+			serviceBuilderObjectFields.removeIf(
+				serviceBuilderObjectField -> Objects.equals(
+					serviceBuilderObjectField.getName(),
+					objectField.getName()));
 		}
 
-		for (com.liferay.object.model.ObjectField existingObjectField :
-				existingObjectFields) {
+		for (com.liferay.object.model.ObjectField serviceBuilderObjectField :
+				serviceBuilderObjectFields) {
 
 			if (Objects.equals(
-					existingObjectField.getBusinessType(),
+					serviceBuilderObjectField.getBusinessType(),
 					ObjectFieldConstants.BUSINESS_TYPE_RELATIONSHIP)) {
 
 				continue;
 			}
 
-			_objectFieldLocalService.deleteObjectField(existingObjectField);
+			_objectFieldLocalService.deleteObjectField(
+				serviceBuilderObjectField);
 		}
 
 		ObjectAction[] objectActions = objectDefinition.getObjectActions();
@@ -362,7 +365,7 @@ public class ObjectDefinitionResourceImpl
 		}
 
 		_addObjectDefinitionResources(
-			objectDefinitionId, objectActions, objectLayouts,
+			objectActions, objectDefinitionId, objectLayouts,
 			objectRelationships, objectViews);
 
 		return _toObjectDefinition(serviceBuilderObjectDefinition);
@@ -391,19 +394,18 @@ public class ObjectDefinitionResourceImpl
 	}
 
 	private void _addObjectDefinitionResources(
-			long objectDefinitionId, ObjectAction[] objectActions,
+			ObjectAction[] objectActions, long objectDefinitionId,
 			ObjectLayout[] objectLayouts,
 			ObjectRelationship[] objectRelationships, ObjectView[] objectViews)
 		throws Exception {
 
 		if (objectActions != null) {
-			ObjectActionResource.Builder objectActionResourcedBuilder =
+			ObjectActionResource.Builder builder =
 				_objectActionResourceFactory.create();
 
-			ObjectActionResource objectActionResource =
-				objectActionResourcedBuilder.user(
-					contextUser
-				).build();
+			ObjectActionResource objectActionResource = builder.user(
+				contextUser
+			).build();
 
 			for (ObjectAction objectAction : objectActions) {
 				objectActionResource.postObjectDefinitionObjectAction(
@@ -426,12 +428,11 @@ public class ObjectDefinitionResourceImpl
 		}
 
 		if (objectRelationships != null) {
-			ObjectRelationshipResource.Builder
-				objectRelationshipResourcedBuilder =
-					_objectRelationshipResourceFactory.create();
+			ObjectRelationshipResource.Builder builder =
+				_objectRelationshipResourceFactory.create();
 
 			ObjectRelationshipResource objectRelationshipResource =
-				objectRelationshipResourcedBuilder.user(
+				builder.user(
 					contextUser
 				).build();
 
@@ -443,13 +444,12 @@ public class ObjectDefinitionResourceImpl
 		}
 
 		if (objectViews != null) {
-			ObjectViewResource.Builder objectViewResourcedBuilder =
+			ObjectViewResource.Builder builder =
 				_objectViewResourceFactory.create();
 
-			ObjectViewResource objectViewResource =
-				objectViewResourcedBuilder.user(
-					contextUser
-				).build();
+			ObjectViewResource objectViewResource = builder.user(
+				contextUser
+			).build();
 
 			for (ObjectView objectView : objectViews) {
 				objectViewResource.postObjectDefinitionObjectView(
@@ -580,7 +580,6 @@ public class ObjectDefinitionResourceImpl
 							null),
 						objectView),
 					ObjectView.class);
-
 				panelCategoryKey = objectDefinition.getPanelCategoryKey();
 				pluralLabel = LocalizedMapUtil.getLanguageIdMap(
 					objectDefinition.getPluralLabelMap());
@@ -607,14 +606,6 @@ public class ObjectDefinitionResourceImpl
 
 				system = objectDefinition.isSystem();
 
-				com.liferay.object.model.ObjectField titleObjectField =
-					_objectFieldLocalService.fetchObjectField(
-						objectDefinition.getTitleObjectFieldId());
-
-				if (titleObjectField != null) {
-					titleObjectFieldName = titleObjectField.getName();
-				}
-
 				setParameterRequired(
 					() -> {
 						String restContextPath = StringPool.BLANK;
@@ -638,6 +629,19 @@ public class ObjectDefinitionResourceImpl
 						}
 
 						return restContextPath.matches(".*/\\{\\w+}/.*");
+					});
+				setTitleObjectFieldName(
+					() -> {
+						com.liferay.object.model.ObjectField
+							serviceBuilderObjectField =
+								_objectFieldLocalService.fetchObjectField(
+									objectDefinition.getTitleObjectFieldId());
+
+						if (serviceBuilderObjectField == null) {
+							return null;
+						}
+
+						return serviceBuilderObjectField.getName();
 					});
 			}
 		};

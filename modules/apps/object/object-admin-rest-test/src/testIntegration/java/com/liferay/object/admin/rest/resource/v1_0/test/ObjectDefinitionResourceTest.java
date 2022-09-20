@@ -234,14 +234,14 @@ public class ObjectDefinitionResourceTest
 			new ObjectField[] {
 				new ObjectField() {
 					{
-						setBusinessType(BusinessType.TEXT);
-						setDBType(ObjectField.DBType.create("String"));
-						setIndexed(false);
-						setIndexedAsKeyword(false);
-						setLabel(Collections.singletonMap("en_US", "Column"));
-						setName("column");
-						setRequired(false);
-						setSystem(false);
+						businessType = BusinessType.TEXT;
+						DBType = ObjectField.DBType.create("String");
+						indexed = false;
+						indexedAsKeyword = false;
+						label = Collections.singletonMap("en_US", "Column");
+						name = "column";
+						required = false;
+						system = false;
 					}
 				}
 			});
