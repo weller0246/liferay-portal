@@ -20,6 +20,7 @@ import com.liferay.portal.kernel.servlet.taglib.aui.ESImport;
 import com.liferay.portal.kernel.servlet.taglib.aui.JSFragment;
 import com.liferay.portal.kernel.servlet.taglib.aui.PortletData;
 import com.liferay.portal.kernel.servlet.taglib.aui.PortletDataRenderer;
+import com.liferay.portal.kernel.util.IntegerWrapper;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 		// Write ES prologue
 
-		Map<String, Integer> usedAliases = new HashMap<>();
+		Map<String, IntegerWrapper> usedAliases = new HashMap<>();
 
 		Map<ESImport, ESImport> esImportsMap = _computeESImportsMap(
 			portletDatas, usedAliases);
@@ -151,7 +152,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 	private Map<AMDRequire, AMDRequire> _computeAMDRequiresMap(
 		Collection<PortletData> portletDatas,
-		Map<String, Integer> usedAliases) {
+		Map<String, IntegerWrapper> usedAliases) {
 
 		Map<AMDRequire, AMDRequire> amdRequiresMap = new HashMap<>();
 
@@ -172,14 +173,14 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 					String alias = amdRequire.getAlias();
 
 					if (usedAliases.containsKey(alias)) {
-						int index = usedAliases.get(alias);
+						IntegerWrapper integerWrapper = usedAliases.get(alias);
 
-						usedAliases.put(alias, index + 1);
+						alias += integerWrapper.getValue();
 
-						alias += index;
+						integerWrapper.increment();
 					}
 					else {
-						usedAliases.put(alias, 1);
+						usedAliases.put(alias, new IntegerWrapper(1));
 					}
 
 					amdRequiresMap.put(
@@ -208,7 +209,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 	private Map<ESImport, ESImport> _computeESImportsMap(
 		Collection<PortletData> portletDatas,
-		Map<String, Integer> usedAliases) {
+		Map<String, IntegerWrapper> usedAliases) {
 
 		Map<ESImport, ESImport> esImportsMap = new HashMap<>();
 
@@ -228,21 +229,20 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 					String alias = esImport.getAlias();
 
 					if (usedAliases.containsKey(alias)) {
-						int index = usedAliases.get(alias);
+						IntegerWrapper integerWrapper = usedAliases.get(alias);
 
-						usedAliases.put(alias, index + 1);
+						alias += integerWrapper.getValue();
 
-						alias += index;
+						integerWrapper.increment();
 					}
 					else {
-						usedAliases.put(alias, 0);
+						usedAliases.put(alias, new IntegerWrapper(0));
 					}
 
 					esImportsMap.put(
 						esImport,
 						new ESImport(
-							esImport.getSymbol(), alias,
-							esImport.getModule()));
+							esImport.getSymbol(), alias, esImport.getModule()));
 				}
 			}
 		}
