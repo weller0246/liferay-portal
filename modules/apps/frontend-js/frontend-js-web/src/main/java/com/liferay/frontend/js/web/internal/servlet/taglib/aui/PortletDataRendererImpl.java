@@ -49,15 +49,13 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 		if (!Validator.isBlank(rawCode)) {
 			writer.write("<script type=\"text/javascript\">\n");
-
 			writer.write(rawCode);
-
 			writer.write("\n</script>");
 		}
 
 		writer.write("<script type=\"module\">\n");
 
-		// Write ES prolog
+		// Write ES prologue
 
 		Map<String, Integer> usedVariables = new HashMap<>();
 
@@ -82,7 +80,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 			}
 		}
 
-		// Write AMD prolog
+		// Write AMD prologue
 
 		Map<AMDRequire, AMDRequire> amdRequiresMap = _computeAMDRequiresMap(
 			portletDatas, usedVariables);
@@ -111,7 +109,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 			writer.write("try {\n");
 		}
 
-		// Write AUI prolog
+		// Write AUI prologue
 
 		Set<String> auiUseSet = _computeAUIUseSet(portletDatas);
 
@@ -132,13 +130,13 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 		writer.write(
 			_computeNonrawCode(amdRequiresMap, esImportsMap, portletDatas));
 
-		// Write AUI epilog
+		// Write AUI epilogue
 
 		if (!auiUseSet.isEmpty()) {
 			writer.write("});\n");
 		}
 
-		// Write AMD epilog
+		// Write AMD epilogue
 
 		if (!amdRequiresMap.isEmpty()) {
 			writer.write("} catch (err) {\n");
