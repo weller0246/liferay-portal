@@ -178,14 +178,14 @@ public class ObjectDefinitionServiceImpl
 
 	@Override
 	public ObjectDefinition updateExternalReferenceCode(
-			String externalReferenceCode, long objectDefinitionId)
+			long objectDefinitionId, String externalReferenceCode)
 		throws PortalException {
 
 		_objectDefinitionModelResourcePermission.check(
 			getPermissionChecker(), objectDefinitionId, ActionKeys.UPDATE);
 
 		return _objectDefinitionLocalService.updateExternalReferenceCode(
-			externalReferenceCode, objectDefinitionId);
+			objectDefinitionId, externalReferenceCode);
 	}
 
 	@Override

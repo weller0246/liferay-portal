@@ -166,16 +166,18 @@ public class ObjectDefinitionLocalServiceImpl
 			String externalReferenceCode, long userId)
 		throws PortalException {
 
-		User user = _userLocalService.getUser(userId);
-
 		ObjectDefinition objectDefinition = objectDefinitionPersistence.create(
 			counterLocalService.increment());
+
+		objectDefinition.setExternalReferenceCode(externalReferenceCode);
+
+		User user = _userLocalService.getUser(userId);
 
 		objectDefinition.setCompanyId(user.getCompanyId());
 		objectDefinition.setUserId(user.getUserId());
 		objectDefinition.setUserName(user.getFullName());
+
 		objectDefinition.setActive(false);
-		objectDefinition.setExternalReferenceCode(externalReferenceCode);
 		objectDefinition.setName(externalReferenceCode);
 		objectDefinition.setStorageType(
 			ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT);
@@ -190,9 +192,9 @@ public class ObjectDefinitionLocalServiceImpl
 			objectDefinition.getObjectDefinitionId(), false, true, true);
 
 		_addSystemObjectFields(
-			userId, ObjectEntryTable.INSTANCE.getTableName(), objectDefinition,
+			ObjectEntryTable.INSTANCE.getTableName(), objectDefinition,
 			ObjectEntryTable.INSTANCE.objectEntryId.getName(),
-			objectDefinition.isSystem());
+			objectDefinition.isSystem(), userId);
 
 		return objectDefinition;
 	}
@@ -686,7 +688,7 @@ public class ObjectDefinitionLocalServiceImpl
 
 	@Override
 	public ObjectDefinition updateExternalReferenceCode(
-			String externalReferenceCode, long objectDefinitionId)
+			long objectDefinitionId, String externalReferenceCode)
 		throws PortalException {
 
 		ObjectDefinition objectDefinition =
@@ -829,7 +831,7 @@ public class ObjectDefinitionLocalServiceImpl
 		}
 
 		_addSystemObjectFields(
-			userId, dbTableName, objectDefinition, pkObjectFieldName, system);
+			dbTableName, objectDefinition, pkObjectFieldName, system, userId);
 
 		if (objectFields != null) {
 			for (ObjectField objectField : objectFields) {
@@ -870,8 +872,8 @@ public class ObjectDefinitionLocalServiceImpl
 	}
 
 	private void _addSystemObjectFields(
-			long userId, String dbTableName, ObjectDefinition objectDefinition,
-			String pkObjectFieldName, boolean system)
+			String dbTableName, ObjectDefinition objectDefinition,
+			String pkObjectFieldName, boolean system, long userId)
 		throws PortalException {
 
 		_objectFieldLocalService.addSystemObjectField(
