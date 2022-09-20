@@ -26,12 +26,10 @@ import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.ModelHintsUtil;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.service.LayoutLocalService;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.Validator;
 
-import java.util.Date;
 import java.util.List;
 
 import org.osgi.service.component.annotations.Component;
@@ -145,36 +143,22 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 
 	@Override
 	public LayoutUtilityPageEntry updateLayoutUtilityPageEntry(
-			long layoutUtilityPageEntryId, long plid, String name, int type,
-			ServiceContext serviceContext)
+			long layoutUtilityPageEntryId, long plid, String name, int type)
 		throws PortalException {
 
 		LayoutUtilityPageEntry layoutUtilityPageEntry =
 			layoutUtilityPageEntryPersistence.fetchByPrimaryKey(
 				layoutUtilityPageEntryId);
 
-		_validateName(name);
-
 		_validateLayout(layoutUtilityPageEntry.getGroupId(), plid);
+
+		_validateName(name);
 
 		layoutUtilityPageEntry.setPlid(plid);
 		layoutUtilityPageEntry.setName(name);
 		layoutUtilityPageEntry.setType(type);
 
-		layoutUtilityPageEntry.setModifiedDate(
-			serviceContext.getModifiedDate(new Date()));
-
 		return layoutUtilityPageEntryPersistence.update(layoutUtilityPageEntry);
-	}
-
-	private boolean _isValidLayout(long groupId, Layout layout) {
-		if ((layout == null) || (layout.getGroupId() != groupId) ||
-			layout.isDraftLayout() || layout.isTypeAssetDisplay()) {
-
-			return false;
-		}
-
-		return true;
 	}
 
 	private void _validateExternalReferenceCode(
@@ -202,8 +186,16 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 
 		Layout layout = _layoutLocalService.fetchLayout(plid);
 
-		if ((plid > 0) && !_isValidLayout(groupId, layout)) {
-			throw new NoSuchLayoutException("Layout is invalid");
+		if (plid <= 0) {
+			return;
+		}
+
+		if ((layout == null) || (layout.getGroupId() != groupId) ||
+			layout.isDraftLayout() || layout.isTypeAssetDisplay()) {
+
+			throw new NoSuchLayoutException(
+				StringBundler.concat(
+					"Layout ", plid, " is not valid for group ", groupId));
 		}
 	}
 
