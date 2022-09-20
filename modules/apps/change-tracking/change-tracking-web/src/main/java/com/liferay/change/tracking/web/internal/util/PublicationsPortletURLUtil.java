@@ -41,7 +41,7 @@ public class PublicationsPortletURLUtil {
 		String backURL, long ctCollectionId, Language language) {
 
 		return StringBundler.concat(
-			"javascript: Liferay.Util.openConfirmModal({message: '",
+			"javascript:Liferay.Util.openConfirmModal({message: '",
 			language.get(
 				httpServletRequest,
 				"are-you-sure-you-want-to-delete-this-publication"),
@@ -78,7 +78,7 @@ public class PublicationsPortletURLUtil {
 		throws Exception {
 
 		return StringBundler.concat(
-			"javascript: Liferay.Util.openWindow({dialog: {destroyOnHide: ",
+			"javascript:Liferay.Util.openWindow({dialog: {destroyOnHide: ",
 			"true,}, dialogIframe: {bodyCssClass: 'dialog-with-footer'}, ",
 			"title:'", language.get(httpServletRequest, "permissions"),
 			"', uri:'",
