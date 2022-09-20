@@ -56,8 +56,7 @@ public class PortletDataRendererImplTest {
 
 		String code = writer.toString();
 
-		Assert.assertTrue(
-			code.contains("(function() {\ncontent\n})();"));
+		Assert.assertTrue(code.contains("(function() {\ncontent\n})();"));
 	}
 
 	@Test
@@ -78,8 +77,7 @@ public class PortletDataRendererImplTest {
 
 		String code = writer.toString();
 
-		Assert.assertTrue(
-			code.contains("(function() {\ncontent\n})();"));
+		Assert.assertTrue(code.contains("(function() {\ncontent\n})();"));
 	}
 
 	@Test
@@ -100,8 +98,7 @@ public class PortletDataRendererImplTest {
 
 		String code = writer.toString();
 
-		Assert.assertTrue(
-			code.contains("{\ncontent\n}\n"));
+		Assert.assertTrue(code.contains("{\ncontent\n}\n"));
 	}
 
 	@Test
