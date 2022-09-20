@@ -114,7 +114,6 @@ public class OfflineOpenIdConnectSessionManager {
 		}
 
 		String key = String.valueOf(openIdConnectSessionId);
-
 		String lockOwner = _generateLockOwner();
 
 		Lock lock = _lockManager.lock(
@@ -366,16 +365,12 @@ public class OfflineOpenIdConnectSessionManager {
 								_tokenRefreshOffsetMillis),
 						QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 
-			// Help reduce spikes for OIDC provider server
-
-			for (int i = 0; i < _getSize(openIdConnectSessions.size()); ++i) {
-				OpenIdConnectSession openIdConnectSession =
-					openIdConnectSessions.get(i);
-
-				String lockOwner = _generateLockOwner();
+			for (OpenIdConnectSession openIdConnectSession :
+					openIdConnectSessions) {
 
 				String key = String.valueOf(
 					openIdConnectSession.getOpenIdConnectSessionId());
+				String lockOwner = _generateLockOwner();
 
 				Lock lock = _lockManager.lock(
 					OpenIdConnectSession.class.getSimpleName(), key, lockOwner);
@@ -391,23 +386,6 @@ public class OfflineOpenIdConnectSessionManager {
 			}
 		}
 
-		private int _getSize(int counts) {
-			int intervals = _expectedFinishIn / _tokenRefreshScheduledInterval;
-
-			if (intervals == 0) {
-				intervals = 1;
-			}
-
-			int size = (counts / intervals) + 1;
-
-			if (counts < size) {
-				size = counts;
-			}
-
-			return size;
-		}
-
-		private final int _expectedFinishIn = (int)(2 * Time.HOUR / 1000);
 		private final LockManager _lockManager;
 
 	}
