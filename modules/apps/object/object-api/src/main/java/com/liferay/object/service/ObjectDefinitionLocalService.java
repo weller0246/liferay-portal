@@ -406,7 +406,7 @@ public interface ObjectDefinitionLocalService
 		throws PortalException;
 
 	public ObjectDefinition updateExternalReferenceCode(
-			String externalReferenceCode, long objectDefinitionId)
+			long objectDefinitionId, String externalReferenceCode)
 		throws PortalException;
 
 	/**

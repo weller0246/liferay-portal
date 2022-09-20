@@ -507,8 +507,8 @@ public class ObjectDefinitionServiceHttp {
 
 	public static com.liferay.object.model.ObjectDefinition
 			updateExternalReferenceCode(
-				HttpPrincipal httpPrincipal, String externalReferenceCode,
-				long objectDefinitionId)
+				HttpPrincipal httpPrincipal, long objectDefinitionId,
+				String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -518,7 +518,7 @@ public class ObjectDefinitionServiceHttp {
 				_updateExternalReferenceCodeParameterTypes11);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, externalReferenceCode, objectDefinitionId);
+				methodKey, objectDefinitionId, externalReferenceCode);
 
 			Object returnObj = null;
 
@@ -629,7 +629,7 @@ public class ObjectDefinitionServiceHttp {
 		};
 	private static final Class<?>[]
 		_updateExternalReferenceCodeParameterTypes11 = new Class[] {
-			String.class, long.class
+			long.class, String.class
 		};
 	private static final Class<?>[] _updateTitleObjectFieldIdParameterTypes12 =
 		new Class[] {long.class, long.class};

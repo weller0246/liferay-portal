@@ -161,11 +161,11 @@ public class ObjectDefinitionServiceWrapper
 	@Override
 	public com.liferay.object.model.ObjectDefinition
 			updateExternalReferenceCode(
-				String externalReferenceCode, long objectDefinitionId)
+				long objectDefinitionId, String externalReferenceCode)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _objectDefinitionService.updateExternalReferenceCode(
-			externalReferenceCode, objectDefinitionId);
+			objectDefinitionId, externalReferenceCode);
 	}
 
 	@Override

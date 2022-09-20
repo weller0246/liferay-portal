@@ -151,7 +151,7 @@ public interface ObjectRelationshipLocalService
 			long objectRelationshipId, long primaryKey1, long primaryKey2)
 		throws PortalException;
 
-	public void deleteObjectRelationships(long objectDefinitionId)
+	public void deleteObjectRelationships(long objectDefinitionId1)
 		throws PortalException;
 
 	/**

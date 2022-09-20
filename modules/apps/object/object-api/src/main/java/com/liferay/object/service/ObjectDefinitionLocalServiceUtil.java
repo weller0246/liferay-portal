@@ -507,11 +507,11 @@ public class ObjectDefinitionLocalServiceUtil {
 	}
 
 	public static ObjectDefinition updateExternalReferenceCode(
-			String externalReferenceCode, long objectDefinitionId)
+			long objectDefinitionId, String externalReferenceCode)
 		throws PortalException {
 
 		return getService().updateExternalReferenceCode(
-			externalReferenceCode, objectDefinitionId);
+			objectDefinitionId, externalReferenceCode);
 	}
 
 	/**
