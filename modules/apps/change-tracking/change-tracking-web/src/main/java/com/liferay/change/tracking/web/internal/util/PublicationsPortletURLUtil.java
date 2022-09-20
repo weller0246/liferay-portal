@@ -45,8 +45,8 @@ public class PublicationsPortletURLUtil {
 			language.get(
 				httpServletRequest,
 				"are-you-sure-you-want-to-delete-this-publication"),
-			"', onConfirm: (isConfirmed) => {if (isConfirmed)".concat(
-				"{submitForm(document.hrefFm,'"),
+			"', onConfirm: (isConfirmed) => {if (isConfirmed) {",
+			"submitForm(document.hrefFm, '",
 			getHref(
 				renderResponse.createActionURL(), ActionRequest.ACTION_NAME,
 				"/change_tracking/delete_ct_collection", "redirect", backURL,
