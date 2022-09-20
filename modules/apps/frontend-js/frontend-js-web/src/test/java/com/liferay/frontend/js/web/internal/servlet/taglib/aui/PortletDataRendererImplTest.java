@@ -57,7 +57,6 @@ public class PortletDataRendererImplTest {
 		String code = writer.toString();
 
 		Assert.assertTrue(
-			"AMD code is correctly wrapped in IIFE",
 			code.contains("(function() {\ncontent\n})();"));
 	}
 
@@ -80,7 +79,6 @@ public class PortletDataRendererImplTest {
 		String code = writer.toString();
 
 		Assert.assertTrue(
-			"AUI code is correctly wrapped in IIFE",
 			code.contains("(function() {\ncontent\n})();"));
 	}
 
@@ -103,7 +101,6 @@ public class PortletDataRendererImplTest {
 		String code = writer.toString();
 
 		Assert.assertTrue(
-			"ES code is correctly wrapped in block",
 			code.contains("{\ncontent\n}\n"));
 	}
 
