@@ -149,6 +149,20 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		return _portletDataMap;
 	}
 
+	private String[] _getNameAndAlias(String requirePart) {
+		requirePart = requirePart.trim();
+
+		String[] parts = _whitespacePattern.split(requirePart, 4);
+
+		if ((parts.length == 3) &&
+			StringUtil.equalsIgnoreCase(parts[1], "as")) {
+
+			return new String[] {parts[0], parts[2]};
+		}
+
+		return new String[] {requirePart, null};
+	}
+
 	private Collection<AMDRequire> _parseAMDRequires(String require) {
 		List<AMDRequire> amdRequires = new ArrayList<>();
 
@@ -170,20 +184,6 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		}
 
 		return amdRequires;
-	}
-
-	private String[] _getNameAndAlias(String requirePart) {
-		requirePart = requirePart.trim();
-
-		String[] parts = _whitespacePattern.split(requirePart, 4);
-
-		if ((parts.length == 3) &&
-			StringUtil.equalsIgnoreCase(parts[1], "as")) {
-
-			return new String[] {parts[0], parts[2]};
-		}
-
-		return new String[] {requirePart, null};
 	}
 
 	private static volatile PortletDataRenderer _portletDataRenderer;
