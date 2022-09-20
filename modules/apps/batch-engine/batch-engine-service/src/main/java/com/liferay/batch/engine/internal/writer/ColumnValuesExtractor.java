@@ -156,7 +156,7 @@ public class ColumnValuesExtractor {
 						StringBundler.concat(
 							"Mapping collection of ",
 							fieldClass.getDeclaredClasses(),
-							" to single column may not contain all data"));
+							" to a single column may not contain all data"));
 				}
 
 				localIndex++;
