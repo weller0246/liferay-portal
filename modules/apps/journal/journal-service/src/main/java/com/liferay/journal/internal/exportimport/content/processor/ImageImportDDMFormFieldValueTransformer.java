@@ -102,9 +102,9 @@ public class ImageImportDDMFormFieldValueTransformer
 			}
 
 			String fileEntryJSON = _toJSON(
-				importedFileEntry, jsonObject.getString("type"),
-				jsonObject.getString("alt"), jsonObject.getString("url"),
-				jsonObject.getString("height"), jsonObject.getString("width"));
+				jsonObject.getString("alt"), importedFileEntry,
+				jsonObject.getString("height"), jsonObject.getString("type"),
+				jsonObject.getString("url"), jsonObject.getString("width"));
 
 			value.addString(locale, fileEntryJSON);
 
@@ -169,7 +169,7 @@ public class ImageImportDDMFormFieldValueTransformer
 	}
 
 	private String _toJSON(
-		FileEntry fileEntry, String type, String alt, String url, String height,
+		String alt, FileEntry fileEntry, String height, String type, String url,
 		String width) {
 
 		return JSONUtil.put(
