@@ -155,9 +155,9 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		String[] requireParts = require.split(StringPool.COMMA);
 
 		for (String requirePart : requireParts) {
-			String[] nameAndAlias = _splitNameAlias(requirePart);
+			String[] nameAndAlias = _getNameAndAlias(requirePart);
 
-			AMDRequire amdRequire;
+			AMDRequire amdRequire = null;
 
 			if (nameAndAlias[1] == null) {
 				amdRequire = new AMDRequire(nameAndAlias[0]);
@@ -172,7 +172,7 @@ public class ScriptData implements Mergeable<ScriptData>, Serializable {
 		return amdRequires;
 	}
 
-	private String[] _splitNameAlias(String requirePart) {
+	private String[] _getNameAndAlias(String requirePart) {
 		requirePart = requirePart.trim();
 
 		String[] parts = _whitespacePattern.split(requirePart, 4);
