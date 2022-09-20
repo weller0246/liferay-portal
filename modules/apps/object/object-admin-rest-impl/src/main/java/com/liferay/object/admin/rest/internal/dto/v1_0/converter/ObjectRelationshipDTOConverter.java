@@ -55,8 +55,9 @@ public class ObjectRelationshipDTOConverter
 			_objectDefinitionLocalService.getObjectDefinition(
 				serviceBuilderObjectRelationship.getObjectDefinitionId2());
 
-		ObjectRelationship objectRelationship = new ObjectRelationship() {
+		return new ObjectRelationship() {
 			{
+				actions = dtoConverterContext.getActions();
 				deletionType = ObjectRelationship.DeletionType.create(
 					serviceBuilderObjectRelationship.getDeletionType());
 				id = serviceBuilderObjectRelationship.getObjectRelationshipId();
@@ -78,10 +79,6 @@ public class ObjectRelationshipDTOConverter
 					serviceBuilderObjectRelationship.getType());
 			}
 		};
-
-		objectRelationship.setActions(dtoConverterContext.getActions());
-
-		return objectRelationship;
 	}
 
 	@Reference
