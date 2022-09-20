@@ -30,6 +30,9 @@
 		<finder name="UserId" return-type="Collection">
 			<finder-column name="userId" />
 		</finder>
+		<finder name="LtAccessTokenExpirationDate" return-type="Collection">
+			<finder-column comparator="&lt;" name="accessTokenExpirationDate" />
+		</finder>
 		<finder name="C_A_C" return-type="Collection">
 			<finder-column name="companyId" />
 			<finder-column name="authServerWellKnownURI" />
