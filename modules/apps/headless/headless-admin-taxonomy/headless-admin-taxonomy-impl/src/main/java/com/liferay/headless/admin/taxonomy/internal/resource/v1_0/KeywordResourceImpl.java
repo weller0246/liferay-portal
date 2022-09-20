@@ -81,7 +81,7 @@ public class KeywordResourceImpl extends BaseKeywordResourceImpl {
 			Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return _getKeywordPage(
+		return _getKeywordsPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -161,7 +161,7 @@ public class KeywordResourceImpl extends BaseKeywordResourceImpl {
 			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return _getKeywordPage(
+		return _getKeywordsPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -245,7 +245,7 @@ public class KeywordResourceImpl extends BaseKeywordResourceImpl {
 		return AssetTagsPermission.RESOURCE_NAME;
 	}
 
-	private Page<Keyword> _getKeywordPage(
+	private Page<Keyword> _getKeywordsPage(
 			Map<String, Map<String, String>> actions, Long groupId,
 			String search, Aggregation aggregation, Filter filter,
 			Pagination pagination, Sort[] sorts)

@@ -129,7 +129,7 @@ public class TaxonomyVocabularyResourceImpl
 			Filter filter, Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return _getTaxonomyVocabularyPage(
+		return _getTaxonomyVocabulariesPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -183,7 +183,7 @@ public class TaxonomyVocabularyResourceImpl
 			Pagination pagination, Sort[] sorts)
 		throws Exception {
 
-		return _getTaxonomyVocabularyPage(
+		return _getTaxonomyVocabulariesPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -644,7 +644,7 @@ public class TaxonomyVocabularyResourceImpl
 		return assetVocabularySettingsHelper.toString();
 	}
 
-	private Page<TaxonomyVocabulary> _getTaxonomyVocabularyPage(
+	private Page<TaxonomyVocabulary> _getTaxonomyVocabulariesPage(
 			Map<String, Map<String, String>> actions, Long groupId,
 			String search, Aggregation aggregation, Filter filter,
 			Pagination pagination, Sort[] sorts)

@@ -135,7 +135,7 @@ public class StructuredContentFolderResourceImpl
 				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 		}
 
-		return _getFoldersPage(
+		return _getStructuredContentFoldersPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -203,7 +203,7 @@ public class StructuredContentFolderResourceImpl
 				JournalFolderConstants.DEFAULT_PARENT_FOLDER_ID;
 		}
 
-		return _getFoldersPage(
+		return _getStructuredContentFoldersPage(
 			HashMapBuilder.put(
 				"create",
 				addAction(
@@ -254,7 +254,7 @@ public class StructuredContentFolderResourceImpl
 		JournalFolder journalFolder = _journalFolderService.getFolder(
 			parentStructuredContentFolderId);
 
-		return _getFoldersPage(
+		return _getStructuredContentFoldersPage(
 			HashMapBuilder.put(
 				"add-subfolder",
 				addAction(
@@ -456,7 +456,7 @@ public class StructuredContentFolderResourceImpl
 			contextAcceptLanguage.getPreferredLocale());
 	}
 
-	private Page<StructuredContentFolder> _getFoldersPage(
+	private Page<StructuredContentFolder> _getStructuredContentFoldersPage(
 			Map<String, Map<String, String>> actions,
 			Long parentStructuredContentFolderId, Long siteId, String keywords,
 			Aggregation aggregation, Filter filter, Pagination pagination,
