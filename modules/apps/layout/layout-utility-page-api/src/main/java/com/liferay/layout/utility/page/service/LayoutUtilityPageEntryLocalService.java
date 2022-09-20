@@ -87,7 +87,7 @@ public interface LayoutUtilityPageEntryLocalService
 
 	public LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long userId, long groupId, long plid,
-			String name, int type, ServiceContext serviceContext)
+			String name, int type)
 		throws PortalException;
 
 	/**

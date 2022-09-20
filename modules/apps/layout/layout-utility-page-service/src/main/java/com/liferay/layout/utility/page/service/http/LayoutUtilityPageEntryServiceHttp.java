@@ -53,8 +53,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 	public static com.liferay.layout.utility.page.model.LayoutUtilityPageEntry
 			addLayoutUtilityPageEntry(
 				HttpPrincipal httpPrincipal, String externalReferenceCode,
-				long groupId, long plid, String name, int type,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+				long groupId, long plid, String name, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -64,8 +63,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 				_addLayoutUtilityPageEntryParameterTypes0);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, externalReferenceCode, groupId, plid, name, type,
-				serviceContext);
+				methodKey, externalReferenceCode, groupId, plid, name, type);
 
 			Object returnObj = null;
 
@@ -412,8 +410,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 	public static com.liferay.layout.utility.page.model.LayoutUtilityPageEntry
 			updateLayoutUtilityPageEntry(
 				HttpPrincipal httpPrincipal, long layoutUtilityPageEntryId,
-				long plid, String name, int type,
-				com.liferay.portal.kernel.service.ServiceContext serviceContext)
+				long plid, String name, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		try {
@@ -423,8 +420,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 				_updateLayoutUtilityPageEntryParameterTypes9);
 
 			MethodHandler methodHandler = new MethodHandler(
-				methodKey, layoutUtilityPageEntryId, plid, name, type,
-				serviceContext);
+				methodKey, layoutUtilityPageEntryId, plid, name, type);
 
 			Object returnObj = null;
 
@@ -460,8 +456,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 
 	private static final Class<?>[] _addLayoutUtilityPageEntryParameterTypes0 =
 		new Class[] {
-			String.class, long.class, long.class, String.class, int.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			String.class, long.class, long.class, String.class, int.class
 		};
 	private static final Class<?>[]
 		_deleteLayoutUtilityPageEntryParameterTypes1 = new Class[] {long.class};
@@ -493,8 +488,7 @@ public class LayoutUtilityPageEntryServiceHttp {
 		};
 	private static final Class<?>[]
 		_updateLayoutUtilityPageEntryParameterTypes9 = new Class[] {
-			long.class, long.class, String.class, int.class,
-			com.liferay.portal.kernel.service.ServiceContext.class
+			long.class, long.class, String.class, int.class
 		};
 
 }

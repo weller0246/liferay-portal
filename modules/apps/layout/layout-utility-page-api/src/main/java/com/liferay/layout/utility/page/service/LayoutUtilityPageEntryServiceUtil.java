@@ -41,12 +41,11 @@ public class LayoutUtilityPageEntryServiceUtil {
 	 */
 	public static LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long groupId, long plid, String name,
-			int type,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			int type)
 		throws PortalException {
 
 		return getService().addLayoutUtilityPageEntry(
-			externalReferenceCode, groupId, plid, name, type, serviceContext);
+			externalReferenceCode, groupId, plid, name, type);
 	}
 
 	public static LayoutUtilityPageEntry deleteLayoutUtilityPageEntry(
@@ -115,12 +114,11 @@ public class LayoutUtilityPageEntryServiceUtil {
 	}
 
 	public static LayoutUtilityPageEntry updateLayoutUtilityPageEntry(
-			long layoutUtilityPageEntryId, long plid, String name, int type,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			long layoutUtilityPageEntryId, long plid, String name, int type)
 		throws PortalException {
 
 		return getService().updateLayoutUtilityPageEntry(
-			layoutUtilityPageEntryId, plid, name, type, serviceContext);
+			layoutUtilityPageEntryId, plid, name, type);
 	}
 
 	public static LayoutUtilityPageEntryService getService() {

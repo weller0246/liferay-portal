@@ -63,13 +63,11 @@ public class LayoutUtilityPageEntryLocalServiceUtil {
 
 	public static LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long userId, long groupId, long plid,
-			String name, int type,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			String name, int type)
 		throws PortalException {
 
 		return getService().addLayoutUtilityPageEntry(
-			externalReferenceCode, userId, groupId, plid, name, type,
-			serviceContext);
+			externalReferenceCode, userId, groupId, plid, name, type);
 	}
 
 	/**

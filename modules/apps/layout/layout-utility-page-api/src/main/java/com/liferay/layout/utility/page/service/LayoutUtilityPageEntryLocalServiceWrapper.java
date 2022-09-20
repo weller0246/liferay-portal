@@ -62,13 +62,11 @@ public class LayoutUtilityPageEntryLocalServiceWrapper
 	@Override
 	public LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long userId, long groupId, long plid,
-			String name, int type,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			String name, int type)
 		throws com.liferay.portal.kernel.exception.PortalException {
 
 		return _layoutUtilityPageEntryLocalService.addLayoutUtilityPageEntry(
-			externalReferenceCode, userId, groupId, plid, name, type,
-			serviceContext);
+			externalReferenceCode, userId, groupId, plid, name, type);
 	}
 
 	/**
