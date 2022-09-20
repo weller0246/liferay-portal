@@ -452,11 +452,9 @@ public class ObjectRelationshipLocalServiceTest {
 		Assert.assertEquals(
 			objectRelationship.getDBTableName(),
 			reverseObjectRelationship.getDBTableName());
-
 		Assert.assertEquals(
 			objectRelationship.getDeletionType(),
 			reverseObjectRelationship.getDeletionType());
-
 		Assert.assertEquals(
 			objectRelationship.getType(), reverseObjectRelationship.getType());
 

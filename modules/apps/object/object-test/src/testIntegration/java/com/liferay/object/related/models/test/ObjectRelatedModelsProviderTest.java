@@ -376,13 +376,23 @@ public class ObjectRelatedModelsProviderTest {
 	public void testObjectEntryMtoMObjectRelatedModelsProviderImpl()
 		throws Exception {
 
-		_testSystemObjectEntryMtoMRelatedModelsProviderImpl();
-
 		_testObjectEntryMtoMRelatedModelsProviderImpl(
 			_objectDefinition1, _objectDefinition1);
-
 		_testObjectEntryMtoMRelatedModelsProviderImpl(
 			_objectDefinition1, _objectDefinition2);
+		_testSystemObjectEntryMtoMRelatedModelsProviderImpl();
+	}
+
+	private ObjectRelationship _addObjectRelationship(String relationshipType)
+		throws Exception {
+
+		return _objectRelationshipLocalService.addObjectRelationship(
+			TestPropsValues.getUserId(),
+			_objectDefinition1.getObjectDefinitionId(),
+			_objectDefinition2.getObjectDefinitionId(), 0,
+			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
+			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
+			StringUtil.randomId(), relationshipType);
 	}
 
 	private long[] _addUsers(int count) throws Exception {
@@ -395,19 +405,6 @@ public class ObjectRelatedModelsProviderTest {
 		}
 
 		return userIds;
-	}
-
-	private ObjectRelationship _addObjectRelationship(
-			String relationshipType)
-		throws Exception {
-
-		return _objectRelationshipLocalService.addObjectRelationship(
-			TestPropsValues.getUserId(),
-			_objectDefinition1.getObjectDefinitionId(),
-			_objectDefinition2.getObjectDefinitionId(), 0,
-			ObjectRelationshipConstants.DELETION_TYPE_PREVENT,
-			LocalizedMapUtil.getLocalizedMap(RandomTestUtil.randomString()),
-			StringUtil.randomId(), relationshipType);
 	}
 
 	private void _setUser(User user) {
@@ -935,7 +932,6 @@ public class ObjectRelatedModelsProviderTest {
 			objectRelationship.getObjectRelationshipId(),
 			objectEntry.getObjectEntryId(), userIds[1],
 			ServiceContextTestUtil.getServiceContext());
-
 		_objectRelationshipLocalService.addObjectRelationshipMappingTableValues(
 			TestPropsValues.getUserId(),
 			objectRelationship.getObjectRelationshipId(),
