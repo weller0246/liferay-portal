@@ -43,12 +43,14 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 			while (resultSet.next()) {
 				long openIdConnectSessionId = resultSet.getLong(
 					"openIdConnectSessionId");
-				Timestamp modifiedDate = resultSet.getTimestamp("modifiedDate");
-				String accessTokenJSON = resultSet.getString("accessToken");
 
 				try {
 					_upgradeOpenIdConnectSession(
-						openIdConnectSessionId, modifiedDate, accessTokenJSON);
+						openIdConnectSessionId,
+						resultSet.getTimestamp("modifiedDate"),
+						AccessToken.parse(
+							JSONObjectUtils.parse(
+								resultSet.getString("accessToken"))));
 				}
 				catch (Exception exception) {
 					if (_log.isDebugEnabled()) {
@@ -74,11 +76,8 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 
 	private void _upgradeOpenIdConnectSession(
 			long openIdConnectSessionId, Timestamp modifiedDate,
-			String accessTokenJSON)
+			AccessToken accessToken)
 		throws Exception {
-
-		AccessToken accessToken = AccessToken.parse(
-			JSONObjectUtils.parse(accessTokenJSON));
 
 		long accessTokenLifetime = accessToken.getLifetime() * Time.SECOND;
 
@@ -88,7 +87,7 @@ public class OpenIdConnectSessionUpgradeProcess extends UpgradeProcess {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				"update OpenIdConnectSession set accessTokenExpirationDate = " +
-					"? WHERE openIdConnectSessionId = ?")) {
+					"? where openIdConnectSessionId = ?")) {
 
 			preparedStatement.setTimestamp(
 				1, new Timestamp(modifiedDate.getTime() + accessTokenLifetime));
