@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.servlet.taglib.aui.PortletData;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
 import java.io.CharArrayWriter;
+import java.io.Writer;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,7 +50,7 @@ public class PortletDataRendererImplTest {
 				Arrays.asList(new AMDRequire("frontend-js-web")), null,
 				"content", null));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(Arrays.asList(portletData), writer);
 
@@ -72,7 +73,7 @@ public class PortletDataRendererImplTest {
 				null, Arrays.asList("aui-use-1", "aui-use-2"), "content",
 				null));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(Arrays.asList(portletData), writer);
 
@@ -95,7 +96,7 @@ public class PortletDataRendererImplTest {
 				null, null, "content",
 				Arrays.asList(new ESImport("openDialog", "frontend-js-web"))));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(Arrays.asList(portletData), writer);
 
@@ -122,7 +123,7 @@ public class PortletDataRendererImplTest {
 					new AMDRequire("*Var"), new AMDRequire("/Var")),
 				null, "content", null));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
@@ -144,7 +145,7 @@ public class PortletDataRendererImplTest {
 					new AMDRequire("va*r"), new AMDRequire("var/")),
 				null, "content", null));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
@@ -165,7 +166,7 @@ public class PortletDataRendererImplTest {
 			new JSFragment(
 				Arrays.asList(new AMDRequire("var!")), null, "content", null));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
@@ -212,7 +213,7 @@ public class PortletDataRendererImplTest {
 					new ESImport(
 						"openDialog", "myOpenDialog2", "frontend-js-web"))));
 
-		CharArrayWriter writer = new CharArrayWriter();
+		Writer writer = new CharArrayWriter();
 
 		portletDataRendererImpl.write(
 			Arrays.asList(portletData1, portletData2), writer);
