@@ -54,7 +54,7 @@ public class IconDeactivateTag extends IconTag {
 					TagResourceBundleUtil.getResourceBundle(pageContext),
 					"are-you-sure-you-want-to-deactivate-this"),
 				"', onConfirm: (isConfirmed) => {if (isConfirmed) {", url,
-				" } else { self.focus(); }}});"));
+				" } else {self.focus();}}});"));
 
 		return super.getPage();
 	}

@@ -253,7 +253,7 @@ public class UIItemsBuilder {
 		sb.append(
 			_getSubmitFormJavaScript(Constants.DELETE, portletURL.toString()));
 
-		sb.append(" }}});");
+		sb.append("}}});");
 
 		_addJavaScriptUIItem(
 			new JavaScriptToolbarItem(), toolbarItems, DLUIItemKeys.DELETE,
