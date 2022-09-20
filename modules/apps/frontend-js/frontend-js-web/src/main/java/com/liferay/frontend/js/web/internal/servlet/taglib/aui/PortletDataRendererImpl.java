@@ -57,10 +57,10 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 		// Write ES prologue
 
-		Map<String, Integer> usedVariables = new HashMap<>();
+		Map<String, Integer> usedAliases = new HashMap<>();
 
 		Map<ESImport, ESImport> esImportsMap = _computeESImportsMap(
-			portletDatas, usedVariables);
+			portletDatas, usedAliases);
 
 		if (!esImportsMap.isEmpty()) {
 			for (ESImport esImport : esImportsMap.values()) {
@@ -83,7 +83,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 		// Write AMD prologue
 
 		Map<AMDRequire, AMDRequire> amdRequiresMap = _computeAMDRequiresMap(
-			portletDatas, usedVariables);
+			portletDatas, usedAliases);
 
 		if (!amdRequiresMap.isEmpty()) {
 			writer.write("Liferay.Loader.require(\n");
@@ -151,7 +151,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 	private Map<AMDRequire, AMDRequire> _computeAMDRequiresMap(
 		Collection<PortletData> portletDatas,
-		Map<String, Integer> usedVariables) {
+		Map<String, Integer> usedAliases) {
 
 		Map<AMDRequire, AMDRequire> amdRequiresMap = new HashMap<>();
 
@@ -171,15 +171,15 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 					String alias = amdRequire.getAlias();
 
-					if (usedVariables.containsKey(alias)) {
-						int index = usedVariables.get(alias);
+					if (usedAliases.containsKey(alias)) {
+						int index = usedAliases.get(alias);
 
-						usedVariables.put(alias, index + 1);
+						usedAliases.put(alias, index + 1);
 
 						alias += index;
 					}
 					else {
-						usedVariables.put(alias, 1);
+						usedAliases.put(alias, 1);
 					}
 
 					amdRequiresMap.put(
@@ -208,7 +208,7 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 	private Map<ESImport, ESImport> _computeESImportsMap(
 		Collection<PortletData> portletDatas,
-		Map<String, Integer> usedVariables) {
+		Map<String, Integer> usedAliases) {
 
 		Map<ESImport, ESImport> esImportsMap = new HashMap<>();
 
@@ -227,15 +227,15 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 
 					String alias = esImport.getAlias();
 
-					if (usedVariables.containsKey(alias)) {
-						int index = usedVariables.get(alias);
+					if (usedAliases.containsKey(alias)) {
+						int index = usedAliases.get(alias);
 
-						usedVariables.put(alias, index + 1);
+						usedAliases.put(alias, index + 1);
 
 						alias += index;
 					}
 					else {
-						usedVariables.put(alias, 0);
+						usedAliases.put(alias, 0);
 					}
 
 					esImportsMap.put(
