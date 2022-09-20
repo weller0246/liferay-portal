@@ -2529,13 +2529,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 				JSONUtil.toStringArray(
 					jsonObject.getJSONArray("assetTagNames")));
 
-			JournalArticle existingJournalArticle =
+			JournalArticle journalArticle =
 				_journalArticleLocalService.fetchArticle(
 					serviceContext.getScopeGroupId(),
 					jsonObject.getString("articleId"));
 
-			if (existingJournalArticle == null) {
-				existingJournalArticle = _journalArticleLocalService.addArticle(
+			if (journalArticle == null) {
+				journalArticle = _journalArticleLocalService.addArticle(
 					null, serviceContext.getUserId(),
 					serviceContext.getScopeGroupId(), journalFolderId,
 					JournalArticleConstants.CLASS_NAME_ID_DEFAULT, 0,
@@ -2556,34 +2556,32 @@ public class BundleSiteInitializer implements SiteInitializer {
 					serviceContext);
 			}
 			else {
-				existingJournalArticle =
-					_journalArticleLocalService.updateArticle(
-						serviceContext.getUserId(),
-						serviceContext.getScopeGroupId(), journalFolderId,
-						jsonObject.getString("articleId"),
-						existingJournalArticle.getVersion(), titleMap, null,
-						titleMap,
-						_replace(
-							SiteInitializerUtil.read(
-								_replace(resourcePath, ".json", ".xml"),
-								_servletContext),
-							"[$", "$]", documentsStringUtilReplaceValues),
-						ddmStructureKey, ddmTemplateKey, null,
-						calendar.get(Calendar.MONTH),
-						calendar.get(Calendar.DAY_OF_MONTH),
-						calendar.get(Calendar.YEAR),
-						calendar.get(Calendar.HOUR_OF_DAY),
-						calendar.get(Calendar.MINUTE), 0, 0, 0, 0, 0, true, 0,
-						0, 0, 0, 0, true, true, false, null, null, null, null,
-						serviceContext);
+				journalArticle = _journalArticleLocalService.updateArticle(
+					serviceContext.getUserId(),
+					serviceContext.getScopeGroupId(), journalFolderId,
+					jsonObject.getString("articleId"),
+					journalArticle.getVersion(), titleMap, null, titleMap,
+					_replace(
+						SiteInitializerUtil.read(
+							_replace(resourcePath, ".json", ".xml"),
+							_servletContext),
+						"[$", "$]", documentsStringUtilReplaceValues),
+					ddmStructureKey, ddmTemplateKey, null,
+					calendar.get(Calendar.MONTH),
+					calendar.get(Calendar.DAY_OF_MONTH),
+					calendar.get(Calendar.YEAR),
+					calendar.get(Calendar.HOUR_OF_DAY),
+					calendar.get(Calendar.MINUTE), 0, 0, 0, 0, 0, true, 0, 0, 0,
+					0, 0, true, true, false, null, null, null, null,
+					serviceContext);
 			}
+
+			JournalArticle finalJournalArticle = journalArticle;
 
 			serviceContext.setAssetCategoryIds(null);
 			serviceContext.setAssetTagNames(null);
 
-			JournalArticle journalArticle = existingJournalArticle;
-
-			DDMStructure ddmStructure = journalArticle.getDDMStructure();
+			DDMStructure ddmStructure = finalJournalArticle.getDDMStructure();
 
 			siteNavigationMenuItemSettingsBuilder.put(
 				resourcePath,
@@ -2591,10 +2589,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 					{
 						className = JournalArticle.class.getName();
 						classPK = String.valueOf(
-							journalArticle.getResourcePrimKey());
+							finalJournalArticle.getResourcePrimKey());
 						classTypeId = String.valueOf(
 							ddmStructure.getStructureId());
-						title = journalArticle.getTitle(
+						title = finalJournalArticle.getTitle(
 							serviceContext.getLocale());
 						type = ResourceActionsUtil.getModelResource(
 							serviceContext.getLocale(),
