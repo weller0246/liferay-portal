@@ -169,22 +169,22 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 						continue;
 					}
 
-					String variable = amdRequire.getAlias();
+					String alias = amdRequire.getAlias();
 
-					if (usedVariables.containsKey(variable)) {
-						int index = usedVariables.get(variable);
+					if (usedVariables.containsKey(alias)) {
+						int index = usedVariables.get(alias);
 
-						usedVariables.put(variable, index + 1);
+						usedVariables.put(alias, index + 1);
 
-						variable += index;
+						alias += index;
 					}
 					else {
-						usedVariables.put(variable, 1);
+						usedVariables.put(alias, 1);
 					}
 
 					amdRequiresMap.put(
 						amdRequire,
-						new AMDRequire(amdRequire.getModule(), variable));
+						new AMDRequire(amdRequire.getModule(), alias));
 				}
 			}
 		}
@@ -225,23 +225,23 @@ public class PortletDataRendererImpl implements PortletDataRenderer {
 						continue;
 					}
 
-					String variable = esImport.getAlias();
+					String alias = esImport.getAlias();
 
-					if (usedVariables.containsKey(variable)) {
-						int index = usedVariables.get(variable);
+					if (usedVariables.containsKey(alias)) {
+						int index = usedVariables.get(alias);
 
-						usedVariables.put(variable, index + 1);
+						usedVariables.put(alias, index + 1);
 
-						variable += index;
+						alias += index;
 					}
 					else {
-						usedVariables.put(variable, 0);
+						usedVariables.put(alias, 0);
 					}
 
 					esImportsMap.put(
 						esImport,
 						new ESImport(
-							esImport.getSymbol(), variable,
+							esImport.getSymbol(), alias,
 							esImport.getModule()));
 				}
 			}
