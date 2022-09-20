@@ -50,40 +50,24 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 	@Override
 	public LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long userId, long groupId, long plid,
-			String name, int type, ServiceContext serviceContext)
+			String name, int type)
 		throws PortalException {
+
+		_validateExternalReferenceCode(externalReferenceCode, groupId);
+		_validateLayout(groupId, plid);
+		_validateName(name);
+
+		LayoutUtilityPageEntry layoutUtilityPageEntry =
+			layoutUtilityPageEntryPersistence.create(
+				counterLocalService.increment());
+
+		layoutUtilityPageEntry.setGroupId(groupId);
 
 		User user = _userLocalService.getUser(userId);
 
-		long companyId = user.getCompanyId();
-
-		if (serviceContext != null) {
-			companyId = serviceContext.getCompanyId();
-		}
-		else {
-			serviceContext = new ServiceContext();
-		}
-
-		_validateExternalReferenceCode(externalReferenceCode, groupId);
-
-		_validateName(name);
-
-		_validateLayout(groupId, plid);
-
-		long layoutUtilityPageEntryId = counterLocalService.increment();
-
-		LayoutUtilityPageEntry layoutUtilityPageEntry =
-			layoutUtilityPageEntryPersistence.create(layoutUtilityPageEntryId);
-
-		layoutUtilityPageEntry.setUuid(serviceContext.getUuid());
-		layoutUtilityPageEntry.setGroupId(groupId);
-		layoutUtilityPageEntry.setCompanyId(companyId);
+		layoutUtilityPageEntry.setCompanyId(user.getCompanyId());
 		layoutUtilityPageEntry.setUserId(user.getUserId());
 		layoutUtilityPageEntry.setUserName(user.getFullName());
-		layoutUtilityPageEntry.setCreateDate(
-			serviceContext.getCreateDate(new Date()));
-		layoutUtilityPageEntry.setModifiedDate(
-			serviceContext.getModifiedDate(new Date()));
 
 		layoutUtilityPageEntry.setExternalReferenceCode(externalReferenceCode);
 		layoutUtilityPageEntry.setPlid(plid);

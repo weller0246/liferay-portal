@@ -22,7 +22,6 @@ import com.liferay.portal.aop.AopService;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermission;
 import com.liferay.portal.kernel.security.permission.resource.PortletResourcePermission;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.util.OrderByComparator;
 
 import java.util.List;
@@ -46,7 +45,7 @@ public class LayoutUtilityPageEntryServiceImpl
 	@Override
 	public LayoutUtilityPageEntry addLayoutUtilityPageEntry(
 			String externalReferenceCode, long groupId, long plid, String name,
-			int type, ServiceContext serviceContext)
+			int type)
 		throws PortalException {
 
 		_portletResourcePermission.check(
@@ -54,8 +53,7 @@ public class LayoutUtilityPageEntryServiceImpl
 			LayoutUtilityPageActionKeys.ADD_LAYOUT_UTILITY_PAGE_ENTRY);
 
 		return layoutUtilityPageEntryLocalService.addLayoutUtilityPageEntry(
-			externalReferenceCode, getUserId(), groupId, plid, name, type,
-			serviceContext);
+			externalReferenceCode, getUserId(), groupId, plid, name, type);
 	}
 
 	@Override
@@ -127,12 +125,11 @@ public class LayoutUtilityPageEntryServiceImpl
 
 	@Override
 	public LayoutUtilityPageEntry updateLayoutUtilityPageEntry(
-			long layoutUtilityPageEntryId, long plid, String name, int type,
-			ServiceContext serviceContext)
+			long layoutUtilityPageEntryId, long plid, String name, int type)
 		throws PortalException {
 
 		return layoutUtilityPageEntryLocalService.updateLayoutUtilityPageEntry(
-			layoutUtilityPageEntryId, plid, name, type, serviceContext);
+			layoutUtilityPageEntryId, plid, name, type);
 	}
 
 	@Reference(
