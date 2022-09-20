@@ -125,7 +125,7 @@ public class PortletDataRendererImplTest {
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
 
-		assertVariables(writer.toString(), "_Var", "_Var1", "_Var2", "_Var3");
+		_assertAliases(writer.toString(), "_Var", "_Var1", "_Var2", "_Var3");
 	}
 
 	@Test
@@ -147,7 +147,7 @@ public class PortletDataRendererImplTest {
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
 
-		assertVariables(writer.toString(), "_var", "vAr", "vaR", "var1");
+		_assertAliases(writer.toString(), "_var", "vAr", "vaR", "var1");
 	}
 
 	@Test
@@ -168,7 +168,7 @@ public class PortletDataRendererImplTest {
 		portletDataRendererImpl.write(
 			Collections.singleton(portletData), writer);
 
-		assertVariables(writer.toString(), "_var");
+		_assertAliases(writer.toString(), "_var");
 	}
 
 	@Test
@@ -253,10 +253,9 @@ public class PortletDataRendererImplTest {
 					"})();\n")));
 	}
 
-	protected void assertVariables(String code, String... variables) {
-		for (String variable : variables) {
-			Assert.assertTrue(
-				variable + " was not found", code.contains(variable));
+	private void _assertAliases(String code, String... aliases) {
+		for (String alias : aliases) {
+			Assert.assertTrue(alias + " was not found", code.contains(alias));
 		}
 	}
 
