@@ -218,7 +218,7 @@ public interface OpenIdConnectSessionLocalService
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public List<OpenIdConnectSession>
 		getAccessTokenExpirationDateOpenIdConnectSessions(
-			Date beforeDate, int start, int end);
+			Date ltAccessTokenExpirationDate, int start, int end);
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
 	public ActionableDynamicQuery getActionableDynamicQuery();

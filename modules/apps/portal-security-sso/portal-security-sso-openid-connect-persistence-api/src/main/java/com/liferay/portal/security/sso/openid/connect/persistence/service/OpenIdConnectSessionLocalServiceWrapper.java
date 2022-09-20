@@ -277,11 +277,12 @@ public class OpenIdConnectSessionLocalServiceWrapper
 		<com.liferay.portal.security.sso.openid.connect.persistence.model.
 			OpenIdConnectSession>
 				getAccessTokenExpirationDateOpenIdConnectSessions(
-					java.util.Date beforeDate, int start, int end) {
+					java.util.Date ltAccessTokenExpirationDate, int start,
+					int end) {
 
 		return _openIdConnectSessionLocalService.
 			getAccessTokenExpirationDateOpenIdConnectSessions(
-				beforeDate, start, end);
+				ltAccessTokenExpirationDate, start, end);
 	}
 
 	@Override
