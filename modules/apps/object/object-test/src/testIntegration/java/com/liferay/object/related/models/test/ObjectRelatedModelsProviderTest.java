@@ -148,7 +148,7 @@ public class ObjectRelatedModelsProviderTest {
 	public void testObjectEntry1to1ObjectRelatedModelsProviderImpl()
 		throws Exception {
 
-		ObjectRelationship objectRelationship = _createObjectRelationship(
+		ObjectRelationship objectRelationship = _addObjectRelationship(
 			ObjectRelationshipConstants.TYPE_ONE_TO_ONE);
 
 		ObjectRelatedModelsProvider<ObjectEntry> objectRelatedModelsProvider =
@@ -273,7 +273,7 @@ public class ObjectRelatedModelsProviderTest {
 
 		_testSystemObjectEntry1toMObjectRelatedModels();
 
-		ObjectRelationship objectRelationship = _createObjectRelationship(
+		ObjectRelationship objectRelationship = _addObjectRelationship(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
 		ObjectRelatedModelsProvider<ObjectEntry> objectRelatedModelsProvider =
@@ -385,10 +385,10 @@ public class ObjectRelatedModelsProviderTest {
 			_objectDefinition1, _objectDefinition2);
 	}
 
-	private long[] _addUsers(int numberOfUsers) throws Exception {
-		long[] userIds = new long[numberOfUsers];
+	private long[] _addUsers(int count) throws Exception {
+		long[] userIds = new long[count];
 
-		for (int i = 0; i < numberOfUsers; i++) {
+		for (int i = 0; i < count; i++) {
 			User user = UserTestUtil.addUser();
 
 			userIds[i] = user.getUserId();
@@ -397,7 +397,7 @@ public class ObjectRelatedModelsProviderTest {
 		return userIds;
 	}
 
-	private ObjectRelationship _createObjectRelationship(
+	private ObjectRelationship _addObjectRelationship(
 			String relationshipType)
 		throws Exception {
 
