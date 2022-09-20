@@ -477,12 +477,11 @@ public class LayoutUtilityPageEntryLocalServiceUtil {
 	}
 
 	public static LayoutUtilityPageEntry updateLayoutUtilityPageEntry(
-			long layoutUtilityPageEntryId, long plid, String name, int type,
-			com.liferay.portal.kernel.service.ServiceContext serviceContext)
+			long layoutUtilityPageEntryId, long plid, String name, int type)
 		throws PortalException {
 
 		return getService().updateLayoutUtilityPageEntry(
-			layoutUtilityPageEntryId, plid, name, type, serviceContext);
+			layoutUtilityPageEntryId, plid, name, type);
 	}
 
 	public static LayoutUtilityPageEntryLocalService getService() {
