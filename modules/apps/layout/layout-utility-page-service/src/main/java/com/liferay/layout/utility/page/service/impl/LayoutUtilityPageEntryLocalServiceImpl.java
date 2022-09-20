@@ -195,7 +195,7 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 
 			throw new NoSuchLayoutException(
 				StringBundler.concat(
-					"Layout ", plid, " is not valid for group ", groupId));
+					"Layout ", plid, " is invalid for group ", groupId));
 		}
 	}
 
