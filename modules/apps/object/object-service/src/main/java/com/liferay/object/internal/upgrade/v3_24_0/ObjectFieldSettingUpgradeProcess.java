@@ -52,30 +52,29 @@ public class ObjectFieldSettingUpgradeProcess extends UpgradeProcess {
 				 AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					 connection,
 					 StringBundler.concat(
-						 "insert into ObjectFieldSetting (mvccVersion, uuid_, ",
+						 "insert into ObjectFieldSetting (uuid_, ",
 						 "objectFieldSettingId, companyId, userId, userName, ",
 						 "createDate, modifiedDate, objectFieldId, name, ",
-						 "value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"));
+						 "value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
 			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
 			while (resultSet.next()) {
-				preparedStatement2.setLong(1, 0);
-				preparedStatement2.setString(2, _portalUUID.generate());
-				preparedStatement2.setLong(3, increment());
-				preparedStatement2.setLong(4, resultSet.getLong("companyId"));
-				preparedStatement2.setLong(5, resultSet.getLong("userId"));
+				preparedStatement2.setString(1, _portalUUID.generate());
+				preparedStatement2.setLong(2, increment());
+				preparedStatement2.setLong(3, resultSet.getLong("companyId"));
+				preparedStatement2.setLong(4, resultSet.getLong("userId"));
 				preparedStatement2.setString(
-					6, resultSet.getString("userName"));
+					5, resultSet.getString("userName"));
 
 				Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+				preparedStatement2.setTimestamp(6, timestamp);
 				preparedStatement2.setTimestamp(7, timestamp);
-				preparedStatement2.setTimestamp(8, timestamp);
 
 				preparedStatement2.setLong(
-					9, resultSet.getLong("objectFieldId"));
-				preparedStatement2.setString(10, "ObjectDefinition1ShortName");
+					8, resultSet.getLong("objectFieldId"));
+				preparedStatement2.setString(9, "ObjectDefinition1ShortName");
 
 				String shortName = resultSet.getString("name");
 
@@ -83,7 +82,7 @@ public class ObjectFieldSettingUpgradeProcess extends UpgradeProcess {
 					shortName = shortName.substring(2);
 				}
 
-				preparedStatement2.setString(11, shortName);
+				preparedStatement2.setString(10, shortName);
 
 				preparedStatement2.addBatch();
 			}
