@@ -61,13 +61,9 @@ public class ObjectFieldSettingUpgradeProcess extends UpgradeProcess {
 
 			while (resultSet.next()) {
 				preparedStatement2.setLong(1, 0);
-
 				preparedStatement2.setString(2, _portalUUID.generate());
-
 				preparedStatement2.setLong(3, increment());
-
 				preparedStatement2.setLong(4, resultSet.getLong("companyId"));
-
 				preparedStatement2.setLong(5, resultSet.getLong("userId"));
 				preparedStatement2.setString(
 					6, resultSet.getString("userName"));
@@ -79,7 +75,6 @@ public class ObjectFieldSettingUpgradeProcess extends UpgradeProcess {
 
 				preparedStatement2.setLong(
 					9, resultSet.getLong("objectFieldId"));
-
 				preparedStatement2.setString(10, "ObjectDefinition1ShortName");
 
 				String shortName = resultSet.getString("name");
