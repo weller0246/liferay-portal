@@ -44,20 +44,18 @@ public class ObjectFieldSettingUpgradeProcess extends UpgradeProcess {
 					"ObjectDefinition.name from ObjectField inner join ",
 					"ObjectRelationship on ObjectField.objectFieldId = ",
 					"ObjectRelationship.objectFieldId2 inner join ",
-					"ObjectDefinition on ",
-					"ObjectRelationship.objectDefinitionId1 = ",
-					"ObjectDefinition.objectDefinitionId where ",
+					"ObjectDefinition on ObjectDefinition.objectDefinitionId ",
+					"= ObjectRelationship.objectDefinitionId1 where ",
 					"ObjectField.businessType = 'Relationship'")));
 
 			 PreparedStatement preparedStatement2 =
 				 AutoBatchPreparedStatementUtil.concurrentAutoBatch(
 					 connection,
 					 StringBundler.concat(
-						 "insert into ObjectFieldSetting(mvccVersion, uuid_, ",
+						 "insert into ObjectFieldSetting (mvccVersion, uuid_, ",
 						 "objectFieldSettingId, companyId, userId, userName, ",
 						 "createDate, modifiedDate, objectFieldId, name, ",
-						 "value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ",
-						 "?)"));
+						 "value) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"));
 
 			ResultSet resultSet = preparedStatement1.executeQuery()) {
 
