@@ -207,7 +207,7 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 					highlightedPortletIds, httpServletRequest,
 					currentPortletCategory, themeDisplay);
 
-			JSONArray childPortletCategoryJSONArray = JSONUtil.toJSONArray(
+			JSONArray childPortletCategoriesJSONArray = JSONUtil.toJSONArray(
 				childPortletCategoryJSONObjectsMap.values(),
 				portletCategoryJSONObject -> portletCategoryJSONObject);
 
@@ -215,13 +215,13 @@ public class PortletCategoryManagerImpl implements PortletCategoryManager {
 				highlightedPortletIds, httpServletRequest,
 				currentPortletCategory, themeDisplay);
 
-			if ((childPortletCategoryJSONArray.length() > 0) ||
+			if ((childPortletCategoriesJSONArray.length() > 0) ||
 				(portletsJSONArray.length() > 0)) {
 
 				portletCategoryJSONObjectsMap.put(
 					portletCategoryKey,
 					JSONUtil.put(
-						"categories", childPortletCategoryJSONArray
+						"categories", childPortletCategoriesJSONArray
 					).put(
 						"path", portletCategoryKey
 					).put(
