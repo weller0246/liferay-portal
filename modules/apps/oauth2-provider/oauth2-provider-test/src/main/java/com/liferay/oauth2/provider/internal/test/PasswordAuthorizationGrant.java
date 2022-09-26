@@ -23,17 +23,17 @@ import javax.ws.rs.core.MultivaluedMap;
 public class PasswordAuthorizationGrant implements AuthorizationGrant {
 
 	public PasswordAuthorizationGrant(String userName, String password) {
-		_authorizationGrantData.add("grant_type", "password");
-		_authorizationGrantData.add("password", password);
-		_authorizationGrantData.add("username", userName);
+		_authorizationGrantParameters.add("grant_type", "password");
+		_authorizationGrantParameters.add("password", password);
+		_authorizationGrantParameters.add("username", userName);
 	}
 
 	@Override
 	public MultivaluedMap<String, String> getAuthorizationGrantParameters() {
-		return _authorizationGrantData;
+		return _authorizationGrantParameters;
 	}
 
-	private final MultivaluedMap<String, String> _authorizationGrantData =
+	private final MultivaluedMap<String, String> _authorizationGrantParameters =
 		new MultivaluedHashMap<>();
 
 }

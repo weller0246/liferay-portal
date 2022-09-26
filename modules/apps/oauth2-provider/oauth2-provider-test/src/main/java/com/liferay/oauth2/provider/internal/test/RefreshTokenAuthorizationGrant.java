@@ -23,16 +23,16 @@ import javax.ws.rs.core.MultivaluedMap;
 public class RefreshTokenAuthorizationGrant implements AuthorizationGrant {
 
 	public RefreshTokenAuthorizationGrant(String refreshToken) {
-		_authorizationGrantData.add("grant_type", "refresh_token");
-		_authorizationGrantData.add("refresh_token", refreshToken);
+		_authorizationGrantParameters.add("grant_type", "refresh_token");
+		_authorizationGrantParameters.add("refresh_token", refreshToken);
 	}
 
 	@Override
 	public MultivaluedMap<String, String> getAuthorizationGrantParameters() {
-		return _authorizationGrantData;
+		return _authorizationGrantParameters;
 	}
 
-	private final MultivaluedMap<String, String> _authorizationGrantData =
+	private final MultivaluedMap<String, String> _authorizationGrantParameters =
 		new MultivaluedHashMap<>();
 
 }

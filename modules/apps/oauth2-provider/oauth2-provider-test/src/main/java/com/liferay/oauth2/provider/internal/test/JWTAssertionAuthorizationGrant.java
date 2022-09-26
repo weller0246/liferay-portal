@@ -33,24 +33,24 @@ public class JWTAssertionAuthorizationGrant implements AuthorizationGrant {
 		String issuer, List<String> scopes, String subject,
 		WebTarget audienceWebTarget) {
 
-		_authorizationGrantData.add(
+		_authorizationGrantParameters.add(
 			"assertion",
 			JWTAssertionUtil.getJWTAssertionRS256(
 				audienceWebTarget.getUri(), issuer, JWTAssertionUtil.JWKS,
 				subject));
-		_authorizationGrantData.add("grant_type", Constants.JWT_BEARER_GRANT);
+		_authorizationGrantParameters.add("grant_type", Constants.JWT_BEARER_GRANT);
 
 		if (scopes != null) {
-			_authorizationGrantData.put("scope", scopes);
+			_authorizationGrantParameters.put("scope", scopes);
 		}
 	}
 
 	@Override
 	public MultivaluedMap<String, String> getAuthorizationGrantParameters() {
-		return _authorizationGrantData;
+		return _authorizationGrantParameters;
 	}
 
-	private final MultivaluedMap<String, String> _authorizationGrantData =
+	private final MultivaluedMap<String, String> _authorizationGrantParameters =
 		new MultivaluedHashMap<>();
 
 }
