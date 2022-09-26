@@ -128,8 +128,8 @@ public class CTSettingsConfigurationModelListener
 						)
 					))) {
 
-			if (group.isStaged() || group.isStagingGroup() ||
-				group.hasRemoteStagingGroup()) {
+			if (group.hasRemoteStagingGroup() ||
+				group.isStaged() || group.isStagingGroup()) {
 
 				throw new CTStagingEnabledException();
 			}
