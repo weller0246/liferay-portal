@@ -129,10 +129,8 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "identifierGenerationStrategyFactory",
 			identifierGenerationStrategyFactory);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);
-
 		ReflectionTestUtil.setFieldValue(_webSsoProfileImpl, "portal", portal);
 
 		_webSsoProfileImpl.setSamlBindings(samlBindings);
@@ -140,21 +138,17 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "_samlSpAuthRequestLocalService",
 			_samlSpAuthRequestLocalService);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "samlSpSessionLocalService",
 			_samlSpSessionLocalService);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "_samlSpMessageLocalService",
 			getMockPortletService(
 				SamlSpMessageLocalServiceUtil.class,
 				SamlSpMessageLocalService.class));
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "_samlSpIdpConnectionLocalService",
 			getMockPortletService(
@@ -603,9 +597,10 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 
 		metadataManagerImpl = new MetadataManagerImpl();
 
+		ReflectionTestUtil.invoke(
+			metadataManagerImpl, "activate", new Class<?>[0]);
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
-
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_localEntityManager", credentialResolver);
 
@@ -614,16 +609,11 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_parserPool", parserPool);
-
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_portal", portal);
-
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
-
-		ReflectionTestUtil.invoke(
-			metadataManagerImpl, "activate", new Class<?>[0]);
 
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);

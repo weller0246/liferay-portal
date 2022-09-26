@@ -95,10 +95,8 @@ public class XMLSecurityTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "identifierGenerationStrategyFactory",
 			identifierGenerationStrategyFactory);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);
-
 		ReflectionTestUtil.setFieldValue(_webSsoProfileImpl, "portal", portal);
 
 		_webSsoProfileImpl.setSamlBindings(samlBindings);
@@ -106,15 +104,12 @@ public class XMLSecurityTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "_samlSpAuthRequestLocalService",
 			samlSpAuthRequestLocalService);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "_samlSpIdpConnectionLocalService",
 			samlSpIdpConnectionLocalService);
-
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "samlSpSessionLocalService",
 			samlSpSessionLocalService);

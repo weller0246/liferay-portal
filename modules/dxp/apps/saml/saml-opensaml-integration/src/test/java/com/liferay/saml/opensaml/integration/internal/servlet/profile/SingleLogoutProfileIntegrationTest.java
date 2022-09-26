@@ -94,10 +94,8 @@ public class SingleLogoutProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "identifierGenerationStrategyFactory",
 			identifierGenerationStrategyFactory);
-
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "metadataManager", metadataManagerImpl);
-
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "portal", portal);
 
@@ -106,11 +104,9 @@ public class SingleLogoutProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "_samlPeerBindingLocalService",
 			samlPeerBindingLocalService);
-
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
-
 		ReflectionTestUtil.setFieldValue(
 			_singleLogoutProfileImpl, "samlSpSessionLocalService",
 			_samlSpSessionLocalService);

@@ -627,12 +627,14 @@ public abstract class BaseSamlTestCase {
 					"/credential/dependencies/keystore.jks"
 			).build());
 
+		ReflectionTestUtil.invoke(
+			metadataManagerImpl, "activate", new Class<?>[0]);
+
 		credentialResolver = new KeyStoreCredentialResolver();
 
 		ReflectionTestUtil.setFieldValue(
 			credentialResolver, "_keyStoreManager",
 			fileSystemKeyStoreManagerImpl);
-
 		ReflectionTestUtil.setFieldValue(
 			credentialResolver, "_samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
@@ -641,22 +643,17 @@ public abstract class BaseSamlTestCase {
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
 
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_parserPool", parserPool);
+			metadataManagerImpl, "_localEntityManager", credentialResolver);
 
 		metadataManagerImpl.setMetadataResolver(new MockMetadataResolver());
 
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_samlProviderConfigurationHelper",
-			samlProviderConfigurationHelper);
-
+			metadataManagerImpl, "_parserPool", parserPool);
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_portal", portal);
-
 		ReflectionTestUtil.setFieldValue(
-			metadataManagerImpl, "_localEntityManager", credentialResolver);
-
-		ReflectionTestUtil.invoke(
-			metadataManagerImpl, "activate", new Class<?>[0]);
+			metadataManagerImpl, "_samlProviderConfigurationHelper",
+			samlProviderConfigurationHelper);
 	}
 
 	private void _setupParserPool() {
