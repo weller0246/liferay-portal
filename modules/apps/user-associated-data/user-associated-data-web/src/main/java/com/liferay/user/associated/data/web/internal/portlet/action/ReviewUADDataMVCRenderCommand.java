@@ -285,14 +285,16 @@ public class ReviewUADDataMVCRenderCommand implements MVCRenderCommand {
 			applicationKey, renderRequest, renderResponse, scopeDisplay,
 			(UADDisplay<Object>)uadDisplay, uadHierarchyDisplay, user);
 
-		String uniqueSearchContainerId = StringUtil.replace(
+		String id = StringUtil.replace(
 			applicationKey, CharPool.PERIOD, CharPool.UNDERLINE);
 
-		if (Validator.isNull(uniqueSearchContainerId)) {
-			uniqueSearchContainerId = StringUtil.randomId();
+		if (Validator.isNull(id)) {
+			id = StringUtil.randomId();
 		}
 
-		searchContainer.setId("UADEntities_" + uniqueSearchContainerId);
+		id = "uadEntities_" + id;
+
+		searchContainer.setId(id);
 
 		viewUADEntitiesDisplay.setSearchContainer(searchContainer);
 
