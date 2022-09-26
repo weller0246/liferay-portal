@@ -20,8 +20,6 @@
 long countryId = ParamUtil.getLong(request, "countryId");
 
 Country country = CountryLocalServiceUtil.fetchCountry(countryId);
-
-int titleMaxLength = ModelHintsUtil.getMaxLength(CountryLocalization.class.getName(), "title");
 %>
 
 <portlet:actionURL name="/address/edit_country" var="editCountryURL" />
@@ -38,6 +36,10 @@ int titleMaxLength = ModelHintsUtil.getMaxLength(CountryLocalization.class.getNa
 	<liferay-ui:error exception="<%= CountryNameException.class %>" message="please-enter-a-valid-name" />
 	<liferay-ui:error exception="<%= CountryNumberException.class %>" message="please-enter-a-valid-number" />
 	<liferay-ui:error exception="<%= DuplicateCountryException.class %>" message="the-two-letter-iso-code-is-already-used" />
+
+	<%
+	int titleMaxLength = ModelHintsUtil.getMaxLength(CountryLocalization.class.getName(), "title");
+	%>
 
 	<liferay-ui:error exception="<%= CountryTitleException.MustNotExceedMaximumLength.class %>">
 		<liferay-ui:message arguments="<%= String.valueOf(titleMaxLength) %>" key="please-enter-a-name-with-fewer-than-x-characters" />
