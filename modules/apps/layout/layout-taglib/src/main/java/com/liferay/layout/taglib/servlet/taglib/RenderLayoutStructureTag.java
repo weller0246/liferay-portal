@@ -325,6 +325,7 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				}
 
 				containerTag.setCssClass(containerCSSClassSB.toString());
+
 				containerTag.setFluid(true);
 				containerTag.setPageContext(pageContext);
 
@@ -333,18 +334,18 @@ public class RenderLayoutStructureTag extends IncludeTag {
 				for (int i = 0; i < numberOfRows; i++) {
 					RowTag rowTag = new RowTag();
 
-					StringBundler cssClassSB = new StringBundler(3);
+					StringBundler rowCSSClassSB = new StringBundler(3);
 
-					cssClassSB.append("align-items-");
-					cssClassSB.append(
+					rowCSSClassSB.append("align-items-");
+					rowCSSClassSB.append(
 						collectionStyledLayoutStructureItem.
 							getVerticalAlignment());
 
 					if (!collectionStyledLayoutStructureItem.isGutters()) {
-						cssClassSB.append(" no-gutters");
+						rowCSSClassSB.append(" no-gutters");
 					}
 
-					rowTag.setCssClass(cssClassSB.toString());
+					rowTag.setCssClass(rowCSSClassSB.toString());
 
 					rowTag.setPageContext(pageContext);
 
