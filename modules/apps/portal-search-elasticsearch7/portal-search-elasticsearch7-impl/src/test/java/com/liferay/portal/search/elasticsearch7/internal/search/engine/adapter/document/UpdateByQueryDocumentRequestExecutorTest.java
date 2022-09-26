@@ -85,10 +85,6 @@ public class UpdateByQueryDocumentRequestExecutorTest {
 					new com.liferay.portal.search.elasticsearch7.internal.
 						legacy.query.ElasticsearchQueryTranslatorFixture();
 
-		ElasticsearchQueryTranslatorFixture
-			elasticsearchQueryTranslatorFixture =
-				new ElasticsearchQueryTranslatorFixture();
-
 		ReflectionTestUtil.setFieldValue(
 			updateByQueryDocumentRequestExecutorImpl,
 			"_elasticsearchClientResolver", _elasticsearchFixture);
@@ -96,10 +92,16 @@ public class UpdateByQueryDocumentRequestExecutorTest {
 			updateByQueryDocumentRequestExecutorImpl, "_legacyQueryTranslator",
 			lecacyElasticsearchQueryTranslatorFixture.
 				getElasticsearchQueryTranslator());
+
+		ElasticsearchQueryTranslatorFixture
+			elasticsearchQueryTranslatorFixture =
+				new ElasticsearchQueryTranslatorFixture();
+
 		ReflectionTestUtil.setFieldValue(
 			updateByQueryDocumentRequestExecutorImpl, "_queryTranslator",
 			elasticsearchQueryTranslatorFixture.
 				getElasticsearchQueryTranslator());
+
 		ReflectionTestUtil.setFieldValue(
 			updateByQueryDocumentRequestExecutorImpl, "_scripts", _scripts);
 
