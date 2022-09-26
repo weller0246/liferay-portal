@@ -38,7 +38,8 @@ public class JWTAssertionAuthorizationGrant implements AuthorizationGrant {
 			JWTAssertionUtil.getJWTAssertionRS256(
 				audienceWebTarget.getUri(), issuer, JWTAssertionUtil.JWKS,
 				subject));
-		_authorizationGrantParameters.add("grant_type", Constants.JWT_BEARER_GRANT);
+		_authorizationGrantParameters.add(
+			"grant_type", Constants.JWT_BEARER_GRANT);
 
 		if (scopes != null) {
 			_authorizationGrantParameters.put("scope", scopes);
