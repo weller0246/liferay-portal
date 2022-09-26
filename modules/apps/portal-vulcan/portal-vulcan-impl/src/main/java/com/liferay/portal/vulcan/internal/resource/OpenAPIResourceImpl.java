@@ -170,10 +170,6 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 			_portal.getForwardedHost(httpServletRequest), scheme, uriInfo);
 	}
 
-	private String _getBasePath(UriInfo uriInfo) {
-		return _getBasePath(null, uriInfo);
-	}
-
 	private Set<String> _getDTOClassNames(Set<Class<?>> resourceClasses) {
 		Set<String> classNames = new HashSet<>();
 
@@ -339,7 +335,7 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 			_mergeOpenAPISchemaFilters(
 				openAPISchemaFilter,
 				_getOpenAPISchemaFilter(
-					_getBasePath(uriInfo), _extensionProviderRegistry,
+					_getBasePath(null, uriInfo), _extensionProviderRegistry,
 					resourceClasses));
 
 		if (mergedOpenAPISchemaFilter != null) {
