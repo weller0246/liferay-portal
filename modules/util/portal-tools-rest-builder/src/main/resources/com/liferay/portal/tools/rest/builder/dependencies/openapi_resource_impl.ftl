@@ -57,24 +57,18 @@ public class OpenAPIResourceImpl {
 	@Path("/openapi.{type:json|yaml}")
 	@Produces({MediaType.APPLICATION_JSON, "application/yaml"})
 	public Response getOpenAPI(@PathParam("type") String type) throws Exception {
-
 		Class<? extends OpenAPIResource> clazz = _openAPIResource.getClass();
 
 		try {
-			clazz.getMethod(
-			"getOpenAPI", HttpServletRequest.class, Set.class, String.class,
-			UriInfo.class);
+			clazz.getMethod("getOpenAPI", HttpServletRequest.class, Set.class, String.class, UriInfo.class);
 
-			return _openAPIResource.getOpenAPI(
-			_httpServletRequest, _resourceClasses, type, _uriInfo);
+			return _openAPIResource.getOpenAPI(_httpServletRequest, _resourceClasses, type, _uriInfo);
 		}
 		catch (NoSuchMethodException noSuchMethodException1) {
 			try {
-				clazz.getMethod(
-				"getOpenAPI", Set.class, String.class, UriInfo.class);
+				clazz.getMethod("getOpenAPI", Set.class, String.class, UriInfo.class);
 
-				return _openAPIResource.getOpenAPI(
-				_resourceClasses, type, _uriInfo);
+				return _openAPIResource.getOpenAPI(_resourceClasses, type, _uriInfo);
 			}
 			catch (NoSuchMethodException noSuchMethodException2) {
 				return _openAPIResource.getOpenAPI(_resourceClasses, type);
