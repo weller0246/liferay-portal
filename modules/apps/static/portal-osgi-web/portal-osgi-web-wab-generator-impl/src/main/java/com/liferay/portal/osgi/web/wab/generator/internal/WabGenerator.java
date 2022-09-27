@@ -251,10 +251,6 @@ public class WabGenerator
 
 	private static final Log _log = LogFactoryUtil.getLog(WabGenerator.class);
 
-	/**
-	 * This reference is held to force a dependency on the portal's complete
-	 * startup.
-	 */
 	@Reference(target = ModuleServiceLifecycle.PORTAL_INITIALIZED)
 	private ModuleServiceLifecycle _moduleServiceLifecycle;
 
