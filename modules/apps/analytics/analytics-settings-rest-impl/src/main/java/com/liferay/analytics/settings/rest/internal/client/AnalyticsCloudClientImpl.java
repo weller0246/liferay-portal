@@ -150,7 +150,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 		catch (Exception exception) {
 			_log.error("Unable to decode token", exception);
 
-			throw new PortalException("Unable to decode", exception);
+			throw new PortalException("Unable to decode token", exception);
 		}
 	}
 
