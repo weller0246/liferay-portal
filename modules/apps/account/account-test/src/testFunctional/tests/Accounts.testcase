@@ -2927,6 +2927,40 @@ definition {
 		}
 	}
 
+	@description = "This test asserts accurate results when searching for assigned account groups of an account"
+	@priority = "4"
+	test CanSearchForAccountGroup {
+		task ("Given a business account with assigned account group") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Acme Inc",
+				accountEntryType = "Business");
+
+			JSONAccountGroup.addAccountGroup(accountGroupName = "Account Group Name");
+
+			AccountGroups.openAccountGroupsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Group Name");
+
+			AccountGroups.addAssignee(
+				accountGroupName = "Account Group Name",
+				assigneeNames = "Acme Inc");
+			}
+
+		task ("When a user searches for an account group in the Account Groups tab of an account") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Acme Inc");
+
+			Navigator.gotoNavTab(navTab = "Account Groups");
+
+			Search.searchCP(searchTerm = "Account Group Name");
+		}
+
+		task ("Then the account group displays in the results") {
+			LexiconEntry.viewEntryName(rowEntry = "Account Group Name");
+		}
+	}
+
 	@description = "This test searches for organizations assigned to an account"
 	@priority = "4"
 	test CanSearchForAssignedOrganizations {
