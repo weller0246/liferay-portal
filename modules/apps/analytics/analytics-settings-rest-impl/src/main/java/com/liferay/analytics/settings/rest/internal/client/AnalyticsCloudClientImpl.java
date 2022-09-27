@@ -79,6 +79,8 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				_log.debug("Response code " + response.getResponseCode());
 			}
 
+			// TODO Throw a specific exception
+
 			throw new PortalException("Invalid token");
 		}
 
