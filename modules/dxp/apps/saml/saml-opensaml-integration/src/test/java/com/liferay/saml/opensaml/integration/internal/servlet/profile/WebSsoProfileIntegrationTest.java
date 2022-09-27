@@ -597,8 +597,6 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 
 		metadataManagerImpl = new MetadataManagerImpl();
 
-		ReflectionTestUtil.invoke(
-			metadataManagerImpl, "activate", new Class<?>[0]);
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_credentialResolver", credentialResolver);
 		ReflectionTestUtil.setFieldValue(
@@ -614,6 +612,9 @@ public class WebSsoProfileIntegrationTest extends BaseSamlTestCase {
 		ReflectionTestUtil.setFieldValue(
 			metadataManagerImpl, "_samlProviderConfigurationHelper",
 			samlProviderConfigurationHelper);
+
+		ReflectionTestUtil.invoke(
+			metadataManagerImpl, "activate", new Class<?>[0]);
 
 		ReflectionTestUtil.setFieldValue(
 			_webSsoProfileImpl, "metadataManager", metadataManagerImpl);
