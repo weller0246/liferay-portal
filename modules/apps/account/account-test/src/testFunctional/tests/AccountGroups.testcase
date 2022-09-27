@@ -219,12 +219,6 @@ definition {
 			portlet = "Account Groups");
 
 		AccountGroups.addCP(
-			accountGroupDescription = "This is an Account Group to make search field works.",
-			accountGroupName = "Search AG");
-
-		Navigator.gotoBack();
-
-		AccountGroups.addCP(
 			accountGroupDescription = "This is an Account Group for delete testing.",
 			accountGroupName = "Delete AG");
 
