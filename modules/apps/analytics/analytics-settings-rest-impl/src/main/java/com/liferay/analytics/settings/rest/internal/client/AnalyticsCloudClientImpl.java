@@ -82,7 +82,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 
 			// TODO Throw a specific exception
 
-			throw new PortalException("Invalid token");
+			throw new PortalException("Unable to connect data source");
 		}
 
 		JSONObject contentJSONObject = JSONFactoryUtil.createJSONObject(
@@ -126,7 +126,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				_log.debug("Response code " + response.getResponseCode());
 			}
 
-			throw new PortalException("Unable to disconnect DataSource");
+			throw new PortalException("Unable to disconnect data source");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -134,7 +134,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new PortalException(
-				"Unable to disconnect DataSource", exception);
+				"Unable to disconnect data source", exception);
 		}
 	}
 
@@ -148,9 +148,9 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				new String(Base64.decode(connectionToken)));
 		}
 		catch (Exception exception) {
-			_log.error("Invalid token", exception);
+			_log.error("Unable to decode token", exception);
 
-			throw new PortalException("Invalid token", exception);
+			throw new PortalException("Unable to decode", exception);
 		}
 	}
 
