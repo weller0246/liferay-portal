@@ -2853,6 +2853,45 @@ definition {
 		LexiconEntry.viewEntryName(rowEntry = "userfn2 userln2");
 	}
 
+	@description = "This test asserts accurate results when searching within a filter scope"
+	@priority = "4"
+	test CanSearchForAccountInTheInactiveFilter {
+		task ("Given an active and inactive business account exist") {
+			JSONAccountEntry.addAccountEntry(
+			    accountEntryName = "S Auto Service",
+			    accountEntryType = "Business");
+
+            JSONAccountEntry.addAccountEntry(
+			    accountEntryName = "Acme Inc",
+			    accountEntryStatus = "Inactive",
+			    accountEntryType = "Business");
+		}
+
+		task ("When a user searches for the inactive account in the Inactive filter") {
+			Accounts.openAccountsAdmin();
+
+            ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+			Search.searchCP(searchTerm = "Acme Inc");
+		}
+
+		task ("Then the inactive account displays in the results") {
+			LexiconEntry.viewEntryName(rowEntry = "Acme Inc");
+
+			LexiconEntry.viewNoEntry(rowEntry = "S Auto Service");
+		}
+
+        task ("When a user searches for an active account in the Inactive filter") {
+			Search.searchCP(searchTerm = "S Auto Service");
+		}
+
+		task ("Then the entry does not display in the results") {
+			AssertTextEquals(
+			    locator1 = "Message#EMPTY_INFO",
+			    value1 = "No accounts were found.");
+		}
+	}
+
 	@description = "This test searches for an address in the addresses tab of an account."
 	@priority = "3"
 	test CanSearchForAddressInAddressesTab {
