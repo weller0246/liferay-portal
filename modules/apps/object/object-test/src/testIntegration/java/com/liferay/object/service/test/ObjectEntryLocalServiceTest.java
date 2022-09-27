@@ -1831,7 +1831,6 @@ public class ObjectEntryLocalServiceTest {
 		Map<String, Serializable> values = objectEntry.getValues();
 
 		Assert.assertEquals(_getValuesFromCacheField(objectEntry), values);
-
 		Assert.assertEquals(0L, values.get("ageOfDeath"));
 		Assert.assertFalse((boolean)values.get("authorOfGospel"));
 		Assert.assertEquals(null, values.get("birthday"));
