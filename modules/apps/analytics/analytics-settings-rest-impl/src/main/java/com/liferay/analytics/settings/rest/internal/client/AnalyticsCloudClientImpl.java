@@ -123,10 +123,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Received response code %s",
-						response.getResponseCode()));
+				_log.debug("Response code " + response.getResponseCode());
 			}
 
 			throw new PortalException("Unable to disconnect DataSource");
