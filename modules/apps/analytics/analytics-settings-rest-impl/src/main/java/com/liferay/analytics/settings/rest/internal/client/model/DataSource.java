@@ -21,8 +21,8 @@ import java.util.Date;
  */
 public class DataSource {
 
-	public Date getDateCreated() {
-		return _dateCreated;
+	public Date getCreateDate() {
+		return _createDate;
 	}
 
 	public Long getId() {
@@ -41,7 +41,7 @@ public class DataSource {
 		return _status;
 	}
 
-	public String getUrl() {
+	public String getURL() {
 		return _url;
 	}
 
@@ -49,8 +49,8 @@ public class DataSource {
 		return _workspaceURL;
 	}
 
-	public void setDateCreated(Date dateCreated) {
-		_dateCreated = dateCreated;
+	public void setCreateDate(Date createDate) {
+		_createDate = createDate;
 	}
 
 	public void setId(Long id) {
@@ -69,7 +69,7 @@ public class DataSource {
 		_status = status;
 	}
 
-	public void setUrl(String url) {
+	public void setURL(String url) {
 		_url = url;
 	}
 
@@ -77,7 +77,7 @@ public class DataSource {
 		_workspaceURL = workspaceURL;
 	}
 
-	private Date _dateCreated;
+	private Date _createDate;
 	private Long _id;
 	private String _name;
 	private String _state;
