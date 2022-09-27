@@ -51,7 +51,12 @@ for (Organization organization : organizations) {
 			%>
 
 				<li class="<%= (phone.isPrimary() && !organizationPhones.isEmpty()) ? "icon-star" : StringPool.BLANK %>">
-					<%= HtmlUtil.escape(phone.getNumber()) %> <%= phone.getExtension() %> <liferay-ui:message key="<%= phone.getListType().getName() %>" />
+
+					<%
+					ListType listType = phone.getListType();
+					%>
+
+					<%= HtmlUtil.escape(phone.getNumber()) %> <%= phone.getExtension() %> <liferay-ui:message key="<%= listType.getName() %>" />
 				</li>
 
 			<%

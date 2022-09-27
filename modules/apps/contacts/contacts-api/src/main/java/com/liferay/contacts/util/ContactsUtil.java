@@ -382,11 +382,9 @@ public class ContactsUtil {
 
 		for (Phone phone : phones) {
 			sb.append("TEL;TYPE=");
-
 			sb.append(
 				StringUtil.toUpperCase(
 					_getVCardListTypeName(phone.getListType())));
-
 			sb.append(StringPool.COLON);
 			sb.append(phone.getNumber());
 			sb.append(StringPool.SPACE);
