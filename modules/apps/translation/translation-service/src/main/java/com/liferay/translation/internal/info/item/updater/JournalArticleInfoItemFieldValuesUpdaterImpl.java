@@ -184,14 +184,13 @@ public class JournalArticleInfoItemFieldValuesUpdaterImpl
 
 		ServiceContext serviceContext = _getServiceContext(latestArticle);
 
-		String translatedContent = _journalConverter.getContent(
-			ddmStructure, fields, ddmStructure.getGroupId());
-
 		return _journalArticleLocalService.updateArticle(
 			latestArticle.getUserId(), latestArticle.getGroupId(),
 			latestArticle.getFolderId(), latestArticle.getArticleId(),
 			latestArticle.getVersion(), titleMap, descriptionMap,
-			latestArticle.getFriendlyURLMap(), translatedContent,
+			latestArticle.getFriendlyURLMap(),
+			_journalConverter.getContent(
+				ddmStructure, fields, ddmStructure.getGroupId()),
 			latestArticle.getDDMStructureKey(),
 			latestArticle.getDDMTemplateKey(), latestArticle.getLayoutUuid(),
 			displayDateArray[0], displayDateArray[1], displayDateArray[2],
