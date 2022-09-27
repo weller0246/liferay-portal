@@ -51,18 +51,15 @@ public class SearchResultContentDisplayContextBuilder {
 
 		searchResultContentDisplayContext.setAssetEntry(assetEntry);
 
-		AssetRenderer<?> assetRenderer;
+		AssetRenderer<?> assetRenderer = null;
 
 		if (assetEntry != null) {
 			assetRenderer = assetEntry.getAssetRenderer();
 		}
-		else {
-			assetRenderer = null;
-		}
 
 		searchResultContentDisplayContext.setAssetRenderer(assetRenderer);
 
-		boolean visible;
+		boolean visible = false;
 
 		if ((assetEntry != null) && (assetRenderer != null) &&
 			assetEntry.isVisible() &&
@@ -70,13 +67,10 @@ public class SearchResultContentDisplayContextBuilder {
 
 			visible = true;
 		}
-		else {
-			visible = false;
-		}
 
 		searchResultContentDisplayContext.setVisible(visible);
 
-		if (visible && (assetRenderer != null)) {
+		if (visible) {
 			String title = assetRenderer.getTitle(_locale);
 
 			searchResultContentDisplayContext.setHeaderTitle(title);
