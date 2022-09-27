@@ -52,19 +52,20 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			long companyId, String connectionToken)
 		throws Exception {
 
-		JSONObject jsonObject = _decodeToken(connectionToken);
+		JSONObject connectionTokenJSONObject = _decodeToken(connectionToken);
 
 		Company company = _companyLocalService.getCompany(companyId);
 
 		Http.Options options = new Http.Options();
 
 		String url = HttpComponentsUtil.addParameter(
-			jsonObject.getString("url"), "name", company.getName());
+			connectionTokenJSONObject.getString("url"), "name",
+			company.getName());
 
 		url = HttpComponentsUtil.addParameter(
 			url, "portalURL", company.getPortalURL(0));
 		url = HttpComponentsUtil.addParameter(
-			url, "token", jsonObject.getString("token"));
+			url, "token", connectionTokenJSONObject.getString("token"));
 
 		options.setLocation(url);
 
