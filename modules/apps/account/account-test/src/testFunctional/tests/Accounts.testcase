@@ -2972,6 +2972,44 @@ definition {
 		}
 	}
 
+	@description = "This test asserts accurate results when searching for assigned users of an account"
+	@priority = "4"
+	test CanSearchForUser {
+		task ("Given a business account with assigned users") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Account Name",
+				accountEntryType = "Business");
+
+			for (var accountUser : list "1,2") {
+				JSONUser.addUser(
+					userEmailAddress = "userea${accountUser}@liferay.com",
+					userFirstName = "userfn${accountUser}",
+					userLastName = "userln${accountUser}",
+					userScreenName = "usersn${accountUser}");
+
+				JSONAccountEntryUser.addExistUsertoAccount(
+					accountEntryName = "Account Name",
+					userEmailAddress = "userea${accountUser}@liferay.com");
+			}
+		}
+
+		task ("When a user searches for a user in the Users tab of an account") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Account Name");
+
+			Navigator.gotoNavTab(navTab = "Users");
+
+			Search.searchCP(searchTerm = "usersn1");
+		}
+
+		task ("Then the user displays in the results") {
+			LexiconEntry.viewEntryName(rowEntry = "userfn1 userln1");
+
+			LexiconEntry.viewNoEntry(rowEntry = "userfn2 userln2");
+		}
+	}
+
 	@description = "This test sets default shipping and default billing addresses for an account."
 	@priority = "3"
 	test CanSetDefaultAddresses {
