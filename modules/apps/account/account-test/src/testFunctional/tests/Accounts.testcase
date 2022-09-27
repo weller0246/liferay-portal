@@ -2887,6 +2887,45 @@ definition {
 		}
 	}
 
+	@description = "This test asserts accurate results when searching within a filter scope"
+	@priority = "4"
+	test CanSearchForAccountInTheInactiveFilter {
+		task ("Given an active and inactive business account exist") {
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "S Auto Service",
+				accountEntryType = "Business");
+
+			JSONAccountEntry.addAccountEntry(
+				accountEntryName = "Acme Inc",
+				accountEntryStatus = "Inactive",
+				accountEntryType = "Business");
+		}
+
+		task ("When a user searches for the inactive account in the Inactive filter") {
+			Accounts.openAccountsAdmin();
+
+			ManagementBar.setFilterAndOrder(filterBy = "Inactive");
+
+			Search.searchCP(searchTerm = "Acme Inc");
+		}
+
+		task ("Then the inactive account displays in the results") {
+			LexiconEntry.viewEntryName(rowEntry = "Acme Inc");
+
+			LexiconEntry.viewNoEntry(rowEntry = "S Auto Service");
+		}
+
+		task ("When a user searches for an active account in the Inactive filter") {
+			Search.searchCP(searchTerm = "S Auto Service");
+		}
+
+		task ("Then the entry does not display in the results") {
+			AssertTextEquals(
+				locator1 = "Message#EMPTY_INFO",
+				value1 = "No accounts were found.");
+		}
+	}
+
 	@description = "This test asserts accurate results when searching for account roles available in an account"
 	@priority = "4"
 	test CanSearchForAccountRole {
@@ -2914,45 +2953,6 @@ definition {
 
 		task ("Then the account role displays in the results") {
 			LexiconEntry.viewEntryName(rowEntry = "Account Specific Role");
-		}
-	}
-
-	@description = "This test asserts accurate results when searching within a filter scope"
-	@priority = "4"
-	test CanSearchForAccountInTheInactiveFilter {
-		task ("Given an active and inactive business account exist") {
-			JSONAccountEntry.addAccountEntry(
-			    accountEntryName = "S Auto Service",
-			    accountEntryType = "Business");
-
-            JSONAccountEntry.addAccountEntry(
-			    accountEntryName = "Acme Inc",
-			    accountEntryStatus = "Inactive",
-			    accountEntryType = "Business");
-		}
-
-		task ("When a user searches for the inactive account in the Inactive filter") {
-			Accounts.openAccountsAdmin();
-
-            ManagementBar.setFilterAndOrder(filterBy = "Inactive");
-
-			Search.searchCP(searchTerm = "Acme Inc");
-		}
-
-		task ("Then the inactive account displays in the results") {
-			LexiconEntry.viewEntryName(rowEntry = "Acme Inc");
-
-			LexiconEntry.viewNoEntry(rowEntry = "S Auto Service");
-		}
-
-        task ("When a user searches for an active account in the Inactive filter") {
-			Search.searchCP(searchTerm = "S Auto Service");
-		}
-
-		task ("Then the entry does not display in the results") {
-			AssertTextEquals(
-			    locator1 = "Message#EMPTY_INFO",
-			    value1 = "No accounts were found.");
 		}
 	}
 
@@ -2988,40 +2988,6 @@ definition {
 			Search.searchCP(searchTerm = "${searchTerm}");
 
 			LexiconEntry.viewEntryName(rowEntry = "Liferay Dalian Software Co., Ltd.");
-		}
-	}
-
-	@description = "This test asserts accurate results when searching for assigned account groups of an account"
-	@priority = "4"
-	test CanSearchForAccountGroup {
-		task ("Given a business account with assigned account group") {
-			JSONAccountEntry.addAccountEntry(
-				accountEntryName = "Acme Inc",
-				accountEntryType = "Business");
-
-			JSONAccountGroup.addAccountGroup(accountGroupName = "Account Group Name");
-
-			AccountGroups.openAccountGroupsAdmin();
-
-			LexiconEntry.gotoEntry(rowEntry = "Account Group Name");
-
-			AccountGroups.addAssignee(
-				accountGroupName = "Account Group Name",
-				assigneeNames = "Acme Inc");
-			}
-
-		task ("When a user searches for an account group in the Account Groups tab of an account") {
-			Accounts.openAccountsAdmin();
-
-			LexiconEntry.gotoEntry(rowEntry = "Acme Inc");
-
-			Navigator.gotoNavTab(navTab = "Account Groups");
-
-			Search.searchCP(searchTerm = "Account Group Name");
-		}
-
-		task ("Then the account group displays in the results") {
-			LexiconEntry.viewEntryName(rowEntry = "Account Group Name");
 		}
 	}
 
