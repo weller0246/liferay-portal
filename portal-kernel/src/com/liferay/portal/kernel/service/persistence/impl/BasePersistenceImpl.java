@@ -279,7 +279,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 						sqlQuery.addScalar(
 							scalarDSLQueryAlias.getName(),
-							_typeMap.get(scalarDSLQueryAlias.getJavaType()));
+							_types.get(scalarDSLQueryAlias.getJavaType()));
 					}
 					else {
 						throw new IllegalArgumentException(
@@ -1117,7 +1117,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 
 			Class<?> javaTypeClass = column.getJavaType();
 
-			Type type = _typeMap.get(javaTypeClass);
+			Type type = _types.get(javaTypeClass);
 
 			if (type != null) {
 				return type;
@@ -1198,7 +1198,7 @@ public class BasePersistenceImpl<T extends BaseModel<T>>
 	private static final Log _log = LogFactoryUtil.getLog(
 		BasePersistenceImpl.class);
 
-	private static final Map<Class<?>, Type> _typeMap =
+	private static final Map<Class<?>, Type> _types =
 		HashMapBuilder.<Class<?>, Type>put(
 			BigDecimal.class, Type.BIG_DECIMAL
 		).put(
