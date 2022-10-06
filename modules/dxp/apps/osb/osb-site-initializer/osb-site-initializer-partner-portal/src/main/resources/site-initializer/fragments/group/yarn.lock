@@ -963,19 +963,10 @@
     "@clayui/icon" "^3.56.0"
     classnames "^2.2.6"
 
-"@clayui/charts@3.65.0":
-  version "3.65.0"
-  resolved "https://registry.yarnpkg.com/@clayui/charts/-/charts-3.65.0.tgz#e2f2a90d15faebc40da8e51f91468aa4719bc84e"
-  integrity sha512-gkV3JaTgK6x5hD0vuDDW3Ib4vM1FvKckTpwPh4SiIyvGAa3+aMr4o9Vecv8FLYH4NKX923qY7Vt7KeJLdtgSTQ==
-  dependencies:
-    billboard.js "^1.8.0"
-    classnames "^2.2.6"
-    d3 "^5.9.2"
-
-"@clayui/card@^3.75.2":
-  version "3.75.2"
-  resolved "https://registry.yarnpkg.com/@clayui/card/-/card-3.75.2.tgz#7ae93d008e1090e1e6835a36f6cb107a1a48dfc2"
-  integrity sha512-QYZnsfp2dJ6K4O3nVplwRnuNe3r3HG8hqymvzOiNRkmbiXeABUr7pdyL2XRrt0jzwuaM8aCfjNlYQqyAhwmZjw==
+"@clayui/card@3.74.0":
+  version "3.74.0"
+  resolved "https://registry.yarnpkg.com/@clayui/card/-/card-3.74.0.tgz#caad3b62fd9a02cd9a6217dc6791ba8c939da63a"
+  integrity sha512-jhubHp5T7+GeHI5F9hxTcoSqDJACA6kfx2mT5R0CFfPPAbcupbQSQiqfpDxT0h5GjThi1rSOvflKDTK9xyX4Sw==
   dependencies:
     "@clayui/button" "^3.73.0"
     "@clayui/drop-down" "^3.74.0"
@@ -987,6 +978,15 @@
     "@clayui/shared" "^3.73.0"
     "@clayui/sticker" "^3.65.0"
     classnames "^2.2.6"
+
+"@clayui/charts@3.65.0":
+  version "3.65.0"
+  resolved "https://registry.yarnpkg.com/@clayui/charts/-/charts-3.65.0.tgz#e2f2a90d15faebc40da8e51f91468aa4719bc84e"
+  integrity sha512-gkV3JaTgK6x5hD0vuDDW3Ib4vM1FvKckTpwPh4SiIyvGAa3+aMr4o9Vecv8FLYH4NKX923qY7Vt7KeJLdtgSTQ==
+  dependencies:
+    billboard.js "^1.8.0"
+    classnames "^2.2.6"
+    d3 "^5.9.2"
 
 "@clayui/drop-down@^3.74.0":
   version "3.75.2"

@@ -89,7 +89,7 @@ const ReimbursementInvoice = () => {
 		getDocuments();
 	}, []);
 	const currentDocument = document?.items[0];
-	const URL_INVOICE = `${Liferay.ThemeDisplay.getPortalURL}${currentDocument?.url}`;
+	const URL_INVOICE = `${Liferay.ThemeDisplay.getPortalURL()}${currentDocument?.url}`;
 
 	return (
 		<ClayCard>
@@ -102,7 +102,7 @@ const ReimbursementInvoice = () => {
 					<a
 						className="text-decoration-none"
 						download
-						href={URL_INVOICE}
+						href={currentDocument ? URL_INVOICE : ''}
 					>
 							<div className="d-flex document-pdf mt-3">
 								<ClayIcon
