@@ -9,12 +9,13 @@
  */
 
 import ClayCard from '@clayui/card';
-import ClayIcon, {ClayIconSpriteContext} from '@clayui/icon';
+import ClayIcon from '@clayui/icon';
 import ClayPanel from '@clayui/panel';
 import ClayTable from '@clayui/table';
 import React, {useEffect, useState} from 'react';
 
-const MDF_CLAIM_ID = 45395;
+const currentPath = Liferay.currentURL.split('/')
+const mdfClaimId = +currentPath[currentPath.length -1];
 
 const getIntlNumberFormat = () =>
 	new Intl.NumberFormat(Liferay.ThemeDisplay.getBCP47LanguageId(), {
@@ -57,19 +58,14 @@ const getIconSpriteMap = () => {
 
 	return spritemap;
 };
-const ClayIconProvider = ({children}) => (
-	<ClayIconSpriteContext.Provider value={getIconSpriteMap()}>
-		{children}
-	</ClayIconSpriteContext.Provider>
-);
 
-const Reinburse = () => {
+const ReimbursementInvoice = () => {
 	const [document, setDocument] = useState();
 	useEffect(() => {
 		const getDocuments = async () => {
 			// eslint-disable-next-line @liferay/portal/no-global-fetch
 			const response = await fetch(
-				`/o/c/mdfclaims/${MDF_CLAIM_ID}/mdfClaimToMdfClaimDocuments`,
+				`/o/c/mdfclaims/${mdfClaimId}/mdfClaimToMdfClaimDocuments`,
 				{
 					headers: {
 						'accept': 'application/json',
@@ -77,20 +73,23 @@ const Reinburse = () => {
 					},
 				}
 			);
+			
 			if (response.ok) {
 				setDocument(await response.json());
 
 				return;
 			}
+			
 			Liferay.Util.openToast({
 				message: 'An unexpected error occured.',
 				type: 'danger',
 			});
 		};
+
 		getDocuments();
 	}, []);
-
-	const URL_INVOICE = `${window.origin}${document?.items[0]?.url}`;
+	const currentDocument = document?.items[0];
+	const URL_INVOICE = `${Liferay.ThemeDisplay.getPortalURL}${currentDocument?.url}`;
 
 	return (
 		<ClayCard>
@@ -105,24 +104,23 @@ const Reinburse = () => {
 						download
 						href={URL_INVOICE}
 					>
-						<ClayIconProvider>
 							<div className="d-flex document-pdf mt-3">
 								<ClayIcon
 									className="mr-2 mt-3 text-neutral-5"
+									spritemap={getIconSpriteMap()}
 									symbol="document-pdf"
 								/>
 
 								<div>
 									<h5 className="mb-0 text-neutral-9">
-										{document?.items[0]?.fileName}
+										{currentDocument?.fileName}
 									</h5>
 
 									<p className="mb-0 text-neutral-9">
-										Size:{document?.items[0]?.fileSize}
+										Size:{currentDocument?.fileSize}
 									</p>
 								</div>
 							</div>
-						</ClayIconProvider>
 					</a>
 				</ClayCard.Description>
 			</ClayCard.Body>
@@ -147,7 +145,7 @@ const Table = ({items, title}) => (
 		</ClayTable.Head>
 
 		<ClayTable.Body>
-			{items.map((item, index) => (
+			{items?.map((item, index) => (
 				<ClayTable.Row key={index}>
 					<ClayTable.Cell className="border-0 w-50">
 						<p className="text-neutral-10">{item.title}</p>
@@ -166,7 +164,7 @@ const BudgetBreakdownTable = ({activityId}) => {
 	const [budgets, setBudgets] = useState();
 
 	useEffect(() => {
-		const getActivityToBudgets = async () => {
+		const getBudgets = async () => {
 			// eslint-disable-next-line @liferay/portal/no-global-fetch
 			const response = await fetch(
 				`/o/c/mdfclaimactivities/${activityId}/mdfClaimActivityToMdfClaimBudgets`,
@@ -191,12 +189,12 @@ const BudgetBreakdownTable = ({activityId}) => {
 		};
 
 		if (activityId) {
-			getActivityToBudgets();
+			getBudgets();
 		}
 	}, [activityId]);
 
 	return (
-		<div>
+		<>
 			{budgets && (
 				<Table
 					items={budgets.items.map((budget) => ({
@@ -206,19 +204,18 @@ const BudgetBreakdownTable = ({activityId}) => {
 					title="Budget Breakdown"
 				/>
 			)}
-		</div>
+		</>
 	);
 };
 
 export default function () {
 	const [activities, setActivities] = useState();
-	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const getActivities = async () => {
 			// eslint-disable-next-line @liferay/portal/no-global-fetch
 			const response = await fetch(
-				`/o/c/mdfclaims/${MDF_CLAIM_ID}/mdfClaimToMdfClaimActivities`,
+				`/o/c/mdfclaims/${mdfClaimId}/mdfClaimToMdfClaimActivities`,
 				{
 					headers: {
 						'accept': 'application/json',
@@ -229,8 +226,6 @@ export default function () {
 
 			if (response.ok) {
 				setActivities(await response.json());
-
-				setLoading(false);
 
 				return;
 			}
@@ -244,13 +239,13 @@ export default function () {
 		getActivities();
 	}, []);
 
-	if (loading) {
+	if (!activities) {
 		return <>Loading</>;
 	}
 
 	return (
 		<div>
-			<Reinburse />
+			<ReimbursementInvoice />
 
 			{activities?.items.map((activity, index) => (
 				<Panel activity={activity} key={index}>
