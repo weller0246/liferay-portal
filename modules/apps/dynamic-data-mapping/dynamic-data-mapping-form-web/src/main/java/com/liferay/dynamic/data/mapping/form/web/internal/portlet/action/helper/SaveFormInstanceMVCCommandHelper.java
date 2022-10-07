@@ -81,7 +81,7 @@ import org.osgi.service.component.annotations.Reference;
 /**
  * @author Marcellus Tavares
  */
-@Component(immediate = true, service = SaveFormInstanceMVCCommandHelper.class)
+@Component(service = SaveFormInstanceMVCCommandHelper.class)
 public class SaveFormInstanceMVCCommandHelper {
 
 	public Map<Locale, String> getNameMap(
