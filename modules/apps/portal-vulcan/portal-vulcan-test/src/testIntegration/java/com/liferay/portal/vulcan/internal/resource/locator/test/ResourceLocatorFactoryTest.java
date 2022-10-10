@@ -63,7 +63,6 @@ public class ResourceLocatorFactoryTest {
 		try {
 			HttpServletRequest httpServletRequest =
 				ProxyFactory.newDummyInstance(HttpServletRequest.class);
-
 			User user = ProxyFactory.newDummyInstance(User.class);
 
 			ResourceLocator resourceLocator = _resourceLocatorFactory.create(
