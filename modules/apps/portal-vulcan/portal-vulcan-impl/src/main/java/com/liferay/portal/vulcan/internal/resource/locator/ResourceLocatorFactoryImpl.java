@@ -115,13 +115,12 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 								createMethod.getReturnType();
 
 							return new Builder(
-								resourceFactoryImpl, createMethod,
-								builderClass.getMethod("build"),
+								createMethod, builderClass.getMethod("build"),
 								builderClass.getMethod(
 									"httpServletRequest",
 									HttpServletRequest.class),
-								builderClass.getMethod(
-									"user", User.class));
+								resourceFactoryImpl,
+								builderClass.getMethod("user", User.class));
 						}
 						catch (NoSuchMethodException noSuchMethodException) {
 							_log.error(noSuchMethodException);
@@ -183,26 +182,26 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 		}
 
 		private Builder(
-			Object resourceFactoryImpl, Method createMethod, Method buildMethod,
-			Method httpServletRequestMethod, Method userMethod) {
-
-			_resourceFactoryImpl = resourceFactoryImpl;
+			Method createMethod, Method buildMethod,
+			Method httpServletRequestMethod, Object resourceFactoryImpl,
+			Method userMethod) {
 
 			_createMethod = createMethod;
 			_buildMethod = buildMethod;
 			_httpServletRequestMethod = httpServletRequestMethod;
+			_resourceFactoryImpl = resourceFactoryImpl;
 			_userMethod = userMethod;
 
-			_createMethod.setAccessible(true);
-			_buildMethod.setAccessible(true);
-			_httpServletRequestMethod.setAccessible(true);
-			_userMethod.setAccessible(true);
+			createMethod.setAccessible(true);
+			buildMethod.setAccessible(true);
+			httpServletRequestMethod.setAccessible(true);
+			userMethod.setAccessible(true);
 		}
 
 		private final Method _buildMethod;
 		private final Method _createMethod;
-		private final Object _resourceFactoryImpl;
 		private final Method _httpServletRequestMethod;
+		private final Object _resourceFactoryImpl;
 		private final Method _userMethod;
 
 	}
