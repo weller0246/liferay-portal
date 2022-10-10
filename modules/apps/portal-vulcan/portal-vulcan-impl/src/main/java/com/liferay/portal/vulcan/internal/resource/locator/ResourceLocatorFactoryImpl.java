@@ -101,26 +101,26 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 					public Builder addingService(
 						ServiceReference<Object> serviceReference) {
 
-						Object factoryImpl = _bundleContext.getService(
+						Object resourceFactoryImpl = _bundleContext.getService(
 							serviceReference);
 
 						Class<?> resourceFactoryImplClass =
-							factoryImpl.getClass();
+							resourceFactoryImpl.getClass();
 
 						try {
 							Method createMethod =
 								resourceFactoryImplClass.getMethod("create");
 
-							Class<?> resourceBuilderInterface =
+							Class<?> builderClass =
 								createMethod.getReturnType();
 
 							return new Builder(
-								factoryImpl, createMethod,
-								resourceBuilderInterface.getMethod("build"),
-								resourceBuilderInterface.getMethod(
+								resourceFactoryImpl, createMethod,
+								builderClass.getMethod("build"),
+								builderClass.getMethod(
 									"httpServletRequest",
 									HttpServletRequest.class),
-								resourceBuilderInterface.getMethod(
+								builderClass.getMethod(
 									"user", User.class));
 						}
 						catch (NoSuchMethodException noSuchMethodException) {
@@ -162,7 +162,7 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 
 		public Object build(HttpServletRequest httpServletRequest, User user) {
 			try {
-				Object builder = _createMethod.invoke(_factoryImpl);
+				Object builder = _createMethod.invoke(_resourceFactoryImpl);
 
 				if (httpServletRequest != null) {
 					_httpServletRequestMethod.invoke(
@@ -183,10 +183,10 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 		}
 
 		private Builder(
-			Object factoryImpl, Method createMethod, Method buildMethod,
+			Object resourceFactoryImpl, Method createMethod, Method buildMethod,
 			Method httpServletRequestMethod, Method userMethod) {
 
-			_factoryImpl = factoryImpl;
+			_resourceFactoryImpl = resourceFactoryImpl;
 
 			_createMethod = createMethod;
 			_buildMethod = buildMethod;
@@ -201,7 +201,7 @@ public class ResourceLocatorFactoryImpl implements ResourceLocatorFactory {
 
 		private final Method _buildMethod;
 		private final Method _createMethod;
-		private final Object _factoryImpl;
+		private final Object _resourceFactoryImpl;
 		private final Method _httpServletRequestMethod;
 		private final Method _userMethod;
 
