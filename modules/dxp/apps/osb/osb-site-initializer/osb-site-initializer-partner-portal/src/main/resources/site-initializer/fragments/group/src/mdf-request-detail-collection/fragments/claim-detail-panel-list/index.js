@@ -61,6 +61,7 @@ const getIconSpriteMap = () => {
 
 const ReimbursementInvoice = () => {
 	const [document, setDocument] = useState();
+	
 	useEffect(() => {
 		const getDocuments = async () => {
 			// eslint-disable-next-line @liferay/portal/no-global-fetch
@@ -88,8 +89,9 @@ const ReimbursementInvoice = () => {
 
 		getDocuments();
 	}, []);
+	
 	const currentDocument = document?.items[0];
-	const URL_INVOICE = `${Liferay.ThemeDisplay.getPortalURL()}${currentDocument?.url}`;
+	const urlInvoice = `${Liferay.ThemeDisplay.getPortalURL()}${currentDocument?.url}`;
 
 	return (
 		<ClayCard>
@@ -102,7 +104,7 @@ const ReimbursementInvoice = () => {
 					<a
 						className="text-decoration-none"
 						download
-						href={currentDocument ? URL_INVOICE : ''}
+						href={currentDocument ? urlInvoice : ''}
 					>
 							<div className="d-flex document-pdf mt-3">
 								<ClayIcon
