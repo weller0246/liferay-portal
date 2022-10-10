@@ -39,9 +39,9 @@ String commerceRegionCode = BeanParamUtil.getString(commerceInventoryWarehouse, 
 <aui:form action="<%= editCommerceInventoryWarehouseActionURL %>" cssClass="pt-4" method="post" name="fm">
 	<aui:input name="<%= Constants.CMD %>" type="hidden" value="<%= (commerceInventoryWarehouse == null) ? Constants.ADD : Constants.UPDATE %>" />
 	<aui:input name="redirect" type="hidden" value="<%= currentURL %>" />
+	<aui:input name="mvccVersion" type="hidden" value="<%= commerceInventoryWarehouse.getMvccVersion() %>" />
 	<aui:input name="externalReferenceCode" type="hidden" value="<%= commerceInventoryWarehouse.getExternalReferenceCode() %>" />
 	<aui:input name="commerceInventoryWarehouseId" type="hidden" value="<%= commerceInventoryWarehouse.getCommerceInventoryWarehouseId() %>" />
-	<aui:input name="mvccVersion" type="hidden" value="<%= commerceInventoryWarehouse.getMvccVersion() %>" />
 
 	<aui:model-context bean="<%= commerceInventoryWarehouse %>" model="<%= CommerceInventoryWarehouse.class %>" />
 
