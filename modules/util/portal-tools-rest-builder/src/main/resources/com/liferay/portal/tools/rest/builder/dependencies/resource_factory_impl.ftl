@@ -50,7 +50,7 @@ import org.osgi.service.component.annotations.ReferenceScope;
  * @author ${configYAML.author}
  * @generated
  */
-@Component(<#if configYAML.liferayEnterpriseApp>enabled = false,</#if> immediate = true, service = ${schemaName}Resource.Factory.class,property="resource.locator.key=${configYAML.application.baseURI}/${openAPIYAML.info.version}/${schemaName}")
+@Component(<#if configYAML.liferayEnterpriseApp>enabled = false,</#if> immediate = true, property="resource.locator.key=${configYAML.application.baseURI}/${openAPIYAML.info.version}/${schemaName}", service = ${schemaName}Resource.Factory.class)
 @Generated("")
 public class ${schemaName}ResourceFactoryImpl implements ${schemaName}Resource.Factory {
 
