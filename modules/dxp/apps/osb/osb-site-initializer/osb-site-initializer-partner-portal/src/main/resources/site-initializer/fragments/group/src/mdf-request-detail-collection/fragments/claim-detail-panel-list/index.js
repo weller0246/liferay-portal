@@ -14,8 +14,8 @@ import ClayPanel from '@clayui/panel';
 import ClayTable from '@clayui/table';
 import React, {useEffect, useState} from 'react';
 
-const currentPath = Liferay.currentURL.split('/')
-const mdfClaimId = +currentPath[currentPath.length -1];
+const currentPath = Liferay.currentURL.split('/');
+const mdfClaimId = +currentPath[currentPath.length - 1];
 
 const getIntlNumberFormat = () =>
 	new Intl.NumberFormat(Liferay.ThemeDisplay.getBCP47LanguageId(), {
@@ -61,7 +61,7 @@ const getIconSpriteMap = () => {
 
 const ReimbursementInvoice = () => {
 	const [document, setDocument] = useState();
-	
+
 	useEffect(() => {
 		const getDocuments = async () => {
 			// eslint-disable-next-line @liferay/portal/no-global-fetch
@@ -74,13 +74,13 @@ const ReimbursementInvoice = () => {
 					},
 				}
 			);
-			
+
 			if (response.ok) {
 				setDocument(await response.json());
 
 				return;
 			}
-			
+
 			Liferay.Util.openToast({
 				message: 'An unexpected error occured.',
 				type: 'danger',
@@ -89,9 +89,11 @@ const ReimbursementInvoice = () => {
 
 		getDocuments();
 	}, []);
-	
+
 	const currentDocument = document?.items[0];
-	const urlInvoice = `${Liferay.ThemeDisplay.getPortalURL()}${currentDocument?.url}`;
+	const urlInvoice = `${Liferay.ThemeDisplay.getPortalURL()}${
+		currentDocument?.url
+	}`;
 
 	return (
 		<ClayCard>
@@ -106,23 +108,23 @@ const ReimbursementInvoice = () => {
 						download
 						href={currentDocument ? urlInvoice : ''}
 					>
-							<div className="d-flex document-pdf mt-3">
-								<ClayIcon
-									className="mr-2 mt-3 text-neutral-5"
-									spritemap={getIconSpriteMap()}
-									symbol="document-pdf"
-								/>
+						<div className="d-flex document-pdf mt-3">
+							<ClayIcon
+								className="mr-2 mt-3 text-neutral-5"
+								spritemap={getIconSpriteMap()}
+								symbol="document-pdf"
+							/>
 
-								<div>
-									<h5 className="mb-0 text-neutral-9">
-										{currentDocument?.fileName}
-									</h5>
+							<div>
+								<h5 className="mb-0 text-neutral-9">
+									{currentDocument?.fileName}
+								</h5>
 
-									<p className="mb-0 text-neutral-9">
-										Size:{currentDocument?.fileSize}
-									</p>
-								</div>
+								<p className="mb-0 text-neutral-9">
+									Size:{currentDocument?.fileSize}
+								</p>
 							</div>
+						</div>
 					</a>
 				</ClayCard.Description>
 			</ClayCard.Body>
