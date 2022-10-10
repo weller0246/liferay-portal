@@ -438,6 +438,12 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
 
+		Mockito.when(
+			renderRequest.getAttribute(WebKeys.THEME_DISPLAY)
+		).thenReturn(
+			_themeDisplay
+		);
+
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				new SearchBarPortletDisplayContextFactory(
@@ -450,6 +456,12 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			destination);
 		portletPreferences.setValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE, scope);
+
+		Mockito.when(
+			_searchBarPortletInstanceConfiguration.destination()
+		).thenReturn(
+			destination
+		);
 
 		if (scopeParameterName != null) {
 			portletPreferences.setValue(
@@ -469,12 +481,6 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			renderRequest.getPreferences()
 		).thenReturn(
 			portletPreferences
-		);
-
-		Mockito.when(
-			renderRequest.getAttribute(WebKeys.THEME_DISPLAY)
-		).thenReturn(
-			_themeDisplay
 		);
 
 		PortletSharedSearchResponse portletSharedSearchResponse = Mockito.mock(
@@ -561,7 +567,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			Mockito.when(
 				_portletDisplay.getPortletInstanceConfiguration(Mockito.any())
 			).thenReturn(
-				Mockito.mock(SearchBarPortletInstanceConfiguration.class)
+				_searchBarPortletInstanceConfiguration
 			);
 		}
 		catch (Exception exception) {
@@ -615,6 +621,9 @@ public class SearchBarPortletDisplayContextFactoryTest {
 		Mockito.mock(PortletPreferencesLookup.class);
 	private final PortletSharedSearchRequest _portletSharedSearchRequest =
 		Mockito.mock(PortletSharedSearchRequest.class);
+	private final SearchBarPortletInstanceConfiguration
+		_searchBarPortletInstanceConfiguration = Mockito.mock(
+			SearchBarPortletInstanceConfiguration.class);
 	private final SearchBarPrecedenceHelper _searchBarPrecedenceHelper =
 		Mockito.mock(SearchBarPrecedenceHelper.class);
 	private final SearchSuggestionsCompanyConfiguration
