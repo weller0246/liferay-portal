@@ -26,8 +26,6 @@ PortletURL portletCommerceInventoryWarehouseURL = cIWarehouseQualifiersDisplayCo
 long commerceInventoryWarehouseId = cIWarehouseQualifiersDisplayContext.getCommerceInventoryWarehouseId();
 
 String channelQualifiers = ParamUtil.getString(request, "channelQualifiers", cIWarehouseQualifiersDisplayContext.getActiveChannelEligibility());
-
-boolean hasPermission = cIWarehouseQualifiersDisplayContext.hasPermission(ActionKeys.UPDATE);
 %>
 
 <portlet:actionURL name="/commerce_inventory_warehouse/edit_commerce_inventory_warehouse_qualifiers" var="editCommerceInventoryWarehouseQualifiersActionURL" />
