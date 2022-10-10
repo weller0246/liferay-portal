@@ -194,7 +194,10 @@ public class MBMessageIndexerIndexedFieldsTest {
 			"assetEntryId_sortable", String.valueOf(_getAssetEntryId(mbMessage))
 		).put(
 			"childMessagesCount",
-			String.valueOf(_getChildMessagesCount(mbMessage))
+			String.valueOf(
+				_mbMessageLocalService.getChildMessagesCount(
+					mbMessage.getMessageId(),
+					WorkflowConstants.STATUS_APPROVED))
 		).put(
 			"discussion", "false"
 		).put(
@@ -236,11 +239,6 @@ public class MBMessageIndexerIndexedFieldsTest {
 		}
 
 		return assetEntry.getEntryId();
-	}
-
-	private long _getChildMessagesCount(MBMessage mbMessage) {
-		return _mbMessageLocalService.getChildMessagesCount(
-			mbMessage.getMessageId(), WorkflowConstants.STATUS_APPROVED);
 	}
 
 	private void _populateDates(MBMessage mbMessage, Map<String, String> map) {
