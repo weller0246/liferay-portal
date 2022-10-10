@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.resource;
+package com.liferay.portal.vulcan.internal.resource.locator;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMap;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerMapFactory;
@@ -20,8 +20,8 @@ import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.User;
-import com.liferay.portal.vulcan.resource.ResourceLocator;
-import com.liferay.portal.vulcan.resource.ResourceLocatorFactory;
+import com.liferay.portal.vulcan.resource.locator.ResourceLocator;
+import com.liferay.portal.vulcan.resource.locator.ResourceLocatorFactory;
 
 import java.lang.reflect.Method;
 

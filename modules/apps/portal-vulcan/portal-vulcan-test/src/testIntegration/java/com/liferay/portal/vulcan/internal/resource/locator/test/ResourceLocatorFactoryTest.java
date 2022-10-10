@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.internal.resource.test;
+package com.liferay.portal.vulcan.internal.resource.locator.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.portal.kernel.model.User;
@@ -20,8 +20,8 @@ import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.ProxyFactory;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-import com.liferay.portal.vulcan.resource.ResourceLocator;
-import com.liferay.portal.vulcan.resource.ResourceLocatorFactory;
+import com.liferay.portal.vulcan.resource.locator.ResourceLocator;
+import com.liferay.portal.vulcan.resource.locator.ResourceLocatorFactory;
 
 import javax.servlet.http.HttpServletRequest;
 

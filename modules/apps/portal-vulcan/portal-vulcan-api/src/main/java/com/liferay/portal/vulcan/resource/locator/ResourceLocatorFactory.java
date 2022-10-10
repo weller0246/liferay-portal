@@ -12,13 +12,18 @@
  * details.
  */
 
-package com.liferay.portal.vulcan.resource;
+package com.liferay.portal.vulcan.resource.locator;
+
+import com.liferay.portal.kernel.model.User;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author Shuyang Zhou
  */
-public interface ResourceLocator {
+public interface ResourceLocatorFactory {
 
-	public Object locate(String restContextPath, String resourceName);
+	public ResourceLocator create(
+		HttpServletRequest httpServletRequest, User user);
 
 }
