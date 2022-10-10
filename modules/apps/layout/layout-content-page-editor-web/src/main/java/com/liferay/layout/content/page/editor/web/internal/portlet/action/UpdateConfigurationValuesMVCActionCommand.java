@@ -127,8 +127,6 @@ public class UpdateConfigurationValuesMVCActionCommand
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		long segmentsExperienceId = ParamUtil.getLong(
-			actionRequest, "segmentsExperienceId");
 		long fragmentEntryLinkId = ParamUtil.getLong(
 			actionRequest, "fragmentEntryLinkId");
 
@@ -187,7 +185,8 @@ public class UpdateConfigurationValuesMVCActionCommand
 			ContentUtil.getPageContentsJSONArray(
 				_portal.getHttpServletRequest(actionRequest),
 				_portal.getHttpServletResponse(actionResponse),
-				themeDisplay.getPlid(), segmentsExperienceId)
+				themeDisplay.getPlid(),
+				ParamUtil.getLong(actionRequest, "segmentsExperienceId"))
 		);
 	}
 
