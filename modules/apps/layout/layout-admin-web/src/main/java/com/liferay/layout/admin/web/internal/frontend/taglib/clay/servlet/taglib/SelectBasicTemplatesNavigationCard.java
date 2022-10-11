@@ -16,19 +16,17 @@ package com.liferay.layout.admin.web.internal.frontend.taglib.clay.servlet.tagli
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.NavigationCard;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
 import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.util.LayoutTypeControllerTracker;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -63,18 +61,14 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 
 	@Override
 	public Map<String, String> getDynamicAttributes() {
-		Map<String, String> data = new HashMap<>();
-
-		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
-
-		data.put(
+		return HashMapBuilder.put(
 			"data-add-layout-url",
 			PortletURLBuilder.createRenderURL(
 				_renderResponse
 			).setMVCRenderCommandName(
 				"/layout_admin/add_layout"
 			).setBackURL(
-				redirect
+				ParamUtil.getString(_httpServletRequest, "redirect")
 			).setParameter(
 				"privateLayout",
 				ParamUtil.getBoolean(_httpServletRequest, "privateLayout")
@@ -84,11 +78,12 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 				"type", _type
 			).setWindowState(
 				LiferayWindowState.POP_UP
-			).buildString());
-		data.put("role", "button");
-		data.put("tabIndex", "0");
-
-		return data;
+			).buildString()
+		).put(
+			"role", "button"
+		).put(
+			"tabIndex", "0"
+		).build();
 	}
 
 	@Override
@@ -111,9 +106,6 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 	public Boolean isSmall() {
 		return true;
 	}
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SelectBasicTemplatesNavigationCard.class);
 
 	private final HttpServletRequest _httpServletRequest;
 	private final LayoutTypeController _layoutTypeController;
