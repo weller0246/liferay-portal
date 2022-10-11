@@ -36,8 +36,8 @@ import com.liferay.object.service.ObjectEntryLocalService;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.web.internal.info.item.ObjectEntryInfoItemFields;
 import com.liferay.object.web.internal.util.ObjectFieldDBTypeUtil;
+import com.liferay.petra.reflect.ReflectionUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
@@ -99,7 +99,7 @@ public class ObjectEntryInfoItemFieldValuesProvider
 	public InfoItemFieldValues getInfoItemFieldValues(ObjectEntry objectEntry) {
 		return InfoItemFieldValues.builder(
 		).infoFieldValues(
-			_getObjectEntryInfoFieldValues(objectEntry)
+			_getInfoFieldValues(objectEntry)
 		).infoFieldValues(
 			_infoItemFieldReaderFieldSetProvider.getInfoFieldValues(
 				ObjectEntry.class.getName(), objectEntry)
@@ -114,154 +114,154 @@ public class ObjectEntryInfoItemFieldValuesProvider
 
 	private String _getDisplayPageURL(
 			ObjectEntry objectEntry, ThemeDisplay themeDisplay)
-		throws PortalException {
+		throws Exception {
 
 		return _assetDisplayPageFriendlyURLProvider.getFriendlyURL(
 			objectEntry.getModelClassName(), objectEntry.getObjectEntryId(),
 			themeDisplay);
 	}
 
-	private List<InfoFieldValue<Object>> _getObjectEntryInfoFieldValues(
+	private List<InfoFieldValue<Object>> _getInfoFieldValues(
 		ObjectEntry objectEntry) {
 
 		try {
-			if (!_objectDefinition.isDefaultStorageType()) {
-				return _getObjectEntryInfoFieldValuesByObjectEntryManager(
-					objectEntry);
+			if (_objectDefinition.isDefaultStorageType()) {
+				return _getInfoFieldValuesByDefaultStorageType(objectEntry);
 			}
 
-			List<InfoFieldValue<Object>> objectEntryFieldValues =
-				new ArrayList<>();
-
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.createDateInfoField,
-					objectEntry.getCreateDate()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.modifiedDateInfoField,
-					objectEntry.getModifiedDate()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.publishDateInfoField,
-					objectEntry.getLastPublishDate()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.userNameInfoField,
-					objectEntry.getUserName()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.userProfileImageInfoField,
-					_getWebImage(objectEntry.getUserId())));
-
-			ThemeDisplay themeDisplay = _getThemeDisplay();
-
-			if (themeDisplay != null) {
-				objectEntryFieldValues.add(
-					new InfoFieldValue<>(
-						ObjectEntryInfoItemFields.displayPageURLInfoField,
-						_getDisplayPageURL(objectEntry, themeDisplay)));
-			}
-
-			Map<String, Serializable> values = objectEntry.getValues();
-
-			objectEntryFieldValues.addAll(
-				TransformUtil.transform(
-					_objectFieldLocalService.getObjectFields(
-						objectEntry.getObjectDefinitionId()),
-					objectField -> new InfoFieldValue<>(
-						InfoField.builder(
-						).infoFieldType(
-							ObjectFieldDBTypeUtil.getInfoFieldType(objectField)
-						).namespace(
-							ObjectField.class.getSimpleName()
-						).name(
-							objectField.getName()
-						).labelInfoLocalizedValue(
-							InfoLocalizedValue.<String>builder(
-							).values(
-								objectField.getLabelMap()
-							).build()
-						).build(),
-						_getValue(objectField, values))));
-
-			return objectEntryFieldValues;
+			return _getInfoFieldValuesByObjectEntryManager(objectEntry);
 		}
-		catch (PortalException portalException) {
-			throw new RuntimeException(portalException);
+		catch (Exception exception) {
+			return ReflectionUtil.throwException(exception);
 		}
 	}
 
 	private List<InfoFieldValue<Object>>
-		_getObjectEntryInfoFieldValuesByObjectEntryManager(
-			ObjectEntry serviceBuilderObjectEntry) {
+			_getInfoFieldValuesByDefaultStorageType(ObjectEntry objectEntry)
+		throws Exception {
 
-		try {
-			ThemeDisplay themeDisplay = _getThemeDisplay();
+		List<InfoFieldValue<Object>> objectEntryFieldValues = new ArrayList<>();
 
-			ObjectEntryManager objectEntryManager =
-				_objectEntryManagerTracker.getObjectEntryManager(
-					_objectDefinition.getStorageType());
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.createDateInfoField,
+				objectEntry.getCreateDate()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.modifiedDateInfoField,
+				objectEntry.getModifiedDate()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.publishDateInfoField,
+				objectEntry.getLastPublishDate()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.userNameInfoField,
+				objectEntry.getUserName()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.userProfileImageInfoField,
+				_getWebImage(objectEntry.getUserId())));
 
-			com.liferay.object.rest.dto.v1_0.ObjectEntry objectEntry =
-				objectEntryManager.getObjectEntry(
-					new DefaultDTOConverterContext(
-						false, null, null, null, null, themeDisplay.getLocale(),
-						null, themeDisplay.getUser()),
-					serviceBuilderObjectEntry.getExternalReferenceCode(),
-					themeDisplay.getCompanyId(), _objectDefinition, null);
+		ThemeDisplay themeDisplay = _getThemeDisplay();
 
-			List<InfoFieldValue<Object>> objectEntryFieldValues =
-				new ArrayList<>();
-
+		if (themeDisplay != null) {
 			objectEntryFieldValues.add(
 				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.createDateInfoField,
-					objectEntry.getDateCreated()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.modifiedDateInfoField,
-					objectEntry.getDateModified()));
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.publishDateInfoField,
-					objectEntry.getDateModified()));
-
-			if (themeDisplay != null) {
-				objectEntryFieldValues.add(
-					new InfoFieldValue<>(
-						ObjectEntryInfoItemFields.displayPageURLInfoField,
-						_getDisplayPageURL(
-							serviceBuilderObjectEntry, themeDisplay)));
-			}
-
-			Map<String, Object> properties = objectEntry.getProperties();
-
-			objectEntryFieldValues.addAll(
-				TransformUtil.transform(
-					_objectFieldLocalService.getObjectFields(
-						serviceBuilderObjectEntry.getObjectDefinitionId()),
-					objectField -> new InfoFieldValue<>(
-						InfoField.builder(
-						).infoFieldType(
-							ObjectFieldDBTypeUtil.getInfoFieldType(objectField)
-						).namespace(
-							ObjectField.class.getSimpleName()
-						).name(
-							objectField.getName()
-						).labelInfoLocalizedValue(
-							InfoLocalizedValue.<String>builder(
-							).values(
-								objectField.getLabelMap()
-							).build()
-						).build(),
-						_getValue(objectField, properties))));
-
-			return objectEntryFieldValues;
+					ObjectEntryInfoItemFields.displayPageURLInfoField,
+					_getDisplayPageURL(objectEntry, themeDisplay)));
 		}
-		catch (Exception exception) {
-			throw new RuntimeException(exception);
+
+		Map<String, Serializable> values = objectEntry.getValues();
+
+		objectEntryFieldValues.addAll(
+			TransformUtil.transform(
+				_objectFieldLocalService.getObjectFields(
+					objectEntry.getObjectDefinitionId()),
+				objectField -> new InfoFieldValue<>(
+					InfoField.builder(
+					).infoFieldType(
+						ObjectFieldDBTypeUtil.getInfoFieldType(objectField)
+					).namespace(
+						ObjectField.class.getSimpleName()
+					).name(
+						objectField.getName()
+					).labelInfoLocalizedValue(
+						InfoLocalizedValue.<String>builder(
+						).values(
+							objectField.getLabelMap()
+						).build()
+					).build(),
+					_getValue(objectField, values))));
+
+		return objectEntryFieldValues;
+	}
+
+	private List<InfoFieldValue<Object>>
+			_getInfoFieldValuesByObjectEntryManager(
+				ObjectEntry serviceBuilderObjectEntry)
+		throws Exception {
+
+		ThemeDisplay themeDisplay = _getThemeDisplay();
+
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerTracker.getObjectEntryManager(
+				_objectDefinition.getStorageType());
+
+		com.liferay.object.rest.dto.v1_0.ObjectEntry objectEntry =
+			objectEntryManager.getObjectEntry(
+				new DefaultDTOConverterContext(
+					false, null, null, null, null, themeDisplay.getLocale(),
+					null, themeDisplay.getUser()),
+				serviceBuilderObjectEntry.getExternalReferenceCode(),
+				themeDisplay.getCompanyId(), _objectDefinition, null);
+
+		List<InfoFieldValue<Object>> objectEntryFieldValues = new ArrayList<>();
+
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.createDateInfoField,
+				objectEntry.getDateCreated()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.modifiedDateInfoField,
+				objectEntry.getDateModified()));
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.publishDateInfoField,
+				objectEntry.getDateModified()));
+
+		if (themeDisplay != null) {
+			objectEntryFieldValues.add(
+				new InfoFieldValue<>(
+					ObjectEntryInfoItemFields.displayPageURLInfoField,
+					_getDisplayPageURL(
+						serviceBuilderObjectEntry, themeDisplay)));
 		}
+
+		Map<String, Object> properties = objectEntry.getProperties();
+
+		objectEntryFieldValues.addAll(
+			TransformUtil.transform(
+				_objectFieldLocalService.getObjectFields(
+					serviceBuilderObjectEntry.getObjectDefinitionId()),
+				objectField -> new InfoFieldValue<>(
+					InfoField.builder(
+					).infoFieldType(
+						ObjectFieldDBTypeUtil.getInfoFieldType(objectField)
+					).namespace(
+						ObjectField.class.getSimpleName()
+					).name(
+						objectField.getName()
+					).labelInfoLocalizedValue(
+						InfoLocalizedValue.<String>builder(
+						).values(
+							objectField.getLabelMap()
+						).build()
+					).build(),
+					_getValue(objectField, properties))));
+
+		return objectEntryFieldValues;
 	}
 
 	private ThemeDisplay _getThemeDisplay() {
@@ -340,7 +340,7 @@ public class ObjectEntryInfoItemFieldValuesProvider
 		return values.get(objectField.getName());
 	}
 
-	private WebImage _getWebImage(long userId) throws PortalException {
+	private WebImage _getWebImage(long userId) throws Exception {
 		User user = _userLocalService.fetchUser(userId);
 
 		if (user == null) {
