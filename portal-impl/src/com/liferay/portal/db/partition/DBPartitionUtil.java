@@ -775,8 +775,7 @@ public class DBPartitionUtil {
 	private static final Log _log = LogFactoryUtil.getLog(
 		DBPartitionUtil.class);
 
-	private static final CopyOnWriteArrayList<Long> _companyIds =
-		new CopyOnWriteArrayList<>();
+	private static final List<Long> _companyIds = new CopyOnWriteArrayList<>();
 	private static final Set<String> _controlTableNames = new HashSet<>(
 		Arrays.asList("company", "virtualhost"));
 	private static volatile long _defaultCompanyId;
