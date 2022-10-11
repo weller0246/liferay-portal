@@ -42,13 +42,11 @@ public class UserGroupModelDocumentContributor
 		document.addText(Field.DESCRIPTION, userGroup.getDescription());
 		document.addText(Field.NAME, userGroup.getName());
 		document.addKeyword(Field.USER_GROUP_ID, userGroup.getUserGroupId());
-		document.addKeyword("userIds", _getUserGroupUserIds(userGroup));
-	}
-
-	private long[] _getUserGroupUserIds(UserGroup userGroup) {
-		return ListUtil.toLongArray(
-			_userLocalService.getUserGroupUsers(userGroup.getUserGroupId()),
-			User::getUserId);
+		document.addKeyword(
+			"userIds",
+			ListUtil.toLongArray(
+				_userLocalService.getUserGroupUsers(userGroup.getUserGroupId()),
+				User::getUserId));
 	}
 
 	@Reference

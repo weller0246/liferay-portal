@@ -40,12 +40,6 @@ public class UserGroupModelPreFilterContributor
 		BooleanFilter booleanFilter, ModelSearchSettings modelSearchSettings,
 		SearchContext searchContext) {
 
-		_filterByUserId(booleanFilter, searchContext);
-	}
-
-	private void _filterByUserId(
-		BooleanFilter booleanFilter, SearchContext searchContext) {
-
 		long[] userIds = (long[])searchContext.getAttribute("userIds");
 
 		if (ArrayUtil.isNotEmpty(userIds)) {
