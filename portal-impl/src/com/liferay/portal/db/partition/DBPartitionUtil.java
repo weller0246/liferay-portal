@@ -94,7 +94,7 @@ public class DBPartitionUtil {
 				while (resultSet.next()) {
 					String tableName = resultSet.getString("TABLE_NAME");
 
-					if (_isObjectsTable(tableName)) {
+					if (_isObjectTable(tableName)) {
 						continue;
 					}
 
@@ -538,7 +538,7 @@ public class DBPartitionUtil {
 			DBInspector dbInspector, String tableName)
 		throws Exception {
 
-		if (!_isObjectsTable(tableName) &&
+		if (!_isObjectTable(tableName) &&
 			(_controlTableNames.contains(StringUtil.toLowerCase(tableName)) ||
 			 !dbInspector.hasColumn(tableName, "companyId"))) {
 
@@ -548,7 +548,7 @@ public class DBPartitionUtil {
 		return false;
 	}
 
-	private static boolean _isObjectsTable(String tableName)
+	private static boolean _isObjectTable(String tableName)
 		throws SQLException {
 
 		for (long companyId : _getCompanyIds()) {

@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.util.PortalInstances;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.junit.After;
@@ -213,8 +214,7 @@ public class DBPartitionTest extends BaseDBPartitionTestCase {
 			_companyIds.add(CompanyThreadLocal.getCompanyId());
 		}
 
-		private volatile CopyOnWriteArrayList<Long> _companyIds =
-			new CopyOnWriteArrayList<>();
+		private volatile List<Long> _companyIds = new CopyOnWriteArrayList<>();
 
 	}
 
