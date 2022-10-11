@@ -116,6 +116,8 @@ const ExperienceSelector = ({
 		}
 	}, 100);
 
+	const experienceSelectorContentId = useId();
+
 	const handleDropdownButtonClick = () => debouncedSetOpen(!open);
 	const handleDropdownButtonBlur = () => debouncedSetOpen(false);
 	const handleDropdownBlur = () => debouncedSetOpen(false);
@@ -351,6 +353,9 @@ const ExperienceSelector = ({
 	return (
 		<>
 			<ClayButton
+				aria-controls={experienceSelectorContentId}
+				aria-expanded={open}
+				aria-haspopup="true"
 				className="form-control-select pr-4 text-left text-truncate"
 				disabled={!canUpdateExperiences}
 				displayType="secondary"
@@ -380,6 +385,7 @@ const ExperienceSelector = ({
 				<ReactPortal className="cadmin">
 					<div
 						className="dropdown-menu p-4 page-editor__toolbar-experience__dropdown-menu toggled"
+						id={experienceSelectorContentId}
 						onBlur={handleDropdownBlur}
 						onFocus={handleDropdownFocus}
 						style={{
