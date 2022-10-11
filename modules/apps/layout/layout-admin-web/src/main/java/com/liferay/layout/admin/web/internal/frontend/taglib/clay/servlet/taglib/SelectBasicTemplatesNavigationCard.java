@@ -16,19 +16,13 @@ package com.liferay.layout.admin.web.internal.frontend.taglib.clay.servlet.tagli
 
 import com.liferay.frontend.taglib.clay.servlet.taglib.NavigationCard;
 import com.liferay.portal.kernel.language.LanguageUtil;
-import com.liferay.portal.kernel.model.LayoutTypeController;
 import com.liferay.portal.kernel.portlet.LiferayWindowState;
 import com.liferay.portal.kernel.portlet.url.builder.PortletURLBuilder;
-import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.HashMapBuilder;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
-import com.liferay.portal.kernel.util.WebKeys;
-import com.liferay.portal.util.LayoutTypeControllerTracker;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
@@ -47,11 +41,7 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 		_type = type;
 		_renderResponse = renderResponse;
 
-		_layoutTypeController =
-			LayoutTypeControllerTracker.getLayoutTypeController(type);
 		_httpServletRequest = PortalUtil.getHttpServletRequest(renderRequest);
-		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
 	}
 
 	@Override
@@ -93,13 +83,7 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 
 	@Override
 	public String getTitle() {
-		ResourceBundle layoutTypeResourceBundle = ResourceBundleUtil.getBundle(
-			"content.Language", _themeDisplay.getLocale(),
-			_layoutTypeController.getClass());
-
-		return LanguageUtil.get(
-			_httpServletRequest, layoutTypeResourceBundle,
-			"layout.types." + _type);
+		return LanguageUtil.get(_httpServletRequest, "layout.types." + _type);
 	}
 
 	@Override
@@ -108,9 +92,7 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 	}
 
 	private final HttpServletRequest _httpServletRequest;
-	private final LayoutTypeController _layoutTypeController;
 	private final RenderResponse _renderResponse;
-	private final ThemeDisplay _themeDisplay;
 	private final String _type;
 
 }
