@@ -3472,9 +3472,9 @@ public class JenkinsResultsParserUtil {
 			String jobName, JenkinsMaster jenkinsMaster)
 		throws IOException {
 
-		JenkinsCohort jenkinsCohort = jenkinsMaster.getJenkinsCohort();
-
 		List<JenkinsMaster> availableJenkinsMasters = new ArrayList<>();
+
+		JenkinsCohort jenkinsCohort = jenkinsMaster.getJenkinsCohort();
 
 		for (JenkinsMaster availableJenkinsMaster :
 				jenkinsCohort.getJenkinsMasters()) {
