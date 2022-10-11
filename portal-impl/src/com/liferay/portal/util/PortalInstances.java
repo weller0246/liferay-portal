@@ -226,7 +226,8 @@ public class PortalInstances {
 			}
 			catch (SQLException sqlException) {
 				_log.error(
-					"Unable to get the default companyId by SQL", sqlException);
+					"Unable to get the default company ID by SQL",
+					sqlException);
 
 				throw new RuntimeException(sqlException);
 			}
