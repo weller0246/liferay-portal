@@ -55,7 +55,7 @@ public class AMImageValidatorImplTest {
 	}
 
 	@Test
-	public void testIsProcessingRequiredFalseWhenFileVersionNotValid() {
+	public void testIsProcessingRequiredWhenFileVersionNotValid() {
 		Mockito.when(
 			_amImageEntryLocalService.hasAMImageEntryContent(
 				Mockito.anyString(), Mockito.any(FileVersion.class))
