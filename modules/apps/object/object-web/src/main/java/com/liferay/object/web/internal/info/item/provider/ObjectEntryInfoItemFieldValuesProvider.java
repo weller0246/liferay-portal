@@ -209,6 +209,8 @@ public class ObjectEntryInfoItemFieldValuesProvider
 			return Collections.emptyList();
 		}
 
+		List<InfoFieldValue<Object>> objectEntryFieldValues = new ArrayList<>();
+
 		ObjectEntryManager objectEntryManager =
 			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
@@ -220,8 +222,6 @@ public class ObjectEntryInfoItemFieldValuesProvider
 					null, themeDisplay.getUser()),
 				serviceBuilderObjectEntry.getExternalReferenceCode(),
 				themeDisplay.getCompanyId(), _objectDefinition, null);
-
-		List<InfoFieldValue<Object>> objectEntryFieldValues = new ArrayList<>();
 
 		objectEntryFieldValues.add(
 			new InfoFieldValue<>(
