@@ -30,6 +30,8 @@ import {config} from '../../../app/config/index';
 import {useDispatch, useSelector} from '../../../app/contexts/StoreContext';
 import selectCanUpdateExperiences from '../../../app/selectors/selectCanUpdateExperiences';
 import selectCanUpdateSegments from '../../../app/selectors/selectCanUpdateSegments';
+import getKeyboardFocusableElements from '../../../app/utils/getKeyboardFocusableElements';
+import {useId} from '../../../core/hooks/useId';
 import {useSessionState} from '../../../core/hooks/useSessionState';
 import createExperience from '../thunks/createExperience';
 import duplicateExperience from '../thunks/duplicateExperience';
@@ -83,6 +85,7 @@ const ExperienceSelector = ({
 	const canUpdateSegments = useSelector(selectCanUpdateSegments);
 
 	const buttonRef = useRef();
+	const selectorRef = useRef();
 	const [buttonBoundingClientRect, setButtonBoundingClientRect] = useState({
 		bottom: 0,
 		left: 0,
@@ -362,6 +365,17 @@ const ExperienceSelector = ({
 				id={selectId}
 				onBlur={handleDropdownButtonBlur}
 				onClick={handleDropdownButtonClick}
+				onKeyDown={(event) => {
+					if (event.key === 'Tab' && !event.shiftKey && open) {
+						event.preventDefault();
+
+						const focusableElements = getKeyboardFocusableElements(
+							selectorRef.current
+						);
+
+						focusableElements[0]?.focus();
+					}
+				}}
 				ref={buttonRef}
 				small
 				type="button"
