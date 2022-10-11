@@ -341,6 +341,8 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 					"mvc.command.name", "/object_entries/edit_object_entry"
 				).build()));
 
+		// TODO Explain 910ae730
+
 		serviceRegistrations.add(
 			_bundleContext.registerService(
 				InfoItemFieldValuesProvider.class,
