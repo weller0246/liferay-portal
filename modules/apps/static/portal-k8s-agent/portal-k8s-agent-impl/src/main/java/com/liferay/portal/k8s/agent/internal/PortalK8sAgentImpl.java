@@ -243,7 +243,7 @@ public class PortalK8sAgentImpl implements PortalK8sConfigMapModifier {
 						StringBundler.concat(
 							"Config map does not exist and no data was ",
 							"supplied for ", configMapName,
-							" resulting in no change."));
+							" resulting in no change"));
 				}
 
 				return Result.UNCHANGED;
