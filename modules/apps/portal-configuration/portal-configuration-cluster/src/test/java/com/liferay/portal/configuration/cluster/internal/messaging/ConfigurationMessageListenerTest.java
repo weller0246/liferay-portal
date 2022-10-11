@@ -183,7 +183,7 @@ public class ConfigurationMessageListenerTest {
 	private void _invokeConfigurationListener(
 			Set<Configuration.ConfigurationAttribute> attributes,
 			int configuratonEventType, Dictionary<String, Object> properties,
-			UnsafeConsumer<Configuration, Exception> testChecks)
+			UnsafeConsumer<Configuration, Exception> unsafeConsumer)
 		throws Exception {
 
 		Mockito.when(
@@ -213,7 +213,7 @@ public class ConfigurationMessageListenerTest {
 
 		_configurationMessageListener.doReceive(message);
 
-		testChecks.accept(configuration);
+		unsafeConsumer.accept(configuration);
 	}
 
 	@Mock
