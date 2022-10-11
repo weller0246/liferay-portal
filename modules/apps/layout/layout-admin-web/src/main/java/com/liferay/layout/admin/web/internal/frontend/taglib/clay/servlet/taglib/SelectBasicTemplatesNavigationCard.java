@@ -67,32 +67,24 @@ public class SelectBasicTemplatesNavigationCard implements NavigationCard {
 
 		String redirect = ParamUtil.getString(_httpServletRequest, "redirect");
 
-		try {
-			data.put(
-				"data-add-layout-url",
-				PortletURLBuilder.createRenderURL(
-					_renderResponse
-				).setMVCRenderCommandName(
-					"/layout_admin/add_layout"
-				).setBackURL(
-					redirect
-				).setParameter(
-					"privateLayout",
-					ParamUtil.getBoolean(_httpServletRequest, "privateLayout")
-				).setParameter(
-					"selPlid", ParamUtil.getLong(_httpServletRequest, "selPlid")
-				).setParameter(
-					"type", _type
-				).setWindowState(
-					LiferayWindowState.POP_UP
-				).buildString());
-		}
-		catch (Exception exception) {
-			if (_log.isDebugEnabled()) {
-				_log.debug(exception);
-			}
-		}
-
+		data.put(
+			"data-add-layout-url",
+			PortletURLBuilder.createRenderURL(
+				_renderResponse
+			).setMVCRenderCommandName(
+				"/layout_admin/add_layout"
+			).setBackURL(
+				redirect
+			).setParameter(
+				"privateLayout",
+				ParamUtil.getBoolean(_httpServletRequest, "privateLayout")
+			).setParameter(
+				"selPlid", ParamUtil.getLong(_httpServletRequest, "selPlid")
+			).setParameter(
+				"type", _type
+			).setWindowState(
+				LiferayWindowState.POP_UP
+			).buildString());
 		data.put("role", "button");
 		data.put("tabIndex", "0");
 
