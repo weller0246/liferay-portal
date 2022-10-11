@@ -17,7 +17,7 @@ import MDFRequestActivityDTO from '../../common/interfaces/dto/mdfRequestActivit
 import MDFClaim from '../../common/interfaces/mdfClaim';
 import useGetMDFRequestById from '../../common/services/liferay/object/mdf-requests/useGetMDFRequestById';
 import MDFClaimPage from './components/MDFClaimPage';
-import useMDFRequestByURL from './hooks/useMDFRequestByURL';
+import useGetMDFRequestIdByHash from './hooks/useMDFRequestByURL';
 
 const getInitialFormValues = (
 	totalrequestedAmount?: number,
@@ -39,10 +39,10 @@ const getInitialFormValues = (
 });
 
 const MDFClaimForm = () => {
-	const MDF_REQUEST_ID = useMDFRequestByURL();
+	const mdfRequestId = useGetMDFRequestIdByHash();
 
 	const {data: mdfRequest, isValidating} = useGetMDFRequestById(
-		MDF_REQUEST_ID
+		Number(mdfRequestId)
 	);
 	if (!mdfRequest || isValidating) {
 		return <ClayLoadingIndicator />;

@@ -16,13 +16,13 @@ import MDFRequestDTO from '../../../../interfaces/dto/mdfRequestDTO';
 import {LiferayAPIs} from '../../common/enums/apis';
 import liferayFetcher from '../../common/utils/fetcher';
 
-export default function useGetMDFRequestById(id: number | string | undefined) {
+export default function useGetMDFRequestById(id: number | undefined) {
 	return useSWR(
 		id
 			? [
 					`/o/${LiferayAPIs.OBJECT}/mdfrequests/${id}?nestedFields=mdfRequestToActivities,activityToBudgets&nestedFieldsDepth=2`,
 					Liferay.authToken,
-			  ]
+			]
 			: null,
 		(url, token) => liferayFetcher<MDFRequestDTO>(url, token)
 	);
