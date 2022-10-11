@@ -552,7 +552,13 @@ public class DBPartitionUtil {
 		throws SQLException {
 
 		for (long companyId : _getCompanyIds()) {
-			if (tableName.contains(String.valueOf(companyId))) {
+
+			// See ObjectDefinitionImpl#getExtensionDBTableName and
+			// ObjectDefinitionLocalServiceImpl#_getDBTableName
+
+			if (tableName.endsWith("_x_" + companyId) ||
+				tableName.startsWith("O_" + companyId + "_")) {
+
 				return true;
 			}
 		}
