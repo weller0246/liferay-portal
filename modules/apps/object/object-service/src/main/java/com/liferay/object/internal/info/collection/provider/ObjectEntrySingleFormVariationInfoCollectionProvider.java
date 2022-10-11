@@ -143,33 +143,18 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		CollectionQuery collectionQuery) {
 
 		try {
-			if (!_objectDefinition.isDefaultStorageType()) {
-				return _getCollectionInfoPageByObjectEntryManager(
+			if (_objectDefinition.isDefaultStorageType()) {
+				return _getCollectionInfoPageByDefaultStorageType(
 					collectionQuery);
 			}
 
-			Indexer<ObjectEntry> indexer = IndexerRegistryUtil.getIndexer(
-				_objectDefinition.getClassName());
-
-			Hits hits = indexer.search(_buildSearchContext(collectionQuery));
-
-			return InfoPage.of(
-				TransformUtil.transformToList(
-					hits.getDocs(),
-					document -> {
-						long classPK = GetterUtil.getLong(
-							document.get(Field.ENTRY_CLASS_PK));
-
-						return _objectEntryLocalService.fetchObjectEntry(
-							classPK);
-					}),
-				collectionQuery.getPagination(), hits.getLength());
+			return _getCollectionInfoPageByObjectEntryManager(collectionQuery);
 		}
-		catch (PortalException portalException) {
+		catch (Exception exception) {
 			throw new RuntimeException(
 				"Unable to get object entries for object definition " +
 					_objectDefinition.getObjectDefinitionId(),
-				portalException);
+				exception);
 		}
 	}
 
@@ -421,52 +406,65 @@ public class ObjectEntrySingleFormVariationInfoCollectionProvider
 		};
 	}
 
+	private InfoPage<ObjectEntry> _getCollectionInfoPageByDefaultStorageType(
+			CollectionQuery collectionQuery)
+		throws Exception {
+
+		Indexer<ObjectEntry> indexer = IndexerRegistryUtil.getIndexer(
+			_objectDefinition.getClassName());
+
+		Hits hits = indexer.search(_buildSearchContext(collectionQuery));
+
+		return InfoPage.of(
+			TransformUtil.transformToList(
+				hits.getDocs(),
+				document -> {
+					long classPK = GetterUtil.getLong(
+						document.get(Field.ENTRY_CLASS_PK));
+
+					return _objectEntryLocalService.fetchObjectEntry(classPK);
+				}),
+			collectionQuery.getPagination(), hits.getLength());
+	}
+
 	private InfoPage<ObjectEntry> _getCollectionInfoPageByObjectEntryManager(
-		CollectionQuery collectionQuery) {
+			CollectionQuery collectionQuery)
+		throws Exception {
 
-		try {
-			ObjectEntryManager objectEntryManager =
-				_objectEntryManagerTracker.getObjectEntryManager(
-					_objectDefinition.getStorageType());
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerTracker.getObjectEntryManager(
+				_objectDefinition.getStorageType());
 
-			ServiceContext serviceContext =
-				ServiceContextThreadLocal.getServiceContext();
+		ServiceContext serviceContext =
+			ServiceContextThreadLocal.getServiceContext();
 
-			ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
+		ThemeDisplay themeDisplay = serviceContext.getThemeDisplay();
 
-			Group scopeGroup = themeDisplay.getScopeGroup();
+		Group scopeGroup = themeDisplay.getScopeGroup();
 
-			Pagination pagination = collectionQuery.getPagination();
+		Pagination pagination = collectionQuery.getPagination();
 
-			Page<com.liferay.object.rest.dto.v1_0.ObjectEntry>
-				objectEntriesPage = objectEntryManager.getObjectEntries(
-					themeDisplay.getCompanyId(), _objectDefinition,
-					scopeGroup.getGroupKey(), null,
-					new DefaultDTOConverterContext(
-						false, null, null, null, null, themeDisplay.getLocale(),
-						null, themeDisplay.getUser()),
-					(Filter)null,
-					com.liferay.portal.vulcan.pagination.Pagination.of(
-						1, pagination.getEnd()),
-					null, null);
+		Page<com.liferay.object.rest.dto.v1_0.ObjectEntry> objectEntriesPage =
+			objectEntryManager.getObjectEntries(
+				themeDisplay.getCompanyId(), _objectDefinition,
+				scopeGroup.getGroupKey(), null,
+				new DefaultDTOConverterContext(
+					false, null, null, null, null, themeDisplay.getLocale(),
+					null, themeDisplay.getUser()),
+				(Filter)null,
+				com.liferay.portal.vulcan.pagination.Pagination.of(
+					1, pagination.getEnd()),
+				null, null);
 
-			List<com.liferay.object.rest.dto.v1_0.ObjectEntry> objectEntries =
-				new ArrayList<>(objectEntriesPage.getItems());
+		List<com.liferay.object.rest.dto.v1_0.ObjectEntry> objectEntries =
+			new ArrayList<>(objectEntriesPage.getItems());
 
-			return InfoPage.of(
-				TransformUtil.transform(
-					objectEntries,
-					objectEntry -> _toObjectEntry(
-						_objectDefinition.getObjectDefinitionId(),
-						objectEntry)),
-				collectionQuery.getPagination(), objectEntries.size());
-		}
-		catch (Exception exception) {
-			throw new RuntimeException(
-				"Unable to get object entries for object definition " +
-					_objectDefinition.getObjectDefinitionId(),
-				exception);
-		}
+		return InfoPage.of(
+			TransformUtil.transform(
+				objectEntries,
+				objectEntry -> _toObjectEntry(
+					_objectDefinition.getObjectDefinitionId(), objectEntry)),
+			collectionQuery.getPagination(), objectEntries.size());
 	}
 
 	private String _getFieldName(ObjectField objectField) {
