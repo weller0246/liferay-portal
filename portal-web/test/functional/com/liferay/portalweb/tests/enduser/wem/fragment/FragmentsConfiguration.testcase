@@ -108,6 +108,87 @@ element.textContent = 'Fragment Example';''';
 		}
 	}
 
+	@description = "This is a test for LPS-164104. View fragment with fragmentEntryLinkNamespace variable to JavaScript on associated display page template."
+	@priority = "4"
+	test AddFragmentWithFragmentEntryLinkNamespaceInJavaScriptToDisplayPageTemplate {
+		property testray.component.names = "Display Pages,Fragments";
+
+		task ("Given a page creator has a fragment with fragmentEntryLinkNamespace in JavaScript") {
+			FragmentsAdmin.addFragment(fragmentName = "Fragment Name");
+
+			var htmlSnippet = '''
+<div class="fragment-name">
+    <div id="fragment-${fragmentEntryLinkNamespace}"></div>
+</div>''';
+
+			FragmentsEditor.typeHtmlEditor(content = "${htmlSnippet}");
+
+			FragmentsEditor.waitForAutoSave();
+
+			var jsSnippet = '''
+const element = document.getElementById(`fragment-${fragmentEntryLinkNamespace}`);
+element.textContent = 'Fragment Example';''';
+
+			FragmentsEditor.waitForAutoSave();
+
+			FragmentsEditor.typeJsEditor(content = "${jsSnippet}");
+
+			FragmentsEditor.publish();
+		}
+
+		task ("When the page creator adds the new fragment to a display page template") {
+			JSONLayoutpagetemplate.addDisplayPageTemplateEntry(
+				contentType = "Web Content Article",
+				displayPageTemplateEntryName = "Display Page Name",
+				groupName = "Test Site Name",
+				subType = "Basic Web Content");
+
+			DisplayPageTemplatesAdmin.openDisplayPagesAdmin(siteURLKey = "test-site-name");
+
+			DisplayPageTemplatesAdmin.gotoDisplayPage(displayPageName = "Display Page Name");
+
+			PageEditor.addFragment(
+				collectionName = "Collection Name",
+				fragmentName = "Fragment Name");
+		}
+
+		task ("Then the page creator sees the content of new fragment") {
+			AssertTextEquals(
+				index = "1",
+				key_fragmentName = "Fragment Name",
+				locator1 = "Fragment#FRAGMENT_CONTENT",
+				value1 = "Fragment Example");
+
+			PageEditor.publish();
+
+			JSONLayoutpagetemplate.setLayoutPageTemplateEntryAsDefault(
+				groupName = "Test Site Name",
+				layoutPageTemplateEntryName = "Display Page Name",
+				type = "Display Page Template");
+		}
+
+		task ("When the page creator navigates to the associated display page template") {
+			JSONWebcontent.addWebContent(
+				content = "Web Content Content",
+				groupName = "Test Site Name",
+				title = "Web Content Title");
+
+			WebContentNavigator.openWebContentAdmin(siteURLKey = "test-site-name");
+
+			WebContentNavigator.gotoEntryMenuItem(
+				entry = "Web Content Title",
+				menuItem = "View Content");
+		}
+
+		task ("Then the page creators sees the content of new fragment") {
+			AssertTextEquals(
+				fragmentName = "fragment-name",
+				index = "1",
+				locator1 = "Fragment#FRAGMENT_BODY",
+				value1 = "Fragment Example");
+		}
+	}
+
 	@description = "This is a test for LPS-158328. The user can change default resource image on content page after propagation."
 	@priority = "4"
 	test ChangeResourceImageAfterPropagation {
