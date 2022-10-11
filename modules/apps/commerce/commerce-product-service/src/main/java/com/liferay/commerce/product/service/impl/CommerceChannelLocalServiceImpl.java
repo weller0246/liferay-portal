@@ -396,11 +396,7 @@ public class CommerceChannelLocalServiceImpl
 		CommerceChannel commerceChannel =
 			commerceChannelPersistence.findByPrimaryKey(commerceChannelId);
 
-		if (CommerceChannelConstants.CHANNEL_TYPE_SITE.equals(type) &&
-			(siteGroupId != commerceChannel.getSiteGroupId())) {
-
-			_updateGroupTypeSettings(commerceChannel.getGroup(), siteGroupId);
-		}
+		long oldSiteGroupId = commerceChannel.getSiteGroupId();
 
 		commerceChannel.setSiteGroupId(siteGroupId);
 		commerceChannel.setName(name);
@@ -409,7 +405,15 @@ public class CommerceChannelLocalServiceImpl
 			typeSettingsUnicodeProperties);
 		commerceChannel.setCommerceCurrencyCode(commerceCurrencyCode);
 
-		return commerceChannelPersistence.update(commerceChannel);
+		commerceChannel = commerceChannelPersistence.update(commerceChannel);
+
+		if (CommerceChannelConstants.CHANNEL_TYPE_SITE.equals(type) &&
+			(siteGroupId != oldSiteGroupId)) {
+
+			_updateGroupTypeSettings(commerceChannel.getGroup(), siteGroupId);
+		}
+
+		return commerceChannel;
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
@@ -424,11 +428,7 @@ public class CommerceChannelLocalServiceImpl
 		CommerceChannel commerceChannel =
 			commerceChannelPersistence.findByPrimaryKey(commerceChannelId);
 
-		if (CommerceChannelConstants.CHANNEL_TYPE_SITE.equals(type) &&
-			(siteGroupId != commerceChannel.getSiteGroupId())) {
-
-			_updateGroupTypeSettings(commerceChannel.getGroup(), siteGroupId);
-		}
+		long oldSiteGroupId = commerceChannel.getSiteGroupId();
 
 		commerceChannel.setSiteGroupId(siteGroupId);
 		commerceChannel.setName(name);
@@ -439,7 +439,15 @@ public class CommerceChannelLocalServiceImpl
 		commerceChannel.setPriceDisplayType(priceDisplayType);
 		commerceChannel.setDiscountsTargetNetPrice(discountsTargetNetPrice);
 
-		return commerceChannelPersistence.update(commerceChannel);
+		commerceChannel = commerceChannelPersistence.update(commerceChannel);
+
+		if (CommerceChannelConstants.CHANNEL_TYPE_SITE.equals(type) &&
+			(siteGroupId != oldSiteGroupId)) {
+
+			_updateGroupTypeSettings(commerceChannel.getGroup(), siteGroupId);
+		}
+
+		return commerceChannel;
 	}
 
 	@Indexable(type = IndexableType.REINDEX)
