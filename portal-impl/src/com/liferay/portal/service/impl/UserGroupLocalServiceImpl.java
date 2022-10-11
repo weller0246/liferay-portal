@@ -275,54 +275,42 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 	}
 
 	@Override
-	public void addUserUserGroup(long userId, long userGroupId) {
+	public void addUserUserGroup(long userId, long userGroupId)
+		throws PortalException {
+
 		super.addUserUserGroup(userId, userGroupId);
 
-		try {
-			reindexUserGroup(getUserGroup(userGroupId));
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
-		}
+		reindexUserGroup(getUserGroup(userGroupId));
 	}
 
 	@Override
-	public void addUserUserGroup(long userId, UserGroup userGroup) {
+	public void addUserUserGroup(long userId, UserGroup userGroup)
+		throws PortalException {
+
 		super.addUserUserGroup(userId, userGroup);
 
-		try {
-			reindexUserGroup(userGroup);
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
-		}
+		reindexUserGroup(userGroup);
 	}
 
 	@Override
-	public void addUserUserGroups(long userId, List<UserGroup> userGroups) {
+	public void addUserUserGroups(long userId, List<UserGroup> userGroups)
+		throws PortalException {
+
 		super.addUserUserGroups(userId, userGroups);
 
-		try {
-			for (UserGroup userGroup : userGroups) {
-				reindexUserGroup(userGroup);
-			}
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
+		for (UserGroup userGroup : userGroups) {
+			reindexUserGroup(userGroup);
 		}
 	}
 
 	@Override
-	public void addUserUserGroups(long userId, long[] userGroupIds) {
+	public void addUserUserGroups(long userId, long[] userGroupIds)
+		throws PortalException {
+
 		super.addUserUserGroups(userId, userGroupIds);
 
-		try {
-			for (long userGroupId : userGroupIds) {				
-				reindexUserGroup(getUserGroup(userGroupId));
-			}
-		}
-		catch (PortalException portalException) {
-			throw new SystemException(portalException);
+		for (long userGroupId : userGroupIds) {				
+			reindexUserGroup(getUserGroup(userGroupId));
 		}
 	}
 
