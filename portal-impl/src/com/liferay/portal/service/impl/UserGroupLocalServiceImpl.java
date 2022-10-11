@@ -309,7 +309,7 @@ public class UserGroupLocalServiceImpl extends UserGroupLocalServiceBaseImpl {
 
 		super.addUserUserGroups(userId, userGroupIds);
 
-		for (long userGroupId : userGroupIds) {				
+		for (long userGroupId : userGroupIds) {
 			reindexUserGroup(getUserGroup(userGroupId));
 		}
 	}
