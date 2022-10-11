@@ -87,10 +87,10 @@ public class TestrayProject {
 					new TestrayProductVersion(
 						this, jsonObject.getJSONObject("data"));
 
-				_testrayProductVersionsByName.put(
-					testrayProductVersionName, newTestrayProductVersion);
 				_testrayProductVersionsByID.put(
 					getID(), newTestrayProductVersion);
+				_testrayProductVersionsByName.put(
+					testrayProductVersionName, newTestrayProductVersion);
 
 				return newTestrayProductVersion;
 			}

@@ -1822,11 +1822,11 @@ public class TestrayImporter {
 				portalRelease.getPortalBundleTomcatURL());
 
 			string = string.replace(
+				"$(portal.product.version)", portalRelease.getPortalVersion());
+			string = string.replace(
 				"$(portal.release.tomcat.url)", portalBundleTomcatURLString);
 			string = string.replace(
 				"$(portal.release.version)", portalRelease.getPortalVersion());
-			string = string.replace(
-				"$(portal.product.version)", portalRelease.getPortalVersion());
 
 			Matcher matcher = _releaseArtifactURLPattern.matcher(
 				portalBundleTomcatURLString);
