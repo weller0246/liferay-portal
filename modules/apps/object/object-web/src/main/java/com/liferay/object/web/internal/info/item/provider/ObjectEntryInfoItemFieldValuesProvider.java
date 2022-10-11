@@ -58,6 +58,7 @@ import java.io.Serializable;
 import java.text.Format;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -204,6 +205,10 @@ public class ObjectEntryInfoItemFieldValuesProvider
 
 		ThemeDisplay themeDisplay = _getThemeDisplay();
 
+		if (themeDisplay != null) {
+			return Collections.emptyList();
+		}
+
 		ObjectEntryManager objectEntryManager =
 			_objectEntryManagerTracker.getObjectEntryManager(
 				_objectDefinition.getStorageType());
@@ -230,14 +235,10 @@ public class ObjectEntryInfoItemFieldValuesProvider
 			new InfoFieldValue<>(
 				ObjectEntryInfoItemFields.publishDateInfoField,
 				objectEntry.getDateModified()));
-
-		if (themeDisplay != null) {
-			objectEntryFieldValues.add(
-				new InfoFieldValue<>(
-					ObjectEntryInfoItemFields.displayPageURLInfoField,
-					_getDisplayPageURL(
-						serviceBuilderObjectEntry, themeDisplay)));
-		}
+		objectEntryFieldValues.add(
+			new InfoFieldValue<>(
+				ObjectEntryInfoItemFields.displayPageURLInfoField,
+				_getDisplayPageURL(serviceBuilderObjectEntry, themeDisplay)));
 
 		Map<String, Object> properties = objectEntry.getProperties();
 
