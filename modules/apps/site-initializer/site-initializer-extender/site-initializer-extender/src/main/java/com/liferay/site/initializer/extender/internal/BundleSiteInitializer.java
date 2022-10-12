@@ -485,7 +485,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 					documentsStringUtilReplaceValues,
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 					serviceContext));
-
 			_invoke(
 				() -> _addLayoutPageTemplates(
 					assetListEntryIdsStringUtilReplaceValues,
@@ -493,7 +492,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 					serviceContext,
 					taxonomyCategoryIdsStringUtilReplaceValues));
-
 			_invoke(
 				() -> _addOrUpdateNotificationTemplates(
 					documentsStringUtilReplaceValues,
@@ -3966,9 +3964,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_releaseInfoStringUtilReplaceValues);
 
 		return StringUtil.replace(
-			StringUtil.replace(
-				s, "[$", "$]", aggregatedStringUtilReplaceValues),
-			"\"[#", "#]\"", aggregatedStringUtilReplaceValues);
+			s, "\"[#", "#]\"", aggregatedStringUtilReplaceValues);
+
+		return StringUtil.replace(
+			s, "[$", "$]", aggregatedStringUtilReplaceValues);
 	}
 
 	private String _replace(String s, String oldSub, String newSub) {
