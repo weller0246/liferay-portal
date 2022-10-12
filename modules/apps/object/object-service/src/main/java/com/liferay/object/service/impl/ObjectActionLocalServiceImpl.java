@@ -208,10 +208,10 @@ public class ObjectActionLocalServiceImpl
 		if (!_objectActionExecutorRegistry.hasObjectActionExecutor(
 				objectActionExecutorKey)) {
 
-			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Object definition registered with missing action ".concat(
-						objectActionExecutorKey));
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					"No object action executor is registered with " +
+						objectActionExecutorKey);
 			}
 		}
 
