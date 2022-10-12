@@ -1,5 +1,5 @@
 {
-	"@generated": "a17bd88f0e28f29341407774be0cdaf7104bc103",
+	"@generated": "4d88868f2297f505b33fbb91fb762a24c9bae478",
 	"@overrides": {
 	},
 	"@readonly": "** AUTO-GENERATED: DO NOT EDIT OUTSIDE @overrides **",
@@ -26,13 +26,13 @@
 			"./node_modules/@types"
 		]
 	},
-	"include": [
-		"src/**/*",
-		"../../../global.d.ts"
-	],
 	"exclude": [
 		"test/**/*",
 		"**/__tests__/**"
+	],
+	"include": [
+		"src/**/*",
+		"../../../global.d.ts"
 	],
 	"references": [
 		{

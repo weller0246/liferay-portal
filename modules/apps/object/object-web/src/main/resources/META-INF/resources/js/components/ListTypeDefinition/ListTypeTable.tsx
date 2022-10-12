@@ -15,7 +15,9 @@
 import {
 	FrontendDataSet,
 	IFrontendDataSetProps,
+
 	// @ts-ignore
+
 } from '@liferay/frontend-data-set-web';
 import React, {useEffect, useState} from 'react';
 
