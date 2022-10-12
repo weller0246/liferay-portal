@@ -14,9 +14,6 @@
 
 package com.liferay.portal.search.web.internal.search.bar.portlet;
 
-import com.liferay.portal.kernel.log.Log;
-import com.liferay.portal.kernel.log.LogFactoryUtil;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.bridges.mvc.MVCPortlet;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.util.Portal;
@@ -76,31 +73,21 @@ public class SearchBarPortlet extends MVCPortlet {
 		throws IOException, PortletException {
 
 		SearchBarPortletDisplayContextFactory
-			searchBarPortletDisplayContextFactory = null;
-
-		try {
 			searchBarPortletDisplayContextFactory =
 				new SearchBarPortletDisplayContextFactory(
 					layoutLocalService, portal, renderRequest);
 
-			SearchBarPortletDisplayContext searchBarPortletDisplayContext =
-				searchBarPortletDisplayContextFactory.create(
-					portletPreferencesLookup, portletSharedSearchRequest,
-					searchBarPrecedenceHelper);
+		SearchBarPortletDisplayContext searchBarPortletDisplayContext =
+			searchBarPortletDisplayContextFactory.create(
+				portletPreferencesLookup, portletSharedSearchRequest,
+				searchBarPrecedenceHelper);
 
+		renderRequest.setAttribute(
+			WebKeys.PORTLET_DISPLAY_CONTEXT, searchBarPortletDisplayContext);
+
+		if (searchBarPortletDisplayContext.isRenderNothing()) {
 			renderRequest.setAttribute(
-				WebKeys.PORTLET_DISPLAY_CONTEXT,
-				searchBarPortletDisplayContext);
-
-			if (searchBarPortletDisplayContext.isRenderNothing()) {
-				renderRequest.setAttribute(
-					WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
-			}
-		}
-		catch (ConfigurationException configurationException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(configurationException);
-			}
+				WebKeys.PORTLET_CONFIGURATOR_VISIBILITY, Boolean.TRUE);
 		}
 
 		super.render(renderRequest, renderResponse);
@@ -120,8 +107,5 @@ public class SearchBarPortlet extends MVCPortlet {
 
 	@Reference
 	protected SearchBarPrecedenceHelper searchBarPrecedenceHelper;
-
-	private static final Log _log = LogFactoryUtil.getLog(
-		SearchBarPortlet.class);
 
 }
