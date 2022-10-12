@@ -57,7 +57,4 @@ public interface SearchBarPortletInstanceConfiguration {
 	)
 	public int suggestionsDisplayThreshold();
 
-	@Meta.AD(deflt = "/page", name = "destination", required = false)
-	public String destination();
-
 }
