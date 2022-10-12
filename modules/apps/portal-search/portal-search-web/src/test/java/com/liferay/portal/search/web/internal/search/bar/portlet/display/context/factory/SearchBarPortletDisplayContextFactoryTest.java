@@ -457,12 +457,6 @@ public class SearchBarPortletDisplayContextFactoryTest {
 		portletPreferences.setValue(
 			SearchBarPortletPreferences.PREFERENCE_KEY_SEARCH_SCOPE, scope);
 
-		Mockito.when(
-			_searchBarPortletInstanceConfiguration.destination()
-		).thenReturn(
-			destination
-		);
-
 		if (scopeParameterName != null) {
 			portletPreferences.setValue(
 				SearchBarPortletPreferences.PREFERENCE_KEY_SCOPE_PARAMETER_NAME,
@@ -490,6 +484,12 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			_portletSharedSearchRequest.search(renderRequest)
 		).thenReturn(
 			portletSharedSearchResponse
+		);
+
+		Mockito.when(
+			_searchBarPortletInstanceConfiguration.destination()
+		).thenReturn(
+			destination
 		);
 
 		Mockito.when(
