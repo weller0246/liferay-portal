@@ -96,8 +96,8 @@ const ObjectField = ({
 					return false;
 				}
 				else if (
-					focusedFieldType === 'document_library' &&
-					businessType === 'Attachment'
+					businessType === 'Attachment' &&
+					focusedFieldType === 'document_library'
 				) {
 					return true;
 				}
