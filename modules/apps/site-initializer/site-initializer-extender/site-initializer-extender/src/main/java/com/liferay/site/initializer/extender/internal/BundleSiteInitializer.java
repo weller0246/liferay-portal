@@ -3963,7 +3963,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		aggregatedStringUtilReplaceValues.putAll(
 			_releaseInfoStringUtilReplaceValues);
 
-		return StringUtil.replace(
+		s = StringUtil.replace(
 			s, "\"[#", "#]\"", aggregatedStringUtilReplaceValues);
 
 		return StringUtil.replace(
