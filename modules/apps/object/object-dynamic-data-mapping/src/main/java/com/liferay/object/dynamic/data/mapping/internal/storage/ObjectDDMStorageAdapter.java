@@ -496,7 +496,16 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			String objectFieldDBType, String value)
 		throws JSONException, ParseException {
 
-		if (Objects.equals(objectFieldDBType, "BigDecimal")) {
+		if (StringUtil.equals(
+				ddmFormFieldValue.getType(),
+				DDMFormFieldTypeConstants.DOCUMENT_LIBRARY)) {
+
+			JSONObject fileEntryValueJSONObject = _jsonFactory.createJSONObject(
+				value);
+
+			return fileEntryValueJSONObject.getString("fileEntryId");
+		}
+		else if (Objects.equals(objectFieldDBType, "BigDecimal")) {
 			if (value.isEmpty()) {
 				return GetterUtil.DEFAULT_DOUBLE;
 			}
@@ -513,15 +522,6 @@ public class ObjectDDMStorageAdapter implements DDMStorageAdapter {
 			NumberFormat numberFormat = NumberFormat.getInstance(locale);
 
 			return GetterUtil.getDouble(numberFormat.parse(value));
-		}
-		else if (StringUtil.equals(
-					ddmFormFieldValue.getType(),
-					DDMFormFieldTypeConstants.DOCUMENT_LIBRARY)) {
-
-			JSONObject fileEntryValueJSONObject = _jsonFactory.createJSONObject(
-				value);
-
-			return fileEntryValueJSONObject.getString("fileEntryId");
 		}
 		else {
 			return value;
