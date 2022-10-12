@@ -7253,7 +7253,6 @@ public class JournalArticleLocalServiceImpl
 						indexer.getDocument(article));
 				}
 			});
-
 		indexableActionableDynamicQuery.setTransactionConfig(
 			DefaultActionableDynamicQuery.REQUIRES_NEW_TRANSACTION_CONFIG);
 
