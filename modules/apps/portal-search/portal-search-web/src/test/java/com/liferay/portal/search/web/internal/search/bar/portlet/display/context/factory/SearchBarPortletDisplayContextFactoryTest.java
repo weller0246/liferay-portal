@@ -20,7 +20,6 @@ import com.liferay.portal.kernel.language.Language;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.portlet.LiferayPortletRequest;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -80,9 +79,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testDestinationBlank()
-		throws ConfigurationException, PortletException {
-
+	public void testDestinationBlank() throws PortletException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(StringPool.BLANK);
@@ -97,9 +94,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testDestinationNull()
-		throws ConfigurationException, PortletException {
-
+	public void testDestinationNull() throws PortletException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(null);
@@ -114,9 +109,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testDestinationUnreachable()
-		throws ConfigurationException, PortletException {
-
+	public void testDestinationUnreachable() throws PortletException {
 		String destination = RandomTestUtil.randomString();
 
 		_whenLayoutLocalServiceFetchLayoutByFriendlyURL(destination, null);
@@ -192,9 +185,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testSamePageNoDestination()
-		throws ConfigurationException, PortletException {
-
+	public void testSamePageNoDestination() throws PortletException {
 		Mockito.doReturn(
 			"http://example.com/web/guest/home?param=arg"
 		).when(
@@ -218,9 +209,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testScopeParameterName()
-		throws ConfigurationException, ReadOnlyException {
-
+	public void testScopeParameterName() throws ReadOnlyException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(null, "sp", null);
@@ -235,9 +224,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testScopeParameterNameDefault()
-		throws ConfigurationException, ReadOnlyException {
-
+	public void testScopeParameterNameDefault() throws ReadOnlyException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(null, null, null);
@@ -253,9 +240,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testSearchScopePreferenceDefault()
-		throws ConfigurationException, ReadOnlyException {
-
+	public void testSearchScopePreferenceDefault() throws ReadOnlyException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(null, null, null);
@@ -264,9 +249,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testSearchScopePreferenceEverything()
-		throws ConfigurationException, ReadOnlyException {
-
+	public void testSearchScopePreferenceEverything() throws ReadOnlyException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(
@@ -277,7 +260,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 	@Test
 	public void testSearchScopePreferenceLetTheUserChooseEverything()
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
@@ -289,7 +272,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 	@Test
 	public void testSearchScopePreferenceLetTheUserChooseInvalidScopeParam()
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		expectedException.expect(IllegalArgumentException.class);
 		expectedException.expectMessage(
@@ -306,7 +289,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 	@Test
 	public void testSearchScopePreferenceLetTheUserChooseNoScopeParam()
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
@@ -318,7 +301,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 	@Test
 	public void testSearchScopePreferenceLetTheUserChooseThisSite()
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
@@ -329,9 +312,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 	}
 
 	@Test
-	public void testSearchScopePreferenceThisSite()
-		throws ConfigurationException, ReadOnlyException {
-
+	public void testSearchScopePreferenceThisSite() throws ReadOnlyException {
 		SearchBarPortletDisplayContextFactory
 			searchBarPortletDisplayContextFactory =
 				_createSearchBarPortletDisplayContextFactory(
@@ -414,7 +395,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 
 	private SearchBarPortletDisplayContextFactory
 			_createSearchBarPortletDisplayContextFactory(String destination)
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		return _createSearchBarPortletDisplayContextFactory(
 			destination, null, null, null);
@@ -424,7 +405,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			_createSearchBarPortletDisplayContextFactory(
 				String scope, String scopeParameterName,
 				String scopeParameterValue)
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		return _createSearchBarPortletDisplayContextFactory(
 			null, scope, scopeParameterName, scopeParameterValue);
@@ -434,7 +415,7 @@ public class SearchBarPortletDisplayContextFactoryTest {
 			_createSearchBarPortletDisplayContextFactory(
 				String destination, String scope, String scopeParameterName,
 				String scopeParameterValue)
-		throws ConfigurationException, ReadOnlyException {
+		throws ReadOnlyException {
 
 		RenderRequest renderRequest = Mockito.mock(RenderRequest.class);
 
