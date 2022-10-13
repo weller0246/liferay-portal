@@ -211,8 +211,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				url = HttpComponentsUtil.addParameter(url, "filter", keywords);
 			}
 
-			url = HttpComponentsUtil.addParameter(
-				url, "page", page);
+			url = HttpComponentsUtil.addParameter(url, "page", page);
 			url = HttpComponentsUtil.addParameter(url, "size", size);
 
 			options.setLocation(url);
@@ -257,8 +256,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 						response.getResponseCode()));
 			}
 
-			throw new PortalException(
-				"Unable to get analytics channels page");
+			throw new PortalException("Unable to get analytics channels page");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
