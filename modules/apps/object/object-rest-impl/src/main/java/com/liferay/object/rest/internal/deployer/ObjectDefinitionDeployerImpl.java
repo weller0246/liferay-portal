@@ -122,8 +122,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		if (objectDefinitions == null) {
 			objectDefinitions = new HashMap<>();
 
-			_objectDefinitionsMap.put(
-				objectDefinitionKey, objectDefinitions);
+			_objectDefinitionsMap.put(objectDefinitionKey, objectDefinitions);
 
 			_excludeScopedMethods(objectDefinition, objectScopeProvider);
 
