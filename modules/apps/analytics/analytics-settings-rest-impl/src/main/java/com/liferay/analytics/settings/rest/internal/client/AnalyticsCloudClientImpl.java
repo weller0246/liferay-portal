@@ -100,7 +100,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 		}
 
 		if (_log.isDebugEnabled()) {
-			_log.debug("Received response code " + response.getResponseCode());
+			_log.debug("Response code " + response.getResponseCode());
 		}
 
 		throw new PortalException("Unable to add Channel");
