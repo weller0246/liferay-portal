@@ -22,7 +22,7 @@ export default function useGetMDFRequestById(id: number | undefined) {
 			? [
 					`/o/${LiferayAPIs.OBJECT}/mdfrequests/${id}?nestedFields=mdfRequestToActivities,activityToBudgets&nestedFieldsDepth=2`,
 					Liferay.authToken,
-			]
+			  ]
 			: null,
 		(url, token) => liferayFetcher<MDFRequestDTO>(url, token)
 	);

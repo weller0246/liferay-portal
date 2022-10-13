@@ -44,7 +44,7 @@ const MDFClaimForm = () => {
 	const {data: mdfRequest, isValidating} = useGetMDFRequestById(
 		Number(mdfRequestId)
 	);
-	
+
 	if (!mdfRequest || isValidating) {
 		return <ClayLoadingIndicator />;
 	}
