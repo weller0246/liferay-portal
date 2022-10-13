@@ -21,7 +21,7 @@ export default function useDynamicFieldEntries() {
 	const {data: listTypeDefinitions} = useGetListTypeDefinitions([
 		LiferayPicklistName.REGIONS,
 		LiferayPicklistName.PROJECT_CATEGORIES,
-		LiferayPicklistName.PROJECT_INFORMATION,
+		LiferayPicklistName.PROJECT_INFORMATIONS,
 		LiferayPicklistName.JOB_ROLES,
 		LiferayPicklistName.DEPARTMENTS,
 		LiferayPicklistName.INDUSTRIES,
