@@ -109,7 +109,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			return Collections.emptyList();
 		}
 
-		String objectDefinitionInstanceKey = _createObjectDefinitionInstanceKey(
+		String objectDefinitionInstanceKey = _getObjectDefinitionInstanceKey(
 			objectDefinition.getCompanyId(),
 			objectDefinition.getRESTContextPath());
 
@@ -294,7 +294,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		Map<Long, ObjectDefinition> objectDefinitions =
 			_objectDefinitionsMap.get(
-				_createObjectDefinitionInstanceKey(companyId, restContextPath));
+				_getObjectDefinitionInstanceKey(companyId, restContextPath));
 
 		if (objectDefinitions != null) {
 			return objectDefinitions.get(companyId);
@@ -305,7 +305,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Override
 	public synchronized void undeploy(ObjectDefinition objectDefinition) {
-		String objectDefinitionInstanceKey = _createObjectDefinitionInstanceKey(
+		String objectDefinitionInstanceKey = _getObjectDefinitionInstanceKey(
 			objectDefinition.getCompanyId(),
 			objectDefinition.getRESTContextPath());
 
@@ -350,7 +350,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_bundleContext = bundleContext;
 	}
 
-	private String _createObjectDefinitionInstanceKey(
+	private String _getObjectDefinitionInstanceKey(
 		long companyId, String restContextPath) {
 
 		return restContextPath + companyId;
