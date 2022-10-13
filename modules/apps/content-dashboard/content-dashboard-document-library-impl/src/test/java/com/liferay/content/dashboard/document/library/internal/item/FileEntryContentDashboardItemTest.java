@@ -192,7 +192,6 @@ public class FileEntryContentDashboardItemTest {
 			_getContentDashboardItemVersionAction(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
 				RandomTestUtil.randomString(), RandomTestUtil.randomString());
-
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction2 =
 			_getContentDashboardItemVersionAction(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString(),
@@ -229,7 +228,6 @@ public class FileEntryContentDashboardItemTest {
 		Assert.assertEquals(
 			contentDashboardItemVersionActions.toString(), 2,
 			contentDashboardItemVersionActions.size());
-
 		Assert.assertEquals(
 			contentDashboardItemVersionAction1,
 			contentDashboardItemVersionActions.get(0));
@@ -479,11 +477,9 @@ public class FileEntryContentDashboardItemTest {
 					getContentDashboardItemVersionActions();
 
 		Assert.assertNotNull(contentDashboardItemVersionActions);
-
 		Assert.assertEquals(
 			contentDashboardItemVersionActions.toString(), 1,
 			contentDashboardItemVersionActions.size());
-
 		Assert.assertEquals(
 			contentDashboardItemVersionAction,
 			contentDashboardItemVersionActions.get(0));
@@ -770,26 +766,6 @@ public class FileEntryContentDashboardItemTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
-		mockHttpServletRequest.setAttribute(WebKeys.USER_ID, userId);
-
-		PermissionChecker permissionChecker = Mockito.mock(
-			PermissionChecker.class);
-
-		Mockito.when(
-			permissionChecker.isContentReviewer(
-				Mockito.anyLong(), Mockito.anyLong())
-		).thenReturn(
-			true
-		);
-
-		User user = Mockito.mock(User.class);
-
-		Mockito.when(
-			user.getUserId()
-		).thenReturn(
-			userId
-		);
-
 		ThemeDisplay themeDisplay = Mockito.mock(ThemeDisplay.class);
 
 		Mockito.when(
@@ -804,10 +780,28 @@ public class FileEntryContentDashboardItemTest {
 			LocaleUtil.US
 		);
 
+		PermissionChecker permissionChecker = Mockito.mock(
+			PermissionChecker.class);
+
+		Mockito.when(
+			permissionChecker.isContentReviewer(
+				Mockito.anyLong(), Mockito.anyLong())
+		).thenReturn(
+			true
+		);
+
 		Mockito.when(
 			themeDisplay.getPermissionChecker()
 		).thenReturn(
 			permissionChecker
+		);
+
+		User user = Mockito.mock(User.class);
+
+		Mockito.when(
+			user.getUserId()
+		).thenReturn(
+			userId
 		);
 
 		Mockito.when(
@@ -818,6 +812,8 @@ public class FileEntryContentDashboardItemTest {
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
+
+		mockHttpServletRequest.setAttribute(WebKeys.USER_ID, userId);
 
 		return mockHttpServletRequest;
 	}
