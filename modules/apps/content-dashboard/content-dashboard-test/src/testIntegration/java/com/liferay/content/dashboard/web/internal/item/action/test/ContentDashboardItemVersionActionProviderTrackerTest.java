@@ -68,7 +68,6 @@ public class ContentDashboardItemVersionActionProviderTrackerTest {
 
 				Assert.assertNotNull(
 					contentDashboardItemVersionActionProviders);
-
 				Assert.assertEquals(
 					contentDashboardItemVersionActionProviders.toString(), 0,
 					contentDashboardItemVersionActionProviders.size());
@@ -89,7 +88,6 @@ public class ContentDashboardItemVersionActionProviderTrackerTest {
 
 				Assert.assertNotNull(
 					contentDashboardItemVersionActionProviders);
-
 				Assert.assertEquals(
 					contentDashboardItemVersionActionProviders.toString(), 1,
 					contentDashboardItemVersionActionProviders.size());
