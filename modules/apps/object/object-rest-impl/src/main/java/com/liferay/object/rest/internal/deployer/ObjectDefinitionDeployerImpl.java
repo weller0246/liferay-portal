@@ -128,7 +128,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 			_excludeScopedMethods(objectDefinition, objectScopeProvider);
 
-			String osgiJAXRsName = objectDefinition.getOSGiJaxRsName();
+			String osgiJaxRsName = objectDefinition.getOSGiJaxRsName();
 
 			_componentInstancesMap.put(
 				objectDefinitionInstanceKey,
@@ -143,7 +143,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension.select",
 							"(osgi.jaxrs.name=Liferay.Vulcan)"
 						).put(
-							"osgi.jaxrs.name", osgiJAXRsName
+							"osgi.jaxrs.name", osgiJaxRsName
 						).build())));
 
 			_serviceRegistrationsMap.put(
@@ -156,7 +156,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"enabled", "false"
 						).put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.extension", "true"
 						).put(
@@ -169,7 +169,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						new ObjectEntryManagerHttpExceptionMapper(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.extension", "true"
 						).put(
@@ -182,7 +182,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						new ObjectEntryValuesExceptionMapper(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.extension", "true"
 						).put(
@@ -195,7 +195,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						new ObjectValidationRuleEngineExceptionMapper(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.extension", "true"
 						).put(
@@ -208,7 +208,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						new RequiredObjectRelationshipExceptionMapper(),
 						HashMapDictionaryBuilder.<String, Object>put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.extension", "true"
 						).put(
@@ -255,7 +255,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"batch.engine.task.item.delegate", "true"
 						).put(
 							"batch.engine.task.item.delegate.name",
-							osgiJAXRsName
+							osgiJaxRsName
 						).put(
 							"batch.planner.export.enabled", "true"
 						).put(
@@ -266,7 +266,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 								objectDefinition.getName()
 						).put(
 							"osgi.jaxrs.application.select",
-							"(osgi.jaxrs.name=" + osgiJAXRsName + ")"
+							"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
 						).put(
 							"osgi.jaxrs.resource", "true"
 						).build())));
