@@ -1013,7 +1013,7 @@ public class ObjectEntryLocalServiceTest {
 
 		_objectDefinitionLocalService.updateObjectDefinition(_objectDefinition);
 
-		FileEntry fileEntry = _addTempFileEntry("FileEntry");
+		FileEntry fileEntry = _addTempFileEntry("Old Testament");
 
 		ObjectEntry objectEntry = _addObjectEntry(
 			HashMapBuilder.<String, Serializable>put(
@@ -1041,14 +1041,14 @@ public class ObjectEntryLocalServiceTest {
 					"name", "List Type Entry Key 1"
 				)
 			).put(
-				"upload", JSONUtil.put("title", "FileEntry")
+				"upload", JSONUtil.put("title", "Old Testament")
 			).toString(),
 			String.valueOf(auditMessage.getAdditionalInfo()),
 			JSONCompareMode.STRICT_ORDER);
 
 		auditMessages.clear();
 
-		fileEntry = _addTempFileEntry("NewFileEntry");
+		fileEntry = _addTempFileEntry("New Testament");
 
 		objectEntry = _objectEntryLocalService.updateObjectEntry(
 			TestPropsValues.getUserId(), objectEntry.getObjectEntryId(),
@@ -1103,9 +1103,9 @@ public class ObjectEntryLocalServiceTest {
 					JSONUtil.put(
 						"name", "upload"
 					).put(
-						"newValue", JSONUtil.put("title", "NewFileEntry")
+						"newValue", JSONUtil.put("title", "New Testament")
 					).put(
-						"oldValue", JSONUtil.put("title", "FileEntry")
+						"oldValue", JSONUtil.put("title", "Old Testament")
 					))
 			).toString(),
 			String.valueOf(auditMessage.getAdditionalInfo()),
@@ -1131,7 +1131,7 @@ public class ObjectEntryLocalServiceTest {
 					"name", "List Type Entry Key 3"
 				)
 			).put(
-				"upload", JSONUtil.put("title", "NewFileEntry")
+				"upload", JSONUtil.put("title", "New Testament")
 			).toString(),
 			String.valueOf(auditMessage.getAdditionalInfo()),
 			JSONCompareMode.STRICT_ORDER);
