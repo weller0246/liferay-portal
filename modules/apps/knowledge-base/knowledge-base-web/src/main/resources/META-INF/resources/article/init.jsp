@@ -16,8 +16,6 @@
 
 <%@ include file="/init.jsp" %>
 
-<%@ page import="com.liferay.knowledge.base.web.internal.display.context.KBArticleConfigurationDisplayContext" %>
-
 <%
 KBArticlePortletInstanceConfiguration kbArticlePortletInstanceConfiguration = portletDisplay.getPortletInstanceConfiguration(KBArticlePortletInstanceConfiguration.class);
 
