@@ -15,7 +15,6 @@
 import React from 'react';
 interface IAssignModal {
 	observer: any;
-	onCloseModal: () => void;
 }
 export declare enum ETabs {
 	Channel = 0,
