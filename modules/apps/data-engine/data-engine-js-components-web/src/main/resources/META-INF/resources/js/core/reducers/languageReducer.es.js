@@ -92,6 +92,7 @@ const getLocalizedValue = ({
 	}
 
 	switch (type) {
+		case 'text':
 		case 'select':
 		case 'numeric': {
 			return _value;
