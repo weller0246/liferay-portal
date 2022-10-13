@@ -35,7 +35,7 @@ public interface AnalyticsCloudClient {
 	public AnalyticsDataSource disconnectAnalyticsDataSource(long companyId)
 		throws Exception;
 
-	public Page<AnalyticsChannel> fetchAnalyticsChannelsPage(
+	public Page<AnalyticsChannel> getAnalyticsChannelsPage(
 			long companyId, String keywords, int page, int size)
 		throws Exception;
 

@@ -139,7 +139,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new DataSourceConnectionException(
-				"Unable to connect data source");
+				"Unable to connect analytics data source");
 		}
 
 		JSONObject contentJSONObject = JSONFactoryUtil.createJSONObject(
@@ -179,7 +179,8 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				_log.debug("Response code " + response.getResponseCode());
 			}
 
-			throw new PortalException("Unable to disconnect data source");
+			throw new PortalException(
+				"Unable to disconnect analytics data source");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -187,11 +188,11 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new PortalException(
-				"Unable to disconnect data source", exception);
+				"Unable to disconnect analytics data source", exception);
 		}
 	}
 
-	public Page<AnalyticsChannel> fetchAnalyticsChannelsPage(
+	public Page<AnalyticsChannel> getAnalyticsChannelsPage(
 			long companyId, String keywords, int page, int size)
 		throws Exception {
 
@@ -256,7 +257,8 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 						response.getResponseCode()));
 			}
 
-			throw new PortalException("Unable to fetch Channels page");
+			throw new PortalException(
+				"Unable to get analytics channels page");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -264,7 +266,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new PortalException(
-				"Unable to fetch Channels page", exception);
+				"Unable to get analytics channels page", exception);
 		}
 	}
 

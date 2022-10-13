@@ -45,7 +45,7 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 
 		com.liferay.analytics.settings.rest.internal.client.pagination.Page
 			<AnalyticsChannel> analyticsChannelsPage =
-				_analyticsCloudClient.fetchAnalyticsChannelsPage(
+				_analyticsCloudClient.getAnalyticsChannelsPage(
 					contextCompany.getCompanyId(), keywords,
 					pagination.getPage() - 1, pagination.getPageSize());
 
