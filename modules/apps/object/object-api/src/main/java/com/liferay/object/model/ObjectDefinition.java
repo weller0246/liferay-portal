@@ -57,13 +57,13 @@ public interface ObjectDefinition
 
 		};
 
-	public String createOSGIJAXRsName();
-
-	public String createOSGIJAXRsName(String className);
-
 	public String getDestinationName();
 
 	public String getExtensionDBTableName();
+
+	public String getOSGiJaxRsName();
+
+	public String getOSGiJaxRsName(String className);
 
 	public String getPortletId();
 
