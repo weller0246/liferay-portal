@@ -17,8 +17,8 @@ import {WebDAV} from './common/context/WebDAV';
 import {AppRouteType} from './common/enums/appRouteType';
 import getIconSpriteMap from './common/utils/getIconSpriteMap';
 import handleError from './common/utils/handleError';
-import MDFClaimForm from './routes/MDFClaimForm';
 import DealRegistrationForm from './routes/DealRegistrationForm';
+import MDFClaimForm from './routes/MDFClaimForm';
 import MDFRequestForm from './routes/MDFRequestForm';
 import MDFRequestList from './routes/MDFRequestList';
 

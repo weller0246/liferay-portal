@@ -10,15 +10,21 @@
  * distribution rights of the Software.
  */
 
-import classNames  from 'classnames';
+import classNames from 'classnames';
 interface IProps {
 	children?: React.ReactNode;
 }
 
-const Footer = ({children, className}: IProps & React.HTMLAttributes<HTMLDivElement>
-	) => (
+const Footer = ({
+	children,
+	className,
+}: IProps & React.HTMLAttributes<HTMLDivElement>) => (
 	<div
-	className={classNames('border-neutral-2 border-top d-flex mt-4 pt-4', className)}	>
+		className={classNames(
+			'border-neutral-2 border-top d-flex mt-4 pt-4',
+			className
+		)}
+	>
 		{children}
 	</div>
 );
