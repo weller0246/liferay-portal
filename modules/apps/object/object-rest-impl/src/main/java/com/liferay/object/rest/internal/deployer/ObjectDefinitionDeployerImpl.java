@@ -109,29 +109,28 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 			return Collections.emptyList();
 		}
 
-		String objectDefinitionInstanceKey = _getObjectDefinitionInstanceKey(
+		String objectDefinitionKey = _getObjectDefinitionKey(
 			objectDefinition.getCompanyId(),
 			objectDefinition.getRESTContextPath());
-
 		ObjectScopeProvider objectScopeProvider =
 			_objectScopeProviderRegistry.getObjectScopeProvider(
 				objectDefinition.getScope());
 
 		Map<Long, ObjectDefinition> objectDefinitions =
-			_objectDefinitionsMap.get(objectDefinitionInstanceKey);
+			_objectDefinitionsMap.get(objectDefinitionKey);
 
 		if (objectDefinitions == null) {
 			objectDefinitions = new HashMap<>();
 
 			_objectDefinitionsMap.put(
-				objectDefinitionInstanceKey, objectDefinitions);
+				objectDefinitionKey, objectDefinitions);
 
 			_excludeScopedMethods(objectDefinition, objectScopeProvider);
 
 			String osgiJaxRsName = objectDefinition.getOSGiJaxRsName();
 
 			_componentInstancesMap.put(
-				objectDefinitionInstanceKey,
+				objectDefinitionKey,
 				Arrays.asList(
 					_objectEntryApplicationComponentFactory.newInstance(
 						HashMapDictionaryBuilder.<String, Object>put(
@@ -147,7 +146,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						).build())));
 
 			_serviceRegistrationsMap.put(
-				objectDefinitionInstanceKey,
+				objectDefinitionKey,
 				Arrays.asList(
 					_bundleContext.registerService(
 						ContextProvider.class,
@@ -294,7 +293,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 		Map<Long, ObjectDefinition> objectDefinitions =
 			_objectDefinitionsMap.get(
-				_getObjectDefinitionInstanceKey(companyId, restContextPath));
+				_getObjectDefinitionKey(companyId, restContextPath));
 
 		if (objectDefinitions != null) {
 			return objectDefinitions.get(companyId);
@@ -305,27 +304,27 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 	@Override
 	public synchronized void undeploy(ObjectDefinition objectDefinition) {
-		String objectDefinitionInstanceKey = _getObjectDefinitionInstanceKey(
+		String objectDefinitionKey = _getObjectDefinitionKey(
 			objectDefinition.getCompanyId(),
 			objectDefinition.getRESTContextPath());
 
 		Map<Long, ObjectDefinition> objectDefinitions =
-			_objectDefinitionsMap.get(objectDefinitionInstanceKey);
+			_objectDefinitionsMap.get(objectDefinitionKey);
 
 		if (objectDefinitions != null) {
 			objectDefinitions.remove(objectDefinition.getCompanyId());
 
 			if (objectDefinitions.isEmpty()) {
-				_objectDefinitionsMap.remove(objectDefinitionInstanceKey);
+				_objectDefinitionsMap.remove(objectDefinitionKey);
 			}
 		}
 
-		if (_objectDefinitionsMap.containsKey(objectDefinitionInstanceKey)) {
+		if (_objectDefinitionsMap.containsKey(objectDefinitionKey)) {
 			return;
 		}
 
 		List<ComponentInstance> componentInstances =
-			_componentInstancesMap.remove(objectDefinitionInstanceKey);
+			_componentInstancesMap.remove(objectDefinitionKey);
 
 		if (componentInstances != null) {
 			for (ComponentInstance componentInstance : componentInstances) {
@@ -334,7 +333,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		}
 
 		List<ServiceRegistration<?>> serviceRegistrations =
-			_serviceRegistrationsMap.remove(objectDefinitionInstanceKey);
+			_serviceRegistrationsMap.remove(objectDefinitionKey);
 
 		if (serviceRegistrations != null) {
 			for (ServiceRegistration<?> serviceRegistration :
@@ -348,12 +347,6 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_bundleContext = bundleContext;
-	}
-
-	private String _getObjectDefinitionInstanceKey(
-		long companyId, String restContextPath) {
-
-		return restContextPath + companyId;
 	}
 
 	private void _excludeScopedMethods(
@@ -405,6 +398,12 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 				_log.debug(exception);
 			}
 		}
+	}
+
+	private String _getObjectDefinitionKey(
+		long companyId, String restContextPath) {
+
+		return restContextPath + companyId;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
