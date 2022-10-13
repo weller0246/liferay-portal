@@ -3361,13 +3361,10 @@ public class ServiceBuilder {
 			file.delete();
 		}
 
-		File folder = file.getParentFile();
+		File dir = file.getParentFile();
 
-		File[] oldFiles = folder.listFiles(
-			(dir, name) -> !Objects.equals(name, file.getName()));
-
-		if (oldFiles != null) {
-			for (File oldFile : oldFiles) {
+		for (File oldFile : dir.listFiles()) {
+			if (!Objects.equals(file.getName(), oldFile.getName())) {
 				oldFile.delete();
 			}
 		}
