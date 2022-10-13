@@ -202,16 +202,17 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 
 			Http.Options options = _getOptions(analyticsConfiguration);
 
-			String url = HttpComponentsUtil.addParameter(
+			String url =
 				analyticsConfiguration.liferayAnalyticsFaroBackendURL() +
-					"/api/1.0/channels",
-				"page", page);
-
-			url = HttpComponentsUtil.addParameter(url, "size", size);
+					"/api/1.0/channels";
 
 			if (Validator.isNotNull(keywords)) {
 				url = HttpComponentsUtil.addParameter(url, "filter", keywords);
 			}
+
+			url = HttpComponentsUtil.addParameter(
+				url, "page", page);
+			url = HttpComponentsUtil.addParameter(url, "size", size);
 
 			options.setLocation(url);
 
