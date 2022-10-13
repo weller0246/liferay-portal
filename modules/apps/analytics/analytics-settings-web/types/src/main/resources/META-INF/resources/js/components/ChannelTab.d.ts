@@ -12,7 +12,5 @@
  * details.
  */
 
-/// <reference types="react" />
-
 declare const ChannelTab: () => JSX.Element;
 export default ChannelTab;
