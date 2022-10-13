@@ -22,7 +22,6 @@ import SitesTab from './SitesTab';
 
 interface IAssignModal {
 	observer: any;
-	onCloseModal: () => void;
 }
 
 export enum ETabs {
@@ -30,7 +29,7 @@ export enum ETabs {
 	Sites = 1,
 }
 
-const AssignModal: React.FC<IAssignModal> = ({observer, onCloseModal}) => {
+const AssignModal: React.FC<IAssignModal> = ({observer}) => {
 	const [activeTabKeyValue, setActiveTabKeyValue] = useState<number>(
 		ETabs.Channel
 	);
@@ -38,8 +37,6 @@ const AssignModal: React.FC<IAssignModal> = ({observer, onCloseModal}) => {
 	return (
 		<ClayModal observer={observer} size="lg">
 			<ClayModal.Header>
-				{/* TODO: Replace "Property Name" for property name from backend  */}
-
 				{Liferay.Language.get('assign-to')} Propertie Name
 			</ClayModal.Header>
 
@@ -52,7 +49,7 @@ const AssignModal: React.FC<IAssignModal> = ({observer, onCloseModal}) => {
 						}}
 						onClick={() => setActiveTabKeyValue(0)}
 					>
-						{Liferay.Language.get('channel')}
+						Channel
 					</ClayTabs.Item>
 
 					<ClayTabs.Item
@@ -62,7 +59,7 @@ const AssignModal: React.FC<IAssignModal> = ({observer, onCloseModal}) => {
 						}}
 						onClick={() => setActiveTabKeyValue(1)}
 					>
-						{Liferay.Language.get('sites')}
+						Sites
 					</ClayTabs.Item>
 
 					<ClayTabs.Content activeIndex={activeTabKeyValue} fade>
@@ -80,10 +77,7 @@ const AssignModal: React.FC<IAssignModal> = ({observer, onCloseModal}) => {
 			<ClayModal.Footer
 				last={
 					<ClayButton.Group spaced>
-						<ClayButton
-							displayType="secondary"
-							onClick={onCloseModal}
-						>
+						<ClayButton displayType="secondary">
 							{Liferay.Language.get('cancel')}
 						</ClayButton>
 
