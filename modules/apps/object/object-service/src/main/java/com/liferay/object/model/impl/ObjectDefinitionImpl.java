@@ -40,16 +40,6 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 	}
 
 	@Override
-	public String createOSGIJAXRsName() {
-		return createOSGIJAXRsName(StringPool.BLANK);
-	}
-
-	@Override
-	public String createOSGIJAXRsName(String className) {
-		return StringBundler.concat(getName(), className, getCompanyId());
-	}
-
-	@Override
 	public String getDestinationName() {
 		return StringBundler.concat(
 			"liferay/object/", getCompanyId(), StringPool.SLASH,
@@ -74,6 +64,16 @@ public class ObjectDefinitionImpl extends ObjectDefinitionBaseImpl {
 		}
 
 		return getDBTableName() + "_x";
+	}
+
+	@Override
+	public String getOSGiJaxRsName() {
+		return getOSGiJaxRsName(StringPool.BLANK);
+	}
+
+	@Override
+	public String getOSGiJaxRsName(String className) {
+		return StringBundler.concat(getName(), className, getCompanyId());
 	}
 
 	@Override

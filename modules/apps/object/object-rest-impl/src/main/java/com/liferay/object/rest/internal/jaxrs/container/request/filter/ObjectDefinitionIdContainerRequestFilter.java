@@ -56,7 +56,7 @@ public class ObjectDefinitionIdContainerRequestFilter
 		}
 
 		uriBuilder.queryParam(
-			"taskItemDelegateName", _objectDefinition.createOSGIJAXRsName());
+			"taskItemDelegateName", _objectDefinition.getOSGiJaxRsName());
 
 		containerRequestContext.setRequestUri(uriBuilder.build());
 	}

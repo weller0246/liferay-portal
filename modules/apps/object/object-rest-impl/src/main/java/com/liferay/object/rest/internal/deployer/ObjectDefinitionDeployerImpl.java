@@ -128,7 +128,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 
 			_excludeScopedMethods(objectDefinition, objectScopeProvider);
 
-			String osgiJAXRsName = objectDefinition.createOSGIJAXRsName();
+			String osgiJAXRsName = objectDefinition.getOSGiJaxRsName();
 
 			_componentInstancesMap.put(
 				objectDefinitionInstanceKey,
@@ -161,7 +161,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension", "true"
 						).put(
 							"osgi.jaxrs.name",
-							objectDefinition.createOSGIJAXRsName(
+							objectDefinition.getOSGiJaxRsName(
 								"ObjectDefinitionContextProvider")
 						).build()),
 					_bundleContext.registerService(
@@ -174,7 +174,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension", "true"
 						).put(
 							"osgi.jaxrs.name",
-							objectDefinition.createOSGIJAXRsName(
+							objectDefinition.getOSGiJaxRsName(
 								"ObjectEntryManagerHttpExceptionMapper")
 						).build()),
 					_bundleContext.registerService(
@@ -187,7 +187,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension", "true"
 						).put(
 							"osgi.jaxrs.name",
-							objectDefinition.createOSGIJAXRsName(
+							objectDefinition.getOSGiJaxRsName(
 								"ObjectEntryValuesExceptionMapper")
 						).build()),
 					_bundleContext.registerService(
@@ -200,7 +200,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension", "true"
 						).put(
 							"osgi.jaxrs.name",
-							objectDefinition.createOSGIJAXRsName(
+							objectDefinition.getOSGiJaxRsName(
 								"ObjectValidationRuleEngineExceptionMapper")
 						).build()),
 					_bundleContext.registerService(
@@ -213,7 +213,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							"osgi.jaxrs.extension", "true"
 						).put(
 							"osgi.jaxrs.name",
-							objectDefinition.createOSGIJAXRsName(
+							objectDefinition.getOSGiJaxRsName(
 								"RequiredObjectRelationshipExceptionMapper")
 						).build()),
 					_bundleContext.registerService(
