@@ -17,8 +17,8 @@ package com.liferay.object.internal.action.executor;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
 import com.liferay.object.action.executor.ObjectActionExecutor;
-import com.liferay.object.configuration.FunctionObjectActionExecutorFactoryConfiguration;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
+import com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -29,8 +29,6 @@ import com.liferay.portal.kernel.servlet.HttpHeaders;
 import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.Http;
-import com.liferay.portal.kernel.util.Http.Method;
-import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.util.PropsValues;
@@ -48,12 +46,11 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
-	configurationPid = "com.liferay.object.configuration.FunctionObjectActionExecutorFactoryConfiguration",
+	configurationPid = "com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE,
 	service = ObjectActionExecutor.class
 )
-public class FunctionObjectActionExecutorFactory
-	implements ObjectActionExecutor {
+public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 
 	@Override
 	public void execute(
@@ -69,7 +66,7 @@ public class FunctionObjectActionExecutorFactory
 			payloadJSONObject.toString(), ContentTypes.APPLICATION_JSON,
 			StringPool.UTF8);
 		options.setLocation(_location);
-		options.setMethod(Method.POST);
+		options.setMethod(Http.Method.POST);
 		options.setTimeout(_timeout);
 
 		// Adding OAuth is pending a change by App Sec.
@@ -87,9 +84,9 @@ public class FunctionObjectActionExecutorFactory
 
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
-		_functionObjectActionExecutorFactoryConfiguration =
+		_functionObjectActionExecutorImplConfiguration =
 			ConfigurableUtil.createConfigurable(
-				FunctionObjectActionExecutorFactoryConfiguration.class,
+				FunctionObjectActionExecutorImplConfiguration.class,
 				properties);
 
 		_key = _getExternalReferenceCode(properties);
@@ -100,12 +97,12 @@ public class FunctionObjectActionExecutorFactory
 			_oAuth2ApplicationLocalService.
 				fetchOAuth2ApplicationByExternalReferenceCode(
 					company.getCompanyId(),
-					_functionObjectActionExecutorFactoryConfiguration.
+					_functionObjectActionExecutorImplConfiguration.
 						oauth2Application());
 
 		_location = _getLocation();
 
-		_timeout = _functionObjectActionExecutorFactoryConfiguration.timeout();
+		_timeout = _functionObjectActionExecutorImplConfiguration.timeout();
 	}
 
 	private Company _getCompany(Map<String, Object> properties)
@@ -148,7 +145,7 @@ public class FunctionObjectActionExecutorFactory
 
 	private String _getLocation() {
 		String resourcePath =
-			_functionObjectActionExecutorFactoryConfiguration.resourcePath();
+			_functionObjectActionExecutorImplConfiguration.resourcePath();
 
 		if (resourcePath.contains(Http.PROTOCOL_DELIMITER)) {
 			return resourcePath;
@@ -171,8 +168,8 @@ public class FunctionObjectActionExecutorFactory
 	@Reference
 	private CompanyLocalService _companyLocalService;
 
-	private FunctionObjectActionExecutorFactoryConfiguration
-		_functionObjectActionExecutorFactoryConfiguration;
+	private FunctionObjectActionExecutorImplConfiguration
+		_functionObjectActionExecutorImplConfiguration;
 
 	@Reference
 	private Http _http;

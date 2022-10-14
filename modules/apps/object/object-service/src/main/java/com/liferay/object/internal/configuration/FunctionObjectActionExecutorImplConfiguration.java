@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.object.configuration;
+package com.liferay.object.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -21,9 +21,9 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.object.configuration.FunctionObjectActionExecutorFactoryConfiguration"
+	id = "com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration"
 )
-public interface FunctionObjectActionExecutorFactoryConfiguration {
+public interface FunctionObjectActionExecutorImplConfiguration {
 
 	@Meta.AD(required = false)
 	public String description();
