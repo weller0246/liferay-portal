@@ -69,9 +69,9 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 		options.setMethod(Http.Method.POST);
 		options.setTimeout(_timeout);
 
-		// Adding OAuth is pending a change by App Sec.
+		// TODO
 
-		// _authorize(companyId, options, userId);
+		//_authorize(companyId, options, userId);
 
 		_http.URLtoByteArray(options);
 	}
