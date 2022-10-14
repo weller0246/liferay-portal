@@ -40,6 +40,7 @@ import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
 
 import java.io.IOException;
@@ -284,36 +285,35 @@ public class SystemObjectEntryItemSelectorView
 					_portletRequest, _portletURL, null,
 					"no-entries-were-found");
 
+			searchContainer.setResultsAndTotal(ArrayList::new, 0);
+
 			String objectRelationshipType = ParamUtil.getString(
 				_portletRequest, "objectRelationshipType");
 
-			if (objectRelationshipType.isEmpty()) {
-				searchContainer.setResultsAndTotal(ArrayList::new, 0);
+			if (Validator.isNull(objectRelationshipType)) {
+				return searchContainer;
 			}
-			else {
-				try {
-					ObjectRelatedModelsProvider objectRelatedModelsProvider =
-						_objectRelatedModelsProviderRegistry.
-							getObjectRelatedModelsProvider(
-								_objectDefinition.getClassName(),
-								objectRelationshipType);
 
-					List<BaseModel<?>> baseModels =
-						objectRelatedModelsProvider.getUnrelatedModels(
-							_themeDisplay.getCompanyId(),
-							_themeDisplay.getScopeGroupId(), _objectDefinition,
-							ParamUtil.getLong(_portletRequest, "objectEntryId"),
-							ParamUtil.getLong(
-								_portletRequest, "objectRelationshipId"));
+			try {
+				ObjectRelatedModelsProvider objectRelatedModelsProvider =
+					_objectRelatedModelsProviderRegistry.
+						getObjectRelatedModelsProvider(
+							_objectDefinition.getClassName(),
+							objectRelationshipType);
 
-					searchContainer.setResultsAndTotal(
-						() -> baseModels, baseModels.size());
-				}
-				catch (Exception exception) {
-					_log.error(exception);
+				List<BaseModel<?>> baseModels =
+					objectRelatedModelsProvider.getUnrelatedModels(
+						_themeDisplay.getCompanyId(),
+						_themeDisplay.getScopeGroupId(), _objectDefinition,
+						ParamUtil.getLong(_portletRequest, "objectEntryId"),
+						ParamUtil.getLong(
+							_portletRequest, "objectRelationshipId"));
 
-					searchContainer.setResultsAndTotal(ArrayList::new, 0);
-				}
+				searchContainer.setResultsAndTotal(
+					() -> baseModels, baseModels.size());
+			}
+			catch (Exception exception) {
+				_log.error(exception);
 			}
 
 			return searchContainer;
