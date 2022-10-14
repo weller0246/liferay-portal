@@ -8350,6 +8350,38 @@ public class PortalImpl implements Portal {
 		return _LOCALHOST;
 	}
 
+	private Layout _getFirstPublishedLayout(
+		long groupId, boolean privateLayout) {
+
+		boolean hasNext = true;
+
+		int start = 1;
+		int end = 0;
+		int interval = 20;
+
+		while (hasNext) {
+			end = start + interval;
+
+			List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
+				groupId, privateLayout,
+				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, true, start, end);
+
+			for (Layout layout : layouts) {
+				if (layout.isPublished()) {
+					return layout;
+				}
+			}
+
+			start = start + interval;
+
+			if (layouts.size() < interval) {
+				hasNext = false;
+			}
+		}
+
+		return null;
+	}
+
 	private String _getGroupFriendlyURL(
 			Group group, LayoutSet layoutSet, ThemeDisplay themeDisplay,
 			boolean canonicalURL, boolean controlPanel)
@@ -8912,38 +8944,6 @@ public class PortalImpl implements Portal {
 		}
 
 		return false;
-	}
-
-	private Layout _getFirstPublishedLayout(
-		long groupId, boolean privateLayout) {
-
-		boolean hasNext = true;
-
-		int start = 1;
-		int end = 0;
-		int interval = 20;
-
-		while (hasNext) {
-			end = start + interval;
-
-			List<Layout> layouts = LayoutLocalServiceUtil.getLayouts(
-				groupId, privateLayout,
-				LayoutConstants.DEFAULT_PARENT_LAYOUT_ID, true, start, end);
-
-			for (Layout layout : layouts) {
-				if (layout.isPublished()) {
-					return layout;
-				}
-			}
-
-			start = start + interval;
-
-			if (layouts.size() < interval) {
-				hasNext = false;
-			}
-		}
-
-		return null;
 	}
 
 	private static final String _J_SECURITY_CHECK = "j_security_check";
