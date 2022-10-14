@@ -67,7 +67,7 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 			transform(
 				_groupService.search(
 					contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-					_getGroupParams(), pagination.getStartPosition(),
+					_getParams(), pagination.getStartPosition(),
 					pagination.getEndPosition(), null),
 				group -> _siteDTOConverter.toDTO(
 					new SiteDTOConverterContext(
@@ -78,10 +78,10 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 			pagination,
 			_groupService.searchCount(
 				contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-				_getGroupParams()));
+				_getParams()));
 	}
 
-	private LinkedHashMap<String, Object> _getGroupParams() {
+	private LinkedHashMap<String, Object> _getParams() {
 		return LinkedHashMapBuilder.<String, Object>put(
 			"active", Boolean.TRUE
 		).put(
