@@ -834,22 +834,18 @@ public abstract class Base${schemaName}ResourceImpl
 
 		@Override
 		public Sort[] toSorts(String sortString) {
-
 			if (Validator.isNull(sortString)) {
 				return null;
 			}
 
 			try {
-				SortParser sortParser = sortParserProvider.provide(
-					getEntityModel(Collections.emptyMap()));
+				SortParser sortParser = sortParserProvider.provide(getEntityModel(Collections.emptyMap()));
 
 				if (sortParser == null) {
 					return null;
 				}
 
-				com.liferay.portal.odata.sort.Sort oDataSort =
-					new com.liferay.portal.odata.sort.Sort(
-						sortParser.parse(sortString));
+				com.liferay.portal.odata.sort.Sort oDataSort = new com.liferay.portal.odata.sort.Sort(sortParser.parse(sortString));
 
 				List<SortField> sortFields = oDataSort.getSortFields();
 
@@ -858,10 +854,7 @@ public abstract class Base${schemaName}ResourceImpl
 				for (int i = 0; i < sortFields.size(); i++) {
 					SortField sortField = sortFields.get(i);
 
-					sorts[i] = new Sort(
-						sortField.getSortableFieldName(
-							contextAcceptLanguage.getPreferredLocale()),
-							!sortField.isAscending());
+					sorts[i] = new Sort(sortField.getSortableFieldName(contextAcceptLanguage.getPreferredLocale()), !sortField.isAscending());
 				}
 
 				return sorts;
