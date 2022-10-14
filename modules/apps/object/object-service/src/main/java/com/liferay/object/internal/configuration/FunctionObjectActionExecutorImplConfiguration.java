@@ -25,13 +25,13 @@ import aQute.bnd.annotation.metatype.Meta;
 )
 public interface FunctionObjectActionExecutorImplConfiguration {
 
-	@Meta.AD(deflt = "0", required = false)
-	public int timeout();
+    @Meta.AD
+    public String oAuth2ApplicationExternalReferenceCode();
 
 	@Meta.AD
 	public String resourcePath();
 
-	@Meta.AD
-	public String oAuth2ApplicationExternalReferenceCode();
+    @Meta.AD(deflt = "0", required = false)
+    public int timeout();
 
 }
