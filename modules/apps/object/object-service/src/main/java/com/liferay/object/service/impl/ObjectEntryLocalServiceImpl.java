@@ -1164,7 +1164,7 @@ public class ObjectEntryLocalServiceImpl
 
 		objectEntry.setStatusDate(serviceContext.getModifiedDate(null));
 
-		if (_skipModelListenersThreadLocal.get()) {
+		if (_skipModelListeners.get()) {
 			while (objectEntry instanceof ModelWrapper) {
 				ModelWrapper<ObjectEntry> modelWrapper =
 					(ModelWrapper<ObjectEntry>)objectEntry;
@@ -2541,7 +2541,7 @@ public class ObjectEntryLocalServiceImpl
 				objectEntry.getObjectDefinitionId());
 
 		try {
-			_skipModelListenersThreadLocal.set(true);
+			_skipModelListeners.set(true);
 
 			WorkflowHandlerRegistryUtil.startWorkflowInstance(
 				objectEntry.getCompanyId(), objectEntry.getNonzeroGroupId(),
@@ -2549,7 +2549,7 @@ public class ObjectEntryLocalServiceImpl
 				objectEntry.getObjectEntryId(), objectEntry, serviceContext);
 		}
 		finally {
-			_skipModelListenersThreadLocal.set(false);
+			_skipModelListeners.set(false);
 		}
 	}
 
@@ -3013,10 +3013,10 @@ public class ObjectEntryLocalServiceImpl
 	private static final Log _log = LogFactoryUtil.getLog(
 		ObjectEntryLocalServiceImpl.class);
 
-	private static final ThreadLocal<Boolean> _skipModelListenersThreadLocal =
+	private static final ThreadLocal<Boolean> _skipModelListeners =
 		new CentralizedThreadLocal<>(
 			ObjectEntryLocalServiceImpl.class +
-				"._skipModelListenersThreadLocal",
+				"._skipModelListeners",
 			() -> false);
 
 	@Reference
