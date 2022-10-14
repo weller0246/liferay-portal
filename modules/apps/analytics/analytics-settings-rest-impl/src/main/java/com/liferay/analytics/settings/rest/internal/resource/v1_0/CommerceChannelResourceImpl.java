@@ -20,20 +20,19 @@ import com.liferay.analytics.settings.rest.internal.client.model.AnalyticsChanne
 import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.CommerceChannelDTOConverter;
 import com.liferay.analytics.settings.rest.internal.dto.v1_0.converter.CommerceChannelDTOConverterContext;
 import com.liferay.analytics.settings.rest.resource.v1_0.CommerceChannelResource;
-import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -66,49 +65,50 @@ public class CommerceChannelResourceImpl
 			Collectors.toMap(
 				AnalyticsChannel::getId, AnalyticsChannel::getName));
 
-		List<Group> groups = _groupService.search(
-			contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-			_getGroupParams(), pagination.getStartPosition(),
-			pagination.getEndPosition(), null);
-
-		int count = _groupService.searchCount(
-			contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-			_getGroupParams());
-
 		return Page.of(
 			transform(
-				groups,
+				_groupService.search(
+					contextCompany.getCompanyId(), _classNameIds, null,
+					_getParams(), pagination.getStartPosition(),
+					pagination.getEndPosition(), null),
 				group -> _commerceChannelDTOConverter.toDTO(
 					new CommerceChannelDTOConverterContext(
 						group.getGroupId(),
 						contextAcceptLanguage.getPreferredLocale(),
 						analyticsChannelsMap),
 					group)),
-			pagination, count);
+			pagination,
+			_groupService.searchCount(
+				contextCompany.getCompanyId(), _classNameIds, null,
+				_getParams()));
 	}
 
-	private LinkedHashMap<String, Object> _getGroupParams() {
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_classNameIds = new long[] {
+			_portal.getClassNameId(
+				"com.liferay.commerce.product.model.CommerceChannel")
+		};
+	}
+
+	private LinkedHashMap<String, Object> _getParams() {
 		return LinkedHashMapBuilder.<String, Object>put(
 			"active", Boolean.TRUE
 		).build();
 	}
 
-	private static final long[] _CLASS_NAME_IDS;
-
-	static {
-		_CLASS_NAME_IDS = new long[] {
-			PortalUtil.getClassNameId(
-				"com.liferay.commerce.product.model.CommerceChannel")
-		};
-	}
-
 	@Reference
 	private AnalyticsCloudClient _analyticsCloudClient;
+
+	private long[] _classNameIds;
 
 	@Reference
 	private CommerceChannelDTOConverter _commerceChannelDTOConverter;
 
 	@Reference
 	private GroupService _groupService;
+
+	@Reference
+	private Portal _portal;
 
 }
