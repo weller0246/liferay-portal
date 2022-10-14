@@ -8549,7 +8549,7 @@ public class PortalImpl implements Portal {
 			return layout;
 		}
 
-		return _searchFirstPublishedLayout(groupId, privateLayout);
+		return _getFirstPublishedLayout(groupId, privateLayout);
 	}
 
 	private String _getPortalURL(
@@ -8914,7 +8914,7 @@ public class PortalImpl implements Portal {
 		return false;
 	}
 
-	private Layout _searchFirstPublishedLayout(
+	private Layout _getFirstPublishedLayout(
 		long groupId, boolean privateLayout) {
 
 		boolean hasNext = true;
