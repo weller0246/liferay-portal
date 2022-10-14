@@ -24,7 +24,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Organization;
 import com.liferay.portal.kernel.service.GroupService;
 import com.liferay.portal.kernel.util.LinkedHashMapBuilder;
-import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -66,7 +67,7 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 		return Page.of(
 			transform(
 				_groupService.search(
-					contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
+					contextCompany.getCompanyId(), _classNameIds, null,
 					_getParams(), pagination.getStartPosition(),
 					pagination.getEndPosition(), null),
 				group -> _siteDTOConverter.toDTO(
@@ -77,8 +78,16 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 					group)),
 			pagination,
 			_groupService.searchCount(
-				contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
+				contextCompany.getCompanyId(), _classNameIds, null,
 				_getParams()));
+	}
+
+	@Activate
+	protected void activate(Map<String, Object> properties) {
+		_classNameIds = new long[] {
+			_portal.getClassNameId(Group.class),
+			_portal.getClassNameId(Organization.class)
+		};
 	}
 
 	private LinkedHashMap<String, Object> _getParams() {
@@ -89,20 +98,16 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 		).build();
 	}
 
-	private static final long[] _CLASS_NAME_IDS;
-
-	static {
-		_CLASS_NAME_IDS = new long[] {
-			PortalUtil.getClassNameId(Group.class),
-			PortalUtil.getClassNameId(Organization.class)
-		};
-	}
-
 	@Reference
 	private AnalyticsCloudClient _analyticsCloudClient;
 
+	private long[] _classNameIds;
+
 	@Reference
 	private GroupService _groupService;
+
+	@Reference
+	private Portal _portal;
 
 	@Reference
 	private SiteDTOConverter _siteDTOConverter;
