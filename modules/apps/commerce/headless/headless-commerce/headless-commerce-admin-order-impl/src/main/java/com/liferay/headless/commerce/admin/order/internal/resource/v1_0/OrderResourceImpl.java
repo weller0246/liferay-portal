@@ -61,6 +61,7 @@ import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.CalendarFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.odata.entity.EntityModel;
 import com.liferay.portal.vulcan.pagination.Page;
@@ -572,13 +573,13 @@ public class OrderResourceImpl extends BaseOrderResourceImpl {
 						_serviceContextHelper.getServiceContext(
 							commerceOrder.getGroupId()));
 
-				Map<String, ?> customFields = _getExpandoBridgeAttributes(
+				Map<String, ?> expandoAttributes = _getExpandoBridgeAttributes(
 					orderItem);
 
-				if ((customFields != null) && !customFields.isEmpty()) {
+				if (MapUtil.isNotEmpty(expandoAttributes)) {
 					ExpandoUtil.updateExpando(
 						contextCompany.getCompanyId(), CommerceOrderItem.class,
-						commerceOrderItem.getPrimaryKey(), customFields);
+						commerceOrderItem.getPrimaryKey(), expandoAttributes);
 				}
 			}
 		}
