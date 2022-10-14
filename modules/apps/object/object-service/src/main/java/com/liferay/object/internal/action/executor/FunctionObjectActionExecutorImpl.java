@@ -154,14 +154,14 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 			return resourcePath;
 		}
 
-		if (resourcePath.startsWith(StringPool.SLASH)) {
-			resourcePath = resourcePath.substring(1);
-		}
-
 		String homePageURL = _oAuth2Application.getHomePageURL();
 
 		if (homePageURL.endsWith(StringPool.SLASH)) {
 			homePageURL = homePageURL.substring(0, homePageURL.length() - 1);
+		}
+
+		if (resourcePath.startsWith(StringPool.SLASH)) {
+			resourcePath = resourcePath.substring(1);
 		}
 
 		return StringBundler.concat(
