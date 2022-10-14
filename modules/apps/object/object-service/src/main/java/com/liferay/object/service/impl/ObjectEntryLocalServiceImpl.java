@@ -3015,8 +3015,7 @@ public class ObjectEntryLocalServiceImpl
 
 	private static final ThreadLocal<Boolean> _skipModelListeners =
 		new CentralizedThreadLocal<>(
-			ObjectEntryLocalServiceImpl.class +
-				"._skipModelListeners",
+			ObjectEntryLocalServiceImpl.class + "._skipModelListeners",
 			() -> false);
 
 	@Reference
