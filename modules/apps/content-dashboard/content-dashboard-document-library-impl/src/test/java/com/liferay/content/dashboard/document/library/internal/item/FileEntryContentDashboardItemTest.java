@@ -790,7 +790,8 @@ public class FileEntryContentDashboardItemTest {
 				boolean showVersionInfoVisible)
 		throws Exception {
 
-		FileEntry fileEntry = _getFileEntry();
+		DLDisplayContextProvider dlDisplayContextProvider = Mockito.mock(
+			DLDisplayContextProvider.class);
 
 		DLEditFileEntryDisplayContext dlEditFileEntryDisplayContext =
 			Mockito.mock(DLEditFileEntryDisplayContext.class);
@@ -801,9 +802,6 @@ public class FileEntryContentDashboardItemTest {
 			showVersionInfoVisible
 		);
 
-		DLDisplayContextProvider dlDisplayContextProvider = Mockito.mock(
-			DLDisplayContextProvider.class);
-
 		Mockito.when(
 			dlDisplayContextProvider.getDLEditFileEntryDisplayContext(
 				Mockito.any(), Mockito.any(), Mockito.any(FileEntry.class))
@@ -813,7 +811,7 @@ public class FileEntryContentDashboardItemTest {
 
 		return new FileEntryContentDashboardItem(
 			null, null, null, null, null, dlDisplayContextProvider, null,
-			fileEntry, null, null, null, null);
+			_getFileEntry(), null, null, null, null);
 	}
 
 	private HttpServletRequest _getHttpServletRequest(long userId)
