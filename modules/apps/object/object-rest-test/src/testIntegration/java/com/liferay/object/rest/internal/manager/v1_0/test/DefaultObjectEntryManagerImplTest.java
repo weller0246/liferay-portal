@@ -770,6 +770,18 @@ public class DefaultObjectEntryManagerImplTest {
 			objectField.isState(), objectField.getObjectFieldSettings());
 	}
 
+	private String _addListTypeEntry() throws Exception {
+		ListTypeEntry listTypeEntry =
+			_listTypeEntryLocalService.addListTypeEntry(
+				_user.getUserId(),
+				_listTypeDefinition.getListTypeDefinitionId(),
+				RandomTestUtil.randomString(),
+				Collections.singletonMap(
+					LocaleUtil.US, RandomTestUtil.randomString()));
+
+		return listTypeEntry.getKey();
+	}
+
 	private void _assertCountAggregationObjectFieldValue(
 			int expectedValue, ObjectEntry objectEntry)
 		throws Exception {
@@ -1001,18 +1013,6 @@ public class DefaultObjectEntryManagerImplTest {
 		objectFieldSetting.setValue(value);
 
 		return objectFieldSetting;
-	}
-
-	private String _addListTypeEntry() throws Exception {
-		ListTypeEntry listTypeEntry =
-			_listTypeEntryLocalService.addListTypeEntry(
-				_user.getUserId(),
-				_listTypeDefinition.getListTypeDefinitionId(),
-				RandomTestUtil.randomString(),
-				Collections.singletonMap(
-					LocaleUtil.US, RandomTestUtil.randomString()));
-
-		return listTypeEntry.getKey();
 	}
 
 	private Long _getAttachmentObjectFieldValue() throws Exception {
