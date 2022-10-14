@@ -863,7 +863,7 @@ public abstract class Base${schemaName}ResourceImpl
 				_log.error("Invalid sort " + sortString, exception);
 			}
 
-			return new Sort[] {};
+			return new Sort[0];
 		}
 	</#if>
 
