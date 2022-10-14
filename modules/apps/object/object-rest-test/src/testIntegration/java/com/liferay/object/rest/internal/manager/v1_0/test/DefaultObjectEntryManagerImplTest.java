@@ -308,7 +308,7 @@ public class DefaultObjectEntryManagerImplTest {
 			},
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		String listTypeEntryKey = _generateListTypeEntryKey();
+		String listTypeEntryKey = _addListTypeEntry();
 
 		ObjectEntry childObjectEntry1 = new ObjectEntry() {
 			{
@@ -515,7 +515,7 @@ public class DefaultObjectEntryManagerImplTest {
 		String oneToManyRelationshipFieldName =
 			"r_oneToManyRelationshipName_" +
 				_objectDefinition1.getPKObjectFieldName();
-		String picklistObjectFieldValue1 = _generateListTypeEntryKey();
+		String picklistObjectFieldValue1 = _addListTypeEntry();
 
 		ObjectEntry parentObjectEntry1 = _objectEntryManager.addObjectEntry(
 			_simpleDTOConverterContext, _objectDefinition1,
@@ -555,7 +555,7 @@ public class DefaultObjectEntryManagerImplTest {
 			},
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		String picklistObjectFieldValue2 = _generateListTypeEntryKey();
+		String picklistObjectFieldValue2 = _addListTypeEntry();
 
 		ObjectEntry childObjectEntry2 = _objectEntryManager.addObjectEntry(
 			_dtoConverterContext, _objectDefinition2,
@@ -1003,7 +1003,7 @@ public class DefaultObjectEntryManagerImplTest {
 		return objectFieldSetting;
 	}
 
-	private String _generateListTypeEntryKey() throws Exception {
+	private String _addListTypeEntry() throws Exception {
 		ListTypeEntry listTypeEntry =
 			_listTypeEntryLocalService.addListTypeEntry(
 				_user.getUserId(),
