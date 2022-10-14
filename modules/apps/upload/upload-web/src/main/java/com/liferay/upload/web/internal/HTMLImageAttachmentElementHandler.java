@@ -52,11 +52,11 @@ public class HTMLImageAttachmentElementHandler
 				saveTempFileUnsafeFunction)
 		throws PortalException {
 
-		Matcher matcher = _tempAttachmentPattern.matcher(content);
-
 		StringBuffer sb = new StringBuffer(content.length());
 
 		Map<String, FileEntry> fileEntries = new HashMap<>();
+
+		Matcher matcher = _tempAttachmentPattern.matcher(content);
 
 		while (matcher.find()) {
 			String fileName = matcher.group(0);
