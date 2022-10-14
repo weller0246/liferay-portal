@@ -51,11 +51,11 @@ public class CommerceChannelDTOConverter
 		UnicodeProperties typeSettingsUnicodeProperties =
 			group.getTypeSettingsProperties();
 
-		String siteGroupId = typeSettingsUnicodeProperties.getProperty(
-			"siteGroupId", null);
-
 		return new CommerceChannel() {
 			{
+				id = group.getGroupId();
+				name = group.getDescriptiveName();
+
 				setChannelName(
 					() -> {
 						String analyticsChannelId =
@@ -66,12 +66,12 @@ public class CommerceChannelDTOConverter
 							getChannelName(
 								GetterUtil.getLong(analyticsChannelId));
 					});
-
-				id = group.getGroupId();
-				name = group.getDescriptiveName();
-
 				setSiteName(
 					() -> {
+						String siteGroupId =
+							typeSettingsUnicodeProperties.getProperty(
+								"siteGroupId", null);
+
 						if (siteGroupId == null) {
 							return null;
 						}
