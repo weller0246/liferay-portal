@@ -78,31 +78,31 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 
 	@Override
 	public String getKey() {
-		return StringBundler.concat(
-			ObjectActionExecutorConstants.KEY_FUNCTION, StringPool.POUND, _key);
+		return _key;
 	}
 
 	@Activate
 	protected void activate(Map<String, Object> properties) throws Exception {
-		_functionObjectActionExecutorImplConfiguration =
-			ConfigurableUtil.createConfigurable(
-				FunctionObjectActionExecutorImplConfiguration.class,
-				properties);
-
-		_key = _getExternalReferenceCode(properties);
+		_key = StringBundler.concat(
+			ObjectActionExecutorConstants.KEY_FUNCTION, StringPool.POUND,
+			_getExternalReferenceCode(properties));
 
 		Company company = _getCompany(properties);
 
+		FunctionObjectActionExecutorImplConfiguration
+			functionObjectActionExecutorImplConfiguration =
+				ConfigurableUtil.createConfigurable(
+					FunctionObjectActionExecutorImplConfiguration.class,
+					properties);
+
+		_location = _getLocation(functionObjectActionExecutorImplConfiguration);
 		_oAuth2Application =
 			_oAuth2ApplicationLocalService.
 				fetchOAuth2ApplicationByExternalReferenceCode(
 					company.getCompanyId(),
-					_functionObjectActionExecutorImplConfiguration.
+					functionObjectActionExecutorImplConfiguration.
 						oAuth2ApplicationExternalReferenceCode());
-
-		_location = _getLocation();
-
-		_timeout = _functionObjectActionExecutorImplConfiguration.timeout();
+		_timeout = functionObjectActionExecutorImplConfiguration.timeout();
 	}
 
 	private Company _getCompany(Map<String, Object> properties)
@@ -143,9 +143,12 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 		return externalReferenceCode;
 	}
 
-	private String _getLocation() {
+	private String _getLocation(
+		FunctionObjectActionExecutorImplConfiguration
+			functionObjectActionExecutorImplConfiguration) {
+
 		String resourcePath =
-			_functionObjectActionExecutorImplConfiguration.resourcePath();
+			functionObjectActionExecutorImplConfiguration.resourcePath();
 
 		if (resourcePath.contains(Http.PROTOCOL_DELIMITER)) {
 			return resourcePath;
@@ -167,9 +170,6 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 
 	@Reference
 	private CompanyLocalService _companyLocalService;
-
-	private FunctionObjectActionExecutorImplConfiguration
-		_functionObjectActionExecutorImplConfiguration;
 
 	@Reference
 	private Http _http;
