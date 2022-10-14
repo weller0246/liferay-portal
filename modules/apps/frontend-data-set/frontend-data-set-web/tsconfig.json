@@ -1,5 +1,5 @@
 {
-	"@generated": "58d9d31c39207e5d3171af37d86e33e8b14dcca0",
+	"@generated": "45e40a8544aeb6d79f28e33c41eb1caed24afe07",
 	"@overrides": {
 	},
 	"@readonly": "** AUTO-GENERATED: DO NOT EDIT OUTSIDE @overrides **",
@@ -13,11 +13,8 @@
 		"moduleResolution": "node",
 		"outDir": "./types",
 		"paths": {
-			"data-engine-js-components-web": [
-				"../../data-engine/data-engine-js-components-web/src/main/resources/META-INF/resources/js/index.d.ts"
-			],
-			"dynamic-data-mapping-form-field-type": [
-				"../../dynamic-data-mapping/dynamic-data-mapping-form-field-type/src/main/resources/META-INF/resources/index.ts"
+			"@liferay/frontend-js-react-web": [
+				"../../frontend-js/frontend-js-react-web/src/main/resources/META-INF/resources/js/index.ts"
 			],
 			"frontend-js-web": [
 				"../../frontend-js/frontend-js-web/src/main/resources/META-INF/resources/index.d.ts"
@@ -42,10 +39,7 @@
 	],
 	"references": [
 		{
-			"path": "../../data-engine/data-engine-js-components-web"
-		},
-		{
-			"path": "../../dynamic-data-mapping/dynamic-data-mapping-form-field-type"
+			"path": "../../frontend-js/frontend-js-react-web"
 		},
 		{
 			"path": "../../frontend-js/frontend-js-web"

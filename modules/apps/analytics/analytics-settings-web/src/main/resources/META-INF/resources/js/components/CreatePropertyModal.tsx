@@ -46,7 +46,8 @@ const CreatePropertyModal: React.FC<IModalProps> = ({observer}) => {
 				});
 
 				onOpenChange(false);
-			} else {
+			}
+			else {
 				Liferay.Util.openToast({
 					message: Liferay.Language.get(
 						'an-unexpected-system-error-occurred'

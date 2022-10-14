@@ -1,5 +1,5 @@
 {
-	"@generated": "bcafd99c6edd2ef1f406ad282a50849015521ebc",
+	"@generated": "35e0f106c9979a438cc9b0814bf7b9cb9cb1f6df",
 	"@overrides": {
 	},
 	"@readonly": "** AUTO-GENERATED: DO NOT EDIT OUTSIDE @overrides **",
@@ -13,6 +13,9 @@
 		"moduleResolution": "node",
 		"outDir": "./types",
 		"paths": {
+			"@liferay/frontend-data-set-web": [
+				"../../frontend-data-set/frontend-data-set-web/src/main/resources/META-INF/resources/index.d.ts"
+			],
 			"@liferay/object-js-components-web": [
 				"../object-js-components-web/src/main/resources/META-INF/resources/index.ts"
 			],
@@ -41,6 +44,9 @@
 		"../../../global.d.ts"
 	],
 	"references": [
+		{
+			"path": "../../frontend-data-set/frontend-data-set-web"
+		},
 		{
 			"path": "../object-js-components-web"
 		},
