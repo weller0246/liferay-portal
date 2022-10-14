@@ -34,6 +34,7 @@ import com.liferay.portal.kernel.util.ProxyUtil;
 import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.odata.filter.ExpressionConvert;
 import com.liferay.portal.odata.filter.FilterParserProvider;
+import com.liferay.portal.odata.sort.SortParserProvider;
 import com.liferay.portal.vulcan.accept.language.AcceptLanguage;
 
 import java.lang.reflect.Constructor;
@@ -208,6 +209,7 @@ public class ShipmentResourceFactoryImpl implements ShipmentResource.Factory {
 		shipmentResource.setResourcePermissionLocalService(
 			_resourcePermissionLocalService);
 		shipmentResource.setRoleLocalService(_roleLocalService);
+		shipmentResource.setSortParserProvider(_sortParserProvider);
 
 		try {
 			return method.invoke(shipmentResource, arguments);
@@ -255,6 +257,9 @@ public class ShipmentResourceFactoryImpl implements ShipmentResource.Factory {
 
 	@Reference
 	private RoleLocalService _roleLocalService;
+
+	@Reference
+	private SortParserProvider _sortParserProvider;
 
 	@Reference
 	private UserLocalService _userLocalService;
