@@ -30,7 +30,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -64,25 +63,22 @@ public class SiteResourceImpl extends BaseSiteResourceImpl {
 			Collectors.toMap(
 				AnalyticsChannel::getId, AnalyticsChannel::getName));
 
-		List<Group> groups = _groupService.search(
-			contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-			_getGroupParams(), pagination.getStartPosition(),
-			pagination.getEndPosition(), null);
-
-		int count = _groupService.searchCount(
-			contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
-			_getGroupParams());
-
 		return Page.of(
 			transform(
-				groups,
+				_groupService.search(
+					contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
+					_getGroupParams(), pagination.getStartPosition(),
+					pagination.getEndPosition(), null),
 				group -> _siteDTOConverter.toDTO(
 					new SiteDTOConverterContext(
 						group.getGroupId(),
 						contextAcceptLanguage.getPreferredLocale(),
 						analyticsChannelsMap),
 					group)),
-			pagination, count);
+			pagination,
+			_groupService.searchCount(
+				contextCompany.getCompanyId(), _CLASS_NAME_IDS, null,
+				_getGroupParams()));
 	}
 
 	private LinkedHashMap<String, Object> _getGroupParams() {
