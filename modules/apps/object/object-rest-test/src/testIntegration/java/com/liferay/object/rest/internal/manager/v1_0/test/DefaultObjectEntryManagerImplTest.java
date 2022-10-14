@@ -432,14 +432,14 @@ public class DefaultObjectEntryManagerImplTest {
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(),
 			"integerObjectFieldName", ObjectFilterConstants.TYPE_EQUALS,
-			"{\"eq\":\"15\"}");
+			"{\"eq\": \"15\"}");
 
 		_assertCountAggregationObjectFieldValue(1, parentObjectEntry1);
 
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(),
 			"integerObjectFieldName", ObjectFilterConstants.TYPE_EQUALS,
-			"{\"ne\":\"15\"}");
+			"{\"ne\": \"15\"}");
 
 		_assertCountAggregationObjectFieldValue(0, parentObjectEntry1);
 
@@ -489,13 +489,13 @@ public class DefaultObjectEntryManagerImplTest {
 			_user.getUserId(), objectField.getObjectFieldId(), "createDate",
 			ObjectFilterConstants.TYPE_DATE_RANGE,
 			StringBundler.concat(
-				"{\"le\":\"", currentDateString, "\", \"ge\":\"",
+				"{\"le\": \"", currentDateString, "\", \"ge\": \"",
 				currentDateString, "\"}"));
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(), "modifiedDate",
 			ObjectFilterConstants.TYPE_DATE_RANGE,
 			StringBundler.concat(
-				"{\"le\":\"", currentDateString, "\", \"ge\":\"",
+				"{\"le\": \"", currentDateString, "\", \"ge\": \"",
 				currentDateString, "\"}"));
 
 		_assertCountAggregationObjectFieldValue(2, parentObjectEntry1);
@@ -503,7 +503,7 @@ public class DefaultObjectEntryManagerImplTest {
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(),
 			"dateObjectFieldName", ObjectFilterConstants.TYPE_DATE_RANGE,
-			"{\"le\":\"2020-01-02\", \"ge\":\"2020-01-02\"}");
+			"{\"le\": \"2020-01-02\", \"ge\": \"2020-01-02\"}");
 
 		_assertCountAggregationObjectFieldValue(1, parentObjectEntry1);
 	}
