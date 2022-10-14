@@ -449,14 +449,14 @@ public class DefaultObjectEntryManagerImplTest {
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(),
 			"picklistObjectFieldName", ObjectFilterConstants.TYPE_INCLUDES,
-			"{\"in\":[\"" + listTypeEntryKey + "\"]}");
+			"{\"in\": [\"" + listTypeEntryKey + "\"]}");
 
 		_assertCountAggregationObjectFieldValue(1, parentObjectEntry1);
 
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(),
 			"picklistObjectFieldName", ObjectFilterConstants.TYPE_EXCLUDES,
-			"{\"not\":{\"in\":[\"" + listTypeEntryKey + "\"]}}");
+			"{\"not\":{\"in\": [\"" + listTypeEntryKey + "\"]}}");
 
 		_assertCountAggregationObjectFieldValue(0, parentObjectEntry1);
 
@@ -466,14 +466,14 @@ public class DefaultObjectEntryManagerImplTest {
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(), "status",
 			ObjectFilterConstants.TYPE_INCLUDES,
-			"{\"in\":[" + WorkflowConstants.STATUS_APPROVED + "]}");
+			"{\"in\": [" + WorkflowConstants.STATUS_APPROVED + "]}");
 
 		_assertCountAggregationObjectFieldValue(2, parentObjectEntry1);
 
 		_objectFilterLocalService.addObjectFilter(
 			_user.getUserId(), objectField.getObjectFieldId(), "status",
 			ObjectFilterConstants.TYPE_EXCLUDES,
-			"{\"not\":{\"in\":[" + WorkflowConstants.STATUS_APPROVED + "]}}");
+			"{\"not\":{\"in\": [" + WorkflowConstants.STATUS_APPROVED + "]}}");
 
 		_assertCountAggregationObjectFieldValue(0, parentObjectEntry1);
 
