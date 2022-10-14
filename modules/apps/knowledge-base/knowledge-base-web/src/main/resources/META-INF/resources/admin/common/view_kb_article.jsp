@@ -50,14 +50,6 @@ if (portletTitleBasedNavigation) {
 	portletDisplay.setURLBack(redirect);
 	renderResponse.setTitle(kbArticle.getTitle());
 }
-
-int status = WorkflowConstants.STATUS_APPROVED;
-
-if (portletTitleBasedNavigation) {
-	status = WorkflowConstants.STATUS_ANY;
-}
-
-List<KBArticle> childKBArticles = KBArticleServiceUtil.getKBArticles(scopeGroupId, kbArticle.getResourcePrimKey(), status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new KBArticlePriorityComparator(true));
 %>
 
 <c:if test="<%= portletTitleBasedNavigation %>">
@@ -171,6 +163,16 @@ List<KBArticle> childKBArticles = KBArticleServiceUtil.getKBArticles(scopeGroupI
 					<liferay-util:include page="/admin/common/kb_article_siblings.jsp" servletContext="<%= application %>" />
 				</c:if>
 			</div>
+
+			<%
+			int status = WorkflowConstants.STATUS_APPROVED;
+
+			if (portletTitleBasedNavigation) {
+				status = WorkflowConstants.STATUS_ANY;
+			}
+
+			List<KBArticle> childKBArticles = KBArticleServiceUtil.getKBArticles(scopeGroupId, kbArticle.getResourcePrimKey(), status, QueryUtil.ALL_POS, QueryUtil.ALL_POS, new KBArticlePriorityComparator(true));
+			%>
 
 			<c:if test="<%= enableKBArticleSuggestions || !childKBArticles.isEmpty() %>">
 				<c:choose>
