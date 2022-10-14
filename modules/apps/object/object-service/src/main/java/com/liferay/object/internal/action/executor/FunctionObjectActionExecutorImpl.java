@@ -98,7 +98,7 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 				fetchOAuth2ApplicationByExternalReferenceCode(
 					company.getCompanyId(),
 					_functionObjectActionExecutorImplConfiguration.
-						oauth2Application());
+						oAuth2ApplicationExternalReferenceCode());
 
 		_location = _getLocation();
 

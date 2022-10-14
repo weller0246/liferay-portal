@@ -32,6 +32,6 @@ public interface FunctionObjectActionExecutorImplConfiguration {
 	public String resourcePath();
 
 	@Meta.AD
-	public String oauth2Application();
+	public String oAuth2ApplicationExternalReferenceCode();
 
 }
