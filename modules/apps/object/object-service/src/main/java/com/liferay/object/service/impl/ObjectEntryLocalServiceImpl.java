@@ -2548,9 +2548,6 @@ public class ObjectEntryLocalServiceImpl
 				userId, objectDefinition.getClassName(),
 				objectEntry.getObjectEntryId(), objectEntry, serviceContext);
 		}
-		catch (Exception exception) {
-			_log.error(exception);
-		}
 		finally {
 			_skipModelListenersThreadLocal.set(false);
 		}
