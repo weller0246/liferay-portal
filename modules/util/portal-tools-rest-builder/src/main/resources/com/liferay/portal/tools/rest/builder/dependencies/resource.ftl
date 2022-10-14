@@ -108,7 +108,7 @@ public interface ${schemaName}Resource {
 	}
 
 	public default Sort[] toSorts(String sortsString) {
-		return new Sort[] {};
+		return new Sort[0];
 	}
 
 	@ProviderType
