@@ -27,11 +27,11 @@ public class CommerceChannelDTOConverterContext
 	extends DefaultDTOConverterContext {
 
 	public CommerceChannelDTOConverterContext(
-		Object id, Locale locale, Map<Long, String> analyticsChannels) {
+		Object id, Locale locale, Map<Long, String> channelNames) {
 
 		super(false, new HashMap<>(), null, id, locale, null, null);
 
-		_analyticsChannels = analyticsChannels;
+		_channelNames = channelNames;
 	}
 
 	public String getChannelName(Long analyticsChannelId) {
@@ -39,9 +39,9 @@ public class CommerceChannelDTOConverterContext
 			return null;
 		}
 
-		return _analyticsChannels.getOrDefault(analyticsChannelId, null);
+		return _channelNames.getOrDefault(analyticsChannelId, null);
 	}
 
-	private final Map<Long, String> _analyticsChannels;
+	private final Map<Long, String> _channelNames;
 
 }
