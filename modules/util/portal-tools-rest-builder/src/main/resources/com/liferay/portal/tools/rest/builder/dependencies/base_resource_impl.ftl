@@ -827,9 +827,9 @@ public abstract class Base${schemaName}ResourceImpl
 			}
 			catch (Exception exception) {
 				_log.error("Invalid filter " + filterString, exception);
-			}
 
-			return null;
+				return null;
+			}
 		}
 
 		@Override
@@ -861,9 +861,9 @@ public abstract class Base${schemaName}ResourceImpl
 			}
 			catch (Exception exception) {
 				_log.error("Invalid sort " + sortString, exception);
-			}
 
-			return new Sort[0];
+				return new Sort[0];
+			}
 		}
 	</#if>
 
