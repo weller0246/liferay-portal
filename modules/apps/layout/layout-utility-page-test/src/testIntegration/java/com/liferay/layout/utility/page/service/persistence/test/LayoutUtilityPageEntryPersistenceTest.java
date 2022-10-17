@@ -159,6 +159,9 @@ public class LayoutUtilityPageEntryPersistenceTest {
 
 		newLayoutUtilityPageEntry.setType(RandomTestUtil.nextInt());
 
+		newLayoutUtilityPageEntry.setPreviewFileEntryId(
+			RandomTestUtil.nextLong());
+
 		newLayoutUtilityPageEntry.setLastPublishDate(RandomTestUtil.nextDate());
 
 		_layoutUtilityPageEntries.add(
@@ -216,6 +219,9 @@ public class LayoutUtilityPageEntryPersistenceTest {
 		Assert.assertEquals(
 			existingLayoutUtilityPageEntry.getType(),
 			newLayoutUtilityPageEntry.getType());
+		Assert.assertEquals(
+			existingLayoutUtilityPageEntry.getPreviewFileEntryId(),
+			newLayoutUtilityPageEntry.getPreviewFileEntryId());
 		Assert.assertEquals(
 			Time.getShortTimestamp(
 				existingLayoutUtilityPageEntry.getLastPublishDate()),
@@ -275,6 +281,16 @@ public class LayoutUtilityPageEntryPersistenceTest {
 	}
 
 	@Test
+	public void testCountByG_N_T() throws Exception {
+		_persistence.countByG_N_T(
+			RandomTestUtil.nextLong(), "", RandomTestUtil.nextInt());
+
+		_persistence.countByG_N_T(0L, "null", 0);
+
+		_persistence.countByG_N_T(0L, (String)null, 0);
+	}
+
+	@Test
 	public void testCountByG_ERC() throws Exception {
 		_persistence.countByG_ERC(RandomTestUtil.nextLong(), "");
 
@@ -322,7 +338,8 @@ public class LayoutUtilityPageEntryPersistenceTest {
 			"LayoutUtilityPageEntryId", true, "groupId", true, "companyId",
 			true, "userId", true, "userName", true, "createDate", true,
 			"modifiedDate", true, "plid", true, "defaultLayoutUtilityPageEntry",
-			true, "name", true, "type", true, "lastPublishDate", true);
+			true, "name", true, "type", true, "previewFileEntryId", true,
+			"lastPublishDate", true);
 	}
 
 	@Test
@@ -635,6 +652,22 @@ public class LayoutUtilityPageEntryPersistenceTest {
 				layoutUtilityPageEntry, "getColumnOriginalValue",
 				new Class<?>[] {String.class}, "groupId"));
 		Assert.assertEquals(
+			layoutUtilityPageEntry.getName(),
+			ReflectionTestUtil.invoke(
+				layoutUtilityPageEntry, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "name"));
+		Assert.assertEquals(
+			Integer.valueOf(layoutUtilityPageEntry.getType()),
+			ReflectionTestUtil.<Integer>invoke(
+				layoutUtilityPageEntry, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "type_"));
+
+		Assert.assertEquals(
+			Long.valueOf(layoutUtilityPageEntry.getGroupId()),
+			ReflectionTestUtil.<Long>invoke(
+				layoutUtilityPageEntry, "getColumnOriginalValue",
+				new Class<?>[] {String.class}, "groupId"));
+		Assert.assertEquals(
 			layoutUtilityPageEntry.getExternalReferenceCode(),
 			ReflectionTestUtil.invoke(
 				layoutUtilityPageEntry, "getColumnOriginalValue",
@@ -677,6 +710,8 @@ public class LayoutUtilityPageEntryPersistenceTest {
 		layoutUtilityPageEntry.setName(RandomTestUtil.randomString());
 
 		layoutUtilityPageEntry.setType(RandomTestUtil.nextInt());
+
+		layoutUtilityPageEntry.setPreviewFileEntryId(RandomTestUtil.nextLong());
 
 		layoutUtilityPageEntry.setLastPublishDate(RandomTestUtil.nextDate());
 
