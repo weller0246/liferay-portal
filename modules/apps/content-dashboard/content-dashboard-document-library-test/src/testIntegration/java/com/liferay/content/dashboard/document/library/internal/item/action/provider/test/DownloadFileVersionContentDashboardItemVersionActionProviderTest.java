@@ -113,7 +113,6 @@ public class DownloadFileVersionContentDashboardItemVersionActionProviderTest {
 		String url = contentDashboardItemVersionAction.getURL();
 
 		Assert.assertNotNull(url);
-
 		Assert.assertTrue(url.contains("download=true"));
 		Assert.assertTrue(url.contains("version=" + _fileEntry.getVersion()));
 	}
