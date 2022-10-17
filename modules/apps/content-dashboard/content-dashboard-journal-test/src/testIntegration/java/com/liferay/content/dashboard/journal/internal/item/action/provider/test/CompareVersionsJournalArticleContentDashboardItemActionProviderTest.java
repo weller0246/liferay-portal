@@ -81,11 +81,15 @@ public class
 
 		JournalTestUtil.updateArticle(journalArticle);
 
-		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
-			new MockLiferayPortletRenderRequest();
-
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
+
+		mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_RESPONSE,
+			new MockLiferayPortletRenderResponse());
+
+		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
+			new MockLiferayPortletRenderRequest();
 
 		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY,
@@ -94,18 +98,14 @@ public class
 				TestPropsValues.getUser()));
 
 		mockHttpServletRequest.setAttribute(
+			JavaConstants.JAVAX_PORTLET_REQUEST,
+			mockLiferayPortletRenderRequest);
+
+		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY,
 			_getThemeDisplay(
 				mockHttpServletRequest, LocaleUtil.US,
 				TestPropsValues.getUser()));
-
-		mockHttpServletRequest.setAttribute(
-			JavaConstants.JAVAX_PORTLET_RESPONSE,
-			new MockLiferayPortletRenderResponse());
-
-		mockHttpServletRequest.setAttribute(
-			JavaConstants.JAVAX_PORTLET_REQUEST,
-			mockLiferayPortletRenderRequest);
 
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction =
 			_contentDashboardItemVersionActionProvider.
@@ -114,9 +114,7 @@ public class
 
 		Assert.assertEquals(
 			"compare-versions", contentDashboardItemVersionAction.getName());
-
 		Assert.assertNull(contentDashboardItemVersionAction.getIcon());
-
 		Assert.assertEquals(
 			_language.get(LocaleUtil.US, "compare-to"),
 			contentDashboardItemVersionAction.getLabel(LocaleUtil.US));
@@ -124,7 +122,6 @@ public class
 		String url = contentDashboardItemVersionAction.getURL();
 
 		Assert.assertNotNull(url);
-
 		Assert.assertTrue(
 			url.contains("articleId=" + journalArticle.getArticleId()));
 		Assert.assertTrue(url.contains("compare_versions"));
