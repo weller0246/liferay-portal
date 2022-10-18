@@ -85,7 +85,7 @@ public class ObjectEntryOpenAPIContributor implements OpenAPIContributor {
 						_addSchema(relatedObjectDefinition, openAPI);
 					}
 
-					_addRelationshipPaths(
+					_addPathItem(
 						key, relatedObjectDefinition, objectRelationship,
 						paths);
 				}
@@ -113,7 +113,7 @@ public class ObjectEntryOpenAPIContributor implements OpenAPIContributor {
 		}
 	}
 
-	private void _addRelationshipPaths(
+	private void _addPathItem(
 		String key, ObjectDefinition objectDefinition,
 		ObjectRelationship objectRelationship, Paths paths) {
 
@@ -231,10 +231,10 @@ public class ObjectEntryOpenAPIContributor implements OpenAPIContributor {
 				relatedObjectDefinition);
 		}
 
-		ApiResponses operationResponses = operation.getResponses();
+		ApiResponses operationApiResponses = operation.getResponses();
 
 		for (Map.Entry<String, ApiResponse> entry :
-				operationResponses.entrySet()) {
+				operationApiResponses.entrySet()) {
 
 			ApiResponse apiResponse = entry.getValue();
 
