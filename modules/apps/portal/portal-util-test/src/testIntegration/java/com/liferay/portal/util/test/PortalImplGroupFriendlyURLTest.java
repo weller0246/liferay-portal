@@ -245,20 +245,20 @@ public class PortalImplGroupFriendlyURLTest {
 		String groupFriendlyURL = _group.getFriendlyURL();
 		String layoutFriendlyURL = defaultSiteLayout.getFriendlyURL();
 
-		Assert.assertTrue(
-			_portal.isGroupFriendlyURL(
-				groupFriendlyURL, groupFriendlyURL, layoutFriendlyURL));
 		Assert.assertFalse(
 			_portal.isGroupFriendlyURL(
 				groupFriendlyURL.concat(layoutFriendlyURL), groupFriendlyURL,
 				layoutFriendlyURL));
 		Assert.assertFalse(
 			_portal.isGroupFriendlyURL(
-				layoutFriendlyURL.concat(layoutFriendlyURL), layoutFriendlyURL,
-				layoutFriendlyURL));
+				layoutFriendlyURL, layoutFriendlyURL, layoutFriendlyURL));
 		Assert.assertFalse(
 			_portal.isGroupFriendlyURL(
-				layoutFriendlyURL, layoutFriendlyURL, layoutFriendlyURL));
+				layoutFriendlyURL.concat(layoutFriendlyURL), layoutFriendlyURL,
+				layoutFriendlyURL));
+		Assert.assertTrue(
+			_portal.isGroupFriendlyURL(
+				groupFriendlyURL, groupFriendlyURL, layoutFriendlyURL));
 	}
 
 	private void _testGroupFriendlyURL(
