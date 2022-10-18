@@ -85,20 +85,24 @@ public abstract class Node implements ActionAware, NotificationAware {
 		User user = UserLocalServiceUtil.fetchUser(
 			PrincipalThreadLocal.getUserId());
 
-		if ((user != null) && _labelMap.containsKey(user.getLocale())) {
-			return _labelMap.get(user.getLocale());
+		if (user != null) {
+			String label = _labelMap.get(user.getLocale());
+
+			if (label != null) {
+				return label;
+			}
 		}
 
-		Locale locale = LocaleUtil.getSiteDefault();
+		String label = _labelMap.get(LocaleUtil.getSiteDefault());
 
-		if (_labelMap.containsKey(locale)) {
-			return _labelMap.get(locale);
+		if (label != null) {
+			return label;
 		}
 
-		locale = LocaleUtil.getDefault();
+		label = _labelMap.get(LocaleUtil.getDefault());
 
-		if (_labelMap.containsKey(locale)) {
-			return _labelMap.get(locale);
+		if (label != null) {
+			return label;
 		}
 
 		return _name;
