@@ -155,6 +155,7 @@ definition {
 	test AssertUserIsLoggedOutWithHigherRefreshToken {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "tokenRefreshOffset=&quot;120&quot;";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#AssertUserIsLoggedOutWithHigherRefreshToken";
 
 		task ("Startup Keycloak for test") {
