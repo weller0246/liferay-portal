@@ -129,7 +129,7 @@ public class FriendlyURLEntryLocalServiceTest {
 	}
 
 	@Test
-	public void testDeleteAllFriendlyURLLocalizationEntries() throws Exception {
+	public void testDeleteFriendlyURLLocalizationEntry() throws Exception {
 		FriendlyURLEntry friendlyURLEntry =
 			_friendlyURLEntryLocalService.addFriendlyURLEntry(
 				_group.getGroupId(),
