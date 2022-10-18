@@ -181,7 +181,6 @@ public class ContentPageLayoutEditorDisplayContext
 			"availableSegmentsExperiences",
 			SegmentsExperienceUtil.getAvailableSegmentsExperiences(
 				httpServletRequest));
-
 		stateContext.put("layoutDataList", _getLayoutDataList());
 		stateContext.put(
 			"segmentsExperimentStatus",
