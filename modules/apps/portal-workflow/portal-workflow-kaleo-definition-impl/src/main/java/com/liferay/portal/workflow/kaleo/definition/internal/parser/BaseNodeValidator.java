@@ -57,12 +57,12 @@ public abstract class BaseNodeValidator<T extends Node>
 			return;
 		}
 
-		for (Map.Entry<Locale, String> labelEntry : labelMap.entrySet()) {
-			String label = labelEntry.getValue();
+		for (Map.Entry<Locale, String> entry : labelMap.entrySet()) {
+			String value = entry.getValue();
 
-			if (label.length() > _NODE_VALUE_MAX_LENGTH) {
+			if (value.length() > _NODE_VALUE_MAX_LENGTH) {
 				throw new KaleoDefinitionValidationException.
-					MustSetValidNodeNameLength(_NODE_VALUE_MAX_LENGTH, label);
+					MustSetValidNodeNameLength(_NODE_VALUE_MAX_LENGTH, value);
 			}
 		}
 	}
