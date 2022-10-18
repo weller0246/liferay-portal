@@ -191,7 +191,7 @@
 	</entity>
 	<entity local-service="true" name="ObjectField" remote-service="true" uuid="true">
 
-		<!-- External Reference Code -->
+		<!-- External reference code -->
 
 		<column name="externalReferenceCode" type="String" />
 
