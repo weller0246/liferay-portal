@@ -99,14 +99,14 @@ public class CopyLayoutUtilityPageEntryMVCActionCommand
 		ServiceContext serviceContext = ServiceContextFactory.getInstance(
 			actionRequest);
 
-		LayoutUtilityPageEntry sourceLayoutUtilityPageEntry =
-			_layoutUtilityPageEntryLocalService.getLayoutUtilityPageEntry(
-				layoutUtilityPageEntryId);
-
 		LayoutUtilityPageEntry layoutUtilityPageEntry =
 			_layoutUtilityPageEntryService.copyLayoutUtilityPageEntry(
 				themeDisplay.getScopeGroupId(), layoutUtilityPageEntryId,
 				serviceContext);
+
+		LayoutUtilityPageEntry sourceLayoutUtilityPageEntry =
+			_layoutUtilityPageEntryLocalService.getLayoutUtilityPageEntry(
+				layoutUtilityPageEntryId);
 
 		Layout sourceLayout = _layoutLocalService.getLayout(
 			sourceLayoutUtilityPageEntry.getPlid());
