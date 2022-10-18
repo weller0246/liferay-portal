@@ -68,6 +68,10 @@ public class LayoutUtilityPageEntryTable
 			"modifiedDate", Date.class, Types.TIMESTAMP, Column.FLAG_DEFAULT);
 	public final Column<LayoutUtilityPageEntryTable, Long> plid = createColumn(
 		"plid", Long.class, Types.BIGINT, Column.FLAG_DEFAULT);
+	public final Column<LayoutUtilityPageEntryTable, Long> previewFileEntryId =
+		createColumn(
+			"previewFileEntryId", Long.class, Types.BIGINT,
+			Column.FLAG_DEFAULT);
 	public final Column<LayoutUtilityPageEntryTable, Boolean>
 		defaultLayoutUtilityPageEntry = createColumn(
 			"defaultLayoutUtilityPageEntry", Boolean.class, Types.BOOLEAN,
@@ -77,10 +81,6 @@ public class LayoutUtilityPageEntryTable
 	public final Column<LayoutUtilityPageEntryTable, Integer> type =
 		createColumn(
 			"type_", Integer.class, Types.INTEGER, Column.FLAG_DEFAULT);
-	public final Column<LayoutUtilityPageEntryTable, Long> previewFileEntryId =
-		createColumn(
-			"previewFileEntryId", Long.class, Types.BIGINT,
-			Column.FLAG_DEFAULT);
 	public final Column<LayoutUtilityPageEntryTable, Date> lastPublishDate =
 		createColumn(
 			"lastPublishDate", Date.class, Types.TIMESTAMP,

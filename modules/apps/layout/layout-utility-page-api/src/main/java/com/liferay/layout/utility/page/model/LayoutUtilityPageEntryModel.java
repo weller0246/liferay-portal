@@ -269,6 +269,20 @@ public interface LayoutUtilityPageEntryModel
 	public void setPlid(long plid);
 
 	/**
+	 * Returns the preview file entry ID of this layout utility page entry.
+	 *
+	 * @return the preview file entry ID of this layout utility page entry
+	 */
+	public long getPreviewFileEntryId();
+
+	/**
+	 * Sets the preview file entry ID of this layout utility page entry.
+	 *
+	 * @param previewFileEntryId the preview file entry ID of this layout utility page entry
+	 */
+	public void setPreviewFileEntryId(long previewFileEntryId);
+
+	/**
 	 * Returns the default layout utility page entry of this layout utility page entry.
 	 *
 	 * @return the default layout utility page entry of this layout utility page entry
@@ -318,20 +332,6 @@ public interface LayoutUtilityPageEntryModel
 	 * @param type the type of this layout utility page entry
 	 */
 	public void setType(int type);
-
-	/**
-	 * Returns the preview file entry ID of this layout utility page entry.
-	 *
-	 * @return the preview file entry ID of this layout utility page entry
-	 */
-	public long getPreviewFileEntryId();
-
-	/**
-	 * Sets the preview file entry ID of this layout utility page entry.
-	 *
-	 * @param previewFileEntryId the preview file entry ID of this layout utility page entry
-	 */
-	public void setPreviewFileEntryId(long previewFileEntryId);
 
 	/**
 	 * Returns the last publish date of this layout utility page entry.

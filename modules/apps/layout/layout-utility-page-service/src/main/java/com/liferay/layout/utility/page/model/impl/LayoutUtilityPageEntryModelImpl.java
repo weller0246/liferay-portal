@@ -80,9 +80,9 @@ public class LayoutUtilityPageEntryModelImpl
 		{"companyId", Types.BIGINT}, {"userId", Types.BIGINT},
 		{"userName", Types.VARCHAR}, {"createDate", Types.TIMESTAMP},
 		{"modifiedDate", Types.TIMESTAMP}, {"plid", Types.BIGINT},
+		{"previewFileEntryId", Types.BIGINT},
 		{"defaultLayoutUtilityPageEntry", Types.BOOLEAN},
 		{"name", Types.VARCHAR}, {"type_", Types.INTEGER},
-		{"previewFileEntryId", Types.BIGINT},
 		{"lastPublishDate", Types.TIMESTAMP}
 	};
 
@@ -102,15 +102,15 @@ public class LayoutUtilityPageEntryModelImpl
 		TABLE_COLUMNS_MAP.put("createDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("modifiedDate", Types.TIMESTAMP);
 		TABLE_COLUMNS_MAP.put("plid", Types.BIGINT);
+		TABLE_COLUMNS_MAP.put("previewFileEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("defaultLayoutUtilityPageEntry", Types.BOOLEAN);
 		TABLE_COLUMNS_MAP.put("name", Types.VARCHAR);
 		TABLE_COLUMNS_MAP.put("type_", Types.INTEGER);
-		TABLE_COLUMNS_MAP.put("previewFileEntryId", Types.BIGINT);
 		TABLE_COLUMNS_MAP.put("lastPublishDate", Types.TIMESTAMP);
 	}
 
 	public static final String TABLE_SQL_CREATE =
-		"create table LayoutUtilityPageEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,LayoutUtilityPageEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,plid LONG,defaultLayoutUtilityPageEntry BOOLEAN,name VARCHAR(75) null,type_ INTEGER,previewFileEntryId LONG,lastPublishDate DATE null,primary key (LayoutUtilityPageEntryId, ctCollectionId))";
+		"create table LayoutUtilityPageEntry (mvccVersion LONG default 0 not null,ctCollectionId LONG default 0 not null,uuid_ VARCHAR(75) null,externalReferenceCode VARCHAR(75) null,LayoutUtilityPageEntryId LONG not null,groupId LONG,companyId LONG,userId LONG,userName VARCHAR(75) null,createDate DATE null,modifiedDate DATE null,plid LONG,previewFileEntryId LONG,defaultLayoutUtilityPageEntry BOOLEAN,name VARCHAR(75) null,type_ INTEGER,lastPublishDate DATE null,primary key (LayoutUtilityPageEntryId, ctCollectionId))";
 
 	public static final String TABLE_SQL_DROP =
 		"drop table LayoutUtilityPageEntry";
@@ -357,6 +357,13 @@ public class LayoutUtilityPageEntryModelImpl
 			(BiConsumer<LayoutUtilityPageEntry, Long>)
 				LayoutUtilityPageEntry::setPlid);
 		attributeGetterFunctions.put(
+			"previewFileEntryId",
+			LayoutUtilityPageEntry::getPreviewFileEntryId);
+		attributeSetterBiConsumers.put(
+			"previewFileEntryId",
+			(BiConsumer<LayoutUtilityPageEntry, Long>)
+				LayoutUtilityPageEntry::setPreviewFileEntryId);
+		attributeGetterFunctions.put(
 			"defaultLayoutUtilityPageEntry",
 			LayoutUtilityPageEntry::getDefaultLayoutUtilityPageEntry);
 		attributeSetterBiConsumers.put(
@@ -373,13 +380,6 @@ public class LayoutUtilityPageEntryModelImpl
 			"type",
 			(BiConsumer<LayoutUtilityPageEntry, Integer>)
 				LayoutUtilityPageEntry::setType);
-		attributeGetterFunctions.put(
-			"previewFileEntryId",
-			LayoutUtilityPageEntry::getPreviewFileEntryId);
-		attributeSetterBiConsumers.put(
-			"previewFileEntryId",
-			(BiConsumer<LayoutUtilityPageEntry, Long>)
-				LayoutUtilityPageEntry::setPreviewFileEntryId);
 		attributeGetterFunctions.put(
 			"lastPublishDate", LayoutUtilityPageEntry::getLastPublishDate);
 		attributeSetterBiConsumers.put(
@@ -649,6 +649,21 @@ public class LayoutUtilityPageEntryModelImpl
 
 	@JSON
 	@Override
+	public long getPreviewFileEntryId() {
+		return _previewFileEntryId;
+	}
+
+	@Override
+	public void setPreviewFileEntryId(long previewFileEntryId) {
+		if (_columnOriginalValues == Collections.EMPTY_MAP) {
+			_setColumnOriginalValues();
+		}
+
+		_previewFileEntryId = previewFileEntryId;
+	}
+
+	@JSON
+	@Override
 	public boolean getDefaultLayoutUtilityPageEntry() {
 		return _defaultLayoutUtilityPageEntry;
 	}
@@ -733,21 +748,6 @@ public class LayoutUtilityPageEntryModelImpl
 	public int getOriginalType() {
 		return GetterUtil.getInteger(
 			this.<Integer>getColumnOriginalValue("type_"));
-	}
-
-	@JSON
-	@Override
-	public long getPreviewFileEntryId() {
-		return _previewFileEntryId;
-	}
-
-	@Override
-	public void setPreviewFileEntryId(long previewFileEntryId) {
-		if (_columnOriginalValues == Collections.EMPTY_MAP) {
-			_setColumnOriginalValues();
-		}
-
-		_previewFileEntryId = previewFileEntryId;
 	}
 
 	@JSON
@@ -843,12 +843,12 @@ public class LayoutUtilityPageEntryModelImpl
 		layoutUtilityPageEntryImpl.setCreateDate(getCreateDate());
 		layoutUtilityPageEntryImpl.setModifiedDate(getModifiedDate());
 		layoutUtilityPageEntryImpl.setPlid(getPlid());
+		layoutUtilityPageEntryImpl.setPreviewFileEntryId(
+			getPreviewFileEntryId());
 		layoutUtilityPageEntryImpl.setDefaultLayoutUtilityPageEntry(
 			isDefaultLayoutUtilityPageEntry());
 		layoutUtilityPageEntryImpl.setName(getName());
 		layoutUtilityPageEntryImpl.setType(getType());
-		layoutUtilityPageEntryImpl.setPreviewFileEntryId(
-			getPreviewFileEntryId());
 		layoutUtilityPageEntryImpl.setLastPublishDate(getLastPublishDate());
 
 		layoutUtilityPageEntryImpl.resetOriginalValues();
@@ -885,6 +885,8 @@ public class LayoutUtilityPageEntryModelImpl
 			this.<Date>getColumnOriginalValue("modifiedDate"));
 		layoutUtilityPageEntryImpl.setPlid(
 			this.<Long>getColumnOriginalValue("plid"));
+		layoutUtilityPageEntryImpl.setPreviewFileEntryId(
+			this.<Long>getColumnOriginalValue("previewFileEntryId"));
 		layoutUtilityPageEntryImpl.setDefaultLayoutUtilityPageEntry(
 			this.<Boolean>getColumnOriginalValue(
 				"defaultLayoutUtilityPageEntry"));
@@ -892,8 +894,6 @@ public class LayoutUtilityPageEntryModelImpl
 			this.<String>getColumnOriginalValue("name"));
 		layoutUtilityPageEntryImpl.setType(
 			this.<Integer>getColumnOriginalValue("type_"));
-		layoutUtilityPageEntryImpl.setPreviewFileEntryId(
-			this.<Long>getColumnOriginalValue("previewFileEntryId"));
 		layoutUtilityPageEntryImpl.setLastPublishDate(
 			this.<Date>getColumnOriginalValue("lastPublishDate"));
 
@@ -1035,6 +1035,9 @@ public class LayoutUtilityPageEntryModelImpl
 
 		layoutUtilityPageEntryCacheModel.plid = getPlid();
 
+		layoutUtilityPageEntryCacheModel.previewFileEntryId =
+			getPreviewFileEntryId();
+
 		layoutUtilityPageEntryCacheModel.defaultLayoutUtilityPageEntry =
 			isDefaultLayoutUtilityPageEntry();
 
@@ -1047,9 +1050,6 @@ public class LayoutUtilityPageEntryModelImpl
 		}
 
 		layoutUtilityPageEntryCacheModel.type = getType();
-
-		layoutUtilityPageEntryCacheModel.previewFileEntryId =
-			getPreviewFileEntryId();
 
 		Date lastPublishDate = getLastPublishDate();
 
@@ -1136,10 +1136,10 @@ public class LayoutUtilityPageEntryModelImpl
 	private Date _modifiedDate;
 	private boolean _setModifiedDate;
 	private long _plid;
+	private long _previewFileEntryId;
 	private boolean _defaultLayoutUtilityPageEntry;
 	private String _name;
 	private int _type;
-	private long _previewFileEntryId;
 	private Date _lastPublishDate;
 
 	public <T> T getColumnValue(String columnName) {
@@ -1185,11 +1185,11 @@ public class LayoutUtilityPageEntryModelImpl
 		_columnOriginalValues.put("createDate", _createDate);
 		_columnOriginalValues.put("modifiedDate", _modifiedDate);
 		_columnOriginalValues.put("plid", _plid);
+		_columnOriginalValues.put("previewFileEntryId", _previewFileEntryId);
 		_columnOriginalValues.put(
 			"defaultLayoutUtilityPageEntry", _defaultLayoutUtilityPageEntry);
 		_columnOriginalValues.put("name", _name);
 		_columnOriginalValues.put("type_", _type);
-		_columnOriginalValues.put("previewFileEntryId", _previewFileEntryId);
 		_columnOriginalValues.put("lastPublishDate", _lastPublishDate);
 	}
 
@@ -1239,13 +1239,13 @@ public class LayoutUtilityPageEntryModelImpl
 
 		columnBitmasks.put("plid", 2048L);
 
-		columnBitmasks.put("defaultLayoutUtilityPageEntry", 4096L);
+		columnBitmasks.put("previewFileEntryId", 4096L);
 
-		columnBitmasks.put("name", 8192L);
+		columnBitmasks.put("defaultLayoutUtilityPageEntry", 8192L);
 
-		columnBitmasks.put("type_", 16384L);
+		columnBitmasks.put("name", 16384L);
 
-		columnBitmasks.put("previewFileEntryId", 32768L);
+		columnBitmasks.put("type_", 32768L);
 
 		columnBitmasks.put("lastPublishDate", 65536L);
 

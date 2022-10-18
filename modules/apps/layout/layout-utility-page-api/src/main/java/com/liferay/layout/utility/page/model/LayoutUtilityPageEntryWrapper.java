@@ -60,11 +60,11 @@ public class LayoutUtilityPageEntryWrapper
 		attributes.put("createDate", getCreateDate());
 		attributes.put("modifiedDate", getModifiedDate());
 		attributes.put("plid", getPlid());
+		attributes.put("previewFileEntryId", getPreviewFileEntryId());
 		attributes.put(
 			"defaultLayoutUtilityPageEntry", isDefaultLayoutUtilityPageEntry());
 		attributes.put("name", getName());
 		attributes.put("type", getType());
-		attributes.put("previewFileEntryId", getPreviewFileEntryId());
 		attributes.put("lastPublishDate", getLastPublishDate());
 
 		return attributes;
@@ -146,6 +146,12 @@ public class LayoutUtilityPageEntryWrapper
 			setPlid(plid);
 		}
 
+		Long previewFileEntryId = (Long)attributes.get("previewFileEntryId");
+
+		if (previewFileEntryId != null) {
+			setPreviewFileEntryId(previewFileEntryId);
+		}
+
 		Boolean defaultLayoutUtilityPageEntry = (Boolean)attributes.get(
 			"defaultLayoutUtilityPageEntry");
 
@@ -163,12 +169,6 @@ public class LayoutUtilityPageEntryWrapper
 
 		if (type != null) {
 			setType(type);
-		}
-
-		Long previewFileEntryId = (Long)attributes.get("previewFileEntryId");
-
-		if (previewFileEntryId != null) {
-			setPreviewFileEntryId(previewFileEntryId);
 		}
 
 		Date lastPublishDate = (Date)attributes.get("lastPublishDate");

@@ -104,14 +104,14 @@ public class LayoutUtilityPageEntryCacheModel
 		sb.append(modifiedDate);
 		sb.append(", plid=");
 		sb.append(plid);
+		sb.append(", previewFileEntryId=");
+		sb.append(previewFileEntryId);
 		sb.append(", defaultLayoutUtilityPageEntry=");
 		sb.append(defaultLayoutUtilityPageEntry);
 		sb.append(", name=");
 		sb.append(name);
 		sb.append(", type=");
 		sb.append(type);
-		sb.append(", previewFileEntryId=");
-		sb.append(previewFileEntryId);
 		sb.append(", lastPublishDate=");
 		sb.append(lastPublishDate);
 		sb.append("}");
@@ -170,6 +170,7 @@ public class LayoutUtilityPageEntryCacheModel
 		}
 
 		layoutUtilityPageEntryImpl.setPlid(plid);
+		layoutUtilityPageEntryImpl.setPreviewFileEntryId(previewFileEntryId);
 		layoutUtilityPageEntryImpl.setDefaultLayoutUtilityPageEntry(
 			defaultLayoutUtilityPageEntry);
 
@@ -181,7 +182,6 @@ public class LayoutUtilityPageEntryCacheModel
 		}
 
 		layoutUtilityPageEntryImpl.setType(type);
-		layoutUtilityPageEntryImpl.setPreviewFileEntryId(previewFileEntryId);
 
 		if (lastPublishDate == Long.MIN_VALUE) {
 			layoutUtilityPageEntryImpl.setLastPublishDate(null);
@@ -217,12 +217,12 @@ public class LayoutUtilityPageEntryCacheModel
 
 		plid = objectInput.readLong();
 
+		previewFileEntryId = objectInput.readLong();
+
 		defaultLayoutUtilityPageEntry = objectInput.readBoolean();
 		name = objectInput.readUTF();
 
 		type = objectInput.readInt();
-
-		previewFileEntryId = objectInput.readLong();
 		lastPublishDate = objectInput.readLong();
 	}
 
@@ -266,6 +266,8 @@ public class LayoutUtilityPageEntryCacheModel
 
 		objectOutput.writeLong(plid);
 
+		objectOutput.writeLong(previewFileEntryId);
+
 		objectOutput.writeBoolean(defaultLayoutUtilityPageEntry);
 
 		if (name == null) {
@@ -276,8 +278,6 @@ public class LayoutUtilityPageEntryCacheModel
 		}
 
 		objectOutput.writeInt(type);
-
-		objectOutput.writeLong(previewFileEntryId);
 		objectOutput.writeLong(lastPublishDate);
 	}
 
@@ -293,10 +293,10 @@ public class LayoutUtilityPageEntryCacheModel
 	public long createDate;
 	public long modifiedDate;
 	public long plid;
+	public long previewFileEntryId;
 	public boolean defaultLayoutUtilityPageEntry;
 	public String name;
 	public int type;
-	public long previewFileEntryId;
 	public long lastPublishDate;
 
 }

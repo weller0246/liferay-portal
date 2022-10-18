@@ -152,15 +152,15 @@ public class LayoutUtilityPageEntryPersistenceTest {
 
 		newLayoutUtilityPageEntry.setPlid(RandomTestUtil.nextLong());
 
+		newLayoutUtilityPageEntry.setPreviewFileEntryId(
+			RandomTestUtil.nextLong());
+
 		newLayoutUtilityPageEntry.setDefaultLayoutUtilityPageEntry(
 			RandomTestUtil.randomBoolean());
 
 		newLayoutUtilityPageEntry.setName(RandomTestUtil.randomString());
 
 		newLayoutUtilityPageEntry.setType(RandomTestUtil.nextInt());
-
-		newLayoutUtilityPageEntry.setPreviewFileEntryId(
-			RandomTestUtil.nextLong());
 
 		newLayoutUtilityPageEntry.setLastPublishDate(RandomTestUtil.nextDate());
 
@@ -211,6 +211,9 @@ public class LayoutUtilityPageEntryPersistenceTest {
 			existingLayoutUtilityPageEntry.getPlid(),
 			newLayoutUtilityPageEntry.getPlid());
 		Assert.assertEquals(
+			existingLayoutUtilityPageEntry.getPreviewFileEntryId(),
+			newLayoutUtilityPageEntry.getPreviewFileEntryId());
+		Assert.assertEquals(
 			existingLayoutUtilityPageEntry.isDefaultLayoutUtilityPageEntry(),
 			newLayoutUtilityPageEntry.isDefaultLayoutUtilityPageEntry());
 		Assert.assertEquals(
@@ -219,9 +222,6 @@ public class LayoutUtilityPageEntryPersistenceTest {
 		Assert.assertEquals(
 			existingLayoutUtilityPageEntry.getType(),
 			newLayoutUtilityPageEntry.getType());
-		Assert.assertEquals(
-			existingLayoutUtilityPageEntry.getPreviewFileEntryId(),
-			newLayoutUtilityPageEntry.getPreviewFileEntryId());
 		Assert.assertEquals(
 			Time.getShortTimestamp(
 				existingLayoutUtilityPageEntry.getLastPublishDate()),
@@ -337,8 +337,8 @@ public class LayoutUtilityPageEntryPersistenceTest {
 			true, "uuid", true, "externalReferenceCode", true,
 			"LayoutUtilityPageEntryId", true, "groupId", true, "companyId",
 			true, "userId", true, "userName", true, "createDate", true,
-			"modifiedDate", true, "plid", true, "defaultLayoutUtilityPageEntry",
-			true, "name", true, "type", true, "previewFileEntryId", true,
+			"modifiedDate", true, "plid", true, "previewFileEntryId", true,
+			"defaultLayoutUtilityPageEntry", true, "name", true, "type", true,
 			"lastPublishDate", true);
 	}
 
@@ -704,14 +704,14 @@ public class LayoutUtilityPageEntryPersistenceTest {
 
 		layoutUtilityPageEntry.setPlid(RandomTestUtil.nextLong());
 
+		layoutUtilityPageEntry.setPreviewFileEntryId(RandomTestUtil.nextLong());
+
 		layoutUtilityPageEntry.setDefaultLayoutUtilityPageEntry(
 			RandomTestUtil.randomBoolean());
 
 		layoutUtilityPageEntry.setName(RandomTestUtil.randomString());
 
 		layoutUtilityPageEntry.setType(RandomTestUtil.nextInt());
-
-		layoutUtilityPageEntry.setPreviewFileEntryId(RandomTestUtil.nextLong());
 
 		layoutUtilityPageEntry.setLastPublishDate(RandomTestUtil.nextDate());
 

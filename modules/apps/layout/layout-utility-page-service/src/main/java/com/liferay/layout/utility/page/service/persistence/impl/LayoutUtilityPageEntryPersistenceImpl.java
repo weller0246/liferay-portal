@@ -5874,10 +5874,10 @@ public class LayoutUtilityPageEntryPersistenceImpl
 		ctStrictColumnNames.add("createDate");
 		ctIgnoreColumnNames.add("modifiedDate");
 		ctStrictColumnNames.add("plid");
+		ctStrictColumnNames.add("previewFileEntryId");
 		ctStrictColumnNames.add("defaultLayoutUtilityPageEntry");
 		ctStrictColumnNames.add("name");
 		ctStrictColumnNames.add("type_");
-		ctStrictColumnNames.add("previewFileEntryId");
 		ctStrictColumnNames.add("lastPublishDate");
 
 		_ctColumnNamesMap.put(
