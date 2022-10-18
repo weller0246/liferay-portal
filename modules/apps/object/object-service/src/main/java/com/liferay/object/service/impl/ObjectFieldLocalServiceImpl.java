@@ -521,9 +521,9 @@ public class ObjectFieldLocalServiceImpl
 		ObjectField newObjectField = (ObjectField)oldObjectField.clone();
 
 		_validateExternalReferenceCode(
-			newObjectField.getCompanyId(), externalReferenceCode,
-			newObjectField.getObjectDefinitionId(),
-			newObjectField.getObjectFieldId());
+			externalReferenceCode, newObjectField.getObjectFieldId(),
+			newObjectField.getCompanyId(),
+			newObjectField.getObjectDefinitionId());
 
 		_validateDefaultValue(
 			businessType, defaultValue, listTypeDefinitionId, state);
@@ -645,8 +645,8 @@ public class ObjectFieldLocalServiceImpl
 			_objectDefinitionPersistence.findByPrimaryKey(objectDefinitionId);
 
 		_validateExternalReferenceCode(
-			objectDefinition.getCompanyId(), externalReferenceCode,
-			objectDefinitionId, 0);
+			externalReferenceCode, 0, objectDefinition.getCompanyId(),
+			objectDefinitionId);
 
 		_validateDefaultValue(
 			businessType, defaultValue, listTypeDefinitionId, state);
@@ -936,8 +936,8 @@ public class ObjectFieldLocalServiceImpl
 	}
 
 	private void _validateExternalReferenceCode(
-			long companyId, String externalReferenceCode,
-			long objectDefinitionId, long objectFieldId)
+			String externalReferenceCode, long objectFieldId, long companyId,
+			long objectDefinitionId)
 		throws PortalException {
 
 		if (Validator.isNull(externalReferenceCode)) {

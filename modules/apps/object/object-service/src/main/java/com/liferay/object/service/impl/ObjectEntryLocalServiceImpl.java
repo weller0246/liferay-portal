@@ -2548,7 +2548,7 @@ public class ObjectEntryLocalServiceImpl
 				}
 
 				_validateExternalReferenceCode(
-					objectEntry.getCompanyId(), externalReferenceCode,
+					externalReferenceCode, objectEntry.getCompanyId(),
 					objectEntry.getObjectDefinitionId(),
 					objectEntry.getObjectEntryId());
 
@@ -2695,7 +2695,7 @@ public class ObjectEntryLocalServiceImpl
 	}
 
 	private void _validateExternalReferenceCode(
-			long companyId, String externalReferenceCode,
+			String externalReferenceCode, long companyId,
 			long objectDefinitionId, long objectEntryId)
 		throws PortalException {
 
