@@ -23,6 +23,7 @@ FileEntry fileEntry = dlViewEntryHistoryDisplayContext.getFileEntry();
 
 portletDisplay.setShowBackIcon(true);
 portletDisplay.setURLBack(dlViewEntryHistoryDisplayContext.getBackURL());
+
 renderResponse.setTitle(fileEntry.getTitle());
 %>
 
