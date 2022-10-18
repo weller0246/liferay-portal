@@ -87,23 +87,21 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 			ObjectActionExecutorConstants.KEY_FUNCTION, StringPool.POUND,
 			_getExternalReferenceCode(properties));
 
-		Company company = _getCompany(properties);
-
 		FunctionObjectActionExecutorImplConfiguration
 			functionObjectActionExecutorImplConfiguration =
 				ConfigurableUtil.createConfigurable(
 					FunctionObjectActionExecutorImplConfiguration.class,
 					properties);
+		Company company = _getCompany(properties);
 
-		_oAuth2Application =
+		_location = _getLocation(
+			functionObjectActionExecutorImplConfiguration,
 			_oAuth2ApplicationLocalService.
 				getOAuth2ApplicationByExternalReferenceCode(
 					company.getCompanyId(),
 					functionObjectActionExecutorImplConfiguration.
-						oAuth2ApplicationExternalReferenceCode());
+						oAuth2ApplicationExternalReferenceCode()));
 
-		_location = _getLocation(
-			functionObjectActionExecutorImplConfiguration, _oAuth2Application);
 		_timeout = functionObjectActionExecutorImplConfiguration.timeout();
 	}
 
@@ -179,7 +177,6 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 
 	private String _key;
 	private String _location;
-	private OAuth2Application _oAuth2Application;
 
 	@Reference
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;
