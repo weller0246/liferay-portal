@@ -91,16 +91,19 @@ public class JournalTransformerTest {
 
 		logoFieldTemplateNode.put("data", _IMAGE_FIELD_DATA);
 
+		logoFieldSetTemplateNode.appendChild(logoFieldTemplateNode);
+
 		TemplateNode linkLogoFieldTemplateNode = _createTemplateNode(
 			"linkLogoField", DDMFormFieldTypeConstants.TEXT);
 
-		logoFieldSetTemplateNode.appendChild(logoFieldTemplateNode);
-		logoFieldSetTemplateNode.appendChild(linkLogoFieldTemplateNode);
 		logoFieldTemplateNode.appendSibling(linkLogoFieldTemplateNode);
+
+		logoFieldSetTemplateNode.appendChild(linkLogoFieldTemplateNode);
 
 		logoTitleTextTemplateNode.appendSibling(logoFieldSetTemplateNode);
 
 		logoTitleFieldSetTemplateNode.appendChild(logoTitleTextTemplateNode);
+
 		logoTitleFieldSetTemplateNode.appendChild(logoFieldSetTemplateNode);
 
 		templateNodes.add(logoTitleFieldSetTemplateNode);
