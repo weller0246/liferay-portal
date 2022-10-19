@@ -104,7 +104,6 @@ public class SegmentsDisplayContextTest {
 	public void setUp() throws Exception {
 		_company = _companyLocalService.getCompany(
 			TestPropsValues.getCompanyId());
-
 		_group = GroupTestUtil.addGroup();
 
 		Bundle bundle = FrameworkUtil.getBundle(
@@ -235,11 +234,11 @@ public class SegmentsDisplayContextTest {
 
 	@Test
 	public void testGetAvailableActionsWithoutPermissions() throws Exception {
-		User differentUser = UserTestUtil.addUser();
+		User user = UserTestUtil.addUser();
 
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), differentUser.getUserId()));
+				_group.getGroupId(), user.getUserId()));
 
 		Assert.assertEquals(
 			StringPool.BLANK, _getAvailableActions(segmentsEntry));
@@ -256,7 +255,6 @@ public class SegmentsDisplayContextTest {
 		Assert.assertTrue(
 			deleteURL.contains(
 				"param_javax.portlet.action=/segments/delete_segments_entry"));
-
 		Assert.assertTrue(
 			deleteURL.contains(
 				"param_segmentsEntryId=" + segmentsEntry.getSegmentsEntryId()));
@@ -273,7 +271,6 @@ public class SegmentsDisplayContextTest {
 		Assert.assertTrue(
 			editURL.contains(
 				"param_mvcRenderCommandName=/segments/edit_segments_entry"));
-
 		Assert.assertTrue(
 			editURL.contains(
 				"param_segmentsEntryId=" + segmentsEntry.getSegmentsEntryId()));
@@ -295,11 +292,9 @@ public class SegmentsDisplayContextTest {
 		Assert.assertTrue(
 			permissionURL.contains(
 				"modelResource=" + SegmentsEntry.class.getName()));
-
 		Assert.assertTrue(
 			permissionURL.contains(
 				"resourcePrimKey=" + segmentsEntry.getSegmentsEntryId()));
-
 		Assert.assertTrue(permissionURL.contains("p_p_state=pop_up"));
 	}
 
@@ -315,10 +310,8 @@ public class SegmentsDisplayContextTest {
 			previewMembersURL.contains(
 				"param_mvcRenderCommandName=/segments" +
 					"/preview_segments_entry_users"));
-
 		Assert.assertTrue(
 			previewMembersURL.contains("clearSessionCriteria=true"));
-
 		Assert.assertTrue(
 			previewMembersURL.contains(
 				"param_segmentsEntryId=" + segmentsEntry.getSegmentsEntryId()));
@@ -420,11 +413,11 @@ public class SegmentsDisplayContextTest {
 	public void testIsShowAssignUserRolesActionWithoutPermissions()
 		throws Exception {
 
-		User differentUser = UserTestUtil.addUser();
+		User user = UserTestUtil.addUser();
 
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), differentUser.getUserId()));
+				_group.getGroupId(), user.getUserId()));
 
 		Assert.assertFalse(_isShowAssignUserRolesAction(segmentsEntry));
 	}
@@ -486,11 +479,11 @@ public class SegmentsDisplayContextTest {
 	public void testIsShowDeleteActionSameSiteDifferentUsers()
 		throws Exception {
 
-		User differentUser = UserTestUtil.addUser();
+		User user = UserTestUtil.addUser();
 
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), differentUser.getUserId()));
+				_group.getGroupId(), user.getUserId()));
 
 		Assert.assertFalse(_isShowDeleteAction(segmentsEntry));
 	}
@@ -506,11 +499,11 @@ public class SegmentsDisplayContextTest {
 
 	@Test
 	public void testIsShowPermissionActionDifferentUsers() throws Exception {
-		User differentUser = UserTestUtil.addUser();
+		User user = UserTestUtil.addUser();
 
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), differentUser.getUserId()));
+				_group.getGroupId(), user.getUserId()));
 
 		Assert.assertFalse(_isShowPermissionAction(segmentsEntry));
 	}
@@ -526,11 +519,11 @@ public class SegmentsDisplayContextTest {
 
 	@Test
 	public void testIsShowUpdateActionDifferentUsers() throws Exception {
-		User differentUser = UserTestUtil.addUser();
+		User user = UserTestUtil.addUser();
 
 		SegmentsEntry segmentsEntry = SegmentsTestUtil.addSegmentsEntry(
 			ServiceContextTestUtil.getServiceContext(
-				_group.getGroupId(), differentUser.getUserId()));
+				_group.getGroupId(), user.getUserId()));
 
 		Assert.assertFalse(_isShowUpdateAction(segmentsEntry));
 	}
@@ -634,15 +627,6 @@ public class SegmentsDisplayContextTest {
 		MockLiferayPortletRenderRequest mockLiferayPortletRenderRequest =
 			new MockLiferayPortletRenderRequest();
 
-		mockLiferayPortletRenderRequest.setAttribute(
-			WebKeys.COMPANY_ID, _company.getCompanyId());
-
-		mockLiferayPortletRenderRequest.setAttribute(
-			StringBundler.concat(
-				mockLiferayPortletRenderRequest.getPortletName(), "-",
-				WebKeys.CURRENT_PORTLET_URL),
-			new MockLiferayPortletURL());
-
 		com.liferay.portal.kernel.model.Portlet portlet =
 			_portletLocalService.getPortletById(SegmentsPortletKeys.SEGMENTS);
 
@@ -652,18 +636,23 @@ public class SegmentsDisplayContextTest {
 
 		String path = "/view.jsp";
 
-		mockLiferayPortletRenderRequest.setParameter("mvcPath", path);
-
 		mockLiferayPortletRenderRequest.setAttribute(
 			MVCRenderConstants.
 				PORTLET_CONTEXT_OVERRIDE_REQUEST_ATTIBUTE_NAME_PREFIX + path,
 			new MockLiferayPortletContext(path));
 
 		mockLiferayPortletRenderRequest.setAttribute(
+			WebKeys.COMPANY_ID, _company.getCompanyId());
+		mockLiferayPortletRenderRequest.setAttribute(
+			StringBundler.concat(
+				mockLiferayPortletRenderRequest.getPortletName(), "-",
+				WebKeys.CURRENT_PORTLET_URL),
+			new MockLiferayPortletURL());
+		mockLiferayPortletRenderRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, _getThemeDisplay());
-
 		mockLiferayPortletRenderRequest.setAttribute(
 			"view.jsp-eventName", "assignSiteRoles");
+		mockLiferayPortletRenderRequest.setParameter("mvcPath", path);
 
 		return mockLiferayPortletRenderRequest;
 	}
