@@ -315,14 +315,14 @@ const NotificationsInfo = ({
 			})
 			.map((item) => item.label);
 
-		if (checkedTrue.includes('Email')) {
+		if (checkedTrue.includes(Liferay.Language.get('email'))) {
 			setNotificationTypeEmail(true);
 		}
 		else {
 			setNotificationTypeEmail(false);
 		}
 
-		if (checkedTrue.includes('User Notification')) {
+		if (checkedTrue.includes(Liferay.Language.get('user-notification'))) {
 			setNotificationTypeUserNotification(true);
 		}
 		else {
