@@ -114,19 +114,19 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 
 	private int _getCharacterThreshold(Map<String, Object> attributes) {
 		if (attributes == null) {
-			return _DEFAULT_CHARACTER_THRESHOLD;
+			return _CHARACTER_THRESHOLD;
 		}
 
 		return MapUtil.getInteger(
-			attributes, "characterThreshold", _DEFAULT_CHARACTER_THRESHOLD);
+			attributes, "characterThreshold", _CHARACTER_THRESHOLD);
 	}
 
 	private int _getCount(Map<String, Object> attributes) {
 		if (attributes == null) {
-			return _DEFAULT_COUNT;
+			return _COUNT;
 		}
 
-		return MapUtil.getInteger(attributes, "count", _DEFAULT_COUNT);
+		return MapUtil.getInteger(attributes, "count", _COUNT);
 	}
 
 	private String _getDisplayLanguageId(
@@ -185,8 +185,8 @@ public abstract class BaseAsahKeywordsSuggestionsContributor {
 		return suggestions;
 	}
 
-	private static final int _DEFAULT_CHARACTER_THRESHOLD = 2;
+	private static final int _CHARACTER_THRESHOLD = 2;
 
-	private static final int _DEFAULT_COUNT = 5;
+	private static final int _COUNT = 5;
 
 }
