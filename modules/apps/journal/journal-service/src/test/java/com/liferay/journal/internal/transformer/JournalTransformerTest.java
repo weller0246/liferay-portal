@@ -218,22 +218,19 @@ public class JournalTransformerTest {
 	}
 
 	private TemplateNode _getExpectedNestedRepeatableFieldsTemplateNode() {
-		TemplateNode group1Field1 = _createTemplateNode(
+		TemplateNode templateNode = _createTemplateNode(
 			"Group 1 Field 1", DDMFormFieldTypeConstants.TEXT);
 
-		group1Field1.appendSibling(group1Field1);
+		templateNode.appendSibling(templateNode);
 
-		TemplateNode group1Field2 = _createTemplateNode(
-			"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT);
+		templateNode.appendSibling(
+			_createTemplateNode(
+				"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT));
+		templateNode.appendSibling(
+			_createTemplateNode(
+				"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT));
 
-		group1Field1.appendSibling(group1Field2);
-
-		TemplateNode group2Field1 = _createTemplateNode(
-			"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT);
-
-		group1Field1.appendSibling(group2Field1);
-
-		return group1Field1;
+		return templateNode;
 	}
 
 	private List<TemplateNode>
