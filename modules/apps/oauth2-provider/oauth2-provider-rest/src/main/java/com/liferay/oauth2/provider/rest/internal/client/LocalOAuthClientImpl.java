@@ -28,7 +28,6 @@ import java.util.List;
 import org.apache.cxf.rs.security.oauth2.common.AccessTokenRegistration;
 import org.apache.cxf.rs.security.oauth2.common.Client;
 import org.apache.cxf.rs.security.oauth2.common.ServerAccessToken;
-import org.apache.cxf.rs.security.oauth2.common.UserSubject;
 import org.apache.cxf.rs.security.oauth2.utils.OAuthUtils;
 
 import org.osgi.service.component.annotations.Component;
@@ -44,28 +43,31 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 	public String requestTokens(
 		OAuth2Application oAuth2Application, long userId) {
 
-		Client client = _liferayOAuthDataProvider.getClient(oAuth2Application);
-
-		UserSubject userSubject = _liferayOAuthDataProvider.getUserSubject(
-			userId);
-		List<GrantType> allowedGrantTypes =
-			oAuth2Application.getAllowedGrantTypesList();
-
 		AccessTokenRegistration accessTokenRegistration =
 			new AccessTokenRegistration();
 
+		Client client = _liferayOAuthDataProvider.getClient(oAuth2Application);
+
 		accessTokenRegistration.setApprovedScope(client.getRegisteredScopes());
+
 		accessTokenRegistration.setAudiences(
 			Collections.singletonList(oAuth2Application.getHomePageURL()));
 		accessTokenRegistration.setClient(client);
+
+		List<GrantType> allowedGrantTypesList =
+			oAuth2Application.getAllowedGrantTypesList();
+
 		accessTokenRegistration.setGrantType(
-			String.valueOf(allowedGrantTypes.get(0)));
+			String.valueOf(allowedGrantTypesList.get(0)));
+
 		accessTokenRegistration.setRequestedScope(client.getRegisteredScopes());
-		accessTokenRegistration.setSubject(userSubject);
+		accessTokenRegistration.setSubject(
+			_liferayOAuthDataProvider.getUserSubject(userId));
 
 		try {
 			ServerAccessToken serverAccessToken =
-				_liferayOAuthDataProvider.createAccessToken(accessTokenRegistration);
+				_liferayOAuthDataProvider.createAccessToken(
+					accessTokenRegistration);
 
 			return _toJSONString(serverAccessToken);
 		}
