@@ -138,7 +138,7 @@ public class JournalTransformerTest {
 		JournalTransformer journalTransformer = new JournalTransformer();
 
 		List<TemplateNode> nestedRepeatableFieldsTemplateNodes =
-			_getInitNestedRepeatableFieldsTemplateNode();
+			_getNestedRepeatableFieldsTemplateNodes();
 
 		TemplateNode templateNode = nestedRepeatableFieldsTemplateNodes.get(0);
 
@@ -165,7 +165,7 @@ public class JournalTransformerTest {
 
 		Assert.assertEquals(
 			nestedRepeatableFieldsTemplateNodes,
-			_getInitNestedRepeatableFieldsTemplateNode());
+			_getNestedRepeatableFieldsTemplateNodes());
 
 		TemplateNode expectedNestedRepeatableFieldsTemplateNode =
 			_getExpectedNestedRepeatableFieldsTemplateNode();
@@ -373,7 +373,7 @@ public class JournalTransformerTest {
 		return ListUtil.fromArray(repeatableTextTemplateNode1);
 	}
 
-	private List<TemplateNode> _getInitNestedRepeatableFieldsTemplateNode() {
+	private List<TemplateNode> _getNestedRepeatableFieldsTemplateNodes() {
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
 		TemplateNode group1TemplateNode = _createTemplateNode(
@@ -404,7 +404,7 @@ public class JournalTransformerTest {
 
 		group2Field1TemplateNode.appendSibling(
 			_createTemplateNode(
-			"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT));
+				"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT));
 
 		group1TemplateNode.appendSibling(group2TemplateNode);
 
