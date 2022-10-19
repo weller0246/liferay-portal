@@ -43,6 +43,21 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 	public String requestTokens(
 		OAuth2Application oAuth2Application, long userId) {
 
+		try {
+			return _requestTokens(oAuth2Application, userId);
+		}
+		catch (Exception exception) {
+			if (_log.isWarnEnabled()) {
+				_log.warn(exception);
+			}
+
+			return null;
+		}
+	}
+
+	private String _requestTokens(
+		OAuth2Application oAuth2Application, long userId) {
+
 		AccessTokenRegistration accessTokenRegistration =
 			new AccessTokenRegistration();
 
@@ -64,23 +79,10 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 		accessTokenRegistration.setSubject(
 			_liferayOAuthDataProvider.getUserSubject(userId));
 
-		try {
-			ServerAccessToken serverAccessToken =
-				_liferayOAuthDataProvider.createAccessToken(
-					accessTokenRegistration);
+		ServerAccessToken serverAccessToken =
+			_liferayOAuthDataProvider.createAccessToken(
+				accessTokenRegistration);
 
-			return _toJSONString(serverAccessToken);
-		}
-		catch (Exception exception) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(exception);
-			}
-
-			return null;
-		}
-	}
-
-	private String _toJSONString(ServerAccessToken serverAccessToken) {
 		return JSONUtil.put(
 			"access_token", serverAccessToken.getTokenKey()
 		).put(
