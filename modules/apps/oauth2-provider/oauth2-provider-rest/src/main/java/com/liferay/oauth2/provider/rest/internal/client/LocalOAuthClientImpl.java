@@ -51,19 +51,20 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 		List<GrantType> allowedGrantTypes =
 			oAuth2Application.getAllowedGrantTypesList();
 
-		AccessTokenRegistration reg = new AccessTokenRegistration();
+		AccessTokenRegistration accessTokenRegistration =
+			new AccessTokenRegistration();
 
-		reg.setClient(client);
-		reg.setGrantType(String.valueOf(allowedGrantTypes.get(0)));
-		reg.setSubject(userSubject);
-		reg.setRequestedScope(client.getRegisteredScopes());
-		reg.setApprovedScope(client.getRegisteredScopes());
-		reg.setAudiences(
+		accessTokenRegistration.setClient(client);
+		accessTokenRegistration.setGrantType(String.valueOf(allowedGrantTypes.get(0)));
+		accessTokenRegistration.setSubject(userSubject);
+		accessTokenRegistration.setRequestedScope(client.getRegisteredScopes());
+		accessTokenRegistration.setApprovedScope(client.getRegisteredScopes());
+		accessTokenRegistration.setAudiences(
 			Collections.singletonList(oAuth2Application.getHomePageURL()));
 
 		try {
 			ServerAccessToken serverAccessToken =
-				_liferayOAuthDataProvider.createAccessToken(reg);
+				_liferayOAuthDataProvider.createAccessToken(accessTokenRegistration);
 
 			return _toJSONString(serverAccessToken);
 		}
