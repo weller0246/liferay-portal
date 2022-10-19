@@ -376,41 +376,39 @@ public class JournalTransformerTest {
 	private List<TemplateNode> _getInitNestedRepeatableFieldsTemplateNode() {
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
-		TemplateNode group1 = _createTemplateNode(
+		TemplateNode group1TemplateNode = _createTemplateNode(
 			"Group 1", DDMFormFieldTypeConstants.FIELDSET);
 
-		TemplateNode group1Field1 = _createTemplateNode(
+		TemplateNode group1Field1TemplateNode = _createTemplateNode(
 			"Group 1 Field 1", DDMFormFieldTypeConstants.TEXT);
 
-		TemplateNode group1Field2 = _createTemplateNode(
-			"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT);
+		group1TemplateNode.appendChild(group1Field1TemplateNode);
 
-		group1.appendChild(group1Field1);
+		group1TemplateNode.appendSibling(group1TemplateNode);
 
-		group1.appendSibling(group1);
+		group1Field1TemplateNode.appendSibling(group1Field1TemplateNode);
 
-		group1Field1.appendSibling(group1Field1);
+		group1Field1TemplateNode.appendSibling(
+			_createTemplateNode(
+				"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT));
 
-		group1Field1.appendSibling(group1Field2);
-
-		TemplateNode group2 = _createTemplateNode(
+		TemplateNode group2TemplateNode = _createTemplateNode(
 			"Group 2", DDMFormFieldTypeConstants.FIELDSET);
 
-		TemplateNode group2Field1 = _createTemplateNode(
+		TemplateNode group2Field1TemplateNode = _createTemplateNode(
 			"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT);
 
-		TemplateNode group2Field2 = _createTemplateNode(
-			"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT);
+		group2TemplateNode.appendChild(group2Field1TemplateNode);
 
-		group2.appendChild(group2Field1);
+		group2Field1TemplateNode.appendSibling(group2Field1TemplateNode);
 
-		group2Field1.appendSibling(group2Field1);
+		group2Field1TemplateNode.appendSibling(
+			_createTemplateNode(
+			"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT));
 
-		group2Field1.appendSibling(group2Field2);
+		group1TemplateNode.appendSibling(group2TemplateNode);
 
-		group1.appendSibling(group2);
-
-		templateNodes.add(group1);
+		templateNodes.add(group1TemplateNode);
 
 		return templateNodes;
 	}
