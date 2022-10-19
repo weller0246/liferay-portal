@@ -81,13 +81,9 @@ public class PortalInstancesConfigurationFactoryTest {
 				"virtualHostname", webId.concat(".foo.bar")
 			).build());
 
-		// It can take a very long time to instantiate a company. But by
-		// the time the factoryInstance for a particular configuration
-		// is available the company should have been created.
+		// Wait for company to be created
 
-		Object factoryInstance = serviceTracker.waitForService(40000);
-
-		Assert.assertNotNull(factoryInstance);
+		Assert.assertNotNull(serviceTracker.waitForService(40000));
 
 		_company = _companyLocalService.getCompanyByWebId(webId);
 
