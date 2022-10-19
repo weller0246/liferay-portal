@@ -19,8 +19,6 @@ import com.liferay.oauth.client.LocalOAuthClient;
 import com.liferay.oauth2.provider.constants.GrantType;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
-import com.liferay.portal.kernel.exception.PortalException;
-import com.liferay.portal.kernel.json.JSONException;
 import com.liferay.portal.kernel.json.JSONFactoryUtil;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.model.User;
@@ -34,9 +32,7 @@ import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import java.util.Arrays;
 import java.util.Collections;
 
-import org.junit.After;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,13 +49,11 @@ public class LocalOAuthClientTest {
 	public static final AggregateTestRule aggregateTestRule =
 		new LiferayIntegrationTestRule();
 
-	@Before
-	public void setUp() throws PortalException {
+	@Test
+	public void test() throws Exception {
 		User user = UserTestUtil.getAdminUser(PortalUtil.getDefaultCompanyId());
 
-		_userId = user.getUserId();
-
-		_oAuth2Application =
+		OAuth2Application oAuth2Application =
 			_oAuth2ApplicationLocalService.addOAuth2Application(
 				user.getCompanyId(), user.getUserId(), user.getLogin(),
 				Arrays.asList(GrantType.RESOURCE_OWNER_PASSWORD),
@@ -71,32 +65,21 @@ public class LocalOAuthClientTest {
 				Collections.singletonList("http://client/redirect"), false,
 				Collections.singletonList("everything"), false,
 				new ServiceContext());
-	}
 
-	@After
-	public void tearDown() throws Exception {
-		if (_oAuth2Application != null) {
-			_oAuth2ApplicationLocalService.deleteOAuth2Application(
-				_oAuth2Application);
-		}
-	}
-
-	@Test
-	public void test() throws JSONException {
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
-			_localOAuthClient.requestTokens(_userId, _oAuth2Application));
+			_localOAuthClient.requestTokens(
+				user.getUserId(), oAuth2Application));
 
 		Assert.assertTrue(jsonObject.getString("access_token", null) != null);
+
+		_oAuth2ApplicationLocalService.deleteOAuth2Application(
+			oAuth2Application);
 	}
 
 	@Inject
 	private LocalOAuthClient _localOAuthClient;
 
-	private OAuth2Application _oAuth2Application;
-
 	@Inject
 	private OAuth2ApplicationLocalService _oAuth2ApplicationLocalService;
-
-	private long _userId;
 
 }

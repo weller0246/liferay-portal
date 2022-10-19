@@ -17,20 +17,10 @@ package com.liferay.oauth.client;
 import com.liferay.oauth2.provider.model.OAuth2Application;
 
 /**
- * Primarily used by LXC to retrieve OAuth tokens from Portal OAuth Provider
- * on a same instance for extension consumptions.
- *
  * @author Arthur Chan
  */
 public interface LocalOAuthClient {
 
-	/**
-	 * Retrieve OAuth tokens from Portal OAuth Provider on a same instance.
-	 *
-	 * @param userId the user who gives the grant
-	 * @param oAuth2Application oAuth2Application containing client information
-	 * @return OAuth tokens or null if there was a token generation error
-	 */
 	public String requestTokens(
 		long userId, OAuth2Application oAuth2Application);
 
