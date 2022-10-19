@@ -95,7 +95,6 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 						_companyLocalService, properties),
 					functionObjectActionExecutorImplConfiguration.
 						oAuth2ApplicationExternalReferenceCode()));
-
 		_timeout = functionObjectActionExecutorImplConfiguration.timeout();
 	}
 
