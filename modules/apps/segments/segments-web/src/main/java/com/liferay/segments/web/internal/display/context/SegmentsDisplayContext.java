@@ -96,7 +96,7 @@ public class SegmentsDisplayContext {
 
 		_httpServletRequest = portal.getHttpServletRequest(renderRequest);
 
-		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
+		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
 		_permissionChecker = _themeDisplay.getPermissionChecker();
