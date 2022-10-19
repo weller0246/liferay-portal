@@ -27,16 +27,13 @@ import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 import com.liferay.portal.test.rule.SynchronousMailTestRule;
 
-import org.junit.AfterClass;
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.cm.Configuration;
 import org.osgi.service.cm.ConfigurationAdmin;
@@ -54,74 +51,60 @@ public class PortalInstancesConfigurationFactoryTest {
 		new AggregateTestRule(
 			new LiferayIntegrationTestRule(), SynchronousMailTestRule.INSTANCE);
 
-	@BeforeClass
-	public static void setUpClass() throws Exception {
+	@Test
+	public void test() throws Exception {
 		Bundle bundle = FrameworkUtil.getBundle(
 			PortalInstancesConfigurationFactoryTest.class);
 
-		_bundleContext = bundle.getBundleContext();
+		String webId = RandomTestUtil.randomString();
 
-		_webId = RandomTestUtil.randomString();
+		Configuration configuration =
+			_configurationAdmin.getFactoryConfiguration(
+				"com.liferay.portal.instances.internal.configuration." +
+					"PortalInstancesConfiguration",
+				webId, StringPool.QUESTION);
 
-		_configuration = _configurationAdmin.getFactoryConfiguration(
-			"com.liferay.portal.instances.internal.configuration." +
-				"PortalInstancesConfiguration",
-			_webId, StringPool.QUESTION);
-
-		_serviceTracker = new ServiceTracker<>(
-			_bundleContext,
+		ServiceTracker<Object, Object> serviceTracker = new ServiceTracker<>(
+			bundle.getBundleContext(),
 			FrameworkUtil.createFilter(
 				"(component.name=com.liferay.portal.instances.internal." +
 					"configuration.PortalInstancesConfigurationFactory)"),
 			null);
 
-		_serviceTracker.open();
+		serviceTracker.open();
 
 		ConfigurationTestUtil.saveConfiguration(
-			_configuration,
+			configuration,
 			HashMapDictionaryBuilder.<String, Object>put(
-				"mx", _webId.concat(".foo.bar")
+				"mx", webId.concat(".foo.bar")
 			).put(
-				"virtualHostname", _webId.concat(".foo.bar")
+				"virtualHostname", webId.concat(".foo.bar")
 			).build());
 
 		// It can take a very long time to instantiate a company. But by
 		// the time the factoryInstance for a particular configuration
 		// is available the company should have been created.
 
-		Object factoryInstance = _serviceTracker.waitForService(40000);
+		Object factoryInstance = serviceTracker.waitForService(40000);
 
 		Assert.assertNotNull(factoryInstance);
-	}
 
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		ConfigurationTestUtil.deleteConfiguration(_configuration);
-
-		_serviceTracker.close();
-	}
-
-	@Test
-	public void testCreateVirtualInstanceFromFactory() throws Exception {
-		_company = _companyLocalService.getCompanyByWebId(_webId);
+		_company = _companyLocalService.getCompanyByWebId(webId);
 
 		Assert.assertNotNull(_company);
+
+		ConfigurationTestUtil.deleteConfiguration(configuration);
+
+		serviceTracker.close();
 	}
-
-	private static BundleContext _bundleContext;
-
-	@Inject
-	private static CompanyLocalService _companyLocalService;
-
-	private static Configuration _configuration;
-
-	@Inject
-	private static ConfigurationAdmin _configurationAdmin;
-
-	private static ServiceTracker<Object, Object> _serviceTracker;
-	private static String _webId;
 
 	@DeleteAfterTestRun
 	private Company _company;
+
+	@Inject
+	private CompanyLocalService _companyLocalService;
+
+	@Inject
+	private ConfigurationAdmin _configurationAdmin;
 
 }
