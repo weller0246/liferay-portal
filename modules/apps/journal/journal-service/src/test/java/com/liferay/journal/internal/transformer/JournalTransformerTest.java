@@ -75,9 +75,39 @@ public class JournalTransformerTest {
 	public void testIncludeBackwardsCompatibilityTemplateNodesNestedImageFieldSet() {
 		JournalTransformer journalTransformer = new JournalTransformer();
 
+		List<TemplateNode> templateNodes = new ArrayList<>();
+
+		TemplateNode logoTitleFieldSet = _createTemplateNode(
+			"logoTitleFieldSet", DDMFormFieldTypeConstants.FIELDSET);
+
+		TemplateNode logoTitleText = _createTemplateNode(
+			"logoTitleText", DDMFormFieldTypeConstants.TEXT);
+
+		TemplateNode logoFieldSet = _createTemplateNode(
+			"logoFieldSet", DDMFormFieldTypeConstants.FIELDSET);
+
+		TemplateNode logoField = _createTemplateNode(
+			"logoField", DDMFormFieldTypeConstants.IMAGE);
+
+		logoField.put("data", _IMAGE_FIELD_DATA);
+
+		TemplateNode linkLogoField = _createTemplateNode(
+			"linkLogoField", DDMFormFieldTypeConstants.TEXT);
+
+		logoFieldSet.appendChild(logoField);
+		logoFieldSet.appendChild(linkLogoField);
+		logoField.appendSibling(linkLogoField);
+
+		logoTitleText.appendSibling(logoFieldSet);
+
+		logoTitleFieldSet.appendChild(logoTitleText);
+		logoTitleFieldSet.appendChild(logoFieldSet);
+
+		templateNodes.add(logoTitleFieldSet);
+
 		List<TemplateNode> backwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
-				_getInitNestedImageFieldSetTemplateNode(), 0);
+				templateNodes, 0);
 
 		TemplateNode backwardsCompatibilityTemplateNode =
 			backwardsCompatibilityTemplateNodes.get(0);
@@ -342,40 +372,6 @@ public class JournalTransformerTest {
 		textTemplateNode1.appendSibling(textTemplateNode2);
 
 		return ListUtil.fromArray(repeatableTextTemplateNode1);
-	}
-
-	private List<TemplateNode> _getInitNestedImageFieldSetTemplateNode() {
-		List<TemplateNode> templateNodes = new ArrayList<>();
-
-		TemplateNode logoTitleFieldSet = _createTemplateNode(
-			"logoTitleFieldSet", DDMFormFieldTypeConstants.FIELDSET);
-
-		TemplateNode logoTitleText = _createTemplateNode(
-			"logoTitleText", DDMFormFieldTypeConstants.TEXT);
-
-		TemplateNode logoFieldSet = _createTemplateNode(
-			"logoFieldSet", DDMFormFieldTypeConstants.FIELDSET);
-
-		TemplateNode logoField = _createTemplateNode(
-			"logoField", DDMFormFieldTypeConstants.IMAGE);
-
-		logoField.put("data", _IMAGE_FIELD_DATA);
-
-		TemplateNode linkLogoField = _createTemplateNode(
-			"linkLogoField", DDMFormFieldTypeConstants.TEXT);
-
-		logoFieldSet.appendChild(logoField);
-		logoFieldSet.appendChild(linkLogoField);
-		logoField.appendSibling(linkLogoField);
-
-		logoTitleText.appendSibling(logoFieldSet);
-
-		logoTitleFieldSet.appendChild(logoTitleText);
-		logoTitleFieldSet.appendChild(logoFieldSet);
-
-		templateNodes.add(logoTitleFieldSet);
-
-		return templateNodes;
 	}
 
 	private List<TemplateNode> _getInitNestedRepeatableFieldsTemplateNode() {
