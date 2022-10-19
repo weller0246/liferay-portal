@@ -54,13 +54,14 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 		AccessTokenRegistration accessTokenRegistration =
 			new AccessTokenRegistration();
 
-		accessTokenRegistration.setClient(client);
-		accessTokenRegistration.setGrantType(String.valueOf(allowedGrantTypes.get(0)));
-		accessTokenRegistration.setSubject(userSubject);
-		accessTokenRegistration.setRequestedScope(client.getRegisteredScopes());
 		accessTokenRegistration.setApprovedScope(client.getRegisteredScopes());
 		accessTokenRegistration.setAudiences(
 			Collections.singletonList(oAuth2Application.getHomePageURL()));
+		accessTokenRegistration.setClient(client);
+		accessTokenRegistration.setGrantType(
+			String.valueOf(allowedGrantTypes.get(0)));
+		accessTokenRegistration.setRequestedScope(client.getRegisteredScopes());
+		accessTokenRegistration.setSubject(userSubject);
 
 		try {
 			ServerAccessToken serverAccessToken =
