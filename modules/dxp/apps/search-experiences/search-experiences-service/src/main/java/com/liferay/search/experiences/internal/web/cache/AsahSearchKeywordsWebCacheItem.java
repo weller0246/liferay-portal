@@ -91,7 +91,6 @@ public class AsahSearchKeywordsWebCacheItem implements WebCacheItem {
 			options.addHeader(
 				"OSB-Asah-Faro-Backend-Security-Signature",
 				AsahUtil.getAsahFaroBackendSecuritySignature(_companyId));
-
 			options.addHeader(
 				"OSB-Asah-Project-ID", AsahUtil.getAsahProjectId(_companyId));
 
@@ -160,8 +159,8 @@ public class AsahSearchKeywordsWebCacheItem implements WebCacheItem {
 
 		throw new InvalidWebCacheItemException(
 			StringBundler.concat(
-				"Server returned ", response.getResponseCode(), ". Response: ",
-				jsonObject.toString()));
+				"Response body: ", jsonObject, "\nResponse code: ",
+				response.getResponseCode()));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
