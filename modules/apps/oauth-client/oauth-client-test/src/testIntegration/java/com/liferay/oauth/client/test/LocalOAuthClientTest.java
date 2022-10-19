@@ -26,6 +26,7 @@ import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
 import com.liferay.portal.kernel.test.util.UserTestUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
+import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
 
@@ -70,7 +71,8 @@ public class LocalOAuthClientTest {
 			_localOAuthClient.requestTokens(
 				oAuth2Application, user.getUserId()));
 
-		Assert.assertTrue(jsonObject.getString("access_token", null) != null);
+		Assert.assertTrue(
+			Validator.isNotNull(jsonObject.getString("access_token")));
 
 		_oAuth2ApplicationLocalService.deleteOAuth2Application(
 			oAuth2Application);
