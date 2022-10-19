@@ -105,19 +105,19 @@ public class JournalTransformerTest {
 
 		templateNodes.add(logoTitleFieldSet);
 
-		List<TemplateNode> backwardsCompatibilityTemplateNodes =
+		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
 				templateNodes, 0);
 
-		TemplateNode backwardsCompatibilityTemplateNode =
-			backwardsCompatibilityTemplateNodes.get(0);
+		TemplateNode templateNode =
+			includeBackwardsCompatibilityTemplateNodes.get(0);
 
-		List<TemplateNode> children =
-			backwardsCompatibilityTemplateNode.getChildren();
+		List<TemplateNode> childrenTemplateNodes = templateNode.getChildren();
 
-		TemplateNode firstChild = children.get(0);
+		TemplateNode firstChildTemplateNode = childrenTemplateNodes.get(0);
 
-		Assert.assertEquals(firstChild.get("data"), _IMAGE_FIELD_DATA);
+		Assert.assertEquals(
+			firstChildTemplateNode.get("data"), _IMAGE_FIELD_DATA);
 	}
 
 	@Test
@@ -221,14 +221,16 @@ public class JournalTransformerTest {
 		TemplateNode group1Field1 = _createTemplateNode(
 			"Group 1 Field 1", DDMFormFieldTypeConstants.TEXT);
 
+		group1Field1.appendSibling(group1Field1);
+
 		TemplateNode group1Field2 = _createTemplateNode(
 			"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT);
+
+		group1Field1.appendSibling(group1Field2);
 
 		TemplateNode group2Field1 = _createTemplateNode(
 			"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT);
 
-		group1Field1.appendSibling(group1Field1);
-		group1Field1.appendSibling(group1Field2);
 		group1Field1.appendSibling(group2Field1);
 
 		return group1Field1;
