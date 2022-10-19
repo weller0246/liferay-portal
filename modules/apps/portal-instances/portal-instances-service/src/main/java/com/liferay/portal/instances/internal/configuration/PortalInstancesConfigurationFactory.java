@@ -16,7 +16,6 @@ package com.liferay.portal.instances.internal.configuration;
 
 import com.liferay.petra.lang.SafeCloseable;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
-import com.liferay.portal.instances.configuration.PortalInstancesConfiguration;
 import com.liferay.portal.instances.service.PortalInstancesLocalService;
 import com.liferay.portal.kernel.exception.NoSuchCompanyException;
 import com.liferay.portal.kernel.exception.PortalException;
@@ -41,7 +40,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
-	configurationPid = "com.liferay.portal.instances.configuration.PortalInstancesConfiguration",
+	configurationPid = "com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration",
 	configurationPolicy = ConfigurationPolicy.REQUIRE, immediate = true,
 	service = PortalInstancesConfigurationFactory.class
 )
@@ -73,28 +72,20 @@ public class PortalInstancesConfigurationFactory {
 		}
 
 		if (company == null) {
-
-			// Add instance
-
 			company = _companyLocalService.addCompany(
 				null, webId, virtualHostname, mx, maxUsers, active);
-
-			String siteInitializerKey =
-				portalInstancesConfiguration.siteInitializerKey();
 
 			try (SafeCloseable safeCloseable =
 					CompanyThreadLocal.setWithSafeCloseable(
 						company.getCompanyId())) {
 
 				_portalInstancesLocalService.initializePortalInstance(
-					company.getCompanyId(), siteInitializerKey,
+					company.getCompanyId(),
+					portalInstancesConfiguration.siteInitializerKey(),
 					_servletContext);
 			}
 		}
 		else {
-
-			// Update instance
-
 			if (company.getCompanyId() ==
 					_portalInstancesLocalService.getDefaultCompanyId()) {
 

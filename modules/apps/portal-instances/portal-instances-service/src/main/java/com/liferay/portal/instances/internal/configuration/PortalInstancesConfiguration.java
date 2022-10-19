@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.portal.instances.configuration;
+package com.liferay.portal.instances.internal.configuration;
 
 import aQute.bnd.annotation.metatype.Meta;
 
@@ -21,7 +21,7 @@ import aQute.bnd.annotation.metatype.Meta;
  */
 @Meta.OCD(
 	factory = true,
-	id = "com.liferay.portal.instances.configuration.PortalInstancesConfiguration"
+	id = "com.liferay.portal.instances.internal.configuration.PortalInstancesConfiguration"
 )
 public interface PortalInstancesConfiguration {
 

@@ -12,12 +12,11 @@
  * details.
  */
 
-package com.liferay.portal.instances.test;
+package com.liferay.portal.instances.internal.configuration.test;
 
 import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.test.util.ConfigurationTestUtil;
-import com.liferay.portal.instances.configuration.PortalInstancesConfiguration;
 import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.service.CompanyLocalService;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
@@ -64,10 +63,10 @@ public class PortalInstancesConfigurationFactoryTest {
 
 		_webId = RandomTestUtil.randomString();
 
-		_portalInstanceConfiguration =
-			_configurationAdmin.getFactoryConfiguration(
-				PortalInstancesConfiguration.class.getName(), _webId,
-				StringPool.QUESTION);
+		_configuration = _configurationAdmin.getFactoryConfiguration(
+			"com.liferay.portal.instances.internal.configuration." +
+				"PortalInstancesConfiguration",
+			_webId, StringPool.QUESTION);
 
 		_serviceTracker = new ServiceTracker<>(
 			_bundleContext,
@@ -79,7 +78,7 @@ public class PortalInstancesConfigurationFactoryTest {
 		_serviceTracker.open();
 
 		ConfigurationTestUtil.saveConfiguration(
-			_portalInstanceConfiguration,
+			_configuration,
 			HashMapDictionaryBuilder.<String, Object>put(
 				"mx", _webId.concat(".foo.bar")
 			).put(
@@ -97,7 +96,7 @@ public class PortalInstancesConfigurationFactoryTest {
 
 	@AfterClass
 	public static void tearDownClass() throws Exception {
-		ConfigurationTestUtil.deleteConfiguration(_portalInstanceConfiguration);
+		ConfigurationTestUtil.deleteConfiguration(_configuration);
 
 		_serviceTracker.close();
 	}
@@ -114,10 +113,11 @@ public class PortalInstancesConfigurationFactoryTest {
 	@Inject
 	private static CompanyLocalService _companyLocalService;
 
+	private static Configuration _configuration;
+
 	@Inject
 	private static ConfigurationAdmin _configurationAdmin;
 
-	private static Configuration _portalInstanceConfiguration;
 	private static ServiceTracker<Object, Object> _serviceTracker;
 	private static String _webId;
 
