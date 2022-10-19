@@ -77,33 +77,33 @@ public class JournalTransformerTest {
 
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
-		TemplateNode logoTitleFieldSet = _createTemplateNode(
+		TemplateNode logoTitleFieldSetTemplateNode = _createTemplateNode(
 			"logoTitleFieldSet", DDMFormFieldTypeConstants.FIELDSET);
 
-		TemplateNode logoTitleText = _createTemplateNode(
+		TemplateNode logoTitleTextTemplateNode = _createTemplateNode(
 			"logoTitleText", DDMFormFieldTypeConstants.TEXT);
 
-		TemplateNode logoFieldSet = _createTemplateNode(
+		TemplateNode logoFieldSetTemplateNode = _createTemplateNode(
 			"logoFieldSet", DDMFormFieldTypeConstants.FIELDSET);
 
-		TemplateNode logoField = _createTemplateNode(
+		TemplateNode logoFieldTemplateNode = _createTemplateNode(
 			"logoField", DDMFormFieldTypeConstants.IMAGE);
 
-		logoField.put("data", _IMAGE_FIELD_DATA);
+		logoFieldTemplateNode.put("data", _IMAGE_FIELD_DATA);
 
-		TemplateNode linkLogoField = _createTemplateNode(
+		TemplateNode linkLogoFieldTemplateNode = _createTemplateNode(
 			"linkLogoField", DDMFormFieldTypeConstants.TEXT);
 
-		logoFieldSet.appendChild(logoField);
-		logoFieldSet.appendChild(linkLogoField);
-		logoField.appendSibling(linkLogoField);
+		logoFieldSetTemplateNode.appendChild(logoFieldTemplateNode);
+		logoFieldSetTemplateNode.appendChild(linkLogoFieldTemplateNode);
+		logoFieldTemplateNode.appendSibling(linkLogoFieldTemplateNode);
 
-		logoTitleText.appendSibling(logoFieldSet);
+		logoTitleTextTemplateNode.appendSibling(logoFieldSetTemplateNode);
 
-		logoTitleFieldSet.appendChild(logoTitleText);
-		logoTitleFieldSet.appendChild(logoFieldSet);
+		logoTitleFieldSetTemplateNode.appendChild(logoTitleTextTemplateNode);
+		logoTitleFieldSetTemplateNode.appendChild(logoFieldSetTemplateNode);
 
-		templateNodes.add(logoTitleFieldSet);
+		templateNodes.add(logoTitleFieldSetTemplateNode);
 
 		List<TemplateNode> includeBackwardsCompatibilityTemplateNodes =
 			journalTransformer.includeBackwardsCompatibilityTemplateNodes(
