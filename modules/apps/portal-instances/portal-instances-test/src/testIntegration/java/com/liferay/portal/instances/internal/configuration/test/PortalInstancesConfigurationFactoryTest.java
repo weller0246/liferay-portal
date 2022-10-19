@@ -56,14 +56,6 @@ public class PortalInstancesConfigurationFactoryTest {
 		Bundle bundle = FrameworkUtil.getBundle(
 			PortalInstancesConfigurationFactoryTest.class);
 
-		String webId = RandomTestUtil.randomString();
-
-		Configuration configuration =
-			_configurationAdmin.getFactoryConfiguration(
-				"com.liferay.portal.instances.internal.configuration." +
-					"PortalInstancesConfiguration",
-				webId, StringPool.QUESTION);
-
 		ServiceTracker<Object, Object> serviceTracker = new ServiceTracker<>(
 			bundle.getBundleContext(),
 			FrameworkUtil.createFilter(
@@ -72,6 +64,14 @@ public class PortalInstancesConfigurationFactoryTest {
 			null);
 
 		serviceTracker.open();
+
+		String webId = RandomTestUtil.randomString();
+
+		Configuration configuration =
+			_configurationAdmin.getFactoryConfiguration(
+				"com.liferay.portal.instances.internal.configuration." +
+					"PortalInstancesConfiguration",
+				webId, StringPool.QUESTION);
 
 		ConfigurationTestUtil.saveConfiguration(
 			configuration,
