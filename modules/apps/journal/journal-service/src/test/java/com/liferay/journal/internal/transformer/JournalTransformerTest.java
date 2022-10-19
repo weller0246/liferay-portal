@@ -373,46 +373,6 @@ public class JournalTransformerTest {
 		return ListUtil.fromArray(repeatableTextTemplateNode1);
 	}
 
-	private List<TemplateNode> _getNestedRepeatableFieldsTemplateNodes() {
-		List<TemplateNode> templateNodes = new ArrayList<>();
-
-		TemplateNode group1TemplateNode = _createTemplateNode(
-			"Group 1", DDMFormFieldTypeConstants.FIELDSET);
-
-		TemplateNode group1Field1TemplateNode = _createTemplateNode(
-			"Group 1 Field 1", DDMFormFieldTypeConstants.TEXT);
-
-		group1TemplateNode.appendChild(group1Field1TemplateNode);
-
-		group1TemplateNode.appendSibling(group1TemplateNode);
-
-		group1Field1TemplateNode.appendSibling(group1Field1TemplateNode);
-
-		group1Field1TemplateNode.appendSibling(
-			_createTemplateNode(
-				"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT));
-
-		TemplateNode group2TemplateNode = _createTemplateNode(
-			"Group 2", DDMFormFieldTypeConstants.FIELDSET);
-
-		TemplateNode group2Field1TemplateNode = _createTemplateNode(
-			"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT);
-
-		group2TemplateNode.appendChild(group2Field1TemplateNode);
-
-		group2Field1TemplateNode.appendSibling(group2Field1TemplateNode);
-
-		group2Field1TemplateNode.appendSibling(
-			_createTemplateNode(
-				"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT));
-
-		group1TemplateNode.appendSibling(group2TemplateNode);
-
-		templateNodes.add(group1TemplateNode);
-
-		return templateNodes;
-	}
-
 	private List<TemplateNode> _getInitTemplateNodes() {
 		List<TemplateNode> templateNodes = new ArrayList<>();
 
@@ -635,6 +595,44 @@ public class JournalTransformerTest {
 			bookmarksTitleFieldSetTemplateNode1);
 
 		templateNodes.add(separatorFieldSetTemplateNode);
+
+		return templateNodes;
+	}
+
+	private List<TemplateNode> _getNestedRepeatableFieldsTemplateNodes() {
+		List<TemplateNode> templateNodes = new ArrayList<>();
+
+		TemplateNode group1TemplateNode = _createTemplateNode(
+			"Group 1", DDMFormFieldTypeConstants.FIELDSET);
+
+		TemplateNode group1Field1TemplateNode = _createTemplateNode(
+			"Group 1 Field 1", DDMFormFieldTypeConstants.TEXT);
+
+		group1Field1TemplateNode.appendSibling(group1Field1TemplateNode);
+		group1Field1TemplateNode.appendSibling(
+			_createTemplateNode(
+				"Group 1 Field 2", DDMFormFieldTypeConstants.TEXT));
+
+		group1TemplateNode.appendChild(group1Field1TemplateNode);
+
+		group1TemplateNode.appendSibling(group1TemplateNode);
+
+		TemplateNode group2TemplateNode = _createTemplateNode(
+			"Group 2", DDMFormFieldTypeConstants.FIELDSET);
+
+		TemplateNode group2Field1TemplateNode = _createTemplateNode(
+			"Group 2 Field 1", DDMFormFieldTypeConstants.TEXT);
+
+		group2Field1TemplateNode.appendSibling(group2Field1TemplateNode);
+		group2Field1TemplateNode.appendSibling(
+			_createTemplateNode(
+				"Group 2 Field 2", DDMFormFieldTypeConstants.TEXT));
+
+		group2TemplateNode.appendChild(group2Field1TemplateNode);
+
+		group1TemplateNode.appendSibling(group2TemplateNode);
+
+		templateNodes.add(group1TemplateNode);
 
 		return templateNodes;
 	}
