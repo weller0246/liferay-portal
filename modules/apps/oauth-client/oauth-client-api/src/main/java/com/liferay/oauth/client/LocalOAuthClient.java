@@ -22,6 +22,6 @@ import com.liferay.oauth2.provider.model.OAuth2Application;
 public interface LocalOAuthClient {
 
 	public String requestTokens(
-		long userId, OAuth2Application oAuth2Application);
+		OAuth2Application oAuth2Application, long userId);
 
 }

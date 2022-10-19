@@ -68,7 +68,7 @@ public class LocalOAuthClientTest {
 
 		JSONObject jsonObject = JSONFactoryUtil.createJSONObject(
 			_localOAuthClient.requestTokens(
-				user.getUserId(), oAuth2Application));
+				oAuth2Application, user.getUserId()));
 
 		Assert.assertTrue(jsonObject.getString("access_token", null) != null);
 

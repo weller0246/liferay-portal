@@ -42,7 +42,7 @@ public class LocalOAuthClientImpl implements LocalOAuthClient {
 
 	@Override
 	public String requestTokens(
-		long userId, OAuth2Application oAuth2Application) {
+		OAuth2Application oAuth2Application, long userId) {
 
 		Client client = _liferayOAuthDataProvider.getClient(oAuth2Application);
 
