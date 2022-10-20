@@ -104,10 +104,9 @@ public class LayoutCommonTag extends IncludeTag {
 
 		if (_includeWebServerDisplayNode) {
 			jspWriter.write("<div class=\"alert-container cadmin container\">");
-			jspWriter.write(
-				"<div class=\"alert-notifications " +
-					"alert-notifications-fixed\" " +
-						"id=\"WebServerDisplayNodeContainer\">");
+			jspWriter.write("<div class=\"alert-notifications ");
+			jspWriter.write("alert-notifications-fixed\" ");
+			jspWriter.write("id=\"WebServerDisplayNodeContainer\">");
 
 			AlertTag alertTag = new AlertTag();
 
@@ -129,10 +128,10 @@ public class LayoutCommonTag extends IncludeTag {
 			jspWriter.write("</div></div>");
 		}
 
-		jspWriter.write(
-			"<form action=\"#\" aria-hidden=\"true\" class=\"hide\" " +
-				"id=\"hrefFm\" method=\"post\" name=\"hrefFm\"><span>" +
-					"</span><button hidden type=\"submit\">");
+		jspWriter.write("<form action=\"#\" aria-hidden=\"true\" ");
+		jspWriter.write("class=\"hide\" id=\"hrefFm\" method=\"post\" ");
+		jspWriter.write("name=\"hrefFm\"><span></span><button hidden ");
+		jspWriter.write("type=\"submit\">");
 		jspWriter.write(LanguageUtil.get(httpServletRequest, "hidden"));
 		jspWriter.write("</button></form>");
 
