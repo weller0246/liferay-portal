@@ -396,4 +396,51 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-150388. TODO //TC-1"
+	@priority = "3"
+	test UserSetNewPasswordWithoutPasswordProperty {
+		property custom.properties = "default.admin.password = ";
+
+		Navigator.openURL();
+
+		sUser._clickSignInLink();
+
+		WaitForElementPresent(locator1 = "SignIn#SET_PASSWORD_TITLE");
+
+		User.resetPassword();
+
+		if (isSet(localizedAnswer)) {
+			User.answerPasswordReminderLocalized(
+				localizedAnswer = "${localizedAnswer}",
+				localizedSaveButton = "${localizedSaveButton}");
+		}
+		else if (IsElementPresent(locator1 = "Select#QUESTION")) {
+			SignIn.setPasswordReminder();
+		}
+
+		if (isSet(localizedAgree)) {
+			User.acceptEndUserLicenseAgreementLocalized(localizedAgree = "${localizedAgree}");
+		}
+		else if (IsElementPresent(locator1 = "Button#I_AGREE")) {
+			SignIn.agreeToTermsOfUse();
+		}
+
+		AssertLocation(value1 = "http://localhost:8080/web/guest/landing");
+	}
+
+	@description = "This is a use case for LPS-150388. TODO //TC-1"
+	@priority = "3"
+	test VirtualInstancesNeedNoExtraInformationWithPasswordProperty {
+		property custom.properties = "default.admin.password = tester";
+
+		User.firstLoginUI(
+			password = "test",
+			userEmailAddress = "test@liferay.com");
+
+		SAML.addVirtualInstances(virtualHosts = "www.able.com");
+
+
+
+
+
 }
