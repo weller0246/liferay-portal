@@ -39,9 +39,7 @@ public class AssetTagModelDocumentContributor
 	@Override
 	public void contribute(Document document, AssetTag assetTag) {
 		document.addTextSortable(Field.NAME, assetTag.getName());
-
 		document.addNumberSortable("assetCount", assetTag.getAssetCount());
-
 		document.addKeyword(
 			"subscribed",
 			_subscriptionLocalService.isSubscribed(
