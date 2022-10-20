@@ -177,8 +177,8 @@ export function useObjectFieldForm({
 			}
 		}
 		else if (
-			field.businessType === 'Text' ||
-			field.businessType === 'LongText'
+			field.businessType === 'LongText' ||
+			field.businessType === 'Text'
 		) {
 			if (settings.showCounter && !settings.maxLength) {
 				errors.maxLength = REQUIRED_MSG;
