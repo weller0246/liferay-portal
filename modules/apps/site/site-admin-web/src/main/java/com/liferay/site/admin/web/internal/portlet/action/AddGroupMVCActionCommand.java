@@ -307,9 +307,11 @@ public class AddGroupMVCActionCommand extends BaseMVCActionCommand {
 		}
 
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-165482"))) {
+			String siteInitializerKey = ParamUtil.getString(
+				actionRequest, "siteInitializerKey");
+
 			typeSettingsUnicodeProperties.setProperty(
-				"siteInitializerKey",
-				ParamUtil.getString(actionRequest, "siteInitializerKey"));
+				"siteInitializerKey", siteInitializerKey);
 		}
 
 		boolean trashEnabled = ParamUtil.getBoolean(
