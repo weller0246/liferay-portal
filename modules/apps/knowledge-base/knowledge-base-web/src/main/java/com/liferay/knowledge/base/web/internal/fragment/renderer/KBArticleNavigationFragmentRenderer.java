@@ -115,7 +115,7 @@ public class KBArticleNavigationFragmentRenderer implements FragmentRenderer {
 
 	@Override
 	public String getLabel(Locale locale) {
-		return _language.get(locale, "knowledge-base-article-navigation");
+		return _language.get(locale, "knowledge-base-navigation");
 	}
 
 	@Override
