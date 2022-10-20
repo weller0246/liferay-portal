@@ -206,7 +206,14 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 				objectDefinition.getTitleObjectFieldId());
 
 			if (objectField != null) {
-				return _parserLabelKey(objectField.getName());
+				String objectFieldName = objectField.getName();
+
+				objectFieldName = StringUtil.replace(
+					objectFieldName, "createDate", "dateCreated");
+				objectFieldName = StringUtil.replace(
+					objectFieldName, "modifiedDate", "dateModified");
+
+				return objectFieldName;
 			}
 		}
 
@@ -233,15 +240,6 @@ public class ObjectRelationshipDDMFormFieldTemplateContextContributor
 		}
 
 		return systemObjectDefinitionMetadata.getRESTDTOIdPropertyName();
-	}
-
-	private String _parserLabelKey(String objectFieldName) {
-		objectFieldName = StringUtil.replace(
-			objectFieldName, "createDate", "dateCreated");
-		objectFieldName = StringUtil.replace(
-			objectFieldName, "modifiedDate", "dateModified");
-
-		return objectFieldName;
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
