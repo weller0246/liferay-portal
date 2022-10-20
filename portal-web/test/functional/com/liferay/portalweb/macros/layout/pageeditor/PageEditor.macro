@@ -4828,9 +4828,10 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 	macro viewExperienceActiveInViewModeDropdown {
 		ContentPages.openExperienceMenu();
 
-		AssertElementPresent(
+		AssertTextEquals(
 			key_experienceName = "${experienceName}",
-			locator1 = "PageEditor#EXPERIENCE_ACTIVE_LABEL_VIEW_DROPDOWN");
+			locator1 = "PageEditor#EXPERIENCE_ACTIVE_LABEL_VIEW_DROPDOWN",
+			value1 = "Active");
 	}
 
 	macro viewExperienceNotActiveInEditMode {
@@ -4852,9 +4853,10 @@ return	Array.from(getWebElement("(//div[@aria-label='${fragmentName}'])[${index}
 	macro viewExperienceNotActiveInViewModeDropdown {
 		ContentPages.openExperienceMenu();
 
-		AssertElementPresent(
+		AssertTextEquals(
 			key_experienceName = "${experienceName}",
-			locator1 = "PageEditor#EXPERIENCE_INACTIVE_LABEL_VIEW_DROPDOWN");
+			locator1 = "PageEditor#EXPERIENCE_INACTIVE_LABEL_VIEW_DROPDOWN",
+			value1 = "Inactive");
 	}
 
 	macro viewExperienceValues {
