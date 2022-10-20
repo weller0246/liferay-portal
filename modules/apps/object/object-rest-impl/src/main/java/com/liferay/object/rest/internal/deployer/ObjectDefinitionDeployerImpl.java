@@ -396,8 +396,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						"api.version", "v1.0"
 					).put(
 						"batch.engine.entity.class.name",
-						ObjectEntry.class.getName() + "#" +
-							objectDefinition.getName()
+						ObjectEntry.class.getName() + "#" + osgiJaxRsName
 					).put(
 						"batch.engine.task.item.delegate", "true"
 					).put(
@@ -408,8 +407,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						"batch.planner.import.enabled", "true"
 					).put(
 						"entity.class.name",
-						ObjectEntry.class.getName() + "#" +
-							objectDefinition.getName()
+						ObjectEntry.class.getName() + "#" + osgiJaxRsName
 					).put(
 						"osgi.jaxrs.application.select",
 						"(osgi.jaxrs.name=" + osgiJaxRsName + ")"
