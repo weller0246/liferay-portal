@@ -30,17 +30,17 @@ import org.osgi.service.component.annotations.Component;
 	property = {
 		"osgi.jaxrs.application.select=(osgi.jaxrs.name=Liferay.Headless.Commerce.Admin.Channel)",
 		"osgi.jaxrs.extension=true",
-		"osgi.jaxrs.name=Liferay.Headless.Commerce.Admin.Channel.CommerceChannelTypeExceptionMapper"
+		"osgi.jaxrs.name=Liferay.Headless.Commerce.Admin.Channel.ChannelTypeExceptionMapper"
 	},
 	service = ExceptionMapper.class
 )
 @Provider
-public class CommerceChannelTypeExceptionMapper
+public class ChannelTypeExceptionMapper
 	extends BaseExceptionMapper<CommerceChannelTypeException> {
 
 	@Override
 	public String getErrorDescription() {
-		return "Invalid type";
+		return "Invalid channel type";
 	}
 
 	@Override
