@@ -3571,13 +3571,13 @@ public class JenkinsResultsParserUtil {
 	}
 
 	public static FilenameFilter newFilenameFilter(String patternString) {
-		final Pattern namePattern = Pattern.compile(patternString);
+		final Pattern pattern = Pattern.compile(patternString);
 
 		return new FilenameFilter() {
 
 			@Override
 			public boolean accept(File dir, String name) {
-				Matcher matcher = namePattern.matcher(name);
+				Matcher matcher = pattern.matcher(name);
 
 				if (matcher.matches()) {
 					return true;

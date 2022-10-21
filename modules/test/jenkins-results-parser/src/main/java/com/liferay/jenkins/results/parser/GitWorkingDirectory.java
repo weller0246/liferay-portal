@@ -498,13 +498,13 @@ public class GitWorkingDirectory {
 	public void deleteLockFiles() {
 		File gitDirectory = getGitDirectory();
 
-		String[] lockFilenames = gitDirectory.list(
+		String[] lockFileNames = gitDirectory.list(
 			JenkinsResultsParserUtil.newFilenameFilter(".*\\.lock"));
 
-		for (String lockFilename : lockFilenames) {
-			File lockFile = new File(gitDirectory, lockFilename);
-
+		for (String lockFileName : lockFileNames) {
 			boolean deleted = false;
+
+			File lockFile = new File(gitDirectory, lockFileName);
 
 			if (lockFile.exists() && lockFile.canWrite()) {
 				System.out.println("Deleting lock file " + lockFile.getPath());
