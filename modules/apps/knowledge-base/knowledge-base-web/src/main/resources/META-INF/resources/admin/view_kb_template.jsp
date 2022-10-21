@@ -54,8 +54,6 @@ if (portletTitleBasedNavigation) {
 			</div>
 
 			<%= kbTemplate.getContent() %>
-
-			<liferay-util:include page="/admin/kb_template_comments.jsp" servletContext="<%= application %>" />
 		</div>
 	</div>
 </div>
