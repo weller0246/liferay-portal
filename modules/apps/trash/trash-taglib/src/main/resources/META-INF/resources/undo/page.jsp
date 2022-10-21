@@ -104,6 +104,10 @@ int trashedEntriesCount = GetterUtil.getInteger(request.getAttribute("liferay-tr
 </liferay-util:buffer>
 
 <liferay-frontend:component
-	context='<%= HashMapBuilder.<String, Object>put("alertMessage", alertMessage).build() %>'
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"alertMessage", alertMessage
+		).build()
+	%>'
 	module="js/undo"
 />
