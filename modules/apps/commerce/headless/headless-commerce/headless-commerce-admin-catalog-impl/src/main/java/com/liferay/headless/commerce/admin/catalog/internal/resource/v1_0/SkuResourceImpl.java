@@ -280,7 +280,7 @@ public class SkuResourceImpl
 		long replacementCProductId = 0;
 		String replacementCPInstanceUuid = null;
 
-		if (GetterUtil.get(sku.getDiscontinued(), false)) {
+		if (GetterUtil.getBoolean(sku.getDiscontinued())) {
 			CPInstance discontinuedCPInstance = null;
 
 			if (Validator.isNotNull(
