@@ -295,14 +295,16 @@ public class Dom4JUtil {
 			return saxReader.read(new StringReader(xml));
 		}
 		catch (Exception exception1) {
-			DocumentBuilderFactory documentBuilderFactory =
-				DocumentBuilderFactory.newInstance();
-
 			try {
+				DOMReader domReader = new DOMReader();
+
+				DocumentBuilderFactory documentBuilderFactory =
+					DocumentBuilderFactory.newInstance();
+
 				DocumentBuilder documentBuilder =
 					documentBuilderFactory.newDocumentBuilder();
 
-				org.w3c.dom.Document orgW3CDomDocument;
+				org.w3c.dom.Document orgW3CDomDocument = null;
 
 				if (!xml.contains("<!DOCTYPE definition")) {
 					String documentTypeDefinition =
@@ -317,8 +319,6 @@ public class Dom4JUtil {
 					orgW3CDomDocument = documentBuilder.parse(
 						new InputSource(new StringReader(xml)));
 				}
-
-				DOMReader domReader = new DOMReader();
 
 				return domReader.read(orgW3CDomDocument);
 			}
