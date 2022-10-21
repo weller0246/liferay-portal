@@ -345,18 +345,18 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 		FragmentEntryLink fragmentEntryLink = _getFragmentEntryLink(
 			fragmentRendererContext);
 
-		StringBundler cacheKeySB = new StringBundler(5);
+		StringBundler portalCacheKeySB = new StringBundler(5);
 
-		cacheKeySB.append(fragmentEntryLink.getFragmentEntryLinkId());
-		cacheKeySB.append(StringPool.DASH);
-		cacheKeySB.append(fragmentRendererContext.getLocale());
-		cacheKeySB.append(StringPool.DASH);
-		cacheKeySB.append(fragmentEntryLink.getSegmentsExperienceId());
+		portalCacheKeySB.append(fragmentEntryLink.getFragmentEntryLinkId());
+		portalCacheKeySB.append(StringPool.DASH);
+		portalCacheKeySB.append(fragmentRendererContext.getLocale());
+		portalCacheKeySB.append(StringPool.DASH);
+		portalCacheKeySB.append(fragmentEntryLink.getSegmentsExperienceId());
 
 		String content = StringPool.BLANK;
 
 		if (_isCacheable(fragmentEntryLink, fragmentRendererContext)) {
-			content = portalCache.get(cacheKeySB.toString());
+			content = portalCache.get(portalCacheKeySB.toString());
 
 			if (Validator.isNotNull(content)) {
 				return content;
@@ -436,7 +436,7 @@ public class FragmentEntryFragmentRenderer implements FragmentRenderer {
 			html, httpServletRequest);
 
 		if (_isCacheable(fragmentEntryLink, fragmentRendererContext)) {
-			portalCache.put(cacheKeySB.toString(), content);
+			portalCache.put(portalCacheKeySB.toString(), content);
 		}
 
 		return content;

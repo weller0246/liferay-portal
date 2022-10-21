@@ -300,24 +300,6 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 			ArrayList::addAll);
 	}
 
-	private String _getCacheKey(
-		String ddmDataProviderId, List<KeyValuePair> keyValuePairs,
-		String url) {
-
-		Stream<KeyValuePair> stream = keyValuePairs.stream();
-
-		return StringBundler.concat(
-			ddmDataProviderId, StringPool.AT, url, StringPool.QUESTION,
-			stream.sorted(
-			).map(
-				keyValuePair -> StringBundler.concat(
-					keyValuePair.getKey(), StringPool.EQUAL,
-					keyValuePair.getValue())
-			).collect(
-				Collectors.joining(StringPool.AMPERSAND)
-			));
-	}
-
 	private DDMDataProviderResponse _getData(
 			DDMDataProviderRequest ddmDataProviderRequest,
 			DDMRESTDataProviderSettings ddmRESTDataProviderSettings)
@@ -347,12 +329,12 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 
 		String absoluteURL = _getAbsoluteURL(uri.getQuery(), url);
 
-		String cacheKey = _getCacheKey(
+		String portalCacheKey = _getPortalCacheKey(
 			ddmDataProviderRequest.getDDMDataProviderId(), allParameters,
 			absoluteURL);
 
 		DDMDataProviderResponse ddmDataProviderResponse = _portalCache.get(
-			cacheKey);
+			portalCacheKey);
 
 		if ((ddmDataProviderResponse != null) &&
 			ddmRESTDataProviderSettings.cacheable()) {
@@ -401,7 +383,7 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 			DDMDataProviderResponseStatus.OK, ddmRESTDataProviderSettings);
 
 		if (ddmRESTDataProviderSettings.cacheable()) {
-			_portalCache.put(cacheKey, ddmDataProviderResponse);
+			_portalCache.put(portalCacheKey, ddmDataProviderResponse);
 		}
 
 		return ddmDataProviderResponse;
@@ -534,6 +516,24 @@ public class DDMRESTDataProvider implements DDMDataProvider {
 		}
 
 		return pathInputParametersMap;
+	}
+
+	private String _getPortalCacheKey(
+		String ddmDataProviderId, List<KeyValuePair> keyValuePairs,
+		String url) {
+
+		Stream<KeyValuePair> stream = keyValuePairs.stream();
+
+		return StringBundler.concat(
+			ddmDataProviderId, StringPool.AT, url, StringPool.QUESTION,
+			stream.sorted(
+			).map(
+				keyValuePair -> StringBundler.concat(
+					keyValuePair.getKey(), StringPool.EQUAL,
+					keyValuePair.getValue())
+			).collect(
+				Collectors.joining(StringPool.AMPERSAND)
+			));
 	}
 
 	private Map<String, Object> _getProxySettingsMap() {
