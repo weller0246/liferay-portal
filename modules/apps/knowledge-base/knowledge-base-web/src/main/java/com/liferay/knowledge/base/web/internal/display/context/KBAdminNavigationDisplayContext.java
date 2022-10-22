@@ -190,8 +190,8 @@ public class KBAdminNavigationDisplayContext {
 			JSONArray navigationItemsJSONArray = null;
 
 			if (!mvcPath.equals("/admin/view_kb_suggestions.jsp") &&
-				!mvcPath.equals("/admin/view_kb_templates.jsp") &&
-				!mvcPath.equals("/admin/view_kb_template.jsp")) {
+				!mvcPath.equals("/admin/view_kb_template.jsp") &&
+				!mvcPath.equals("/admin/view_kb_templates.jsp")) {
 
 				active = true;
 				navigationItemsJSONArray = _getChildrenJSONArray();
@@ -233,8 +233,8 @@ public class KBAdminNavigationDisplayContext {
 			boolean active = false;
 			JSONArray navigationItemsJSONArray = null;
 
-			if (mvcPath.equals("/admin/view_kb_templates.jsp") ||
-				mvcPath.equals("/admin/view_kb_template.jsp")) {
+			if (mvcPath.equals("/admin/view_kb_template.jsp") ||
+				mvcPath.equals("/admin/view_kb_templates.jsp")) {
 
 				active = true;
 				navigationItemsJSONArray =
