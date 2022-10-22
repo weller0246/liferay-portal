@@ -27,9 +27,9 @@ import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.search.filter.Filter;
 import com.liferay.portal.kernel.service.GroupLocalService;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HashMapBuilder;
-import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterRegistry;
@@ -37,12 +37,8 @@ import com.liferay.portal.vulcan.dto.converter.DefaultDTOConverterContext;
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.pagination.Pagination;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -97,18 +93,14 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 				contextAcceptLanguage.getPreferredLocale(),
 				dataSource.getSiteIds());
 
-		AnalyticsDataSource analyticsDataSource = _filterDataSources(
+		AnalyticsDataSource analyticsDataSource = _getAnalyticsDataSource(
 			GetterUtil.getLong(dataSource.getDataSourceId()),
 			analyticsChannel.getAnalyticsDataSources());
 
-		List<Long> commerceChannelIds = Arrays.asList(
-			analyticsDataSource.getCommerceChannelIds());
-
-		List<Long> siteIds = Arrays.asList(analyticsDataSource.getSiteIds());
-
 		_analyticsCloudClient.updateAnalyticsDataSourceDetails(
-			contextCompany.getCompanyId(), !commerceChannelIds.isEmpty(),
-			!siteIds.isEmpty());
+			contextCompany.getCompanyId(),
+			ArrayUtil.isNotEmpty(analyticsDataSource.getCommerceChannelIds()),
+			ArrayUtil.isNotEmpty(analyticsDataSource.getSiteIds()));
 
 		AnalyticsConfiguration analyticsConfiguration =
 			_analyticsSettingsManager.getAnalyticsConfiguration(
@@ -117,11 +109,11 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 		_updateCommerceChannelGroups(
 			analyticsConfiguration.syncedCommerceChannelIds(),
 			channel.getChannelId(), contextCompany.getCompanyId(),
-			commerceChannelIds);
+			analyticsDataSource.getCommerceChannelIds());
 
 		_updateGroups(
 			analyticsConfiguration.syncedGroupIds(), channel.getChannelId(),
-			siteIds);
+			analyticsDataSource.getSiteIds());
 
 		_analyticsSettingsManager.updateCompanyConfiguration(
 			contextUser.getCompanyId(),
@@ -151,56 +143,42 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 	@Reference
 	protected DTOConverterRegistry dtoConverterRegistry;
 
-	private AnalyticsDataSource _filterDataSources(
+	private AnalyticsDataSource _getAnalyticsDataSource(
 		long analyticsDataSourceId,
 		AnalyticsDataSource[] analyticsDataSources) {
 
 		for (AnalyticsDataSource analyticsDataSource : analyticsDataSources) {
-			if (analyticsDataSource.getId() != analyticsDataSourceId) {
-				continue;
+			if (analyticsDataSource.getId() == analyticsDataSourceId) {
+				return analyticsDataSource;
 			}
-
-			return analyticsDataSource;
 		}
 
-		throw new RuntimeException("Unable to filter Data Source");
-	}
-
-	private List<Long> _toLongList(String[] groupIds) {
-		return Stream.of(
-			groupIds
-		).mapToLong(
-			GetterUtil::getLong
-		).boxed(
-		).collect(
-			Collectors.toList()
-		);
+		throw new RuntimeException("Unable to get analytics data source");
 	}
 
 	private void _updateCommerceChannelGroups(
 			String[] analyticsConfigurationCommerceChannelIds, String channelId,
-			long companyId, List<Long> dataSourceCommerceChannelIds)
+			long companyId, Long[] dataSourceCommerceChannelIds)
 		throws Exception {
-
-		List<Long> commerceChannelIds = _toLongList(
-			analyticsConfigurationCommerceChannelIds);
 
 		_updateTypeSetting(
 			channelId,
-			ListUtil.filter(
+			ArrayUtil.filter(
 				dataSourceCommerceChannelIds,
-				commerceChannelId -> !commerceChannelIds.contains(
-					commerceChannelId)),
+				commerceChannelId -> !ArrayUtil.contains(
+					analyticsConfigurationCommerceChannelIds,
+					String.valueOf(commerceChannelId))),
 			commerceChannelId -> _groupLocalService.fetchGroup(
 				companyId, _commerceChannelClassNameId, commerceChannelId),
 			false);
 
 		_updateTypeSetting(
 			channelId,
-			ListUtil.filter(
-				commerceChannelIds,
-				commerceChannelId -> !dataSourceCommerceChannelIds.contains(
-					commerceChannelId)),
+			ArrayUtil.filter(
+				analyticsConfigurationCommerceChannelIds,
+				commerceChannelId -> !ArrayUtil.contains(
+					dataSourceCommerceChannelIds,
+					Long.valueOf(commerceChannelId))),
 			commerceChannelId -> _groupLocalService.fetchGroup(
 				companyId, _commerceChannelClassNameId, commerceChannelId),
 			true);
@@ -208,31 +186,33 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 
 	private void _updateGroups(
 			String[] analyticsConfigurationGroupIds, String channelId,
-			List<Long> dataSourceGroupIds)
+			Long[] dataSourceGroupIds)
 		throws Exception {
-
-		List<Long> groupIds = _toLongList(analyticsConfigurationGroupIds);
 
 		_updateTypeSetting(
 			channelId,
-			ListUtil.filter(
-				dataSourceGroupIds, groupId -> !groupIds.contains(groupId)),
+			ArrayUtil.filter(
+				dataSourceGroupIds,
+				groupId -> !ArrayUtil.contains(
+					analyticsConfigurationGroupIds, String.valueOf(groupId))),
 			groupId -> _groupLocalService.fetchGroup(groupId), false);
 
 		_updateTypeSetting(
 			channelId,
-			ListUtil.filter(
-				groupIds, groupId -> !dataSourceGroupIds.contains(groupId)),
+			ArrayUtil.filter(
+				analyticsConfigurationGroupIds,
+				groupId -> !ArrayUtil.contains(
+					dataSourceGroupIds, Long.valueOf(groupId))),
 			groupId -> _groupLocalService.fetchGroup(groupId), true);
 	}
 
-	private void _updateTypeSetting(
-			String channelId, List<Long> groupIds,
+	private <T> void _updateTypeSetting(
+			String channelId, T[] groupIds,
 			Function<Long, Group> fetchGroupFunction, boolean remove)
 		throws Exception {
 
-		for (Long groupId : groupIds) {
-			Group group = fetchGroupFunction.apply(groupId);
+		for (T groupId : groupIds) {
+			Group group = fetchGroupFunction.apply(GetterUtil.getLong(groupId));
 
 			if (group == null) {
 				continue;
