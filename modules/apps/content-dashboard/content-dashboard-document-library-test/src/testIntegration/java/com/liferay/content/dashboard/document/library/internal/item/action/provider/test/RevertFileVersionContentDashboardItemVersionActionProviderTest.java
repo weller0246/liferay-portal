@@ -88,12 +88,10 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testGetContentDashboardItemActionOneVersion() throws Exception {
 		FileEntry fileEntry = _getFileEntry(1, TestPropsValues.getUserId());
 
-		FileVersion fileVersion = fileEntry.getLatestFileVersion();
-
 		Assert.assertNull(
 			_contentDashboardItemVersionActionProvider.
 				getContentDashboardItemVersionAction(
-					fileVersion,
+					fileEntry.getLatestFileVersion(),
 					_getMockHttpServletRequest(TestPropsValues.getUser())));
 	}
 
