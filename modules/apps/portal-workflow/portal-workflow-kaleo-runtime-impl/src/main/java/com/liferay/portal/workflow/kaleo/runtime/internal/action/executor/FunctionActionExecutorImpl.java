@@ -140,9 +140,8 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 				kaleoAction.getUserId(), workflowTaskId)
 		).put(
 			"transitionURL",
-			StringBundler.concat(
-				"/o/headless-admin-workflow/v1.0/workflow-tasks/",
-				workflowTaskId, "/change-transition")
+			"/o/headless-admin-workflow/v1.0/workflow-tasks/" + workflowTaskId +
+				"/change-transition"
 		).put(
 			"workflowTaskId", workflowTaskId
 		);
@@ -162,26 +161,23 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 		if (workflowTaskAssignees.isEmpty()) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					StringBundler.concat(
-						"When specifing an action of type function#<id>, ",
-						"there must always be a User pre-assigned to the task ",
-						kaleoAction));
+					"There are no workflow task assignees for Kaleo action " +
+						kaleoAction);
 			}
 
 			return;
 		}
 
-		WorkflowTaskAssignee workflowTaskAssignee = workflowTaskAssignees.get(0);
+		WorkflowTaskAssignee workflowTaskAssignee = workflowTaskAssignees.get(
+			0);
 
 		if (workflowTaskAssignee.getAssigneeClassName() !=
 				User.class.getName()) {
 
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					StringBundler.concat(
-						"When specifing an action of type function#<id> the ",
-						"first pre-assigment must be of type User ",
-						kaleoAction));
+					"The first workflow task assignee must be a user for " +
+						"Kaleo action " + kaleoAction);
 			}
 
 			return;
