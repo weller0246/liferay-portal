@@ -163,24 +163,24 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 
 		_updateTypeSetting(
 			channelId,
+			commerceChannelId -> _groupLocalService.fetchGroup(
+				companyId, _commerceChannelClassNameId, commerceChannelId),
 			ArrayUtil.filter(
 				dataSourceCommerceChannelIds,
 				commerceChannelId -> !ArrayUtil.contains(
 					analyticsConfigurationCommerceChannelIds,
 					String.valueOf(commerceChannelId))),
-			commerceChannelId -> _groupLocalService.fetchGroup(
-				companyId, _commerceChannelClassNameId, commerceChannelId),
 			false);
 
 		_updateTypeSetting(
 			channelId,
+			commerceChannelId -> _groupLocalService.fetchGroup(
+				companyId, _commerceChannelClassNameId, commerceChannelId),
 			ArrayUtil.filter(
 				analyticsConfigurationCommerceChannelIds,
 				commerceChannelId -> !ArrayUtil.contains(
 					dataSourceCommerceChannelIds,
 					Long.valueOf(commerceChannelId))),
-			commerceChannelId -> _groupLocalService.fetchGroup(
-				companyId, _commerceChannelClassNameId, commerceChannelId),
 			true);
 	}
 
@@ -190,25 +190,25 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 		throws Exception {
 
 		_updateTypeSetting(
-			channelId,
+			channelId, groupId -> _groupLocalService.fetchGroup(groupId),
 			ArrayUtil.filter(
 				dataSourceGroupIds,
 				groupId -> !ArrayUtil.contains(
 					analyticsConfigurationGroupIds, String.valueOf(groupId))),
-			groupId -> _groupLocalService.fetchGroup(groupId), false);
+			false);
 
 		_updateTypeSetting(
-			channelId,
+			channelId, groupId -> _groupLocalService.fetchGroup(groupId),
 			ArrayUtil.filter(
 				analyticsConfigurationGroupIds,
 				groupId -> !ArrayUtil.contains(
 					dataSourceGroupIds, Long.valueOf(groupId))),
-			groupId -> _groupLocalService.fetchGroup(groupId), true);
+			true);
 	}
 
 	private <T> void _updateTypeSetting(
-			String channelId, T[] groupIds,
-			Function<Long, Group> fetchGroupFunction, boolean remove)
+			String channelId, Function<Long, Group> fetchGroupFunction,
+			T[] groupIds, boolean remove)
 		throws Exception {
 
 		for (T groupId : groupIds) {
