@@ -49,6 +49,7 @@ import org.osgi.service.component.annotations.Reference;
  * @author Raymond Augé
  */
 @Component(
+	configurationPid = "com.liferay.portal.workflow.kaleo.runtime.internal.configuration.FunctionActionExecutorImplConfiguration",
 	factory = "com.liferay.object.internal.action.executor.FunctionObjectActionExecutorImpl",
 	service = ActionExecutor.class
 )
