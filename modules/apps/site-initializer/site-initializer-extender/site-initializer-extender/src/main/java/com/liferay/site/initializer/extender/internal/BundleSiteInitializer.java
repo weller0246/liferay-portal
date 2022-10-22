@@ -521,6 +521,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 					taxonomyCategoryIdsStringUtilReplaceValues));
 
 			_invoke(() -> _addWorkflowDefinitions(serviceContext));
+
+			_invoke(() -> _updateGroupSiteInitializerKey(groupId));
 		}
 		catch (Exception exception) {
 			_log.error(exception);
@@ -4053,6 +4055,23 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 
 		return draftLayout;
+	}
+
+	private void _updateGroupSiteInitializerKey(long groupId) throws Exception {
+		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-165482"))) {
+			return;
+		}
+
+		Group group = _groupLocalService.getGroup(groupId);
+
+		UnicodeProperties typeSettingsUnicodeProperties =
+			group.getTypeSettingsProperties();
+
+		typeSettingsUnicodeProperties.setProperty(
+			"siteInitializerKey", getKey());
+
+		_groupLocalService.updateGroup(
+			group.getGroupId(), typeSettingsUnicodeProperties.toString());
 	}
 
 	private void _updateLayoutSet(
