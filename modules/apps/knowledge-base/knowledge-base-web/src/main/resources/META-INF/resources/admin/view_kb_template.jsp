@@ -41,6 +41,7 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 if (portletTitleBasedNavigation) {
 	portletDisplay.setShowBackIcon(true);
 	portletDisplay.setURLBack(redirect);
+
 	renderResponse.setTitle(kbTemplate.getTitle());
 }
 %>
