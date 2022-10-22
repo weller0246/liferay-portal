@@ -53,15 +53,11 @@ import com.liferay.portal.kernel.util.Validator;
 import java.net.HttpURLConnection;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
@@ -408,22 +404,6 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			"com.liferay.commerce.product.model.CommerceChannel");
 	}
 
-	private JSONObject _buildGroupJSONObject(Group group, Locale locale) {
-		JSONObject groupJSONObject = JSONUtil.put(
-			"id", String.valueOf(group.getClassPK()));
-
-		try {
-			return groupJSONObject.put(
-				"name", group.getDescriptiveName(locale));
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-
-			return groupJSONObject.put(
-				"name", _language.get(locale, "unknown"));
-		}
-	}
-
 	private JSONObject _decodeToken(String connectionToken) throws Exception {
 		try {
 			if (Validator.isBlank(connectionToken)) {
@@ -445,21 +425,31 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			Locale locale)
 		throws Exception {
 
-		if (groupIds == null) {
-			return null;
-		}
-
-		Stream<Long> stream = Arrays.stream(groupIds);
-
 		return JSONUtil.toJSONArray(
-			stream.map(
-				fetchGroupFunction
-			).filter(
-				Objects::nonNull
-			).collect(
-				Collectors.toList()
-			),
-			group -> _buildGroupJSONObject(group, locale));
+			groupIds,
+			groupId -> {
+				Group group = fetchGroupFunction.apply(groupId);
+
+				if (group == null) {
+					return null;
+				}
+
+				return JSONUtil.put(
+					"id", String.valueOf(group.getClassPK())
+				).put(
+					"name",
+					() -> {
+						try {
+							return group.getDescriptiveName(locale);
+						}
+						catch (PortalException portalException) {
+							_log.error(portalException);
+
+							return _language.get(locale, "unknown");
+						}
+					}
+				);
+			});
 	}
 
 	private Http.Options _getOptions(
