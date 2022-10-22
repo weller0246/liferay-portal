@@ -125,28 +125,11 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 
 		_analyticsSettingsManager.updateCompanyConfiguration(
 			contextUser.getCompanyId(),
-			HashMapBuilder.put(
+			HashMapBuilder.<String, Object>put(
 				"syncedCommerceChannelIds",
-				() -> {
-					Stream<Long> stream = commerceChannelIds.stream();
-
-					return (Object)stream.map(
-						String::valueOf
-					).toArray(
-						String[]::new
-					);
-				}
+				analyticsDataSource.getCommerceChannelIds()
 			).put(
-				"syncedGroupIds",
-				() -> {
-					Stream<Long> stream = siteIds.stream();
-
-					return (Object)stream.map(
-						String::valueOf
-					).toArray(
-						String[]::new
-					);
-				}
+				"syncedGroupIds", analyticsDataSource.getSiteIds()
 			).build());
 
 		return _channelDTOConverter.toDTO(analyticsChannel);
