@@ -109,15 +109,15 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 				_jsonFactory.serialize(value));
 
 			if (jsonObject.has("javaClass")) {
-				if (jsonObject.has("serializable")) {
-					payloadJSONObject.put(
-						key, jsonObject.getJSONObject("serializable"));
-				}
-				else if (jsonObject.has("list")) {
+				if (jsonObject.has("list")) {
 					payloadJSONObject.put(key, jsonObject.getJSONArray("list"));
 				}
 				else if (jsonObject.has("map")) {
 					payloadJSONObject.put(key, jsonObject.getJSONObject("map"));
+				}
+				else if (jsonObject.has("serializable")) {
+					payloadJSONObject.put(
+						key, jsonObject.getJSONObject("serializable"));
 				}
 				else {
 					payloadJSONObject.put(key, jsonObject);
