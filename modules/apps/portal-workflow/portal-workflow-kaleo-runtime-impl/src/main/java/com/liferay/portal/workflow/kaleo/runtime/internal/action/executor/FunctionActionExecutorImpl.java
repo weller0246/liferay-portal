@@ -194,6 +194,10 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 		options.setMethod(Http.Method.POST);
 		options.setTimeout(_timeout);
 
+		// TODO
+
+		//_authorize(companyId, options, userId);
+
 		_http.URLtoByteArray(options);
 	}
 
@@ -201,6 +205,8 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 		FunctionActionExecutorImplConfiguration
 			functionActionExecutorImplConfiguration,
 		OAuth2Application oAuth2Application) {
+
+		// TODO Abstract this out
 
 		String resourcePath =
 			functionActionExecutorImplConfiguration.resourcePath();

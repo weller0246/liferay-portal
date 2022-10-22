@@ -103,6 +103,8 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 			functionObjectActionExecutorImplConfiguration,
 		OAuth2Application oAuth2Application) {
 
+		// TODO Abstract this out
+
 		String resourcePath =
 			functionObjectActionExecutorImplConfiguration.resourcePath();
 
