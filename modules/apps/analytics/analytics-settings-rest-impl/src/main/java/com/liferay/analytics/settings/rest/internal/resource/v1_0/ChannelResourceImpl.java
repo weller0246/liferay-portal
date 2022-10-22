@@ -228,7 +228,7 @@ public class ChannelResourceImpl extends BaseChannelResourceImpl {
 				if ((analyticsChannelId != null) &&
 					!channelId.equals(analyticsChannelId)) {
 
-					throw new PortalException("Invalid channel Id");
+					throw new IllegalArgumentException("Invalid channel ID");
 				}
 			}
 			else {
