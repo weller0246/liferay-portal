@@ -39,15 +39,15 @@ public class EqualsFunctionTest {
 
 		Assert.assertFalse(equalsFunction.apply("FORMS", "forms"));
 		Assert.assertFalse(equalsFunction.apply("forms&#39;", "forms'"));
-		Assert.assertFalse(equalsFunction.apply(2.0D, new BigDecimal(1)));
 		Assert.assertFalse(equalsFunction.apply(2, new BigDecimal(1)));
+		Assert.assertFalse(equalsFunction.apply(2.0D, new BigDecimal(1)));
 		Assert.assertFalse(equalsFunction.apply(2L, new BigDecimal(1)));
 		Assert.assertFalse(equalsFunction.apply(null, "forms"));
 		Assert.assertFalse(equalsFunction.apply(null, new BigDecimal(1)));
 		Assert.assertTrue(equalsFunction.apply("1", new BigDecimal(1)));
 		Assert.assertTrue(equalsFunction.apply("forms", "forms"));
-		Assert.assertTrue(equalsFunction.apply(1.0D, new BigDecimal(1)));
 		Assert.assertTrue(equalsFunction.apply(1, new BigDecimal(1)));
+		Assert.assertTrue(equalsFunction.apply(1.0D, new BigDecimal(1)));
 		Assert.assertTrue(equalsFunction.apply(1L, new BigDecimal(1)));
 	}
 
