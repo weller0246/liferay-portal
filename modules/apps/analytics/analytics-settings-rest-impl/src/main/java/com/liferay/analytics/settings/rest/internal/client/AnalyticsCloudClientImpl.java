@@ -263,10 +263,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Received response code %s",
-						response.getResponseCode()));
+				_log.debug("Response code " + response.getResponseCode());
 			}
 
 			throw new PortalException("Unable to get analytics channels page");
@@ -301,7 +298,6 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			Http.Options options = _getOptions(analyticsConfiguration);
 
 			options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
-
 			options.setBody(
 				JSONUtil.put(
 					"commerceChannels",
@@ -319,13 +315,11 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 						siteGroupIds, locale)
 				).toString(),
 				ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
 			options.setLocation(
 				String.format(
 					"%s/api/1.0/channels/%s",
 					analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
 					channelId));
-
 			options.setPatch(true);
 
 			String content = _http.URLtoString(options);
@@ -342,10 +336,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Received response code %s",
-						response.getResponseCode()));
+				_log.debug("Response code " + response.getResponseCode());
 			}
 
 			throw new PortalException("Unable to patch analytics channel");
@@ -373,7 +364,6 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			Http.Options options = _getOptions(analyticsConfiguration);
 
 			options.addHeader("Content-Type", ContentTypes.APPLICATION_JSON);
-
 			options.setBody(
 				JSONUtil.put(
 					"commerceChannelsSelected", commerceChannelsSelected
@@ -381,13 +371,11 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 					"sitesSelected", sitesSelected
 				).toString(),
 				ContentTypes.APPLICATION_JSON, StringPool.UTF8);
-
 			options.setLocation(
 				String.format(
 					"%s/api/1.0/data-sources/%s/details",
 					analyticsConfiguration.liferayAnalyticsFaroBackendURL(),
 					analyticsConfiguration.liferayAnalyticsDataSourceId()));
-
 			options.setPut(true);
 
 			String content = _http.URLtoString(options);
@@ -400,10 +388,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					String.format(
-						"Received response code %s",
-						response.getResponseCode()));
+				_log.debug("Response code " + response.getResponseCode());
 			}
 
 			throw new PortalException(
