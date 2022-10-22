@@ -34,8 +34,6 @@ import org.osgi.framework.Constants;
  */
 public class FactoryUtil {
 
-	public static final String SERVICE_FACTORY_PID = "service.factoryPid";
-
 	public static long getCompanyId(
 			Map<String, Object> properties,
 			CompanyLocalService companyLocalService)
@@ -75,7 +73,7 @@ public class FactoryUtil {
 		throws IllegalStateException {
 
 		String serviceFactoryPid = GetterUtil.getString(
-			properties.get(SERVICE_FACTORY_PID));
+			properties.get("service.factoryPid"));
 
 		if (Validator.isNull(serviceFactoryPid)) {
 			throw new IllegalStateException(

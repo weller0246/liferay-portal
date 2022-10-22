@@ -88,15 +88,13 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 					FunctionObjectActionExecutorImplConfiguration.class,
 					properties);
 
-		_oAuth2Application =
+		_location = _getLocation(
+			functionObjectActionExecutorImplConfiguration,
 			_oAuth2ApplicationLocalService.
 				getOAuth2ApplicationByExternalReferenceCode(
 					FactoryUtil.getCompanyId(properties, _companyLocalService),
 					functionObjectActionExecutorImplConfiguration.
-						oAuth2ApplicationExternalReferenceCode());
-
-		_location = _getLocation(
-			functionObjectActionExecutorImplConfiguration, _oAuth2Application);
+						oAuth2ApplicationExternalReferenceCode()));
 
 		_timeout = functionObjectActionExecutorImplConfiguration.timeout();
 	}
