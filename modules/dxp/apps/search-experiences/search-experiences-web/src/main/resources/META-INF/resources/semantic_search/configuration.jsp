@@ -26,21 +26,21 @@ page import="java.util.Map" %><%@
 page import="java.util.Map.Entry" %>
 
 <%
-SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfigurationDisplayContext = (SemanticSearchCompanyConfigurationDisplayContext)request.getAttribute(SemanticSearchCompanyConfigurationDisplayContext.class.getName());
+SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurationDisplayContext = (SemanticSearchCompanyConfigurationDisplayContext)request.getAttribute(SemanticSearchCompanyConfigurationDisplayContext.class.getName());
 %>
 
-<aui:input name="enabled" type="checkbox" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.isEnabled() %>" />
+<aui:input name="enabled" type="checkbox" value="<%= semanticSearchCompanyConfigurationDisplayContext.isEnabled() %>" />
 
 <aui:fieldset label="transform-provider-settings">
 
 	<%
-	String sentenceTransformProvider = sentenceTransformerCompanyConfigurationDisplayContext.getSentenceTransformProvider();
+	String sentenceTransformProvider = semanticSearchCompanyConfigurationDisplayContext.getSentenceTransformProvider();
 	%>
 
 	<aui:select id="sentenceTransformProvider" name="sentenceTransformProvider" value="<%= sentenceTransformProvider %>">
 
 		<%
-		Map<String, String> availableSentenceTransformProviders = sentenceTransformerCompanyConfigurationDisplayContext.getAvailableSentenceTranformProviders();
+		Map<String, String> availableSentenceTransformProviders = semanticSearchCompanyConfigurationDisplayContext.getAvailableSentenceTranformProviders();
 
 		for (Entry<String, String> entry : availableSentenceTransformProviders.entrySet()) {
 		%>
@@ -54,31 +54,31 @@ SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfi
 	</aui:select>
 
 	<div class="options-container <%= !sentenceTransformProvider.equals("huggingFace") ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />huggingFaceOptionsContainer">
-		<aui:input name="huggingFaceAccessToken" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getHuggingFaceAccessToken() %>" />
+		<aui:input name="huggingFaceAccessToken" value="<%= semanticSearchCompanyConfigurationDisplayContext.getHuggingFaceAccessToken() %>" />
 
 		<%--
 		TODO Use REST to query ML models
 		--%>
 
-		<aui:input helpMessage="sentence-transformer-model-help" name="model" value='<%= (sentenceTransformerCompanyConfigurationDisplayContext.getModel() != null) ? sentenceTransformerCompanyConfigurationDisplayContext.getModel() : "facebook/contriever-msmarco" %>' />
+		<aui:input helpMessage="sentence-transformer-model-help" name="model" value='<%= (semanticSearchCompanyConfigurationDisplayContext.getModel() != null) ? semanticSearchCompanyConfigurationDisplayContext.getModel() : "facebook/contriever-msmarco" %>' />
 
-		<aui:input helpMessage="sentence-transformer-model-timeout-help" name="modelTimeout" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getModelTimeout() %>">
+		<aui:input helpMessage="sentence-transformer-model-timeout-help" name="modelTimeout" value="<%= semanticSearchCompanyConfigurationDisplayContext.getModelTimeout() %>">
 			<aui:validator name="required" />
 			<aui:validator name="number" />
 			<aui:validator name="range">[0,60]</aui:validator>
 		</aui:input>
 
-		<aui:input name="enableGPU" type="checkbox" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.isEnableGPU() %>" />
+		<aui:input name="enableGPU" type="checkbox" value="<%= semanticSearchCompanyConfigurationDisplayContext.isEnableGPU() %>" />
 	</div>
 
 	<div class="options-container <%= !sentenceTransformProvider.equals("txtai") ? "hide" : StringPool.BLANK %>" id="<portlet:namespace />txtAiOptionsContainer">
-		<aui:input helpMessage="sentence-transformer-txtai-host-address-help" label="txtai-host-address" name="txtaiHostAddress" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getTxtaiHostAddress() %>" />
+		<aui:input helpMessage="sentence-transformer-txtai-host-address-help" label="txtai-host-address" name="txtaiHostAddress" value="<%= semanticSearchCompanyConfigurationDisplayContext.getTxtaiHostAddress() %>" />
 	</div>
 
-	<aui:select name="embeddingVectorDimensions" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getEmbeddingVectorDimensions() %>">
+	<aui:select name="embeddingVectorDimensions" value="<%= semanticSearchCompanyConfigurationDisplayContext.getEmbeddingVectorDimensions() %>">
 
 		<%
-		for (String availableEmbeddingVectorDimensions : sentenceTransformerCompanyConfigurationDisplayContext.getAvailableEmbeddingVectorDimensions()) {
+		for (String availableEmbeddingVectorDimensions : semanticSearchCompanyConfigurationDisplayContext.getAvailableEmbeddingVectorDimensions()) {
 		%>
 
 			<aui:option label="<%= availableEmbeddingVectorDimensions %>" value="<%= availableEmbeddingVectorDimensions %>" />
@@ -91,16 +91,16 @@ SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfi
 </aui:fieldset>
 
 <aui:fieldset label="indexing-settings">
-	<aui:input helpMessage="sentence-transformer-max-character-count-help" name="maxCharacterCount" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getMaxCharacterCount() %>">
+	<aui:input helpMessage="sentence-transformer-max-character-count-help" name="maxCharacterCount" value="<%= semanticSearchCompanyConfigurationDisplayContext.getMaxCharacterCount() %>">
 		<aui:validator name="required" />
 		<aui:validator name="number" />
 		<aui:validator name="range">[50,10000]</aui:validator>
 	</aui:input>
 
-	<aui:select helpMessage="sentence-transformer-text-truncation-strategy-help" name="textTruncationStrategy" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getTextTruncationStrategy() %>">
+	<aui:select helpMessage="sentence-transformer-text-truncation-strategy-help" name="textTruncationStrategy" value="<%= semanticSearchCompanyConfigurationDisplayContext.getTextTruncationStrategy() %>">
 
 		<%
-		Map<String, String> availableTextTruncationStrategies = sentenceTransformerCompanyConfigurationDisplayContext.getAvailableTextTruncationStrategies();
+		Map<String, String> availableTextTruncationStrategies = semanticSearchCompanyConfigurationDisplayContext.getAvailableTextTruncationStrategies();
 
 		for (Entry<String, String> entry : availableTextTruncationStrategies.entrySet()) {
 		%>
@@ -116,10 +116,10 @@ SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfi
 	<aui:select helpMessage="sentence-transformer-asset-entry-class-names-help" multiple="<%= true %>" name="assetEntryClassNames" required="<%= true %>">
 
 		<%
-		Map<String, String> availableAssetEntryClassNames = sentenceTransformerCompanyConfigurationDisplayContext.getAvailableAssetEntryClassNames();
+		Map<String, String> availableAssetEntryClassNames = semanticSearchCompanyConfigurationDisplayContext.getAvailableAssetEntryClassNames();
 
 		for (Entry<String, String> entry : availableAssetEntryClassNames.entrySet()) {
-			List<String> assetEntryClassNames = sentenceTransformerCompanyConfigurationDisplayContext.getAssetEntryClassNames();
+			List<String> assetEntryClassNames = semanticSearchCompanyConfigurationDisplayContext.getAssetEntryClassNames();
 		%>
 
 			<aui:option label="<%= entry.getValue() %>" selected="<%= assetEntryClassNames.contains(entry.getKey()) %>" value="<%= entry.getKey() %>" />
@@ -133,10 +133,10 @@ SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfi
 	<aui:select helpMessage="sentence-transformer-language-ids-help" multiple="<%= true %>" name="languageIds" required="<%= true %>">
 
 		<%
-		Map<String, String> availableLanguageDisplayNames = sentenceTransformerCompanyConfigurationDisplayContext.getAvailableLanguageDisplayNames();
+		Map<String, String> availableLanguageDisplayNames = semanticSearchCompanyConfigurationDisplayContext.getAvailableLanguageDisplayNames();
 
 		for (Entry<String, String> entry : availableLanguageDisplayNames.entrySet()) {
-			List<String> languageIds = sentenceTransformerCompanyConfigurationDisplayContext.getLanguageIds();
+			List<String> languageIds = semanticSearchCompanyConfigurationDisplayContext.getLanguageIds();
 		%>
 
 			<aui:option label="<%= entry.getValue() %>" selected="<%= languageIds.contains(entry.getKey()) %>" value="<%= entry.getKey() %>" />
@@ -148,7 +148,7 @@ SemanticSearchCompanyConfigurationDisplayContext sentenceTransformerCompanyConfi
 	</aui:select>
 </aui:fieldset>
 
-<aui:input name="cacheTimeout" value="<%= sentenceTransformerCompanyConfigurationDisplayContext.getCacheTimeout() %>">
+<aui:input name="cacheTimeout" value="<%= semanticSearchCompanyConfigurationDisplayContext.getCacheTimeout() %>">
 	<aui:validator name="required" />
 	<aui:validator name="number" />
 	<aui:validator name="min">0</aui:validator>
