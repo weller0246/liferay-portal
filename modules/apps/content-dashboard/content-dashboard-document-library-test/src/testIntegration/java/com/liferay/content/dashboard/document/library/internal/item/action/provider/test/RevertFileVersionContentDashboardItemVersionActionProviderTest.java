@@ -103,12 +103,12 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
+		FileVersion fileVersion = fileEntry.getFileVersion("1.0");
 
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction =
 			_contentDashboardItemVersionActionProvider.
 				getContentDashboardItemVersionAction(
-					fileFirstVersion,
+					fileVersion,
 					_getMockHttpServletRequest(TestPropsValues.getUser()));
 
 		Assert.assertNotNull(contentDashboardItemVersionAction);
@@ -124,24 +124,19 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 			url.contains(ActionRequest.ACTION_NAME + "=" + actionName));
 
 		Assert.assertTrue(url.contains(Constants.CMD + "=" + Constants.REVERT));
-
 		Assert.assertTrue(
 			url.contains("fileEntryId=" + fileEntry.getFileEntryId()));
-
-		Assert.assertTrue(
-			url.contains("version=" + fileFirstVersion.getVersion()));
+		Assert.assertTrue(url.contains("version=" + fileVersion.getVersion()));
 	}
 
 	@Test
 	public void testGetIcon() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
-
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction =
 			_contentDashboardItemVersionActionProvider.
 				getContentDashboardItemVersionAction(
-					fileFirstVersion,
+					fileEntry.getFileVersion("1.0"),
 					_getMockHttpServletRequest(TestPropsValues.getUser()));
 
 		Assert.assertEquals(
@@ -152,12 +147,10 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testGetLabel() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
-
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction =
 			_contentDashboardItemVersionActionProvider.
 				getContentDashboardItemVersionAction(
-					fileFirstVersion,
+					fileEntry.getFileVersion("1.0"),
 					_getMockHttpServletRequest(TestPropsValues.getUser()));
 
 		Assert.assertEquals(
@@ -170,12 +163,10 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testGetName() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
-
 		ContentDashboardItemVersionAction contentDashboardItemVersionAction =
 			_contentDashboardItemVersionActionProvider.
 				getContentDashboardItemVersionAction(
-					fileFirstVersion,
+					fileEntry.getFileVersion("1.0"),
 					_getMockHttpServletRequest(TestPropsValues.getUser()));
 
 		Assert.assertEquals(
@@ -186,21 +177,19 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testIsShowFileVersionStatusExpired() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
+		FileVersion fileVersion = fileEntry.getFileVersion("1.0");
 
 		DLFileVersion dlFileVersion =
 			_dlFileVersionLocalService.getDLFileVersion(
-				fileFirstVersion.getFileVersionId());
+				fileVersion.getFileVersionId());
 
 		dlFileVersion.setStatus(WorkflowConstants.STATUS_EXPIRED);
 
 		_dlFileVersionLocalService.updateDLFileVersion(dlFileVersion);
 
-		fileFirstVersion = fileEntry.getFileVersion("1.0");
-
 		Assert.assertFalse(
 			_contentDashboardItemVersionActionProvider.isShow(
-				fileFirstVersion,
+				fileEntry.getFileVersion("1.0"),
 				_getMockHttpServletRequest(TestPropsValues.getUser())));
 	}
 
@@ -208,11 +197,9 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testIsShowFirstVersion() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileFirstVersion = fileEntry.getFileVersion("1.0");
-
 		Assert.assertTrue(
 			_contentDashboardItemVersionActionProvider.isShow(
-				fileFirstVersion,
+				fileEntry.getFileVersion("1.0"),
 				_getMockHttpServletRequest(TestPropsValues.getUser())));
 	}
 
@@ -220,11 +207,9 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 	public void testIsShowLastVersion() throws Exception {
 		FileEntry fileEntry = _getFileEntry(2, TestPropsValues.getUserId());
 
-		FileVersion fileVersion = fileEntry.getLatestFileVersion();
-
 		Assert.assertFalse(
 			_contentDashboardItemVersionActionProvider.isShow(
-				fileVersion,
+				fileEntry.getLatestFileVersion(),
 				_getMockHttpServletRequest(TestPropsValues.getUser())));
 	}
 
@@ -234,13 +219,12 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 
 		FileEntry fileEntry = _getFileEntry(1, user1.getUserId());
 
-		FileVersion fileVersion = fileEntry.getLatestFileVersion();
-
 		User user2 = UserTestUtil.addUser();
 
 		Assert.assertFalse(
 			_contentDashboardItemVersionActionProvider.isShow(
-				fileVersion, _getMockHttpServletRequest(user2)));
+				fileEntry.getLatestFileVersion(),
+				_getMockHttpServletRequest(user2)));
 	}
 
 	private FileEntry _getFileEntry(int numVersions, long userId)
@@ -281,7 +265,6 @@ public class RevertFileVersionContentDashboardItemVersionActionProviderTest {
 		mockHttpServletRequest.setAttribute(
 			JavaConstants.JAVAX_PORTLET_RESPONSE,
 			new MockLiferayResourceResponse());
-
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY,
 			_getThemeDisplay(mockHttpServletRequest, user));
