@@ -48,7 +48,6 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.Http;
 import com.liferay.portal.kernel.util.HttpComponentsUtil;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.kernel.util.ResourceBundleUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.net.HttpURLConnection;
@@ -60,7 +59,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.ResourceBundle;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -421,11 +419,8 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 		catch (PortalException portalException) {
 			_log.error(portalException);
 
-			ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
-				"content.Language", locale, getClass());
-
 			return groupJSONObject.put(
-				"name", _language.get(resourceBundle, "unknown"));
+				"name", _language.get(locale, "unknown"));
 		}
 	}
 
