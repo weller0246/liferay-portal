@@ -90,48 +90,43 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 			KaleoAction kaleoAction, ExecutionContext executionContext)
 		throws Exception {
 
+		JSONObject payloadJSONObject = _jsonFactory.createJSONObject();
+
 		Map<String, Object> inputObjects =
 			_scriptingContextBuilder.buildScriptingContext(executionContext);
 
-		JSONObject payloadJSONObject = _jsonFactory.createJSONObject();
+		for (Map.Entry<String, Object> entry : inputObjects.entrySet()) {
+			String key = entry.getKey();
+			Object value = entry.getValue();
 
-		inputObjects.forEach(
-			(k, v) -> {
-				if (v instanceof Number || v instanceof String) {
-					payloadJSONObject.put(k, v);
+			if (value instanceof Number || value instanceof String) {
+				payloadJSONObject.put(key, value);
 
-					return;
+				return;
+			}
+
+			JSONObject jsonObject = _jsonFactory.createJSONObject(
+				_jsonFactory.serialize(value));
+
+			if (jsonObject.has("javaClass")) {
+				if (jsonObject.has("serializable")) {
+					payloadJSONObject.put(
+						key, jsonObject.getJSONObject("serializable"));
 				}
-
-				try {
-					JSONObject jsonObject = _jsonFactory.createJSONObject(
-						_jsonFactory.serialize(v));
-
-					if (jsonObject.has("javaClass")) {
-						if (jsonObject.has("serializable")) {
-							payloadJSONObject.put(
-								k, jsonObject.getJSONObject("serializable"));
-						}
-						else if (jsonObject.has("list")) {
-							payloadJSONObject.put(
-								k, jsonObject.getJSONArray("list"));
-						}
-						else if (jsonObject.has("map")) {
-							payloadJSONObject.put(
-								k, jsonObject.getJSONObject("map"));
-						}
-						else {
-							payloadJSONObject.put(k, jsonObject);
-						}
-					}
-					else {
-						payloadJSONObject.put(k, jsonObject);
-					}
+				else if (jsonObject.has("list")) {
+					payloadJSONObject.put(key, jsonObject.getJSONArray("list"));
 				}
-				catch (Exception exception) {
-					_log.error(exception);
+				else if (jsonObject.has("map")) {
+					payloadJSONObject.put(key, jsonObject.getJSONObject("map"));
 				}
-			});
+				else {
+					payloadJSONObject.put(key, jsonObject);
+				}
+			}
+			else {
+				payloadJSONObject.put(key, jsonObject);
+			}
+		}
 
 		KaleoTaskInstanceToken kaleoTaskInstanceToken =
 			executionContext.getKaleoTaskInstanceToken();
