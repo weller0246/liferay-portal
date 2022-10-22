@@ -77,9 +77,7 @@ public class FactoryUtil {
 
 		if (Validator.isNull(serviceFactoryPid)) {
 			throw new IllegalStateException(
-				StringBundler.concat(
-					"The configuration properties do not appear to be from a ",
-					"factory instance: ", properties));
+				"Service factory PID is null");
 		}
 
 		List<String> servicePids = StringPlus.asList(
@@ -87,9 +85,7 @@ public class FactoryUtil {
 
 		if (servicePids.isEmpty()) {
 			throw new IllegalStateException(
-				StringBundler.concat(
-					"The configuration properties do not contain a ",
-					"service.pid key: ", properties));
+				"Service PID is null");
 		}
 
 		String servicePid = servicePids.get(0);
@@ -97,8 +93,8 @@ public class FactoryUtil {
 		if (!servicePid.startsWith(serviceFactoryPid)) {
 			throw new IllegalStateException(
 				StringBundler.concat(
-					"The first service.pid does not start with the ",
-					"service.factoryPid: ", properties));
+					"Service PID (", servicePid, ") does not start with ",
+					"service factory PID (", serviceFactoryPid, ")");
 		}
 
 		return servicePid.substring(serviceFactoryPid.length() + 1);
