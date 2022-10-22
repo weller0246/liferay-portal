@@ -199,7 +199,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_bundleContext = bundleContext;
 	}
 
-	private ObjectEntryResourceImpl _createObjectEntryResource() {
+	private ObjectEntryResourceImpl _createObjectEntryResourceImpl() {
 		return new ObjectEntryResourceImpl(
 			_filterPredicateFactory, _objectDefinitionLocalService,
 			_objectEntryLocalService, _objectEntryManagerTracker,
@@ -361,7 +361,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 						_companyLocalService, _defaultPermissionCheckerFactory,
 						_expressionConvert, _filterParserProvider,
 						_groupLocalService, objectDefinition,
-						this::_createObjectEntryResource,
+						this::_createObjectEntryResourceImpl,
 						_resourceActionLocalService,
 						_resourcePermissionLocalService, _roleLocalService,
 						_sortParserProvider, _userLocalService),
@@ -380,7 +380,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 							ServiceRegistration<ObjectEntryResource>
 								serviceRegistration) {
 
-							return _createObjectEntryResource();
+							return _createObjectEntryResourceImpl();
 						}
 
 						@Override

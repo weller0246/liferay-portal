@@ -209,10 +209,8 @@ public class ObjectEntryResourceFactoryImpl
 
 		objectEntryResourceImpl.setContextAcceptLanguage(
 			new AcceptLanguageImpl(httpServletRequest, preferredLocale, user));
-
 		objectEntryResourceImpl.setContextCompany(
 			_companyLocalService.getCompany(user.getCompanyId()));
-
 		objectEntryResourceImpl.setContextHttpServletRequest(
 			httpServletRequest);
 		objectEntryResourceImpl.setContextHttpServletResponse(
