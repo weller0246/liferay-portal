@@ -339,7 +339,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 				_log.debug("Response code " + response.getResponseCode());
 			}
 
-			throw new PortalException("Unable to patch analytics channel");
+			throw new PortalException("Unable to update analytics channel");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -347,7 +347,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new PortalException(
-				"Unable to get analytics channels page", exception);
+				"Unable to update analytics channels", exception);
 		}
 	}
 
@@ -392,7 +392,7 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 			}
 
 			throw new PortalException(
-				"Unable to put analytics data source details");
+				"Unable to update analytics data source details");
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
