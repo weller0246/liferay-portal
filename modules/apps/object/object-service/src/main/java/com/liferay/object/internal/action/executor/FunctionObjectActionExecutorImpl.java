@@ -19,7 +19,6 @@ import com.liferay.oauth2.provider.service.OAuth2ApplicationLocalService;
 import com.liferay.object.action.executor.ObjectActionExecutor;
 import com.liferay.object.constants.ObjectActionExecutorConstants;
 import com.liferay.object.internal.configuration.FunctionObjectActionExecutorImplConfiguration;
-import com.liferay.osgi.util.factory.FactoryUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.configuration.metatype.bnd.util.ConfigurableUtil;
@@ -80,7 +79,7 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 	protected void activate(Map<String, Object> properties) throws Exception {
 		_key = StringBundler.concat(
 			ObjectActionExecutorConstants.KEY_FUNCTION, StringPool.POUND,
-			FactoryUtil.getExternalReferenceCode(properties));
+			ConfigurableUtil.getExternalReferenceCode(properties));
 
 		FunctionObjectActionExecutorImplConfiguration
 			functionObjectActionExecutorImplConfiguration =
@@ -92,7 +91,8 @@ public class FunctionObjectActionExecutorImpl implements ObjectActionExecutor {
 			functionObjectActionExecutorImplConfiguration,
 			_oAuth2ApplicationLocalService.
 				getOAuth2ApplicationByExternalReferenceCode(
-					FactoryUtil.getCompanyId(properties, _companyLocalService),
+					ConfigurableUtil.getCompanyId(
+						_companyLocalService, properties),
 					functionObjectActionExecutorImplConfiguration.
 						oAuth2ApplicationExternalReferenceCode()));
 
