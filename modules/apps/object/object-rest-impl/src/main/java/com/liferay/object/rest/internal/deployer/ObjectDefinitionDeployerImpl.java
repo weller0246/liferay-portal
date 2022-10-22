@@ -428,7 +428,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 		_componentInstancesMap.computeIfAbsent(
 			systemObjectDefinitionMetadata.getRESTContextPath(),
 			key -> Arrays.asList(
-				_relatedObjectEntryResourceFactory.newInstance(
+				_relatedObjectEntryResourceImplComponentFactory.newInstance(
 					HashMapDictionaryBuilder.<String, Object>put(
 						"api.version", "v1.0"
 					).put(
@@ -512,7 +512,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	@Reference(
 		target = "(component.factory=com.liferay.object.rest.internal.resource.v1_0.RelatedObjectEntryResourceImpl)"
 	)
-	private ComponentFactory _relatedObjectEntryResourceFactory;
+	private ComponentFactory _relatedObjectEntryResourceImplComponentFactory;
 
 	@Reference
 	private ResourceActionLocalService _resourceActionLocalService;
