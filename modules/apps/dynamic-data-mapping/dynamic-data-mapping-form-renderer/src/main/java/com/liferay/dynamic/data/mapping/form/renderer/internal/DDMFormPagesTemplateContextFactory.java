@@ -171,12 +171,14 @@ public class DDMFormPagesTemplateContextFactory {
 		List<Object> columnsTemplateContext = new ArrayList<>();
 
 		for (DDMFormLayoutColumn ddmFormLayoutColumn : ddmFormLayoutColumns) {
-			List<String> ddmFormFieldNames = new ArrayList<>(
-				ddmFormLayoutColumn.getDDMFormFieldNames());
+			List<String> ddmFormFieldNames =
+				ddmFormLayoutColumn.getDDMFormFieldNames();
 
 			if (!GetterUtil.getBoolean(
 					PropsUtil.get("feature.flag.LPS-164998")) &&
 				ddmFormFieldNames.contains("limitToOneSubmissionPerUser")) {
+
+				ddmFormFieldNames = new ArrayList<>(ddmFormFieldNames);
 
 				ddmFormFieldNames.remove("limitToOneSubmissionPerUserBody");
 				ddmFormFieldNames.remove("limitToOneSubmissionPerUserHeader");
