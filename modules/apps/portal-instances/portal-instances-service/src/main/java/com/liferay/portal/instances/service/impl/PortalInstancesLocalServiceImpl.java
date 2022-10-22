@@ -55,14 +55,12 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.ColorSchemeFactory;
-import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.JavaConstants;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.PortletKeys;
 import com.liferay.portal.kernel.util.PropsKeys;
-import com.liferay.portal.kernel.util.PropsUtil;
 import com.liferay.portal.kernel.util.UnicodeProperties;
 import com.liferay.portal.kernel.util.Validator;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -185,11 +183,8 @@ public class PortalInstancesLocalServiceImpl
 			_layoutLocalService.deleteLayouts(
 				group.getGroupId(), false, new ServiceContext());
 
-			if (GetterUtil.getBoolean(
-					PropsUtil.get("feature.flag.LPS-165482"))) {
-
-				UnicodeProperties typeSettingsUnicodeProperties =
-					group.getTypeSettingsProperties();
+			UnicodeProperties typeSettingsUnicodeProperties =
+				group.getTypeSettingsProperties();
 
 				typeSettingsUnicodeProperties.setProperty(
 					"siteInitializerKey", siteInitializerKey);
