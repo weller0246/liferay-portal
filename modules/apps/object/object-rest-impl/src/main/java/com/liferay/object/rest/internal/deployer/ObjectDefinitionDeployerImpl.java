@@ -510,7 +510,7 @@ public class ObjectDefinitionDeployerImpl implements ObjectDefinitionDeployer {
 	private Portal _portal;
 
 	@Reference(
-		target = "(component.factory=com.liferay.object.rest.internal.resource.v1_0.RelatedObjectEntryResource)"
+		target = "(component.factory=com.liferay.object.rest.internal.resource.v1_0.RelatedObjectEntryResourceImpl)"
 	)
 	private ComponentFactory _relatedObjectEntryResourceFactory;
 
