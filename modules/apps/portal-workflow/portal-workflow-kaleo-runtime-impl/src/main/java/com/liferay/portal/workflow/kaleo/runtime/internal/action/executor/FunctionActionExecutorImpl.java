@@ -135,11 +135,11 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 			kaleoTaskInstanceToken.getKaleoTaskInstanceTokenId();
 
 		payloadJSONObject.put(
-			"next-transitions",
+			"nextTransitionNames",
 			_workflowTaskManager.getNextTransitionNames(
 				kaleoAction.getUserId(), workflowTaskId)
 		).put(
-			"transition-uri",
+			"transitionURL",
 			StringBundler.concat(
 				"/o/headless-admin-workflow/v1.0/workflow-tasks/",
 				workflowTaskId, "/change-transition")
@@ -155,12 +155,11 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 
 		kaleoTaskInstanceTokenJSONObject.remove("workflowContext");
 
-		@SuppressWarnings("unchecked")
-		List<WorkflowTaskAssignee> assignees =
+		List<WorkflowTaskAssignee> workflowTaskAssignees =
 			(List<WorkflowTaskAssignee>)inputObjects.get(
 				"workflowTaskAssignees");
 
-		if (assignees.isEmpty()) {
+		if (workflowTaskAssignees.isEmpty()) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
 					StringBundler.concat(
@@ -172,7 +171,7 @@ public class FunctionActionExecutorImpl implements ActionExecutor {
 			return;
 		}
 
-		WorkflowTaskAssignee workflowTaskAssignee = assignees.get(0);
+		WorkflowTaskAssignee workflowTaskAssignee = workflowTaskAssignees.get(0);
 
 		if (workflowTaskAssignee.getAssigneeClassName() !=
 				User.class.getName()) {
