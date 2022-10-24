@@ -107,7 +107,7 @@ interface ObjectDefinition {
 	active: boolean;
 	dateCreated: string;
 	dateModified: string;
-	enabledCategorization: boolean;
+	enableCategorization: boolean;
 	id: number;
 	label: LocalizedValue<string>;
 	name: string;
