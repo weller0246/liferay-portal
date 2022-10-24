@@ -1002,7 +1002,7 @@ public class ObjectFieldLocalServiceImpl
 				businessType, ObjectFieldConstants.BUSINESS_TYPE_PICKLIST)) {
 
 			throw new ObjectFieldListTypeDefinitionIdException(
-				"List type definition id must not be null");
+				"List type definition ID is 0");
 		}
 	}
 
