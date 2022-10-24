@@ -176,7 +176,10 @@ export function ModalAddFilter({
 
 	const setFieldValues = useCallback(
 		(objectField: ObjectField) => {
-			if (objectField?.businessType === 'Picklist') {
+			if (
+				objectField.businessType === 'MultiSelectPicklist' ||
+				objectField?.businessType === 'Picklist'
+			) {
 				const makeFetch = async () => {
 					if (objectField.listTypeDefinitionId) {
 						const items = await API.getPickListItems(
@@ -360,6 +363,7 @@ export function ModalAddFilter({
 				selectedFilterBy?.businessType,
 				selectedFilterType?.value,
 				selectedFilterBy?.name === 'status' ||
+					selectedFilterBy?.businessType === 'MultiSelectPicklist' ||
 					selectedFilterBy?.businessType === 'Picklist' ||
 					selectedFilterBy?.businessType === 'Relationship'
 					? checkedItems
@@ -375,6 +379,7 @@ export function ModalAddFilter({
 				selectedFilterBy?.businessType,
 				selectedFilterType?.value,
 				selectedFilterBy?.name === 'status' ||
+					selectedFilterBy?.businessType === 'MultiSelectPicklist' ||
 					selectedFilterBy?.businessType === 'Picklist' ||
 					selectedFilterBy?.businessType === 'Relationship'
 					? checkedItems
@@ -471,6 +476,8 @@ export function ModalAddFilter({
 
 				{selectedFilterType &&
 					(selectedFilterBy?.name === 'status' ||
+						selectedFilterBy?.businessType ===
+							'MultiSelectPicklist' ||
 						selectedFilterBy?.businessType === 'Picklist' ||
 						selectedFilterBy?.businessType === 'Relationship') && (
 						<MultipleSelect
