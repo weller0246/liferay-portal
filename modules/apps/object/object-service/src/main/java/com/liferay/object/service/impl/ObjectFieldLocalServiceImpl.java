@@ -526,12 +526,12 @@ public class ObjectFieldLocalServiceImpl
 			newObjectField.getCompanyId(),
 			newObjectField.getObjectDefinitionId());
 
+		_validateListTypeDefinitionId(listTypeDefinitionId, businessType);
 		_validateDefaultValue(
 			businessType, defaultValue, listTypeDefinitionId, state);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
-		_validateListTypeDefinitionId(listTypeDefinitionId, businessType);
 
 		ObjectDefinition objectDefinition =
 			_objectDefinitionPersistence.findByPrimaryKey(
@@ -650,12 +650,12 @@ public class ObjectFieldLocalServiceImpl
 			externalReferenceCode, 0, objectDefinition.getCompanyId(),
 			objectDefinitionId);
 
+		_validateListTypeDefinitionId(listTypeDefinitionId, businessType);
 		_validateDefaultValue(
 			businessType, defaultValue, listTypeDefinitionId, state);
 		_validateIndexed(
 			businessType, dbType, indexed, indexedAsKeyword, indexedLanguageId);
 		_validateLabel(labelMap);
-		_validateListTypeDefinitionId(listTypeDefinitionId, businessType);
 		_validateName(0, objectDefinition, name, system);
 		_validateState(required, state);
 
