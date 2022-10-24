@@ -183,11 +183,11 @@ public class ObjectFieldResourceImpl
 			_objectFieldService.getObjectField(objectFieldId);
 
 		com.liferay.object.model.ObjectDefinition
-			serviceBuilderobjectDefinition =
+			serviceBuilderObjectDefinition =
 				_objectDefinitionLocalService.getObjectDefinition(
 					serviceBuilderObjectField.getObjectDefinitionId());
 
-		if (!serviceBuilderobjectDefinition.isApproved()) {
+		if (!serviceBuilderObjectDefinition.isApproved()) {
 			_addListTypeDefinition(objectField);
 		}
 
