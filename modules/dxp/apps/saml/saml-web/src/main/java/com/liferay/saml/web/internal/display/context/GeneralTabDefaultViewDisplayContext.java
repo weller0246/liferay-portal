@@ -139,16 +139,14 @@ public class GeneralTabDefaultViewDisplayContext {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
-				String.format(
-					"Unable to get local entity certificate: %s",
-					exception.getMessage()),
+				"Unable to get local entity certificate: " +
+					exception.getMessage(),
 				exception);
 		}
 		else if (logError) {
 			_log.error(
-				String.format(
-					"Unable to get local entity certificate: %s",
-					exception.getMessage()));
+				"Unable to get local entity certificate: " +
+					exception.getMessage());
 		}
 
 		return new X509CertificateStatus(null, status);

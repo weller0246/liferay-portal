@@ -290,7 +290,7 @@ public class KeyStoreCredentialResolver
 	}
 
 	private <T> T _getCauseThrowable(
-		Throwable throwable, Class<T> exceptionType) {
+		Throwable throwable, Class<T> exceptionClass) {
 
 		if (throwable == null) {
 			return null;
@@ -299,7 +299,7 @@ public class KeyStoreCredentialResolver
 		Throwable causeThrowable = throwable.getCause();
 
 		while (causeThrowable != null) {
-			if (exceptionType.isInstance(causeThrowable)) {
+			if (exceptionClass.isInstance(causeThrowable)) {
 				return (T)causeThrowable;
 			}
 
@@ -340,14 +340,14 @@ public class KeyStoreCredentialResolver
 					throw new CredentialAuthException.InvalidKeyStorePassword(
 						String.format(
 							"Company %s used an incorrect password to access " +
-								"the KeyStore provided by %s",
+								"the key store provided by %s",
 							companyId, clazz.getSimpleName()),
 						unrecoverableKeyException);
 				}
 
 				throw new CredentialAuthException.InvalidKeyStore(
 					String.format(
-						"Company %s could not load the SAML KeyStore " +
+						"Company %s could not load the SAML key store " +
 							"provided by %s",
 						companyId, clazz.getSimpleName()),
 					generalSecurityException);
@@ -357,7 +357,7 @@ public class KeyStoreCredentialResolver
 				throw new CredentialAuthException.InvalidCredentialPassword(
 					String.format(
 						"Company %s used an incorrect key credential " +
-							"password to an entry in the SAML KeyStore " +
+							"password to an entry in the SAML key store " +
 								"provided by %s",
 						companyId, clazz.getSimpleName()),
 					(UnrecoverableKeyException)generalSecurityException);
@@ -365,7 +365,7 @@ public class KeyStoreCredentialResolver
 
 			throw new CredentialAuthException.GeneralCredentialAuthException(
 				String.format(
-					"Unknown Exception occurred for company %s using %s",
+					"Unknown exception thrown for company %s using %s",
 					companyId, clazz.getSimpleName()),
 				generalSecurityException);
 		}

@@ -72,7 +72,7 @@ public class CredentialAuthException extends SecurityException {
 
 		super(
 			String.format(
-				"%s. %s", message, generalSecurityException.getMessage()),
+				"%s: %s", message, generalSecurityException.getMessage()),
 			generalSecurityException);
 	}
 
