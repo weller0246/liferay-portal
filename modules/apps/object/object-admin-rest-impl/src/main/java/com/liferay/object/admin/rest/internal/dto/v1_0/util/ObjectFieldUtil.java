@@ -18,7 +18,6 @@ import com.liferay.list.type.model.ListTypeDefinition;
 import com.liferay.list.type.service.ListTypeDefinitionLocalService;
 import com.liferay.object.admin.rest.dto.v1_0.ObjectField;
 import com.liferay.object.constants.ObjectFieldConstants;
-import com.liferay.object.exception.ObjectFieldListTypeDefinitionIdException;
 import com.liferay.object.service.ObjectFieldLocalService;
 import com.liferay.object.service.ObjectFieldSettingLocalService;
 import com.liferay.object.service.ObjectFilterLocalService;
@@ -51,10 +50,9 @@ public class ObjectFieldUtil {
 	}
 
 	public static long getListTypeDefinitionId(
-			long companyId,
-			ListTypeDefinitionLocalService listTypeDefinitionLocalService,
-			ObjectField objectField)
-		throws ObjectFieldListTypeDefinitionIdException {
+		long companyId,
+		ListTypeDefinitionLocalService listTypeDefinitionLocalService,
+		ObjectField objectField) {
 
 		if (!StringUtil.equals(
 				objectField.getBusinessTypeAsString(),
@@ -88,12 +86,11 @@ public class ObjectFieldUtil {
 	}
 
 	public static com.liferay.object.model.ObjectField toObjectField(
-			ListTypeDefinitionLocalService listTypeDefinitionLocalService,
-			ObjectField objectField,
-			ObjectFieldLocalService objectFieldLocalService,
-			ObjectFieldSettingLocalService objectFieldSettingLocalService,
-			ObjectFilterLocalService objectFilterLocalService)
-		throws ObjectFieldListTypeDefinitionIdException {
+		ListTypeDefinitionLocalService listTypeDefinitionLocalService,
+		ObjectField objectField,
+		ObjectFieldLocalService objectFieldLocalService,
+		ObjectFieldSettingLocalService objectFieldSettingLocalService,
+		ObjectFilterLocalService objectFilterLocalService) {
 
 		com.liferay.object.model.ObjectField serviceBuilderObjectField =
 			objectFieldLocalService.createObjectField(0L);
