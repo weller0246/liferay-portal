@@ -50,12 +50,12 @@ import org.osgi.service.component.annotations.ConfigurationPolicy;
 @Path("/jwks")
 public class LiferayJWKSService extends JwksService {
 
-	/**
-	 * TODO: replace this method with JwksService.getPublicVerificationKeys()
-	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response jwks() {
+
+		// TODO Replace with JwksService#getPublicVerificationKeys
+
 		return Response.ok(
 			JwkUtils.jwkSetToJson(_jsonWebKeys)
 		).build();
