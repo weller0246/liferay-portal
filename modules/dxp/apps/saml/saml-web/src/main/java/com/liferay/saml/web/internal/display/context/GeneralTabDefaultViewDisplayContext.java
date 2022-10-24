@@ -103,39 +103,37 @@ public class GeneralTabDefaultViewDisplayContext {
 					credentialAuthException) {
 
 			return _buildX509CertificateStatus(
-				credentialAuthException,
-				X509CertificateStatus.Status.SAML_X509_CERTIFICATE_AUTH_NEEDED,
-				false);
+				credentialAuthException, false,
+				X509CertificateStatus.Status.SAML_X509_CERTIFICATE_AUTH_NEEDED);
 		}
 		catch (CredentialAuthException.InvalidKeyStore
 					credentialAuthException) {
 
 			return _buildX509CertificateStatus(
-				credentialAuthException,
-				X509CertificateStatus.Status.SAML_KEYSTORE_EXCEPTION, true);
+				credentialAuthException, true,
+				X509CertificateStatus.Status.SAML_KEYSTORE_EXCEPTION);
 		}
 		catch (CredentialAuthException.InvalidKeyStorePassword
 					credentialAuthException) {
 
 			return _buildX509CertificateStatus(
-				credentialAuthException,
-				X509CertificateStatus.Status.SAML_KEYSTORE_PASSWORD_INCORRECT,
-				true);
+				credentialAuthException, true,
+				X509CertificateStatus.Status.SAML_KEYSTORE_PASSWORD_INCORRECT);
 		}
 		catch (CredentialAuthException credentialAuthException) {
 			return _buildX509CertificateStatus(
-				credentialAuthException,
-				X509CertificateStatus.Status.UNKNOWN_EXCEPTION, true);
+				credentialAuthException, true,
+				X509CertificateStatus.Status.UNKNOWN_EXCEPTION);
 		}
 		catch (SamlException samlException) {
 			return _buildX509CertificateStatus(
-				samlException, X509CertificateStatus.Status.UNBOUND, false);
+				samlException, false, X509CertificateStatus.Status.UNBOUND);
 		}
 	}
 
 	private X509CertificateStatus _buildX509CertificateStatus(
-		Exception exception, X509CertificateStatus.Status status,
-		boolean logError) {
+		Exception exception, boolean logError,
+		X509CertificateStatus.Status status) {
 
 		if (_log.isDebugEnabled()) {
 			_log.debug(
