@@ -63,7 +63,7 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 		super.setUp();
 
 		_classNameLocalService.addClassName(_CLASS_NAME);
-		_classNameLocalService.addClassName(_CONTAINER_TYPE_CLASS_NAME);
+		_classNameLocalService.addClassName(_CLASS_NAME_CONTAINER_TYPE);
 
 		_classPK = RandomTestUtil.nextLong();
 		_containerKey = String.valueOf(RandomTestUtil.nextLong());
@@ -77,7 +77,7 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 		_classNameLocalService.deleteClassName(
 			_classNameLocalService.getClassName(_CLASS_NAME));
 		_classNameLocalService.deleteClassName(
-			_classNameLocalService.getClassName(_CONTAINER_TYPE_CLASS_NAME));
+			_classNameLocalService.getClassName(_CLASS_NAME_CONTAINER_TYPE));
 	}
 
 	@Test
@@ -100,9 +100,9 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 		StagedModel exportedStagedModel = readExportedStagedModel(stagedModel);
 
 		_classNameLocalService.deleteClassName(
-			_classNameLocalService.getClassName(_CONTAINER_TYPE_CLASS_NAME));
+			_classNameLocalService.getClassName(_CLASS_NAME_CONTAINER_TYPE));
 
-		_classNameLocalService.addClassName(_CONTAINER_TYPE_CLASS_NAME);
+		_classNameLocalService.addClassName(_CLASS_NAME_CONTAINER_TYPE);
 
 		Assert.assertNotNull(exportedStagedModel);
 
@@ -114,7 +114,7 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 				stagedModel.getUuid(), liveGroup);
 
 		Assert.assertEquals(
-			_classNameLocalService.getClassNameId(_CONTAINER_TYPE_CLASS_NAME),
+			_classNameLocalService.getClassNameId(_CLASS_NAME_CONTAINER_TYPE),
 			importedLayoutClassedModelUsage.getContainerType());
 	}
 
@@ -148,7 +148,7 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 			group.getGroupId(),
 			_classNameLocalService.getClassNameId(_CLASS_NAME), _classPK,
 			_containerKey,
-			_classNameLocalService.getClassNameId(_CONTAINER_TYPE_CLASS_NAME),
+			_classNameLocalService.getClassNameId(_CLASS_NAME_CONTAINER_TYPE),
 			layout.getPlid(),
 			ServiceContextTestUtil.getServiceContext(
 				stagingGroup.getGroupId(), TestPropsValues.getUserId()));
@@ -170,7 +170,7 @@ public class LayoutClassedModelUsageStagedModelDataHandlerTest
 
 	private static final String _CLASS_NAME = RandomTestUtil.randomString();
 
-	private static final String _CONTAINER_TYPE_CLASS_NAME =
+	private static final String _CLASS_NAME_CONTAINER_TYPE =
 		RandomTestUtil.randomString();
 
 	@Inject
