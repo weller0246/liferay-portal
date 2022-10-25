@@ -1225,7 +1225,7 @@ public class DynamicDataMappingUpgradeProcess extends UpgradeProcess {
 
 			String resourceName = _getStructureModelResourceName(classNameId);
 
-			// A permission with the correct resourceName may already exist.
+			// A permission with the correct resource name may already exist.
 			// This means that Documents and Media has already migrated the
 			// structures for all its file entry types. In this case, we simply
 			// need to remove the old permission and continue with the upgrade
