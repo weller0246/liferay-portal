@@ -732,8 +732,6 @@ public class CommerceSiteInitializer {
 				commercePriceList.getCommercePriceListId(),
 				cpInstance.getCPInstanceUuid());
 
-		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
-
 		BigDecimal price = cpInstance.getPrice();
 
 		if (CommercePriceListConstants.TYPE_PROMOTION.equals(
@@ -741,6 +739,8 @@ public class CommerceSiteInitializer {
 
 			price = cpInstance.getPromoPrice();
 		}
+
+		serviceContext.setWorkflowAction(WorkflowConstants.ACTION_PUBLISH);
 
 		if (commercePriceEntry == null) {
 			_commercePriceEntryLocalService.addCommercePriceEntry(
