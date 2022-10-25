@@ -61,11 +61,11 @@ public class HeadlessHttpClientHttpResponseWrapper
 	}
 
 	@Override
-	public void sendError(int sc) {
+	public void sendError(int status) {
 	}
 
 	@Override
-	public void sendError(int sc, String msg) {
+	public void sendError(int status, String message) {
 	}
 
 	@Override
@@ -77,19 +77,19 @@ public class HeadlessHttpClientHttpResponseWrapper
 	}
 
 	@Override
-	public void setCharacterEncoding(String charset) {
+	public void setCharacterEncoding(String characterEncoding) {
 	}
 
 	@Override
-	public void setContentLength(int len) {
+	public void setContentLength(int contentLength) {
 	}
 
 	@Override
-	public void setContentLengthLong(long length) {
+	public void setContentLengthLong(long contentLength) {
 	}
 
 	@Override
-	public void setContentType(String type) {
+	public void setContentType(String contentType) {
 	}
 
 	@Override
@@ -105,15 +105,15 @@ public class HeadlessHttpClientHttpResponseWrapper
 	}
 
 	@Override
-	public void setLocale(Locale loc) {
+	public void setLocale(Locale locale) {
 	}
 
 	@Override
-	public void setStatus(int sc) {
+	public void setStatus(int status) {
 	}
 
 	@Override
-	public void setStatus(int sc, String sm) {
+	public void setStatus(int status, String message) {
 	}
 
 }
