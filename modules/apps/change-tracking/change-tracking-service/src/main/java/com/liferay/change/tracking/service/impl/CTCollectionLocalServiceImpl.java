@@ -801,8 +801,7 @@ public class CTCollectionLocalServiceImpl
 							ctPersistence.getTableName(),
 							" where ctCollectionId = ", ctCollectionId,
 							" and status not in (",
-							StringUtil.merge(
-								_ACCEPTED_STATUSES, StringPool.COMMA),
+							StringUtil.merge(_STATUSES, StringPool.COMMA),
 							")"));
 				ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -1172,7 +1171,7 @@ public class CTCollectionLocalServiceImpl
 		}
 	}
 
-	private static final int[] _ACCEPTED_STATUSES = {
+	private static final int[] _STATUSES = {
 		WorkflowConstants.STATUS_APPROVED, WorkflowConstants.STATUS_IN_TRASH
 	};
 
