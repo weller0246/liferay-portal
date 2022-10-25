@@ -15,8 +15,11 @@
 package com.liferay.portal.vulcan.util;
 
 /**
- * @author Matija Petanjek
+ * @author     Matija Petanjek
+ * @deprecated As of Cavanaugh (7.4.x), replaced by {@link
+ *             com.liferay.petra.function.transform.TransformUtil}
  */
+@Deprecated
 public class TransformUtil
 	extends com.liferay.petra.function.transform.TransformUtil {
 }
