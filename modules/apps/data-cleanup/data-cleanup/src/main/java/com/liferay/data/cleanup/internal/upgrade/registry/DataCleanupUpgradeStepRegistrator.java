@@ -75,66 +75,55 @@ public class DataCleanupUpgradeStepRegistrator
 				ConfigurationUtil.getAndResetConfiguration(
 					_persistenceManager, DataCleanupConfiguration.class);
 
-			DataRemovalConfiguration dataRemovalConfiguration =
-				ConfigurationUtil.getAndResetConfiguration(
-					_persistenceManager, DataRemovalConfiguration.class);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpChatModuleData,
 				"com.liferay.chat.service", ChatUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpDictionaryModuleData,
 				"com.liferay.dictionary.web", DictionaryUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpDirectoryModuleData,
 				"com.liferay.directory.web", DirectoryUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpImageEditorModuleData,
 				"com.liferay.frontend.image.editor.web",
 				ImageEditorUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpHelloWorldModuleData,
 				"com.liferay.hello.world.web", UpgradeHelloWorld::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpInvitationModuleData,
 				"com.liferay.invitation.web", InvitationUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpMailReaderModuleData,
 				"com.liferay.mail.reader.service",
 				MailReaderUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpShoppingModuleData,
 				"com.liferay.shopping.service",
 				() -> new ShoppingUpgradeProcess(_imageLocalService));
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpPrivateMessagingModuleData,
 				"com.liferay.social.privatemessaging.service",
 				() -> new PrivateMessagingUpgradeProcess(
 					_mbThreadLocalService));
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpSoftwareCatalogModuleData,
 				"com.liferay.softwarecatalog.service",
 				() -> new SoftwareCatalogUpgradeProcess(
 					_imageLocalService, _mbMessageLocalService,
 					_ratingsStatsLocalService, _subscriptionLocalService));
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpTwitterModuleData,
 				"com.liferay.twitter.service", TwitterUpgradeProcess::new);
-
 			_cleanUpModuleData(
 				dataCleanupConfiguration::cleanUpOpenSocialModuleData,
 				"opensocial-portlet",
 				() -> new OpenSocialUpgradeProcess(_expandoTableLocalService));
+
+			DataRemovalConfiguration dataRemovalConfiguration =
+				ConfigurationUtil.getAndResetConfiguration(
+					_persistenceManager, DataRemovalConfiguration.class);
 
 			_removeModuleData(
 				dataRemovalConfiguration::removePublishedCTSContentData,
