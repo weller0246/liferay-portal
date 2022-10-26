@@ -838,8 +838,8 @@ public class AccountEntryLocalServiceImpl
 		if (oldStatus != newStatus) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(
-					"Workflow is enabled for AccountEntry. The status " +
-						"parameter will be ignored.");
+					"Workflow is enabled for account entry. The status " +
+						"will be ignored.");
 			}
 		}
 	}
