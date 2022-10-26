@@ -510,7 +510,7 @@ public class KBDropdownItemsProvider {
 								 selectedItemAncestorIds.contains(
 									 kbFolder.getKbFolderId()))) {
 
-								return _createKbFolderRenderURL(
+								return _createKBFolderRenderURL(
 									kbFolder.getParentKBFolderId());
 							}
 
@@ -613,7 +613,7 @@ public class KBDropdownItemsProvider {
 		).build();
 	}
 
-	private String _createKbArticleRenderURL(KBArticle kbArticle) {
+	private String _createKBArticleRenderURL(KBArticle kbArticle) {
 		return PortletURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setMVCPath(
@@ -627,7 +627,7 @@ public class KBDropdownItemsProvider {
 		).buildString();
 	}
 
-	private String _createKbFolderRenderURL(long kbFolderId) {
+	private String _createKBFolderRenderURL(long kbFolderId) {
 		return PortletURLBuilder.createRenderURL(
 			_liferayPortletResponse
 		).setMVCPath(
@@ -648,10 +648,10 @@ public class KBDropdownItemsProvider {
 		KBArticle parentKBArticle = kbArticle.getParentKBArticle();
 
 		if (parentKBArticle != null) {
-			return _createKbArticleRenderURL(parentKBArticle);
+			return _createKBArticleRenderURL(parentKBArticle);
 		}
 
-		return _createKbFolderRenderURL(kbArticle.getKbFolderId());
+		return _createKBFolderRenderURL(kbArticle.getKbFolderId());
 	}
 
 	private String _getPermissionsURL(KBFolder kbFolder) throws Exception {
