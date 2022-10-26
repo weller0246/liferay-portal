@@ -27,11 +27,6 @@ public interface CTCollectionHistoryProvider<T> {
 	public List<CTCollection> getCTCollections(long classNameId, long classPK)
 		throws PortalException;
 
-	/**
-	 * Returns the model class for this provider.
-	 *
-	 * @return the model class for this provider
-	 */
 	public Class<T> getModelClass();
 
 }
