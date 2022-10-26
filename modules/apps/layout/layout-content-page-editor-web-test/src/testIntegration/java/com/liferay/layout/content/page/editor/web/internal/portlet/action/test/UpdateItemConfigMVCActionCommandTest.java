@@ -128,7 +128,7 @@ public class UpdateItemConfigMVCActionCommandTest {
 			layoutPageTemplateStructure.getDefaultSegmentsExperienceData());
 	}
 
-	private MockActionRequest _getMockActionrequest() throws Exception {
+	private MockActionRequest _getMockActionRequest() throws Exception {
 		return ContentLayoutTestUtil.getMockLiferayPortletActionRequest(
 			_companyLocalService.getCompany(_group.getCompanyId()), _group,
 			_layout);
@@ -146,7 +146,7 @@ public class UpdateItemConfigMVCActionCommandTest {
 	private void _testUpdateColumnItemConfigResponsive(String itemConfigfile)
 		throws Exception {
 
-		MockActionRequest mockActionRequest = _getMockActionrequest();
+		MockActionRequest mockActionRequest = _getMockActionRequest();
 
 		LayoutStructure layoutStructure = _getLayoutStructure();
 
@@ -189,7 +189,7 @@ public class UpdateItemConfigMVCActionCommandTest {
 	private void _testUpdateRowItemConfigResponsive(String itemConfigFile)
 		throws Exception {
 
-		MockActionRequest mockActionRequest = _getMockActionrequest();
+		MockActionRequest mockActionRequest = _getMockActionRequest();
 
 		LayoutStructure layoutStructure = _getLayoutStructure();
 
