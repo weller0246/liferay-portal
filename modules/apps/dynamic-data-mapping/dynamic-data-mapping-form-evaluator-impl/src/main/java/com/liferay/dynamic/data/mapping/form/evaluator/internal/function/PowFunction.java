@@ -28,10 +28,10 @@ public class PowFunction
 
 	@Override
 	public BigDecimal apply(Object number, Object exponent) {
-		BigDecimal n1 = new BigDecimal(number.toString());
-		BigDecimal n2 = new BigDecimal(exponent.toString());
+		BigDecimal bigDecimal1 = new BigDecimal(number.toString());
+		BigDecimal bigDecimal2 = new BigDecimal(exponent.toString());
 
-		return n1.pow(n2.intValue());
+		return bigDecimal1.pow(bigDecimal2.intValue());
 	}
 
 	@Override

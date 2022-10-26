@@ -52,9 +52,7 @@ public class PowFunctionTest {
 	public void testApply() {
 		PowFunction powFunction = new PowFunction();
 
-		BigDecimal actualResult = powFunction.apply(n1, n2);
-
-		Assert.assertEquals(expectedObject, actualResult);
+		Assert.assertEquals(expectedObject, powFunction.apply(n1, n2));
 	}
 
 	@Parameterized.Parameter(2)
