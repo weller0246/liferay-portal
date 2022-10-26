@@ -77,8 +77,6 @@ public class KBAdminNavigationDisplayContext {
 
 		_httpServletRequest = httpServletRequest;
 
-		_selectedItemAncestorIds = _getSelectedItemAncestorIds();
-
 		_kbArticleURLHelper = new KBArticleURLHelper(
 			renderRequest, renderResponse);
 		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
@@ -86,6 +84,7 @@ public class KBAdminNavigationDisplayContext {
 				JavaConstants.JAVAX_PORTLET_REQUEST));
 		_liferayPortletResponse = LiferayPortletUtil.getLiferayPortletResponse(
 			renderResponse);
+		_selectedItemAncestorIds = _getSelectedItemAncestorIds();
 		_themeDisplay = (ThemeDisplay)_httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
