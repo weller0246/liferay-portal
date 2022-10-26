@@ -28,12 +28,9 @@ import javax.servlet.http.HttpServletRequestWrapper;
 /**
  * @author Alejandro Tardín
  */
-public class HeadlessHttpClientHttpRequestWrapper
-	extends HttpServletRequestWrapper {
+public class RESTClientHttpRequest extends HttpServletRequestWrapper {
 
-	public HeadlessHttpClientHttpRequestWrapper(
-		HttpServletRequest httpServletRequest) {
-
+	public RESTClientHttpRequest(HttpServletRequest httpServletRequest) {
 		super(httpServletRequest);
 	}
 

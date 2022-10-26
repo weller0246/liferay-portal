@@ -22,8 +22,8 @@ import com.liferay.portal.kernel.servlet.ServletContextPool;
 import com.liferay.portal.kernel.template.TemplateContextContributor;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
 import com.liferay.portal.kernel.util.Portal;
-import com.liferay.portal.vulcan.internal.template.servlet.HeadlessHttpClientHttpRequestWrapper;
-import com.liferay.portal.vulcan.internal.template.servlet.HeadlessHttpClientHttpResponseWrapper;
+import com.liferay.portal.vulcan.internal.template.servlet.RESTClientHttpRequest;
+import com.liferay.portal.vulcan.internal.template.servlet.RESTClientHttpResponse;
 
 import java.util.Map;
 
@@ -41,7 +41,7 @@ import org.osgi.service.component.annotations.Component;
 	property = "type=" + TemplateContextContributor.TYPE_GLOBAL,
 	service = TemplateContextContributor.class
 )
-public class HeadlessHttpClientTemplateContextContributor
+public class RESTClientTemplateContextContributor
 	implements TemplateContextContributor {
 
 	@Override
@@ -53,14 +53,13 @@ public class HeadlessHttpClientTemplateContextContributor
 			"themeDisplay");
 
 		contextObjects.put(
-			"headlessHttpClient",
-			new HeadlessHttpClient(
-				httpServletRequest, themeDisplay.getResponse()));
+			"restClient",
+			new RESTClient(httpServletRequest, themeDisplay.getResponse()));
 	}
 
-	public class HeadlessHttpClient {
+	public class RESTClient {
 
-		public HeadlessHttpClient(
+		public RESTClient(
 			HttpServletRequest httpServletRequest,
 			HttpServletResponse httpServletResponse) {
 
@@ -80,8 +79,8 @@ public class HeadlessHttpClientTemplateContextContributor
 				servletContext.getRequestDispatcher(Portal.PATH_MODULE + path);
 
 			requestDispatcher.forward(
-				new HeadlessHttpClientHttpRequestWrapper(_httpServletRequest),
-				new HeadlessHttpClientHttpResponseWrapper(
+				new RESTClientHttpRequest(_httpServletRequest),
+				new RESTClientHttpResponse(
 					new PipingServletResponse(
 						_httpServletResponse, unsyncStringWriter)));
 
