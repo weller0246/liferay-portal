@@ -183,16 +183,12 @@ public abstract class BaseDispatchTriggerResourceImpl
 	@javax.ws.rs.POST
 	@javax.ws.rs.Produces({"application/json", "application/xml"})
 	@Override
-	public Response postDispatchTriggerRun(
+	public void postDispatchTriggerRun(
 			@io.swagger.v3.oas.annotations.Parameter(hidden = true)
 			@javax.validation.constraints.NotNull
 			@javax.ws.rs.PathParam("dispatchTriggerId")
 			Long dispatchTriggerId)
 		throws Exception {
-
-		Response.ResponseBuilder responseBuilder = Response.ok();
-
-		return responseBuilder.build();
 	}
 
 	@Override

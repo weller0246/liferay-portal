@@ -63,8 +63,7 @@ public interface DispatchTriggerResource {
 	public Response postDispatchTriggerBatch(String callbackURL, Object object)
 		throws Exception;
 
-	public Response postDispatchTriggerRun(Long dispatchTriggerId)
-		throws Exception;
+	public void postDispatchTriggerRun(Long dispatchTriggerId) throws Exception;
 
 	public default void setContextAcceptLanguage(
 		AcceptLanguage contextAcceptLanguage) {

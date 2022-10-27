@@ -304,7 +304,25 @@ public abstract class BaseDispatchTriggerResourceTestCase {
 
 	@Test
 	public void testPostDispatchTriggerRun() throws Exception {
-		Assert.assertTrue(false);
+		@SuppressWarnings("PMD.UnusedLocalVariable")
+		DispatchTrigger dispatchTrigger =
+			testPostDispatchTriggerRun_addDispatchTrigger();
+
+		assertHttpResponseStatusCode(
+			204,
+			dispatchTriggerResource.postDispatchTriggerRunHttpResponse(
+				dispatchTrigger.getId()));
+
+		assertHttpResponseStatusCode(
+			404,
+			dispatchTriggerResource.postDispatchTriggerRunHttpResponse(0L));
+	}
+
+	protected DispatchTrigger testPostDispatchTriggerRun_addDispatchTrigger()
+		throws Exception {
+
+		throw new UnsupportedOperationException(
+			"This method needs to be implemented");
 	}
 
 	protected DispatchTrigger testGraphQLDispatchTrigger_addDispatchTrigger()
