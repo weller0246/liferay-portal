@@ -29,8 +29,6 @@ import com.liferay.portal.kernel.security.permission.resource.ModelResourcePermi
 import com.liferay.portal.vulcan.pagination.Page;
 import com.liferay.portal.vulcan.util.TransformUtil;
 
-import javax.ws.rs.core.Response;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ServiceScope;
@@ -67,7 +65,7 @@ public class DispatchTriggerResourceImpl
 				dispatchTrigger.getName()));
 	}
 
-	public Response postDispatchTriggerRun(Long dispatchTriggerId)
+	public void postDispatchTriggerRun(Long dispatchTriggerId)
 		throws Exception {
 
 		_dispatchTriggerModelResourcePermission.check(
@@ -82,10 +80,6 @@ public class DispatchTriggerResourceImpl
 			).toString());
 
 		_destination.send(message);
-
-		return Response.status(
-			Response.Status.ACCEPTED
-		).build();
 	}
 
 	@Reference(
