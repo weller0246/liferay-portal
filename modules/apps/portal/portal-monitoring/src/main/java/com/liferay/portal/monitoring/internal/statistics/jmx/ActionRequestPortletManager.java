@@ -34,7 +34,7 @@ import org.osgi.service.component.annotations.Reference;
 	},
 	service = DynamicMBean.class
 )
-public class ActionRequestPortletManager extends PortletManager {
+public class ActionRequestPortletManager extends BasePortletManager {
 
 	public ActionRequestPortletManager() throws NotCompliantMBeanException {
 		super(PortletManagerMBean.class);
