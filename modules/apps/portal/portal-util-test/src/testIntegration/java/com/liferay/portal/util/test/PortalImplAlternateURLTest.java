@@ -134,7 +134,6 @@ public class PortalImplAlternateURLTest {
 
 		Collection<Locale> availableLocales = Arrays.asList(
 			LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY);
-
 		Locale defaultLocale = LocaleUtil.US;
 
 		_group = GroupTestUtil.updateDisplaySettings(
@@ -208,7 +207,6 @@ public class PortalImplAlternateURLTest {
 
 		Collection<Locale> availableLocales = Arrays.asList(
 			LocaleUtil.US, LocaleUtil.SPAIN, LocaleUtil.GERMANY);
-
 		Locale defaultLocale = LocaleUtil.US;
 
 		_group = GroupTestUtil.updateDisplaySettings(
