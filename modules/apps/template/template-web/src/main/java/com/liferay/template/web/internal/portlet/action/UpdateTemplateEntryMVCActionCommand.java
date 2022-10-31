@@ -52,7 +52,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Eudaldo Alonso
  */
 @Component(
-	immediate = true,
 	property = {
 		"javax.portlet.name=" + TemplatePortletKeys.TEMPLATE,
 		"mvc.command.name=/template/update_template_entry"

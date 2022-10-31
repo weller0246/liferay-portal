@@ -48,7 +48,6 @@ import org.osgi.service.component.annotations.Reference;
  * @author Lourdes Fernández Besada
  */
 @Component(
-	immediate = true,
 	property = {
 		"javax.portlet.name=" + TemplatePortletKeys.TEMPLATE,
 		"mvc.command.name=/template/update_ddm_template"
