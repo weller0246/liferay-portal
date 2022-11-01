@@ -65,7 +65,6 @@ public class LoggingAuditMessageProcessor implements AuditMessageProcessor {
 		_loggingAuditMessageProcessorConfiguration =
 			ConfigurableUtil.createConfigurable(
 				LoggingAuditMessageProcessorConfiguration.class, properties);
-
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, LogMessageFormatter.class, null,
 			(serviceReference, emitter) -> {

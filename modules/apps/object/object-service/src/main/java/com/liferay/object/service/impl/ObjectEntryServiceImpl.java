@@ -220,9 +220,6 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 	protected void activate(
 		BundleContext bundleContext, Map<String, Object> properties) {
 
-		_objectConfiguration = ConfigurableUtil.createConfigurable(
-			ObjectConfiguration.class, properties);
-
 		_modelResourcePermissionsServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext,
@@ -231,6 +228,8 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				"(&(com.liferay.object=true)(model.class.name=*))",
 				(serviceReference, emitter) -> emitter.emit(
 					(String)serviceReference.getProperty("model.class.name")));
+		_objectConfiguration = ConfigurableUtil.createConfigurable(
+			ObjectConfiguration.class, properties);
 		_portletResourcePermissionsServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				bundleContext, PortletResourcePermission.class,
