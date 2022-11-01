@@ -232,12 +232,13 @@ public class ObjectFieldUtil {
 					listTypeEntryLocalService.fetchListTypeEntry(
 						listTypeDefinition.getListTypeDefinitionId(), key);
 
-				if (listTypeEntry == null) {
-					listTypeEntryLocalService.addListTypeEntry(
-						userId, listTypeDefinition.getListTypeDefinitionId(),
-						key,
-						Collections.singletonMap(LocaleUtil.getDefault(), key));
+				if (listTypeEntry != null) {
+					continue;
 				}
+
+				listTypeEntryLocalService.addListTypeEntry(
+					userId, listTypeDefinition.getListTypeDefinitionId(), key,
+					Collections.singletonMap(LocaleUtil.getDefault(), key));
 			}
 		}
 	}

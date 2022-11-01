@@ -169,17 +169,17 @@ public class ListTypeDefinitionLocalServiceTest {
 	public void testUpdateListTypeDefinition() throws Exception {
 		ListTypeDefinition listTypeDefinition = _addListTypeDefinition();
 
-		String listTypeDefinitionERC = RandomTestUtil.randomString();
+		String externalReferenceCode = RandomTestUtil.randomString();
 		String name = RandomTestUtil.randomString();
 
 		listTypeDefinition =
 			_listTypeDefinitionLocalService.updateListTypeDefinition(
-				listTypeDefinitionERC,
+				externalReferenceCode,
 				listTypeDefinition.getListTypeDefinitionId(),
 				Collections.singletonMap(LocaleUtil.getDefault(), name));
 
 		Assert.assertEquals(
-			listTypeDefinitionERC,
+			externalReferenceCode,
 			listTypeDefinition.getExternalReferenceCode());
 		Assert.assertEquals(
 			name, listTypeDefinition.getName(LocaleUtil.getDefault()));
@@ -189,9 +189,9 @@ public class ListTypeDefinitionLocalServiceTest {
 				StringPool.BLANK, listTypeDefinition.getListTypeDefinitionId(),
 				Collections.singletonMap(LocaleUtil.getDefault(), name));
 
-		listTypeDefinitionERC = listTypeDefinition.getExternalReferenceCode();
+		externalReferenceCode = listTypeDefinition.getExternalReferenceCode();
 
-		Assert.assertFalse(listTypeDefinitionERC.isEmpty());
+		Assert.assertFalse(externalReferenceCode.isEmpty());
 	}
 
 	private ListTypeDefinition _addListTypeDefinition() throws Exception {
