@@ -150,15 +150,15 @@ public class DefaultObjectEntryManagerImplTest {
 			LocaleUtil.getDefault(), null, _user);
 		_user = TestPropsValues.getUser();
 
-		PropsUtil.addProperties(
-			UnicodePropertiesBuilder.setProperty(
-				"feature.flag.LPS-152650", "true"
-			).build());
-
 		PermissionThreadLocal.setPermissionChecker(
 			PermissionCheckerFactoryUtil.create(_user));
 
 		PrincipalThreadLocal.setName(_user.getUserId());
+
+		PropsUtil.addProperties(
+			UnicodePropertiesBuilder.setProperty(
+				"feature.flag.LPS-152650", "true"
+			).build());
 	}
 
 	@AfterClass
