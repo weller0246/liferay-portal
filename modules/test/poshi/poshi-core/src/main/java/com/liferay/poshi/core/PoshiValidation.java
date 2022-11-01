@@ -2001,14 +2001,14 @@ public class PoshiValidation {
 					"copyValue",
 					"\"selenium.getElementValue\" (stored as a variable)");
 				put("getEval", "\"selenium.getJavaScriptResult\"");
-				put("runScript", "\"selenium.executeJavaScript\"");
 				put("paste", "a variable storing the desired value");
-				put("typeAlloyEditor", "\"selenium.typeEditor\"");
-				put("typeCKEditor", "\"selenium.typeEditor\"");
 				put("robotType", "\"selenium.type\"");
 				put(
 					"robotTypeShortcut",
 					"\"selenium.typeKeys/selenium.sendKeys\"");
+				put("runScript", "\"selenium.executeJavaScript\"");
+				put("typeAlloyEditor", "\"selenium.typeEditor\"");
+				put("typeCKEditor", "\"selenium.typeEditor\"");
 			}
 		};
 	private static final Set<Exception> _exceptions = new HashSet<>();
