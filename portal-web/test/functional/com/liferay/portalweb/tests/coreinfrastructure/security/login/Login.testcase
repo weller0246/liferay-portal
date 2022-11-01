@@ -400,7 +400,7 @@ definition {
 	@priority = "3"
 	test UserSetNewPasswordWithoutPasswordProperty {
 		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password= ";
-
+		property portal.upstream = "marcell";
 		Navigator.openURL();
 
 		if (IsElementPresent(locator1 = "Button#I_AGREE")) {
@@ -430,6 +430,7 @@ definition {
 	@description = "This is a use case for LPS-150388 TC-3: TODO"
 	@priority = "3"
 	test VirtualInstancesNeedExtraInformationWithoutPasswordProperty {
+		property portal.upstream = "marcell";
 		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false";
 		//property custom.properties = "default.admin.password = tester";
 
@@ -458,6 +459,7 @@ definition {
 	@description = "This is a use case for LPS-150388 TC-2: TODO"
 	@priority = "3"
 	test VirtualInstancesNeedNoExtraInformationWithPasswordProperty {
+		property portal.upstream = "marcell";		
 		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password=tester";
 			
 			User.firstLoginPG(password = "tester");
@@ -490,7 +492,6 @@ definition {
 				portlet = "Virtual Instances");
 	
 			SAML.addVirtualInstances(virtualHosts = "www.able.com");
-
 
 	}
 }
