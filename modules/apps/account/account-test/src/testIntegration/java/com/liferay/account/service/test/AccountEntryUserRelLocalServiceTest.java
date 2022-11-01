@@ -597,8 +597,8 @@ public class AccountEntryUserRelLocalServiceTest {
 
 	@Test
 	public void testInviteUserWithCustomEmailTemplates() throws Exception {
-		String emailBody = "Custom email body";
-		String emailSubject = "Custom email subject";
+		String invitationEmailBody = "Custom email body";
+		String invitationEmailSubject = "Custom email subject";
 
 		try (CompanyConfigurationTemporarySwapper
 				companyConfigurationTemporarySwapper =
@@ -606,9 +606,9 @@ public class AccountEntryUserRelLocalServiceTest {
 						TestPropsValues.getCompanyId(),
 						AccountEntryEmailConfiguration.class.getName(),
 						HashMapDictionaryBuilder.<String, Object>put(
-							"invitationEmailBody", emailBody
+							"invitationEmailBody", invitationEmailBody
 						).put(
-							"invitationEmailSubject", emailSubject
+							"invitationEmailSubject", invitationEmailSubject
 						).build(),
 						SettingsFactoryUtil.getSettingsFactory())) {
 
@@ -624,7 +624,8 @@ public class AccountEntryUserRelLocalServiceTest {
 			MailMessage mailMessage = MailServiceTestUtil.getLastMailMessage();
 
 			Assert.assertEquals(
-				emailSubject, mailMessage.getFirstHeaderValue("Subject"));
+				invitationEmailSubject,
+				mailMessage.getFirstHeaderValue("Subject"));
 
 			String mailMessageBody = mailMessage.getBody();
 
