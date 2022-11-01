@@ -27,6 +27,32 @@ definition {
 			Uncheck(locator1 = "Checkbox#ACTIVE");
 		}
 
+		if (isSet(screenName)) {
+			Type(
+				locator1 = "TextInput#VIRTUAL_INSTANCE_SCREEN_NAME",
+				value1 = "${instanceScreenName}");
+
+			Type(
+				locator1 = "TextInput#VIRTUAL_INSTANCE_EMAIL",
+				value1 = "${instanceAdminEmail}");
+
+			Type(
+				locator1 = "TextInput#VIRTUAL_INSTANCE_PASSWORD",
+				value1 = "${instancePassword}");
+		}
+
+		if (isSet(instanceAdminFirstName)) {
+			Type(
+				locator1 = "TextInput#VIRTUAL_INSTANCE_FIRST_NAME",
+				value1 = "${instanceAdminEmail}");
+		}
+
+		if (isSet(instanceAdminLastName)) {
+			Type(
+				locator1 = "TextInput#VIRTUAL_INSTANCE_LAST_NAME",
+				value1 = "${instanceAdminEmail}");
+		}
+
 		Button.clickAdd();
 
 		SelectFrameTop();

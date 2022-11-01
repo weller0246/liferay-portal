@@ -396,4 +396,101 @@ definition {
 		}
 	}
 
+	@description = "This is a use case for LPS-150388 TC-1/5: TODO"
+	@priority = "3"
+	test UserSetNewPasswordWithoutPasswordProperty {
+		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password= ";
+
+		Navigator.openURL();
+
+		if (IsElementPresent(locator1 = "Button#I_AGREE")) {
+			SignIn.agreeToTermsOfUse();
+		}
+		WaitForElementPresent(locator1 = "SignIn#SET_PASSWORD_TITLE");
+
+		User.resetPassword(newPassword = "tester");
+
+		if (isSet(localizedAnswer)) {
+			User.answerPasswordReminderLocalized(
+				localizedAnswer = "${localizedAnswer}",
+				localizedSaveButton = "${localizedSaveButton}");
+		}
+		else if (IsElementPresent(locator1 = "Select#QUESTION")) {
+			SignIn.setPasswordReminder();
+		}
+
+
+		AssertLocation(value1 = "http://localhost:8080/web/guest/landing");
+
+		User.logoutPG();
+
+		User.firstLoginUI(password = "tester");
+	}
+
+	@description = "This is a use case for LPS-150388 TC-3: TODO"
+	@priority = "3"
+	test VirtualInstancesNeedExtraInformationWithoutPasswordProperty {
+		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false";
+		//property custom.properties = "default.admin.password = tester";
+
+		User.firstLoginUI(
+			password = "tester",
+			userEmailAddress = "test@liferay.com");
+
+		SAML.addVirtualInstances(
+			virtualHosts = "www.able.com",
+			instanceScreenName = "tester",
+			instanceAdminEmail = "test@test.com",
+			instancePassword = "tester");
+
+		User.firstLoginUI(
+			password = "tester",
+			specificURL = "http://www.able.com:8080",
+			userEmailAddress = "test@test.com");
+
+			MyAccount.openMyAccountAdmin(baseURL = "http://www.able.com:8080");
+
+			User.viewUserInfomation(
+				userEmailAddress = "test@test.com",
+				userScreenName = "tester");
+	}
+
+	@description = "This is a use case for LPS-150388 TC-2: TODO"
+	@priority = "3"
+	test VirtualInstancesNeedNoExtraInformationWithPasswordProperty {
+		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password=tester";
+			
+			User.firstLoginPG(password = "tester");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "System",
+				panel = "Control Panel",
+				portlet = "Virtual Instances");
+	
+			SAML.addVirtualInstances(virtualHosts = "www.able.com");
+
+			User.firstLoginUI(
+				password = "tester",
+				specificURL = "http://www.able.com:8080",
+				userEmailAddress = "test@www.able.com");
+
+			User.viewLoggedInPG();
+	}
+
+	@description = "This is a use case for LPS-150388 TC-4: TODO"
+	@priority = "3"
+	test TESTS {
+		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password=tester";
+			
+			User.firstLoginPG(password = "tester");
+
+			ApplicationsMenu.gotoPortlet(
+				category = "System",
+				panel = "Control Panel",
+				portlet = "Virtual Instances");
+	
+			SAML.addVirtualInstances(virtualHosts = "www.able.com");
+
+
+	}
 }
