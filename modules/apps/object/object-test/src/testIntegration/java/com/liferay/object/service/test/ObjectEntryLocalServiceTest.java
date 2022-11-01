@@ -610,7 +610,7 @@ public class ObjectEntryLocalServiceTest {
 				HashMapBuilder.<String, Serializable>put(
 					"emailAddress", RandomTestUtil.randomString()
 				).put(
-					"emailAddressRequired", "john@liferay.com"
+					"emailAddressRequired", "athanasius@liferay.com"
 				).put(
 					"listTypeEntryKeyRequired", "listTypeEntryKey1"
 				).build());
@@ -624,15 +624,15 @@ public class ObjectEntryLocalServiceTest {
 			HashMapBuilder.<String, Serializable>put(
 				"emailAddress", RandomTestUtil.randomString()
 			).put(
-				"emailAddressRequired", "john@liferay.com"
+				"emailAddressRequired", "athanasius@liferay.com"
 			).put(
-				"firstName", "First"
+				"firstName", "Athanasius"
 			).put(
-				"lastName", "Last"
+				"lastName", "Mundum"
 			).put(
 				"listTypeEntryKeyRequired", "listTypeEntryKey1"
 			).put(
-				"middleName", "Middle"
+				"middleName", "Contra"
 			).build());
 
 		Assert.assertNotNull(objectEntry);
@@ -640,7 +640,7 @@ public class ObjectEntryLocalServiceTest {
 		Map<String, Serializable> values = _objectEntryLocalService.getValues(
 			objectEntry.getObjectEntryId());
 
-		Assert.assertEquals("First Middle Last", values.get("fullName"));
+		Assert.assertEquals("Athanasius Contra Mundum", values.get("fullName"));
 
 		_objectFieldLocalService.deleteObjectField(objectField);
 	}
