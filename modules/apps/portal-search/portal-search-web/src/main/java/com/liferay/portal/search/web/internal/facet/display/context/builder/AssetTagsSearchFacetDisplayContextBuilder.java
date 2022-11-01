@@ -59,6 +59,8 @@ public class AssetTagsSearchFacetDisplayContextBuilder {
 		AssetTagsSearchFacetDisplayContext assetTagsSearchFacetDisplayContext =
 			new AssetTagsSearchFacetDisplayContext();
 
+		assetTagsSearchFacetDisplayContext.setBucketDisplayContexts(
+			buildBucketDisplayContexts());
 		assetTagsSearchFacetDisplayContext.setCloudWithCount(
 			_isCloudWithCount());
 		assetTagsSearchFacetDisplayContext.setDisplayStyleGroupId(
@@ -76,8 +78,6 @@ public class AssetTagsSearchFacetDisplayContextBuilder {
 		assetTagsSearchFacetDisplayContext.
 			setTagFacetPortletInstanceConfiguration(
 				_tagFacetPortletInstanceConfiguration);
-		assetTagsSearchFacetDisplayContext.setBucketDisplayContexts(
-			buildBucketDisplayContexts());
 
 		return assetTagsSearchFacetDisplayContext;
 	}
@@ -142,20 +142,24 @@ public class AssetTagsSearchFacetDisplayContextBuilder {
 		TermCollector termCollector, int maxCount, int minCount,
 		double multiplier) {
 
+		BucketDisplayContext bucketDisplayContext = new BucketDisplayContext();
+
+		String value = termCollector.getTerm();
+
+		bucketDisplayContext.setBucketText(value);
+		bucketDisplayContext.setFilterValue(value);
+
 		int frequency = termCollector.getFrequency();
+
+		bucketDisplayContext.setFrequency(frequency);
+
+		bucketDisplayContext.setFrequencyVisible(_frequenciesVisible);
 
 		int popularity = (int)getPopularity(
 			frequency, minCount, maxCount, multiplier);
 
-		String value = termCollector.getTerm();
-
-		BucketDisplayContext bucketDisplayContext = new BucketDisplayContext();
-
-		bucketDisplayContext.setBucketText(value);
-		bucketDisplayContext.setFilterValue(value);
-		bucketDisplayContext.setFrequency(frequency);
-		bucketDisplayContext.setFrequencyVisible(_frequenciesVisible);
 		bucketDisplayContext.setPopularity(popularity);
+
 		bucketDisplayContext.setSelected(isSelected(value));
 
 		return bucketDisplayContext;
