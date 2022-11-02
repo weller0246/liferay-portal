@@ -54,6 +54,8 @@ public class SelectInfoFieldTypeTemplateNodeTransformer
 
 		InfoField infoField = infoFieldValue.getInfoField();
 
+		String stringValue = StringPool.BLANK;
+
 		Optional<Boolean> multipleOptional = infoField.getAttributeOptional(
 			SelectInfoFieldType.MULTIPLE);
 
@@ -62,8 +64,6 @@ public class SelectInfoFieldTypeTemplateNodeTransformer
 		JSONArray selectedOptionValuesJSONArray =
 			_getSelectedOptionValuesJSONArray(
 				infoFieldValue, themeDisplay.getLocale());
-
-		String stringValue = StringPool.BLANK;
 
 		if (multiple) {
 			stringValue = JSONUtil.toString(selectedOptionValuesJSONArray);
