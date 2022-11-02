@@ -127,14 +127,12 @@ public class ObjectEntryDTOConverter
 		Map<String, Object> map, String nestedFields, String objectFieldName,
 		ObjectRelationship objectRelationship, Object value) {
 
-		String[] nestedFieldsList = nestedFields.split(",");
-
 		String objectFieldNameNestedField = StringUtil.replaceLast(
 			objectFieldName.substring(
 				objectFieldName.lastIndexOf(StringPool.UNDERLINE) + 1),
 			"Id", "");
 
-		for (String nestedField : nestedFieldsList) {
+		for (String nestedField : nestedFields.split(",")) {
 			if (nestedField.contains(objectFieldNameNestedField)) {
 				map.put(
 					StringUtil.replaceLast(objectFieldName, "Id", ""), value);
