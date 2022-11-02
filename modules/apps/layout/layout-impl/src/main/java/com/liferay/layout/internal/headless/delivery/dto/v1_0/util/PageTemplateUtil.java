@@ -12,20 +12,20 @@
  * details.
  */
 
-package com.liferay.layout.internal.headless.delivery.dto.v1_0.converter.util;
+package com.liferay.layout.internal.headless.delivery.dto.v1_0.util;
 
-import com.liferay.headless.delivery.dto.v1_0.MasterPage;
+import com.liferay.headless.delivery.dto.v1_0.PageTemplate;
 import com.liferay.layout.page.template.model.LayoutPageTemplateEntry;
 
 /**
  * @author Rubén Pulido
  */
-public class MasterPageUtil {
+public class PageTemplateUtil {
 
-	public static MasterPage toMasterPage(
+	public static PageTemplate toPageTemplate(
 		LayoutPageTemplateEntry layoutPageTemplateEntry) {
 
-		return new MasterPage() {
+		return new PageTemplate() {
 			{
 				name = layoutPageTemplateEntry.getName();
 			}
