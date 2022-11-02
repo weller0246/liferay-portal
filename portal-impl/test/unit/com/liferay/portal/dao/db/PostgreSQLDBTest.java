@@ -78,21 +78,18 @@ public class PostgreSQLDBTest extends BaseDBTestCase {
 	}
 
 	@Test
-	public void testRewordSqlWithColumnStartingByOid() throws Exception {
+	public void testRewordSQLWithOidColumn() throws Exception {
 		String sql = "alter table a add oidcUser varchar(75) null";
 
 		Assert.assertEquals(sql + "\n", buildSQL(sql));
-	}
 
-	@Test
-	public void testRewordSqlWithOidColumn() throws Exception {
-		String sql = "alter table a add oidcUser oid";
+		sql = "alter table a add oidcUser oid";
 
-		String rewordedSql = buildSQL(sql);
+		String rewordedSQL = buildSQL(sql);
 
 		Assert.assertTrue(
-			rewordedSql.contains(sql) &&
-			rewordedSql.contains("create or replace rule"));
+			rewordedSQL.contains(sql) &&
+			rewordedSQL.contains("create or replace rule"));
 	}
 
 	@Override

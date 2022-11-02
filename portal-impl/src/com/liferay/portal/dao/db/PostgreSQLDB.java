@@ -235,7 +235,7 @@ public class PostgreSQLDB extends BaseDB {
 						"@table@", tokens[2]);
 				}
 				else if (line.contains(getTemplateBlob())) {
-					Matcher matcher = _oidTypePattern.matcher(line);
+					Matcher matcher = _oidPattern.matcher(line);
 
 					if (matcher.find()) {
 						String[] tokens = StringUtil.split(line, ' ');
@@ -276,7 +276,7 @@ public class PostgreSQLDB extends BaseDB {
 
 	private static final boolean _SUPPORTS_QUERYING_AFTER_EXCEPTION = false;
 
-	private static final Pattern _oidTypePattern = Pattern.compile(
+	private static final Pattern _oidPattern = Pattern.compile(
 		" oid(\\W|$)", Pattern.CASE_INSENSITIVE);
 
 	private final boolean _supportsNewUuidFunction;
