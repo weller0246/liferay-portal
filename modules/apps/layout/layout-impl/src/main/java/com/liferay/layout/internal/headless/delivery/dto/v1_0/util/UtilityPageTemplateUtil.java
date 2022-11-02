@@ -15,7 +15,11 @@
 package com.liferay.layout.internal.headless.delivery.dto.v1_0.util;
 
 import com.liferay.headless.delivery.dto.v1_0.UtilityPageTemplate;
+import com.liferay.layout.utility.page.constants.LayoutUtilityPageEntryConstants;
 import com.liferay.layout.utility.page.model.LayoutUtilityPageEntry;
+import com.liferay.portal.kernel.util.HashMapBuilder;
+
+import java.util.Map;
 
 /**
  * @author Bárbara Cabrera
@@ -33,10 +37,16 @@ public class UtilityPageTemplateUtil {
 					layoutUtilityPageEntry.getExternalReferenceCode();
 				name = layoutUtilityPageEntry.getName();
 				type = Type.create(
-					UtilityPageTemplateTypeUtil.convertToExternalValue(
-						layoutUtilityPageEntry.getType()));
+					_types.get(layoutUtilityPageEntry.getType()));
 			}
 		};
 	}
+
+	private static final Map<Integer, String> _types = HashMapBuilder.put(
+		LayoutUtilityPageEntryConstants.Type.ERROR_404.getType(), "Error"
+	).put(
+		LayoutUtilityPageEntryConstants.Type.TERMS_OF_USE.getType(),
+		"TermsOfUse"
+	).build();
 
 }
