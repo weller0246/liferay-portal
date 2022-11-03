@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.portal.workflow.kaleo.designer.web.internal.client.extension;
+package com.liferay.portal.workflow.kaleo.designer.web.internal.action.executor;
 
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory;
 import com.liferay.osgi.service.tracker.collections.map.ServiceTrackerCustomizerFactory.ServiceWrapper;
@@ -32,8 +32,8 @@ import org.osgi.service.component.annotations.Deactivate;
 /**
  * @author Rafael Praxedes
  */
-@Component(service = ActionExecutorClientExtensionTracker.class)
-public class ActionExecutorClientExtensionTracker {
+@Component(service = FunctionActionExecutorTracker.class)
+public class FunctionActionExecutorTracker {
 
 	public static final String ACTION_EXECUTOR_LANGUAGE_KEY =
 		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language";
