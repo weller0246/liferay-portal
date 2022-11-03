@@ -171,7 +171,8 @@ public class KaleoDesignerWorkflowPortletTab extends BaseWorkflowPortletTab {
 		KaleoDesignerWorkflowPortletTab.class);
 
 	@Reference
-	private FunctionActionExecutorServiceWrapperTracker _functionActionExecutorServiceWrapperTracker;
+	private FunctionActionExecutorServiceWrapperTracker
+		_functionActionExecutorServiceWrapperTracker;
 
 	private KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;

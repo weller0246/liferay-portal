@@ -517,7 +517,8 @@ public class KaleoDesignerPortlet extends MVCPortlet {
 	private ClassNameLocalService _classNameLocalService;
 
 	@Reference
-	private FunctionActionExecutorServiceWrapperTracker _functionActionExecutorServiceWrapperTracker;
+	private FunctionActionExecutorServiceWrapperTracker
+		_functionActionExecutorServiceWrapperTracker;
 
 	@Reference
 	private KaleoDefinitionVersionLocalService

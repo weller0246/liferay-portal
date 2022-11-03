@@ -95,14 +95,16 @@ import javax.servlet.jsp.PageContext;
 public class KaleoDesignerDisplayContext {
 
 	public KaleoDesignerDisplayContext(
-		FunctionActionExecutorServiceWrapperTracker functionActionExecutorServiceWrapperTracker,
+		FunctionActionExecutorServiceWrapperTracker
+			functionActionExecutorServiceWrapperTracker,
 		RenderRequest renderRequest,
 		KaleoDefinitionVersionLocalService kaleoDefinitionVersionLocalService,
 		PortletResourcePermission portletResourcePermission,
 		ResourceBundleLoader resourceBundleLoader,
 		UserLocalService userLocalService) {
 
-		_functionActionExecutorServiceWrapperTracker = functionActionExecutorServiceWrapperTracker;
+		_functionActionExecutorServiceWrapperTracker =
+			functionActionExecutorServiceWrapperTracker;
 		_kaleoDefinitionVersionLocalService =
 			kaleoDefinitionVersionLocalService;
 		_portletResourcePermission = portletResourcePermission;
@@ -144,7 +146,8 @@ public class KaleoDesignerDisplayContext {
 					properties, "client.extension.description");
 
 				String key = MapUtil.getString(
-					properties, FunctionActionExecutorServiceWrapperTracker.KEY);
+					properties,
+					FunctionActionExecutorServiceWrapperTracker.KEY);
 
 				if (Validator.isBlank(description)) {
 					description = key;
@@ -857,7 +860,8 @@ public class KaleoDesignerDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoDesignerDisplayContext.class);
 
-	private final FunctionActionExecutorServiceWrapperTracker _functionActionExecutorServiceWrapperTracker;
+	private final FunctionActionExecutorServiceWrapperTracker
+		_functionActionExecutorServiceWrapperTracker;
 	private final KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;
 	private KaleoDesignerRequestHelper _kaleoDesignerRequestHelper;
