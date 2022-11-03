@@ -219,7 +219,7 @@ public class ObjectEntryLocalServiceImpl
 			user.isDefaultUser(), objectDefinitionId,
 			objectDefinition.getPortletId(), serviceContext, userId, values);
 
-		values = _fillPicklistDefaultValue(
+		values = _fillBusinessTypePicklistDefaultValue(
 			_objectFieldLocalService.getObjectFields(objectDefinitionId),
 			values);
 
@@ -1516,7 +1516,7 @@ public class ObjectEntryLocalServiceImpl
 		return column.in(ArrayUtil.toLongArray(accountEntryIds));
 	}
 
-	private Map<String, Serializable> _fillPicklistDefaultValue(
+	private Map<String, Serializable> _fillBusinessTypePicklistDefaultValue(
 		List<ObjectField> objectFields, Map<String, Serializable> values) {
 
 		for (ObjectField objectField : objectFields) {
