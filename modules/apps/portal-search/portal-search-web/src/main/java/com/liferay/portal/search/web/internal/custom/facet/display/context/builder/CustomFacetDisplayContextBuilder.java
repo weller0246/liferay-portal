@@ -58,6 +58,8 @@ public class CustomFacetDisplayContextBuilder {
 		CustomFacetDisplayContext customFacetDisplayContext =
 			new CustomFacetDisplayContext(_httpServletRequest);
 
+		customFacetDisplayContext.setBucketDisplayContexts(
+			_buildBucketDisplayContexts(termCollectors));
 		customFacetDisplayContext.setDisplayCaption(getDisplayCaption());
 		customFacetDisplayContext.setNothingSelected(nothingSelected);
 		customFacetDisplayContext.setPaginationStartParameterName(
@@ -66,8 +68,6 @@ public class CustomFacetDisplayContextBuilder {
 		customFacetDisplayContext.setParameterValue(_getFirstParameterValue());
 		customFacetDisplayContext.setParameterValues(_parameterValues);
 		customFacetDisplayContext.setRenderNothing(renderNothing);
-		customFacetDisplayContext.setBucketDisplayContexts(
-			_buildBucketDisplayContexts(termCollectors));
 
 		return customFacetDisplayContext;
 	}
@@ -197,15 +197,20 @@ public class CustomFacetDisplayContextBuilder {
 	private BucketDisplayContext _buildBucketDisplayContext(
 		TermCollector termCollector) {
 
-		String term = GetterUtil.getString(termCollector.getTerm());
-
 		BucketDisplayContext bucketDisplayContext = new BucketDisplayContext();
 
-		bucketDisplayContext.setFrequency(termCollector.getFrequency());
-		bucketDisplayContext.setFrequencyVisible(_frequenciesVisible);
-		bucketDisplayContext.setSelected(isSelected(term));
+		String term = GetterUtil.getString(termCollector.getTerm());
+
 		bucketDisplayContext.setBucketText(term);
 		bucketDisplayContext.setFilterValue(term);
+
+		int frequency = termCollector.getFrequency();
+
+		bucketDisplayContext.setFrequency(frequency);
+
+		bucketDisplayContext.setFrequencyVisible(_frequenciesVisible);
+
+		bucketDisplayContext.setSelected(isSelected(term));
 
 		return bucketDisplayContext;
 	}
@@ -244,11 +249,11 @@ public class CustomFacetDisplayContextBuilder {
 
 		BucketDisplayContext bucketDisplayContext = new BucketDisplayContext();
 
+		bucketDisplayContext.setBucketText(_parameterValues.get(0));
+		bucketDisplayContext.setFilterValue(_parameterValues.get(0));
 		bucketDisplayContext.setFrequency(0);
 		bucketDisplayContext.setFrequencyVisible(_frequenciesVisible);
 		bucketDisplayContext.setSelected(true);
-		bucketDisplayContext.setBucketText(_parameterValues.get(0));
-		bucketDisplayContext.setFilterValue(_parameterValues.get(0));
 
 		return Collections.singletonList(bucketDisplayContext);
 	}
