@@ -347,16 +347,16 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 				_objectDefinition.getObjectDefinitionId(),
 				objectRelationshipName);
 
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerTracker.getObjectEntryManager(
+				_objectDefinition.getStorageType());
+
 		long primaryKey1 = _getPrimaryKey(
 			currentExternalReferenceCode,
 			objectRelationship.getObjectDefinitionId1());
 		long primaryKey2 = _getPrimaryKey(
 			relatedExternalReferenceCode,
 			objectRelationship.getObjectDefinitionId2());
-
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerTracker.getObjectEntryManager(
-				_objectDefinition.getStorageType());
 
 		return _getRelatedObjectEntry(
 			_objectDefinitionLocalService.getObjectDefinition(
