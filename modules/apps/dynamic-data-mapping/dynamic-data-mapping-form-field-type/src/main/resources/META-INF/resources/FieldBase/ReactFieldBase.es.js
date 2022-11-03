@@ -350,6 +350,7 @@ export function FieldBase({
 								className={classNames({
 									'ddm-empty': !showLabel && !required,
 									'ddm-label': showLabel || required,
+									'ddm-repeatable': repeatable,
 								})}
 							>
 								{showLabel && label && (
