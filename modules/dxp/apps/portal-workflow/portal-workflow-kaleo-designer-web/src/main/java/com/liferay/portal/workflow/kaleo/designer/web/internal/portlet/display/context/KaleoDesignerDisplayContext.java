@@ -146,6 +146,8 @@ public class KaleoDesignerDisplayContext {
 					properties,
 					FunctionActionExecutorServiceWrapperTracker.KEY);
 
+				// TODO Is "client.extension.description" actually set?
+
 				return JSONUtil.put(
 					"description",
 					MapUtil.getString(
