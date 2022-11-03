@@ -572,8 +572,8 @@ public class LayoutsTreeImpl implements LayoutsTree {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"_toJSONArray(groupId=", groupId, ", layoutTreeNodes=",
-					layoutTreeNodes, StringPool.CLOSE_PARENTHESIS));
+					"Group ", groupId, " and layout tree nodes ",
+					layoutTreeNodes));
 		}
 
 		ThemeDisplay themeDisplay =
@@ -801,9 +801,8 @@ public class LayoutsTreeImpl implements LayoutsTree {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"_toJSONSerializable(groupId=", groupId,
-					", layoutTreeNodes=", layoutTreeNodes,
-					StringPool.CLOSE_PARENTHESIS));
+					"Group ", groupId, " and layout tree nodes ",
+					layoutTreeNodes));
 		}
 
 		JSONArray jsonArray = _toJSONArray(
