@@ -84,8 +84,7 @@ public class ListTypeDefinitionLocalServiceImpl
 
 			if (count != 0) {
 				throw new DuplicateListTypeExternalReferenceCodeException(
-					"Duplicated External Reference Code: " +
-						listTypeDefinition.getExternalReferenceCode());
+					listTypeDefinition.getExternalReferenceCode());
 			}
 		}
 
