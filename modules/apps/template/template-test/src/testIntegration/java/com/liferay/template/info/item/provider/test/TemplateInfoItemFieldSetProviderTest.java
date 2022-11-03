@@ -451,7 +451,6 @@ public class TemplateInfoItemFieldSetProviderTest {
 			ListUtil.fromArray(LocaleUtil.US, LocaleUtil.SPAIN), LocaleUtil.US);
 
 		String expectedKey1 = RandomTestUtil.randomString(10);
-
 		String expectedKey2 = RandomTestUtil.randomString(10);
 
 		DDMFormField ddmFormField = _createDDMFormField(

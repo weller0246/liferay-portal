@@ -302,7 +302,6 @@ public class DDMFormValuesInfoFieldValuesProviderTest {
 			Assert.assertTrue(
 				expectedKeyLabelMap.containsKey(
 					actualKeyLocalizedLabelPair.getKey()));
-
 			Assert.assertEquals(
 				expectedKeyLabelMap.get(actualKeyLocalizedLabelPair.getKey()),
 				actualKeyLocalizedLabelPair.getLabel(LocaleUtil.US));
@@ -382,7 +381,6 @@ public class DDMFormValuesInfoFieldValuesProviderTest {
 		DDMFormValues ddmFormValues = new DDMFormValues(ddmForm);
 
 		ddmFormValues.addAvailableLocale(LocaleUtil.US);
-
 		ddmFormValues.addDDMFormFieldValue(ddmFormFieldValue);
 
 		return ddmFormValues;
