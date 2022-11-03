@@ -134,6 +134,8 @@ public class KaleoDesignerDisplayContext {
 		).buildString();
 	}
 
+	// TODO Rename getClientExtensionsJSONArray
+
 	public JSONArray getClientExtensionsJSONArray() throws Exception {
 		return JSONUtil.toJSONArray(
 			_functionActionExecutorServiceWrapperTracker.
