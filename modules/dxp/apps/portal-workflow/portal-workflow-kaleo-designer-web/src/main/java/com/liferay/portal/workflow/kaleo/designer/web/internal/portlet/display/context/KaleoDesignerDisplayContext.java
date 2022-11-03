@@ -23,6 +23,7 @@ import com.liferay.portal.kernel.dao.orm.QueryUtil;
 import com.liferay.portal.kernel.dao.search.SearchContainer;
 import com.liferay.portal.kernel.exception.PortalException;
 import com.liferay.portal.kernel.json.JSONArray;
+import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.language.LanguageUtil;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -44,6 +45,7 @@ import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.HtmlUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.LocalizationUtil;
+import com.liferay.portal.kernel.util.MapUtil;
 import com.liferay.portal.kernel.util.OrderByComparator;
 import com.liferay.portal.kernel.util.ParamUtil;
 import com.liferay.portal.kernel.util.PortalUtil;
@@ -75,6 +77,7 @@ import com.liferay.portal.workflow.kaleo.util.comparator.KaleoDefinitionVersionT
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -130,7 +133,29 @@ public class KaleoDesignerDisplayContext {
 	}
 
 	public JSONArray getClientExtensionsJSONArray() throws Exception {
-		return _functionActionExecutorTracker.getClientExtensionsJSONArray();
+		return JSONUtil.toJSONArray(
+			_functionActionExecutorTracker.
+				getFunctionActionExecutorServiceWrappers(),
+			functionActionExecutorServiceWrapper -> {
+				Map<String, Object> properties =
+					functionActionExecutorServiceWrapper.getProperties();
+
+				String description = MapUtil.getString(
+					properties, "client.extension.description");
+
+				String key = MapUtil.getString(
+					properties, FunctionActionExecutorTracker.KEY);
+
+				if (Validator.isBlank(description)) {
+					description = key;
+				}
+
+				return JSONUtil.put(
+					"description", description
+				).put(
+					"key", key
+				);
+			});
 	}
 
 	public Date getCreatedDate(KaleoDefinitionVersion kaleoDefinitionVersion)
