@@ -102,8 +102,8 @@ public class CustomFacetDisplayContextTest {
 		Assert.assertEquals(fieldName, bucketDisplayContext.getBucketText());
 		Assert.assertEquals(fieldName, bucketDisplayContext.getFilterValue());
 		Assert.assertEquals(0, bucketDisplayContext.getFrequency());
-		Assert.assertTrue(bucketDisplayContext.isSelected());
 		Assert.assertTrue(bucketDisplayContext.isFrequencyVisible());
+		Assert.assertTrue(bucketDisplayContext.isSelected());
 
 		Assert.assertEquals(
 			parameterValue, customFacetDisplayContext.getParameterValue());
@@ -136,8 +136,8 @@ public class CustomFacetDisplayContextTest {
 		Assert.assertEquals(fieldName, bucketDisplayContext.getBucketText());
 		Assert.assertEquals(fieldName, bucketDisplayContext.getFilterValue());
 		Assert.assertEquals(count, bucketDisplayContext.getFrequency());
-		Assert.assertFalse(bucketDisplayContext.isSelected());
 		Assert.assertTrue(bucketDisplayContext.isFrequencyVisible());
+		Assert.assertFalse(bucketDisplayContext.isSelected());
 
 		Assert.assertEquals(
 			parameterValue, customFacetDisplayContext.getParameterValue());
@@ -170,8 +170,8 @@ public class CustomFacetDisplayContextTest {
 		Assert.assertEquals(fieldName, bucketDisplayContext.getBucketText());
 		Assert.assertEquals(fieldName, bucketDisplayContext.getFilterValue());
 		Assert.assertEquals(count, bucketDisplayContext.getFrequency());
-		Assert.assertTrue(bucketDisplayContext.isSelected());
 		Assert.assertTrue(bucketDisplayContext.isFrequencyVisible());
+		Assert.assertTrue(bucketDisplayContext.isSelected());
 
 		Assert.assertEquals(
 			parameterValue, customFacetDisplayContext.getParameterValue());
