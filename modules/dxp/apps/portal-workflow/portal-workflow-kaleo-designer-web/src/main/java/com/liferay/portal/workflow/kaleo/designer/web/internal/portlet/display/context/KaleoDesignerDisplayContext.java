@@ -142,19 +142,14 @@ public class KaleoDesignerDisplayContext {
 				Map<String, Object> properties =
 					functionActionExecutorServiceWrapper.getProperties();
 
-				String description = MapUtil.getString(
-					properties, "client.extension.description");
-
 				String key = MapUtil.getString(
 					properties,
 					FunctionActionExecutorServiceWrapperTracker.KEY);
 
-				if (Validator.isBlank(description)) {
-					description = key;
-				}
-
 				return JSONUtil.put(
-					"description", description
+					"description",
+					MapUtil.getString(
+						properties, "client.extension.description", key)
 				).put(
 					"key", key
 				);
