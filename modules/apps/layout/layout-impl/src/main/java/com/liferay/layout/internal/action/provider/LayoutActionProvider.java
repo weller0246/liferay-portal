@@ -71,12 +71,11 @@ public class LayoutActionProvider {
 		_language = language;
 		_siteNavigationMenuLocalService = siteNavigationMenuLocalService;
 
+		_groupProvider = (GroupProvider)httpServletRequest.getAttribute(
+			ApplicationListWebKeys.GROUP_PROVIDER);
 		_liferayPortletRequest = PortalUtil.getLiferayPortletRequest(
 			(PortletRequest)httpServletRequest.getAttribute(
 				JavaConstants.JAVAX_PORTLET_REQUEST));
-
-		_groupProvider = (GroupProvider)httpServletRequest.getAttribute(
-			ApplicationListWebKeys.GROUP_PROVIDER);
 		_namespace = PortalUtil.getPortletNamespace(
 			ProductNavigationProductMenuPortletKeys.
 				PRODUCT_NAVIGATION_PRODUCT_MENU);
