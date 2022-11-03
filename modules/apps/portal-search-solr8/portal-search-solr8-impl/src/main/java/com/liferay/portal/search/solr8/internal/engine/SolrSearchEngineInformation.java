@@ -87,7 +87,7 @@ public class SolrSearchEngineInformation implements SearchEngineInformation {
 		catch (Exception exception) {
 			connectionInformationBuilder.error(exception.toString());
 
-			_log.error("Could not retrieve node information", exception);
+			_log.error("Unable to get node information", exception);
 		}
 
 		connectionInformationList.add(connectionInformationBuilder.build());
@@ -109,7 +109,7 @@ public class SolrSearchEngineInformation implements SearchEngineInformation {
 			return sb.toString();
 		}
 		catch (Exception exception) {
-			_log.error("Could not retrieve node information", exception);
+			_log.error("Unable to get node information", exception);
 
 			StringBundler sb = new StringBundler(3);
 
