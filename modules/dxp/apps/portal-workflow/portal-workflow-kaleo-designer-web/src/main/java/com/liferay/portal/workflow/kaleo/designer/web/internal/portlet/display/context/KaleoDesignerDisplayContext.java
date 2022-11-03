@@ -58,7 +58,7 @@ import com.liferay.portal.workflow.constants.WorkflowDefinitionConstants;
 import com.liferay.portal.workflow.constants.WorkflowWebKeys;
 import com.liferay.portal.workflow.exception.IncompleteWorkflowInstancesException;
 import com.liferay.portal.workflow.kaleo.designer.web.constants.KaleoDesignerPortletKeys;
-import com.liferay.portal.workflow.kaleo.designer.web.internal.action.executor.FunctionActionExecutorTracker;
+import com.liferay.portal.workflow.kaleo.designer.web.internal.action.executor.FunctionActionExecutorServiceWrapperTracker;
 import com.liferay.portal.workflow.kaleo.designer.web.internal.constants.KaleoDesignerActionKeys;
 import com.liferay.portal.workflow.kaleo.designer.web.internal.permission.KaleoDefinitionVersionPermission;
 import com.liferay.portal.workflow.kaleo.designer.web.internal.permission.KaleoDesignerPermission;
@@ -95,14 +95,14 @@ import javax.servlet.jsp.PageContext;
 public class KaleoDesignerDisplayContext {
 
 	public KaleoDesignerDisplayContext(
-		FunctionActionExecutorTracker functionActionExecutorTracker,
+		FunctionActionExecutorServiceWrapperTracker functionActionExecutorServiceWrapperTracker,
 		RenderRequest renderRequest,
 		KaleoDefinitionVersionLocalService kaleoDefinitionVersionLocalService,
 		PortletResourcePermission portletResourcePermission,
 		ResourceBundleLoader resourceBundleLoader,
 		UserLocalService userLocalService) {
 
-		_functionActionExecutorTracker = functionActionExecutorTracker;
+		_functionActionExecutorServiceWrapperTracker = functionActionExecutorServiceWrapperTracker;
 		_kaleoDefinitionVersionLocalService =
 			kaleoDefinitionVersionLocalService;
 		_portletResourcePermission = portletResourcePermission;
@@ -134,7 +134,7 @@ public class KaleoDesignerDisplayContext {
 
 	public JSONArray getClientExtensionsJSONArray() throws Exception {
 		return JSONUtil.toJSONArray(
-			_functionActionExecutorTracker.
+			_functionActionExecutorServiceWrapperTracker.
 				getFunctionActionExecutorServiceWrappers(),
 			functionActionExecutorServiceWrapper -> {
 				Map<String, Object> properties =
@@ -144,7 +144,7 @@ public class KaleoDesignerDisplayContext {
 					properties, "client.extension.description");
 
 				String key = MapUtil.getString(
-					properties, FunctionActionExecutorTracker.KEY);
+					properties, FunctionActionExecutorServiceWrapperTracker.KEY);
 
 				if (Validator.isBlank(description)) {
 					description = key;
@@ -857,7 +857,7 @@ public class KaleoDesignerDisplayContext {
 	private static final Log _log = LogFactoryUtil.getLog(
 		KaleoDesignerDisplayContext.class);
 
-	private final FunctionActionExecutorTracker _functionActionExecutorTracker;
+	private final FunctionActionExecutorServiceWrapperTracker _functionActionExecutorServiceWrapperTracker;
 	private final KaleoDefinitionVersionLocalService
 		_kaleoDefinitionVersionLocalService;
 	private KaleoDesignerRequestHelper _kaleoDesignerRequestHelper;
