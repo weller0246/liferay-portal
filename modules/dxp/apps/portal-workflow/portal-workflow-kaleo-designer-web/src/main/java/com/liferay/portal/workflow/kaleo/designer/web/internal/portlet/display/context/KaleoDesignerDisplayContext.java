@@ -102,10 +102,6 @@ public class KaleoDesignerDisplayContext {
 
 		_actionExecutorClientExtensionTracker =
 			actionExecutorClientExtensionTracker;
-
-		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		_kaleoDefinitionVersionLocalService =
 			kaleoDefinitionVersionLocalService;
 		_portletResourcePermission = portletResourcePermission;
@@ -114,6 +110,8 @@ public class KaleoDesignerDisplayContext {
 
 		_kaleoDesignerRequestHelper = new KaleoDesignerRequestHelper(
 			renderRequest);
+		_themeDisplay = (ThemeDisplay)renderRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 	}
 
 	public boolean canPublishWorkflowDefinition() {
