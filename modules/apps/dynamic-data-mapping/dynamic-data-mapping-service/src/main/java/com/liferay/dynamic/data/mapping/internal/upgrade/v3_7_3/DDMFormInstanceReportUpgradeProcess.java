@@ -104,11 +104,12 @@ public class DDMFormInstanceReportUpgradeProcess extends UpgradeProcess {
 			ResultSet resultSet1 = preparedStatement1.executeQuery()) {
 
 			while (resultSet1.next()) {
-				long formInstanceId = resultSet1.getLong("formInstanceId");
-
 				JSONObject dataJSONObject = _jsonFactory.createJSONObject();
 
+				long formInstanceId = resultSet1.getLong("formInstanceId");
+
 				preparedStatement2.setLong(1, formInstanceId);
+
 				preparedStatement2.setInt(2, WorkflowConstants.STATUS_APPROVED);
 
 				ResultSet resultSet2 = preparedStatement2.executeQuery();
