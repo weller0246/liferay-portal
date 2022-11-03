@@ -86,7 +86,7 @@ public class UpgradeRedirectEntrySourceURLTest {
 	}
 
 	@Test
-	public void testUpgradeWithMultipleGroup() throws Exception {
+	public void testUpgradeWithMultipleGroups() throws Exception {
 		long redirectEntryId1 = _counterLocalService.increment();
 		long redirectEntryId2 = _counterLocalService.increment();
 		long redirectEntryId3 = _counterLocalService.increment();
@@ -170,8 +170,7 @@ public class UpgradeRedirectEntrySourceURLTest {
 	@Test
 	public void testUpgradeWithSourceURLCollision() throws Exception {
 		Assume.assumeFalse(
-			"MYSQL is case-insensitive so it is not possible to create this " +
-				"scenario, skip test.",
+			"Skip this test because MySQL is not case sensitive",
 			_db.getDBType() == DBType.MYSQL);
 
 		long redirectEntryId1 = _counterLocalService.increment();
