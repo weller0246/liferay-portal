@@ -28,6 +28,8 @@ import org.osgi.framework.BundleContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * @author Rafael Praxedes
@@ -35,25 +37,33 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(service = FunctionActionExecutorTracker.class)
 public class FunctionActionExecutorTracker {
 
+	public Collection<ServiceWrapper<ActionExecutor>>
+		getFunctionActionExecutorServiceWrappers() {
+
+		return _serviceTrackerMap.values();
+	}
+
 	public JSONArray getClientExtensionsJSONArray() throws Exception {
 		return JSONUtil.toJSONArray(
-			_serviceTrackerMap.keySet(),
-			clientExtensionFunctionKey -> {
-				ServiceWrapper<ActionExecutor> actionExecutorServiceWrapper =
-					_serviceTrackerMap.getService(clientExtensionFunctionKey);
+			getFunctionActionExecutorServiceWrappers(),
+			functionActionExecutorServiceWrapper -> {
+				Map<String, Object> properties =
+					functionActionExecutorServiceWrapper.getProperties();
 
 				String description = MapUtil.getString(
-					actionExecutorServiceWrapper.getProperties(),
-					"client.extension.description");
+					properties, "client.extension.description");
+
+				String key = MapUtil.getString(
+					properties, _KEY);
 
 				if (Validator.isBlank(description)) {
-					description = clientExtensionFunctionKey;
+					description = key;
 				}
 
 				return JSONUtil.put(
 					"description", description
 				).put(
-					"key", clientExtensionFunctionKey
+					"key", key
 				);
 			});
 	}
