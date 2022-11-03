@@ -35,9 +35,6 @@ import org.osgi.service.component.annotations.Deactivate;
 @Component(service = FunctionActionExecutorTracker.class)
 public class FunctionActionExecutorTracker {
 
-	public static final String ACTION_EXECUTOR_LANGUAGE_KEY =
-		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language";
-
 	public JSONArray getClientExtensionsJSONArray() throws Exception {
 		return JSONUtil.toJSONArray(
 			_serviceTrackerMap.keySet(),
@@ -64,11 +61,9 @@ public class FunctionActionExecutorTracker {
 	@Activate
 	protected void activate(BundleContext bundleContext) {
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
-			bundleContext, ActionExecutor.class,
-			"(" + ACTION_EXECUTOR_LANGUAGE_KEY + "=function*)",
+			bundleContext, ActionExecutor.class, "(" + _KEY + "=function*)",
 			(serviceReference, emitter) -> emitter.emit(
-				(String)serviceReference.getProperty(
-					ACTION_EXECUTOR_LANGUAGE_KEY)),
+				(String)serviceReference.getProperty(_KEY)),
 			ServiceTrackerCustomizerFactory.<ActionExecutor>serviceWrapper(
 				bundleContext));
 	}
@@ -77,6 +72,9 @@ public class FunctionActionExecutorTracker {
 	protected void deactivate() {
 		_serviceTrackerMap.close();
 	}
+
+	private static final String _KEY =
+		"com.liferay.portal.workflow.kaleo.runtime.action.executor.language";
 
 	private ServiceTrackerMap<String, ServiceWrapper<ActionExecutor>>
 		_serviceTrackerMap;
