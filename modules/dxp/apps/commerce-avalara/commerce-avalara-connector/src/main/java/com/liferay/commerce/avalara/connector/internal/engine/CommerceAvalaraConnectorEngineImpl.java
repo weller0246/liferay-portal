@@ -134,7 +134,7 @@ public class CommerceAvalaraConnectorEngineImpl
 			String[] taxRatesByZipCodeLine = StringUtil.split(
 				taxRatesByZipCodeLines[i], StringPool.COMMA);
 
-			_upsertByAddressEntry(
+			_addOrUpdateByAddressEntry(
 				commerceTaxMethod.getUserId(), groupId, cpTaxCategoryId,
 				commerceTaxMethod.getCommerceTaxMethodId(), country,
 				taxRatesByZipCodeLine[1], taxRatesByZipCodeLine[0],
@@ -142,7 +142,7 @@ public class CommerceAvalaraConnectorEngineImpl
 		}
 	}
 
-	private void _upsertByAddressEntry(
+	private void _addOrUpdateByAddressEntry(
 			long userId, long groupId,
 			long tangiblePersonalPropertyCPTaxCategoryId,
 			long commerceTaxMethodId, Country country, String regionCode,

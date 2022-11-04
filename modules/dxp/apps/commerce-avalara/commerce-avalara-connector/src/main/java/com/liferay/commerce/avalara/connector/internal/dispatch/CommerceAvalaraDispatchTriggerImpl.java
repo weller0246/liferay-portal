@@ -32,7 +32,6 @@ import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.Message;
-import com.liferay.portal.kernel.util.StringBundler;
 import com.liferay.portal.kernel.util.UnicodePropertiesBuilder;
 
 import java.util.List;
@@ -54,8 +53,6 @@ public class CommerceAvalaraDispatchTriggerImpl
 		DispatchTrigger dispatchTrigger = null;
 
 		try {
-			String triggerName = _getAvalaraTriggerName(commerceTaxMethod);
-
 			dispatchTrigger = _dispatchTriggerLocalService.addDispatchTrigger(
 				null, commerceTaxMethod.getUserId(),
 				commerceTaxMethod.getEngineKey(),
@@ -64,19 +61,16 @@ public class CommerceAvalaraDispatchTriggerImpl
 				).setProperty(
 					"groupId", String.valueOf(commerceTaxMethod.getGroupId())
 				).build(),
-				triggerName, Boolean.FALSE);
-
-			dispatchTrigger.setCronExpression(
-				_EVERY_MONTH_ON_THE_FIRST_CRON_EXPRESSION);
+				_getTriggerName(commerceTaxMethod), Boolean.FALSE);
 
 			dispatchTrigger.setActive(Boolean.TRUE);
+			dispatchTrigger.setCronExpression("0 0 0 1 * ?");
 
 			_dispatchTriggerLocalService.updateDispatchTrigger(dispatchTrigger);
 		}
 		catch (PortalException portalException) {
 			_log.error(
-				"Could not create a dispatch trigger for newly created " +
-					"Avalara Tax Method",
+				"Unable to add dispatch trigger for " + commerceTaxMethod,
 				portalException);
 		}
 
@@ -96,7 +90,7 @@ public class CommerceAvalaraDispatchTriggerImpl
 		}
 		catch (PortalException portalException) {
 			_log.error(
-				"Could not delete dispatch trigger for an Avalara Tax Method",
+				"Unable not delete dispatch trigger for " + commerceTaxMethod,
 				portalException);
 		}
 	}
@@ -115,9 +109,9 @@ public class CommerceAvalaraDispatchTriggerImpl
 		DynamicQuery dynamicQuery = _getDispatchTriggerByIdQuery(
 			dispatchTrigger);
 
-		Property startDate = PropertyFactoryUtil.forName("startDate");
+		Property startDateProperty = PropertyFactoryUtil.forName("startDate");
 
-		dynamicQuery.addOrder(startDate.desc());
+		dynamicQuery.addOrder(startDateProperty.desc());
 
 		dynamicQuery.setLimit(0, 1);
 
@@ -195,25 +189,12 @@ public class CommerceAvalaraDispatchTriggerImpl
 		return commerceChannel;
 	}
 
-	private String _getAvalaraTriggerName(CommerceTaxMethod commerceTaxMethod) {
-		CommerceChannel commerceChannel = _getAssociatedCommerceChannel(
-			commerceTaxMethod);
-
-		StringBundler triggerNameSB = new StringBundler(2);
-
-		triggerNameSB.append("avalara-");
-		triggerNameSB.append(commerceChannel.getCommerceChannelId());
-
-		return triggerNameSB.toString();
-	}
-
 	private DispatchTrigger _getDispatchTrigger(
 		CommerceTaxMethod commerceTaxMethod) {
 
-		String triggerName = _getAvalaraTriggerName(commerceTaxMethod);
-
 		return _dispatchTriggerLocalService.fetchDispatchTrigger(
-			commerceTaxMethod.getCompanyId(), triggerName);
+			commerceTaxMethod.getCompanyId(),
+			_getTriggerName(commerceTaxMethod));
 	}
 
 	private DynamicQuery _getDispatchTriggerByIdQuery(
@@ -221,13 +202,21 @@ public class CommerceAvalaraDispatchTriggerImpl
 
 		DynamicQuery dynamicQuery = _dispatchLogLocalService.dynamicQuery();
 
-		Property dispatchTriggerId = PropertyFactoryUtil.forName(
+		Property dispatchTriggerIdProperty = PropertyFactoryUtil.forName(
 			"dispatchTriggerId");
 
 		dynamicQuery.add(
-			dispatchTriggerId.eq(dispatchTrigger.getDispatchTriggerId()));
+			dispatchTriggerIdProperty.eq(
+				dispatchTrigger.getDispatchTriggerId()));
 
 		return dynamicQuery;
+	}
+
+	private String _getTriggerName(CommerceTaxMethod commerceTaxMethod) {
+		CommerceChannel commerceChannel = _getAssociatedCommerceChannel(
+			commerceTaxMethod);
+
+		return "avalara-" + commerceChannel.getCommerceChannelId();
 	}
 
 	private void _sendMessage(long dispatchTriggerId) {
@@ -240,9 +229,6 @@ public class CommerceAvalaraDispatchTriggerImpl
 
 		_destination.send(message);
 	}
-
-	private static final String _EVERY_MONTH_ON_THE_FIRST_CRON_EXPRESSION =
-		"0 0 0 1 * ?";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CommerceAvalaraDispatchTriggerImpl.class);
