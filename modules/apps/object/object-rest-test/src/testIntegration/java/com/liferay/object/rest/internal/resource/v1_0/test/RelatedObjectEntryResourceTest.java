@@ -95,6 +95,8 @@ public class RelatedObjectEntryResourceTest {
 		_objectEntry = ObjectEntryTestUtil.addObjectEntry(
 			_objectDefinition, _OBJECT_FIELD_NAME, _OBJECT_FIELD_VALUE);
 
+		_user = TestPropsValues.getUser();
+
 		_userSystemObjectDefinitionMetadata =
 			_systemObjectDefinitionMetadataTracker.
 				getSystemObjectDefinitionMetadata("User");
@@ -102,8 +104,6 @@ public class RelatedObjectEntryResourceTest {
 		_userSystemObjectDefinition =
 			_objectDefinitionLocalService.fetchSystemObjectDefinition(
 				_userSystemObjectDefinitionMetadata.getName());
-
-		_user = TestPropsValues.getUser();
 	}
 
 	@After
