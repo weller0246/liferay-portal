@@ -168,11 +168,20 @@ public class RelatedObjectEntryResourceImpl
 				relatedObjectEntryId, systemObjectDefinition),
 			new ServiceContext());
 
-		return _checkRelatedObjectEntry(
+		return _getRelatedObjectEntry(
 			objectRelationship, relatedObjectEntryId, systemObjectDefinition);
 	}
 
-	private ObjectEntry _checkRelatedObjectEntry(
+	private void _checkRelatedObjectEntry(
+			ObjectRelationship objectRelationship, long relatedObjectEntryId,
+			ObjectDefinition systemObjectDefinition)
+		throws Exception {
+
+		_getRelatedObjectEntry(
+			objectRelationship, relatedObjectEntryId, systemObjectDefinition);
+	}
+
+	private ObjectEntry _getRelatedObjectEntry(
 			ObjectRelationship objectRelationship, long relatedObjectEntryId,
 			ObjectDefinition systemObjectDefinition)
 		throws Exception {
