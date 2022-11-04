@@ -2401,6 +2401,30 @@ definition {
 		}
 	}
 
+	@description = "COMMERCE-9938. Only active currencies can be viewed and disabled currency should not be available to be selected."
+	@priority = "4"
+	test CanViewOnlyActiveCurrencies {
+		task ("Given a disabled currency") {
+			Navigator.openWithAppendToBaseURL(urlAppend = "group/control_panel/manage?p_p_id=com_liferay_commerce_currency_web_internal_portlet_CommerceCurrencyPortlet");
+
+			CommerceEntry.selectEntryEllipsis(entryName = "Euro");
+
+			DropdownMenuItem.click(menuItem = "Deactivate");
+		}
+
+		task ("When the admin sets a default currency for the account") {
+			Accounts.openAccountsAdmin();
+
+			LexiconEntry.gotoEntry(rowEntry = "Commerce Account");
+
+			Accounts.gotoAssigneeTab(assigneeTab = "Channel Defaults");
+		}
+
+		task ("Then the disabled currency should not be available") {
+			Accounts.assertDisabledCurrencyIsNotAvailable(disabledCurrency = "Euro");
+		}
+	}
+
 	@description = "COMMERCE-9782. Default delivery set to override should be default regardless of other eligibility criteria."
 	@priority = "4"
 	test DefaultDeliveryTermCanOverrideOtherEligibilities {
