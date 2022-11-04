@@ -79,19 +79,19 @@ public class CommerceAvalaraConnectorImpl implements CommerceAvalaraConnector {
 	public String getTaxRateByZipCode() throws Exception {
 		AvaTaxClient avaTaxClient = _getAvaTaxClient();
 
-		Date date = new Date() {
+		return avaTaxClient.downloadTaxRatesByZipCode(
+			new Date() {
 
-			@Override
-			public String toString() {
-				SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
-					"yyyy-MM-dd");
+				@Override
+				public String toString() {
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
+						"yyyy-MM-dd");
 
-				return simpleDateFormat.format(this);
-			}
+					return simpleDateFormat.format(this);
+				}
 
-		};
-
-		return avaTaxClient.downloadTaxRatesByZipCode(date, null);
+			},
+			null);
 	}
 
 	@Override
