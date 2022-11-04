@@ -135,9 +135,7 @@ public class RelatedObjectEntryResourceTest {
 				_objectEntry.getPrimaryKey()),
 			Http.Method.DELETE);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 
 		jsonObject = HTTPTestUtil.invoke(
 			null,
@@ -221,9 +219,7 @@ public class RelatedObjectEntryResourceTest {
 				irrelevantPrimaryKey),
 			Http.Method.DELETE);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 
 		jsonObject = HTTPTestUtil.invoke(
 			null,
@@ -261,9 +257,7 @@ public class RelatedObjectEntryResourceTest {
 				_objectEntry.getPrimaryKey()),
 			Http.Method.DELETE);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 
 		jsonObject = HTTPTestUtil.invoke(
 			null,
@@ -347,9 +341,7 @@ public class RelatedObjectEntryResourceTest {
 				irrelevantPrimaryKey),
 			Http.Method.DELETE);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 
 		jsonObject = HTTPTestUtil.invoke(
 			null,
@@ -384,9 +376,7 @@ public class RelatedObjectEntryResourceTest {
 				_objectRelationship.getName()),
 			Http.Method.GET);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 	}
 
 	@Test
@@ -478,9 +468,7 @@ public class RelatedObjectEntryResourceTest {
 				irrelevantPrimaryKey),
 			Http.Method.PUT);
 
-		String statusCode = jsonObject.getString("status");
-
-		Assert.assertEquals("NOT_FOUND", statusCode);
+		Assert.assertEquals("NOT_FOUND", jsonObject.getString("status"));
 
 		jsonObject = HTTPTestUtil.invoke(
 			null,
