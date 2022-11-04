@@ -70,10 +70,8 @@ public class CommerceAvalaraConnectorImpl implements CommerceAvalaraConnector {
 	public List<TaxCodeModel> getTaxCodeModels() throws Exception {
 		AvaTaxClient avaTaxClient = _getAvaTaxClient();
 
-		String expiredTaxCodeFilter = "isActive eq true";
-
 		FetchResult<TaxCodeModel> taxCodeModelFetchResult =
-			avaTaxClient.listTaxCodes(expiredTaxCodeFilter, 0, 0, null);
+			avaTaxClient.listTaxCodes("isActive eq true", 0, 0, null);
 
 		return taxCodeModelFetchResult.getValue();
 	}
