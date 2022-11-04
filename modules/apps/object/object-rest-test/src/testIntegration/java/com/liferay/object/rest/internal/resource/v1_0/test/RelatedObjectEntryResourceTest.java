@@ -108,10 +108,6 @@ public class RelatedObjectEntryResourceTest {
 
 	@After
 	public void tearDown() throws Exception {
-		_objectRelationshipLocalService.
-			deleteObjectRelationshipMappingTableValues(
-				_objectRelationship.getObjectRelationshipId(),
-				_objectEntry.getPrimaryKey(), _user.getUserId());
 		_objectRelationshipLocalService.deleteObjectRelationship(
 			_objectRelationship);
 	}
