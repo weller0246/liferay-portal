@@ -181,24 +181,6 @@ public class RelatedObjectEntryResourceImpl
 			objectRelationship, relatedObjectEntryId, systemObjectDefinition);
 	}
 
-	private ObjectEntry _getRelatedObjectEntry(
-			ObjectRelationship objectRelationship, long relatedObjectEntryId,
-			ObjectDefinition systemObjectDefinition)
-		throws Exception {
-
-		ObjectEntryManager objectEntryManager =
-			_objectEntryManagerTracker.getObjectEntryManager(
-				systemObjectDefinition.getStorageType());
-
-		ObjectDefinition relatedObjectDefinition = _getRelatedObjectDefinition(
-			systemObjectDefinition, objectRelationship);
-
-		return objectEntryManager.getObjectEntry(
-			_getDefaultDTOConverterContext(
-				relatedObjectDefinition, relatedObjectEntryId, _uriInfo),
-			relatedObjectDefinition, relatedObjectEntryId);
-	}
-
 	private void _checkSystemObjectEntry(
 			long objectEntryId, ObjectDefinition systemObjectDefinition)
 		throws Exception {
@@ -266,6 +248,24 @@ public class RelatedObjectEntryResourceImpl
 
 		return _objectDefinitionLocalService.getObjectDefinition(
 			objectRelationship.getObjectDefinitionId2());
+	}
+
+	private ObjectEntry _getRelatedObjectEntry(
+			ObjectRelationship objectRelationship, long relatedObjectEntryId,
+			ObjectDefinition systemObjectDefinition)
+		throws Exception {
+
+		ObjectEntryManager objectEntryManager =
+			_objectEntryManagerTracker.getObjectEntryManager(
+				systemObjectDefinition.getStorageType());
+
+		ObjectDefinition relatedObjectDefinition = _getRelatedObjectDefinition(
+			systemObjectDefinition, objectRelationship);
+
+		return objectEntryManager.getObjectEntry(
+			_getDefaultDTOConverterContext(
+				relatedObjectDefinition, relatedObjectEntryId, _uriInfo),
+			relatedObjectDefinition, relatedObjectEntryId);
 	}
 
 	private ObjectDefinition _getSystemObjectDefinition(String previousPath) {
