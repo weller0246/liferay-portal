@@ -23,7 +23,7 @@ import com.liferay.dispatch.model.DispatchTrigger;
  */
 public interface CommerceAvalaraDispatchTrigger {
 
-	public DispatchTrigger createDispatchTrigger(
+	public DispatchTrigger addDispatchTrigger(
 		CommerceTaxMethod commerceTaxMethod);
 
 	public void deleteDispatchTrigger(CommerceTaxMethod commerceTaxMethod);

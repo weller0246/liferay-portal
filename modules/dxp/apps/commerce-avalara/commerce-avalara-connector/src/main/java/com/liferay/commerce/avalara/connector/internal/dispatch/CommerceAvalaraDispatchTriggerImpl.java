@@ -48,7 +48,7 @@ public class CommerceAvalaraDispatchTriggerImpl
 	implements CommerceAvalaraDispatchTrigger {
 
 	@Override
-	public DispatchTrigger createDispatchTrigger(
+	public DispatchTrigger addDispatchTrigger(
 		CommerceTaxMethod commerceTaxMethod) {
 
 		DispatchTrigger dispatchTrigger = null;
@@ -156,7 +156,7 @@ public class CommerceAvalaraDispatchTriggerImpl
 			commerceTaxMethod);
 
 		if (dispatchTrigger == null) {
-			dispatchTrigger = createDispatchTrigger(commerceTaxMethod);
+			dispatchTrigger = addDispatchTrigger(commerceTaxMethod);
 		}
 
 		_sendMessage(dispatchTrigger.getDispatchTriggerId());

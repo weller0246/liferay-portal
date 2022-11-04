@@ -35,7 +35,7 @@ public class CommerceTaxMethodModelListener
 		String engineKey = commerceTaxMethod.getEngineKey();
 
 		if (engineKey.equals("avalara")) {
-			_commerceAvalaraDispatchTriggerHelper.createDispatchTrigger(
+			_commerceAvalaraDispatchTriggerHelper.addDispatchTrigger(
 				commerceTaxMethod);
 		}
 	}

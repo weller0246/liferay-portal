@@ -45,17 +45,17 @@ public class AddSalesforceConnectorPortalInstanceLifecycleListener
 
 	@Override
 	public void portalInstanceRegistered(Company company) throws Exception {
-		_createDispatchTrigger(
+		_addDispatchTrigger(
 			company, "etl-salesforce-account-connector-0.4.zip");
-		_createDispatchTrigger(
+		_addDispatchTrigger(
 			company, "etl-salesforce-order-connector-0.7.zip");
-		_createDispatchTrigger(
+		_addDispatchTrigger(
 			company, "etl-salesforce-price-list-connector-0.7.zip");
-		_createDispatchTrigger(
+		_addDispatchTrigger(
 			company, "etl-salesforce-product-connector-0.4.zip");
 	}
 
-	private void _createDispatchTrigger(Company company, String name)
+	private void _addDispatchTrigger(Company company, String name)
 		throws Exception {
 
 		DispatchTrigger dispatchTrigger =
