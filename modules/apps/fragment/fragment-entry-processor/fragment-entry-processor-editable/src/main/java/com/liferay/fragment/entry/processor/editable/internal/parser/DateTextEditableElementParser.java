@@ -61,7 +61,7 @@ public class DateTextEditableElementParser implements EditableElementParser {
 
 	@Override
 	public void validate(Element element) throws FragmentEntryContentException {
-		for (String tag : _TAGS_BLACKLIST) {
+		for (String tag : _TAGS) {
 			if (Objects.equals(element.tagName(), tag)) {
 				ResourceBundle resourceBundle = ResourceBundleUtil.getBundle(
 					"content.Language", getClass());
@@ -76,7 +76,7 @@ public class DateTextEditableElementParser implements EditableElementParser {
 		}
 	}
 
-	private static final String[] _TAGS_BLACKLIST = {"img", "a"};
+	private static final String[] _TAGS = {"img", "a"};
 
 	@Reference
 	private Language _language;
