@@ -138,11 +138,8 @@ public class CommerceAvalaraConnectorImpl implements CommerceAvalaraConnector {
 		String securityHeader = StringBundler.concat(
 			accountNumber, StringPool.COLON, licenseKey);
 
-		byte[] securityHeaderBytes = securityHeader.getBytes();
-
-		String encodedSecurityHeader = Base64.encode(securityHeaderBytes);
-
-		return avaTaxClient.withSecurity(encodedSecurityHeader);
+		return avaTaxClient.withSecurity(
+			Base64.encode(securityHeader.getBytes()));
 	}
 
 	@Reference
