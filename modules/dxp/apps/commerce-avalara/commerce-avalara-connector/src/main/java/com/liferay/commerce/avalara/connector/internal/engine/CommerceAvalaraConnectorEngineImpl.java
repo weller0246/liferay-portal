@@ -55,7 +55,7 @@ public class CommerceAvalaraConnectorEngineImpl
 	implements CommerceAvalaraConnectorEngine {
 
 	@Override
-	public void createTaxCategories(long userId) throws Exception {
+	public void addTaxCategories(long userId) throws Exception {
 		List<TaxCodeModel> taxCodeModels =
 			_commerceAvalaraConnector.getTaxCodeModels();
 
@@ -74,7 +74,7 @@ public class CommerceAvalaraConnectorEngineImpl
 	}
 
 	@Override
-	public void removeByAddressEntries(CommerceTaxMethod commerceTaxMethod) {
+	public void deleteByAddressEntries(CommerceTaxMethod commerceTaxMethod) {
 		_commerceTaxFixedRateAddressRelLocalService.
 			deleteCommerceTaxFixedRateAddressRelsByCommerceTaxMethodId(
 				commerceTaxMethod.getCommerceTaxMethodId());

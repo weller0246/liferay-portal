@@ -61,7 +61,7 @@ public class CommerceTaxMethodModelListener
 			_commerceAvalaraDispatchTriggerHelper.deleteDispatchTrigger(
 				commerceTaxMethod);
 
-			_commerceAvalaraConnectorEngine.removeByAddressEntries(
+			_commerceAvalaraConnectorEngine.deleteByAddressEntries(
 				commerceTaxMethod);
 		}
 	}

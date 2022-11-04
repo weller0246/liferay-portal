@@ -21,9 +21,9 @@ import com.liferay.commerce.tax.model.CommerceTaxMethod;
  */
 public interface CommerceAvalaraConnectorEngine {
 
-	public void createTaxCategories(long userId) throws Exception;
+	public void addTaxCategories(long userId) throws Exception;
 
-	public void removeByAddressEntries(CommerceTaxMethod commerceTaxMethod);
+	public void deleteByAddressEntries(CommerceTaxMethod commerceTaxMethod);
 
 	public void updateByAddressEntries(long groupId) throws Exception;
 
