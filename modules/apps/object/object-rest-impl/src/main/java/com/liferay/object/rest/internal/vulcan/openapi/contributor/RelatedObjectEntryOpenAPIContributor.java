@@ -205,9 +205,8 @@ public class RelatedObjectEntryOpenAPIContributor
 			{
 				operationId(
 					_getOperationId(
-						"delete", dtoConverter.getContentType(),
-						objectRelationship.getName()));
-
+						"delete", objectRelationship.getName(),
+						dtoConverter.getContentType()));
 				parameters(
 					Arrays.asList(
 						new Parameter() {
@@ -251,18 +250,17 @@ public class RelatedObjectEntryOpenAPIContributor
 		ObjectRelationship objectRelationship,
 		SystemObjectDefinitionMetadata systemObjectDefinitionMetadata) {
 
-		String parameterName = _getIdParameterName(
-			_getContentType(systemObjectDefinitionMetadata));
-
 		DTOConverter<?, ?> dtoConverter = _dtoConverterRegistry.getDTOConverter(
 			systemObjectDefinitionMetadata.getModelClassName());
+		String parameterName = _getIdParameterName(
+			_getContentType(systemObjectDefinitionMetadata));
 
 		return new Operation() {
 			{
 				operationId(
 					_getOperationId(
-						"get", dtoConverter.getContentType(),
-						objectRelationship.getName()));
+						"get", objectRelationship.getName(),
+						dtoConverter.getContentType()));
 				parameters(
 					Collections.singletonList(
 						new Parameter() {
@@ -310,11 +308,11 @@ public class RelatedObjectEntryOpenAPIContributor
 	}
 
 	private String _getOperationId(
-		String operation, String systemObjectDefinitionName,
-		String objectRelationshipName) {
+		String method, String objectRelationshipName,
+		String systemObjectDefinitionName) {
 
 		return StringBundler.concat(
-			operation, systemObjectDefinitionName,
+			method, systemObjectDefinitionName,
 			StringUtil.upperCaseFirstLetter(objectRelationshipName));
 	}
 
@@ -330,8 +328,8 @@ public class RelatedObjectEntryOpenAPIContributor
 			{
 				operationId(
 					_getOperationId(
-						"put", dtoConverter.getContentType(),
-						objectRelationship.getName()));
+						"put", objectRelationship.getName(),
+						dtoConverter.getContentType()));
 				parameters(
 					Arrays.asList(
 						new Parameter() {
