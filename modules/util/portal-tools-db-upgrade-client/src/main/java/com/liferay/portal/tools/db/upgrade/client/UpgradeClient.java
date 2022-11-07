@@ -269,14 +269,13 @@ public class UpgradeClient {
 	}
 
 	public void verifyProperties() {
-		File userHomePropsFile = new File(
+		File file = new File(
 			System.getProperty("user.home") + "/portal-ext.properties");
 
-		if (userHomePropsFile.exists()) {
+		if (file.exists()) {
 			System.err.println(
-				"portal-ext.properties file detected in user home directory. " +
-					"Please remove prior to running the upgrade process to " +
-						"prevent conflicts.");
+				"Remove " + file + " prior to running an upgrade to prevent " +
+					"possible conflicts.");
 
 			System.exit(0);
 		}
