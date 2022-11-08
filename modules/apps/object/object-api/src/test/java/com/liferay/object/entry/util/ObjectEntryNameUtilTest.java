@@ -32,7 +32,7 @@ public class ObjectEntryNameUtilTest {
 		LiferayUnitTestRule.INSTANCE;
 
 	@Test
-	public void testToTechnicalName() {
+	public void testFromTechnicalName() {
 		Assert.assertEquals(
 			"C_Stock", ObjectEntryNameUtil.fromTechnicalName("C_Stock24456"));
 	}
