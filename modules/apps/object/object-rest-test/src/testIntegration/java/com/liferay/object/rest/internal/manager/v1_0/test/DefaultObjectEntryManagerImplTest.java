@@ -602,7 +602,7 @@ public class DefaultObjectEntryManagerImplTest {
 			},
 			ObjectDefinitionConstants.SCOPE_COMPANY);
 
-		// Equals Expression
+		// Equals expression
 
 		_testGetObjectEntries(
 			HashMapBuilder.put(
@@ -639,7 +639,7 @@ public class DefaultObjectEntryManagerImplTest {
 			).build(),
 			childObjectEntry2);
 
-		// In Expression
+		// In expression
 
 		_testGetObjectEntries(
 			HashMapBuilder.put(
@@ -704,7 +704,7 @@ public class DefaultObjectEntryManagerImplTest {
 			).build(),
 			childObjectEntry2);
 
-		// Lambda Expression
+		// Lambda expression
 
 		_testGetObjectEntries(
 			HashMapBuilder.put(
@@ -720,7 +720,7 @@ public class DefaultObjectEntryManagerImplTest {
 					"status", false, WorkflowConstants.STATUS_APPROVED)
 			).build());
 
-		// Range Expression
+		// Range expression
 
 		_testGetObjectEntries(
 			HashMapBuilder.put(
@@ -894,12 +894,13 @@ public class DefaultObjectEntryManagerImplTest {
 
 		Map<String, Object> actualObjectEntryProperties =
 			actualObjectEntry.getProperties();
-		Map<String, Object> expectedObjectEntryProperties =
-			expectedObjectEntry.getProperties();
 
 		Assert.assertFalse(
 			actualObjectEntryProperties.containsKey(
 				_objectRelationshipFieldName));
+
+		Map<String, Object> expectedObjectEntryProperties =
+			expectedObjectEntry.getProperties();
 
 		for (Map.Entry<String, Object> expectedEntry :
 				expectedObjectEntryProperties.entrySet()) {
