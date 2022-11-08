@@ -45,13 +45,13 @@ public class MimeTypesImplTest {
 
 	@Test
 	public void testApplicationOctetStream() {
-		Set<String> validExtensions = _mimeTypes.getExtensions(
+		Set<String> extensions = _mimeTypes.getExtensions(
 			ContentTypes.APPLICATION_OCTET_STREAM);
 
-		for (String validExtension : validExtensions) {
+		for (String extension : extensions) {
 			Assert.assertEquals(
 				ContentTypes.APPLICATION_OCTET_STREAM,
-				_getContentType("test" + validExtension, false));
+				_getContentType("test" + extension, false));
 		}
 
 		Assert.assertNull(_getContentType("test.invalid", false));
