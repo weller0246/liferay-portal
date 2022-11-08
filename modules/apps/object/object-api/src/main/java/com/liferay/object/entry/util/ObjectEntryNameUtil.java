@@ -35,12 +35,10 @@ public class ObjectEntryNameUtil {
 	}
 
 	public static String toTechnicalName(long companyId, String name) {
-		return _OBJECT_ENTRY_PREFIX + name.trim() + companyId;
+		return "C_" + name.trim() + companyId;
 	}
 
-	private static final String _OBJECT_ENTRY_PREFIX = "C_";
-
 	private static final Pattern _pattern = Pattern.compile(
-		StringPool.OPEN_PARENTHESIS + _OBJECT_ENTRY_PREFIX + "[a-zA-Z]+)\\d+");
+		"(C_[a-zA-Z]+)\\d+");
 
 }
