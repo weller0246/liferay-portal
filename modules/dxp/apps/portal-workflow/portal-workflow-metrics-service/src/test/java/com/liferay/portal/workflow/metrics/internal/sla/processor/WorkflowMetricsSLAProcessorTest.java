@@ -605,7 +605,7 @@ public class WorkflowMetricsSLAProcessorTest {
 	}
 
 	private WorkflowMetricsSLACalendarRegistry
-			_mockWorkflowMetricsSLACalendarTracker()
+			_mockWorkflowMetricsSLACalendarRegistry()
 		throws Exception {
 
 		WorkflowMetricsSLACalendarRegistryImpl
@@ -671,7 +671,7 @@ public class WorkflowMetricsSLAProcessorTest {
 
 		ReflectionTestUtil.setFieldValue(
 			workflowMetricsSLAProcessor, "_workflowMetricsSLACalendarRegistry",
-			_mockWorkflowMetricsSLACalendarTracker());
+			_mockWorkflowMetricsSLACalendarRegistry());
 
 		WorkflowMetricsSLAInstanceResult workflowMetricsSLAInstanceResult =
 			workflowMetricsSLAProcessor.process(
