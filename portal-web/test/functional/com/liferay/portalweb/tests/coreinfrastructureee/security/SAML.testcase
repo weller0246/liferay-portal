@@ -408,6 +408,7 @@ definition {
 	@description = "This is a use case for LPS-105165. Assert instance admin cannot configure IdP when disable IdP role."
 	@priority = "5"
 	test AssertInstanceAdminCannotConfigureIdPWhenDisableIdPRole {
+		property portal.upstream = "marcell";
 		property portal.acceptance = "true";
 		property test.name.skip.portal.instance = "SAML#AssertInstanceAdminCannotConfigureIdPWhenDisableIdPRole";
 
