@@ -153,7 +153,7 @@ export function handleAction(
 		doAction();
 	}
 }
-function Actions({actions, itemData, itemId}) {
+function Actions({actions, itemData, itemId, menuActive, onMenuActiveChange}) {
 	const context = useContext(FrontendDataSetContext);
 	const [
 		{
@@ -241,7 +241,9 @@ function Actions({actions, itemData, itemId}) {
 				itemData={itemData}
 				itemId={itemId}
 				loading={loading}
+				menuActive={menuActive}
 				onClick={handleClick}
+				onMenuActiveChange={onMenuActiveChange}
 				setLoading={setLoading}
 			/>
 		</>
