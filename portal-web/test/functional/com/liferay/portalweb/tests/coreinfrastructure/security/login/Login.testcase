@@ -2,14 +2,8 @@
 definition {
 
 	property portal.release = "true";
-	property portal.upstream = "true";
+	property portal.upstream = "marcell";
 	property testray.main.component.name = "Login";
-
-	setUp {
-		task ("Setup: Setup portal instance") {
-			TestCase.setUpPortalInstance();
-		}
-	}
 
 	@description = "This is a use case for LPS-39744 and LPS-78508. Default landing page could be set by property and user is redirected to the changed landing page."
 	@priority = "5"
@@ -380,7 +374,6 @@ definition {
 	@priority = "3"
 	test UserSetNewPasswordWithoutPasswordProperty {
 		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password=${line.separator}jsonws.web.service.paths.excludes=";
-		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OnDemandAdmin#UserSetNewPasswordWithoutPasswordProperty";
 
 		task ("Given: User opens the portal for the first time without default admin password property") {
@@ -430,7 +423,6 @@ definition {
 	@priority = "3"
 	test VirtualInstancesNeedExtraInformationWithoutPasswordProperty {
 		property custom.properties = "default.admin.password=";
-		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OnDemandAdmin#VirtualInstancesNeedExtraInformationWithoutPasswordProperty";
 
 		task ("Given: User opens the portal for the first time without default admin password property") {
@@ -475,7 +467,6 @@ definition {
 	@priority = "3"
 	test VirtualInstancesNeedNoExtraInformationWithPasswordProperty {
 		property custom.properties = "company.security.send.password.reset.link=true${line.separator}passwords.default.policy.change.required=false${line.separator}default.admin.password=tester";
-		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OnDemandAdmin#VirtualInstancesNeedNoExtraInformationWithPasswordProperty";
 
 		task ("Given: User opens the portal with a set admin password and logs in") {
