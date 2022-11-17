@@ -390,6 +390,8 @@ public class ObjectEntryLocalServiceImpl
 	public ObjectEntry deleteObjectEntry(ObjectEntry objectEntry)
 		throws PortalException {
 
+		Map<String, Serializable> values = objectEntry.getValues();
+
 		objectEntry = objectEntryPersistence.remove(objectEntry);
 
 		ObjectDefinition objectDefinition =
@@ -422,7 +424,7 @@ public class ObjectEntryLocalServiceImpl
 
 		_deleteFileEntries(
 			Collections.emptyMap(), objectDefinition.getObjectDefinitionId(),
-			objectEntry.getValues());
+			values);
 
 		Indexer<ObjectEntry> indexer = IndexerRegistryUtil.getIndexer(
 			objectDefinition.getClassName());
