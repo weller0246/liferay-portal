@@ -60,7 +60,7 @@ public class SentenceEmbeddingRetrieverImpl
 
 		SentenceTransformer sentenceTransformer =
 			_sentenceTransformerServiceTrackerMap.getService(
-				semanticSearchConfiguration.sentenceTransformProvider());
+				semanticSearchConfiguration.sentenceTransformer());
 
 		if (sentenceTransformer == null) {
 			return new Double[0];
