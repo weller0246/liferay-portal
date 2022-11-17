@@ -102,12 +102,12 @@ public class SemanticSearchConfigurationFormRenderer
 			"modelTimeout",
 			ParamUtil.getInteger(httpServletRequest, "modelTimeout")
 		).put(
+			"sentenceTransformer",
+			ParamUtil.getString(httpServletRequest, "sentenceTransformer")
+		).put(
 			"sentenceTransformerEnabled",
 			ParamUtil.getBoolean(
 				httpServletRequest, "sentenceTransformerEnabled")
-		).put(
-			"sentenceTransformProvider",
-			ParamUtil.getString(httpServletRequest, "sentenceTransformProvider")
 		).put(
 			"textTruncationStrategy",
 			ParamUtil.getString(httpServletRequest, "textTruncationStrategy")
@@ -157,8 +157,8 @@ public class SemanticSearchConfigurationFormRenderer
 			setAvailableLanguageDisplayNames(
 				_getAvailableLanguageDisplayNames(httpServletRequest));
 		semanticSearchCompanyConfigurationDisplayContext.
-			setAvailableSentenceTranformProviders(
-				_getAvailableSentenceTranformProviders(httpServletRequest));
+			setAvailableSentenceTransformers(
+				_getAvailableSentenceTransformers(httpServletRequest));
 		semanticSearchCompanyConfigurationDisplayContext.
 			setAvailableTextTruncationStrategies(
 				_getAvailableTextTruncationStrategies(httpServletRequest));
@@ -181,9 +181,8 @@ public class SemanticSearchConfigurationFormRenderer
 		semanticSearchCompanyConfigurationDisplayContext.
 			setSentenceTransformerEnabled(
 				_semanticSearchConfiguration.sentenceTransformerEnabled());
-		semanticSearchCompanyConfigurationDisplayContext.
-			setSentenceTransformProvider(
-				_semanticSearchConfiguration.sentenceTransformProvider());
+		semanticSearchCompanyConfigurationDisplayContext.setSentenceTransformer(
+			_semanticSearchConfiguration.sentenceTransformer());
 		semanticSearchCompanyConfigurationDisplayContext.
 			setTextTruncationStrategy(
 				_semanticSearchConfiguration.textTruncationStrategy());
@@ -273,7 +272,7 @@ public class SemanticSearchConfigurationFormRenderer
 		return _sortByValue(availableLanguageDisplayNames);
 	}
 
-	private Map<String, String> _getAvailableSentenceTranformProviders(
+	private Map<String, String> _getAvailableSentenceTransformers(
 		HttpServletRequest httpServletRequest) {
 
 		Map<String, String> availableSentenceTranformProviders =
