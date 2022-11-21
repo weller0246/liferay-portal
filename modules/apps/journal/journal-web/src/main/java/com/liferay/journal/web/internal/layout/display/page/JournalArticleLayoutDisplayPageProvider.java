@@ -89,7 +89,9 @@ public class JournalArticleLayoutDisplayPageProvider
 		try {
 			JournalArticle article = _getArticle(groupId, urlTitle, version);
 
-			if ((article == null) || article.isInTrash()) {
+			if ((article == null) || article.isExpired() ||
+				article.isInTrash()) {
+
 				return null;
 			}
 
