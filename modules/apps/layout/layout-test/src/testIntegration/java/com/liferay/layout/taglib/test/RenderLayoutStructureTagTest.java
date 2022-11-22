@@ -534,6 +534,8 @@ public class RenderLayoutStructureTagTest {
 		MockHttpServletRequest mockHttpServletRequest =
 			new MockHttpServletRequest();
 
+		mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, _layout);
+
 		ThemeDisplay themeDisplay = new ThemeDisplay();
 
 		themeDisplay.setCompany(
@@ -553,7 +555,6 @@ public class RenderLayoutStructureTagTest {
 		themeDisplay.setScopeGroupId(_group.getGroupId());
 		themeDisplay.setSiteGroupId(_group.getGroupId());
 
-		mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, _layout);
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
 
