@@ -21,10 +21,6 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public class ObjectActionNameException extends PortalException {
 
-	private ObjectActionNameException(String msg) {
-		super(msg);
-	}
-
 	public static class MustBeLessThan41Characters
 		extends ObjectActionNameException {
 
@@ -57,6 +53,10 @@ public class ObjectActionNameException extends PortalException {
 			super("Name must only contain letters and digits");
 		}
 
+	}
+
+	private ObjectActionNameException(String msg) {
+		super(msg);
 	}
 
 }
