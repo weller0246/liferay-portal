@@ -20,9 +20,12 @@ import com.liferay.social.kernel.util.SocialInteractionsConfiguration;
 
 import java.util.List;
 
+import org.osgi.annotation.versioning.ProviderType;
+
 /**
  * @author Sergio González
  */
+@ProviderType
 public interface MentionsUserFinder {
 
 	public List<User> getUsers(
