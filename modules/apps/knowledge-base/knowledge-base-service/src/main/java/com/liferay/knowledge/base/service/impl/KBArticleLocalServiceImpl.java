@@ -1611,8 +1611,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 				userId, kbArticle.getResourcePrimKey(),
 				WorkflowConstants.STATUS_EXPIRED, serviceContext);
 
-			// Asset
-
 			AssetEntry assetEntry = _assetEntryLocalService.getEntry(
 				KBArticle.class.getName(), kbArticle.getResourcePrimKey());
 
@@ -1625,8 +1623,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 				ContentTypes.TEXT_HTML, kbArticle.getTitle(),
 				kbArticle.getDescription(), assetEntry.getSummary(), null, null,
 				0, 0, null);
-
-			// Index
 
 			_indexKBArticle(kbArticle);
 		}
