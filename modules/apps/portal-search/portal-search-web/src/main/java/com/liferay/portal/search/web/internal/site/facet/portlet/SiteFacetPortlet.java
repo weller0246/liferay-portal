@@ -148,6 +148,8 @@ public class SiteFacetPortlet extends MVCPortlet {
 			_getLocale(portletSharedSearchResponse, renderRequest));
 		scopeSearchFacetDisplayContextBuilder.setMaxTerms(
 			siteFacetPortletPreferences.getMaxTerms());
+		scopeSearchFacetDisplayContextBuilder.setOrder(
+			siteFacetPortletPreferences.getOrder());
 		scopeSearchFacetDisplayContextBuilder.setPaginationStartParameterName(
 			_getPaginationStartParameterName(portletSharedSearchResponse));
 
