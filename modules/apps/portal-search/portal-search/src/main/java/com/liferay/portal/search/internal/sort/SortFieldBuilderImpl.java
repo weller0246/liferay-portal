@@ -69,7 +69,6 @@ public class SortFieldBuilderImpl implements SortFieldBuilder {
 	protected void activate(BundleContext bundleContext) {
 		_defaultSortableTextFields = SetUtil.fromArray(
 			_props.getArray(PropsKeys.INDEX_SORTABLE_TEXT_FIELDS));
-
 		_serviceTrackerMap = ServiceTrackerMapFactory.openSingleValueMap(
 			bundleContext, SortFieldNameTranslator.class, null,
 			ServiceReferenceMapperFactory.create(
