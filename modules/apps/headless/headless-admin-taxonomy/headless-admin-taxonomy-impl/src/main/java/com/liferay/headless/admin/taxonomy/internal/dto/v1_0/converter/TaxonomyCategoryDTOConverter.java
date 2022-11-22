@@ -31,10 +31,19 @@ import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.portal.kernel.service.UserLocalService;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.Portal;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.UriInfo;
 
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
@@ -144,19 +153,6 @@ public class TaxonomyCategoryDTOConverter
 					assetCategoryProperties -> _toTaxonomyCategoryProperty(
 						assetCategoryProperties),
 					TaxonomyCategoryProperty.class);
-				taxonomyCategoryUsageCount =
-					(int)_assetEntryLocalService.searchCount(
-						assetCategory.getCompanyId(),
-						new long[] {assetCategory.getGroupId()},
-						assetCategory.getUserId(), null, -1, null,
-						String.valueOf(assetCategory.getCategoryId()), null,
-						false, false,
-						new int[] {
-							WorkflowConstants.STATUS_APPROVED,
-							WorkflowConstants.STATUS_PENDING,
-							WorkflowConstants.STATUS_SCHEDULED
-						},
-						false);
 				taxonomyVocabularyId = assetCategory.getVocabularyId();
 
 				setParentTaxonomyCategory(
@@ -168,6 +164,50 @@ public class TaxonomyCategoryDTOConverter
 						return _toParentTaxonomyCategory(
 							assetCategory.getParentCategory(),
 							dtoConverterContext);
+					});
+
+				setTaxonomyCategoryUsageCount(
+					() -> {
+						Optional<UriInfo> uriInfoOptional =
+							dtoConverterContext.getUriInfoOptional();
+
+						List<String> restrictFieldsList =
+							Collections.emptyList();
+
+						if (uriInfoOptional.isPresent()) {
+							UriInfo uriInfo = uriInfoOptional.get();
+
+							MultivaluedMap<String, String> queryParameters =
+								uriInfo.getQueryParameters();
+
+							String restrictFields = queryParameters.getFirst(
+								"restrictFields");
+
+							String[] restrictFieldsArray = StringUtil.split(
+								restrictFields);
+
+							restrictFieldsList = Arrays.asList(
+								restrictFieldsArray);
+						}
+
+						if (restrictFieldsList.contains(
+								"taxonomyCategoryUsageCount")) {
+
+							return null;
+						}
+
+						return (int)_assetEntryLocalService.searchCount(
+							assetCategory.getCompanyId(),
+							new long[] {assetCategory.getGroupId()},
+							assetCategory.getUserId(), null, -1, null,
+							String.valueOf(assetCategory.getCategoryId()), null,
+							false, false,
+							new int[] {
+								WorkflowConstants.STATUS_APPROVED,
+								WorkflowConstants.STATUS_PENDING,
+								WorkflowConstants.STATUS_SCHEDULED
+							},
+							false);
 					});
 			}
 		};
