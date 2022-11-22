@@ -465,8 +465,7 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 			_objectEntryLocalService.getObjectEntry(objectEntry.getId());
 
 		_objectActionEngine.executeObjectAction(
-			objectActionName,
-			ObjectActionTriggerConstants.KEY_STANDALONE,
+			objectActionName, ObjectActionTriggerConstants.KEY_STANDALONE,
 			_objectDefinition.getObjectDefinitionId(),
 			JSONUtil.put(
 				"classPK", serviceBuilderObjectEntry.getObjectEntryId()
