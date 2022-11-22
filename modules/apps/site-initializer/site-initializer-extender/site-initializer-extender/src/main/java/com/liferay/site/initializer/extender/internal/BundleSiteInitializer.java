@@ -4035,7 +4035,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			AssetCategory assetCategory =
 				_assetCategoryLocalService.
 					fetchAssetCategoryByExternalReferenceCode(
-						groupId, externalReferenceCode);
+						externalReferenceCode, groupId);
 
 			if (assetCategory != null) {
 				assetCategoryIds.add(assetCategory.getCategoryId());
