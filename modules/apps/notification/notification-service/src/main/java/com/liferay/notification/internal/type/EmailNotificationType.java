@@ -34,7 +34,6 @@ import com.liferay.notification.service.NotificationQueueEntryAttachmentLocalSer
 import com.liferay.notification.service.NotificationTemplateAttachmentLocalService;
 import com.liferay.notification.type.BaseNotificationType;
 import com.liferay.notification.type.NotificationType;
-import com.liferay.notification.util.LocalizedMapUtil;
 import com.liferay.notification.util.NotificationRecipientSettingUtil;
 import com.liferay.object.model.ObjectField;
 import com.liferay.object.service.ObjectFieldLocalService;
@@ -61,7 +60,6 @@ import com.liferay.portal.security.auth.EmailAddressValidatorFactory;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,44 +76,6 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(immediate = true, service = NotificationType.class)
 public class EmailNotificationType extends BaseNotificationType {
-
-	@Override
-	public List<NotificationRecipientSetting>
-		createNotificationRecipientSettings(
-			long notificationRecipientId, Object[] recipients, User user) {
-
-		List<NotificationRecipientSetting> notificationRecipientSettings =
-			new ArrayList<>();
-
-		Map<String, Object> recipientsMap = (Map<String, Object>)recipients[0];
-
-		for (Map.Entry<String, Object> entry : recipientsMap.entrySet()) {
-			NotificationRecipientSetting notificationRecipientSetting =
-				notificationRecipientSettingLocalService.
-					createNotificationRecipientSetting(0L);
-
-			notificationRecipientSetting.setCompanyId(user.getCompanyId());
-			notificationRecipientSetting.setUserId(user.getUserId());
-			notificationRecipientSetting.setUserName(user.getFullName());
-			notificationRecipientSetting.setNotificationRecipientId(
-				notificationRecipientId);
-			notificationRecipientSetting.setName(entry.getKey());
-
-			if (entry.getValue() instanceof String) {
-				notificationRecipientSetting.setValue(
-					String.valueOf(entry.getValue()));
-			}
-			else {
-				notificationRecipientSetting.setValueMap(
-					LocalizedMapUtil.getLocalizedMap(
-						(LinkedHashMap)entry.getValue()));
-			}
-
-			notificationRecipientSettings.add(notificationRecipientSetting);
-		}
-
-		return notificationRecipientSettings;
-	}
 
 	@Override
 	public String getFromName(NotificationQueueEntry notificationQueueEntry) {

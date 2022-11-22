@@ -28,6 +28,7 @@ import com.liferay.notification.service.NotificationRecipientLocalService;
 import com.liferay.notification.service.NotificationRecipientSettingLocalService;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluator;
 import com.liferay.notification.term.evaluator.NotificationTermEvaluatorRegistry;
+import com.liferay.notification.util.LocalizedMapUtil;
 import com.liferay.object.constants.ObjectFieldConstants;
 import com.liferay.object.model.ObjectDefinition;
 import com.liferay.object.model.ObjectField;
@@ -43,6 +44,7 @@ import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.Validator;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -71,17 +73,24 @@ public abstract class BaseNotificationType implements NotificationType {
 			for (Map.Entry<String, Object> entry : recipientMap.entrySet()) {
 				NotificationRecipientSetting notificationRecipientSetting =
 					notificationRecipientSettingLocalService.
-						createNotificationRecipientSetting(0L);
+						createNotificationRecipientSetting(0);
 
 				notificationRecipientSetting.setCompanyId(user.getCompanyId());
 				notificationRecipientSetting.setUserId(user.getUserId());
 				notificationRecipientSetting.setUserName(user.getFullName());
-
 				notificationRecipientSetting.setNotificationRecipientId(
 					notificationRecipientId);
 				notificationRecipientSetting.setName(entry.getKey());
-				notificationRecipientSetting.setValue(
-					String.valueOf(entry.getValue()));
+
+				if (entry.getValue() instanceof String) {
+					notificationRecipientSetting.setValue(
+						String.valueOf(entry.getValue()));
+				}
+				else {
+					notificationRecipientSetting.setValueMap(
+						LocalizedMapUtil.getLocalizedMap(
+							(LinkedHashMap)entry.getValue()));
+				}
 
 				notificationRecipientSettings.add(notificationRecipientSetting);
 			}
