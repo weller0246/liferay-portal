@@ -41,10 +41,9 @@ public class BaseCookiesBannerDisplayContext {
 		CookiesConfigurationProvider cookiesConfigurationProvider,
 		RenderRequest renderRequest, RenderResponse renderResponse) {
 
+		_cookiesConfigurationProvider = cookiesConfigurationProvider;
 		this.renderRequest = renderRequest;
 		this.renderResponse = renderResponse;
-
-		_cookiesConfigurationProvider = cookiesConfigurationProvider;
 
 		cookiesBannerConfiguration = _getCookiesBannerConfiguration(
 			renderRequest);
