@@ -262,9 +262,9 @@ public class ObjectActionLocalServiceImpl
 
 			throw new ObjectActionTriggerKeyException(
 				StringBundler.concat(
-					"The executor key",
+					"The object action executor key ",
 					ObjectActionExecutorConstants.KEY_UPDATE_OBJECT_ENTRY,
-					" is not allowed for trigger key",
+					" cannot be associated with the object action trigger key",
 					ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE));
 		}
 
