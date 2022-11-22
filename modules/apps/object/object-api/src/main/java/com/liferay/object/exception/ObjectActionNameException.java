@@ -21,7 +21,7 @@ import com.liferay.portal.kernel.exception.PortalException;
  */
 public class ObjectActionNameException extends PortalException {
 
-	public ObjectActionNameException(String msg) {
+	private ObjectActionNameException(String msg) {
 		super(msg);
 	}
 
