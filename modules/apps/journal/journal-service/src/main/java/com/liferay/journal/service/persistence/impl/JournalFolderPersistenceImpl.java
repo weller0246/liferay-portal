@@ -8055,7 +8055,7 @@ public class JournalFolderPersistenceImpl
 			if (isNew) {
 				if (ercJournalFolder != null) {
 					throw new DuplicateJournalFolderExternalReferenceCodeException(
-						"Duplicate JournalFolder with external reference code " +
+						"Duplicate journal folder with external reference code " +
 							journalFolder.getExternalReferenceCode());
 				}
 			}
@@ -8065,7 +8065,7 @@ public class JournalFolderPersistenceImpl
 						ercJournalFolder.getFolderId())) {
 
 					throw new DuplicateJournalFolderExternalReferenceCodeException(
-						"Duplicate JournalFolder with external reference code " +
+						"Duplicate journal folder with external reference code " +
 							journalFolder.getExternalReferenceCode());
 				}
 			}

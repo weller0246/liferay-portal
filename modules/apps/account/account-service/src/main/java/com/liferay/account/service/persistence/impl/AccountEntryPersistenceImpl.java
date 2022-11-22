@@ -5420,7 +5420,7 @@ public class AccountEntryPersistenceImpl
 			if (isNew) {
 				if (ercAccountEntry != null) {
 					throw new DuplicateAccountEntryExternalReferenceCodeException(
-						"Duplicate AccountEntry with external reference code " +
+						"Duplicate account entry with external reference code " +
 							accountEntry.getExternalReferenceCode());
 				}
 			}
@@ -5430,7 +5430,7 @@ public class AccountEntryPersistenceImpl
 						ercAccountEntry.getAccountEntryId())) {
 
 					throw new DuplicateAccountEntryExternalReferenceCodeException(
-						"Duplicate AccountEntry with external reference code " +
+						"Duplicate account entry with external reference code " +
 							accountEntry.getExternalReferenceCode());
 				}
 			}

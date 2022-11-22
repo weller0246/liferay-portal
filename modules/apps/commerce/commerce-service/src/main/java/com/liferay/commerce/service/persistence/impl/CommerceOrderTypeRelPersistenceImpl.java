@@ -3102,7 +3102,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 			if (isNew) {
 				if (ercCommerceOrderTypeRel != null) {
 					throw new DuplicateCommerceOrderTypeRelExternalReferenceCodeException(
-						"Duplicate CommerceOrderTypeRel with external reference code " +
+						"Duplicate commerce order type rel with external reference code " +
 							commerceOrderTypeRel.getExternalReferenceCode());
 				}
 			}
@@ -3112,7 +3112,7 @@ public class CommerceOrderTypeRelPersistenceImpl
 						ercCommerceOrderTypeRel.getCommerceOrderTypeRelId())) {
 
 					throw new DuplicateCommerceOrderTypeRelExternalReferenceCodeException(
-						"Duplicate CommerceOrderTypeRel with external reference code " +
+						"Duplicate commerce order type rel with external reference code " +
 							commerceOrderTypeRel.getExternalReferenceCode());
 				}
 			}

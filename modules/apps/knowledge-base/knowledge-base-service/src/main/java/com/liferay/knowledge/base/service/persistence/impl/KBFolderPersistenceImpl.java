@@ -4013,7 +4013,7 @@ public class KBFolderPersistenceImpl
 			if (isNew) {
 				if (ercKBFolder != null) {
 					throw new DuplicateKBFolderExternalReferenceCodeException(
-						"Duplicate KBFolder with external reference code " +
+						"Duplicate kb folder with external reference code " +
 							kbFolder.getExternalReferenceCode());
 				}
 			}
@@ -4022,7 +4022,7 @@ public class KBFolderPersistenceImpl
 					(kbFolder.getKbFolderId() != ercKBFolder.getKbFolderId())) {
 
 					throw new DuplicateKBFolderExternalReferenceCodeException(
-						"Duplicate KBFolder with external reference code " +
+						"Duplicate kb folder with external reference code " +
 							kbFolder.getExternalReferenceCode());
 				}
 			}

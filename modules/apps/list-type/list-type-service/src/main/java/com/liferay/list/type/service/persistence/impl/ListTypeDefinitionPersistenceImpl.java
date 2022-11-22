@@ -2630,7 +2630,7 @@ public class ListTypeDefinitionPersistenceImpl
 			if (isNew) {
 				if (ercListTypeDefinition != null) {
 					throw new DuplicateListTypeDefinitionExternalReferenceCodeException(
-						"Duplicate ListTypeDefinition with external reference code " +
+						"Duplicate list type definition with external reference code " +
 							listTypeDefinition.getExternalReferenceCode());
 				}
 			}
@@ -2640,7 +2640,7 @@ public class ListTypeDefinitionPersistenceImpl
 						ercListTypeDefinition.getListTypeDefinitionId())) {
 
 					throw new DuplicateListTypeDefinitionExternalReferenceCodeException(
-						"Duplicate ListTypeDefinition with external reference code " +
+						"Duplicate list type definition with external reference code " +
 							listTypeDefinition.getExternalReferenceCode());
 				}
 			}

@@ -8018,7 +8018,7 @@ public class CommerceDiscountPersistenceImpl
 			if (isNew) {
 				if (ercCommerceDiscount != null) {
 					throw new DuplicateCommerceDiscountExternalReferenceCodeException(
-						"Duplicate CommerceDiscount with external reference code " +
+						"Duplicate commerce discount with external reference code " +
 							commerceDiscount.getExternalReferenceCode());
 				}
 			}
@@ -8028,7 +8028,7 @@ public class CommerceDiscountPersistenceImpl
 						ercCommerceDiscount.getCommerceDiscountId())) {
 
 					throw new DuplicateCommerceDiscountExternalReferenceCodeException(
-						"Duplicate CommerceDiscount with external reference code " +
+						"Duplicate commerce discount with external reference code " +
 							commerceDiscount.getExternalReferenceCode());
 				}
 			}

@@ -7540,7 +7540,7 @@ public class COREntryPersistenceImpl
 			if (isNew) {
 				if (ercCOREntry != null) {
 					throw new DuplicateCOREntryExternalReferenceCodeException(
-						"Duplicate COREntry with external reference code " +
+						"Duplicate cor entry with external reference code " +
 							corEntry.getExternalReferenceCode());
 				}
 			}
@@ -7549,7 +7549,7 @@ public class COREntryPersistenceImpl
 					(corEntry.getCOREntryId() != ercCOREntry.getCOREntryId())) {
 
 					throw new DuplicateCOREntryExternalReferenceCodeException(
-						"Duplicate COREntry with external reference code " +
+						"Duplicate cor entry with external reference code " +
 							corEntry.getExternalReferenceCode());
 				}
 			}

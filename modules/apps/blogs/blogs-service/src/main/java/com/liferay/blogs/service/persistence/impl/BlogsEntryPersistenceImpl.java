@@ -21939,7 +21939,7 @@ public class BlogsEntryPersistenceImpl
 			if (isNew) {
 				if (ercBlogsEntry != null) {
 					throw new DuplicateBlogsEntryExternalReferenceCodeException(
-						"Duplicate BlogsEntry with external reference code " +
+						"Duplicate blogs entry with external reference code " +
 							blogsEntry.getExternalReferenceCode());
 				}
 			}
@@ -21948,7 +21948,7 @@ public class BlogsEntryPersistenceImpl
 					(blogsEntry.getEntryId() != ercBlogsEntry.getEntryId())) {
 
 					throw new DuplicateBlogsEntryExternalReferenceCodeException(
-						"Duplicate BlogsEntry with external reference code " +
+						"Duplicate blogs entry with external reference code " +
 							blogsEntry.getExternalReferenceCode());
 				}
 			}

@@ -5347,7 +5347,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 			if (isNew) {
 				if (ercLayoutUtilityPageEntry != null) {
 					throw new DuplicateLayoutUtilityPageEntryExternalReferenceCodeException(
-						"Duplicate LayoutUtilityPageEntry with external reference code " +
+						"Duplicate layout utility page entry with external reference code " +
 							layoutUtilityPageEntry.getExternalReferenceCode());
 				}
 			}
@@ -5358,7 +5358,7 @@ public class LayoutUtilityPageEntryPersistenceImpl
 							getLayoutUtilityPageEntryId())) {
 
 					throw new DuplicateLayoutUtilityPageEntryExternalReferenceCodeException(
-						"Duplicate LayoutUtilityPageEntry with external reference code " +
+						"Duplicate layout utility page entry with external reference code " +
 							layoutUtilityPageEntry.getExternalReferenceCode());
 				}
 			}

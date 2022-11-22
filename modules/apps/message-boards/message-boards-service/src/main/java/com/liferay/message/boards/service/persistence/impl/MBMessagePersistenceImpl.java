@@ -21683,7 +21683,7 @@ public class MBMessagePersistenceImpl
 			if (isNew) {
 				if (ercMBMessage != null) {
 					throw new DuplicateMBMessageExternalReferenceCodeException(
-						"Duplicate MBMessage with external reference code " +
+						"Duplicate message-boards message with external reference code " +
 							mbMessage.getExternalReferenceCode());
 				}
 			}
@@ -21692,7 +21692,7 @@ public class MBMessagePersistenceImpl
 					(mbMessage.getMessageId() != ercMBMessage.getMessageId())) {
 
 					throw new DuplicateMBMessageExternalReferenceCodeException(
-						"Duplicate MBMessage with external reference code " +
+						"Duplicate message-boards message with external reference code " +
 							mbMessage.getExternalReferenceCode());
 				}
 			}

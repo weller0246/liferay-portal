@@ -2829,7 +2829,7 @@ public class BatchEngineExportTaskPersistenceImpl
 			if (isNew) {
 				if (ercBatchEngineExportTask != null) {
 					throw new DuplicateBatchEngineExportTaskExternalReferenceCodeException(
-						"Duplicate BatchEngineExportTask with external reference code " +
+						"Duplicate batch engine export task with external reference code " +
 							batchEngineExportTask.getExternalReferenceCode());
 				}
 			}
@@ -2840,7 +2840,7 @@ public class BatchEngineExportTaskPersistenceImpl
 							getBatchEngineExportTaskId())) {
 
 					throw new DuplicateBatchEngineExportTaskExternalReferenceCodeException(
-						"Duplicate BatchEngineExportTask with external reference code " +
+						"Duplicate batch engine export task with external reference code " +
 							batchEngineExportTask.getExternalReferenceCode());
 				}
 			}

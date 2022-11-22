@@ -5035,7 +5035,7 @@ public class WikiNodePersistenceImpl
 			if (isNew) {
 				if (ercWikiNode != null) {
 					throw new DuplicateWikiNodeExternalReferenceCodeException(
-						"Duplicate WikiNode with external reference code " +
+						"Duplicate wiki node with external reference code " +
 							wikiNode.getExternalReferenceCode());
 				}
 			}
@@ -5044,7 +5044,7 @@ public class WikiNodePersistenceImpl
 					(wikiNode.getNodeId() != ercWikiNode.getNodeId())) {
 
 					throw new DuplicateWikiNodeExternalReferenceCodeException(
-						"Duplicate WikiNode with external reference code " +
+						"Duplicate wiki node with external reference code " +
 							wikiNode.getExternalReferenceCode());
 				}
 			}

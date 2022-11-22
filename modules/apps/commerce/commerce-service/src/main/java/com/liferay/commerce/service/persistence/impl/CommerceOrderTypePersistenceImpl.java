@@ -6479,7 +6479,7 @@ public class CommerceOrderTypePersistenceImpl
 			if (isNew) {
 				if (ercCommerceOrderType != null) {
 					throw new DuplicateCommerceOrderTypeExternalReferenceCodeException(
-						"Duplicate CommerceOrderType with external reference code " +
+						"Duplicate commerce order type with external reference code " +
 							commerceOrderType.getExternalReferenceCode());
 				}
 			}
@@ -6489,7 +6489,7 @@ public class CommerceOrderTypePersistenceImpl
 						ercCommerceOrderType.getCommerceOrderTypeId())) {
 
 					throw new DuplicateCommerceOrderTypeExternalReferenceCodeException(
-						"Duplicate CommerceOrderType with external reference code " +
+						"Duplicate commerce order type with external reference code " +
 							commerceOrderType.getExternalReferenceCode());
 				}
 			}

@@ -3612,7 +3612,7 @@ public class CommercePricingClassPersistenceImpl
 			if (isNew) {
 				if (ercCommercePricingClass != null) {
 					throw new DuplicateCommercePricingClassExternalReferenceCodeException(
-						"Duplicate CommercePricingClass with external reference code " +
+						"Duplicate commerce pricing class with external reference code " +
 							commercePricingClass.getExternalReferenceCode());
 				}
 			}
@@ -3622,7 +3622,7 @@ public class CommercePricingClassPersistenceImpl
 						ercCommercePricingClass.getCommercePricingClassId())) {
 
 					throw new DuplicateCommercePricingClassExternalReferenceCodeException(
-						"Duplicate CommercePricingClass with external reference code " +
+						"Duplicate commerce pricing class with external reference code " +
 							commercePricingClass.getExternalReferenceCode());
 				}
 			}

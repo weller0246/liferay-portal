@@ -6435,7 +6435,7 @@ public class AccountGroupPersistenceImpl
 			if (isNew) {
 				if (ercAccountGroup != null) {
 					throw new DuplicateAccountGroupExternalReferenceCodeException(
-						"Duplicate AccountGroup with external reference code " +
+						"Duplicate account group with external reference code " +
 							accountGroup.getExternalReferenceCode());
 				}
 			}
@@ -6445,7 +6445,7 @@ public class AccountGroupPersistenceImpl
 						ercAccountGroup.getAccountGroupId())) {
 
 					throw new DuplicateAccountGroupExternalReferenceCodeException(
-						"Duplicate AccountGroup with external reference code " +
+						"Duplicate account group with external reference code " +
 							accountGroup.getExternalReferenceCode());
 				}
 			}

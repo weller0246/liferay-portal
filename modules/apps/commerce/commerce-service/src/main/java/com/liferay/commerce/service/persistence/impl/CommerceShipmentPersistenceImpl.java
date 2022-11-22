@@ -4391,7 +4391,7 @@ public class CommerceShipmentPersistenceImpl
 			if (isNew) {
 				if (ercCommerceShipment != null) {
 					throw new DuplicateCommerceShipmentExternalReferenceCodeException(
-						"Duplicate CommerceShipment with external reference code " +
+						"Duplicate commerce shipment with external reference code " +
 							commerceShipment.getExternalReferenceCode());
 				}
 			}
@@ -4401,7 +4401,7 @@ public class CommerceShipmentPersistenceImpl
 						ercCommerceShipment.getCommerceShipmentId())) {
 
 					throw new DuplicateCommerceShipmentExternalReferenceCodeException(
-						"Duplicate CommerceShipment with external reference code " +
+						"Duplicate commerce shipment with external reference code " +
 							commerceShipment.getExternalReferenceCode());
 				}
 			}

@@ -3942,7 +3942,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 			if (isNew) {
 				if (ercClientExtensionEntryRel != null) {
 					throw new DuplicateClientExtensionEntryRelExternalReferenceCodeException(
-						"Duplicate ClientExtensionEntryRel with external reference code " +
+						"Duplicate client extension entry rel with external reference code " +
 							clientExtensionEntryRel.getExternalReferenceCode());
 				}
 			}
@@ -3953,7 +3953,7 @@ public class ClientExtensionEntryRelPersistenceImpl
 							getClientExtensionEntryRelId())) {
 
 					throw new DuplicateClientExtensionEntryRelExternalReferenceCodeException(
-						"Duplicate ClientExtensionEntryRel with external reference code " +
+						"Duplicate client extension entry rel with external reference code " +
 							clientExtensionEntryRel.getExternalReferenceCode());
 				}
 			}
