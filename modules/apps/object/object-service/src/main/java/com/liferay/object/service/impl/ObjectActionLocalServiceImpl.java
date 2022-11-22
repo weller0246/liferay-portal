@@ -96,7 +96,7 @@ public class ObjectActionLocalServiceImpl
 		_validateObjectActionExecutorKey(objectActionExecutorKey);
 		_validateObjectActionTriggerKey(
 			conditionExpression, objectActionTriggerKey);
-		_validateParameters(
+		_validateParametersUnicodeProperties(
 			conditionExpression, objectActionExecutorKey,
 			objectActionTriggerKey, parametersUnicodeProperties);
 
@@ -195,7 +195,7 @@ public class ObjectActionLocalServiceImpl
 		_validateErrorMessage(errorMessageMap, objectActionTriggerKey);
 		_validateLabel(labelMap);
 		_validateObjectActionExecutorKey(objectActionExecutorKey);
-		_validateParameters(
+		_validateParametersUnicodeProperties(
 			conditionExpression, objectActionExecutorKey,
 			objectActionTriggerKey, parametersUnicodeProperties);
 
@@ -346,7 +346,7 @@ public class ObjectActionLocalServiceImpl
 		}
 	}
 
-	private void _validateParameters(
+	private void _validateParametersUnicodeProperties(
 			String conditionExpression, String objectActionExecutorKey,
 			String objectActionTriggerKey,
 			UnicodeProperties parametersUnicodeProperties)
