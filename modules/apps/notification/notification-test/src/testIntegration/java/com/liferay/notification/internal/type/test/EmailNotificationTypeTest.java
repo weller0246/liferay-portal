@@ -68,7 +68,7 @@ public class EmailNotificationTypeTest extends BaseNotificationTypeTest {
 					_createNotificationContext())
 			).termValues(
 				HashMapBuilder.<String, Object>put(
-					"[%emailTerm%]", "test@liferay.com"
+					"[%emailAddressTerm%]", "test@liferay.com"
 				).put(
 					"[%term%]", "termValue"
 				).build()
@@ -124,16 +124,16 @@ public class EmailNotificationTypeTest extends BaseNotificationTypeTest {
 		notificationContext.setNotificationRecipientSettings(
 			Arrays.asList(
 				createNotificationRecipientSetting(
-					"bcc", "[%emailTerm%],bcc@liferay.com"),
+					"bcc", "[%emailAddressTerm%],bcc@liferay.com"),
 				createNotificationRecipientSetting(
-					"cc", "[%emailTerm%],cc@liferay.com"),
-				createNotificationRecipientSetting("from", "[%emailTerm%]"),
+					"cc", "[%emailAddressTerm%],cc@liferay.com"),
+				createNotificationRecipientSetting("from", "[%emailAddressTerm%]"),
 				createNotificationRecipientSetting(
 					"fromName",
-					Collections.singletonMap(LocaleUtil.US, "[%emailTerm%]")),
+					Collections.singletonMap(LocaleUtil.US, "[%emailAddressTerm%]")),
 				createNotificationRecipientSetting(
 					"to",
-					Collections.singletonMap(LocaleUtil.US, "[%emailTerm%]"))));
+					Collections.singletonMap(LocaleUtil.US, "[%emailAddressTerm%]"))));
 
 		NotificationTemplate notificationTemplate =
 			notificationTemplateLocalService.createNotificationTemplate(0L);
