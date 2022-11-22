@@ -482,7 +482,7 @@ public class ObjectFieldLocalServiceTest {
 				objectFieldNameException.getMessage());
 		}
 
-		// Names must be less than 41 characters
+		// Name must be less than 41 characters
 
 		_testAddSystemObjectField(
 			ObjectFieldUtil.createObjectField(
@@ -505,7 +505,7 @@ public class ObjectFieldLocalServiceTest {
 		}
 		catch (ObjectFieldNameException objectFieldNameException) {
 			Assert.assertEquals(
-				"Names must be less than 41 characters",
+				"Name must be less than 41 characters",
 				objectFieldNameException.getMessage());
 		}
 

@@ -183,7 +183,7 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinitionNameException.getMessage());
 		}
 
-		// Names must be less than 41 characters
+		// Name must be less than 41 characters
 
 		_testAddCustomObjectDefinition(
 			"A123456789a123456789a123456789a1234567891");
@@ -196,7 +196,7 @@ public class ObjectDefinitionLocalServiceTest {
 		}
 		catch (ObjectDefinitionNameException objectDefinitionNameException) {
 			Assert.assertEquals(
-				"Names must be less than 41 characters",
+				"Name must be less than 41 characters",
 				objectDefinitionNameException.getMessage());
 		}
 
@@ -734,7 +734,7 @@ public class ObjectDefinitionLocalServiceTest {
 				objectDefinitionNameException.getMessage());
 		}
 
-		// Names must be less than 41 characters
+		// Name must be less than 41 characters
 
 		_testAddSystemObjectDefinition(
 			"A123456789a123456789a123456789a1234567891");
@@ -747,7 +747,7 @@ public class ObjectDefinitionLocalServiceTest {
 		}
 		catch (ObjectDefinitionNameException objectDefinitionNameException) {
 			Assert.assertEquals(
-				"Names must be less than 41 characters",
+				"Name must be less than 41 characters",
 				objectDefinitionNameException.getMessage());
 		}
 

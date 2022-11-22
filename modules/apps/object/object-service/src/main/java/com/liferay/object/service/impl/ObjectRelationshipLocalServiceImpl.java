@@ -788,7 +788,7 @@ public class ObjectRelationshipLocalServiceImpl
 
 		if (nameCharArray.length > 41) {
 			throw new ObjectRelationshipNameException(
-				"Names must be less than 41 characters");
+				"Name must be less than 41 characters");
 		}
 
 		int count = objectRelationshipPersistence.countByODI1_N(
