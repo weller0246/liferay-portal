@@ -255,7 +255,7 @@ public class ObjectActionLocalServiceImpl
 		if (GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-166918")) &&
 			Objects.equals(
 				objectActionTriggerKey,
-				ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION) &&
+				ObjectActionTriggerConstants.KEY_STANDALONE) &&
 			((errorMessageMap == null) ||
 			 Validator.isNull(errorMessageMap.get(locale)))) {
 

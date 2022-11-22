@@ -86,7 +86,7 @@ public class ObjectEntryOpenAPIContributor extends BaseOpenAPIContributor {
 		List<ObjectAction> objectActions =
 			_objectActionLocalService.getObjectActions(
 				_objectDefinition.getObjectDefinitionId(),
-				ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION);
+				ObjectActionTriggerConstants.KEY_STANDALONE);
 		Map<ObjectRelationship, ObjectDefinition> relatedObjectDefinitionsMap =
 			_getRelatedObjectDefinitionsMap();
 

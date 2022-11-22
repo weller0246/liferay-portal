@@ -133,7 +133,7 @@ public class ObjectActionResourceImpl
 		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-166918")) &&
 			Objects.equals(
 				objectAction.getObjectActionTriggerKey(),
-				ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION)) {
+				ObjectActionTriggerConstants.KEY_STANDALONE)) {
 
 			throw new UnsupportedOperationException();
 		}
@@ -169,7 +169,7 @@ public class ObjectActionResourceImpl
 		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-166918")) &&
 			Objects.equals(
 				objectAction.getObjectActionTriggerKey(),
-				ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION)) {
+				ObjectActionTriggerConstants.KEY_STANDALONE)) {
 
 			throw new UnsupportedOperationException();
 		}

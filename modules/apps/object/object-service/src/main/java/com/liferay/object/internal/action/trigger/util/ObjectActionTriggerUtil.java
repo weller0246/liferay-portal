@@ -36,7 +36,7 @@ public class ObjectActionTriggerUtil {
 				_defaultObjectActionTriggers,
 				objectActionTrigger -> !StringUtil.equals(
 					objectActionTrigger.getKey(),
-					ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION));
+					ObjectActionTriggerConstants.KEY_STANDALONE));
 		}
 
 		return _defaultObjectActionTriggers;
@@ -69,6 +69,6 @@ public class ObjectActionTriggerUtil {
 					new ObjectActionTrigger(
 						ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE),
 					new ObjectActionTrigger(
-						ObjectActionTriggerConstants.KEY_STAND_ALONE_ACTION))));
+						ObjectActionTriggerConstants.KEY_STANDALONE))));
 
 }
