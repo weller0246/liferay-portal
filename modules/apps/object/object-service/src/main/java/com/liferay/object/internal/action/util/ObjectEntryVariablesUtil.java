@@ -175,30 +175,21 @@ public class ObjectEntryVariablesUtil {
 			}
 
 			if (!jsonObject.getBoolean("inputAsValue")) {
-				value = _evaluateExpression(
-					ddmExpressionFactory, value.toString(), variables);
+				DDMExpression<Serializable> ddmExpression =
+					ddmExpressionFactory.createExpression(
+						CreateExpressionRequest.Builder.newBuilder(
+							value.toString()
+						).build());
+
+				ddmExpression.setVariables(variables);
+
+				value = ddmExpression.evaluate();
 			}
 
 			values.put(jsonObject.getString("name"), value);
 		}
 
 		return values;
-	}
-
-	private static Serializable _evaluateExpression(
-			DDMExpressionFactory ddmExpressionFactory, String expression,
-			Map<String, Object> variables)
-		throws Exception {
-
-		DDMExpression<Serializable> ddmExpression =
-			ddmExpressionFactory.createExpression(
-				CreateExpressionRequest.Builder.newBuilder(
-					expression
-				).build());
-
-		ddmExpression.setVariables(variables);
-
-		return ddmExpression.evaluate();
 	}
 
 	private static String _getContentType(

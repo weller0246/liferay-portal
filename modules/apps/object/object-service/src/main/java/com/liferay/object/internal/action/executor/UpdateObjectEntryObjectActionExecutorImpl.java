@@ -58,11 +58,12 @@ public class UpdateObjectEntryObjectActionExecutorImpl
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.fetchObjectDefinition(
 				payloadJSONObject.getLong("objectDefinitionId"));
-		User user = _userLocalService.getUser(userId);
 
 		ObjectEntryManager objectEntryManager =
 			_objectEntryManagerRegistry.getObjectEntryManager(
 				objectDefinition.getStorageType());
+
+		User user = _userLocalService.getUser(userId);
 
 		TransactionCommitCallbackUtil.registerCallback(
 			() -> {
