@@ -3459,7 +3459,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			List<Long> groupIds = new ArrayList<>();
 
 			for (int j = 0; j < groupsJSONArray.length(); j++) {
-				JSONObject groupJSONObject = jsonArray.getJSONObject(i);
+				JSONObject groupJSONObject = groupsJSONArray.getJSONObject(j);
 
 				String groupType = groupJSONObject.getString("groupType");
 
@@ -3469,7 +3469,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 							serviceContext.getCompanyId(),
 							groupJSONObject.getString("groupName"));
 
-					groupIds.add(organization.getOrganizationId());
+					Group group =_groupLocalService.getOrganizationGroup(
+						serviceContext.getCompanyId(), organization.getOrganizationId());
+
+					groupIds.add(group.getGroupId());
 				}
 				else if (StringUtil.equals(groupType, "Site")) {
 					groupIds.add(serviceContext.getScopeGroupId());
@@ -3479,14 +3482,21 @@ public class BundleSiteInitializer implements SiteInitializer {
 						serviceContext.getCompanyId(),
 						groupJSONObject.getString("groupName"));
 
-					groupIds.add(user.getUserId());
+					Group group = _groupLocalService.getUserGroup(
+						serviceContext.getCompanyId(), user.getUserId());
+
+					groupIds.add(group.getGroupId());
 				}
 				else if (StringUtil.equals(groupType, "UserGroups")) {
 					UserGroup userGroup = _userGroupLocalService.fetchUserGroup(
 						serviceContext.getCompanyId(),
 						groupJSONObject.getString("groupName"));
 
-					groupIds.add(userGroup.getUserGroupId());
+					Group group = _groupLocalService.getUserGroupGroup(
+						serviceContext.getCompanyId(),
+						userGroup.getUserGroupId());
+
+					groupIds.add(group.getGroupId());
 				}
 			}
 
