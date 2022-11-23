@@ -298,12 +298,8 @@ public class ConfigurationPersistenceManagerTest {
 			try (ResultSet resultSet = preparedStatement.executeQuery()) {
 				boolean stored = resultSet.next();
 
-				if (!shouldBeStored && stored) {
-					Assert.fail();
-				}
-				else if (shouldBeStored && !stored) {
-					Assert.fail();
-				}
+				Assert.assertFalse(!shouldBeStored && stored);
+				Assert.assertFalse(shouldBeStored && !stored);
 			}
 		}
 	}
