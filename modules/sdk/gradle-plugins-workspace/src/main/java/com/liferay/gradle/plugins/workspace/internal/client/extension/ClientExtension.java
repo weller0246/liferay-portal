@@ -122,10 +122,10 @@ public class ClientExtension {
 	private static final String _NOTIFICATION_TYPE_TYPE = "notificationType";
 
 	private static final String _OAUTH_HEADLESS_SERVER_TYPE =
-		"oauthApplicationHeadlessServer";
+		"oAuthApplicationHeadlessServer";
 
 	private static final String _OAUTH_USER_AGENT_TYPE =
-		"oauthApplicationUserAgent";
+		"oAuthApplicationUserAgent";
 
 	private static final String _WORKFLOW_ACTION_TYPE = "workflowAction";
 
