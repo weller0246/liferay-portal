@@ -82,15 +82,15 @@ public class GetCollectionVariationsMVCResourceCommand
 			return _jsonFactory.createJSONArray();
 		}
 
-		assetListEntrySegmentsEntryRels = ListUtil.sort(
-			assetListEntrySegmentsEntryRels,
-			Comparator.comparingInt(
-				AssetListEntrySegmentsEntryRel::getPriority));
-
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
+
+		assetListEntrySegmentsEntryRels = ListUtil.sort(
+			assetListEntrySegmentsEntryRels,
+			Comparator.comparingInt(
+				AssetListEntrySegmentsEntryRel::getPriority));
 
 		for (AssetListEntrySegmentsEntryRel assetListEntrySegmentsEntryRel :
 				assetListEntrySegmentsEntryRels) {
