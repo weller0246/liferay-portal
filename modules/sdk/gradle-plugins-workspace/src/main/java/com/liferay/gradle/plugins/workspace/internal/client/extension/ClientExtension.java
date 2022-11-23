@@ -43,7 +43,7 @@ public class ClientExtension {
 	public Map<String, Object> toJSONMap() throws Exception {
 		Map<String, Object> config = new HashMap<>();
 
-		config.put("baseURL", _BASE_URL_PREFIX + projectName);
+		config.put("baseURL", "${portalURL}/o/" + projectName);
 		config.put("description", description);
 		config.put("dxp.lxc.liferay.com.virtualInstanceId", "default");
 		config.put("name", name);
@@ -55,10 +55,10 @@ public class ClientExtension {
 		String pid = clientExtensionProperties.getProperty(type);
 
 		if ((pid != null) &&
-			(type.equals(_NOTIFICATION_TYPE_TYPE) ||
-			 type.equals(_OAUTH_HEADLESS_SERVER_TYPE) ||
-			 type.equals(_OAUTH_USER_AGENT_TYPE) ||
-			 type.equals(_WORKFLOW_ACTION_TYPE)) &&
+			(type.equals("notificationType") ||
+			 type.equals("oAuthApplicationHeadlessServer") ||
+			 type.equals("oAuthApplicationUserAgent") ||
+			 type.equals("workflowAction")) &&
 			(_typeSettings.get("homePageURL") == null)) {
 
 			_typeSettings.put(
@@ -116,18 +116,6 @@ public class ClientExtension {
 
 		return properties;
 	}
-
-	private static final String _BASE_URL_PREFIX = "${portalURL}/o/";
-
-	private static final String _NOTIFICATION_TYPE_TYPE = "notificationType";
-
-	private static final String _OAUTH_HEADLESS_SERVER_TYPE =
-		"oAuthApplicationHeadlessServer";
-
-	private static final String _OAUTH_USER_AGENT_TYPE =
-		"oAuthApplicationUserAgent";
-
-	private static final String _WORKFLOW_ACTION_TYPE = "workflowAction";
 
 	private final Map<String, Object> _typeSettings = new HashMap<>();
 
