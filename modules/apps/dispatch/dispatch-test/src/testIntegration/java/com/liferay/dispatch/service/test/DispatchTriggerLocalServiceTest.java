@@ -118,7 +118,11 @@ public class DispatchTriggerLocalServiceTest {
 				TestDispatchTaskExecutor.DISPATCH_TASK_EXECUTOR_TYPE_TEST, null,
 				RandomTestUtil.randomString(), RandomTestUtil.randomBoolean());
 
-		_assertFetchPreviousFireDate(dispatchTrigger);
+		Assert.assertNull(
+			_dispatchTriggerLocalService.fetchPreviousFireDate(Long.MIN_VALUE));
+		Assert.assertNull(
+			_dispatchTriggerLocalService.fetchPreviousFireDate(
+				dispatchTrigger.getDispatchTriggerId()));
 
 		String dateString = "7/20/22 02:00:00 AM";
 
@@ -148,7 +152,27 @@ public class DispatchTriggerLocalServiceTest {
 
 		Assert.assertEquals(dispatchTrigger.getTimeZoneStartDate(), date);
 
-		_assertDeleteDispatchTrigger(dispatchTrigger);
+		String liferayMode = SystemProperties.get("liferay.mode");
+
+		try {
+			SystemProperties.clear("liferay.mode");
+
+			_dispatchTriggerLocalService.deleteDispatchTrigger(dispatchTrigger);
+
+			if (dispatchTrigger.isSystem()) {
+				Assert.assertNotNull(
+					_dispatchTriggerLocalService.fetchDispatchTrigger(
+						dispatchTrigger.getDispatchTriggerId()));
+			}
+			else {
+				Assert.assertNull(
+					_dispatchTriggerLocalService.fetchDispatchTrigger(
+						dispatchTrigger.getDispatchTriggerId()));
+			}
+		}
+		finally {
+			SystemProperties.set("liferay.mode", liferayMode);
+		}
 	}
 
 	@Test
@@ -352,41 +376,6 @@ public class DispatchTriggerLocalServiceTest {
 
 		Assert.assertEquals(
 			dispatchTaskStatus, actualDispatchTrigger.getDispatchTaskStatus());
-	}
-
-	private void _assertDeleteDispatchTrigger(DispatchTrigger dispatchTrigger)
-		throws Exception {
-
-		String liferayMode = SystemProperties.get("liferay.mode");
-
-		try {
-			SystemProperties.clear("liferay.mode");
-
-			_dispatchTriggerLocalService.deleteDispatchTrigger(dispatchTrigger);
-
-			if (dispatchTrigger.isSystem()) {
-				Assert.assertNotNull(
-					_dispatchTriggerLocalService.fetchDispatchTrigger(
-						dispatchTrigger.getDispatchTriggerId()));
-			}
-			else {
-				Assert.assertNull(
-					_dispatchTriggerLocalService.fetchDispatchTrigger(
-						dispatchTrigger.getDispatchTriggerId()));
-			}
-		}
-		finally {
-			SystemProperties.set("liferay.mode", liferayMode);
-		}
-	}
-
-	private void _assertFetchPreviousFireDate(DispatchTrigger dispatchTrigger) {
-		Assert.assertNull(
-			_dispatchTriggerLocalService.fetchPreviousFireDate(Long.MIN_VALUE));
-
-		Assert.assertNull(
-			_dispatchTriggerLocalService.fetchPreviousFireDate(
-				dispatchTrigger.getDispatchTriggerId()));
 	}
 
 	private void _basicAssertEquals(
