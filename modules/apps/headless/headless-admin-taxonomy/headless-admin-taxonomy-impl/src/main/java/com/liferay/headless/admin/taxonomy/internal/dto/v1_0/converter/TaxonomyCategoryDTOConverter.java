@@ -37,9 +37,6 @@ import com.liferay.portal.vulcan.dto.converter.DTOConverter;
 import com.liferay.portal.vulcan.dto.converter.DTOConverterContext;
 import com.liferay.portal.vulcan.util.LocalizedMapUtil;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import javax.ws.rs.core.MultivaluedMap;
@@ -165,14 +162,10 @@ public class TaxonomyCategoryDTOConverter
 							assetCategory.getParentCategory(),
 							dtoConverterContext);
 					});
-
 				setTaxonomyCategoryUsageCount(
 					() -> {
 						Optional<UriInfo> uriInfoOptional =
 							dtoConverterContext.getUriInfoOptional();
-
-						List<String> restrictFieldsList =
-							Collections.emptyList();
 
 						if (uriInfoOptional.isPresent()) {
 							UriInfo uriInfo = uriInfoOptional.get();
@@ -180,20 +173,12 @@ public class TaxonomyCategoryDTOConverter
 							MultivaluedMap<String, String> queryParameters =
 								uriInfo.getQueryParameters();
 
-							String restrictFields = queryParameters.getFirst(
-								"restrictFields");
+							if (StringUtil.contains(
+									queryParameters.getFirst("restrictFields"),
+									"taxonomyCategoryUsageCount")) {
 
-							String[] restrictFieldsArray = StringUtil.split(
-								restrictFields);
-
-							restrictFieldsList = Arrays.asList(
-								restrictFieldsArray);
-						}
-
-						if (restrictFieldsList.contains(
-								"taxonomyCategoryUsageCount")) {
-
-							return null;
+								return null;
+							}
 						}
 
 						return (int)_assetEntryLocalService.searchCount(
