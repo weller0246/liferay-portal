@@ -90,7 +90,7 @@ definition {
 			if (!(contains("${fileContent}", "dl.store.impl=com.liferay.portal.store.file.system.FileSystemStore"))) {
 				echo("${fileContent}");
 
-				fail("Document Library Store is not present in upgrade report.");
+				fail("Document library store is not present in upgrade report.");
 			}
 		}
 
@@ -201,13 +201,13 @@ definition {
 			if (!(contains("${fileContent}", "Rows (initial)"))) {
 				echo("${fileContent}");
 
-				fail("Initial rows numbers Column not present on Report.");
+				fail("Initial rows numbers column not present in upgrade report.");
 			}
 
 			if (!(contains("${fileContent}", "Rows (final)"))) {
 				echo("${fileContent}");
 
-				fail("Final rows numbers Column not present on Report.");
+				fail("Final rows numbers column not present in upgrade report.");
 			}
 		}
 	}
@@ -284,7 +284,7 @@ definition {
 			if (!(contains("${fileContentReport}", "Upgrade completed in ${upgradeRunTimeReport}"))) {
 				echo("${fileContentReport}");
 
-				fail("Total Runtime it's not present on the Report.");
+				fail("Total runtime is not present in upgrade report.");
 			}
 		}
 
@@ -292,7 +292,7 @@ definition {
 			if (!(contains("${fileContentReport}", "Upgrade completed in ${upgradeRunTimeLog}"))) {
 				echo("${fileContentReport}");
 
-				fail("Total Runtime on Report mismatch the runtime on upgrade.log file.");
+				fail("Total runtime in upgrade report does not match the runtime in upgrade.log file.");
 			}
 		}
 	}
