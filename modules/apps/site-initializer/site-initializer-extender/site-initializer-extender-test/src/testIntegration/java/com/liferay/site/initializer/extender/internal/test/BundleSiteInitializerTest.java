@@ -309,7 +309,7 @@ public class BundleSiteInitializerTest {
 		AssetCategory testAssetCategory1 =
 			_assetCategoryLocalService.
 				fetchAssetCategoryByExternalReferenceCode(
-					companyGroup.getGroupId(), "TESTCAT0001");
+					"TESTCAT0001", companyGroup.getGroupId());
 
 		Assert.assertNotNull(testAssetCategory1);
 		Assert.assertEquals(
@@ -327,7 +327,7 @@ public class BundleSiteInitializerTest {
 		AssetCategory testAssetCategory3 =
 			_assetCategoryLocalService.
 				fetchAssetCategoryByExternalReferenceCode(
-					group.getGroupId(), "TESTCAT0003");
+					"TESTCAT0003", group.getGroupId());
 
 		Assert.assertNotNull(testAssetCategory3);
 		Assert.assertEquals(
@@ -411,7 +411,7 @@ public class BundleSiteInitializerTest {
 		CommerceCatalog commerceCatalog1 =
 			_commerceCatalogLocalService.
 				fetchCommerceCatalogByExternalReferenceCode(
-					group.getCompanyId(), "TESTCATG0001");
+					"TESTCATG0001", group.getCompanyId());
 
 		Assert.assertNotNull(commerceCatalog1);
 		Assert.assertEquals(
@@ -420,7 +420,7 @@ public class BundleSiteInitializerTest {
 		CommerceCatalog commerceCatalog2 =
 			_commerceCatalogLocalService.
 				fetchCommerceCatalogByExternalReferenceCode(
-					group.getCompanyId(), "TESTCATG0002");
+					"TESTCATG0002", group.getCompanyId());
 
 		Assert.assertNotNull(commerceCatalog2);
 		Assert.assertEquals(
@@ -449,7 +449,7 @@ public class BundleSiteInitializerTest {
 		CommerceInventoryWarehouse commerceInventoryWarehouse =
 			_commerceInventoryWarehouseLocalService.
 				fetchCommerceInventoryWarehouseByExternalReferenceCode(
-					group.getCompanyId(), "TESTWARE0001");
+					"TESTWARE0001", group.getCompanyId());
 
 		Assert.assertNotNull(commerceInventoryWarehouse);
 		Assert.assertEquals(
@@ -1555,14 +1555,14 @@ public class BundleSiteInitializerTest {
 
 		UserGroup userGroup1 =
 			_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
-				group.getCompanyId(), "TESTUSERGROUP1");
+				"TESTUSERGROUP1", group.getCompanyId());
 
 		Assert.assertNotNull(userGroup1);
 		Assert.assertTrue(userGroups.contains(userGroup1));
 
 		UserGroup userGroup2 =
 			_userGroupLocalService.fetchUserGroupByExternalReferenceCode(
-				group.getCompanyId(), "TESTUSERGROUP2");
+				"TESTUSERGROUP2", group.getCompanyId());
 
 		Assert.assertNotNull(userGroup2);
 		Assert.assertTrue(userGroups.contains(userGroup2));
