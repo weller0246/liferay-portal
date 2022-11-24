@@ -154,13 +154,6 @@ public class NotificationTemplateFTLElementsMVCResourceCommand
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = (JSONObject)jsonArray.get(i);
 
-			jsonObject.put(
-				"helpText",
-				_language.get(locale, (String)jsonObject.get("help"))
-			).put(
-				"label", _language.get(locale, (String)jsonObject.get("label"))
-			);
-
 			String content = (String)jsonObject.get("name");
 
 			if (infoField) {
@@ -168,6 +161,13 @@ public class NotificationTemplateFTLElementsMVCResourceCommand
 			}
 
 			jsonObject.put("content", content);
+
+			jsonObject.put(
+				"helpText",
+				_language.get(locale, (String)jsonObject.get("help"))
+			).put(
+				"label", _language.get(locale, (String)jsonObject.get("label"))
+			);
 		}
 
 		templateVariableGroupJSONObject.put(
