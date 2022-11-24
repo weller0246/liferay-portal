@@ -2569,7 +2569,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 					continue;
 				}
 
-				com.liferay.object.model.ObjectEntry finalObjectEntry =
+				com.liferay.object.model.ObjectEntry serviceBuilderObjectEntry =
 					_objectEntryLocalService.getObjectEntry(
 						objectEntry.getId());
 
@@ -2577,12 +2577,12 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectEntrySiteInitializerKey,
 					new SiteNavigationMenuItemSetting() {
 						{
-							className = finalObjectEntry.getModelClassName();
+							className = serviceBuilderObjectEntry.getModelClassName();
 							classPK = String.valueOf(
-								finalObjectEntry.getObjectEntryId());
+								serviceBuilderObjectEntry.getObjectEntryId());
 							title =
 								objectDefinition.getName() + StringPool.SPACE +
-									finalObjectEntry.getObjectEntryId();
+									serviceBuilderObjectEntry.getObjectEntryId();
 						}
 					});
 			}
