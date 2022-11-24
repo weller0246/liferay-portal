@@ -21,7 +21,7 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 Website website = (Website)row.getObject();
 
-ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, renderResponse, ListTypeConstants.WEBSITE, "/common/edit_website.jsp", website.getWebsiteId());
+ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, ListTypeConstants.WEBSITE, "/common/edit_website.jsp", website.getWebsiteId(), renderResponse);
 %>
 
 <clay:dropdown-actions

@@ -36,14 +36,14 @@ import javax.servlet.http.HttpServletRequest;
 public class ContactInformationActionDropdownItemsProvider {
 
 	public ContactInformationActionDropdownItemsProvider(
-		HttpServletRequest httpServletRequest, RenderResponse renderResponse,
-		String listType, String mvcPath, long primaryKey) {
+		HttpServletRequest httpServletRequest, String listType, String mvcPath,
+		long primaryKey, RenderResponse renderResponse) {
 
 		_httpServletRequest = httpServletRequest;
-		_renderResponse = renderResponse;
 		_listType = listType;
 		_mvcPath = mvcPath;
 		_primaryKey = primaryKey;
+		_renderResponse = renderResponse;
 
 		_className = (String)httpServletRequest.getAttribute(
 			"contact_information.jsp-className");

@@ -21,7 +21,7 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 EmailAddress emailAddress = (EmailAddress)row.getObject();
 
-ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, renderResponse, ListTypeConstants.EMAIL_ADDRESS, "/common/edit_email_address.jsp", emailAddress.getEmailAddressId());
+ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, ListTypeConstants.EMAIL_ADDRESS, "/common/edit_email_address.jsp", emailAddress.getEmailAddressId(), renderResponse);
 %>
 
 <clay:dropdown-actions

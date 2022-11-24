@@ -21,7 +21,7 @@ ResultRow row = (ResultRow)request.getAttribute(WebKeys.SEARCH_CONTAINER_RESULT_
 
 Phone phone = (Phone)row.getObject();
 
-ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, renderResponse, ListTypeConstants.PHONE, "/common/edit_phone_number.jsp", phone.getPhoneId());
+ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, ListTypeConstants.PHONE, "/common/edit_phone_number.jsp", phone.getPhoneId(), renderResponse);
 %>
 
 <clay:dropdown-actions

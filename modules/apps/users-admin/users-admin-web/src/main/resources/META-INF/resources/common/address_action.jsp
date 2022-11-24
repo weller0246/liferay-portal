@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, renderResponse, ListTypeConstants.ADDRESS, "/common/edit_address.jsp", ParamUtil.getLong(request, "addressId"));
+ContactInformationActionDropdownItemsProvider contactInformationActionDropdownItemsProvider = new ContactInformationActionDropdownItemsProvider(request, ListTypeConstants.ADDRESS, "/common/edit_address.jsp", ParamUtil.getLong(request, "addressId"), renderResponse);
 %>
 
 <clay:dropdown-actions
