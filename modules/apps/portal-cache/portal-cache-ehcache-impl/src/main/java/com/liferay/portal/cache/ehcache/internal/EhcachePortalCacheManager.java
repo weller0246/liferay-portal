@@ -530,7 +530,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 			sb.append("non-MVCC ");
 		}
 
-		sb.append("portal cache, cause a ");
+		sb.append("portal cache, because a ");
 
 		if (portalCache.isMVCC()) {
 			sb.append("MVCC ");
@@ -566,7 +566,7 @@ public class EhcachePortalCacheManager<K extends Serializable, V>
 			sb.append("nonsharded ");
 		}
 
-		sb.append("portal cache, cause a ");
+		sb.append("portal cache, because a ");
 
 		if (portalCache.isSharded()) {
 			sb.append("sharded ");
