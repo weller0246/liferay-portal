@@ -397,7 +397,7 @@ public class EmailNotificationType extends BaseNotificationType {
 				NotificationTemplate.class.getName() + StringPool.POUND +
 					notificationTemplate.getNotificationTemplateId(),
 				body),
-			PropsValues.NOTIFICATIONS_TEMPLATE_RESTRICT_VARIABLES);
+			PropsValues.NOTIFICATION_EMAIL_TEMPLATE_RESTRICTED);
 
 		InfoItemFieldValuesProvider<Object> infoItemFieldValuesProvider =
 			_infoItemServiceRegistry.getFirstInfoItemService(
