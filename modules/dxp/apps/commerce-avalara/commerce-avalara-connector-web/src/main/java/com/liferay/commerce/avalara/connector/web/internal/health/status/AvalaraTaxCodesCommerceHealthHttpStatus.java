@@ -104,9 +104,9 @@ public class AvalaraTaxCodesCommerceHealthHttpStatus
 		CPTaxCategory cpTaxCategory =
 			_cpTaxCategoryLocalService.
 				fetchCPTaxCategoryByExternalReferenceCode(
-					companyId,
 					CommerceAvalaraConstants.
-						CP_TAX_CATEGORY_ERC_TANGIBLE_PERSONAL_PROPERTY);
+						CP_TAX_CATEGORY_ERC_TANGIBLE_PERSONAL_PROPERTY,
+					companyId);
 
 		if (cpTaxCategory == null) {
 			return false;
