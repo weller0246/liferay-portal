@@ -14,7 +14,7 @@
 
 package com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context;
 
-import com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context.util.CommerceAvalaraTaxRateRequestHelper;
+import com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context.helper.CommerceAvalaraTaxRateRequestHelper;
 import com.liferay.commerce.constants.CommerceTaxScreenNavigationConstants;
 import com.liferay.commerce.currency.service.CommerceCurrencyLocalService;
 import com.liferay.commerce.percentage.PercentageFormatter;

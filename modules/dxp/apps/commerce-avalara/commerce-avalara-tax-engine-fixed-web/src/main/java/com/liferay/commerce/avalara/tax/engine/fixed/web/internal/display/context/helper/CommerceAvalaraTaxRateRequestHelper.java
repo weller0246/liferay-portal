@@ -12,7 +12,7 @@
  *
  */
 
-package com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context.util;
+package com.liferay.commerce.avalara.tax.engine.fixed.web.internal.display.context.helper;
 
 import com.liferay.portal.kernel.display.context.helper.BaseRequestHelper;
 import com.liferay.portal.kernel.util.PortalUtil;
