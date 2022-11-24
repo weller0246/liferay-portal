@@ -154,15 +154,19 @@ public class NotificationTemplateFTLElementsMVCResourceCommand
 		for (int i = 0; i < jsonArray.length(); i++) {
 			JSONObject jsonObject = (JSONObject)jsonArray.get(i);
 
-			String content = (String)jsonObject.get("name");
-
-			if (infoField) {
-				content = StringBundler.concat("${", content, ".getData()}");
-			}
-
-			jsonObject.put("content", content);
-
 			jsonObject.put(
+				"content",
+				() -> {
+					String content = (String)jsonObject.get("name");
+
+					if (infoField) {
+						content = StringBundler.concat(
+							"${", content, ".getData()}");
+					}
+
+					return content;
+				}
+			).put(
 				"helpText",
 				_language.get(locale, (String)jsonObject.get("help"))
 			).put(
