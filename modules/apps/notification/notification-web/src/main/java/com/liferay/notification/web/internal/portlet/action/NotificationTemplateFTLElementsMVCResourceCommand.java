@@ -78,9 +78,9 @@ public class NotificationTemplateFTLElementsMVCResourceCommand
 			return;
 		}
 
-		Locale locale = _portal.getLocale(resourceRequest);
-
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
+
+		Locale locale = _portal.getLocale(resourceRequest);
 
 		Map<String, TemplateVariableGroup> templateVariableGroupsMap =
 			TemplateContextHelper.getTemplateVariableGroups(
