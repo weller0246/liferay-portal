@@ -2577,12 +2577,13 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectEntrySiteInitializerKey,
 					new SiteNavigationMenuItemSetting() {
 						{
-							className = serviceBuilderObjectEntry.getModelClassName();
+							className =
+								serviceBuilderObjectEntry.getModelClassName();
 							classPK = String.valueOf(
 								serviceBuilderObjectEntry.getObjectEntryId());
-							title =
-								objectDefinition.getName() + StringPool.SPACE +
-									serviceBuilderObjectEntry.getObjectEntryId();
+							title = StringBundler.concat(
+								objectDefinition.getName(), StringPool.SPACE,
+								serviceBuilderObjectEntry.getObjectEntryId());
 						}
 					});
 			}
