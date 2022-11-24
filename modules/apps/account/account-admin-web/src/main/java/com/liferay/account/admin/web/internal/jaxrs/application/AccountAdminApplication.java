@@ -47,7 +47,7 @@ import org.osgi.service.jaxrs.whiteboard.JaxrsWhiteboardConstants;
 @Component(
 	property = {
 		JaxrsWhiteboardConstants.JAX_RS_APPLICATION_BASE + "=/com-liferay-account-admin-web",
-		JaxrsWhiteboardConstants.JAX_RS_NAME + "=com.liferay.account.admin.web.Application",
+		JaxrsWhiteboardConstants.JAX_RS_NAME + "=com.liferay.account.admin.web.internal.jaxrs.application.AccountAdminApplication",
 		"auth.verifier.auth.verifier.PortalSessionAuthVerifier.urls.includes=/*",
 		"auth.verifier.guest.allowed=false", "liferay.oauth2=false"
 	},
