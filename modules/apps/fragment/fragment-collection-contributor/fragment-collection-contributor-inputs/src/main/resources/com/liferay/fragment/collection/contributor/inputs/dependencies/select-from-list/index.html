@@ -4,7 +4,8 @@
 			<div class="input-group-item input-group-prepend">
 				<label class="[#if !input.showLabel || !input.label?has_content]sr-only[/#if]" for="${fragmentEntryLinkNamespace}-select-from-list-input">
 					${htmlUtil.escape(input.label)}
-					[#if input.required][@clay["icon"] className="reference-mark" symbol="asterisk" /] [/#if]
+
+					[#if input.required][@clay["icon"] className="reference-mark" symbol="asterisk" /][/#if]
 				</label>
 
 				<input aria-autocomplete="list" aria-controls="${fragmentEntryLinkNamespace}-listbox" aria-expanded="false" class="form-control" id="${fragmentEntryLinkNamespace}-select-from-list-input" name="" placeholder="${languageUtil.get(locale, "choose-an-option")}" role="combobox" type="text" ${input.required?then('required', '')} [#if input.value??]value="${input.value}"[/#if] />
@@ -33,8 +34,8 @@
 				</p>
 
 				<ul aria-labelledby="${fragmentEntryLinkNamespace}-label" class="list-unstyled" id="${fragmentEntryLinkNamespace}-listbox" role="listbox">
-					[#assign selectedValueFoundInOptions=false]
 					[#assign options=(input.attributes.options)![]]
+					[#assign selectedValueFoundInOptions=false]
 
 					[#list options as option]
 						[#if option?index == 10]
@@ -58,6 +59,7 @@
 				</ul>
 			</div>
 		</div>
+
 		[#if input.showHelpText && input.helpText?has_content]
 			<p class="mb-0 mt-1 text-secondary" id="${fragmentEntryLinkNamespace}-help-text">
 				${input.helpText}
