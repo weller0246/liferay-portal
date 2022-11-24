@@ -403,7 +403,6 @@ public class EmailNotificationType extends BaseNotificationType {
 			_infoItemServiceRegistry.getFirstInfoItemService(
 				InfoItemFieldValuesProvider.class,
 				notificationContext.getClassName());
-
 		PersistedModelLocalService persistedModelLocalService =
 			_persistedModelLocalServiceRegistry.getPersistedModelLocalService(
 				notificationContext.getClassName());
