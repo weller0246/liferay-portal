@@ -38,8 +38,12 @@ public class OAuth2ScopeGrantRemoveCompanyIdFromObjectsRelatedUpgradeProcess
 	@Override
 	protected void doUpgrade() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"select * from OAuth2ScopeGrant where " +
+					"bundleSymbolicName='com.liferay.object.rest.impl'")) {
+
 			ResultSet oAuth2ScopeGrantResultSet =
-				_getOAuth2ScopeGrantResultSet()) {
+				preparedStatement.executeQuery();
 
 			while (oAuth2ScopeGrantResultSet.next()) {
 				String applicationName = oAuth2ScopeGrantResultSet.getString(
@@ -72,27 +76,14 @@ public class OAuth2ScopeGrantRemoveCompanyIdFromObjectsRelatedUpgradeProcess
 		}
 	}
 
-	private ResultSet _getOAuth2ScopeGrantResultSet() throws SQLException {
-		String sql =
-			"select * from OAuth2ScopeGrant where " +
-				"bundleSymbolicName='com.liferay.object.rest.impl'";
-
-		PreparedStatement preparedStatement = connection.prepareStatement(sql);
-
-		return preparedStatement.executeQuery();
-	}
-
 	private void _updateOAuth2ScopeGrant(
 			String applicationName, long oAuth2ScopeGrantId,
 			List<String> scopeAliases)
 		throws SQLException {
 
-		String sql =
-			"update OAuth2ScopeGrant set applicationName = ?," +
-				"scopeAliases = ? where oAuth2ScopeGrantId = ?";
-
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
-				sql)) {
+				"update OAuth2ScopeGrant set applicationName = ?," +
+					"scopeAliases = ? where oAuth2ScopeGrantId = ?")) {
 
 			preparedStatement.setString(1, applicationName);
 			preparedStatement.setString(
