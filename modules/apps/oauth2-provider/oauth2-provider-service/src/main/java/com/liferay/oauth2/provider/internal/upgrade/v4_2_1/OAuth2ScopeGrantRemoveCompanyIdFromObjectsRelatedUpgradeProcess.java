@@ -25,8 +25,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,46 +37,40 @@ public class OAuth2ScopeGrantRemoveCompanyIdFromObjectsRelatedUpgradeProcess
 	protected void doUpgrade() throws Exception {
 		try (LoggingTimer loggingTimer = new LoggingTimer();
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"select * from OAuth2ScopeGrant where " +
-					"bundleSymbolicName='com.liferay.object.rest.impl'")) {
+				"select companyId, applicationName from OAuth2ScopeGrant " +
+					"where bundleSymbolicName = ?")) {
 
-			ResultSet oAuth2ScopeGrantResultSet =
-				preparedStatement.executeQuery();
+			preparedStatement.setString(1, "com.liferay.object.rest.impl");
 
-			while (oAuth2ScopeGrantResultSet.next()) {
-				String applicationName = oAuth2ScopeGrantResultSet.getString(
-					"applicationName");
+			ResultSet resultSet = preparedStatement.executeQuery();
+
+			while (resultSet.next()) {
 				String companyId = String.valueOf(
-					oAuth2ScopeGrantResultSet.getLong("companyId"));
+					resultSet.getLong("companyId"));
+				String applicationName = resultSet.getString("applicationName");
 
 				if (!StringUtil.endsWith(applicationName, companyId)) {
 					continue;
 				}
 
-				List<String> scopeAliases = Arrays.asList(
-					StringUtil.split(
-						oAuth2ScopeGrantResultSet.getString("scopeAliases"),
-						StringPool.SPACE));
-
 				String newApplicationName = applicationName.substring(
 					0, applicationName.length() - companyId.length());
 
-				List<String> newScopeAliases = TransformUtil.transform(
-					scopeAliases,
-					scopeAlias -> StringUtil.replace(
-						scopeAlias, applicationName, newApplicationName));
-
 				_updateOAuth2ScopeGrant(
-					newApplicationName,
-					oAuth2ScopeGrantResultSet.getLong("oauth2ScopeGrantId"),
-					newScopeAliases);
+					newApplicationName, resultSet.getLong("oauth2ScopeGrantId"),
+					TransformUtil.transformToList(
+						StringUtil.split(
+							resultSet.getString("scopeAliases"),
+							StringPool.SPACE),
+						scopeAlias -> StringUtil.replace(
+							scopeAlias, applicationName, newApplicationName)));
 			}
 		}
 	}
 
 	private void _updateOAuth2ScopeGrant(
 			String applicationName, long oAuth2ScopeGrantId,
-			List<String> scopeAliases)
+			List<String> scopeAliasesList)
 		throws SQLException {
 
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
@@ -89,8 +81,7 @@ public class OAuth2ScopeGrantRemoveCompanyIdFromObjectsRelatedUpgradeProcess
 			preparedStatement.setString(
 				2,
 				StringUtil.merge(
-					ListUtil.sort(new ArrayList<>(scopeAliases)),
-					StringPool.SPACE));
+					ListUtil.sort(scopeAliasesList), StringPool.SPACE));
 			preparedStatement.setLong(3, oAuth2ScopeGrantId);
 
 			preparedStatement.execute();
