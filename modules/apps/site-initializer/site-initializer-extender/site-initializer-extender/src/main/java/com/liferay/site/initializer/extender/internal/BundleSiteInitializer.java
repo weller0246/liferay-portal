@@ -3469,8 +3469,9 @@ public class BundleSiteInitializer implements SiteInitializer {
 							serviceContext.getCompanyId(),
 							groupJSONObject.getString("groupName"));
 
-					Group group =_groupLocalService.getOrganizationGroup(
-						serviceContext.getCompanyId(), organization.getOrganizationId());
+					Group group = _groupLocalService.getOrganizationGroup(
+						serviceContext.getCompanyId(),
+						organization.getOrganizationId());
 
 					groupIds.add(group.getGroupId());
 				}
