@@ -138,7 +138,7 @@ const InviteUserFormGroup = ({
 			<MultiSelect
 				errorMessages={getErrorMessages(accountRoles)}
 				helpText={Liferay.Language.get(
-					'roles-will-be-applied-to-all-users-above'
+					'roles-will-be-applied-to-all-of-the-users-above'
 				)}
 				inputName={`${portletNamespace}accountRoleIds${index}`}
 				items={accountRoles}
