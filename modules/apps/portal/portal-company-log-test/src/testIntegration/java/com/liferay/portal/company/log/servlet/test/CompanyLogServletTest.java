@@ -123,7 +123,7 @@ public class CompanyLogServletTest {
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
 				PortalImpl.class.getName(), LoggerTestUtil.WARN)) {
 
-			_assertHttpServletResponseStatusAndLogInfo(
+			_assertHttpServletResponseStatusAndLogEntry(
 				_createMockHttpServletRequest(
 					StringBundler.concat(
 						StringPool.SLASH, _company.getCompanyId(),
@@ -151,15 +151,14 @@ public class CompanyLogServletTest {
 		File companyLogDirectory = Log4JUtil.getCompanyLogDirectory(
 			_company.getCompanyId());
 
-		File parentCompanyLogDirectory = companyLogDirectory.getParentFile();
+		File parentFile = companyLogDirectory.getParentFile();
 
-		_assertHttpServletResponseStatusAndLogInfo(
+		_assertHttpServletResponseStatusAndLogEntry(
 			_createMockHttpServletRequest(
 				StringBundler.concat(
 					StringPool.SLASH, _company.getCompanyId(), "/../"),
 				_companyAdminUser),
-			PrincipalException.class,
-			"Invalid path " + parentCompanyLogDirectory.getPath(),
+			PrincipalException.class, "Invalid path " + parentFile.getPath(),
 			HttpServletResponse.SC_FORBIDDEN);
 	}
 
@@ -167,7 +166,7 @@ public class CompanyLogServletTest {
 	public void testDownloadWithNoSuchCompany() throws Exception {
 		long companyId = 1;
 
-		_assertHttpServletResponseStatusAndLogInfo(
+		_assertHttpServletResponseStatusAndLogEntry(
 			_createMockHttpServletRequest(
 				StringBundler.concat(
 					StringPool.SLASH, companyId, StringPool.SLASH,
@@ -197,32 +196,32 @@ public class CompanyLogServletTest {
 		throws Exception {
 
 		_assertDownloadWithInvalidData("0", "0");
+		_assertDownloadWithInvalidData("10", "0");
 		_assertDownloadWithInvalidData("10", "10");
 		_assertDownloadWithInvalidData("2", "1");
-		_assertDownloadWithInvalidData("10", "0");
 	}
 
 	@Test
 	public void testDownloadWithStartLessThanEnd() throws Exception {
-		_assertDownloadWithValidData("2", "5");
 		_assertDownloadWithValidData("0", "10");
 		_assertDownloadWithValidData("1", String.valueOf(Integer.MAX_VALUE));
+		_assertDownloadWithValidData("2", "5");
 		_assertDownloadWithValidData("2", String.valueOf(_file.length() + 1));
 	}
 
 	@Test
-	public void testDownloadWithStartOrEndForNull() throws Exception {
-		_assertDownloadWithValidData("", "");
-		_assertDownloadWithValidData(null, null);
-		_assertDownloadWithValidData("3", "");
+	public void testDownloadWithStartOrEndAsNull() throws Exception {
 		_assertDownloadWithInvalidData("", "0");
 		_assertDownloadWithInvalidData(String.valueOf(_file.length()), "");
+		_assertDownloadWithValidData("", "");
+		_assertDownloadWithValidData("3", "");
+		_assertDownloadWithValidData(null, null);
 	}
 
 	@Test
 	public void testDownloadWithStartOrEndLessThanZero() throws Exception {
-		_assertDownloadWithInvalidData("-3", "3");
 		_assertDownloadWithInvalidData("-3", "-2");
+		_assertDownloadWithInvalidData("-3", "3");
 		_assertDownloadWithInvalidData("3", "-3");
 	}
 
@@ -237,14 +236,14 @@ public class CompanyLogServletTest {
 			_mockHttpServletResponse.getContentAsString());
 
 		_assertCompanyLogFiles(
-			mockHttpServletRequest, _company, (JSONObject)jsonArray.get(0));
+			_company, (JSONObject)jsonArray.get(0), mockHttpServletRequest);
 	}
 
 	@Test
 	public void testListWithCompanyUser() throws Exception {
 		User user = UserTestUtil.addUser(_company);
 
-		_assertHttpServletResponseStatusAndLogInfo(
+		_assertHttpServletResponseStatusAndLogEntry(
 			_createMockHttpServletRequest("/", user),
 			PrincipalException.MustBeCompanyAdmin.class,
 			StringBundler.concat(
@@ -269,11 +268,10 @@ public class CompanyLogServletTest {
 				_mockHttpServletResponse.getContentAsString());
 
 			_assertCompanyLogFiles(
-				mockHttpServletRequest,
 				_companyLocalService.getCompany(TestPropsValues.getCompanyId()),
-				(JSONObject)jsonArray.get(0));
+				(JSONObject)jsonArray.get(0), mockHttpServletRequest);
 			_assertCompanyLogFiles(
-				mockHttpServletRequest, _company, (JSONObject)jsonArray.get(1));
+				_company, (JSONObject)jsonArray.get(1), mockHttpServletRequest);
 		}
 		finally {
 			if (omniAdminUser != null) {
@@ -284,21 +282,21 @@ public class CompanyLogServletTest {
 
 	@Test
 	public void testUserUnauthenticated() throws Exception {
-		_assertHttpServletResponseStatusAndLogInfo(
+		_assertHttpServletResponseStatusAndLogEntry(
 			_createMockHttpServletRequest("/", (User)null),
 			PrincipalException.MustBeAuthenticated.class,
 			"User 0 must be authenticated", HttpServletResponse.SC_FORBIDDEN);
 	}
 
 	private void _assertCompanyLogFiles(
-		MockHttpServletRequest mockHttpServletRequest, Company company,
-		JSONObject jsonObject) {
+		Company company, JSONObject jsonObject,
+		MockHttpServletRequest mockHttpServletRequest) {
 
-		Assert.assertEquals(
-			HttpServletResponse.SC_OK, _mockHttpServletResponse.getStatus());
 		Assert.assertEquals(
 			ContentTypes.APPLICATION_JSON,
 			_mockHttpServletResponse.getContentType());
+		Assert.assertEquals(
+			HttpServletResponse.SC_OK, _mockHttpServletResponse.getStatus());
 		Assert.assertEquals(
 			company.getCompanyId(), jsonObject.getLong("companyId"));
 		Assert.assertEquals(company.getWebId(), jsonObject.getString("webId"));
@@ -342,7 +340,7 @@ public class CompanyLogServletTest {
 				"Start and end cannot be less than 0. Start cannot be " +
 					"greater than or equal to end.";
 
-			_assertHttpServletResponseStatusAndLogInfo(
+			_assertHttpServletResponseStatusAndLogEntry(
 				_createMockHttpServletRequest(startString, endString),
 				IllegalArgumentException.class, message,
 				HttpServletResponse.SC_BAD_REQUEST);
@@ -361,6 +359,7 @@ public class CompanyLogServletTest {
 		}
 		finally {
 			_mockHttpServletResponse.setCommitted(false);
+
 			_mockHttpServletResponse.reset();
 		}
 	}
@@ -441,7 +440,7 @@ public class CompanyLogServletTest {
 		}
 	}
 
-	private void _assertHttpServletResponseStatusAndLogInfo(
+	private void _assertHttpServletResponseStatusAndLogEntry(
 			MockHttpServletRequest mockHttpServletRequest, Class<?> clazz,
 			String message, int status)
 		throws Exception {
@@ -478,8 +477,8 @@ public class CompanyLogServletTest {
 					_file.getName()),
 				_companyAdminUser);
 
-		mockHttpServletRequest.setParameter("start", startString);
 		mockHttpServletRequest.setParameter("end", endString);
+		mockHttpServletRequest.setParameter("start", startString);
 
 		return mockHttpServletRequest;
 	}
