@@ -399,11 +399,11 @@
 												"key": "mdf-claim-manager-status"
 											},
 											"fragmentConfig": {
-												"channelAccountManager": false,
-												"channelFinanceManager": false,
-												"channelGeneralManager": false,
-												"channelGlobalMarketingManager": false,
-												"channelRegionalMarketingManager": false,
+												"channelAccountManager": true,
+												"channelFinanceManager": true,
+												"channelGeneralManager": true,
+												"channelGlobalMarketingManager": true,
+												"channelRegionalMarketingManager": true,
 												"user": false
 											},
 											"fragmentFields": [
