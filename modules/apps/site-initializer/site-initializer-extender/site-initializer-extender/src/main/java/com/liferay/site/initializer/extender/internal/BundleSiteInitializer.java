@@ -3465,9 +3465,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 
 				if (StringUtil.equals(groupType, "Organization")) {
 					com.liferay.portal.kernel.model.Organization organization =
-						_organizationLocalService.getOrganization(
+						_organizationLocalService.fetchOrganization(
 							serviceContext.getCompanyId(),
 							groupJSONObject.getString("groupName"));
+
+					if (organization == null) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"No organization found with name " +
+									groupJSONObject.getString("groupName"));
+						}
+
+						continue;
+					}
 
 					Group group = _groupLocalService.getOrganizationGroup(
 						serviceContext.getCompanyId(),
@@ -3479,9 +3489,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 					groupIds.add(serviceContext.getScopeGroupId());
 				}
 				else if (StringUtil.equals(groupType, "User")) {
-					User user = _userLocalService.getUserByScreenName(
+					User user = _userLocalService.fetchUserByScreenName(
 						serviceContext.getCompanyId(),
 						groupJSONObject.getString("groupName"));
+
+					if (user == null) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"No user found with screen name " +
+									groupJSONObject.getString("groupName"));
+						}
+
+						continue;
+					}
 
 					Group group = _groupLocalService.getUserGroup(
 						serviceContext.getCompanyId(), user.getUserId());
@@ -3493,9 +3513,29 @@ public class BundleSiteInitializer implements SiteInitializer {
 						serviceContext.getCompanyId(),
 						groupJSONObject.getString("groupName"));
 
-					Group group = _groupLocalService.getUserGroupGroup(
+					if (userGroup == null) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"No user group found with name " +
+									groupJSONObject.getString("groupName"));
+						}
+
+						continue;
+					}
+
+					Group group = _groupLocalService.fetchUserGroup(
 						serviceContext.getCompanyId(),
 						userGroup.getUserGroupId());
+
+					if (group == null) {
+						if (_log.isWarnEnabled()) {
+							_log.warn(
+								"No group found with id " +
+									userGroup.getUserGroupId());
+						}
+
+						continue;
+					}
 
 					groupIds.add(group.getGroupId());
 				}
@@ -3505,11 +3545,19 @@ public class BundleSiteInitializer implements SiteInitializer {
 				continue;
 			}
 
-			Role role = _roleLocalService.getRole(
+			Role role = _roleLocalService.fetchRole(
 				serviceContext.getCompanyId(),
 				jsonObject.getString("roleName"));
 
 			if (role == null) {
+				if (_log.isWarnEnabled()) {
+					if (_log.isWarnEnabled()) {
+						_log.warn(
+							"No role group found with name " +
+								jsonObject.getString("roleName"));
+					}
+				}
+
 				continue;
 			}
 
