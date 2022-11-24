@@ -2495,11 +2495,6 @@ public class BundleSiteInitializer implements SiteInitializer {
 			return null;
 		}
 
-		DefaultDTOConverterContext defaultDTOConverterContext =
-			new DefaultDTOConverterContext(
-				false, null, null, null, null, LocaleUtil.getSiteDefault(),
-				null, serviceContext.fetchUser());
-
 		Set<String> sortedResourcePaths = new TreeSet<>(
 			new NaturalOrderStringComparator());
 
@@ -2538,6 +2533,11 @@ public class BundleSiteInitializer implements SiteInitializer {
 			if (JSONUtil.isEmpty(jsonArray)) {
 				continue;
 			}
+
+			DefaultDTOConverterContext defaultDTOConverterContext =
+				new DefaultDTOConverterContext(
+					false, null, null, null, null, LocaleUtil.getSiteDefault(),
+					null, serviceContext.fetchUser());
 
 			for (int i = 0; i < jsonArray.length(); i++) {
 				JSONObject objectEntryJSONObject = jsonArray.getJSONObject(i);
