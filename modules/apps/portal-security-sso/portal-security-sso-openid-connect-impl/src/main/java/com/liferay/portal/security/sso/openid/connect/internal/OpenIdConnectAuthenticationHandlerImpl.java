@@ -193,11 +193,10 @@ public class OpenIdConnectAuthenticationHandlerImpl
 				OpenIdConnectWebKeys.OPEN_ID_CONNECT_SESSION_ID);
 		}
 
+		CodeVerifier codeVerifier = new CodeVerifier();
 		OAuthClientEntry oAuthClientEntry =
 			_oAuthClientEntryLocalService.getOAuthClientEntry(
 				oAuthClientEntryId);
-
-		CodeVerifier codeVerifier = new CodeVerifier();
 
 		Map<String, Object> runtimeRequestParameters =
 			HashMapBuilder.<String, Object>put(
