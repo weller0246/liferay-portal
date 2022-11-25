@@ -2791,8 +2791,9 @@ public class ObjectEntryLocalServiceImpl
 				objectEntry.getObjectEntryId(), objectEntry, serviceContext);
 		}
 		finally {
-			WorkflowThreadLocal.setEnabled(workflowEnabled);
 			_skipModelListeners.set(false);
+
+			WorkflowThreadLocal.setEnabled(workflowEnabled);
 		}
 	}
 
