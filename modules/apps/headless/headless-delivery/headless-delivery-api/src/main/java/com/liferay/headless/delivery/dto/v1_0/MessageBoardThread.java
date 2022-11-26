@@ -497,7 +497,7 @@ public class MessageBoardThread implements Serializable {
 	@JsonProperty(access = JsonProperty.Access.READ_WRITE)
 	protected String[] keywords;
 
-	@Schema(description = "The date the thread was posted.")
+	@Schema
 	public Date getLastPostDate() {
 		return lastPostDate;
 	}
@@ -521,7 +521,7 @@ public class MessageBoardThread implements Serializable {
 		}
 	}
 
-	@GraphQLField(description = "The date the thread was posted.")
+	@GraphQLField
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	protected Date lastPostDate;
 

@@ -2922,8 +2922,6 @@ components:
                         type: string
                     type: array
                 lastPostDate:
-                    description:
-                        The date the thread was posted.
                     format: date-time
                     readOnly: true
                     type: string
