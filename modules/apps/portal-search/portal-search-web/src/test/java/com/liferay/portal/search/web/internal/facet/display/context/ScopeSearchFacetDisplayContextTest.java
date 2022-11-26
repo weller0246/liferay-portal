@@ -196,7 +196,7 @@ public class ScopeSearchFacetDisplayContextTest {
 	@Test
 	public void testOrderByTermFrequencyAscending() throws Exception {
 		List<TermCollector> termCollectors = _getTermCollectors(
-			new String[] {"alpha", "bravo", "delta", "charlie"},
+			new String[] {"able", "baker", "dog", "charlie"},
 			new int[] {6, 5, 4, 3});
 
 		_setUpMultipleTermCollectors(termCollectors);
@@ -211,11 +211,11 @@ public class ScopeSearchFacetDisplayContextTest {
 			bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"charlie:3|delta:4|bravo:5|alpha:6", nameFrequencyString);
+			bucketDisplayContexts.toString(), "charlie:3|dog:4|baker:5|able:6",
+			nameFrequencyString);
 
 		termCollectors = _getTermCollectors(
-			new String[] {"charlie", "delta", "bravo", "alpha"},
+			new String[] {"charlie", "dog", "baker", "able"},
 			new int[] {6, 5, 5, 4});
 
 		_setUpMultipleTermCollectors(termCollectors);
@@ -229,14 +229,14 @@ public class ScopeSearchFacetDisplayContextTest {
 		nameFrequencyString = _buildNameFrequencyString(bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"alpha:4|bravo:5|delta:5|charlie:6", nameFrequencyString);
+			bucketDisplayContexts.toString(), "able:4|baker:5|dog:5|charlie:6",
+			nameFrequencyString);
 	}
 
 	@Test
 	public void testOrderByTermFrequencyDescending() throws Exception {
 		List<TermCollector> termCollectors = _getTermCollectors(
-			new String[] {"alpha", "charlie", "bravo", "delta"},
+			new String[] {"able", "charlie", "baker", "dog"},
 			new int[] {3, 4, 5, 6});
 
 		_setUpMultipleTermCollectors(termCollectors);
@@ -251,11 +251,11 @@ public class ScopeSearchFacetDisplayContextTest {
 			bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"delta:6|bravo:5|charlie:4|alpha:3", nameFrequencyString);
+			bucketDisplayContexts.toString(), "dog:6|baker:5|charlie:4|able:3",
+			nameFrequencyString);
 
 		termCollectors = _getTermCollectors(
-			new String[] {"alpha", "delta", "bravo", "charlie"},
+			new String[] {"able", "dog", "baker", "charlie"},
 			new int[] {4, 5, 5, 6});
 
 		_setUpMultipleTermCollectors(termCollectors);
@@ -269,14 +269,14 @@ public class ScopeSearchFacetDisplayContextTest {
 		nameFrequencyString = _buildNameFrequencyString(bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"charlie:6|bravo:5|delta:5|alpha:4", nameFrequencyString);
+			bucketDisplayContexts.toString(), "charlie:6|baker:5|dog:5|able:4",
+			nameFrequencyString);
 	}
 
 	@Test
 	public void testOrderByTermValueAscending() throws Exception {
 		List<TermCollector> termCollectors = _getTermCollectors(
-			"bravo", "delta", "alpha", "charlie");
+			"baker", "dog", "able", "charlie");
 
 		_setUpMultipleTermCollectors(termCollectors);
 
@@ -290,11 +290,11 @@ public class ScopeSearchFacetDisplayContextTest {
 			bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"alpha:3|bravo:1|charlie:4|delta:2", nameFrequencyString);
+			bucketDisplayContexts.toString(), "able:3|baker:1|charlie:4|dog:2",
+			nameFrequencyString);
 
 		termCollectors = _getTermCollectors(
-			"bravo", "alpha", "bravo", "charlie");
+			"baker", "able", "baker", "charlie");
 
 		_setUpMultipleTermCollectors(termCollectors);
 
@@ -308,13 +308,13 @@ public class ScopeSearchFacetDisplayContextTest {
 
 		Assert.assertEquals(
 			bucketDisplayContexts.toString(),
-			"alpha:2|bravo:3|bravo:1|charlie:4", nameFrequencyString);
+			"able:2|baker:3|baker:1|charlie:4", nameFrequencyString);
 	}
 
 	@Test
 	public void testOrderByTermValueDescending() throws Exception {
 		List<TermCollector> termCollectors = _getTermCollectors(
-			"bravo", "delta", "alpha", "charlie");
+			"baker", "dog", "able", "charlie");
 
 		_setUpMultipleTermCollectors(termCollectors);
 
@@ -328,11 +328,11 @@ public class ScopeSearchFacetDisplayContextTest {
 			bucketDisplayContexts);
 
 		Assert.assertEquals(
-			bucketDisplayContexts.toString(),
-			"delta:2|charlie:4|bravo:1|alpha:3", nameFrequencyString);
+			bucketDisplayContexts.toString(), "dog:2|charlie:4|baker:1|able:3",
+			nameFrequencyString);
 
 		termCollectors = _getTermCollectors(
-			"bravo", "alpha", "bravo", "charlie");
+			"baker", "able", "baker", "charlie");
 
 		_setUpMultipleTermCollectors(termCollectors);
 
@@ -346,7 +346,7 @@ public class ScopeSearchFacetDisplayContextTest {
 
 		Assert.assertEquals(
 			bucketDisplayContexts.toString(),
-			"charlie:4|bravo:3|bravo:1|alpha:2", nameFrequencyString);
+			"charlie:4|baker:3|baker:1|able:2", nameFrequencyString);
 	}
 
 	protected ScopeSearchFacetDisplayContext createDisplayContext(
