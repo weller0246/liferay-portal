@@ -130,8 +130,8 @@ const PatternField = ({
 								Liferay.Language.get(
 									'destination-url-error-help-message'
 								),
-								strings.absoluteUrl,
-								strings.relativeUrl
+								strings.absoluteURL,
+								strings.relativeURL
 							)}
 						</small>
 					</ClayForm.FeedbackGroup>
@@ -241,8 +241,8 @@ RedirectPattern.propTypes = {
 	),
 	portletNamespace: PropTypes.string.isRequired,
 	strings: PropTypes.shape({
-		absoluteUrl: PropTypes.string,
-		relativeUrl: PropTypes.string,
+		absoluteURL: PropTypes.string,
+		relativeURL: PropTypes.string,
 	}),
 };
 

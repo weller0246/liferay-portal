@@ -78,9 +78,9 @@ public class RedirectPatternConfigurationDisplayContext {
 		).put(
 			"strings",
 			HashMapBuilder.put(
-				"absoluteUrl", PortalUtil.getPortalURL(_httpServletRequest)
+				"absoluteURL", PortalUtil.getPortalURL(_httpServletRequest)
 			).put(
-				"relativeUrl",
+				"relativeURL",
 				PropsValues.DEFAULT_GUEST_PUBLIC_LAYOUT_FRIENDLY_URL
 			).build()
 		).build();
