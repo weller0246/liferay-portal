@@ -116,14 +116,14 @@ public class PortalImplLocalizedFriendlyURLTest {
 
 	@Test
 	public void testIncludeI18nPathCustomLocaleAlgorithm0() throws Exception {
-		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
 			_group.getCompanyId());
 
 		try {
-			preferences.setValue(
+			portletPreferences.setValue(
 				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE, String.valueOf(0));
 
-			preferences.store();
+			portletPreferences.store();
 
 			_assertLocalizedSiteLayoutFriendlyURL(
 				_group.getGroupId(),
@@ -133,7 +133,8 @@ public class PortalImplLocalizedFriendlyURLTest {
 				false);
 		}
 		finally {
-			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
+			portletPreferences.reset(
+				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
 	}
 
@@ -179,14 +180,14 @@ public class PortalImplLocalizedFriendlyURLTest {
 
 	@Test
 	public void testIncludeI18nPathDefaultLocaleAlgorithm0() throws Exception {
-		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
 			_group.getCompanyId());
 
 		try {
-			preferences.setValue(
+			portletPreferences.setValue(
 				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE, String.valueOf(0));
 
-			preferences.store();
+			portletPreferences.store();
 
 			_assertLocalizedSiteLayoutFriendlyURL(
 				_group.getGroupId(),
@@ -195,20 +196,21 @@ public class PortalImplLocalizedFriendlyURLTest {
 				"/home", LocaleUtil.US, LocaleUtil.US, "/home", false);
 		}
 		finally {
-			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
+			portletPreferences.reset(
+				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
 	}
 
 	@Test
 	public void testIncludeI18nPathDefaultLocaleAlgorithm1() throws Exception {
-		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
 			_group.getCompanyId());
 
 		try {
-			preferences.setValue(
+			portletPreferences.setValue(
 				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE, String.valueOf(1));
 
-			preferences.store();
+			portletPreferences.store();
 
 			_assertLocalizedSiteLayoutFriendlyURL(
 				_group.getGroupId(),
@@ -217,7 +219,8 @@ public class PortalImplLocalizedFriendlyURLTest {
 				"/home", LocaleUtil.US, LocaleUtil.US, "/home", false);
 		}
 		finally {
-			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
+			portletPreferences.reset(
+				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
 	}
 

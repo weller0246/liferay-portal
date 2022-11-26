@@ -90,14 +90,14 @@ public class FileEntryInfoDisplayContributorTest {
 
 	@Test
 	public void testDisplayPageURLCustomLocaleAlgorithm1() throws Exception {
-		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
 			_group.getCompanyId());
 
 		try {
-			preferences.setValue(
+			portletPreferences.setValue(
 				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE, String.valueOf(1));
 
-			preferences.store();
+			portletPreferences.store();
 
 			_withAndWithoutAssetEntry(
 				fileEntry -> {
@@ -121,7 +121,8 @@ public class FileEntryInfoDisplayContributorTest {
 				});
 		}
 		finally {
-			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
+			portletPreferences.reset(
+				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
 	}
 
@@ -161,14 +162,14 @@ public class FileEntryInfoDisplayContributorTest {
 
 	@Test
 	public void testDisplayPageURLCustomLocaleAlgorithm2() throws Exception {
-		PortletPreferences preferences = PrefsPropsUtil.getPreferences(
+		PortletPreferences portletPreferences = PrefsPropsUtil.getPreferences(
 			_group.getCompanyId());
 
 		try {
-			preferences.setValue(
+			portletPreferences.setValue(
 				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE, String.valueOf(2));
 
-			preferences.store();
+			portletPreferences.store();
 
 			_withAndWithoutAssetEntry(
 				fileEntry -> {
@@ -192,7 +193,8 @@ public class FileEntryInfoDisplayContributorTest {
 				});
 		}
 		finally {
-			preferences.reset(PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
+			portletPreferences.reset(
+				PropsKeys.LOCALE_PREPEND_FRIENDLY_URL_STYLE);
 		}
 	}
 
