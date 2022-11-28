@@ -42,6 +42,8 @@ public class ClientExtension {
 	}
 
 	public Map<String, Object> toJSONMap() throws Exception {
+		Map<String, Object> jsonMap = new HashMap<>();
+
 		Map<String, Object> config = new HashMap<>();
 
 		config.put("baseURL", "${portalURL}/o/" + projectName);
@@ -78,8 +80,6 @@ public class ClientExtension {
 			});
 
 		config.put("typeSettings", _encode(_typeSettings));
-
-		Map<String, Object> jsonMap = new HashMap<>();
 
 		jsonMap.put(pid + "~" + id, config);
 
