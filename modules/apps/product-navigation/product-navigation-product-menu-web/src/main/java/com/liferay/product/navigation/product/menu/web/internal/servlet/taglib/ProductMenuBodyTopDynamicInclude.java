@@ -121,7 +121,7 @@ public class ProductMenuBodyTopDynamicInclude extends BaseDynamicInclude {
 					ProductNavigationProductMenuPortletKeys.
 						PRODUCT_NAVIGATION_PRODUCT_MENU));
 			jspWriter.write(
-				"sidenavSliderId\" role=\"tabpanel\" tabindex=\"-1\" >");
+				"sidenavSliderId\" role=\"tabpanel\" tabindex=\"-1\">");
 			jspWriter.write(
 				"<div class=\"product-menu sidebar sidenav-menu\">");
 
