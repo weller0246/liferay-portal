@@ -103,6 +103,8 @@ public class ObjectEntryEntityModelTest {
 			new ObjectFieldBuilder(
 			).businessType(
 				ObjectFieldConstants.BUSINESS_TYPE_ATTACHMENT
+			).dbType(
+				ObjectFieldConstants.DB_TYPE_LONG
 			).name(
 				"a" + RandomTestUtil.randomString()
 			).objectFieldSettings(
@@ -112,8 +114,6 @@ public class ObjectEntryEntityModelTest {
 					_createObjectFieldSetting("maximumFileSize", "100"))
 			).labelMap(
 				LocalizedMapUtil.getLocalizedMap(value)
-			).dbType(
-				ObjectFieldConstants.DB_TYPE_LONG
 			).build(),
 			_createObjectField(ObjectFieldConstants.DB_TYPE_BIG_DECIMAL),
 			_createObjectField(ObjectFieldConstants.DB_TYPE_BOOLEAN),
@@ -283,13 +283,13 @@ public class ObjectEntryEntityModelTest {
 				expectedObjectRelationshipERCFieldName,
 				locale -> expectedObjectFieldName));
 
-		String expectedRelatedObjectDefinitionIdName =
+		String expectedRelatedObjectDefinitionIdObjectFieldName =
 			pkObjectFieldName.replaceFirst("c_", "");
 
 		expectedEntityFieldsMap.put(
-			expectedRelatedObjectDefinitionIdName,
+			expectedRelatedObjectDefinitionIdObjectFieldName,
 			new IdEntityField(
-				expectedRelatedObjectDefinitionIdName,
+				expectedRelatedObjectDefinitionIdObjectFieldName,
 				locale -> expectedObjectFieldName, String::valueOf));
 
 		return expectedEntityFieldsMap;
@@ -345,14 +345,14 @@ public class ObjectEntryEntityModelTest {
 				ObjectDefinitionConstants.SCOPE_COMPANY,
 				ObjectDefinitionConstants.STORAGE_TYPE_DEFAULT, objectFields);
 
-		ObjectDefinition objectDefinitionPublished =
+		objectDefinition =
 			_objectDefinitionLocalService.publishCustomObjectDefinition(
 				TestPropsValues.getUserId(),
 				objectDefinition.getObjectDefinitionId());
 
-		_objectDefinitions.add(objectDefinitionPublished);
+		_objectDefinitions.add(objectDefinition);
 
-		return objectDefinitionPublished;
+		return objectDefinition;
 	}
 
 	private EntityField _toExpectedEntityField(ObjectField objectField) {
