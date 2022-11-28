@@ -1284,7 +1284,6 @@ public class AssetPublisherDisplayContext {
 		ItemSelector itemSelector =
 			(ItemSelector)_httpServletRequest.getAttribute(
 				AssetPublisherWebKeys.ITEM_SELECTOR);
-
 		String itemSelectorEventName =
 			StringPool.UNDERLINE + HtmlUtil.escapeJS(getPortletResource()) +
 				"_selectSite";
