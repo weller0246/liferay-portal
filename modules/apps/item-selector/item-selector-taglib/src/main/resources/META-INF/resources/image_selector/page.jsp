@@ -17,7 +17,7 @@
 <%@ include file="/image_selector/init.jsp" %>
 
 <%
-boolean draggable = GetterUtil.getBoolean(request.getAttribute("liferay-ui:image-selector:isDraggable"));
+boolean draggable = GetterUtil.getBoolean(request.getAttribute("liferay-ui:image-selector:draggable"));
 long fileEntryId = GetterUtil.getLong(request.getAttribute("liferay-ui:image-selector:fileEntryId"));
 String imageCropDirection = GetterUtil.getString((String)request.getAttribute("liferay-ui:image-selector:imageCropDirection"), "none");
 String imageCropRegion = GetterUtil.getString((String)request.getAttribute("liferay-ui:image-selector:imageCropRegion"));
