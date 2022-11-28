@@ -44,15 +44,15 @@ public class ClientExtension {
 	public Map<String, Object> toJSONMap() throws Exception {
 		Map<String, Object> jsonMap = new HashMap<>();
 
-		Map<String, Object> config = new HashMap<>();
+		Map<String, Object> configMap = new HashMap<>();
 
-		config.put("baseURL", "${portalURL}/o/" + projectName);
-		config.put("description", description);
-		config.put("dxp.lxc.liferay.com.virtualInstanceId", "default");
-		config.put("name", name);
-		config.put("properties", _encode(properties));
-		config.put("sourceCodeURL", sourceCodeURL);
-		config.put("type", type);
+		configMap.put("baseURL", "${portalURL}/o/" + projectName);
+		configMap.put("description", description);
+		configMap.put("dxp.lxc.liferay.com.virtualInstanceId", "default");
+		configMap.put("name", name);
+		configMap.put("properties", _encode(properties));
+		configMap.put("sourceCodeURL", sourceCodeURL);
+		configMap.put("type", type);
 
 		Properties clientExtensionProperties = _getClientExtensionProperties();
 
@@ -75,13 +75,13 @@ public class ClientExtension {
 		set.forEach(
 			entry -> {
 				if (!pid.contains("CETConfiguration")) {
-					config.put(entry.getKey(), entry.getValue());
+					configMap.put(entry.getKey(), entry.getValue());
 				}
 			});
 
-		config.put("typeSettings", _encode(_typeSettings));
+		configMap.put("typeSettings", _encode(_typeSettings));
 
-		jsonMap.put(pid + "~" + id, config);
+		jsonMap.put(pid + "~" + id, configMap);
 
 		return jsonMap;
 	}
