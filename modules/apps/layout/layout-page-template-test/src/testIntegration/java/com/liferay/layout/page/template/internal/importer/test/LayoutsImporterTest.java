@@ -203,7 +203,6 @@ public class LayoutsImporterTest {
 			Assert.assertEquals(
 				layoutPageTemplateEntryName,
 				layoutsImporterResultEntry.getName());
-
 			Assert.assertEquals(
 				LayoutsImporterResultEntry.Status.IMPORTED,
 				layoutsImporterResultEntry.getStatus());
@@ -230,7 +229,6 @@ public class LayoutsImporterTest {
 			Assert.assertEquals(
 				layoutPageTemplateEntryName,
 				layoutsImporterResultEntry.getName());
-
 			Assert.assertEquals(
 				LayoutsImporterResultEntry.Status.IMPORTED,
 				layoutsImporterResultEntry.getStatus());
