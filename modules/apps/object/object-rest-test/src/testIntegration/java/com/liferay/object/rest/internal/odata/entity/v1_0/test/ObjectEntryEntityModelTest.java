@@ -273,14 +273,14 @@ public class ObjectEntryEntityModelTest {
 				expectedObjectFieldName, locale -> expectedObjectFieldName,
 				String::valueOf));
 
-		String expectedObjectRelationshipERCFieldName =
+		String expectedObjectRelationshipERCObjectFieldName =
 			relationshipEntityFieldPrefix +
 				StringUtil.replaceLast(pkObjectFieldName, "Id", "ERC");
 
 		expectedEntityFieldsMap.put(
-			expectedObjectRelationshipERCFieldName,
+			expectedObjectRelationshipERCObjectFieldName,
 			new StringEntityField(
-				expectedObjectRelationshipERCFieldName,
+				expectedObjectRelationshipERCObjectFieldName,
 				locale -> expectedObjectFieldName));
 
 		String expectedRelatedObjectDefinitionIdObjectFieldName =
