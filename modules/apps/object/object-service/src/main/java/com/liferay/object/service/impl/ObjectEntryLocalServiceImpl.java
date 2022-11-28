@@ -2664,8 +2664,8 @@ public class ObjectEntryLocalServiceImpl
 			// Remove the first [ and the last ] in
 			// "[pickListEntryKey1, pickListEntryKey2, pickListEntryKey3]"
 
-			if (StringUtil.startsWith(valueString, StringPool.OPEN_BRACKET) &&
-				StringUtil.endsWith(valueString, StringPool.CLOSE_BRACKET)) {
+			if (StringUtil.endsWith(valueString, StringPool.CLOSE_BRACKET) &&
+				StringUtil.startsWith(valueString, StringPool.OPEN_BRACKET)) {
 
 				valueString = valueString.substring(
 					1, valueString.length() - 1);
