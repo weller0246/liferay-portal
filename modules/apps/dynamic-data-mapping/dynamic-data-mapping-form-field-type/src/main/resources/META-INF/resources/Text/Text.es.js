@@ -152,8 +152,9 @@ const Text = ({
 
 			event.target.value = value.replace(regex, '');
 		}
-		setValue(event.target.value);
+
 		onChange(event);
+		setValue(event.target.value);
 	};
 
 	return (
