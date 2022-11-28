@@ -63,16 +63,6 @@ public class CommerceAccountRoleUpgradeProcess extends UpgradeProcess {
 				actionIds));
 	}
 
-	private void _addResourcePermission(
-			long companyId, Role role, String resourceName, String actionId)
-		throws PortalException {
-
-		_resourcePermissionLocalService.addResourcePermission(
-			companyId, resourceName, ResourceConstants.SCOPE_COMPANY,
-			String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
-			role.getRoleId(), actionId);
-	}
-
 	private void _updateCommerceAccountRoles(
 			long companyId, String name, String resourceName,
 			List<String> actionIds)
@@ -85,7 +75,10 @@ public class CommerceAccountRoleUpgradeProcess extends UpgradeProcess {
 		}
 
 		for (String actionId : actionIds) {
-			_addResourcePermission(companyId, role, resourceName, actionId);
+			_resourcePermissionLocalService.addResourcePermission(
+				companyId, resourceName, ResourceConstants.SCOPE_COMPANY,
+				String.valueOf(GroupConstants.DEFAULT_PARENT_GROUP_ID),
+				role.getRoleId(), actionId);
 		}
 	}
 
