@@ -191,20 +191,20 @@ public class DataDefinitionResourceImpl extends BaseDataDefinitionResourceImpl {
 					dataDefinitionId);
 		}
 
-		List<DDMStructure> ddmStructures =
-			_ddmStructureLocalService.getChildrenStructures(dataDefinitionId);
-
-		if (!ddmStructures.isEmpty()) {
-			throw new RequiredStructureException.
-				MustNotDeleteStructureThatHasChild(dataDefinitionId);
-		}
-
 		List<DDMTemplate> ddmTemplates = _ddmTemplateLocalService.getTemplates(
 			dataDefinitionId);
 
 		if (!ddmTemplates.isEmpty()) {
 			throw new RequiredStructureException.
 				MustNotDeleteStructureReferencedByTemplates(dataDefinitionId);
+		}
+
+		List<DDMStructure> ddmStructures =
+			_ddmStructureLocalService.getChildrenStructures(dataDefinitionId);
+
+		if (!ddmStructures.isEmpty()) {
+			throw new RequiredStructureException.
+				MustNotDeleteStructureThatHasChild(dataDefinitionId);
 		}
 
 		DataLayoutResource dataLayoutResource = _getDataLayoutResource(false);
