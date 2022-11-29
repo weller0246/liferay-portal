@@ -64,20 +64,12 @@ public abstract class BaseDataFetcher implements DataFetcher<Object> {
 				_getHttpServletRequest(dataFetchingEnvironment),
 				_getHttpServletResponse(dataFetchingEnvironment));
 		}
-		catch (InvocationTargetException invocationTargetException) {
-			if (_log.isWarnEnabled()) {
-				_log.warn(invocationTargetException);
-			}
-
-			throw new RuntimeException(
-				invocationTargetException.getTargetException());
-		}
 		catch (Exception exception) {
 			if (_log.isWarnEnabled()) {
 				_log.warn(exception);
 			}
 
-			throw new RuntimeException(exception);
+			throw exception;
 		}
 	}
 
