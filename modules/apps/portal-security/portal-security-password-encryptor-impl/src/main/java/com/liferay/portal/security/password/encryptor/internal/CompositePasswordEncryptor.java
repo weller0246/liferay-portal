@@ -52,11 +52,11 @@ public class CompositePasswordEncryptor
 		boolean prependAlgorithm = true;
 
 		if (upgradeHashSecurity) {
-			algorithm = getDefaultPasswordAlgorithmType();
+			algorithm = getDefaultPasswordEncryptionAlgorithm();
 			encryptedPassword = null;
 		}
 		else {
-			String encryptedPasswordAlgorithm = _getPasswordAlgorithmType(
+			String encryptedPasswordAlgorithm = _getEncryptedPasswordAlgorithm(
 				encryptedPassword);
 
 			if (Validator.isNotNull(encryptedPasswordAlgorithm)) {
@@ -81,7 +81,7 @@ public class CompositePasswordEncryptor
 			}
 
 			if (Validator.isNull(algorithm)) {
-				algorithm = getDefaultPasswordAlgorithmType();
+				algorithm = getDefaultPasswordEncryptionAlgorithm();
 			}
 		}
 
@@ -131,7 +131,7 @@ public class CompositePasswordEncryptor
 		return algorithm;
 	}
 
-	private String _getPasswordAlgorithmType(String encryptedPassword) {
+	private String _getEncryptedPasswordAlgorithm(String encryptedPassword) {
 		String legacyAlgorithm =
 			PropsValues.PASSWORDS_ENCRYPTION_ALGORITHM_LEGACY;
 
@@ -161,7 +161,7 @@ public class CompositePasswordEncryptor
 				return legacyAlgorithm;
 			}
 
-			return getDefaultPasswordAlgorithmType();
+			return getDefaultPasswordEncryptionAlgorithm();
 		}
 		else if (Validator.isNotNull(encryptedPassword) &&
 				 (encryptedPassword.charAt(0) == CharPool.OPEN_CURLY_BRACE)) {

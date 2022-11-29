@@ -31,7 +31,7 @@ public abstract class BasePasswordEncryptor implements PasswordEncryptor {
 		throws PwdEncryptorException {
 
 		return encrypt(
-			getDefaultPasswordAlgorithmType(), plainTextPassword,
+			getDefaultPasswordEncryptionAlgorithm(), plainTextPassword,
 			encryptedPassword);
 	}
 
@@ -45,7 +45,7 @@ public abstract class BasePasswordEncryptor implements PasswordEncryptor {
 	}
 
 	@Override
-	public String getDefaultPasswordAlgorithmType() {
+	public String getDefaultPasswordEncryptionAlgorithm() {
 		return _PASSWORDS_ENCRYPTION_ALGORITHM;
 	}
 

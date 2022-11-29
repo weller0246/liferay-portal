@@ -78,8 +78,8 @@ public class PasswordEncryptorUtil {
 			algorithm, plainTextPassword, encryptedPassword);
 	}
 
-	public static String getDefaultPasswordAlgorithmType() {
-		return _passwordEncryptor.getDefaultPasswordAlgorithmType();
+	public static String getDefaultPasswordEncryptionAlgorithm() {
+		return _passwordEncryptor.getDefaultPasswordEncryptionAlgorithm();
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
