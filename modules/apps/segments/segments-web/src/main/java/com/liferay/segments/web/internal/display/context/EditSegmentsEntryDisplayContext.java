@@ -60,7 +60,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.portlet.PortletURL;
 import javax.portlet.RenderRequest;
@@ -323,6 +322,12 @@ public class EditSegmentsEntryDisplayContext {
 			segmentsEntry.getName(), siteDefaultLocale);
 	}
 
+	private String _getGroupDescriptiveName() throws Exception {
+		Group group = _groupLocalService.getGroup(_getGroupId());
+
+		return group.getDescriptiveName(_locale);
+	}
+
 	private long _getGroupId() throws PortalException {
 		return BeanParamUtil.getLong(
 			_getSegmentsEntry(), _httpServletRequest, "groupId",
@@ -450,29 +455,12 @@ public class EditSegmentsEntryDisplayContext {
 		).put(
 			"requestMembersCountURL", _getSegmentsEntryClassPKsCountURL()
 		).put(
-			"scopeName", _getScopeName()
+			"scopeName", _getGroupDescriptiveName()
 		).put(
 			"segmentsConfigurationURL", _getSegmentsCompanyConfigurationURL()
 		).put(
 			"showInEditMode", _isShowInEditMode()
 		).build();
-	}
-
-	private String _getScopeName() throws Exception {
-		Group group = _groupLocalService.getGroup(_getGroupId());
-
-		try {
-			return Optional.ofNullable(
-				group.getDescriptiveName(_locale)
-			).orElseGet(
-				() -> group.getName(_locale)
-			);
-		}
-		catch (PortalException portalException) {
-			_log.error(portalException);
-
-			return group.getName(_locale);
-		}
 	}
 
 	private String _getSegmentsCompanyConfigurationURL() {
