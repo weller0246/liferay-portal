@@ -255,11 +255,11 @@ public class CompositePasswordEncryptorTest {
 			String prependedAlgorithm)
 		throws Exception {
 
+		testEncrypt(algorithm);
+
 		String encryptedPasswordWithPrependedAlgorithm = StringBundler.concat(
 			CharPool.OPEN_CURLY_BRACE, prependedAlgorithm,
 			CharPool.CLOSE_CURLY_BRACE, encryptedPassword);
-
-		testEncrypt(algorithm);
 
 		testEncrypt(plainPassword, encryptedPasswordWithPrependedAlgorithm);
 
