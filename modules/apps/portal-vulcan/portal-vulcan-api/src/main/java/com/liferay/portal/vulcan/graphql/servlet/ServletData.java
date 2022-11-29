@@ -35,8 +35,8 @@ public interface ServletData {
 
 	public Object getQuery();
 
-	public default ObjectValuePair<Class<?>, String> getResourceMethodPair(
-		String methodName, boolean mutation) {
+	public default ObjectValuePair<Class<?>, String>
+		getResourceMethodObjectValuePair(String methodName, boolean mutation) {
 
 		return null;
 	}

@@ -90,22 +90,22 @@ public class ServletDataImpl implements ServletData {
 		</#if>
 	</#list>
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(String methodName, boolean mutation) {
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(String methodName, boolean mutation) {
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get("mutation#" + methodName);
 		}
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
-	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodPairs = new HashMap<>();
+	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodObjectValuePairs = new HashMap<>();
 
 	<#if mutationJavaMethodSignatures?has_content || queryJavaMethodSignatures?has_content>
 		static {
 		<#list mutationJavaMethodSignatures as javaMethodSignature>
-			_resourceMethodPairs.put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+			_resourceMethodObjectValuePairs.put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
 		</#list>
 		<#list queryJavaMethodSignatures as javaMethodSignature>
-			_resourceMethodPairs.put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+			_resourceMethodObjectValuePairs.put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
 		</#list>
 		}
 	</#if>
