@@ -180,7 +180,7 @@ public class AMImageValidatorImpl implements AMImageValidator {
 
 						if (_log.isDebugEnabled()) {
 							_log.debug(
-								entry.getValue() + " has and invalid height");
+								entry.getValue() + " has an invalid height");
 						}
 
 						return false;
