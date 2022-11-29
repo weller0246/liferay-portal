@@ -140,13 +140,13 @@ public class CompositePasswordEncryptor
 				_log.debug(
 					StringBundler.concat(
 						"Using legacy detection scheme for algorithm ",
-						legacyAlgorithm, " with empty current password"));
+						legacyAlgorithm, " with empty password"));
 			}
 			else {
 				_log.debug(
 					StringBundler.concat(
 						"Using legacy detection scheme for algorithm ",
-						legacyAlgorithm, " with provided current password"));
+						legacyAlgorithm, " with provided password"));
 			}
 		}
 
