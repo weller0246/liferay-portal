@@ -21,8 +21,6 @@ import java.util.Map;
 
 import javax.annotation.Generated;
 
-import javax.ws.rs.container.ResourceInfo;
-
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentServiceObjects;
 import org.osgi.service.component.annotations.Activate;
