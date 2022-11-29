@@ -247,11 +247,11 @@ public class CompositePasswordEncryptorTest {
 
 		testEncrypt(algorithm);
 
-		String encryptedPasswordWithPrependedAlgorithm = StringBundler.concat(
-			CharPool.OPEN_CURLY_BRACE, prependedAlgorithm,
-			CharPool.CLOSE_CURLY_BRACE, encryptedPassword);
-
-		testEncrypt(plainPassword, encryptedPasswordWithPrependedAlgorithm);
+		testEncrypt(
+			plainPassword,
+			StringBundler.concat(
+				CharPool.OPEN_CURLY_BRACE, prependedAlgorithm,
+				CharPool.CLOSE_CURLY_BRACE, encryptedPassword));
 
 		testLegacyEncrypt(algorithm, plainPassword, encryptedPassword);
 	}
