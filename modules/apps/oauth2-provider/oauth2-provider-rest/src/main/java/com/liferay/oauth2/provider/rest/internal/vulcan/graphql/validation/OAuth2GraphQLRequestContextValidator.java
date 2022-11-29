@@ -12,7 +12,7 @@
  * details.
  */
 
-package com.liferay.oauth2.provider.rest.internal.graphql;
+package com.liferay.oauth2.provider.rest.internal.vulcan.graphql.validation;
 
 import com.liferay.oauth2.provider.rest.internal.scope.logic.ScopeLogic;
 import com.liferay.oauth2.provider.scope.ScopeChecker;
