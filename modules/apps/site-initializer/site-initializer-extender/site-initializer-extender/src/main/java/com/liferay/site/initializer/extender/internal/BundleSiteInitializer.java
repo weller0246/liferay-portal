@@ -3327,12 +3327,10 @@ public class BundleSiteInitializer implements SiteInitializer {
 		_addRoles(
 			objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 			serviceContext);
-
 		_addUserAccounts(serviceContext);
 
-		_addUserRoles(serviceContext);
-
 		_addRolesAssignments(serviceContext);
+		_addUserRoles(serviceContext);
 	}
 
 	private void _addPortletSettings(ServiceContext serviceContext)
@@ -3546,7 +3544,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 				if (_log.isWarnEnabled()) {
 					if (_log.isWarnEnabled()) {
 						_log.warn(
-							"No role group found with name " +
+							"No role found with name " +
 								jsonObject.getString("roleName"));
 					}
 				}
