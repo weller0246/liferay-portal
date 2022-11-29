@@ -83,14 +83,6 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	<#assign schemaNames = mutationSchemaNames />
-
-	<#list querySchemaNames as schemaName>
-		<#if !schemaNames?seq_contains(schemaName)>
-			<#assign schemaNames = schemaNames + [schemaName] />
-		</#if>
-	</#list>
-
 	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(String methodName, boolean mutation) {
 		if (mutation) {
 			return _resourceMethodObjectValuePairs.get("mutation#" + methodName);
@@ -110,6 +102,14 @@ public class ServletDataImpl implements ServletData {
 			</#list>
 		}
 	};
+
+	<#assign schemaNames = mutationSchemaNames />
+
+	<#list querySchemaNames as schemaName>
+		<#if !schemaNames?seq_contains(schemaName)>
+			<#assign schemaNames = schemaNames + [schemaName] />
+		</#if>
+	</#list>
 
 	<#list schemaNames as schemaName>
 		@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
