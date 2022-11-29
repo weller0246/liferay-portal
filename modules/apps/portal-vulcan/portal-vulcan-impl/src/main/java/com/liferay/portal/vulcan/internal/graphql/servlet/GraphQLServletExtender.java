@@ -560,10 +560,8 @@ public class GraphQLServletExtender {
 					}
 
 				});
-
 		_graphQLRequestContextValidators = ServiceTrackerListFactory.open(
 			bundleContext, GraphQLRequestContextValidator.class);
-
 		_servletContextHelperServiceRegistration =
 			bundleContext.registerService(
 				ServletContextHelper.class,
@@ -670,11 +668,11 @@ public class GraphQLServletExtender {
 	protected void deactivate() {
 		_graphQLRequestContextValidators.close();
 
+		_servletContextHelperServiceRegistration.unregister();
+
 		_servletDataServiceTracker.close();
 
 		_servletServiceRegistration.unregister();
-
-		_servletContextHelperServiceRegistration.unregister();
 	}
 
 	private static GraphQLFieldDefinition _addField(
