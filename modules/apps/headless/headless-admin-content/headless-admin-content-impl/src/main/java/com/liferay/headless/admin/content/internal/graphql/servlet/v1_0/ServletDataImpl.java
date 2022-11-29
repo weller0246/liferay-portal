@@ -82,61 +82,64 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createSitePageDefinitionPreview",
+						new ObjectValuePair<>(
+							PageDefinitionResourceImpl.class,
+							"postSitePageDefinitionPreview"));
+					put(
+						"mutation#createSiteStructuredContentDraft",
+						new ObjectValuePair<>(
+							StructuredContentResourceImpl.class,
+							"postSiteStructuredContentDraft"));
+					put(
+						"mutation#deleteStructuredContentByVersion",
+						new ObjectValuePair<>(
+							StructuredContentResourceImpl.class,
+							"deleteStructuredContentByVersion"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createSitePageDefinitionPreview",
-			new ObjectValuePair<>(
-				PageDefinitionResourceImpl.class,
-				"postSitePageDefinitionPreview"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteStructuredContentDraft",
-			new ObjectValuePair<>(
-				StructuredContentResourceImpl.class,
-				"postSiteStructuredContentDraft"));
-		_resourceMethodPairs.put(
-			"mutation#deleteStructuredContentByVersion",
-			new ObjectValuePair<>(
-				StructuredContentResourceImpl.class,
-				"deleteStructuredContentByVersion"));
-		_resourceMethodPairs.put(
-			"query#displayPageTemplates",
-			new ObjectValuePair<>(
-				DisplayPageTemplateResourceImpl.class,
-				"getSiteDisplayPageTemplatesPage"));
-		_resourceMethodPairs.put(
-			"query#displayPageTemplate",
-			new ObjectValuePair<>(
-				DisplayPageTemplateResourceImpl.class,
-				"getSiteDisplayPageTemplate"));
-		_resourceMethodPairs.put(
-			"query#structuredContents",
-			new ObjectValuePair<>(
-				StructuredContentResourceImpl.class,
-				"getSiteStructuredContentsPage"));
-		_resourceMethodPairs.put(
-			"query#structuredContentByVersion",
-			new ObjectValuePair<>(
-				StructuredContentResourceImpl.class,
-				"getStructuredContentByVersion"));
-		_resourceMethodPairs.put(
-			"query#structuredContentsVersions",
-			new ObjectValuePair<>(
-				StructuredContentResourceImpl.class,
-				"getStructuredContentsVersionsPage"));
-	}
+					put(
+						"query#displayPageTemplates",
+						new ObjectValuePair<>(
+							DisplayPageTemplateResourceImpl.class,
+							"getSiteDisplayPageTemplatesPage"));
+					put(
+						"query#displayPageTemplate",
+						new ObjectValuePair<>(
+							DisplayPageTemplateResourceImpl.class,
+							"getSiteDisplayPageTemplate"));
+					put(
+						"query#structuredContents",
+						new ObjectValuePair<>(
+							StructuredContentResourceImpl.class,
+							"getSiteStructuredContentsPage"));
+					put(
+						"query#structuredContentByVersion",
+						new ObjectValuePair<>(
+							StructuredContentResourceImpl.class,
+							"getStructuredContentByVersion"));
+					put(
+						"query#structuredContentsVersions",
+						new ObjectValuePair<>(
+							StructuredContentResourceImpl.class,
+							"getStructuredContentsVersionsPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<PageDefinitionResource>

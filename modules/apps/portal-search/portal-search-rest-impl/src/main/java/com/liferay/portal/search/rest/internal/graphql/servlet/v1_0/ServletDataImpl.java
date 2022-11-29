@@ -66,25 +66,28 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
-
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createSuggestionsPage",
-			new ObjectValuePair<>(
-				SuggestionResourceImpl.class, "postSuggestionsPage"));
-	}
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createSuggestionsPage",
+						new ObjectValuePair<>(
+							SuggestionResourceImpl.class,
+							"postSuggestionsPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<SuggestionResource>

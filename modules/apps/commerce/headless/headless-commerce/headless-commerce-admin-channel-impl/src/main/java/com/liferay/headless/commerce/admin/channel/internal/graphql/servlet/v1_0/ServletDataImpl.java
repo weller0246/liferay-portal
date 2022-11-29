@@ -110,183 +110,194 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "postChannel"));
+					put(
+						"mutation#createChannelBatch",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "postChannelBatch"));
+					put(
+						"mutation#deleteChannelByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class,
+							"deleteChannelByExternalReferenceCode"));
+					put(
+						"mutation#patchChannelByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class,
+							"patchChannelByExternalReferenceCode"));
+					put(
+						"mutation#updateChannelByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class,
+							"putChannelByExternalReferenceCode"));
+					put(
+						"mutation#deleteChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "deleteChannel"));
+					put(
+						"mutation#deleteChannelBatch",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "deleteChannelBatch"));
+					put(
+						"mutation#patchChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "patchChannel"));
+					put(
+						"mutation#updateChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "putChannel"));
+					put(
+						"mutation#updateChannelBatch",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "putChannelBatch"));
+					put(
+						"mutation#deletePaymentMethodGroupRelOrderType",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelOrderTypeResourceImpl.class,
+							"deletePaymentMethodGroupRelOrderType"));
+					put(
+						"mutation#deletePaymentMethodGroupRelOrderTypeBatch",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelOrderTypeResourceImpl.class,
+							"deletePaymentMethodGroupRelOrderTypeBatch"));
+					put(
+						"mutation#createPaymentMethodGroupRelIdPaymentMethodGroupRelOrderType",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelOrderTypeResourceImpl.class,
+							"postPaymentMethodGroupRelIdPaymentMethodGroupRelOrderType"));
+					put(
+						"mutation#deletePaymentMethodGroupRelTerm",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelTermResourceImpl.class,
+							"deletePaymentMethodGroupRelTerm"));
+					put(
+						"mutation#deletePaymentMethodGroupRelTermBatch",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelTermResourceImpl.class,
+							"deletePaymentMethodGroupRelTermBatch"));
+					put(
+						"mutation#createPaymentMethodGroupRelIdPaymentMethodGroupRelTerm",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelTermResourceImpl.class,
+							"postPaymentMethodGroupRelIdPaymentMethodGroupRelTerm"));
+					put(
+						"mutation#deleteShippingFixedOptionOrderType",
+						new ObjectValuePair<>(
+							ShippingFixedOptionOrderTypeResourceImpl.class,
+							"deleteShippingFixedOptionOrderType"));
+					put(
+						"mutation#deleteShippingFixedOptionOrderTypeBatch",
+						new ObjectValuePair<>(
+							ShippingFixedOptionOrderTypeResourceImpl.class,
+							"deleteShippingFixedOptionOrderTypeBatch"));
+					put(
+						"mutation#createShippingFixedOptionIdShippingFixedOptionOrderType",
+						new ObjectValuePair<>(
+							ShippingFixedOptionOrderTypeResourceImpl.class,
+							"postShippingFixedOptionIdShippingFixedOptionOrderType"));
+					put(
+						"mutation#deleteShippingFixedOptionTerm",
+						new ObjectValuePair<>(
+							ShippingFixedOptionTermResourceImpl.class,
+							"deleteShippingFixedOptionTerm"));
+					put(
+						"mutation#deleteShippingFixedOptionTermBatch",
+						new ObjectValuePair<>(
+							ShippingFixedOptionTermResourceImpl.class,
+							"deleteShippingFixedOptionTermBatch"));
+					put(
+						"mutation#createShippingFixedOptionIdShippingFixedOptionTerm",
+						new ObjectValuePair<>(
+							ShippingFixedOptionTermResourceImpl.class,
+							"postShippingFixedOptionIdShippingFixedOptionTerm"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "postChannel"));
-		_resourceMethodPairs.put(
-			"mutation#createChannelBatch",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "postChannelBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteChannelByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class,
-				"deleteChannelByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#patchChannelByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class,
-				"patchChannelByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateChannelByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class,
-				"putChannelByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#deleteChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "deleteChannel"));
-		_resourceMethodPairs.put(
-			"mutation#deleteChannelBatch",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "deleteChannelBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "patchChannel"));
-		_resourceMethodPairs.put(
-			"mutation#updateChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "putChannel"));
-		_resourceMethodPairs.put(
-			"mutation#updateChannelBatch",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "putChannelBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deletePaymentMethodGroupRelOrderType",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelOrderTypeResourceImpl.class,
-				"deletePaymentMethodGroupRelOrderType"));
-		_resourceMethodPairs.put(
-			"mutation#deletePaymentMethodGroupRelOrderTypeBatch",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelOrderTypeResourceImpl.class,
-				"deletePaymentMethodGroupRelOrderTypeBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createPaymentMethodGroupRelIdPaymentMethodGroupRelOrderType",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelOrderTypeResourceImpl.class,
-				"postPaymentMethodGroupRelIdPaymentMethodGroupRelOrderType"));
-		_resourceMethodPairs.put(
-			"mutation#deletePaymentMethodGroupRelTerm",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelTermResourceImpl.class,
-				"deletePaymentMethodGroupRelTerm"));
-		_resourceMethodPairs.put(
-			"mutation#deletePaymentMethodGroupRelTermBatch",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelTermResourceImpl.class,
-				"deletePaymentMethodGroupRelTermBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createPaymentMethodGroupRelIdPaymentMethodGroupRelTerm",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelTermResourceImpl.class,
-				"postPaymentMethodGroupRelIdPaymentMethodGroupRelTerm"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShippingFixedOptionOrderType",
-			new ObjectValuePair<>(
-				ShippingFixedOptionOrderTypeResourceImpl.class,
-				"deleteShippingFixedOptionOrderType"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShippingFixedOptionOrderTypeBatch",
-			new ObjectValuePair<>(
-				ShippingFixedOptionOrderTypeResourceImpl.class,
-				"deleteShippingFixedOptionOrderTypeBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createShippingFixedOptionIdShippingFixedOptionOrderType",
-			new ObjectValuePair<>(
-				ShippingFixedOptionOrderTypeResourceImpl.class,
-				"postShippingFixedOptionIdShippingFixedOptionOrderType"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShippingFixedOptionTerm",
-			new ObjectValuePair<>(
-				ShippingFixedOptionTermResourceImpl.class,
-				"deleteShippingFixedOptionTerm"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShippingFixedOptionTermBatch",
-			new ObjectValuePair<>(
-				ShippingFixedOptionTermResourceImpl.class,
-				"deleteShippingFixedOptionTermBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createShippingFixedOptionIdShippingFixedOptionTerm",
-			new ObjectValuePair<>(
-				ShippingFixedOptionTermResourceImpl.class,
-				"postShippingFixedOptionIdShippingFixedOptionTerm"));
-		_resourceMethodPairs.put(
-			"query#channels",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "getChannelsPage"));
-		_resourceMethodPairs.put(
-			"query#channelByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class,
-				"getChannelByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#channel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "getChannel"));
-		_resourceMethodPairs.put(
-			"query#paymentMethodGroupRelOrderTypeOrderType",
-			new ObjectValuePair<>(
-				OrderTypeResourceImpl.class,
-				"getPaymentMethodGroupRelOrderTypeOrderType"));
-		_resourceMethodPairs.put(
-			"query#shippingFixedOptionOrderTypeOrderType",
-			new ObjectValuePair<>(
-				OrderTypeResourceImpl.class,
-				"getShippingFixedOptionOrderTypeOrderType"));
-		_resourceMethodPairs.put(
-			"query#paymentMethodGroupRelIdPaymentMethodGroupRelOrderTypes",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelOrderTypeResourceImpl.class,
-				"getPaymentMethodGroupRelIdPaymentMethodGroupRelOrderTypesPage"));
-		_resourceMethodPairs.put(
-			"query#paymentMethodGroupRelIdPaymentMethodGroupRelTerms",
-			new ObjectValuePair<>(
-				PaymentMethodGroupRelTermResourceImpl.class,
-				"getPaymentMethodGroupRelIdPaymentMethodGroupRelTermsPage"));
-		_resourceMethodPairs.put(
-			"query#shippingFixedOptionIdShippingFixedOptionOrderTypes",
-			new ObjectValuePair<>(
-				ShippingFixedOptionOrderTypeResourceImpl.class,
-				"getShippingFixedOptionIdShippingFixedOptionOrderTypesPage"));
-		_resourceMethodPairs.put(
-			"query#shippingFixedOptionIdShippingFixedOptionTerms",
-			new ObjectValuePair<>(
-				ShippingFixedOptionTermResourceImpl.class,
-				"getShippingFixedOptionIdShippingFixedOptionTermsPage"));
-		_resourceMethodPairs.put(
-			"query#channelShippingMethods",
-			new ObjectValuePair<>(
-				ShippingMethodResourceImpl.class,
-				"getChannelShippingMethodsPage"));
-		_resourceMethodPairs.put(
-			"query#taxCategories",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "getTaxCategoriesPage"));
-		_resourceMethodPairs.put(
-			"query#taxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "getTaxCategory"));
-		_resourceMethodPairs.put(
-			"query#paymentMethodGroupRelTermTerm",
-			new ObjectValuePair<>(
-				TermResourceImpl.class, "getPaymentMethodGroupRelTermTerm"));
-		_resourceMethodPairs.put(
-			"query#shippingFixedOptionTermTerm",
-			new ObjectValuePair<>(
-				TermResourceImpl.class, "getShippingFixedOptionTermTerm"));
-	}
+					put(
+						"query#channels",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "getChannelsPage"));
+					put(
+						"query#channelByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class,
+							"getChannelByExternalReferenceCode"));
+					put(
+						"query#channel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "getChannel"));
+					put(
+						"query#paymentMethodGroupRelOrderTypeOrderType",
+						new ObjectValuePair<>(
+							OrderTypeResourceImpl.class,
+							"getPaymentMethodGroupRelOrderTypeOrderType"));
+					put(
+						"query#shippingFixedOptionOrderTypeOrderType",
+						new ObjectValuePair<>(
+							OrderTypeResourceImpl.class,
+							"getShippingFixedOptionOrderTypeOrderType"));
+					put(
+						"query#paymentMethodGroupRelIdPaymentMethodGroupRelOrderTypes",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelOrderTypeResourceImpl.class,
+							"getPaymentMethodGroupRelIdPaymentMethodGroupRelOrderTypesPage"));
+					put(
+						"query#paymentMethodGroupRelIdPaymentMethodGroupRelTerms",
+						new ObjectValuePair<>(
+							PaymentMethodGroupRelTermResourceImpl.class,
+							"getPaymentMethodGroupRelIdPaymentMethodGroupRelTermsPage"));
+					put(
+						"query#shippingFixedOptionIdShippingFixedOptionOrderTypes",
+						new ObjectValuePair<>(
+							ShippingFixedOptionOrderTypeResourceImpl.class,
+							"getShippingFixedOptionIdShippingFixedOptionOrderTypesPage"));
+					put(
+						"query#shippingFixedOptionIdShippingFixedOptionTerms",
+						new ObjectValuePair<>(
+							ShippingFixedOptionTermResourceImpl.class,
+							"getShippingFixedOptionIdShippingFixedOptionTermsPage"));
+					put(
+						"query#channelShippingMethods",
+						new ObjectValuePair<>(
+							ShippingMethodResourceImpl.class,
+							"getChannelShippingMethodsPage"));
+					put(
+						"query#taxCategories",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"getTaxCategoriesPage"));
+					put(
+						"query#taxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class, "getTaxCategory"));
+					put(
+						"query#paymentMethodGroupRelTermTerm",
+						new ObjectValuePair<>(
+							TermResourceImpl.class,
+							"getPaymentMethodGroupRelTermTerm"));
+					put(
+						"query#shippingFixedOptionTermTerm",
+						new ObjectValuePair<>(
+							TermResourceImpl.class,
+							"getShippingFixedOptionTermTerm"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ChannelResource>

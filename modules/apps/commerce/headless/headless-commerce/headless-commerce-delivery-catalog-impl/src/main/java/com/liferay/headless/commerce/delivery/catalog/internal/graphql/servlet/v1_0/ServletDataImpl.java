@@ -115,117 +115,132 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createChannelWishList",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class, "postChannelWishList"));
+					put(
+						"mutation#deleteWishList",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class, "deleteWishList"));
+					put(
+						"mutation#deleteWishListBatch",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class, "deleteWishListBatch"));
+					put(
+						"mutation#patchChannelWishList",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class,
+							"patchChannelWishList"));
+					put(
+						"mutation#deleteWishListItem",
+						new ObjectValuePair<>(
+							WishListItemResourceImpl.class,
+							"deleteWishListItem"));
+					put(
+						"mutation#deleteWishListItemBatch",
+						new ObjectValuePair<>(
+							WishListItemResourceImpl.class,
+							"deleteWishListItemBatch"));
+					put(
+						"mutation#createChannelWishListItem",
+						new ObjectValuePair<>(
+							WishListItemResourceImpl.class,
+							"postChannelWishListItem"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createChannelWishList",
-			new ObjectValuePair<>(
-				WishListResourceImpl.class, "postChannelWishList"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWishList",
-			new ObjectValuePair<>(
-				WishListResourceImpl.class, "deleteWishList"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWishListBatch",
-			new ObjectValuePair<>(
-				WishListResourceImpl.class, "deleteWishListBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchChannelWishList",
-			new ObjectValuePair<>(
-				WishListResourceImpl.class, "patchChannelWishList"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWishListItem",
-			new ObjectValuePair<>(
-				WishListItemResourceImpl.class, "deleteWishListItem"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWishListItemBatch",
-			new ObjectValuePair<>(
-				WishListItemResourceImpl.class, "deleteWishListItemBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createChannelWishListItem",
-			new ObjectValuePair<>(
-				WishListItemResourceImpl.class, "postChannelWishListItem"));
-		_resourceMethodPairs.put(
-			"query#channelProductAttachments",
-			new ObjectValuePair<>(
-				AttachmentResourceImpl.class,
-				"getChannelProductAttachmentsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductImages",
-			new ObjectValuePair<>(
-				AttachmentResourceImpl.class, "getChannelProductImagesPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductCategories",
-			new ObjectValuePair<>(
-				CategoryResourceImpl.class, "getChannelProductCategoriesPage"));
-		_resourceMethodPairs.put(
-			"query#channels",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "getChannelsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductMappedProducts",
-			new ObjectValuePair<>(
-				MappedProductResourceImpl.class,
-				"getChannelProductMappedProductsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductPins",
-			new ObjectValuePair<>(
-				PinResourceImpl.class, "getChannelProductPinsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProducts",
-			new ObjectValuePair<>(
-				ProductResourceImpl.class, "getChannelProductsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProduct",
-			new ObjectValuePair<>(
-				ProductResourceImpl.class, "getChannelProduct"));
-		_resourceMethodPairs.put(
-			"query#channelProductOptions",
-			new ObjectValuePair<>(
-				ProductOptionResourceImpl.class,
-				"getChannelProductOptionsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductProductSpecifications",
-			new ObjectValuePair<>(
-				ProductSpecificationResourceImpl.class,
-				"getChannelProductProductSpecificationsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductRelatedProducts",
-			new ObjectValuePair<>(
-				RelatedProductResourceImpl.class,
-				"getChannelProductRelatedProductsPage"));
-		_resourceMethodPairs.put(
-			"query#channelProductSkus",
-			new ObjectValuePair<>(
-				SkuResourceImpl.class, "getChannelProductSkusPage"));
-		_resourceMethodPairs.put(
-			"query#channelWishLists",
-			new ObjectValuePair<>(
-				WishListResourceImpl.class, "getChannelWishListsPage"));
-		_resourceMethodPairs.put(
-			"query#wishList",
-			new ObjectValuePair<>(WishListResourceImpl.class, "getWishList"));
-		_resourceMethodPairs.put(
-			"query#wishListItem",
-			new ObjectValuePair<>(
-				WishListItemResourceImpl.class, "getWishListItem"));
-		_resourceMethodPairs.put(
-			"query#wishListItems",
-			new ObjectValuePair<>(
-				WishListItemResourceImpl.class, "getWishListItemsPage"));
-	}
+					put(
+						"query#channelProductAttachments",
+						new ObjectValuePair<>(
+							AttachmentResourceImpl.class,
+							"getChannelProductAttachmentsPage"));
+					put(
+						"query#channelProductImages",
+						new ObjectValuePair<>(
+							AttachmentResourceImpl.class,
+							"getChannelProductImagesPage"));
+					put(
+						"query#channelProductCategories",
+						new ObjectValuePair<>(
+							CategoryResourceImpl.class,
+							"getChannelProductCategoriesPage"));
+					put(
+						"query#channels",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "getChannelsPage"));
+					put(
+						"query#channelProductMappedProducts",
+						new ObjectValuePair<>(
+							MappedProductResourceImpl.class,
+							"getChannelProductMappedProductsPage"));
+					put(
+						"query#channelProductPins",
+						new ObjectValuePair<>(
+							PinResourceImpl.class,
+							"getChannelProductPinsPage"));
+					put(
+						"query#channelProducts",
+						new ObjectValuePair<>(
+							ProductResourceImpl.class,
+							"getChannelProductsPage"));
+					put(
+						"query#channelProduct",
+						new ObjectValuePair<>(
+							ProductResourceImpl.class, "getChannelProduct"));
+					put(
+						"query#channelProductOptions",
+						new ObjectValuePair<>(
+							ProductOptionResourceImpl.class,
+							"getChannelProductOptionsPage"));
+					put(
+						"query#channelProductProductSpecifications",
+						new ObjectValuePair<>(
+							ProductSpecificationResourceImpl.class,
+							"getChannelProductProductSpecificationsPage"));
+					put(
+						"query#channelProductRelatedProducts",
+						new ObjectValuePair<>(
+							RelatedProductResourceImpl.class,
+							"getChannelProductRelatedProductsPage"));
+					put(
+						"query#channelProductSkus",
+						new ObjectValuePair<>(
+							SkuResourceImpl.class,
+							"getChannelProductSkusPage"));
+					put(
+						"query#channelWishLists",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class,
+							"getChannelWishListsPage"));
+					put(
+						"query#wishList",
+						new ObjectValuePair<>(
+							WishListResourceImpl.class, "getWishList"));
+					put(
+						"query#wishListItem",
+						new ObjectValuePair<>(
+							WishListItemResourceImpl.class, "getWishListItem"));
+					put(
+						"query#wishListItems",
+						new ObjectValuePair<>(
+							WishListItemResourceImpl.class,
+							"getWishListItemsPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<WishListResource>

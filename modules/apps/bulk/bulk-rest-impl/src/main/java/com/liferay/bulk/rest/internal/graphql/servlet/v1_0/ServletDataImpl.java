@@ -83,55 +83,60 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#patchKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "patchKeywordBatch"));
+					put(
+						"mutation#updateKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "putKeywordBatch"));
+					put(
+						"mutation#createKeywordsCommonPage",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"postKeywordsCommonPage"));
+					put(
+						"mutation#createBulkSelection",
+						new ObjectValuePair<>(
+							SelectionResourceImpl.class, "postBulkSelection"));
+					put(
+						"mutation#patchTaxonomyCategoryBatch",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"patchTaxonomyCategoryBatch"));
+					put(
+						"mutation#updateTaxonomyCategoryBatch",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"putTaxonomyCategoryBatch"));
+					put(
+						"mutation#createSiteTaxonomyVocabulariesCommonPage",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"postSiteTaxonomyVocabulariesCommonPage"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#patchKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "patchKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "putKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createKeywordsCommonPage",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "postKeywordsCommonPage"));
-		_resourceMethodPairs.put(
-			"mutation#createBulkSelection",
-			new ObjectValuePair<>(
-				SelectionResourceImpl.class, "postBulkSelection"));
-		_resourceMethodPairs.put(
-			"mutation#patchTaxonomyCategoryBatch",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"patchTaxonomyCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyCategoryBatch",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"putTaxonomyCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteTaxonomyVocabulariesCommonPage",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"postSiteTaxonomyVocabulariesCommonPage"));
-		_resourceMethodPairs.put(
-			"query#status",
-			new ObjectValuePair<>(StatusResourceImpl.class, "getStatus"));
-	}
+					put(
+						"query#status",
+						new ObjectValuePair<>(
+							StatusResourceImpl.class, "getStatus"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<KeywordResource>

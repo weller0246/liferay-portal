@@ -101,248 +101,257 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createWorkflowDefinition",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"postWorkflowDefinition"));
+					put(
+						"mutation#createWorkflowDefinitionBatch",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"postWorkflowDefinitionBatch"));
+					put(
+						"mutation#createWorkflowDefinitionDeploy",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"postWorkflowDefinitionDeploy"));
+					put(
+						"mutation#createWorkflowDefinitionSave",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"postWorkflowDefinitionSave"));
+					put(
+						"mutation#deleteWorkflowDefinitionUndeploy",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"deleteWorkflowDefinitionUndeploy"));
+					put(
+						"mutation#createWorkflowDefinitionUpdateActive",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"postWorkflowDefinitionUpdateActive"));
+					put(
+						"mutation#deleteWorkflowDefinition",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"deleteWorkflowDefinition"));
+					put(
+						"mutation#deleteWorkflowDefinitionBatch",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"deleteWorkflowDefinitionBatch"));
+					put(
+						"mutation#updateWorkflowDefinition",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"putWorkflowDefinition"));
+					put(
+						"mutation#updateWorkflowDefinitionBatch",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"putWorkflowDefinitionBatch"));
+					put(
+						"mutation#createWorkflowInstanceSubmit",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"postWorkflowInstanceSubmit"));
+					put(
+						"mutation#deleteWorkflowInstance",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"deleteWorkflowInstance"));
+					put(
+						"mutation#deleteWorkflowInstanceBatch",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"deleteWorkflowInstanceBatch"));
+					put(
+						"mutation#createWorkflowInstanceChangeTransition",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"postWorkflowInstanceChangeTransition"));
+					put(
+						"mutation#createWorkflowTasksPage",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTasksPage"));
+					put(
+						"mutation#patchWorkflowTaskAssignToUser",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"patchWorkflowTaskAssignToUser"));
+					put(
+						"mutation#patchWorkflowTaskChangeTransition",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"patchWorkflowTaskChangeTransition"));
+					put(
+						"mutation#patchWorkflowTaskUpdateDueDate",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"patchWorkflowTaskUpdateDueDate"));
+					put(
+						"mutation#createWorkflowTaskAssignToMe",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTaskAssignToMe"));
+					put(
+						"mutation#createWorkflowTaskAssignToRole",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTaskAssignToRole"));
+					put(
+						"mutation#createWorkflowTaskAssignToUser",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTaskAssignToUser"));
+					put(
+						"mutation#createWorkflowTaskChangeTransition",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTaskChangeTransition"));
+					put(
+						"mutation#createWorkflowTaskUpdateDueDate",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"postWorkflowTaskUpdateDueDate"));
+					put(
+						"mutation#createWorkflowTaskAssignableUser",
+						new ObjectValuePair<>(
+							WorkflowTaskAssignableUsersResourceImpl.class,
+							"postWorkflowTaskAssignableUser"));
+					put(
+						"mutation#createWorkflowTaskTransition",
+						new ObjectValuePair<>(
+							WorkflowTaskTransitionsResourceImpl.class,
+							"postWorkflowTaskTransition"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowDefinition",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"postWorkflowDefinition"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowDefinitionBatch",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"postWorkflowDefinitionBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowDefinitionDeploy",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"postWorkflowDefinitionDeploy"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowDefinitionSave",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"postWorkflowDefinitionSave"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWorkflowDefinitionUndeploy",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"deleteWorkflowDefinitionUndeploy"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowDefinitionUpdateActive",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"postWorkflowDefinitionUpdateActive"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWorkflowDefinition",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"deleteWorkflowDefinition"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWorkflowDefinitionBatch",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"deleteWorkflowDefinitionBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateWorkflowDefinition",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class, "putWorkflowDefinition"));
-		_resourceMethodPairs.put(
-			"mutation#updateWorkflowDefinitionBatch",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"putWorkflowDefinitionBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowInstanceSubmit",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class,
-				"postWorkflowInstanceSubmit"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWorkflowInstance",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class, "deleteWorkflowInstance"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWorkflowInstanceBatch",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class,
-				"deleteWorkflowInstanceBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowInstanceChangeTransition",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class,
-				"postWorkflowInstanceChangeTransition"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTasksPage",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class, "postWorkflowTasksPage"));
-		_resourceMethodPairs.put(
-			"mutation#patchWorkflowTaskAssignToUser",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"patchWorkflowTaskAssignToUser"));
-		_resourceMethodPairs.put(
-			"mutation#patchWorkflowTaskChangeTransition",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"patchWorkflowTaskChangeTransition"));
-		_resourceMethodPairs.put(
-			"mutation#patchWorkflowTaskUpdateDueDate",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"patchWorkflowTaskUpdateDueDate"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskAssignToMe",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class, "postWorkflowTaskAssignToMe"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskAssignToRole",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"postWorkflowTaskAssignToRole"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskAssignToUser",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"postWorkflowTaskAssignToUser"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskChangeTransition",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"postWorkflowTaskChangeTransition"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskUpdateDueDate",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"postWorkflowTaskUpdateDueDate"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskAssignableUser",
-			new ObjectValuePair<>(
-				WorkflowTaskAssignableUsersResourceImpl.class,
-				"postWorkflowTaskAssignableUser"));
-		_resourceMethodPairs.put(
-			"mutation#createWorkflowTaskTransition",
-			new ObjectValuePair<>(
-				WorkflowTaskTransitionsResourceImpl.class,
-				"postWorkflowTaskTransition"));
-		_resourceMethodPairs.put(
-			"query#workflowTaskAssignableUsers",
-			new ObjectValuePair<>(
-				AssigneeResourceImpl.class,
-				"getWorkflowTaskAssignableUsersPage"));
-		_resourceMethodPairs.put(
-			"query#workflowInstanceNextTransitions",
-			new ObjectValuePair<>(
-				TransitionResourceImpl.class,
-				"getWorkflowInstanceNextTransitionsPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTaskNextTransitions",
-			new ObjectValuePair<>(
-				TransitionResourceImpl.class,
-				"getWorkflowTaskNextTransitionsPage"));
-		_resourceMethodPairs.put(
-			"query#workflowDefinitions",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"getWorkflowDefinitionsPage"));
-		_resourceMethodPairs.put(
-			"query#workflowDefinitionByName",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class,
-				"getWorkflowDefinitionByName"));
-		_resourceMethodPairs.put(
-			"query#workflowDefinition",
-			new ObjectValuePair<>(
-				WorkflowDefinitionResourceImpl.class, "getWorkflowDefinition"));
-		_resourceMethodPairs.put(
-			"query#workflowInstances",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class,
-				"getWorkflowInstancesPage"));
-		_resourceMethodPairs.put(
-			"query#workflowInstance",
-			new ObjectValuePair<>(
-				WorkflowInstanceResourceImpl.class, "getWorkflowInstance"));
-		_resourceMethodPairs.put(
-			"query#workflowInstanceWorkflowLogs",
-			new ObjectValuePair<>(
-				WorkflowLogResourceImpl.class,
-				"getWorkflowInstanceWorkflowLogsPage"));
-		_resourceMethodPairs.put(
-			"query#workflowLog",
-			new ObjectValuePair<>(
-				WorkflowLogResourceImpl.class, "getWorkflowLog"));
-		_resourceMethodPairs.put(
-			"query#workflowTaskWorkflowLogs",
-			new ObjectValuePair<>(
-				WorkflowLogResourceImpl.class,
-				"getWorkflowTaskWorkflowLogsPage"));
-		_resourceMethodPairs.put(
-			"query#workflowInstanceWorkflowTasks",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowInstanceWorkflowTasksPage"));
-		_resourceMethodPairs.put(
-			"query#workflowInstanceWorkflowTasksAssignedToMe",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowInstanceWorkflowTasksAssignedToMePage"));
-		_resourceMethodPairs.put(
-			"query#workflowInstanceWorkflowTasksAssignedToUser",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowInstanceWorkflowTasksAssignedToUserPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksAssignedToMe",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksAssignedToMePage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksAssignedToMyRoles",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksAssignedToMyRolesPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksAssignedToRole",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksAssignedToRolePage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksAssignedToUser",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksAssignedToUserPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksAssignedToUserRoles",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksAssignedToUserRolesPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTasksSubmittingUser",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTasksSubmittingUserPage"));
-		_resourceMethodPairs.put(
-			"query#workflowTask",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class, "getWorkflowTask"));
-		_resourceMethodPairs.put(
-			"query#workflowTaskHasAssignableUsers",
-			new ObjectValuePair<>(
-				WorkflowTaskResourceImpl.class,
-				"getWorkflowTaskHasAssignableUsers"));
-	}
+					put(
+						"query#workflowTaskAssignableUsers",
+						new ObjectValuePair<>(
+							AssigneeResourceImpl.class,
+							"getWorkflowTaskAssignableUsersPage"));
+					put(
+						"query#workflowInstanceNextTransitions",
+						new ObjectValuePair<>(
+							TransitionResourceImpl.class,
+							"getWorkflowInstanceNextTransitionsPage"));
+					put(
+						"query#workflowTaskNextTransitions",
+						new ObjectValuePair<>(
+							TransitionResourceImpl.class,
+							"getWorkflowTaskNextTransitionsPage"));
+					put(
+						"query#workflowDefinitions",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"getWorkflowDefinitionsPage"));
+					put(
+						"query#workflowDefinitionByName",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"getWorkflowDefinitionByName"));
+					put(
+						"query#workflowDefinition",
+						new ObjectValuePair<>(
+							WorkflowDefinitionResourceImpl.class,
+							"getWorkflowDefinition"));
+					put(
+						"query#workflowInstances",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"getWorkflowInstancesPage"));
+					put(
+						"query#workflowInstance",
+						new ObjectValuePair<>(
+							WorkflowInstanceResourceImpl.class,
+							"getWorkflowInstance"));
+					put(
+						"query#workflowInstanceWorkflowLogs",
+						new ObjectValuePair<>(
+							WorkflowLogResourceImpl.class,
+							"getWorkflowInstanceWorkflowLogsPage"));
+					put(
+						"query#workflowLog",
+						new ObjectValuePair<>(
+							WorkflowLogResourceImpl.class, "getWorkflowLog"));
+					put(
+						"query#workflowTaskWorkflowLogs",
+						new ObjectValuePair<>(
+							WorkflowLogResourceImpl.class,
+							"getWorkflowTaskWorkflowLogsPage"));
+					put(
+						"query#workflowInstanceWorkflowTasks",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowInstanceWorkflowTasksPage"));
+					put(
+						"query#workflowInstanceWorkflowTasksAssignedToMe",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowInstanceWorkflowTasksAssignedToMePage"));
+					put(
+						"query#workflowInstanceWorkflowTasksAssignedToUser",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowInstanceWorkflowTasksAssignedToUserPage"));
+					put(
+						"query#workflowTasksAssignedToMe",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksAssignedToMePage"));
+					put(
+						"query#workflowTasksAssignedToMyRoles",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksAssignedToMyRolesPage"));
+					put(
+						"query#workflowTasksAssignedToRole",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksAssignedToRolePage"));
+					put(
+						"query#workflowTasksAssignedToUser",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksAssignedToUserPage"));
+					put(
+						"query#workflowTasksAssignedToUserRoles",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksAssignedToUserRolesPage"));
+					put(
+						"query#workflowTasksSubmittingUser",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTasksSubmittingUserPage"));
+					put(
+						"query#workflowTask",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class, "getWorkflowTask"));
+					put(
+						"query#workflowTaskHasAssignableUsers",
+						new ObjectValuePair<>(
+							WorkflowTaskResourceImpl.class,
+							"getWorkflowTaskHasAssignableUsers"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<WorkflowDefinitionResource>

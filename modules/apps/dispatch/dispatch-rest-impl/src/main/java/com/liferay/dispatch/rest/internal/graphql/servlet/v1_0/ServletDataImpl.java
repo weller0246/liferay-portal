@@ -69,37 +69,44 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createDispatchTrigger",
+						new ObjectValuePair<>(
+							DispatchTriggerResourceImpl.class,
+							"postDispatchTrigger"));
+					put(
+						"mutation#createDispatchTriggerBatch",
+						new ObjectValuePair<>(
+							DispatchTriggerResourceImpl.class,
+							"postDispatchTriggerBatch"));
+					put(
+						"mutation#createDispatchTriggerRun",
+						new ObjectValuePair<>(
+							DispatchTriggerResourceImpl.class,
+							"postDispatchTriggerRun"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createDispatchTrigger",
-			new ObjectValuePair<>(
-				DispatchTriggerResourceImpl.class, "postDispatchTrigger"));
-		_resourceMethodPairs.put(
-			"mutation#createDispatchTriggerBatch",
-			new ObjectValuePair<>(
-				DispatchTriggerResourceImpl.class, "postDispatchTriggerBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createDispatchTriggerRun",
-			new ObjectValuePair<>(
-				DispatchTriggerResourceImpl.class, "postDispatchTriggerRun"));
-		_resourceMethodPairs.put(
-			"query#dispatchTriggers",
-			new ObjectValuePair<>(
-				DispatchTriggerResourceImpl.class, "getDispatchTriggersPage"));
-	}
+					put(
+						"query#dispatchTriggers",
+						new ObjectValuePair<>(
+							DispatchTriggerResourceImpl.class,
+							"getDispatchTriggersPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<DispatchTriggerResource>

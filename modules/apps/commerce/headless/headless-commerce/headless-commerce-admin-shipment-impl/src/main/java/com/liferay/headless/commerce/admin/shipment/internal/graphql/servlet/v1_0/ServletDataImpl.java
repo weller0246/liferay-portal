@@ -81,163 +81,176 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createShipment",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "postShipment"));
+					put(
+						"mutation#createShipmentBatch",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "postShipmentBatch"));
+					put(
+						"mutation#deleteShipmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"deleteShipmentByExternalReferenceCode"));
+					put(
+						"mutation#patchShipmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"patchShipmentByExternalReferenceCode"));
+					put(
+						"mutation#updateShipmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"putShipmentByExternalReferenceCode"));
+					put(
+						"mutation#createShipmentByExternalReferenceCodeStatusDelivered",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentByExternalReferenceCodeStatusDelivered"));
+					put(
+						"mutation#createShipmentByExternalReferenceCodeStatusFinishProcessing",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentByExternalReferenceCodeStatusFinishProcessing"));
+					put(
+						"mutation#createShipmentByExternalReferenceCodeStatusShipped",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentByExternalReferenceCodeStatusShipped"));
+					put(
+						"mutation#deleteShipment",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "deleteShipment"));
+					put(
+						"mutation#deleteShipmentBatch",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "deleteShipmentBatch"));
+					put(
+						"mutation#patchShipment",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "patchShipment"));
+					put(
+						"mutation#createShipmentStatusDelivered",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentStatusDelivered"));
+					put(
+						"mutation#createShipmentStatusFinishProcessing",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentStatusFinishProcessing"));
+					put(
+						"mutation#createShipmentStatusShipped",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"postShipmentStatusShipped"));
+					put(
+						"mutation#deleteShipmentItemByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"deleteShipmentItemByExternalReferenceCode"));
+					put(
+						"mutation#patchShipmentItemByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"patchShipmentItemByExternalReferenceCode"));
+					put(
+						"mutation#deleteShipmentItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"deleteShipmentItem"));
+					put(
+						"mutation#deleteShipmentItemBatch",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"deleteShipmentItemBatch"));
+					put(
+						"mutation#patchShipmentItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"patchShipmentItem"));
+					put(
+						"mutation#updateShipmentByExternalReferenceCodeItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"putShipmentByExternalReferenceCodeItem"));
+					put(
+						"mutation#createShipmentItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"postShipmentItem"));
+					put(
+						"mutation#patchShipmentByExternalReferenceCodeShippingAddress",
+						new ObjectValuePair<>(
+							ShippingAddressResourceImpl.class,
+							"patchShipmentByExternalReferenceCodeShippingAddress"));
+					put(
+						"mutation#patchShipmentShippingAddress",
+						new ObjectValuePair<>(
+							ShippingAddressResourceImpl.class,
+							"patchShipmentShippingAddress"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createShipment",
-			new ObjectValuePair<>(ShipmentResourceImpl.class, "postShipment"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentBatch",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "postShipmentBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipmentByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"deleteShipmentByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipmentByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"patchShipmentByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateShipmentByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"putShipmentByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentByExternalReferenceCodeStatusDelivered",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"postShipmentByExternalReferenceCodeStatusDelivered"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentByExternalReferenceCodeStatusFinishProcessing",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"postShipmentByExternalReferenceCodeStatusFinishProcessing"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentByExternalReferenceCodeStatusShipped",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"postShipmentByExternalReferenceCodeStatusShipped"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipment",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "deleteShipment"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipmentBatch",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "deleteShipmentBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipment",
-			new ObjectValuePair<>(ShipmentResourceImpl.class, "patchShipment"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentStatusDelivered",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "postShipmentStatusDelivered"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentStatusFinishProcessing",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"postShipmentStatusFinishProcessing"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentStatusShipped",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "postShipmentStatusShipped"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipmentItemByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class,
-				"deleteShipmentItemByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipmentItemByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class,
-				"patchShipmentItemByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipmentItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "deleteShipmentItem"));
-		_resourceMethodPairs.put(
-			"mutation#deleteShipmentItemBatch",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "deleteShipmentItemBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipmentItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "patchShipmentItem"));
-		_resourceMethodPairs.put(
-			"mutation#updateShipmentByExternalReferenceCodeItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class,
-				"putShipmentByExternalReferenceCodeItem"));
-		_resourceMethodPairs.put(
-			"mutation#createShipmentItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "postShipmentItem"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipmentByExternalReferenceCodeShippingAddress",
-			new ObjectValuePair<>(
-				ShippingAddressResourceImpl.class,
-				"patchShipmentByExternalReferenceCodeShippingAddress"));
-		_resourceMethodPairs.put(
-			"mutation#patchShipmentShippingAddress",
-			new ObjectValuePair<>(
-				ShippingAddressResourceImpl.class,
-				"patchShipmentShippingAddress"));
-		_resourceMethodPairs.put(
-			"query#shipments",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class, "getShipmentsPage"));
-		_resourceMethodPairs.put(
-			"query#shipmentByExternalReferenceCode",
-			new ObjectValuePair<>(
-				ShipmentResourceImpl.class,
-				"getShipmentByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#shipment",
-			new ObjectValuePair<>(ShipmentResourceImpl.class, "getShipment"));
-		_resourceMethodPairs.put(
-			"query#shipmentByExternalReferenceCodeItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class,
-				"getShipmentByExternalReferenceCodeItem"));
-		_resourceMethodPairs.put(
-			"query#shipmentItem",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "getShipmentItem"));
-		_resourceMethodPairs.put(
-			"query#shipmentByExternalReferenceCodeItems",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class,
-				"getShipmentByExternalReferenceCodeItemsPage"));
-		_resourceMethodPairs.put(
-			"query#shipmentItems",
-			new ObjectValuePair<>(
-				ShipmentItemResourceImpl.class, "getShipmentItemsPage"));
-		_resourceMethodPairs.put(
-			"query#shipmentByExternalReferenceCodeShippingAddress",
-			new ObjectValuePair<>(
-				ShippingAddressResourceImpl.class,
-				"getShipmentByExternalReferenceCodeShippingAddress"));
-		_resourceMethodPairs.put(
-			"query#shipmentShippingAddress",
-			new ObjectValuePair<>(
-				ShippingAddressResourceImpl.class,
-				"getShipmentShippingAddress"));
-	}
+					put(
+						"query#shipments",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "getShipmentsPage"));
+					put(
+						"query#shipmentByExternalReferenceCode",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class,
+							"getShipmentByExternalReferenceCode"));
+					put(
+						"query#shipment",
+						new ObjectValuePair<>(
+							ShipmentResourceImpl.class, "getShipment"));
+					put(
+						"query#shipmentByExternalReferenceCodeItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"getShipmentByExternalReferenceCodeItem"));
+					put(
+						"query#shipmentItem",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class, "getShipmentItem"));
+					put(
+						"query#shipmentByExternalReferenceCodeItems",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"getShipmentByExternalReferenceCodeItemsPage"));
+					put(
+						"query#shipmentItems",
+						new ObjectValuePair<>(
+							ShipmentItemResourceImpl.class,
+							"getShipmentItemsPage"));
+					put(
+						"query#shipmentByExternalReferenceCodeShippingAddress",
+						new ObjectValuePair<>(
+							ShippingAddressResourceImpl.class,
+							"getShipmentByExternalReferenceCodeShippingAddress"));
+					put(
+						"query#shipmentShippingAddress",
+						new ObjectValuePair<>(
+							ShippingAddressResourceImpl.class,
+							"getShipmentShippingAddress"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ShipmentResource>

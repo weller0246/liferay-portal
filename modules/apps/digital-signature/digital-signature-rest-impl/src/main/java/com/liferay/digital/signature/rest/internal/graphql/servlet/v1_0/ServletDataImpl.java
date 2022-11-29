@@ -69,37 +69,43 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createSiteDSEnvelope",
+						new ObjectValuePair<>(
+							DSEnvelopeResourceImpl.class,
+							"postSiteDSEnvelope"));
+					put(
+						"mutation#createSiteDSEnvelopeBatch",
+						new ObjectValuePair<>(
+							DSEnvelopeResourceImpl.class,
+							"postSiteDSEnvelopeBatch"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createSiteDSEnvelope",
-			new ObjectValuePair<>(
-				DSEnvelopeResourceImpl.class, "postSiteDSEnvelope"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteDSEnvelopeBatch",
-			new ObjectValuePair<>(
-				DSEnvelopeResourceImpl.class, "postSiteDSEnvelopeBatch"));
-		_resourceMethodPairs.put(
-			"query#dSEnvelopes",
-			new ObjectValuePair<>(
-				DSEnvelopeResourceImpl.class, "getSiteDSEnvelopesPage"));
-		_resourceMethodPairs.put(
-			"query#dSEnvelope",
-			new ObjectValuePair<>(
-				DSEnvelopeResourceImpl.class, "getSiteDSEnvelope"));
-	}
+					put(
+						"query#dSEnvelopes",
+						new ObjectValuePair<>(
+							DSEnvelopeResourceImpl.class,
+							"getSiteDSEnvelopesPage"));
+					put(
+						"query#dSEnvelope",
+						new ObjectValuePair<>(
+							DSEnvelopeResourceImpl.class, "getSiteDSEnvelope"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<DSEnvelopeResource>

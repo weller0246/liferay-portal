@@ -121,154 +121,174 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createSXPBlueprint",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"postSXPBlueprint"));
+					put(
+						"mutation#createSXPBlueprintBatch",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"postSXPBlueprintBatch"));
+					put(
+						"mutation#createSXPBlueprintValidate",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"postSXPBlueprintValidate"));
+					put(
+						"mutation#deleteSXPBlueprint",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"deleteSXPBlueprint"));
+					put(
+						"mutation#deleteSXPBlueprintBatch",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"deleteSXPBlueprintBatch"));
+					put(
+						"mutation#patchSXPBlueprint",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"patchSXPBlueprint"));
+					put(
+						"mutation#createSXPBlueprintCopy",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"postSXPBlueprintCopy"));
+					put(
+						"mutation#createSXPElement",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class, "postSXPElement"));
+					put(
+						"mutation#createSXPElementBatch",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"postSXPElementBatch"));
+					put(
+						"mutation#createSXPElementValidate",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"postSXPElementValidate"));
+					put(
+						"mutation#deleteSXPElement",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class, "deleteSXPElement"));
+					put(
+						"mutation#deleteSXPElementBatch",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"deleteSXPElementBatch"));
+					put(
+						"mutation#patchSXPElement",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class, "patchSXPElement"));
+					put(
+						"mutation#createSXPElementCopy",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"postSXPElementCopy"));
+					put(
+						"mutation#createSearch",
+						new ObjectValuePair<>(
+							SearchResponseResourceImpl.class, "postSearch"));
+					put(
+						"mutation#createSentenceTransformerValidateConfiguration",
+						new ObjectValuePair<>(
+							SentenceTransformerValidationResultResourceImpl.
+								class,
+							"postSentenceTransformerValidateConfiguration"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createSXPBlueprint",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "postSXPBlueprint"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPBlueprintBatch",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "postSXPBlueprintBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPBlueprintValidate",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "postSXPBlueprintValidate"));
-		_resourceMethodPairs.put(
-			"mutation#deleteSXPBlueprint",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "deleteSXPBlueprint"));
-		_resourceMethodPairs.put(
-			"mutation#deleteSXPBlueprintBatch",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "deleteSXPBlueprintBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchSXPBlueprint",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "patchSXPBlueprint"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPBlueprintCopy",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "postSXPBlueprintCopy"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPElement",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "postSXPElement"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPElementBatch",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "postSXPElementBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPElementValidate",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "postSXPElementValidate"));
-		_resourceMethodPairs.put(
-			"mutation#deleteSXPElement",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "deleteSXPElement"));
-		_resourceMethodPairs.put(
-			"mutation#deleteSXPElementBatch",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "deleteSXPElementBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchSXPElement",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "patchSXPElement"));
-		_resourceMethodPairs.put(
-			"mutation#createSXPElementCopy",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "postSXPElementCopy"));
-		_resourceMethodPairs.put(
-			"mutation#createSearch",
-			new ObjectValuePair<>(
-				SearchResponseResourceImpl.class, "postSearch"));
-		_resourceMethodPairs.put(
-			"mutation#createSentenceTransformerValidateConfiguration",
-			new ObjectValuePair<>(
-				SentenceTransformerValidationResultResourceImpl.class,
-				"postSentenceTransformerValidateConfiguration"));
-		_resourceMethodPairs.put(
-			"query#fieldMappingInfos",
-			new ObjectValuePair<>(
-				FieldMappingInfoResourceImpl.class,
-				"getFieldMappingInfosPage"));
-		_resourceMethodPairs.put(
-			"query#keywordQueryContributors",
-			new ObjectValuePair<>(
-				KeywordQueryContributorResourceImpl.class,
-				"getKeywordQueryContributorsPage"));
-		_resourceMethodPairs.put(
-			"query#sentenceTransformerMLModels",
-			new ObjectValuePair<>(
-				MLModelResourceImpl.class,
-				"getSentenceTransformerMLModelsPage"));
-		_resourceMethodPairs.put(
-			"query#modelPrefilterContributors",
-			new ObjectValuePair<>(
-				ModelPrefilterContributorResourceImpl.class,
-				"getModelPrefilterContributorsPage"));
-		_resourceMethodPairs.put(
-			"query#queryPrefilterContributors",
-			new ObjectValuePair<>(
-				QueryPrefilterContributorResourceImpl.class,
-				"getQueryPrefilterContributorsPage"));
-		_resourceMethodPairs.put(
-			"query#sXPBlueprints",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "getSXPBlueprintsPage"));
-		_resourceMethodPairs.put(
-			"query#sXPBlueprint",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "getSXPBlueprint"));
-		_resourceMethodPairs.put(
-			"query#sXPBlueprintExport",
-			new ObjectValuePair<>(
-				SXPBlueprintResourceImpl.class, "getSXPBlueprintExport"));
-		_resourceMethodPairs.put(
-			"query#sXPElements",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "getSXPElementsPage"));
-		_resourceMethodPairs.put(
-			"query#sXPElement",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "getSXPElement"));
-		_resourceMethodPairs.put(
-			"query#sXPElementExport",
-			new ObjectValuePair<>(
-				SXPElementResourceImpl.class, "getSXPElementExport"));
-		_resourceMethodPairs.put(
-			"query#sXPParameterContributorDefinitions",
-			new ObjectValuePair<>(
-				SXPParameterContributorDefinitionResourceImpl.class,
-				"getSXPParameterContributorDefinitionsPage"));
-		_resourceMethodPairs.put(
-			"query#searchIndexes",
-			new ObjectValuePair<>(
-				SearchIndexResourceImpl.class, "getSearchIndexesPage"));
-		_resourceMethodPairs.put(
-			"query#searchableAssetNames",
-			new ObjectValuePair<>(
-				SearchableAssetNameResourceImpl.class,
-				"getSearchableAssetNamesPage"));
-		_resourceMethodPairs.put(
-			"query#searchableAssetNameLanguage",
-			new ObjectValuePair<>(
-				SearchableAssetNameDisplayResourceImpl.class,
-				"getSearchableAssetNameLanguagePage"));
-	}
+					put(
+						"query#fieldMappingInfos",
+						new ObjectValuePair<>(
+							FieldMappingInfoResourceImpl.class,
+							"getFieldMappingInfosPage"));
+					put(
+						"query#keywordQueryContributors",
+						new ObjectValuePair<>(
+							KeywordQueryContributorResourceImpl.class,
+							"getKeywordQueryContributorsPage"));
+					put(
+						"query#sentenceTransformerMLModels",
+						new ObjectValuePair<>(
+							MLModelResourceImpl.class,
+							"getSentenceTransformerMLModelsPage"));
+					put(
+						"query#modelPrefilterContributors",
+						new ObjectValuePair<>(
+							ModelPrefilterContributorResourceImpl.class,
+							"getModelPrefilterContributorsPage"));
+					put(
+						"query#queryPrefilterContributors",
+						new ObjectValuePair<>(
+							QueryPrefilterContributorResourceImpl.class,
+							"getQueryPrefilterContributorsPage"));
+					put(
+						"query#sXPBlueprints",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"getSXPBlueprintsPage"));
+					put(
+						"query#sXPBlueprint",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class, "getSXPBlueprint"));
+					put(
+						"query#sXPBlueprintExport",
+						new ObjectValuePair<>(
+							SXPBlueprintResourceImpl.class,
+							"getSXPBlueprintExport"));
+					put(
+						"query#sXPElements",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"getSXPElementsPage"));
+					put(
+						"query#sXPElement",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class, "getSXPElement"));
+					put(
+						"query#sXPElementExport",
+						new ObjectValuePair<>(
+							SXPElementResourceImpl.class,
+							"getSXPElementExport"));
+					put(
+						"query#sXPParameterContributorDefinitions",
+						new ObjectValuePair<>(
+							SXPParameterContributorDefinitionResourceImpl.class,
+							"getSXPParameterContributorDefinitionsPage"));
+					put(
+						"query#searchIndexes",
+						new ObjectValuePair<>(
+							SearchIndexResourceImpl.class,
+							"getSearchIndexesPage"));
+					put(
+						"query#searchableAssetNames",
+						new ObjectValuePair<>(
+							SearchableAssetNameResourceImpl.class,
+							"getSearchableAssetNamesPage"));
+					put(
+						"query#searchableAssetNameLanguage",
+						new ObjectValuePair<>(
+							SearchableAssetNameDisplayResourceImpl.class,
+							"getSearchableAssetNameLanguagePage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<SXPBlueprintResource>

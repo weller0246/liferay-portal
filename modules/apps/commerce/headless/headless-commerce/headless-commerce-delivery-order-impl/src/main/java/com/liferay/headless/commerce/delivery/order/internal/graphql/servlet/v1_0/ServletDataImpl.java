@@ -82,67 +82,72 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
-
-	static {
-		_resourceMethodPairs.put(
-			"query#channelAccountPlacedOrders",
-			new ObjectValuePair<>(
-				PlacedOrderResourceImpl.class,
-				"getChannelAccountPlacedOrdersPage"));
-		_resourceMethodPairs.put(
-			"query#placedOrder",
-			new ObjectValuePair<>(
-				PlacedOrderResourceImpl.class, "getPlacedOrder"));
-		_resourceMethodPairs.put(
-			"query#placedOrderPaymentURL",
-			new ObjectValuePair<>(
-				PlacedOrderResourceImpl.class, "getPlacedOrderPaymentURL"));
-		_resourceMethodPairs.put(
-			"query#placedOrderPlacedOrderBillingAddres",
-			new ObjectValuePair<>(
-				PlacedOrderAddressResourceImpl.class,
-				"getPlacedOrderPlacedOrderBillingAddres"));
-		_resourceMethodPairs.put(
-			"query#placedOrderPlacedOrderShippingAddres",
-			new ObjectValuePair<>(
-				PlacedOrderAddressResourceImpl.class,
-				"getPlacedOrderPlacedOrderShippingAddres"));
-		_resourceMethodPairs.put(
-			"query#placedOrderComment",
-			new ObjectValuePair<>(
-				PlacedOrderCommentResourceImpl.class, "getPlacedOrderComment"));
-		_resourceMethodPairs.put(
-			"query#placedOrderPlacedOrderComments",
-			new ObjectValuePair<>(
-				PlacedOrderCommentResourceImpl.class,
-				"getPlacedOrderPlacedOrderCommentsPage"));
-		_resourceMethodPairs.put(
-			"query#placedOrderItem",
-			new ObjectValuePair<>(
-				PlacedOrderItemResourceImpl.class, "getPlacedOrderItem"));
-		_resourceMethodPairs.put(
-			"query#placedOrderPlacedOrderItems",
-			new ObjectValuePair<>(
-				PlacedOrderItemResourceImpl.class,
-				"getPlacedOrderPlacedOrderItemsPage"));
-		_resourceMethodPairs.put(
-			"query#placedOrderItemPlacedOrderItemShipments",
-			new ObjectValuePair<>(
-				PlacedOrderItemShipmentResourceImpl.class,
-				"getPlacedOrderItemPlacedOrderItemShipmentsPage"));
-	}
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"query#channelAccountPlacedOrders",
+						new ObjectValuePair<>(
+							PlacedOrderResourceImpl.class,
+							"getChannelAccountPlacedOrdersPage"));
+					put(
+						"query#placedOrder",
+						new ObjectValuePair<>(
+							PlacedOrderResourceImpl.class, "getPlacedOrder"));
+					put(
+						"query#placedOrderPaymentURL",
+						new ObjectValuePair<>(
+							PlacedOrderResourceImpl.class,
+							"getPlacedOrderPaymentURL"));
+					put(
+						"query#placedOrderPlacedOrderBillingAddres",
+						new ObjectValuePair<>(
+							PlacedOrderAddressResourceImpl.class,
+							"getPlacedOrderPlacedOrderBillingAddres"));
+					put(
+						"query#placedOrderPlacedOrderShippingAddres",
+						new ObjectValuePair<>(
+							PlacedOrderAddressResourceImpl.class,
+							"getPlacedOrderPlacedOrderShippingAddres"));
+					put(
+						"query#placedOrderComment",
+						new ObjectValuePair<>(
+							PlacedOrderCommentResourceImpl.class,
+							"getPlacedOrderComment"));
+					put(
+						"query#placedOrderPlacedOrderComments",
+						new ObjectValuePair<>(
+							PlacedOrderCommentResourceImpl.class,
+							"getPlacedOrderPlacedOrderCommentsPage"));
+					put(
+						"query#placedOrderItem",
+						new ObjectValuePair<>(
+							PlacedOrderItemResourceImpl.class,
+							"getPlacedOrderItem"));
+					put(
+						"query#placedOrderPlacedOrderItems",
+						new ObjectValuePair<>(
+							PlacedOrderItemResourceImpl.class,
+							"getPlacedOrderPlacedOrderItemsPage"));
+					put(
+						"query#placedOrderItemPlacedOrderItemShipments",
+						new ObjectValuePair<>(
+							PlacedOrderItemShipmentResourceImpl.class,
+							"getPlacedOrderItemPlacedOrderItemShipmentsPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<PlacedOrderResource>

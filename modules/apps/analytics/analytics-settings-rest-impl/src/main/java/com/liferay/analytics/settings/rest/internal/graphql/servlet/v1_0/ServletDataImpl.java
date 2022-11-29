@@ -109,81 +109,98 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#patchChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "patchChannel"));
+					put(
+						"mutation#createChannel",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "postChannel"));
+					put(
+						"mutation#updateContactConfiguration",
+						new ObjectValuePair<>(
+							ContactConfigurationResourceImpl.class,
+							"putContactConfiguration"));
+					put(
+						"mutation#deleteDataSource",
+						new ObjectValuePair<>(
+							DataSourceResourceImpl.class, "deleteDataSource"));
+					put(
+						"mutation#createDataSource",
+						new ObjectValuePair<>(
+							DataSourceResourceImpl.class, "postDataSource"));
+					put(
+						"mutation#patchFieldAccount",
+						new ObjectValuePair<>(
+							FieldResourceImpl.class, "patchFieldAccount"));
+					put(
+						"mutation#patchFieldPeople",
+						new ObjectValuePair<>(
+							FieldResourceImpl.class, "patchFieldPeople"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#patchChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "patchChannel"));
-		_resourceMethodPairs.put(
-			"mutation#createChannel",
-			new ObjectValuePair<>(ChannelResourceImpl.class, "postChannel"));
-		_resourceMethodPairs.put(
-			"mutation#updateContactConfiguration",
-			new ObjectValuePair<>(
-				ContactConfigurationResourceImpl.class,
-				"putContactConfiguration"));
-		_resourceMethodPairs.put(
-			"mutation#deleteDataSource",
-			new ObjectValuePair<>(
-				DataSourceResourceImpl.class, "deleteDataSource"));
-		_resourceMethodPairs.put(
-			"mutation#createDataSource",
-			new ObjectValuePair<>(
-				DataSourceResourceImpl.class, "postDataSource"));
-		_resourceMethodPairs.put(
-			"mutation#patchFieldPeople",
-			new ObjectValuePair<>(FieldResourceImpl.class, "patchFieldPeople"));
-		_resourceMethodPairs.put(
-			"query#channels",
-			new ObjectValuePair<>(
-				ChannelResourceImpl.class, "getChannelsPage"));
-		_resourceMethodPairs.put(
-			"query#commerceChannels",
-			new ObjectValuePair<>(
-				CommerceChannelResourceImpl.class, "getCommerceChannelsPage"));
-		_resourceMethodPairs.put(
-			"query#contactAccountGroups",
-			new ObjectValuePair<>(
-				ContactAccountGroupResourceImpl.class,
-				"getContactAccountGroupsPage"));
-		_resourceMethodPairs.put(
-			"query#contactConfiguration",
-			new ObjectValuePair<>(
-				ContactConfigurationResourceImpl.class,
-				"getContactConfiguration"));
-		_resourceMethodPairs.put(
-			"query#contactOrganizations",
-			new ObjectValuePair<>(
-				ContactOrganizationResourceImpl.class,
-				"getContactOrganizationsPage"));
-		_resourceMethodPairs.put(
-			"query#contactUserGroups",
-			new ObjectValuePair<>(
-				ContactUserGroupResourceImpl.class,
-				"getContactUserGroupsPage"));
-		_resourceMethodPairs.put(
-			"query#fieldsPeople",
-			new ObjectValuePair<>(
-				FieldResourceImpl.class, "getFieldsPeoplePage"));
-		_resourceMethodPairs.put(
-			"query#field",
-			new ObjectValuePair<>(FieldSummaryResourceImpl.class, "getField"));
-		_resourceMethodPairs.put(
-			"query#sites",
-			new ObjectValuePair<>(SiteResourceImpl.class, "getSitesPage"));
-	}
+					put(
+						"query#channels",
+						new ObjectValuePair<>(
+							ChannelResourceImpl.class, "getChannelsPage"));
+					put(
+						"query#commerceChannels",
+						new ObjectValuePair<>(
+							CommerceChannelResourceImpl.class,
+							"getCommerceChannelsPage"));
+					put(
+						"query#contactAccountGroups",
+						new ObjectValuePair<>(
+							ContactAccountGroupResourceImpl.class,
+							"getContactAccountGroupsPage"));
+					put(
+						"query#contactConfiguration",
+						new ObjectValuePair<>(
+							ContactConfigurationResourceImpl.class,
+							"getContactConfiguration"));
+					put(
+						"query#contactOrganizations",
+						new ObjectValuePair<>(
+							ContactOrganizationResourceImpl.class,
+							"getContactOrganizationsPage"));
+					put(
+						"query#contactUserGroups",
+						new ObjectValuePair<>(
+							ContactUserGroupResourceImpl.class,
+							"getContactUserGroupsPage"));
+					put(
+						"query#fieldsAccounts",
+						new ObjectValuePair<>(
+							FieldResourceImpl.class, "getFieldsAccountsPage"));
+					put(
+						"query#fieldsPeople",
+						new ObjectValuePair<>(
+							FieldResourceImpl.class, "getFieldsPeoplePage"));
+					put(
+						"query#field",
+						new ObjectValuePair<>(
+							FieldSummaryResourceImpl.class, "getField"));
+					put(
+						"query#sites",
+						new ObjectValuePair<>(
+							SiteResourceImpl.class, "getSitesPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ChannelResource>

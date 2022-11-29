@@ -69,37 +69,43 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#patchSamlProvider",
+						new ObjectValuePair<>(
+							SamlProviderResourceImpl.class,
+							"patchSamlProvider"));
+					put(
+						"mutation#createSamlProvider",
+						new ObjectValuePair<>(
+							SamlProviderResourceImpl.class,
+							"postSamlProvider"));
+					put(
+						"mutation#createSamlProviderBatch",
+						new ObjectValuePair<>(
+							SamlProviderResourceImpl.class,
+							"postSamlProviderBatch"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#patchSamlProvider",
-			new ObjectValuePair<>(
-				SamlProviderResourceImpl.class, "patchSamlProvider"));
-		_resourceMethodPairs.put(
-			"mutation#createSamlProvider",
-			new ObjectValuePair<>(
-				SamlProviderResourceImpl.class, "postSamlProvider"));
-		_resourceMethodPairs.put(
-			"mutation#createSamlProviderBatch",
-			new ObjectValuePair<>(
-				SamlProviderResourceImpl.class, "postSamlProviderBatch"));
-		_resourceMethodPairs.put(
-			"query#samlProvider",
-			new ObjectValuePair<>(
-				SamlProviderResourceImpl.class, "getSamlProvider"));
-	}
+					put(
+						"query#samlProvider",
+						new ObjectValuePair<>(
+							SamlProviderResourceImpl.class, "getSamlProvider"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<SamlProviderResource>

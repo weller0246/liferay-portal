@@ -81,291 +81,310 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createAssetLibraryKeyword",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"postAssetLibraryKeyword"));
+					put(
+						"mutation#createAssetLibraryKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"postAssetLibraryKeywordBatch"));
+					put(
+						"mutation#updateAssetLibraryKeywordPermissionsPage",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"putAssetLibraryKeywordPermissionsPage"));
+					put(
+						"mutation#deleteKeyword",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "deleteKeyword"));
+					put(
+						"mutation#deleteKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "deleteKeywordBatch"));
+					put(
+						"mutation#updateKeyword",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "putKeyword"));
+					put(
+						"mutation#updateKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "putKeywordBatch"));
+					put(
+						"mutation#updateKeywordSubscribe",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "putKeywordSubscribe"));
+					put(
+						"mutation#updateKeywordUnsubscribe",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"putKeywordUnsubscribe"));
+					put(
+						"mutation#createSiteKeyword",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "postSiteKeyword"));
+					put(
+						"mutation#createSiteKeywordBatch",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "postSiteKeywordBatch"));
+					put(
+						"mutation#updateSiteKeywordPermissionsPage",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"putSiteKeywordPermissionsPage"));
+					put(
+						"mutation#createTaxonomyCategoryTaxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"postTaxonomyCategoryTaxonomyCategory"));
+					put(
+						"mutation#deleteTaxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"deleteTaxonomyCategory"));
+					put(
+						"mutation#deleteTaxonomyCategoryBatch",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"deleteTaxonomyCategoryBatch"));
+					put(
+						"mutation#patchTaxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"patchTaxonomyCategory"));
+					put(
+						"mutation#updateTaxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"putTaxonomyCategory"));
+					put(
+						"mutation#updateTaxonomyCategoryBatch",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"putTaxonomyCategoryBatch"));
+					put(
+						"mutation#updateTaxonomyCategoryPermissionsPage",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"putTaxonomyCategoryPermissionsPage"));
+					put(
+						"mutation#createTaxonomyVocabularyTaxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"postTaxonomyVocabularyTaxonomyCategory"));
+					put(
+						"mutation#createTaxonomyVocabularyTaxonomyCategoryBatch",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"postTaxonomyVocabularyTaxonomyCategoryBatch"));
+					put(
+						"mutation#deleteTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"deleteTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
+					put(
+						"mutation#updateTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"putTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
+					put(
+						"mutation#createAssetLibraryTaxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"postAssetLibraryTaxonomyVocabulary"));
+					put(
+						"mutation#createAssetLibraryTaxonomyVocabularyBatch",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"postAssetLibraryTaxonomyVocabularyBatch"));
+					put(
+						"mutation#deleteAssetLibraryTaxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"deleteAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"mutation#updateAssetLibraryTaxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"mutation#updateAssetLibraryTaxonomyVocabularyPermissionsPage",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putAssetLibraryTaxonomyVocabularyPermissionsPage"));
+					put(
+						"mutation#createSiteTaxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"postSiteTaxonomyVocabulary"));
+					put(
+						"mutation#createSiteTaxonomyVocabularyBatch",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"postSiteTaxonomyVocabularyBatch"));
+					put(
+						"mutation#deleteSiteTaxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"deleteSiteTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"mutation#updateSiteTaxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putSiteTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"mutation#updateSiteTaxonomyVocabularyPermissionsPage",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putSiteTaxonomyVocabularyPermissionsPage"));
+					put(
+						"mutation#deleteTaxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"deleteTaxonomyVocabulary"));
+					put(
+						"mutation#deleteTaxonomyVocabularyBatch",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"deleteTaxonomyVocabularyBatch"));
+					put(
+						"mutation#patchTaxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"patchTaxonomyVocabulary"));
+					put(
+						"mutation#updateTaxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putTaxonomyVocabulary"));
+					put(
+						"mutation#updateTaxonomyVocabularyBatch",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putTaxonomyVocabularyBatch"));
+					put(
+						"mutation#updateTaxonomyVocabularyPermissionsPage",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"putTaxonomyVocabularyPermissionsPage"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createAssetLibraryKeyword",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "postAssetLibraryKeyword"));
-		_resourceMethodPairs.put(
-			"mutation#createAssetLibraryKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "postAssetLibraryKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateAssetLibraryKeywordPermissionsPage",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class,
-				"putAssetLibraryKeywordPermissionsPage"));
-		_resourceMethodPairs.put(
-			"mutation#deleteKeyword",
-			new ObjectValuePair<>(KeywordResourceImpl.class, "deleteKeyword"));
-		_resourceMethodPairs.put(
-			"mutation#deleteKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "deleteKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateKeyword",
-			new ObjectValuePair<>(KeywordResourceImpl.class, "putKeyword"));
-		_resourceMethodPairs.put(
-			"mutation#updateKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "putKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateKeywordSubscribe",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "putKeywordSubscribe"));
-		_resourceMethodPairs.put(
-			"mutation#updateKeywordUnsubscribe",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "putKeywordUnsubscribe"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteKeyword",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "postSiteKeyword"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteKeywordBatch",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "postSiteKeywordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateSiteKeywordPermissionsPage",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "putSiteKeywordPermissionsPage"));
-		_resourceMethodPairs.put(
-			"mutation#createTaxonomyCategoryTaxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"postTaxonomyCategoryTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class, "deleteTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxonomyCategoryBatch",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"deleteTaxonomyCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchTaxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class, "patchTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class, "putTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyCategoryBatch",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"putTaxonomyCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyCategoryPermissionsPage",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"putTaxonomyCategoryPermissionsPage"));
-		_resourceMethodPairs.put(
-			"mutation#createTaxonomyVocabularyTaxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"postTaxonomyVocabularyTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"mutation#createTaxonomyVocabularyTaxonomyCategoryBatch",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"postTaxonomyVocabularyTaxonomyCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"deleteTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"putTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#createAssetLibraryTaxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"postAssetLibraryTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"mutation#createAssetLibraryTaxonomyVocabularyBatch",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"postAssetLibraryTaxonomyVocabularyBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteAssetLibraryTaxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"deleteAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateAssetLibraryTaxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateAssetLibraryTaxonomyVocabularyPermissionsPage",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putAssetLibraryTaxonomyVocabularyPermissionsPage"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteTaxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"postSiteTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"mutation#createSiteTaxonomyVocabularyBatch",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"postSiteTaxonomyVocabularyBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteSiteTaxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"deleteSiteTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateSiteTaxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putSiteTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#updateSiteTaxonomyVocabularyPermissionsPage",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putSiteTaxonomyVocabularyPermissionsPage"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"deleteTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxonomyVocabularyBatch",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"deleteTaxonomyVocabularyBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchTaxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"patchTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class, "putTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyVocabularyBatch",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putTaxonomyVocabularyBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxonomyVocabularyPermissionsPage",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"putTaxonomyVocabularyPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#assetLibraryKeywords",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "getAssetLibraryKeywordsPage"));
-		_resourceMethodPairs.put(
-			"query#assetLibraryKeywordPermissions",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class,
-				"getAssetLibraryKeywordPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#keywordsRanked",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "getKeywordsRankedPage"));
-		_resourceMethodPairs.put(
-			"query#keyword",
-			new ObjectValuePair<>(KeywordResourceImpl.class, "getKeyword"));
-		_resourceMethodPairs.put(
-			"query#keywords",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "getSiteKeywordsPage"));
-		_resourceMethodPairs.put(
-			"query#keywordPermissions",
-			new ObjectValuePair<>(
-				KeywordResourceImpl.class, "getSiteKeywordPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyCategoriesRanked",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"getTaxonomyCategoriesRankedPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyCategoryTaxonomyCategories",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"getTaxonomyCategoryTaxonomyCategoriesPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyCategory",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class, "getTaxonomyCategory"));
-		_resourceMethodPairs.put(
-			"query#taxonomyCategoryPermissions",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"getTaxonomyCategoryPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabularyTaxonomyCategories",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"getTaxonomyVocabularyTaxonomyCategoriesPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyCategoryResourceImpl.class,
-				"getTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#assetLibraryTaxonomyVocabularies",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getAssetLibraryTaxonomyVocabulariesPage"));
-		_resourceMethodPairs.put(
-			"query#assetLibraryTaxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#assetLibraryTaxonomyVocabularyPermissions",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getAssetLibraryTaxonomyVocabularyPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabularies",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getSiteTaxonomyVocabulariesPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabularyByExternalReferenceCode",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getSiteTaxonomyVocabularyByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#siteTaxonomyVocabularyPermissions",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getSiteTaxonomyVocabularyPermissionsPage"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabulary",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class, "getTaxonomyVocabulary"));
-		_resourceMethodPairs.put(
-			"query#taxonomyVocabularyPermissions",
-			new ObjectValuePair<>(
-				TaxonomyVocabularyResourceImpl.class,
-				"getTaxonomyVocabularyPermissionsPage"));
-	}
+					put(
+						"query#assetLibraryKeywords",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"getAssetLibraryKeywordsPage"));
+					put(
+						"query#assetLibraryKeywordPermissions",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"getAssetLibraryKeywordPermissionsPage"));
+					put(
+						"query#keywordsRanked",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"getKeywordsRankedPage"));
+					put(
+						"query#keyword",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "getKeyword"));
+					put(
+						"query#keywords",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class, "getSiteKeywordsPage"));
+					put(
+						"query#keywordPermissions",
+						new ObjectValuePair<>(
+							KeywordResourceImpl.class,
+							"getSiteKeywordPermissionsPage"));
+					put(
+						"query#taxonomyCategoriesRanked",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyCategoriesRankedPage"));
+					put(
+						"query#taxonomyCategoryTaxonomyCategories",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyCategoryTaxonomyCategoriesPage"));
+					put(
+						"query#taxonomyCategory",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyCategory"));
+					put(
+						"query#taxonomyCategoryPermissions",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyCategoryPermissionsPage"));
+					put(
+						"query#taxonomyVocabularyTaxonomyCategories",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyVocabularyTaxonomyCategoriesPage"));
+					put(
+						"query#taxonomyVocabularyTaxonomyCategoryByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyCategoryResourceImpl.class,
+							"getTaxonomyVocabularyTaxonomyCategoryByExternalReferenceCode"));
+					put(
+						"query#assetLibraryTaxonomyVocabularies",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getAssetLibraryTaxonomyVocabulariesPage"));
+					put(
+						"query#assetLibraryTaxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getAssetLibraryTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"query#assetLibraryTaxonomyVocabularyPermissions",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getAssetLibraryTaxonomyVocabularyPermissionsPage"));
+					put(
+						"query#taxonomyVocabularies",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getSiteTaxonomyVocabulariesPage"));
+					put(
+						"query#taxonomyVocabularyByExternalReferenceCode",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getSiteTaxonomyVocabularyByExternalReferenceCode"));
+					put(
+						"query#siteTaxonomyVocabularyPermissions",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getSiteTaxonomyVocabularyPermissionsPage"));
+					put(
+						"query#taxonomyVocabulary",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getTaxonomyVocabulary"));
+					put(
+						"query#taxonomyVocabularyPermissions",
+						new ObjectValuePair<>(
+							TaxonomyVocabularyResourceImpl.class,
+							"getTaxonomyVocabularyPermissionsPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<KeywordResource>

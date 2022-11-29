@@ -75,96 +75,99 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#deleteNotificationQueueEntry",
+						new ObjectValuePair<>(
+							NotificationQueueEntryResourceImpl.class,
+							"deleteNotificationQueueEntry"));
+					put(
+						"mutation#deleteNotificationQueueEntryBatch",
+						new ObjectValuePair<>(
+							NotificationQueueEntryResourceImpl.class,
+							"deleteNotificationQueueEntryBatch"));
+					put(
+						"mutation#updateNotificationQueueEntryResend",
+						new ObjectValuePair<>(
+							NotificationQueueEntryResourceImpl.class,
+							"putNotificationQueueEntryResend"));
+					put(
+						"mutation#createNotificationTemplate",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"postNotificationTemplate"));
+					put(
+						"mutation#createNotificationTemplateBatch",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"postNotificationTemplateBatch"));
+					put(
+						"mutation#deleteNotificationTemplate",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"deleteNotificationTemplate"));
+					put(
+						"mutation#deleteNotificationTemplateBatch",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"deleteNotificationTemplateBatch"));
+					put(
+						"mutation#patchNotificationTemplate",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"patchNotificationTemplate"));
+					put(
+						"mutation#updateNotificationTemplate",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"putNotificationTemplate"));
+					put(
+						"mutation#updateNotificationTemplateBatch",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"putNotificationTemplateBatch"));
+					put(
+						"mutation#createNotificationTemplateCopy",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"postNotificationTemplateCopy"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#deleteNotificationQueueEntry",
-			new ObjectValuePair<>(
-				NotificationQueueEntryResourceImpl.class,
-				"deleteNotificationQueueEntry"));
-		_resourceMethodPairs.put(
-			"mutation#deleteNotificationQueueEntryBatch",
-			new ObjectValuePair<>(
-				NotificationQueueEntryResourceImpl.class,
-				"deleteNotificationQueueEntryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateNotificationQueueEntryResend",
-			new ObjectValuePair<>(
-				NotificationQueueEntryResourceImpl.class,
-				"putNotificationQueueEntryResend"));
-		_resourceMethodPairs.put(
-			"mutation#createNotificationTemplate",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"postNotificationTemplate"));
-		_resourceMethodPairs.put(
-			"mutation#createNotificationTemplateBatch",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"postNotificationTemplateBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteNotificationTemplate",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"deleteNotificationTemplate"));
-		_resourceMethodPairs.put(
-			"mutation#deleteNotificationTemplateBatch",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"deleteNotificationTemplateBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchNotificationTemplate",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"patchNotificationTemplate"));
-		_resourceMethodPairs.put(
-			"mutation#updateNotificationTemplate",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"putNotificationTemplate"));
-		_resourceMethodPairs.put(
-			"mutation#updateNotificationTemplateBatch",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"putNotificationTemplateBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createNotificationTemplateCopy",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"postNotificationTemplateCopy"));
-		_resourceMethodPairs.put(
-			"query#notificationQueueEntries",
-			new ObjectValuePair<>(
-				NotificationQueueEntryResourceImpl.class,
-				"getNotificationQueueEntriesPage"));
-		_resourceMethodPairs.put(
-			"query#notificationQueueEntry",
-			new ObjectValuePair<>(
-				NotificationQueueEntryResourceImpl.class,
-				"getNotificationQueueEntry"));
-		_resourceMethodPairs.put(
-			"query#notificationTemplates",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"getNotificationTemplatesPage"));
-		_resourceMethodPairs.put(
-			"query#notificationTemplate",
-			new ObjectValuePair<>(
-				NotificationTemplateResourceImpl.class,
-				"getNotificationTemplate"));
-	}
+					put(
+						"query#notificationQueueEntries",
+						new ObjectValuePair<>(
+							NotificationQueueEntryResourceImpl.class,
+							"getNotificationQueueEntriesPage"));
+					put(
+						"query#notificationQueueEntry",
+						new ObjectValuePair<>(
+							NotificationQueueEntryResourceImpl.class,
+							"getNotificationQueueEntry"));
+					put(
+						"query#notificationTemplates",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"getNotificationTemplatesPage"));
+					put(
+						"query#notificationTemplate",
+						new ObjectValuePair<>(
+							NotificationTemplateResourceImpl.class,
+							"getNotificationTemplate"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<NotificationQueueEntryResource>

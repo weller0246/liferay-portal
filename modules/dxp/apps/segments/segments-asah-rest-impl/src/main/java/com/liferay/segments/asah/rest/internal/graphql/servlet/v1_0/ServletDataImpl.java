@@ -77,45 +77,51 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#deleteExperiment",
+						new ObjectValuePair<>(
+							ExperimentResourceImpl.class, "deleteExperiment"));
+					put(
+						"mutation#deleteExperimentBatch",
+						new ObjectValuePair<>(
+							ExperimentResourceImpl.class,
+							"deleteExperimentBatch"));
+					put(
+						"mutation#createExperimentRun",
+						new ObjectValuePair<>(
+							ExperimentRunResourceImpl.class,
+							"postExperimentRun"));
+					put(
+						"mutation#createExperimentStatus",
+						new ObjectValuePair<>(
+							StatusResourceImpl.class, "postExperimentStatus"));
+					put(
+						"mutation#createExperimentStatusBatch",
+						new ObjectValuePair<>(
+							StatusResourceImpl.class,
+							"postExperimentStatusBatch"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#deleteExperiment",
-			new ObjectValuePair<>(
-				ExperimentResourceImpl.class, "deleteExperiment"));
-		_resourceMethodPairs.put(
-			"mutation#deleteExperimentBatch",
-			new ObjectValuePair<>(
-				ExperimentResourceImpl.class, "deleteExperimentBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createExperimentRun",
-			new ObjectValuePair<>(
-				ExperimentRunResourceImpl.class, "postExperimentRun"));
-		_resourceMethodPairs.put(
-			"mutation#createExperimentStatus",
-			new ObjectValuePair<>(
-				StatusResourceImpl.class, "postExperimentStatus"));
-		_resourceMethodPairs.put(
-			"mutation#createExperimentStatusBatch",
-			new ObjectValuePair<>(
-				StatusResourceImpl.class, "postExperimentStatusBatch"));
-		_resourceMethodPairs.put(
-			"query#experiment",
-			new ObjectValuePair<>(
-				ExperimentResourceImpl.class, "getExperiment"));
-	}
+					put(
+						"query#experiment",
+						new ObjectValuePair<>(
+							ExperimentResourceImpl.class, "getExperiment"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<ExperimentResource>

@@ -87,177 +87,193 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#deleteAvailabilityEstimate",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"deleteAvailabilityEstimate"));
+					put(
+						"mutation#deleteAvailabilityEstimateBatch",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"deleteAvailabilityEstimateBatch"));
+					put(
+						"mutation#updateAvailabilityEstimate",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"putAvailabilityEstimate"));
+					put(
+						"mutation#updateAvailabilityEstimateBatch",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"putAvailabilityEstimateBatch"));
+					put(
+						"mutation#createCommerceAdminSiteSettingGroupAvailabilityEstimate",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"postCommerceAdminSiteSettingGroupAvailabilityEstimate"));
+					put(
+						"mutation#createMeasurementUnit",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"postMeasurementUnit"));
+					put(
+						"mutation#createMeasurementUnitBatch",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"postMeasurementUnitBatch"));
+					put(
+						"mutation#deleteMeasurementUnitByExternalReferenceCode",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"deleteMeasurementUnitByExternalReferenceCode"));
+					put(
+						"mutation#patchMeasurementUnitByExternalReferenceCode",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"patchMeasurementUnitByExternalReferenceCode"));
+					put(
+						"mutation#deleteMeasurementUnitByKey",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"deleteMeasurementUnitByKey"));
+					put(
+						"mutation#patchMeasurementUnitByKey",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"patchMeasurementUnitByKey"));
+					put(
+						"mutation#deleteMeasurementUnit",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"deleteMeasurementUnit"));
+					put(
+						"mutation#deleteMeasurementUnitBatch",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"deleteMeasurementUnitBatch"));
+					put(
+						"mutation#patchMeasurementUnit",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"patchMeasurementUnit"));
+					put(
+						"mutation#createCommerceAdminSiteSettingGroupTaxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"postCommerceAdminSiteSettingGroupTaxCategory"));
+					put(
+						"mutation#deleteTaxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"deleteTaxCategory"));
+					put(
+						"mutation#deleteTaxCategoryBatch",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"deleteTaxCategoryBatch"));
+					put(
+						"mutation#updateTaxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class, "putTaxCategory"));
+					put(
+						"mutation#updateTaxCategoryBatch",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"putTaxCategoryBatch"));
+					put(
+						"mutation#createCommerceAdminSiteSettingGroupWarehouse",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class,
+							"postCommerceAdminSiteSettingGroupWarehouse"));
+					put(
+						"mutation#deleteWarehouse",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class, "deleteWarehouse"));
+					put(
+						"mutation#deleteWarehouseBatch",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class,
+							"deleteWarehouseBatch"));
+					put(
+						"mutation#updateWarehouse",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class, "putWarehouse"));
+					put(
+						"mutation#updateWarehouseBatch",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class, "putWarehouseBatch"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#deleteAvailabilityEstimate",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"deleteAvailabilityEstimate"));
-		_resourceMethodPairs.put(
-			"mutation#deleteAvailabilityEstimateBatch",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"deleteAvailabilityEstimateBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateAvailabilityEstimate",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"putAvailabilityEstimate"));
-		_resourceMethodPairs.put(
-			"mutation#updateAvailabilityEstimateBatch",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"putAvailabilityEstimateBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createCommerceAdminSiteSettingGroupAvailabilityEstimate",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"postCommerceAdminSiteSettingGroupAvailabilityEstimate"));
-		_resourceMethodPairs.put(
-			"mutation#createMeasurementUnit",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "postMeasurementUnit"));
-		_resourceMethodPairs.put(
-			"mutation#createMeasurementUnitBatch",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "postMeasurementUnitBatch"));
-		_resourceMethodPairs.put(
-			"mutation#deleteMeasurementUnitByExternalReferenceCode",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"deleteMeasurementUnitByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#patchMeasurementUnitByExternalReferenceCode",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"patchMeasurementUnitByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"mutation#deleteMeasurementUnitByKey",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"deleteMeasurementUnitByKey"));
-		_resourceMethodPairs.put(
-			"mutation#patchMeasurementUnitByKey",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"patchMeasurementUnitByKey"));
-		_resourceMethodPairs.put(
-			"mutation#deleteMeasurementUnit",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "deleteMeasurementUnit"));
-		_resourceMethodPairs.put(
-			"mutation#deleteMeasurementUnitBatch",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"deleteMeasurementUnitBatch"));
-		_resourceMethodPairs.put(
-			"mutation#patchMeasurementUnit",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "patchMeasurementUnit"));
-		_resourceMethodPairs.put(
-			"mutation#createCommerceAdminSiteSettingGroupTaxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class,
-				"postCommerceAdminSiteSettingGroupTaxCategory"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "deleteTaxCategory"));
-		_resourceMethodPairs.put(
-			"mutation#deleteTaxCategoryBatch",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "deleteTaxCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "putTaxCategory"));
-		_resourceMethodPairs.put(
-			"mutation#updateTaxCategoryBatch",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "putTaxCategoryBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createCommerceAdminSiteSettingGroupWarehouse",
-			new ObjectValuePair<>(
-				WarehouseResourceImpl.class,
-				"postCommerceAdminSiteSettingGroupWarehouse"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWarehouse",
-			new ObjectValuePair<>(
-				WarehouseResourceImpl.class, "deleteWarehouse"));
-		_resourceMethodPairs.put(
-			"mutation#deleteWarehouseBatch",
-			new ObjectValuePair<>(
-				WarehouseResourceImpl.class, "deleteWarehouseBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateWarehouse",
-			new ObjectValuePair<>(WarehouseResourceImpl.class, "putWarehouse"));
-		_resourceMethodPairs.put(
-			"mutation#updateWarehouseBatch",
-			new ObjectValuePair<>(
-				WarehouseResourceImpl.class, "putWarehouseBatch"));
-		_resourceMethodPairs.put(
-			"query#availabilityEstimate",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"getAvailabilityEstimate"));
-		_resourceMethodPairs.put(
-			"query#commerceAdminSettingGroupAvailabilityEstimate",
-			new ObjectValuePair<>(
-				AvailabilityEstimateResourceImpl.class,
-				"getCommerceAdminSiteSettingGroupAvailabilityEstimatePage"));
-		_resourceMethodPairs.put(
-			"query#measurementUnits",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "getMeasurementUnitsPage"));
-		_resourceMethodPairs.put(
-			"query#measurementUnitByExternalReferenceCode",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"getMeasurementUnitByExternalReferenceCode"));
-		_resourceMethodPairs.put(
-			"query#measurementUnitByKey",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "getMeasurementUnitByKey"));
-		_resourceMethodPairs.put(
-			"query#measurementUnitsByType",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class,
-				"getMeasurementUnitsByType"));
-		_resourceMethodPairs.put(
-			"query#measurementUnit",
-			new ObjectValuePair<>(
-				MeasurementUnitResourceImpl.class, "getMeasurementUnit"));
-		_resourceMethodPairs.put(
-			"query#commerceAdminSettingGroupTaxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class,
-				"getCommerceAdminSiteSettingGroupTaxCategoryPage"));
-		_resourceMethodPairs.put(
-			"query#taxCategory",
-			new ObjectValuePair<>(
-				TaxCategoryResourceImpl.class, "getTaxCategory"));
-		_resourceMethodPairs.put(
-			"query#commerceAdminSettingGroupWarehouse",
-			new ObjectValuePair<>(
-				WarehouseResourceImpl.class,
-				"getCommerceAdminSiteSettingGroupWarehousePage"));
-		_resourceMethodPairs.put(
-			"query#warehouse",
-			new ObjectValuePair<>(WarehouseResourceImpl.class, "getWarehouse"));
-	}
+					put(
+						"query#availabilityEstimate",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"getAvailabilityEstimate"));
+					put(
+						"query#commerceAdminSettingGroupAvailabilityEstimate",
+						new ObjectValuePair<>(
+							AvailabilityEstimateResourceImpl.class,
+							"getCommerceAdminSiteSettingGroupAvailabilityEstimatePage"));
+					put(
+						"query#measurementUnits",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"getMeasurementUnitsPage"));
+					put(
+						"query#measurementUnitByExternalReferenceCode",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"getMeasurementUnitByExternalReferenceCode"));
+					put(
+						"query#measurementUnitByKey",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"getMeasurementUnitByKey"));
+					put(
+						"query#measurementUnitsByType",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"getMeasurementUnitsByType"));
+					put(
+						"query#measurementUnit",
+						new ObjectValuePair<>(
+							MeasurementUnitResourceImpl.class,
+							"getMeasurementUnit"));
+					put(
+						"query#commerceAdminSettingGroupTaxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class,
+							"getCommerceAdminSiteSettingGroupTaxCategoryPage"));
+					put(
+						"query#taxCategory",
+						new ObjectValuePair<>(
+							TaxCategoryResourceImpl.class, "getTaxCategory"));
+					put(
+						"query#commerceAdminSettingGroupWarehouse",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class,
+							"getCommerceAdminSiteSettingGroupWarehousePage"));
+					put(
+						"query#warehouse",
+						new ObjectValuePair<>(
+							WarehouseResourceImpl.class, "getWarehouse"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<AvailabilityEstimateResource>

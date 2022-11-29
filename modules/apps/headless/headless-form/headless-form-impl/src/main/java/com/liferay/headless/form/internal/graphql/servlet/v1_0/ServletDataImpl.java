@@ -85,84 +85,97 @@ public class ServletDataImpl implements ServletData {
 		return new Query();
 	}
 
-	public ObjectValuePair<Class<?>, String> getResourceMethodPair(
+	public ObjectValuePair<Class<?>, String> getResourceMethodObjectValuePair(
 		String methodName, boolean mutation) {
 
 		if (mutation) {
-			return _resourceMethodPairs.get("mutation#" + methodName);
+			return _resourceMethodObjectValuePairs.get(
+				"mutation#" + methodName);
 		}
 
-		return _resourceMethodPairs.get("query#" + methodName);
+		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
 	private static final Map<String, ObjectValuePair<Class<?>, String>>
-		_resourceMethodPairs = new HashMap<>();
+		_resourceMethodObjectValuePairs =
+			new HashMap<String, ObjectValuePair<Class<?>, String>>() {
+				{
+					put(
+						"mutation#createFormEvaluateContext",
+						new ObjectValuePair<>(
+							FormResourceImpl.class, "postFormEvaluateContext"));
+					put(
+						"mutation#createFormFormDocument",
+						new ObjectValuePair<>(
+							FormResourceImpl.class, "postFormFormDocument"));
+					put(
+						"mutation#deleteFormDocument",
+						new ObjectValuePair<>(
+							FormDocumentResourceImpl.class,
+							"deleteFormDocument"));
+					put(
+						"mutation#deleteFormDocumentBatch",
+						new ObjectValuePair<>(
+							FormDocumentResourceImpl.class,
+							"deleteFormDocumentBatch"));
+					put(
+						"mutation#updateFormRecord",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class, "putFormRecord"));
+					put(
+						"mutation#updateFormRecordBatch",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class,
+							"putFormRecordBatch"));
+					put(
+						"mutation#createFormFormRecord",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class,
+							"postFormFormRecord"));
+					put(
+						"mutation#createFormFormRecordBatch",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class,
+							"postFormFormRecordBatch"));
 
-	static {
-		_resourceMethodPairs.put(
-			"mutation#createFormEvaluateContext",
-			new ObjectValuePair<>(
-				FormResourceImpl.class, "postFormEvaluateContext"));
-		_resourceMethodPairs.put(
-			"mutation#createFormFormDocument",
-			new ObjectValuePair<>(
-				FormResourceImpl.class, "postFormFormDocument"));
-		_resourceMethodPairs.put(
-			"mutation#deleteFormDocument",
-			new ObjectValuePair<>(
-				FormDocumentResourceImpl.class, "deleteFormDocument"));
-		_resourceMethodPairs.put(
-			"mutation#deleteFormDocumentBatch",
-			new ObjectValuePair<>(
-				FormDocumentResourceImpl.class, "deleteFormDocumentBatch"));
-		_resourceMethodPairs.put(
-			"mutation#updateFormRecord",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "putFormRecord"));
-		_resourceMethodPairs.put(
-			"mutation#updateFormRecordBatch",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "putFormRecordBatch"));
-		_resourceMethodPairs.put(
-			"mutation#createFormFormRecord",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "postFormFormRecord"));
-		_resourceMethodPairs.put(
-			"mutation#createFormFormRecordBatch",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "postFormFormRecordBatch"));
-		_resourceMethodPairs.put(
-			"query#form",
-			new ObjectValuePair<>(FormResourceImpl.class, "getForm"));
-		_resourceMethodPairs.put(
-			"query#forms",
-			new ObjectValuePair<>(FormResourceImpl.class, "getSiteFormsPage"));
-		_resourceMethodPairs.put(
-			"query#formDocument",
-			new ObjectValuePair<>(
-				FormDocumentResourceImpl.class, "getFormDocument"));
-		_resourceMethodPairs.put(
-			"query#formRecord",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "getFormRecord"));
-		_resourceMethodPairs.put(
-			"query#formFormRecords",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class, "getFormFormRecordsPage"));
-		_resourceMethodPairs.put(
-			"query#formFormRecordByLatestDraft",
-			new ObjectValuePair<>(
-				FormRecordResourceImpl.class,
-				"getFormFormRecordByLatestDraft"));
-		_resourceMethodPairs.put(
-			"query#formStructure",
-			new ObjectValuePair<>(
-				FormStructureResourceImpl.class, "getFormStructure"));
-		_resourceMethodPairs.put(
-			"query#formStructures",
-			new ObjectValuePair<>(
-				FormStructureResourceImpl.class, "getSiteFormStructuresPage"));
-	}
+					put(
+						"query#form",
+						new ObjectValuePair<>(
+							FormResourceImpl.class, "getForm"));
+					put(
+						"query#forms",
+						new ObjectValuePair<>(
+							FormResourceImpl.class, "getSiteFormsPage"));
+					put(
+						"query#formDocument",
+						new ObjectValuePair<>(
+							FormDocumentResourceImpl.class, "getFormDocument"));
+					put(
+						"query#formRecord",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class, "getFormRecord"));
+					put(
+						"query#formFormRecords",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class,
+							"getFormFormRecordsPage"));
+					put(
+						"query#formFormRecordByLatestDraft",
+						new ObjectValuePair<>(
+							FormRecordResourceImpl.class,
+							"getFormFormRecordByLatestDraft"));
+					put(
+						"query#formStructure",
+						new ObjectValuePair<>(
+							FormStructureResourceImpl.class,
+							"getFormStructure"));
+					put(
+						"query#formStructures",
+						new ObjectValuePair<>(
+							FormStructureResourceImpl.class,
+							"getSiteFormStructuresPage"));
+				}
+			};
 
 	@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
 	private ComponentServiceObjects<FormResource>
