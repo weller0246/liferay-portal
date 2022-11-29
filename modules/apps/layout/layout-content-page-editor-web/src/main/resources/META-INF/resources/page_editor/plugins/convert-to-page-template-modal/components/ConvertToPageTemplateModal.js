@@ -122,8 +122,9 @@ const ConvertToPageTemplateModal = ({observer, onClose}) => {
 		return errors;
 	}, [templateName, templateSet]);
 
-	// We are using flush here because this way we can clear errors inmediately in handleSubmit.
-	// Otherwise React will batch setStates and will do only one update
+	// We are using flush here because this way we can clear errors inmediately
+	// in handleSubmit. Otherwise, React will batch setStates and will do only
+	// one update.
 
 	const resetErrors = useCallback(
 		() =>
