@@ -99,19 +99,17 @@ public class ServletDataImpl implements ServletData {
 		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
-	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodObjectValuePairs = new HashMap<>() {
+	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodObjectValuePairs = new HashMap<String, ObjectValuePair<Class<?>, String>>() {
 		{
-			<#if mutationJavaMethodSignatures?has_content || queryJavaMethodSignatures?has_content>
-				<#list mutationJavaMethodSignatures as javaMethodSignature>
-					put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
-				</#list>
+			<#list mutationJavaMethodSignatures as javaMethodSignature>
+				put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+			</#list>
 
-				<#list queryJavaMethodSignatures as javaMethodSignature>
-					put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
-				</#list>
-			</#if>
+			<#list queryJavaMethodSignatures as javaMethodSignature>
+				put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+			</#list>
 		}
-	}
+	};
 
 	<#list schemaNames as schemaName>
 		@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
