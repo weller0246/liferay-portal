@@ -102,7 +102,8 @@ public class ServletDataRequestContext implements GraphQLRequestContext {
 		}
 
 		ObjectValuePair<Class<?>, String> resourceMethodObjectValuePair =
-			servletData.getResourceMethodObjectValuePair(method.getName(), mutation);
+			servletData.getResourceMethodObjectValuePair(
+				method.getName(), mutation);
 
 		if (resourceMethodObjectValuePair == null) {
 			return null;
@@ -119,7 +120,8 @@ public class ServletDataRequestContext implements GraphQLRequestContext {
 		}
 
 		ObjectValuePair<Class<?>, String> resourceMethodObjectValuePair =
-			servletData.getResourceMethodObjectValuePair(method.getName(), mutation);
+			servletData.getResourceMethodObjectValuePair(
+				method.getName(), mutation);
 
 		if (resourceMethodObjectValuePair == null) {
 			return null;
@@ -129,7 +131,8 @@ public class ServletDataRequestContext implements GraphQLRequestContext {
 
 		for (Method resourceMethod : resourceClass.getMethods()) {
 			if (Objects.equals(
-					resourceMethod.getName(), resourceMethodObjectValuePair.getValue())) {
+					resourceMethod.getName(),
+					resourceMethodObjectValuePair.getValue())) {
 
 				return resourceMethod;
 			}

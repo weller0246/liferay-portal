@@ -43,7 +43,6 @@ import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOContributor;
 import com.liferay.portal.vulcan.graphql.dto.GraphQLDTOProperty;
 import com.liferay.portal.vulcan.graphql.dto.v1_0.Creator;
 import com.liferay.portal.vulcan.graphql.servlet.ServletData;
-import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContext;
 import com.liferay.portal.vulcan.graphql.validation.GraphQLRequestContextValidator;
 import com.liferay.portal.vulcan.internal.configuration.VulcanConfiguration;
 import com.liferay.portal.vulcan.internal.configuration.util.ConfigurationUtil;
@@ -1024,11 +1023,6 @@ public class GraphQLServletExtender {
 						graphQLTypes, false),
 					relationshipGraphQLDTOProperty.getName()));
 
-			GraphQLRequestContext graphQLRequestContext =
-				new GraphQLDTOContributorRequestContext(
-					_companyId, graphQLDTOContributor,
-					GraphQLDTOContributor.Operation.GET_RELATIONSHIP);
-
 			graphQLSchemaBuilder.codeRegistry(
 				graphQLCodeRegistryBuilder.dataFetcher(
 					FieldCoordinates.coordinates(
@@ -1037,7 +1031,10 @@ public class GraphQLServletExtender {
 					new GraphQLDTOContributorDataFetcher(
 						graphQLDTOContributor,
 						_graphQLDTOContributorDataFetchingProcessor,
-						relationshipGraphQLDTOProperty, graphQLRequestContext,
+						relationshipGraphQLDTOProperty,
+						new GraphQLDTOContributorRequestContext(
+							_companyId, graphQLDTOContributor,
+							GraphQLDTOContributor.Operation.GET_RELATIONSHIP),
 						_graphQLRequestContextValidators,
 						GraphQLDTOContributor.Operation.GET_RELATIONSHIP)
 				).build());
@@ -1231,18 +1228,16 @@ public class GraphQLServletExtender {
 				graphQLObjectType, createName,
 				graphQLArguments.toArray(new GraphQLArgument[0])));
 
-		GraphQLRequestContext graphQLRequestContext =
-			new GraphQLDTOContributorRequestContext(
-				_companyId, graphQLDTOContributor,
-				GraphQLDTOContributor.Operation.CREATE);
-
 		graphQLSchemaBuilder.codeRegistry(
 			graphQLCodeRegistryBuilder.dataFetcher(
 				FieldCoordinates.coordinates(mutationNamespace, createName),
 				new GraphQLDTOContributorDataFetcher(
 					graphQLDTOContributor,
 					_graphQLDTOContributorDataFetchingProcessor,
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new GraphQLDTOContributorRequestContext(
+						_companyId, graphQLDTOContributor,
+						GraphQLDTOContributor.Operation.CREATE),
+					_graphQLRequestContextValidators,
 					GraphQLDTOContributor.Operation.CREATE)
 			).build());
 
@@ -1257,27 +1252,22 @@ public class GraphQLServletExtender {
 				Scalars.GraphQLBoolean, deleteName,
 				_addGraphQLArgument(ExtendedScalars.GraphQLLong, idName)));
 
-		graphQLRequestContext = new GraphQLDTOContributorRequestContext(
-			_companyId, graphQLDTOContributor,
-			GraphQLDTOContributor.Operation.DELETE);
-
 		graphQLSchemaBuilder.codeRegistry(
 			graphQLCodeRegistryBuilder.dataFetcher(
 				FieldCoordinates.coordinates(mutationNamespace, deleteName),
 				new GraphQLDTOContributorDataFetcher(
 					graphQLDTOContributor,
 					_graphQLDTOContributorDataFetchingProcessor,
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new GraphQLDTOContributorRequestContext(
+						_companyId, graphQLDTOContributor,
+						GraphQLDTOContributor.Operation.DELETE),
+					_graphQLRequestContextValidators,
 					GraphQLDTOContributor.Operation.DELETE)
 			).build());
 
 		// Get
 
 		String getName = StringUtil.lowerCaseFirstLetter(resourceName);
-
-		graphQLRequestContext = new GraphQLDTOContributorRequestContext(
-			_companyId, graphQLDTOContributor,
-			GraphQLDTOContributor.Operation.GET);
 
 		queryGraphQLObjectTypeBuilder.field(
 			_addField(
@@ -1289,7 +1279,10 @@ public class GraphQLServletExtender {
 				new GraphQLDTOContributorDataFetcher(
 					graphQLDTOContributor,
 					_graphQLDTOContributorDataFetchingProcessor,
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new GraphQLDTOContributorRequestContext(
+						_companyId, graphQLDTOContributor,
+						GraphQLDTOContributor.Operation.GET),
+					_graphQLRequestContextValidators,
 					GraphQLDTOContributor.Operation.GET)
 			).build());
 
@@ -1319,17 +1312,16 @@ public class GraphQLServletExtender {
 					graphQLDTOContributor.getTypeName()),
 				listName, graphQLArguments.toArray(new GraphQLArgument[0])));
 
-		graphQLRequestContext = new GraphQLDTOContributorRequestContext(
-			_companyId, graphQLDTOContributor,
-			GraphQLDTOContributor.Operation.LIST);
-
 		graphQLSchemaBuilder.codeRegistry(
 			graphQLCodeRegistryBuilder.dataFetcher(
 				FieldCoordinates.coordinates(namespace, listName),
 				new GraphQLDTOContributorDataFetcher(
 					graphQLDTOContributor,
 					_graphQLDTOContributorDataFetchingProcessor,
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new GraphQLDTOContributorRequestContext(
+						_companyId, graphQLDTOContributor,
+						GraphQLDTOContributor.Operation.LIST),
+					_graphQLRequestContextValidators,
 					GraphQLDTOContributor.Operation.LIST)
 			).build());
 
@@ -1343,17 +1335,16 @@ public class GraphQLServletExtender {
 				_addGraphQLArgument(graphQLInputType, resourceName),
 				_addGraphQLArgument(ExtendedScalars.GraphQLLong, idName)));
 
-		graphQLRequestContext = new GraphQLDTOContributorRequestContext(
-			_companyId, graphQLDTOContributor,
-			GraphQLDTOContributor.Operation.UPDATE);
-
 		graphQLSchemaBuilder.codeRegistry(
 			graphQLCodeRegistryBuilder.dataFetcher(
 				FieldCoordinates.coordinates(mutationNamespace, updateName),
 				new GraphQLDTOContributorDataFetcher(
 					graphQLDTOContributor,
 					_graphQLDTOContributorDataFetchingProcessor,
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new GraphQLDTOContributorRequestContext(
+						_companyId, graphQLDTOContributor,
+						GraphQLDTOContributor.Operation.UPDATE),
+					_graphQLRequestContextValidators,
 					GraphQLDTOContributor.Operation.UPDATE)
 			).build());
 	}
@@ -1509,16 +1500,13 @@ public class GraphQLServletExtender {
 						clazz.getSimpleName(), method,
 						processingElementsContainer));
 
-				GraphQLRequestContext graphQLRequestContext =
-					new ServletDataRequestContext(
-						_companyId, method, mutation, servletData);
-
 				graphQLSchemaBuilder.codeRegistry(
 					graphQLCodeRegistryBuilder.dataFetcher(
 						FieldCoordinates.coordinates(
 							graphQLNamespace, method.getName()),
 						new LiferayMethodDataFetcher(
-							graphQLRequestContext,
+							new ServletDataRequestContext(
+								_companyId, method, mutation, servletData),
 							_graphQLRequestContextValidators,
 							_liferayMethodDataFetchingProcessor, method)
 					).build());
@@ -2409,14 +2397,12 @@ public class GraphQLServletExtender {
 
 			String canonicalName = clazz.getCanonicalName();
 
-			GraphQLRequestContext graphQLRequestContext =
-				new ServletDataRequestContext(
-					_companyId, method, !canonicalName.contains("Query"),
-					_servletDataMap.get(method));
-
 			graphQLFieldDefinitionBuilder.dataFetcher(
 				new LiferayMethodDataFetcher(
-					graphQLRequestContext, _graphQLRequestContextValidators,
+					new ServletDataRequestContext(
+						_companyId, method, !canonicalName.contains("Query"),
+						_servletDataMap.get(method)),
+					_graphQLRequestContextValidators,
 					_liferayMethodDataFetchingProcessor, method));
 
 			DeprecateBuilder deprecateBuilder = new LiferayDeprecateBuilder(
