@@ -240,16 +240,6 @@ public class CompositePasswordEncryptorTest {
 			PasswordEncryptor.TYPE_UFC_CRYPT);
 	}
 
-	protected String getAlgorithmType(String algorithm) {
-		int index = algorithm.indexOf(StringPool.SLASH);
-
-		if (index == -1) {
-			return algorithm;
-		}
-
-		return algorithm.substring(0, index);
-	}
-
 	protected void runTests(
 			String algorithm, String plainPassword, String encryptedPassword,
 			String prependedAlgorithm)
