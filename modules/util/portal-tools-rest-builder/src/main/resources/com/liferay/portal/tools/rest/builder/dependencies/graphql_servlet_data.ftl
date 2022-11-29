@@ -40,8 +40,11 @@ public class ServletDataImpl implements ServletData {
 
 	<#assign
 		mutationJavaMethodSignatures = freeMarkerTool.getGraphQLJavaMethodSignatures(configYAML, "mutation", openAPIYAML)
+
 		mutationSchemaNames = freeMarkerTool.getGraphQLSchemaNames(mutationJavaMethodSignatures)
+
 		queryJavaMethodSignatures = freeMarkerTool.getGraphQLJavaMethodSignatures(configYAML, "query", openAPIYAML)
+
 		querySchemaNames = freeMarkerTool.getGraphQLSchemaNames(queryJavaMethodSignatures)
 	/>
 
@@ -94,21 +97,23 @@ public class ServletDataImpl implements ServletData {
 		if (mutation) {
 			return _resourceMethodObjectValuePairs.get("mutation#" + methodName);
 		}
+
 		return _resourceMethodObjectValuePairs.get("query#" + methodName);
 	}
 
-	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodObjectValuePairs = new HashMap<>();
+	private static final Map<String, ObjectValuePair<Class<?>, String>> _resourceMethodObjectValuePairs = new HashMap<>() {
+		{
+			<#if mutationJavaMethodSignatures?has_content || queryJavaMethodSignatures?has_content>
+				<#list mutationJavaMethodSignatures as javaMethodSignature>
+					put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+				</#list>
 
-	<#if mutationJavaMethodSignatures?has_content || queryJavaMethodSignatures?has_content>
-		static {
-		<#list mutationJavaMethodSignatures as javaMethodSignature>
-			_resourceMethodObjectValuePairs.put("mutation#${freeMarkerTool.getGraphQLMutationName(javaMethodSignature.methodName)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
-		</#list>
-		<#list queryJavaMethodSignatures as javaMethodSignature>
-			_resourceMethodObjectValuePairs.put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
-		</#list>
+				<#list queryJavaMethodSignatures as javaMethodSignature>
+					put("query#${freeMarkerTool.getGraphQLPropertyName(javaMethodSignature, queryJavaMethodSignatures)}", new ObjectValuePair<>(${javaMethodSignature.schemaName}ResourceImpl.class, "${javaMethodSignature.methodName}"));
+				</#list>
+			</#if>
 		}
-	</#if>
+	}
 
 	<#list schemaNames as schemaName>
 		@Reference(scope = ReferenceScope.PROTOTYPE_REQUIRED)
