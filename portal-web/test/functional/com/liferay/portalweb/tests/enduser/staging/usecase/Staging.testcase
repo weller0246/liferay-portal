@@ -2564,6 +2564,7 @@ definition {
 	@description = "This is a use case for LPS-89116."
 	@priority = "3"
 	test ValidateFriendlyURLWithSpecialCharacters {
+		property portal.upstream = "marcell";
 		WebContentNavigator.openWebContentAdmin(siteURLKey = "site-name");
 
 		WebContentNavigator.gotoAddCP();
