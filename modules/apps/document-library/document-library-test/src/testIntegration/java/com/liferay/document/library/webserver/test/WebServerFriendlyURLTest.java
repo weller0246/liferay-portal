@@ -86,29 +86,23 @@ public class WebServerFriendlyURLTest extends BaseWebServerTestCase {
 	}
 
 	@Test
-	public void testGroupIdUUIDFriendlyURLHasFiles() throws Exception {
+	public void testGroupIdUUIDFriendlyURL() throws Exception {
+		Assert.assertFalse(
+			WebServerServlet.hasFiles(
+				_createMockHttpServletRequest(
+					String.format(
+						"/%s/%s", group.getGroupId(),
+						RandomTestUtil.randomString()))));
+
 		String urlTitle = RandomTestUtil.randomString();
 
 		FileEntry fileEntry = _addFileEntry(urlTitle);
 
-		String path = String.format(
-			"/%s/%s", group.getGroupId(), fileEntry.getUuid());
-
-		MockHttpServletRequest mockHttpServletRequest =
-			_createMockHttpServletRequest(path);
-
-		Assert.assertTrue(WebServerServlet.hasFiles(mockHttpServletRequest));
-	}
-
-	@Test
-	public void testGroupIdUUIDFriendlyURLHasNoFiles() throws Exception {
-		String path = String.format(
-			"/%s/%s", group.getGroupId(), RandomTestUtil.randomString());
-
-		MockHttpServletRequest mockHttpServletRequest =
-			_createMockHttpServletRequest(path);
-
-		Assert.assertFalse(WebServerServlet.hasFiles(mockHttpServletRequest));
+		Assert.assertTrue(
+			WebServerServlet.hasFiles(
+				_createMockHttpServletRequest(
+					String.format(
+						"/%s/%s", group.getGroupId(), fileEntry.getUuid()))));
 	}
 
 	@Test
