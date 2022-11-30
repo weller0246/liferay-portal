@@ -51,7 +51,7 @@ components:
                         type: object
                     readOnly: true
                     type: object
-                attachmentObjectFieldERCs:
+                attachmentObjectFieldExternalReferenceCodes:
                     items:
                         type: string
                     type: array
@@ -89,7 +89,7 @@ components:
                     additionalProperties:
                         type: string
                     type: object
-                objectDefinitionERC:
+                objectDefinitionExternalReferenceCode:
                     type: string
                 objectDefinitionId:
                     format: int64

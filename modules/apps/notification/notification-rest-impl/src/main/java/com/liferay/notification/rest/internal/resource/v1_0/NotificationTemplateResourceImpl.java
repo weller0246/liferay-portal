@@ -311,7 +311,7 @@ public class NotificationTemplateResourceImpl
 						serviceBuilderNotificationTemplate.
 							getNotificationTemplateId())
 				).build();
-				attachmentObjectFieldERCs = transformToArray(
+				attachmentObjectFieldExternalReferenceCodes = transformToArray(
 					_notificationTemplateAttachmentLocalService.
 						getNotificationTemplateAttachments(
 							serviceBuilderNotificationTemplate.
@@ -363,7 +363,7 @@ public class NotificationTemplateResourceImpl
 				typeLabel = _language.get(
 					_getLocale(), notificationType.getTypeLanguageKey());
 
-				setObjectDefinitionERC(
+				setObjectDefinitionExternalReferenceCode(
 					() -> {
 						ObjectDefinition objectDefinition =
 							_objectDefinitionLocalService.fetchObjectDefinition(
