@@ -54,7 +54,8 @@ public class NotificationUtil {
 		List<Long> attachmentObjectFieldIds = new ArrayList<>();
 
 		for (String attachmentObjectFieldExternalReferenceCode :
-				notificationTemplate.getAttachmentObjectFieldExternalReferenceCodes()) {
+				notificationTemplate.
+					getAttachmentObjectFieldExternalReferenceCodes()) {
 
 			ObjectField objectField = objectFieldLocalService.fetchObjectField(
 				attachmentObjectFieldExternalReferenceCode,
@@ -138,17 +139,19 @@ public class NotificationUtil {
 		serviceBuilderNotificationTemplate.setUserId(user.getUserId());
 		serviceBuilderNotificationTemplate.setUserName(user.getFullName());
 
-		String objectDefinitionExternalReferenceCode =
-			notificationTemplate.getObjectDefinitionExternalReferenceCode();
 		long objectDefinitionId = GetterUtil.getLong(
 			notificationTemplate.getObjectDefinitionId());
+
+		String objectDefinitionExternalReferenceCode =
+			notificationTemplate.getObjectDefinitionExternalReferenceCode();
 
 		if (Validator.isNotNull(objectDefinitionExternalReferenceCode)) {
 			try {
 				ObjectDefinition objectDefinition =
 					objectDefinitionLocalService.
 						getObjectDefinitionByExternalReferenceCode(
-							objectDefinitionExternalReferenceCode, user.getCompanyId());
+							objectDefinitionExternalReferenceCode,
+							user.getCompanyId());
 
 				objectDefinitionId = objectDefinition.getObjectDefinitionId();
 			}
@@ -159,6 +162,7 @@ public class NotificationUtil {
 
 		serviceBuilderNotificationTemplate.setObjectDefinitionId(
 			objectDefinitionId);
+
 		serviceBuilderNotificationTemplate.setBodyMap(
 			LocalizedMapUtil.getLocalizedMap(notificationTemplate.getBody()));
 		serviceBuilderNotificationTemplate.setDescription(
