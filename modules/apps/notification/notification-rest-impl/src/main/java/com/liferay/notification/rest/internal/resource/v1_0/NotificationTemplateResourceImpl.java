@@ -233,13 +233,13 @@ public class NotificationTemplateResourceImpl
 			NotificationTemplate notificationTemplate)
 		throws Exception {
 
+		notificationTemplate.setExternalReferenceCode(externalReferenceCode);
+
 		com.liferay.notification.model.NotificationTemplate
 			serviceBuilderNotificationTemplate =
 				_notificationTemplateService.
 					fetchNotificationTemplateByExternalReferenceCode(
 						externalReferenceCode, contextCompany.getCompanyId());
-
-		notificationTemplate.setExternalReferenceCode(externalReferenceCode);
 
 		if (serviceBuilderNotificationTemplate != null) {
 			return putNotificationTemplate(
