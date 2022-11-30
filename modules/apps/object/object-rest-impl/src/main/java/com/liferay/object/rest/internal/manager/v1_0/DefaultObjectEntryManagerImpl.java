@@ -655,6 +655,19 @@ public class DefaultObjectEntryManagerImpl
 					dtoConverterContext.getUserId())));
 	}
 
+	private Map<String, String> _addAction(
+			String actionName, String methodName,
+			com.liferay.object.model.ObjectEntry objectEntry, UriInfo uriInfo)
+		throws Exception {
+
+		return ActionUtil.addAction(
+			actionName, ObjectEntryResourceImpl.class,
+			objectEntry.getObjectEntryId(), methodName, null,
+			objectEntry.getUserId(),
+			_getObjectEntryPermissionName(objectEntry.getObjectDefinitionId()),
+			objectEntry.getGroupId(), uriInfo);
+	}
+
 	private void _checkObjectEntryObjectDefinitionId(
 			ObjectDefinition objectDefinition,
 			com.liferay.object.model.ObjectEntry objectEntry)
@@ -691,19 +704,6 @@ public class DefaultObjectEntryManagerImpl
 		serviceContext.setUserId(userId);
 
 		return serviceContext;
-	}
-
-	private Map<String, String> _addAction(
-			String actionName, String methodName,
-			com.liferay.object.model.ObjectEntry objectEntry, UriInfo uriInfo)
-		throws Exception {
-
-		return ActionUtil.addAction(
-			actionName, ObjectEntryResourceImpl.class,
-			objectEntry.getObjectEntryId(), methodName, null,
-			objectEntry.getUserId(),
-			_getObjectEntryPermissionName(objectEntry.getObjectDefinitionId()),
-			objectEntry.getGroupId(), uriInfo);
 	}
 
 	private String _getObjectEntriesPermissionName(long objectDefinitionId) {
