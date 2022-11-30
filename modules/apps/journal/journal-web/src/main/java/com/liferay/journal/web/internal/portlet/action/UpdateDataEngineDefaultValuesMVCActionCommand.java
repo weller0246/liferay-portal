@@ -126,7 +126,7 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 		DDMForm ddmForm = ddmStructure.getDDMForm();
 
 		DDMFormValues ddmFormValues = _ddmFormValuesFactory.create(
-			actionRequest, ddmStructure.getDDMForm());
+			actionRequest, ddmForm);
 
 		ddmFormValues.setDDMFormFieldValues(
 			DDMFormValuesConverterUtil.addMissingDDMFormFieldValues(
