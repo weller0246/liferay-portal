@@ -99,7 +99,8 @@ public class NotificationTemplateResourceTest
 		notificationTemplate.setBody(
 			LocalizedMapUtil.getI18nMap(
 				RandomTestUtil.randomLocaleStringMap()));
-		notificationTemplate.setObjectDefinitionERC(StringPool.BLANK);
+		notificationTemplate.setObjectDefinitionExternalReferenceCode(
+			StringPool.BLANK);
 		notificationTemplate.setObjectDefinitionId(0L);
 		notificationTemplate.setRecipients(new Object[0]);
 		notificationTemplate.setRecipientType(
