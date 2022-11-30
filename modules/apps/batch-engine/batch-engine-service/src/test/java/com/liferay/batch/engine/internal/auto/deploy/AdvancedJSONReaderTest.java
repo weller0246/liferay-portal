@@ -93,10 +93,10 @@ public class AdvancedJSONReaderTest {
 
 				String content = byteArrayOutputStream.toString();
 
-				Assert.assertTrue(content.startsWith(StringPool.OPEN_BRACKET));
-				Assert.assertTrue(content.endsWith(StringPool.CLOSE_BRACKET));
-				Assert.assertTrue(content.contains("innerArray1"));
 				Assert.assertTrue(content.contains("Array Element 4"));
+				Assert.assertTrue(content.contains("innerArray1"));
+				Assert.assertTrue(content.endsWith(StringPool.CLOSE_BRACKET));
+				Assert.assertTrue(content.startsWith(StringPool.OPEN_BRACKET));
 			}
 		}
 	}

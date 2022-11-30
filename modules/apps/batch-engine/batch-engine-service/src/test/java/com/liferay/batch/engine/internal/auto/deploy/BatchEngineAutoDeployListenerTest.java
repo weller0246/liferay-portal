@@ -261,7 +261,7 @@ public class BatchEngineAutoDeployListenerTest {
 		try {
 			_batchEngineAutoDeployListener.deploy(autoDeploymentContext);
 
-			Assert.fail("Empty zip file is not deployable");
+			Assert.fail();
 		}
 		catch (Exception exception) {
 			Assert.assertEquals(
