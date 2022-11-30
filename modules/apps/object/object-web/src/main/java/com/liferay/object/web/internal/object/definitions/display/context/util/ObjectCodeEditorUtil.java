@@ -71,7 +71,6 @@ public class ObjectCodeEditorUtil {
 						"label", objectField.getLabel(locale)
 					).build()),
 				"fields", locale));
-
 		codeEditorElements.add(
 			_createCodeEditorElement(
 				Collections.singletonList(
