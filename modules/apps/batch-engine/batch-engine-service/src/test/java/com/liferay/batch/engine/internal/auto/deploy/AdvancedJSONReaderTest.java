@@ -88,7 +88,7 @@ public class AdvancedJSONReaderTest {
 			try (ByteArrayOutputStream byteArrayOutputStream =
 					new ByteArrayOutputStream()) {
 
-				advancedJSONReader.transferJsonArray(
+				advancedJSONReader.transferJSONArray(
 					"items", byteArrayOutputStream);
 
 				String content = byteArrayOutputStream.toString();

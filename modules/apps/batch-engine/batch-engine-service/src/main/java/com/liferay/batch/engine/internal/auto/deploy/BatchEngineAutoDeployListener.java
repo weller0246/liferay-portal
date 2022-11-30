@@ -203,8 +203,8 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 	private Collection<BatchEngineZipUnit> _getBatchEngineZipUnitsCollection(
 		ZipFile zipFile) {
 
-		Map<String, BatchEngineZipUnit> batchEngineZipUnits = new HashMap<>();
 		Map<String, ZipEntry> batchEngineZipEntries = new HashMap<>();
+		Map<String, BatchEngineZipUnit> batchEngineZipUnits = new HashMap<>();
 		Enumeration<? extends ZipEntry> enumeration = zipFile.entries();
 
 		while (enumeration.hasMoreElements()) {

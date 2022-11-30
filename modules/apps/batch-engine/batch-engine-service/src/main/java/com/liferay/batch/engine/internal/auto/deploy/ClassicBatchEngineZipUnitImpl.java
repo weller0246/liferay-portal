@@ -33,7 +33,7 @@ public class ClassicBatchEngineZipUnitImpl<T> implements BatchEngineZipUnit<T> {
 
 		if ((zipEntries == null) || (zipEntries.length > 2)) {
 			throw new IllegalArgumentException(
-				"Unable to find both configuration and data zip entry");
+				"Invalid zip entries " + zipEntries);
 		}
 
 		_zipFile = Objects.requireNonNull(zipFile);
@@ -48,11 +48,14 @@ public class ClassicBatchEngineZipUnitImpl<T> implements BatchEngineZipUnit<T> {
 			_dataZipEntry = zipEntry;
 		}
 
-		if (Objects.isNull(_configurationZipEntry) ||
-			Objects.isNull(_dataZipEntry)) {
-
+		if (Objects.isNull(_configurationZipEntry)) {
 			throw new IllegalArgumentException(
-				"Unable to set configuration and data zip entry");
+				"Configuration zip entry is null");
+		}
+
+		if (Objects.isNull(_dataZipEntry)) {
+			throw new IllegalArgumentException(
+				"Data zip entry is null");
 		}
 	}
 

@@ -398,9 +398,8 @@ public class BatchEngineAutoDeployListenerTest {
 			_batchEngineImportTasks.size());
 	}
 
-	private File _toZipFile(String directory) throws Exception {
-		URL url = BatchEngineAutoDeployListenerTest.class.getResource(
-			directory);
+	private File _toZipFile(String fileName) throws Exception {
+		URL url = BatchEngineAutoDeployListenerTest.class.getResource(fileName);
 
 		if (url == null) {
 			File file = new File(RandomTestUtil.randomString(20) + ".zip");
@@ -409,6 +408,7 @@ public class BatchEngineAutoDeployListenerTest {
 					new FileOutputStream(file))) {
 
 				zipOutputStream.putNextEntry(new ZipEntry(file.getName()));
+
 				zipOutputStream.closeEntry();
 			}
 
@@ -443,19 +443,21 @@ public class BatchEngineAutoDeployListenerTest {
 
 						zipOutputStream.putNextEntry(
 							new ZipEntry(relativePath.toString()));
+
 						zipOutputStream.write(
 							StreamUtil.toByteArray(fileInputStream));
+
 						zipOutputStream.closeEntry();
 					}
 					catch (Exception exception) {
 						throw new IllegalStateException(
-							"Unable to create new zip entry", exception);
+							"Unable to add new zip entry", exception);
 					}
 				});
 		}
 		catch (Exception exception) {
 			throw new IllegalStateException(
-				"Unable to create zip file", exception);
+				"Unable to write zip file", exception);
 		}
 
 		return zipFile;

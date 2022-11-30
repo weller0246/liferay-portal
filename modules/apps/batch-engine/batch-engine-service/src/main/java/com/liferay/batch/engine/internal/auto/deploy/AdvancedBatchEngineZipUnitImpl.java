@@ -59,13 +59,13 @@ public class AdvancedBatchEngineZipUnitImpl<T>
 	@Override
 	public InputStream getDataInputStream() throws IOException {
 		try (InputStream inputStream = _zipFile.getInputStream(_zipEntry)) {
-			AdvancedJSONReader advancedJSONReader = new AdvancedJSONReader(
-				inputStream);
-
 			ByteArrayOutputStream byteArrayOutputStream =
 				new ByteArrayOutputStream();
 
-			advancedJSONReader.transferJsonArray(
+			AdvancedJSONReader advancedJSONReader = new AdvancedJSONReader(
+				inputStream);
+
+			advancedJSONReader.transferJSONArray(
 				"items", byteArrayOutputStream);
 
 			return new ByteArrayInputStream(
@@ -92,7 +92,7 @@ public class AdvancedBatchEngineZipUnitImpl<T>
 		}
 		catch (IOException ioException) {
 			_log.error(
-				"Unable to find data in file " + _zipEntry.getName(),
+				"Unable to get data in file " + _zipEntry.getName(),
 				ioException);
 		}
 

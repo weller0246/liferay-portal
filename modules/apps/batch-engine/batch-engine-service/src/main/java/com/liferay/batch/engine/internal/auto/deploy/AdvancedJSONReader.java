@@ -38,7 +38,7 @@ public class AdvancedJSONReader<T> {
 		ByteArrayOutputStream byteArrayOutputStream =
 			new ByteArrayOutputStream();
 
-		transferJsonObject(name, byteArrayOutputStream);
+		transferJSONObject(name, byteArrayOutputStream);
 
 		ObjectMapper objectMapper = new ObjectMapper();
 
@@ -56,7 +56,7 @@ public class AdvancedJSONReader<T> {
 		return true;
 	}
 
-	public void transferJsonArray(String name, OutputStream outputStream)
+	public void transferJSONArray(String name, OutputStream outputStream)
 		throws IOException {
 
 		_readUntil("\"" + name + "\"");
@@ -65,7 +65,7 @@ public class AdvancedJSONReader<T> {
 			CharPool.OPEN_BRACKET, CharPool.CLOSE_BRACKET, outputStream);
 	}
 
-	public void transferJsonObject(String name, OutputStream outputStream)
+	public void transferJSONObject(String name, OutputStream outputStream)
 		throws IOException {
 
 		_readUntil("\"" + name + "\"");
