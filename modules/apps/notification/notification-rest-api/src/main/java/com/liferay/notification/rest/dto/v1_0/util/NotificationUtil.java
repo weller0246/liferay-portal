@@ -54,8 +54,7 @@ public class NotificationUtil {
 		List<Long> attachmentObjectFieldIds = new ArrayList<>();
 
 		for (String attachmentObjectFieldExternalReferenceCode :
-				ListUtil.fromArray(
-					notificationTemplate.getAttachmentObjectFieldExternalReferenceCodes())) {
+				notificationTemplate.getAttachmentObjectFieldExternalReferenceCodes()) {
 
 			ObjectField objectField = objectFieldLocalService.fetchObjectField(
 				attachmentObjectFieldExternalReferenceCode,
