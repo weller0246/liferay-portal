@@ -54,8 +54,7 @@ public class ClassicBatchEngineZipUnitImpl<T> implements BatchEngineZipUnit<T> {
 		}
 
 		if (Objects.isNull(_dataZipEntry)) {
-			throw new IllegalArgumentException(
-				"Data zip entry is null");
+			throw new IllegalArgumentException("Data zip entry is null");
 		}
 	}
 
