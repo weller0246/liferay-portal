@@ -195,7 +195,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch6"));
+		autoDeploymentContext.setFile(_toZipFile("batch6"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -223,7 +223,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch5"));
+		autoDeploymentContext.setFile(_toZipFile("batch5"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -251,7 +251,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch0"));
+		autoDeploymentContext.setFile(_toZipFile("batch0"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -282,7 +282,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch4"));
+		autoDeploymentContext.setFile(_toZipFile("batch4"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -310,7 +310,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch2"));
+		autoDeploymentContext.setFile(_toZipFile("batch2"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -347,7 +347,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch3"));
+		autoDeploymentContext.setFile(_toZipFile("batch3"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -375,7 +375,7 @@ public class BatchEngineAutoDeployListenerTest {
 		AutoDeploymentContext autoDeploymentContext =
 			new AutoDeploymentContext();
 
-		autoDeploymentContext.setFile(_asZipFile("batch1"));
+		autoDeploymentContext.setFile(_toZipFile("batch1"));
 
 		boolean deployable = _batchEngineAutoDeployListener.isDeployable(
 			autoDeploymentContext);
@@ -398,7 +398,7 @@ public class BatchEngineAutoDeployListenerTest {
 			_batchEngineImportTasks.size());
 	}
 
-	private File _asZipFile(String directory) throws Exception {
+	private File _toZipFile(String directory) throws Exception {
 		URL url = BatchEngineAutoDeployListenerTest.class.getResource(
 			directory);
 
