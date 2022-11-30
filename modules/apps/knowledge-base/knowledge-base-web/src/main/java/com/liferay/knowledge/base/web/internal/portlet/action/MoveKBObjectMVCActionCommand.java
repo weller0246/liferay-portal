@@ -189,9 +189,8 @@ public class MoveKBObjectMVCActionCommand extends BaseMVCActionCommand {
 		else if ((ceil != floor) && (floor > previousKBArticlePriority)) {
 			return floor;
 		}
-		else {
-			return (previousKBArticlePriority + nextKBArticlePriority) / 2;
-		}
+
+		return (previousKBArticlePriority + nextKBArticlePriority) / 2;
 	}
 
 	private double _getPriority(
@@ -221,12 +220,11 @@ public class MoveKBObjectMVCActionCommand extends BaseMVCActionCommand {
 			return _getNearestPriority(
 				nextKBArticle.getPriority() + 2, nextKBArticle.getPriority());
 		}
-		else {
-			KBArticle previousKBArticle = kbArticles.get(kbArticles.size() - 2);
 
-			return _getNearestPriority(
-				nextKBArticle.getPriority(), previousKBArticle.getPriority());
-		}
+		KBArticle previousKBArticle = kbArticles.get(kbArticles.size() - 2);
+
+		return _getNearestPriority(
+			nextKBArticle.getPriority(), previousKBArticle.getPriority());
 	}
 
 	private boolean _isDragAndDrop(boolean dragAndDrop) {
