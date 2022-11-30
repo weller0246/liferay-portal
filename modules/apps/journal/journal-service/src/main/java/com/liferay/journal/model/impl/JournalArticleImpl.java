@@ -278,7 +278,7 @@ public class JournalArticleImpl extends JournalArticleBaseImpl {
 		if (ddmFormValues != null) {
 			ddmFormValues.setDDMFormFieldValues(
 				DDMFormValuesConverterUtil.addMissingDDMFormFieldValues(
-					ddmForm.getDDMFormFieldsMap(true),
+					ddmForm.getDDMFormFields(),
 					ddmFormValues.getDDMFormFieldValuesMap(true)));
 		}
 
