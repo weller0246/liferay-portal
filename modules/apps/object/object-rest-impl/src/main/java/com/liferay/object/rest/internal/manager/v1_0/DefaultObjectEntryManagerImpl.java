@@ -693,7 +693,7 @@ public class DefaultObjectEntryManagerImpl
 		return serviceContext;
 	}
 
-	private Map<String, String> _getAction(
+	private Map<String, String> _addAction(
 			String actionName, String methodName,
 			com.liferay.object.model.ObjectEntry objectEntry, UriInfo uriInfo)
 		throws Exception {
@@ -958,28 +958,28 @@ public class DefaultObjectEntryManagerImpl
 						return null;
 					}
 
-					return _getAction(
+					return _addAction(
 						ActionKeys.DELETE, "deleteObjectEntry", objectEntry,
 						dtoConverterContext.getUriInfo());
 				}
 			).put(
 				"get",
-				_getAction(
+				_addAction(
 					ActionKeys.VIEW, "getObjectEntry", objectEntry,
 					dtoConverterContext.getUriInfo())
 			).put(
 				"permissions",
-				_getAction(
+				_addAction(
 					ActionKeys.PERMISSIONS, "getObjectEntryPermissionsPage",
 					objectEntry, dtoConverterContext.getUriInfo())
 			).put(
 				"replace",
-				_getAction(
+				_addAction(
 					ActionKeys.UPDATE, "putObjectEntry", objectEntry,
 					dtoConverterContext.getUriInfo())
 			).put(
 				"update",
-				_getAction(
+				_addAction(
 					ActionKeys.UPDATE, "patchObjectEntry", objectEntry,
 					dtoConverterContext.getUriInfo())
 			).build();
@@ -994,7 +994,7 @@ public class DefaultObjectEntryManagerImpl
 
 					actions.put(
 						objectAction.getName(),
-						_getAction(
+						_addAction(
 							ActionKeys.VIEW,
 							"putByExternalReferenceCodeObjectEntryExternal" +
 								"ReferenceCodeObjectActionObjectActionName",
