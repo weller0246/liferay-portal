@@ -53,21 +53,27 @@ public class NotificationUtil {
 
 		List<Long> attachmentObjectFieldIds = new ArrayList<>();
 
-		for (String attachmentObjectFieldExternalReferenceCode :
-				notificationTemplate.
-					getAttachmentObjectFieldExternalReferenceCodes()) {
+		String[] attachmentObjectFieldExternalReferenceCodes =
+			notificationTemplate.
+				getAttachmentObjectFieldExternalReferenceCodes();
 
-			ObjectField objectField = objectFieldLocalService.fetchObjectField(
-				attachmentObjectFieldExternalReferenceCode,
-				notificationTemplate.getObjectDefinitionId());
+		if (attachmentObjectFieldExternalReferenceCodes != null) {
+			for (String attachmentObjectFieldExternalReferenceCode :
+					attachmentObjectFieldExternalReferenceCodes) {
 
-			if (objectField == null) {
-				attachmentObjectFieldIds.clear();
+				ObjectField objectField =
+					objectFieldLocalService.fetchObjectField(
+						attachmentObjectFieldExternalReferenceCode,
+						notificationTemplate.getObjectDefinitionId());
 
-				break;
+				if (objectField == null) {
+					attachmentObjectFieldIds.clear();
+
+					break;
+				}
+
+				attachmentObjectFieldIds.add(objectField.getObjectFieldId());
 			}
-
-			attachmentObjectFieldIds.add(objectField.getObjectFieldId());
 		}
 
 		if (attachmentObjectFieldIds.isEmpty()) {
