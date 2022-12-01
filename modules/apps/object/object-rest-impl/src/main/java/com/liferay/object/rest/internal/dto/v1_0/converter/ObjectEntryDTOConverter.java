@@ -424,16 +424,18 @@ public class ObjectEntryDTOConverter
 					com.liferay.portal.kernel.repository.model.FileEntry
 						fileEntry = _dlAppService.getFileEntry(fileEntryId);
 
-					fileEntryLink.setHref(
-						HttpComponentsUtil.addParameter(
-							HttpComponentsUtil.addParameter(
-								_dlURLHelper.getDownloadURL(
-									fileEntry, fileEntry.getFileVersion(), null,
-									StringPool.BLANK),
-								"objectDefinitionExternalReferenceCode",
-								objectDefinition.getExternalReferenceCode()),
-							"objectEntryExternalReferenceCode",
-							objectEntry.getExternalReferenceCode()));
+					String href = _dlURLHelper.getDownloadURL(
+						fileEntry, fileEntry.getFileVersion(), null,
+						StringPool.BLANK);
+
+					href = HttpComponentsUtil.addParameter(
+						href, "objectDefinitionExternalReferenceCode",
+						objectDefinition.getExternalReferenceCode());
+					href = HttpComponentsUtil.addParameter(
+						href, "objectEntryExternalReferenceCode",
+						objectEntry.getExternalReferenceCode());
+
+					fileEntryLink.setHref(href);
 				}
 				catch (PrincipalException principalException) {
 					if (_log.isWarnEnabled()) {
