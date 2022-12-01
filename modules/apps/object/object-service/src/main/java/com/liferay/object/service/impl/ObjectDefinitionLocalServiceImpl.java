@@ -1249,6 +1249,8 @@ public class ObjectDefinitionLocalServiceImpl
 		objectDefinition.setPKObjectFieldName(pkObjectFieldName);
 		objectDefinition.setScope(scope);
 
+		objectDefinition = objectDefinitionPersistence.update(objectDefinition);
+
 		for (ObjectField objectField :
 				_objectFieldLocalService.getObjectFields(
 					objectDefinition.getObjectDefinitionId(),
@@ -1259,7 +1261,7 @@ public class ObjectDefinitionLocalServiceImpl
 			_objectFieldLocalService.updateObjectField(objectField);
 		}
 
-		return objectDefinitionPersistence.update(objectDefinition);
+		return objectDefinition;
 	}
 
 	private void _updateWorkflowInstances(ObjectDefinition objectDefinition)
