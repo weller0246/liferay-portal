@@ -44,7 +44,7 @@ import org.osgi.service.component.annotations.Reference;
  */
 @Component(
 	immediate = true,
-	property = "destination.name=" + DestinationNames.OBJECT_ENTRY_BUSINESS_TYPE_ATTACHMENT_DOWNLOAD,
+	property = "destination.name=" + DestinationNames.OBJECT_ENTRY_ATTACHMENT_DOWNLOAD,
 	service = MessageListener.class
 )
 public class ObjectActionDownloadTriggerMessageListener
@@ -56,7 +56,7 @@ public class ObjectActionDownloadTriggerMessageListener
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
 				DestinationNames.
-					OBJECT_ENTRY_BUSINESS_TYPE_ATTACHMENT_DOWNLOAD);
+					OBJECT_ENTRY_ATTACHMENT_DOWNLOAD);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);

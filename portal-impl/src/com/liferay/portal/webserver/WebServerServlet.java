@@ -1204,7 +1204,7 @@ public class WebServerServlet extends HttpServlet {
 			message.put("userId", user.getUserId());
 
 			_messageBus.sendMessage(
-				DestinationNames.OBJECT_ENTRY_BUSINESS_TYPE_ATTACHMENT_DOWNLOAD,
+				DestinationNames.OBJECT_ENTRY_ATTACHMENT_DOWNLOAD,
 				message);
 		}
 	}
