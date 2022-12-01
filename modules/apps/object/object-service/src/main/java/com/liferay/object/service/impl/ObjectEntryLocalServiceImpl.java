@@ -1654,10 +1654,9 @@ public class ObjectEntryLocalServiceImpl
 	}
 
 	private Predicate _fillObjectFieldPredicate(
-		Column<?, Object> column, ObjectField objectField, String search) {
+		Column<?, Object> column, String dbType, String search) {
 
 		Predicate objectFieldPredicate = null;
-		String dbType = objectField.getDBType();
 
 		if (StringUtil.equals(dbType, ObjectFieldConstants.DB_TYPE_STRING) ||
 			StringUtil.equals(dbType, ObjectFieldConstants.DB_TYPE_CLOB)) {
@@ -1718,7 +1717,7 @@ public class ObjectEntryLocalServiceImpl
 			}
 
 			Predicate objectFieldPredicate = _fillObjectFieldPredicate(
-				(Column<?, Object>)column, objectField, search);
+				(Column<?, Object>)column, objectField.getDBType(), search);
 
 			if (searchPredicate == null) {
 				searchPredicate = objectFieldPredicate;
