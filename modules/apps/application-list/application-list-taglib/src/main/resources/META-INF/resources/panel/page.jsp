@@ -201,6 +201,11 @@ PanelCategoryHelper panelCategoryHelper = new PanelCategoryHelper(panelAppRegist
 </ul>
 
 <liferay-frontend:component
-	context='<%= HashMapBuilder.<String, Object>put("categoryKey", panelCategory.getKey()).build() %>'
+	context='<%=
+		HashMapBuilder.<String, Object>put(
+			"categoryKey",
+			panelCategory.getKey()
+		).build()
+	%>'
 	module="panel/PanelKeyboardHandler"
 />
