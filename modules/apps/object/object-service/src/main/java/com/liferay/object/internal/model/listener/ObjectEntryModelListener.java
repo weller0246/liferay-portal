@@ -161,7 +161,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 			_objectActionEngine.executeObjectActions(
 				objectEntry.getModelClassName(), objectEntry.getCompanyId(),
 				objectActionTriggerKey,
-				ObjectEntryUtil.getActionPayloadJSONObject(
+				ObjectEntryUtil.getPayloadJSONObject(
 					_dtoConverterRegistry, _jsonFactory, objectActionTriggerKey,
 					_objectDefinitionLocalService.getObjectDefinition(
 						objectEntry.getObjectDefinitionId()),
@@ -403,7 +403,7 @@ public class ObjectEntryModelListener extends BaseModelListener<ObjectEntry> {
 
 			_objectValidationRuleLocalService.validate(
 				objectEntry, objectEntry.getObjectDefinitionId(),
-				ObjectEntryUtil.getActionPayloadJSONObject(
+				ObjectEntryUtil.getPayloadJSONObject(
 					_dtoConverterRegistry, _jsonFactory, null,
 					_objectDefinitionLocalService.getObjectDefinition(
 						objectEntry.getObjectDefinitionId()),

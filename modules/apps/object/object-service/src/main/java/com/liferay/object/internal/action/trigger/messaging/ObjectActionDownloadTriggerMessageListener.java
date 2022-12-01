@@ -84,7 +84,7 @@ public class ObjectActionDownloadTriggerMessageListener
 			objectDefinition.getClassName(), message.getLong("companyId"),
 			ObjectActionTriggerConstants.
 				KEY_ON_AFTER_BUSINESS_TYPE_ATTACHMENT_DOWNLOAD,
-			ObjectEntryUtil.getActionPayloadJSONObject(
+			ObjectEntryUtil.getPayloadJSONObject(
 				_dtoConverterRegistry, _jsonFactory,
 				ObjectActionTriggerConstants.
 					KEY_ON_AFTER_BUSINESS_TYPE_ATTACHMENT_DOWNLOAD,

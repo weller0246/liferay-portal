@@ -36,7 +36,7 @@ import java.util.Map;
  */
 public class ObjectEntryUtil {
 
-	public static JSONObject getActionPayloadJSONObject(
+	public static JSONObject getPayloadJSONObject(
 			DTOConverterRegistry dtoConverterRegistry, JSONFactory jsonFactory,
 			String objectActionTriggerKey, ObjectDefinition objectDefinition,
 			ObjectEntry objectEntry, ObjectEntry originalObjectEntry, User user)
