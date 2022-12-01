@@ -55,8 +55,7 @@ public class ObjectActionDownloadTriggerMessageListener
 		DestinationConfiguration destinationConfiguration =
 			new DestinationConfiguration(
 				DestinationConfiguration.DESTINATION_TYPE_SYNCHRONOUS,
-				DestinationNames.
-					OBJECT_ENTRY_ATTACHMENT_DOWNLOAD);
+				DestinationNames.OBJECT_ENTRY_ATTACHMENT_DOWNLOAD);
 
 		Destination destination = _destinationFactory.createDestination(
 			destinationConfiguration);
@@ -82,12 +81,10 @@ public class ObjectActionDownloadTriggerMessageListener
 
 		_objectActionEngine.executeObjectActions(
 			objectDefinition.getClassName(), message.getLong("companyId"),
-			ObjectActionTriggerConstants.
-				KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
+			ObjectActionTriggerConstants.KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
 			ObjectEntryUtil.getPayloadJSONObject(
 				_dtoConverterRegistry, _jsonFactory,
-				ObjectActionTriggerConstants.
-					KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
+				ObjectActionTriggerConstants.KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
 				objectDefinition,
 				_objectEntryLocalService.fetchObjectEntry(
 					message.getString("objectEntryExternalReferenceCode"),
