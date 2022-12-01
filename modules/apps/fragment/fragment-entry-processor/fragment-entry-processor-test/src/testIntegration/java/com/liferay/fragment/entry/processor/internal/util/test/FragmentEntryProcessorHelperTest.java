@@ -194,7 +194,6 @@ public class FragmentEntryProcessorHelperTest {
 	public void testGetFieldValueFromStringValue() throws Exception {
 		DDMFormField ddmFormField = _createDDMFormField(
 			DDMFormFieldTypeConstants.TEXT);
-
 		String fieldValue = StringBundler.concat(
 			"<script>alert(\"", RandomTestUtil.randomString(), "\")</script>");
 
@@ -223,7 +222,6 @@ public class FragmentEntryProcessorHelperTest {
 
 		DDMFormField ddmFormField = _createDDMFormField(
 			DDMFormFieldTypeConstants.RICH_TEXT);
-
 		String fieldValue = StringBundler.concat(
 			"<p>", RandomTestUtil.randomString(), "</p>");
 
