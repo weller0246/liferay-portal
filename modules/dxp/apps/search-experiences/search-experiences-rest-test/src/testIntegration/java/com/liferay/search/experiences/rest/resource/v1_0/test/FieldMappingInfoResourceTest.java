@@ -25,6 +25,7 @@ import com.liferay.search.experiences.rest.client.dto.v1_0.FieldMappingInfo;
 import com.liferay.search.experiences.rest.client.pagination.Page;
 
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
