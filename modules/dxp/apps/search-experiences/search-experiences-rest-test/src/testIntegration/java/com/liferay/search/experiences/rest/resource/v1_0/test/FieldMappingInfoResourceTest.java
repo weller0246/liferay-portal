@@ -57,10 +57,10 @@ public class FieldMappingInfoResourceTest
 		}
 	}
 
+	@Ignore
 	@Override
 	@Test
 	public void testGraphQLGetFieldMappingInfosPage() throws Exception {
-		Assert.assertTrue(true);
 	}
 
 	@Inject
