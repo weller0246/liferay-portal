@@ -18,9 +18,13 @@ import com.liferay.object.action.engine.ObjectActionEngine;
 import com.liferay.object.constants.ObjectActionTriggerConstants;
 import com.liferay.object.internal.entry.util.ObjectEntryUtil;
 import com.liferay.object.model.ObjectDefinition;
+import com.liferay.object.model.ObjectEntry;
 import com.liferay.object.service.ObjectDefinitionLocalService;
 import com.liferay.object.service.ObjectEntryLocalService;
+import com.liferay.petra.string.StringBundler;
 import com.liferay.portal.kernel.json.JSONFactory;
+import com.liferay.portal.kernel.log.Log;
+import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.messaging.BaseMessageListener;
 import com.liferay.portal.kernel.messaging.Destination;
 import com.liferay.portal.kernel.messaging.DestinationConfiguration;
@@ -73,11 +77,46 @@ public class ObjectActionDownloadTriggerMessageListener
 
 	@Override
 	protected void doReceive(Message message) throws Exception {
+		String objectDefinitionExternalReferenceCode = message.getString(
+			"objectDefinitionExternalReferenceCode");
+		long companyId = message.getLong("companyId");
+
 		ObjectDefinition objectDefinition =
 			_objectDefinitionLocalService.
 				fetchObjectDefinitionByExternalReferenceCode(
-					message.getString("objectDefinitionExternalReferenceCode"),
-					message.getLong("companyId"));
+					objectDefinitionExternalReferenceCode, companyId);
+
+		if (objectDefinition == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Object definition is null for external reference ",
+						"code ", objectDefinitionExternalReferenceCode,
+						" and company ", companyId));
+
+				return;
+			}
+		}
+
+		String objectEntryExternalReferenceCode = message.getString(
+			"objectEntryExternalReferenceCode");
+
+		ObjectEntry objectEntry = _objectEntryLocalService.fetchObjectEntry(
+			objectEntryExternalReferenceCode,
+			objectDefinition.getObjectDefinitionId());
+
+		if (objectEntry == null) {
+			if (_log.isDebugEnabled()) {
+				_log.debug(
+					StringBundler.concat(
+						"Object entry is null for external reference code ",
+						objectEntryExternalReferenceCode,
+						" and object definition ",
+						objectDefinitionExternalReferenceCode));
+
+				return;
+			}
+		}
 
 		_objectActionEngine.executeObjectActions(
 			objectDefinition.getClassName(), message.getLong("companyId"),
@@ -85,13 +124,13 @@ public class ObjectActionDownloadTriggerMessageListener
 			ObjectEntryUtil.getPayloadJSONObject(
 				_dtoConverterRegistry, _jsonFactory,
 				ObjectActionTriggerConstants.KEY_ON_AFTER_ATTACHMENT_DOWNLOAD,
-				objectDefinition,
-				_objectEntryLocalService.fetchObjectEntry(
-					message.getString("objectEntryExternalReferenceCode"),
-					objectDefinition.getObjectDefinitionId()),
-				null, _userLocalService.getUser(message.getLong("userId"))),
+				objectDefinition, objectEntry, null,
+				_userLocalService.getUser(message.getLong("userId"))),
 			message.getLong("userId"));
 	}
+
+	private static final Log _log = LogFactoryUtil.getLog(
+		ObjectActionDownloadTriggerMessageListener.class);
 
 	@Reference
 	private DestinationFactory _destinationFactory;
