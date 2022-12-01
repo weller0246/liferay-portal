@@ -138,7 +138,6 @@ public class LayoutCTDisplayRenderer extends BaseCTDisplayRenderer<Layout> {
 		}
 
 		url = HttpComponentsUtil.addParameter(url, "p_l_mode", "preview");
-
 		url = HttpComponentsUtil.addParameter(
 			url, "previewCTCollectionId", layout.getCtCollectionId());
 
