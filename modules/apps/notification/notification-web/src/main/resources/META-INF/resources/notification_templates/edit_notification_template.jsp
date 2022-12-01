@@ -23,12 +23,12 @@ ViewNotificationTemplatesDisplayContext viewNotificationTemplatesDisplayContext 
 
 NotificationTemplate notificationTemplate = viewNotificationTemplatesDisplayContext.getNotificationTemplate();
 
-String notificationTemplateERC = StringPool.BLANK;
+String externalReferenceCode = StringPool.BLANK;
 long notificationTemplateId = 0;
 
 if (notificationTemplate != null) {
+	externalReferenceCode = notificationTemplate.getExternalReferenceCode();
 	notificationTemplateId = notificationTemplate.getNotificationTemplateId();
-	notificationTemplateERC = notificationTemplate.getExternalReferenceCode();
 }
 
 portletDisplay.setShowBackIcon(true);
@@ -47,7 +47,7 @@ renderResponse.setTitle(LanguageUtil.get(request, "notification-template"));
 		).put(
 			"editorConfig", viewNotificationTemplatesDisplayContext.getEditorConfig()
 		).put(
-			"externalReferenceCode", notificationTemplateERC
+			"externalReferenceCode", externalReferenceCode
 		).put(
 			"notificationTemplateId", notificationTemplateId
 		).put(
