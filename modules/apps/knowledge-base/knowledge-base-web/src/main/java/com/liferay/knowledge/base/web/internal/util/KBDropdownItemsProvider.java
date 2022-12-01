@@ -106,12 +106,12 @@ public class KBDropdownItemsProvider {
 					_getEditActionUnsafeConsumer(kbArticle)
 				).add(
 					this::_hasAddPermission,
-					_getAddChildArticleActionUnsafeConsumer(kbArticle)
+					_getAddChildKBArticleActionUnsafeConsumer(kbArticle)
 				).add(
 					() ->
 						_hasChildKBArticles(kbArticle) &&
-						_hasViewChildArticlesPermission(),
-					_getViewChildArticlesActionUnsafeConsumer(kbArticle)
+						_hasViewChildKBArticlesPermission(),
+					_getViewChildKBArticlesActionUnsafeConsumer(kbArticle)
 				).add(
 					() ->
 						_isSubscriptionEnabled() &&
@@ -329,7 +329,7 @@ public class KBDropdownItemsProvider {
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception>
-		_getAddChildArticleActionUnsafeConsumer(KBArticle kbArticle) {
+		_getAddChildKBArticleActionUnsafeConsumer(KBArticle kbArticle) {
 
 		return dropdownItem -> {
 			dropdownItem.setHref(
@@ -918,7 +918,7 @@ public class KBDropdownItemsProvider {
 	}
 
 	private UnsafeConsumer<DropdownItem, Exception>
-		_getViewChildArticlesActionUnsafeConsumer(KBArticle kbArticle) {
+		_getViewChildKBArticlesActionUnsafeConsumer(KBArticle kbArticle) {
 
 		return dropdownItem -> {
 			dropdownItem.setHref(
@@ -1253,7 +1253,7 @@ public class KBDropdownItemsProvider {
 		return false;
 	}
 
-	private boolean _hasViewChildArticlesPermission() {
+	private boolean _hasViewChildKBArticlesPermission() {
 		PortletDisplay portletDisplay = _themeDisplay.getPortletDisplay();
 
 		if (Objects.equals(
