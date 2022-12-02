@@ -164,9 +164,9 @@ public class DropZoneFragmentEntryProcessor implements FragmentEntryProcessor {
 
 				List<String> noFragmentDropZoneIdItemIds = new LinkedList<>();
 
-				for (String childrenItemId : dropZoneItemIds) {
+				for (String dropZoneItemId : dropZoneItemIds) {
 					LayoutStructureItem childLayoutStructureItem =
-						layoutStructure.getLayoutStructureItem(childrenItemId);
+						layoutStructure.getLayoutStructureItem(dropZoneItemId);
 
 					if (!(childLayoutStructureItem instanceof
 							FragmentDropZoneLayoutStructureItem)) {
@@ -184,11 +184,11 @@ public class DropZoneFragmentEntryProcessor implements FragmentEntryProcessor {
 							getFragmentDropZoneId();
 
 					if (Validator.isBlank(fragmentDropZoneId)) {
-						noFragmentDropZoneIdItemIds.add(childrenItemId);
+						noFragmentDropZoneIdItemIds.add(dropZoneItemId);
 					}
 					else {
 						fragmentDropZoneIdsMap.put(
-							fragmentDropZoneId, childrenItemId);
+							fragmentDropZoneId, dropZoneItemId);
 					}
 				}
 
