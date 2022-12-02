@@ -162,7 +162,7 @@ public class DropZoneFragmentEntryProcessor implements FragmentEntryProcessor {
 				Map<String, String> fragmentDropZoneIdsMap =
 					new LinkedHashMap<>();
 
-				List<String> noFragmentDropZoneIdItemIds = new LinkedList<>();
+				List<String> noFragmentDropZoneItemIds = new LinkedList<>();
 
 				for (String dropZoneItemId : dropZoneItemIds) {
 					LayoutStructureItem childLayoutStructureItem =
@@ -184,7 +184,7 @@ public class DropZoneFragmentEntryProcessor implements FragmentEntryProcessor {
 							getFragmentDropZoneId();
 
 					if (Validator.isBlank(fragmentDropZoneId)) {
-						noFragmentDropZoneIdItemIds.add(dropZoneItemId);
+						noFragmentDropZoneItemIds.add(dropZoneItemId);
 					}
 					else {
 						fragmentDropZoneIdsMap.put(
@@ -201,9 +201,9 @@ public class DropZoneFragmentEntryProcessor implements FragmentEntryProcessor {
 						element.attr(
 							"uuid", fragmentDropZoneIdsMap.get(dropZoneId));
 					}
-					else if (ListUtil.isNotEmpty(noFragmentDropZoneIdItemIds)) {
+					else if (ListUtil.isNotEmpty(noFragmentDropZoneItemIds)) {
 						element.attr(
-							"uuid", noFragmentDropZoneIdItemIds.remove(0));
+							"uuid", noFragmentDropZoneItemIds.remove(0));
 					}
 				}
 			}
