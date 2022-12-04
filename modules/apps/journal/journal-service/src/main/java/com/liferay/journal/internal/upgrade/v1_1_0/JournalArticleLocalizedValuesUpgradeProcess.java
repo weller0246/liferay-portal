@@ -200,9 +200,9 @@ public class JournalArticleLocalizedValuesUpgradeProcess
 			processConcurrently(
 				"select id_, companyId, title, description, " +
 					"defaultLanguageId from JournalArticle",
-				"insert into JournalArticleLocalization(" +
+				"insert into JournalArticleLocalization (" +
 					"articleLocalizationId, companyId, articlePK, title, " +
-						"description, languageId) values(?, ?, ?, ?, ?, ?)",
+						"description, languageId) values (?, ?, ?, ?, ?, ?)",
 				resultSet -> new Object[] {
 					resultSet.getLong(1), resultSet.getLong(2),
 					resultSet.getString(3), resultSet.getString(4),
