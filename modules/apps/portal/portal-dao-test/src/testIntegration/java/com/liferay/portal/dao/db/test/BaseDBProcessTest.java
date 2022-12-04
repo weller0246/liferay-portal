@@ -536,8 +536,8 @@ public class BaseDBProcessTest extends BaseDBProcess {
 		try (PreparedStatement preparedStatement = connection.prepareStatement(
 				StringBundler.concat(
 					"select count(1) from ", _TABLE_NAME,
-					" where id >= 1 and id <= ",
-					_PROCESS_CONCURRENTLY_COUNT, " and typeInteger = id"));
+					" where id >= 1 and id <= ", _PROCESS_CONCURRENTLY_COUNT,
+					" and typeInteger = id"));
 			ResultSet resultSet = preparedStatement.executeQuery()) {
 
 			resultSet.next();
