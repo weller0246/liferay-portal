@@ -388,7 +388,7 @@ public abstract class BaseDBProcess implements DBProcess {
 	}
 
 	protected void processConcurrently(
-			String sql, String updateSql,
+			String sql, String updateSQL,
 			UnsafeFunction<ResultSet, Object[], Exception> unsafeFunction,
 			UnsafeBiConsumer<Object[], PreparedStatement, Exception>
 				unsafeBiConsumer,
@@ -410,7 +410,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 						return null;
 					},
-					null, updateSql, unsafeBiConsumer, exceptionMessage);
+					null, updateSQL, unsafeBiConsumer, exceptionMessage);
 			}
 		}
 	}
@@ -471,7 +471,7 @@ public abstract class BaseDBProcess implements DBProcess {
 	protected Connection connection;
 
 	private PreparedStatement _getConcurrentPreparedStatement(
-		String updateSql,
+		String updateSQL,
 		Map<Thread, PreparedStatement> preparedStatementHashMap) {
 
 		return preparedStatementHashMap.computeIfAbsent(
@@ -479,7 +479,7 @@ public abstract class BaseDBProcess implements DBProcess {
 			k -> {
 				try {
 					return AutoBatchPreparedStatementUtil.autoBatch(
-						connection, updateSql);
+						connection, updateSQL);
 				}
 				catch (SQLException sqlException) {
 					throw new RuntimeException(sqlException);
@@ -531,14 +531,14 @@ public abstract class BaseDBProcess implements DBProcess {
 
 	private <T> void _processConcurrently(
 			UnsafeSupplier<T, Exception> unsafeSupplier,
-			UnsafeConsumer<T, Exception> unsafeConsumer, String updateSql,
+			UnsafeConsumer<T, Exception> unsafeConsumer, String updateSQL,
 			UnsafeBiConsumer<T, PreparedStatement, Exception> unsafeBiConsumer,
 			String exceptionMessage)
 		throws Exception {
 
 		Objects.requireNonNull(unsafeSupplier);
 
-		if (Validator.isNull(updateSql)) {
+		if (Validator.isNull(updateSQL)) {
 			Objects.requireNonNull(unsafeConsumer);
 		}
 		else {
@@ -573,14 +573,14 @@ public abstract class BaseDBProcess implements DBProcess {
 						try (SafeCloseable safeCloseable =
 								CompanyThreadLocal.lock(companyId)) {
 
-							if (Validator.isNull(updateSql)) {
+							if (Validator.isNull(updateSQL)) {
 								unsafeConsumer.accept(current);
 							}
 							else {
 								unsafeBiConsumer.accept(
 									current,
 									_getConcurrentPreparedStatement(
-										updateSql, preparedStatementHashMap));
+										updateSQL, preparedStatementHashMap));
 							}
 						}
 						catch (Exception exception) {
