@@ -403,6 +403,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 			try (ResultSet resultSet = statement.executeQuery(sql)) {
 				_processConcurrently(
+					updateSQL,
 					() -> {
 						if (resultSet.next()) {
 							return unsafeFunction.apply(resultSet);
@@ -410,7 +411,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 						return null;
 					},
-					null, updateSQL, unsafeBiConsumer, exceptionMessage);
+					null, unsafeBiConsumer, exceptionMessage);
 			}
 		}
 	}
@@ -430,6 +431,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 			try (ResultSet resultSet = statement.executeQuery(sql)) {
 				_processConcurrently(
+					null,
 					() -> {
 						if (resultSet.next()) {
 							return unsafeFunction.apply(resultSet);
@@ -437,7 +439,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 						return null;
 					},
-					unsafeConsumer, null, null, exceptionMessage);
+					unsafeConsumer, null, exceptionMessage);
 			}
 		}
 	}
@@ -450,6 +452,7 @@ public abstract class BaseDBProcess implements DBProcess {
 		AtomicInteger atomicInteger = new AtomicInteger();
 
 		_processConcurrently(
+			null,
 			() -> {
 				int index = atomicInteger.getAndIncrement();
 
@@ -459,7 +462,7 @@ public abstract class BaseDBProcess implements DBProcess {
 
 				return null;
 			},
-			unsafeConsumer, null, null, exceptionMessage);
+			unsafeConsumer, null, exceptionMessage);
 	}
 
 	protected void removePrimaryKey(String tableName) throws Exception {
@@ -530,8 +533,8 @@ public abstract class BaseDBProcess implements DBProcess {
 	}
 
 	private <T> void _processConcurrently(
-			UnsafeSupplier<T, Exception> unsafeSupplier,
-			UnsafeConsumer<T, Exception> unsafeConsumer, String updateSQL,
+			String updateSQL, UnsafeSupplier<T, Exception> unsafeSupplier,
+			UnsafeConsumer<T, Exception> unsafeConsumer,
 			UnsafeBiConsumer<T, PreparedStatement, Exception> unsafeBiConsumer,
 			String exceptionMessage)
 		throws Exception {
