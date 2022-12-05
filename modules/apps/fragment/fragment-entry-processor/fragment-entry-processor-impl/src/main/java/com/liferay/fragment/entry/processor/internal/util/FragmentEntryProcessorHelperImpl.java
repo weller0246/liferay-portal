@@ -510,23 +510,14 @@ public class FragmentEntryProcessorHelperImpl
 		if (value instanceof String) {
 			InfoField infoField = infoFieldValue.getInfoField();
 
-			if (infoField.getInfoFieldType() instanceof TextInfoFieldType) {
-				Optional<Boolean> htmlOptional = infoField.getAttributeOptional(
-					TextInfoFieldType.HTML);
-
-				if (!htmlOptional.orElse(false)) {
-					return _html.escape((String)value);
-				}
-			}
-
 			if (infoField.getInfoFieldType() instanceof DateInfoFieldType) {
 				try {
-					SimpleDateFormat formatter = new SimpleDateFormat(
+					SimpleDateFormat simpleDateFormat = new SimpleDateFormat(
 						"MM/dd/yy", locale);
 
 					return _getDateValue(
 						editableValueJSONObject,
-						formatter.parse(value.toString()), locale);
+						simpleDateFormat.parse(value.toString()), locale);
 				}
 				catch (ParseException parseException) {
 					if (_log.isDebugEnabled()) {
@@ -534,6 +525,16 @@ public class FragmentEntryProcessorHelperImpl
 					}
 
 					return value;
+				}
+			}
+			else if (infoField.getInfoFieldType() instanceof
+						TextInfoFieldType) {
+
+				Optional<Boolean> htmlOptional = infoField.getAttributeOptional(
+					TextInfoFieldType.HTML);
+
+				if (!htmlOptional.orElse(false)) {
+					return _html.escape((String)value);
 				}
 			}
 
