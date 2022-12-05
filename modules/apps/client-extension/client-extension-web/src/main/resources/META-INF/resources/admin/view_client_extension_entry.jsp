@@ -49,7 +49,7 @@ renderResponse.setTitle(viewClientExtensionEntryDisplayContext.getTitle());
 			<c:otherwise>
 
 				<%
-				for (Method method : viewClientExtensionEntryDisplayContext.getPropertyMethods()) {
+				for (Method method : viewClientExtensionEntryDisplayContext.getMethods()) {
 					CETProperty cetProperty = method.getAnnotation(CETProperty.class);
 					String label = viewClientExtensionEntryDisplayContext.getLabel(method);
 					Object value = viewClientExtensionEntryDisplayContext.getValue(method);

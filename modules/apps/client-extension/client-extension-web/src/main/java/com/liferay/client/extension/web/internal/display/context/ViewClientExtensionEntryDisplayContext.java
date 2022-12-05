@@ -84,7 +84,7 @@ public class ViewClientExtensionEntryDisplayContext<T extends CET> {
 		return PropertiesUtil.toString(_cet.getProperties());
 	}
 
-	public Collection<Method> getPropertyMethods() {
+	public Collection<Method> getMethods() {
 		List<Method> methods = new ArrayList<>();
 
 		Class<? extends CET> clazz = _cet.getClass();
