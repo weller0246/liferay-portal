@@ -74,16 +74,6 @@ public class ViewClientExtensionEntryDisplayContext<T extends CET> {
 		return LanguageUtil.get(_getHttpServletRequest(), label);
 	}
 
-	public String getName() {
-		ThemeDisplay themeDisplay = _getThemeDisplay();
-
-		return _cet.getName(themeDisplay.getLocale());
-	}
-
-	public String getProperties() {
-		return PropertiesUtil.toString(_cet.getProperties());
-	}
-
 	public Collection<Method> getMethods() {
 		List<Method> methods = new ArrayList<>();
 
@@ -107,6 +97,16 @@ public class ViewClientExtensionEntryDisplayContext<T extends CET> {
 			methods, Comparator.comparing(method -> getLabel(method)));
 
 		return methods;
+	}
+
+	public String getName() {
+		ThemeDisplay themeDisplay = _getThemeDisplay();
+
+		return _cet.getName(themeDisplay.getLocale());
+	}
+
+	public String getProperties() {
+		return PropertiesUtil.toString(_cet.getProperties());
 	}
 
 	public String getRedirect() {
