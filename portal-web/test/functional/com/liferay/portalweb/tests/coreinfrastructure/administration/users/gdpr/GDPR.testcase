@@ -476,7 +476,7 @@ definition {
 				key_relatedAssetTitle = "DM Document Title",
 				locator1 = "AssetRelatedAssets#ASSET_TITLE");
 
-			Button.click(button = "Info");
+			ManagementBar.clickInfo();
 
 			AssertTextEquals(
 				locator1 = "DocumentsAndMediaDocument#DOCUMENT_INFO_UPLOADED_BY",
