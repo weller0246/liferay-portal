@@ -316,28 +316,28 @@ public class FragmentEntryProcessorHelperImpl
 		JSONObject editableValueJSONObject, Date date, Locale locale) {
 
 		if (editableValueJSONObject == null) {
-			return _DEFAULT_DATE_FORMAT.format(date);
+			return _DATE_FORMAT.format(date);
 		}
 
 		JSONObject configJSONObject = editableValueJSONObject.getJSONObject(
 			"config");
 
 		if (configJSONObject == null) {
-			return _DEFAULT_DATE_FORMAT.format(date);
+			return _DATE_FORMAT.format(date);
 		}
 
 		JSONObject dateFormatJSONObject = configJSONObject.getJSONObject(
 			"dateFormat");
 
 		if (dateFormatJSONObject == null) {
-			return _DEFAULT_DATE_FORMAT.format(date);
+			return _DATE_FORMAT.format(date);
 		}
 
 		String pattern = dateFormatJSONObject.getString(
 			_language.getLanguageId(locale), null);
 
 		if (Validator.isNull(pattern)) {
-			return _DEFAULT_DATE_FORMAT.format(date);
+			return _DATE_FORMAT.format(date);
 		}
 
 		try {
@@ -350,7 +350,7 @@ public class FragmentEntryProcessorHelperImpl
 				_log.debug(exception);
 			}
 
-			return _DEFAULT_DATE_FORMAT.format(date);
+			return _DATE_FORMAT.format(date);
 		}
 	}
 
@@ -567,7 +567,7 @@ public class FragmentEntryProcessorHelperImpl
 		return value.toString();
 	}
 
-	private static final DateFormat _DEFAULT_DATE_FORMAT = new SimpleDateFormat(
+	private static final DateFormat _DATE_FORMAT = new SimpleDateFormat(
 		"MM/dd/yy hh:mm a", LocaleUtil.US);
 
 	private static final InfoCollectionTextFormatter<Object>
