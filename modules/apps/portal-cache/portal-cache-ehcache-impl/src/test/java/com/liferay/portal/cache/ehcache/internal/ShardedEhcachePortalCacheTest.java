@@ -84,20 +84,6 @@ public class ShardedEhcachePortalCacheTest {
 
 		_cacheManager = new CacheManager(configuration);
 
-		_dbPartitionUtilMockedStatic.when(
-			DBPartitionUtil::getCurrentCompanyId
-		).thenAnswer(
-			(Answer<Long>)invocationOnMock -> {
-				long currentCompanyId = _companyIdThreadLocal.get();
-
-				if (_companyIdThreadLocal.get() == CompanyConstants.SYSTEM) {
-					currentCompanyId = _TEST_COMPANY_ID_1;
-				}
-
-				return currentCompanyId;
-			}
-		);
-
 		_baseEhcachePortalCacheManager = new BaseEhcachePortalCacheManager() {
 
 			@Override
@@ -111,6 +97,20 @@ public class ShardedEhcachePortalCacheTest {
 
 		ReflectionTestUtil.setFieldValue(
 			_baseEhcachePortalCacheManager, "_cacheManager", _cacheManager);
+
+		_dbPartitionUtilMockedStatic.when(
+			DBPartitionUtil::getCurrentCompanyId
+		).thenAnswer(
+			(Answer<Long>)invocationOnMock -> {
+				long currentCompanyId = _companyIdThreadLocal.get();
+
+				if (_companyIdThreadLocal.get() == CompanyConstants.SYSTEM) {
+					currentCompanyId = _TEST_COMPANY_ID_1;
+				}
+
+				return currentCompanyId;
+			}
+		);
 
 		_companyIdThreadLocal = ReflectionTestUtil.getFieldValue(
 			CompanyThreadLocal.class, "_companyId");
