@@ -1402,12 +1402,11 @@ public class GraphQLServletExtender {
 		}
 
 		_registerFields(
-			queryGraphQLObjectTypeBuilder, namespace,
-			rootQueryGraphQLObjectTypeBuilder);
-
-		_registerFields(
 			mutationGraphQLObjectTypeBuilder, namespace,
 			rootMutationGraphQLObjectTypeBuilder);
+		_registerFields(
+			queryGraphQLObjectTypeBuilder, namespace,
+			rootQueryGraphQLObjectTypeBuilder);
 
 		GraphQLCodeRegistry.Builder graphQLCodeRegistryBuilder =
 			processingElementsContainer.getCodeRegistryBuilder();
