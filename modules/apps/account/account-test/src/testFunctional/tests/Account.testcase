@@ -2648,7 +2648,7 @@ definition {
 				value1 = "john.doe@liferay1.com");
 
 			KeyPress(
-				key_text = "Emails",
+				key_text = "Email Addresses",
 				locator1 = "TextInput#ANY",
 				value1 = "\RETURN");
 
