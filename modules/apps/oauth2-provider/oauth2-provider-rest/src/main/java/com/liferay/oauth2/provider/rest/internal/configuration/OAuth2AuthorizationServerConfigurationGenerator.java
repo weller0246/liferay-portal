@@ -53,11 +53,11 @@ public class OAuth2AuthorizationServerConfigurationGenerator {
 			HashMapDictionaryBuilder.<String, Object>put(
 				"oauth2.authorization.server.issue.jwt.access.token", true
 			).put(
-				"oauth2.authorization.server.jwt.access.token.signing." +
-					"json.web.key",
+				"oauth2.authorization.server.jwt.access.token.signing.json." +
+					"web.key",
 				() -> {
-					RsaJsonWebKey rsaJsonWebKey =
-						RsaJwkGenerator.generateJwk(2048);
+					RsaJsonWebKey rsaJsonWebKey = RsaJwkGenerator.generateJwk(
+						2048);
 
 					rsaJsonWebKey.setAlgorithm("RS256");
 					rsaJsonWebKey.setKeyId("authServer");
