@@ -45,25 +45,27 @@ public class OAuth2AuthorizationServerConfigurationGenerator {
 
 		Dictionary<String, Object> dictionary = configuration.getProperties();
 
-		if (dictionary == null) {
-			configuration.update(
-				HashMapDictionaryBuilder.<String, Object>put(
-					"oauth2.authorization.server.issue.jwt.access.token", true
-				).put(
-					"oauth2.authorization.server.jwt.access.token.signing." +
-						"json.web.key",
-					() -> {
-						RsaJsonWebKey rsaJsonWebKey =
-							RsaJwkGenerator.generateJwk(2048);
-
-						rsaJsonWebKey.setAlgorithm("RS256");
-						rsaJsonWebKey.setKeyId("authServer");
-
-						return rsaJsonWebKey.toJson(
-							JsonWebKey.OutputControlLevel.INCLUDE_PRIVATE);
-					}
-				).build());
+		if (dictionary != null) {
+			return;
 		}
+
+		configuration.update(
+			HashMapDictionaryBuilder.<String, Object>put(
+				"oauth2.authorization.server.issue.jwt.access.token", true
+			).put(
+				"oauth2.authorization.server.jwt.access.token.signing." +
+					"json.web.key",
+				() -> {
+					RsaJsonWebKey rsaJsonWebKey =
+						RsaJwkGenerator.generateJwk(2048);
+
+					rsaJsonWebKey.setAlgorithm("RS256");
+					rsaJsonWebKey.setKeyId("authServer");
+
+					return rsaJsonWebKey.toJson(
+						JsonWebKey.OutputControlLevel.INCLUDE_PRIVATE);
+				}
+			).build());
 	}
 
 	@Reference
