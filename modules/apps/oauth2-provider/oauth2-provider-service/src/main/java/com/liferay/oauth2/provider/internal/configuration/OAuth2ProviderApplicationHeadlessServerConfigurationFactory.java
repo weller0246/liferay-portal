@@ -183,9 +183,10 @@ public class OAuth2ProviderApplicationHeadlessServerConfigurationFactory
 		if (_log.isInfoEnabled()) {
 			_log.info(
 				StringBundler.concat(
-					"OAuth2Application {externalReferenceCode: ",
+					"OAuth 2 application with external reference code ",
 					oAuth2Application.getExternalReferenceCode(),
-					", clientId: ", oAuth2Application.getClientId(), "}"));
+					" and company ID ", oAuth2Application.getCompanyId(),
+					" has client ID ", oAuth2Application.getClientId()));
 		}
 
 		Class<?> clazz = getClass();
