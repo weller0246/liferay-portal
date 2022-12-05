@@ -89,12 +89,14 @@ public class ViewClientExtensionEntryDisplayContext<T extends CET> {
 
 		Class<? extends CET> clazz = _cet.getClass();
 
-		for (Class<?> iface : clazz.getInterfaces()) {
-			if ((iface == _CET_CLASS) || !_CET_CLASS.isAssignableFrom(iface)) {
+		for (Class<?> interfaceClasses : clazz.getInterfaces()) {
+			if ((interfaceClasses == _CLASS) ||
+				!_CLASS.isAssignableFrom(interfaceClasses)) {
+
 				continue;
 			}
 
-			for (Method method : iface.getDeclaredMethods()) {
+			for (Method method : interfaceClasses.getDeclaredMethods()) {
 				if (method.getAnnotation(CETProperty.class) != null) {
 					methods.add(method);
 				}
@@ -161,7 +163,7 @@ public class ViewClientExtensionEntryDisplayContext<T extends CET> {
 			WebKeys.THEME_DISPLAY);
 	}
 
-	private static final Class<CET> _CET_CLASS = CET.class;
+	private static final Class<CET> _CLASS = CET.class;
 
 	private final T _cet;
 	private final PortletRequest _portletRequest;

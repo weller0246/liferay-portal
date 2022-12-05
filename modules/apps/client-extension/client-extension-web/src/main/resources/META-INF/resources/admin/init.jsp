@@ -33,5 +33,3 @@ page import="com.liferay.client.extension.web.internal.display.context.ViewClien
 page import="com.liferay.portal.kernel.service.WorkflowDefinitionLinkLocalServiceUtil" %>
 
 <%@ page import="java.lang.reflect.Method" %>
-
-<%@ page import="java.util.Collection" %>
