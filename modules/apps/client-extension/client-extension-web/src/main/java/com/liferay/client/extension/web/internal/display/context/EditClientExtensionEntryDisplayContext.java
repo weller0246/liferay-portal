@@ -90,13 +90,13 @@ public class EditClientExtensionEntryDisplayContext<T extends CET> {
 	public List<SelectOption> getPortletCategoryNameSelectOptions(
 		String selectedPortletCategoryName) {
 
-		if (Validator.isBlank(selectedPortletCategoryName)) {
-			selectedPortletCategoryName = "category.remote-apps";
-		}
-
 		List<SelectOption> selectOptions = new ArrayList<>();
 
 		boolean found = false;
+
+		if (Validator.isBlank(selectedPortletCategoryName)) {
+			selectedPortletCategoryName = "category.remote-apps";
+		}
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)_portletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
