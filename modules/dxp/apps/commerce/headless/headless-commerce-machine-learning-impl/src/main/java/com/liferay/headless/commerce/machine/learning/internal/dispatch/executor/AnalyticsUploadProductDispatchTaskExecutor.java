@@ -58,12 +58,10 @@ public class AnalyticsUploadProductDispatchTaskExecutor
 		AnalyticsConfiguration analyticsConfiguration =
 			_configurationProvider.getCompanyConfiguration(
 				AnalyticsConfiguration.class, dispatchTrigger.getCompanyId());
-
 		DispatchLog dispatchLog =
 			dispatchLogLocalService.fetchLatestDispatchLog(
 				dispatchTrigger.getDispatchTriggerId(),
 				DispatchTaskStatus.IN_PROGRESS);
-
 		Date resourceLastModifiedDate = getLatestSuccessfulDispatchLogEndDate(
 			dispatchTrigger.getDispatchTriggerId());
 

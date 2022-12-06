@@ -139,7 +139,6 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 				FieldProductConstants.FIELD_PRODUCT_REQUIRED_NAMES, "product",
 				analyticsConfiguration.syncedProductFieldNames(),
 				FieldProductConstants.FIELD_PRODUCT_TYPES));
-
 		fields.addAll(
 			_getFields(
 				FieldProductConstants.FIELD_PRODUCT_CHANNEL_EXAMPLES,
