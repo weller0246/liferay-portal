@@ -1816,9 +1816,15 @@ definition {
 
 		ScrollWebElementIntoView(locator1 = "Portlet#TITLE");
 
-		//MouseOver.mouseOverNotVisible(locator1 = "AP#ASSET_EDIT");
+		MouseOver.mouseOverNotVisible(locator1 = "Icon#EDIT_PENCIL");
 
-		Click.mouseOverClick(locator1 = "AP#ASSET_EDIT");
+		Click.mouseOverClick(locator1 = "Icon#EDIT_PENCIL");
+
+		if (IsElementPresent.isElementPresentAfterWait(locator1 = "Icon#EDIT_PENCIL")) {
+			Click.mouseOverClick(locator1 = "Icon#EDIT_PENCIL");
+		}
+
+		WaitForElementPresent(locator1 = "TextInput#TITLE");
 
 		if (isSet(dmDocumentTitleEdit)) {
 			Type(
