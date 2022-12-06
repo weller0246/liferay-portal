@@ -17,9 +17,10 @@
 <%@ include file="/init.jsp" %>
 
 <%
-ObjectAction objectAction = objectDefinitionsActionsDisplayContext.getObjectAction();
 ObjectDefinition objectDefinition = (ObjectDefinition)request.getAttribute(ObjectWebKeys.OBJECT_DEFINITION);
 ObjectDefinitionsActionsDisplayContext objectDefinitionsActionsDisplayContext = (ObjectDefinitionsActionsDisplayContext)request.getAttribute(WebKeys.PORTLET_DISPLAY_CONTEXT);
+
+ObjectAction objectAction = objectDefinitionsActionsDisplayContext.getObjectAction();
 %>
 
 <react:component
