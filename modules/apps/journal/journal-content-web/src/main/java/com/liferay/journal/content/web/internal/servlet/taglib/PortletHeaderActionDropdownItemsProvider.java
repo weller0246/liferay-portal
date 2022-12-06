@@ -38,11 +38,11 @@ import javax.servlet.http.HttpServletRequest;
 public class PortletHeaderActionDropdownItemsProvider {
 
 	public PortletHeaderActionDropdownItemsProvider(
-		JournalContentDisplayContext journalContentDisplayContext,
-		HttpServletRequest httpServletRequest) {
+		HttpServletRequest httpServletRequest,
+		JournalContentDisplayContext journalContentDisplayContext) {
 
-		_journalContentDisplayContext = journalContentDisplayContext;
 		_httpServletRequest = httpServletRequest;
+		_journalContentDisplayContext = journalContentDisplayContext;
 
 		_themeDisplay = (ThemeDisplay)httpServletRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
