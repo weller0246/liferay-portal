@@ -181,8 +181,7 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 
 		if (batchEngineConfiguration.companyId == 0) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Default company id will be used for this batch process");
+				_log.warn("Using default company ID for this batch process");
 			}
 
 			try {
@@ -192,14 +191,13 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 				batchEngineConfiguration.companyId = company.getCompanyId();
 			}
 			catch (PortalException portalException) {
-				_log.error("Unable to set default company id", portalException);
+				_log.error("Unable to get default company ID", portalException);
 			}
 		}
 
 		if (batchEngineConfiguration.userId == 0) {
 			if (_log.isWarnEnabled()) {
-				_log.warn(
-					"Default user id will be used for this batch process");
+				_log.warn("Using default user ID for this batch process");
 			}
 
 			try {
@@ -210,7 +208,7 @@ public class BatchEngineAutoDeployListener implements AutoDeployListener {
 				batchEngineConfiguration.userId = user.getUserId();
 			}
 			catch (PortalException portalException) {
-				_log.error("Unable to set default user", portalException);
+				_log.error("Unable to get default user ID", portalException);
 			}
 		}
 
