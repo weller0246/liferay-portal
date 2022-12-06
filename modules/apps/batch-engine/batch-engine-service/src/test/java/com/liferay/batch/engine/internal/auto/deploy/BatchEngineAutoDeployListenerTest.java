@@ -397,6 +397,8 @@ public class BatchEngineAutoDeployListenerTest {
 			_batchEngineImportTasks.toString(), 1,
 			_batchEngineImportTasks.size());
 
+		// Without "companyId" and "userId" in batch-engine.json
+
 		autoDeploymentContext = new AutoDeploymentContext();
 
 		autoDeploymentContext.setFile(_toZipFile("batch7"));
