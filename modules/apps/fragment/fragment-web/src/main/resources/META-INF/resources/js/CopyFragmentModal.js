@@ -280,7 +280,7 @@ function FragmentSetForm({
 			{showNoFragmentCollectionMessage ? (
 				<p className="text-secondary">
 					{Liferay.Language.get(
-						'a-fragment-set-must-first-be-created-before-you-can-copy-your-fragment'
+						'a-fragment-set-must-first-be-created-before-you-can-copy-it'
 					)}
 				</p>
 			) : null}
