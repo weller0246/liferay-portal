@@ -17,7 +17,7 @@
 <%@ include file="/init.jsp" %>
 
 <%
-ContributedFragmentManagementToolbarDisplayContext contributedFragmentManagementToolbarDisplayContext = new ContributedFragmentManagementToolbarDisplayContext(request, liferayPortletRequest, liferayPortletResponse, fragmentDisplayContext);
+ContributedFragmentManagementToolbarDisplayContext contributedFragmentManagementToolbarDisplayContext = new ContributedFragmentManagementToolbarDisplayContext(fragmentDisplayContext, request, liferayPortletRequest, liferayPortletResponse);
 %>
 
 <clay:management-toolbar

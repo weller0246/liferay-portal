@@ -49,17 +49,17 @@ public class ContributedFragmentManagementToolbarDisplayContext
 	extends SearchContainerManagementToolbarDisplayContext {
 
 	public ContributedFragmentManagementToolbarDisplayContext(
+		FragmentDisplayContext fragmentDisplayContext,
 		HttpServletRequest httpServletRequest,
 		LiferayPortletRequest liferayPortletRequest,
-		LiferayPortletResponse liferayPortletResponse,
-		FragmentDisplayContext fragmentDisplayContext) {
+		LiferayPortletResponse liferayPortletResponse) {
 
 		super(
 			httpServletRequest, liferayPortletRequest, liferayPortletResponse,
 			fragmentDisplayContext.getContributedEntriesSearchContainer());
 
-		_liferayPortletResponse = liferayPortletResponse;
 		_fragmentDisplayContext = fragmentDisplayContext;
+		_liferayPortletResponse = liferayPortletResponse;
 	}
 
 	@Override
