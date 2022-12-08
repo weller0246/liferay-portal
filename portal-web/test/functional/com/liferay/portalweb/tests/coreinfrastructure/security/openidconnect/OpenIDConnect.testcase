@@ -826,6 +826,7 @@ definition {
 	test UserAttributesCanBeMappedInOIDC {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
 		property osgi.module.configurations = "enabled=\"true\"";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "OpenIDConnect#UserAttributesCanBeMappedInOIDC";
 
 		task ("Given: User starts Keycloak for test and set debug level") {
