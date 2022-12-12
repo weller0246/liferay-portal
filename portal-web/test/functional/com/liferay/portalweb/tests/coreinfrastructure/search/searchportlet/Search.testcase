@@ -817,17 +817,7 @@ definition {
 
 	@priority = "3"
 	test AssertUserFacetDisplays {
-		JSONUser.addUser(
-			userEmailAddress = "userea@liferay.com",
-			userFirstName = "userfn",
-			userLastName = "userln",
-			userScreenName = "usersn");
-
-		JSONUser.addUserToSite(
-			groupName = "Guest",
-			userEmailAddress = "userea@liferay.com");
-
-		for (var count : list "2,3") {
+		for (var count : list "1,2,3") {
 			JSONUser.addUser(
 				userEmailAddress = "userea${count}@liferay.com",
 				userFirstName = "userfn${count}",
@@ -847,7 +837,7 @@ definition {
 
 		Refresh();
 
-		for (var users : list "userfn userln,userfn2 userln2,userfn3 userln3") {
+		for (var users : list "userfn1 userln1,userfn2 userln2,userfn3 userln3") {
 			AssertElementPresent(
 				facetValueName = "${users}",
 				locator1 = "Search#FACET_COMPACT_LAYOUT");
@@ -859,7 +849,7 @@ definition {
 
 		Refresh();
 
-		for (var users : list "userfn userln,userfn2 userln2,userfn3 userln3") {
+		for (var users : list "userfn1 userln1,userfn2 userln2,userfn3 userln3") {
 			AssertElementPresent(
 				facetValueName = "${users}",
 				locator1 = "Search#FACET_LABEL_LAYOUT");
