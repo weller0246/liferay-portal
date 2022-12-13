@@ -29,8 +29,8 @@ public class IsEmailAddressFunction
 
 	@Override
 	public Boolean apply(String parameter) {
-		for (String str : StringUtil.split(parameter, CharPool.COMMA)) {
-			if (!Validator.isEmailAddress(str.trim())) {
+		for (String string : StringUtil.split(parameter, CharPool.COMMA)) {
+			if (!Validator.isEmailAddress(string.trim())) {
 				return false;
 			}
 		}
