@@ -15,12 +15,9 @@
 package com.liferay.portal.kernel.exception;
 
 /**
- * The base class for all exceptions caused by duplicate external reference
- * in different entity types. This base class is necessary in order for portlets
- * to properly consistently identify sub-classes as session errors.
- *
- * @author Brian Wing Shun Chan
- * @see com.liferay.portal.kernel.portlet.LiferayPortlet#isSessionErrorException(Throwable)
+ * @author Drew Brokke
+ * @see    com.liferay.portal.kernel.portlet.LiferayPortlet#isSessionErrorException(
+ *         Throwable)
  */
 public class DuplicateExternalReferenceCodeException extends SystemException {
 
