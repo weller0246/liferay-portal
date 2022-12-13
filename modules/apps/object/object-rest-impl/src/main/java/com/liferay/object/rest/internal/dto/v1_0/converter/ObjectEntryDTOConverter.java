@@ -460,11 +460,11 @@ public class ObjectEntryDTOConverter
 						objectField.getBusinessType(),
 						ObjectFieldConstants.BUSINESS_TYPE_PRECISION_DECIMAL)) {
 
-				DecimalFormat defaultDecimalFormat =
+				DecimalFormat decimalFormat =
 					NumericDDMFormFieldUtil.getDecimalFormat(
 						dtoConverterContext.getLocale());
 
-				serializable = defaultDecimalFormat.format(serializable);
+				serializable = decimalFormat.format(serializable);
 
 				map.put(objectFieldName, serializable);
 			}
