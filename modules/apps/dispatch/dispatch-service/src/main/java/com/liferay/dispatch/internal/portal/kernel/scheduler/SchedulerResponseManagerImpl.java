@@ -147,8 +147,8 @@ public class SchedulerResponseManagerImpl implements SchedulerResponseManager {
 		message.put(
 			SchedulerEngine.DESTINATION_NAME,
 			schedulerResponse.getDestinationName());
-		message.put(SchedulerEngine.JOB_NAME, jobName);
 		message.put(SchedulerEngine.GROUP_NAME, groupName);
+		message.put(SchedulerEngine.JOB_NAME, jobName);
 
 		_messageBus.sendMessage(
 			schedulerResponse.getDestinationName(), message);
