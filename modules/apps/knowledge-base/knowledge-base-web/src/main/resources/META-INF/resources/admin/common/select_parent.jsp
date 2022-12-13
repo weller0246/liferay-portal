@@ -55,7 +55,7 @@ kbSelectParentDisplayContext.populatePortletBreadcrumbEntries(currentURLObj);
 						).put(
 							"resourcePrimKey", kbSelectParentDisplayContext.getParentResourcePrimKey()
 						).put(
-							"title", kbSelectParentDisplayContext.getSelectedEntryTitle()
+							"title", kbSelectParentDisplayContext.getParentTitle()
 						).build()
 					%>'
 					value='<%= (kbSelectParentDisplayContext.getParentResourceClassNameId() == kbFolderClassNameId) ? "select-this-folder" : "select-this-article" %>'

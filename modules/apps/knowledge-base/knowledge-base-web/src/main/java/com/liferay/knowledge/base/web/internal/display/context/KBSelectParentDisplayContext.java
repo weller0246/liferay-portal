@@ -127,7 +127,7 @@ public class KBSelectParentDisplayContext {
 		return _searchContainer;
 	}
 
-	public String getSelectedEntryTitle() throws PortalException {
+	public String getParentTitle() throws PortalException {
 		long resourcePrimKey = getParentResourcePrimKey();
 
 		if (resourcePrimKey == KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
@@ -136,17 +136,16 @@ public class KBSelectParentDisplayContext {
 		else if (getParentResourceClassNameId() == PortalUtil.getClassNameId(
 					KBFolderConstants.getClassName())) {
 
-			KBFolder kbParentFolder = KBFolderServiceUtil.getKBFolder(
+			KBFolder kbFolder = KBFolderServiceUtil.getKBFolder(
 				resourcePrimKey);
 
-			return kbParentFolder.getName();
+			return kbFolder.getName();
 		}
 		else {
-			KBArticle kbCurrentArticle =
-				KBArticleServiceUtil.getLatestKBArticle(
-					resourcePrimKey, WorkflowConstants.STATUS_APPROVED);
+			KBArticle kbArticle = KBArticleServiceUtil.getLatestKBArticle(
+				resourcePrimKey, WorkflowConstants.STATUS_APPROVED);
 
-			return kbCurrentArticle.getTitle();
+			return kbArticle.getTitle();
 		}
 	}
 
