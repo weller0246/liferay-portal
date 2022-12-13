@@ -87,7 +87,7 @@ public interface DDLRecordService extends BaseService {
 	 * @param displayIndex the index position in which the record is
 	 displayed in the spreadsheet view
 	 * @param fieldsMap the record values. The fieldsMap is a map of field
-	 names and its Serializable values.
+	 names and its serializable values.
 	 * @param serviceContext the service context to be applied. This can
 	 set the UUID, guest permissions, and group permissions for
 	 the record.
@@ -174,7 +174,7 @@ public interface DDLRecordService extends BaseService {
 	 * @param displayIndex the index position in which the record is
 	 displayed in the spreadsheet view
 	 * @param fieldsMap the record values. The fieldsMap is a map of field
-	 names and its Serializable values.
+	 names and its serializable values.
 	 * @param mergeFields whether to merge the new fields with the existing
 	 ones; otherwise replace the existing fields
 	 * @param serviceContext the service context to be applied. This can
