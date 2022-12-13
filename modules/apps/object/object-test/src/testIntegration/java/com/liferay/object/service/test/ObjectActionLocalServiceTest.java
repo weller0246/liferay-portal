@@ -313,7 +313,7 @@ public class ObjectActionLocalServiceTest {
 
 		// On after create
 
-		_assertWebhookObjectActionExecutorArguments(
+		_assertWebhookObjectAction(
 			"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, null,
 			WorkflowConstants.STATUS_DRAFT);
 
@@ -340,7 +340,7 @@ public class ObjectActionLocalServiceTest {
 
 		// On after update
 
-		_assertWebhookObjectActionExecutorArguments(
+		_assertWebhookObjectAction(
 			"João", ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, "John",
 			WorkflowConstants.STATUS_APPROVED);
 
@@ -363,7 +363,7 @@ public class ObjectActionLocalServiceTest {
 
 		// On after remove
 
-		_assertWebhookObjectActionExecutorArguments(
+		_assertWebhookObjectAction(
 			"João", ObjectActionTriggerConstants.KEY_ON_AFTER_DELETE, null,
 			WorkflowConstants.STATUS_APPROVED);
 
@@ -616,7 +616,7 @@ public class ObjectActionLocalServiceTest {
 		Assert.assertEquals(status, objectAction.getStatus());
 	}
 
-	private void _assertWebhookObjectActionExecutorArguments(
+	private void _assertWebhookObjectAction(
 			String firstName, String objectActionTriggerKey,
 			String originalFirstName, int status)
 		throws Exception {
