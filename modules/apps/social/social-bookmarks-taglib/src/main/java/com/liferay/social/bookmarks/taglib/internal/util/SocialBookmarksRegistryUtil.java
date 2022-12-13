@@ -15,21 +15,34 @@
 package com.liferay.social.bookmarks.taglib.internal.util;
 
 import com.liferay.social.bookmarks.SocialBookmark;
+import com.liferay.social.bookmarks.SocialBookmarksRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.osgi.service.component.annotations.Activate;
+import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Deactivate;
+import org.osgi.service.component.annotations.Reference;
+
 /**
  * @author Alejandro Tardín
  */
+@Component(service = {})
 public class SocialBookmarksRegistryUtil {
 
 	public static SocialBookmark getSocialBookmark(String type) {
-		return _socialBookmarksRegistry.getSocialBookmark(type);
+		SocialBookmarksRegistry socialBookmarksRegistry =
+			_socialBookmarksRegistryUtil._socialBookmarksRegistry;
+
+		return socialBookmarksRegistry.getSocialBookmark(type);
 	}
 
 	public static List<String> getSocialBookmarksTypes() {
-		return _socialBookmarksRegistry.getSocialBookmarksTypes();
+		SocialBookmarksRegistry socialBookmarksRegistry =
+			_socialBookmarksRegistryUtil._socialBookmarksRegistry;
+
+		return socialBookmarksRegistry.getSocialBookmarksTypes();
 	}
 
 	public static String[] getValidTypes(String[] types) {
@@ -45,12 +58,19 @@ public class SocialBookmarksRegistryUtil {
 		return validTypes.toArray(new String[0]);
 	}
 
-	public static void setSocialBookmarksRegistry(
-		SocialBookmarksRegistry socialBookmarksRegistry) {
-
-		_socialBookmarksRegistry = socialBookmarksRegistry;
+	@Activate
+	protected void activate() {
+		_socialBookmarksRegistryUtil = this;
 	}
 
-	private static SocialBookmarksRegistry _socialBookmarksRegistry;
+	@Deactivate
+	protected void deactivate() {
+		_socialBookmarksRegistryUtil = null;
+	}
+
+	private static SocialBookmarksRegistryUtil _socialBookmarksRegistryUtil;
+
+	@Reference
+	private SocialBookmarksRegistry _socialBookmarksRegistry;
 
 }
