@@ -1658,14 +1658,9 @@ public class ObjectEntryLocalServiceImpl
 
 		Predicate objectFieldPredicate = null;
 
-		if (StringUtil.equals(dbType, ObjectFieldConstants.DB_TYPE_CLOB) ||
-			StringUtil.equals(dbType, ObjectFieldConstants.DB_TYPE_STRING)) {
-
-			objectFieldPredicate = column.like("%" + search + "%");
-		}
-		else if (StringUtil.equals(
-					dbType, ObjectFieldConstants.DB_TYPE_BIG_DECIMAL) ||
-				 dbType.equals(ObjectFieldConstants.DB_TYPE_DOUBLE)) {
+		if (StringUtil.equals(
+				dbType, ObjectFieldConstants.DB_TYPE_BIG_DECIMAL) ||
+			dbType.equals(ObjectFieldConstants.DB_TYPE_DOUBLE)) {
 
 			BigDecimal searchBigDecimal = BigDecimal.valueOf(
 				GetterUtil.getDouble(search));
@@ -1673,6 +1668,12 @@ public class ObjectEntryLocalServiceImpl
 			if (searchBigDecimal.compareTo(BigDecimal.ZERO) != 0) {
 				objectFieldPredicate = column.eq(searchBigDecimal);
 			}
+		}
+		else if (StringUtil.equals(dbType, ObjectFieldConstants.DB_TYPE_CLOB) ||
+				 StringUtil.equals(
+					 dbType, ObjectFieldConstants.DB_TYPE_STRING)) {
+
+			objectFieldPredicate = column.like("%" + search + "%");
 		}
 		else if (StringUtil.equals(
 					dbType, ObjectFieldConstants.DB_TYPE_INTEGER) ||
