@@ -73,8 +73,8 @@ public class JIRAUtil {
 			return null;
 		}
 
-		if (_issueMap.containsKey(issueKey)) {
-			CachedIssue cachedIssue = _issueMap.get(issueKey);
+		if (_cachedIssues.containsKey(issueKey)) {
+			CachedIssue cachedIssue = _cachedIssues.get(issueKey);
 
 			if (!cachedIssue.isExpired()) {
 				return cachedIssue.issue;
@@ -88,7 +88,7 @@ public class JIRAUtil {
 
 			Issue issue = promise.claim();
 
-			_issueMap.put(issueKey, new CachedIssue(issue));
+			_cachedIssues.put(issueKey, new CachedIssue(issue));
 
 			return issue;
 		}
@@ -112,11 +112,11 @@ public class JIRAUtil {
 	}
 
 	public static Map<String, Transition> getTransitions(Issue issue) {
-		if (!_issueTransitionMap.containsKey(issue.getKey())) {
+		if (!_transitionsMap.containsKey(issue.getKey())) {
 			_initTransitions(issue);
 		}
 
-		return _issueTransitionMap.get(issue.getKey());
+		return _transitionsMap.get(issue.getKey());
 	}
 
 	private static IssueRestClient _initIssueRestClient() {
@@ -159,28 +159,28 @@ public class JIRAUtil {
 		Promise<Iterable<Transition>> promise = _issueRestClient.getTransitions(
 			issue);
 
-		Iterable<Transition> iterableTransitions = promise.claim();
+		Iterable<Transition> iterable = promise.claim();
 
-		Map<String, Transition> transitionMap = new ConcurrentHashMap<>();
+		Map<String, Transition> transitions = new ConcurrentHashMap<>();
 
-		for (Transition transition : iterableTransitions) {
-			transitionMap.put(transition.getName(), transition);
+		for (Transition transition : iterable) {
+			transitions.put(transition.getName(), transition);
 		}
 
-		_issueTransitionMap.put(issue.getKey(), transitionMap);
+		_transitionsMap.put(issue.getKey(), transitions);
 	}
 
 	private static void _uncacheIssue(String issueKey) {
-		_issueMap.remove(issueKey);
-		_issueTransitionMap.remove(issueKey);
+		_cachedIssues.remove(issueKey);
+		_transitionsMap.remove(issueKey);
 	}
 
-	private static final Map<String, CachedIssue> _issueMap =
+	private static final Map<String, CachedIssue> _cachedIssues =
 		new ConcurrentHashMap<>();
 	private static final IssueRestClient _issueRestClient =
 		_initIssueRestClient();
-	private static final Map<String, Map<String, Transition>>
-		_issueTransitionMap = new ConcurrentHashMap<>();
+	private static final Map<String, Map<String, Transition>> _transitionsMap =
+		new ConcurrentHashMap<>();
 
 	private static class CachedIssue {
 
