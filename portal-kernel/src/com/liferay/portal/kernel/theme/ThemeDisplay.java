@@ -1501,11 +1501,6 @@ public class ThemeDisplay
 		setPathThemeJavaScript(
 			cdnBaseURL + themeStaticResourcePath + theme.getJavaScriptPath());
 
-		setPathThemeSpritemap(
-			StringBundler.concat(
-				cdnBaseURL, themeStaticResourcePath, theme.getImagesPath(),
-				"/clay/icons.svg"));
-
 		String rootPath = theme.getRootPath();
 
 		if (rootPath.equals(StringPool.SLASH)) {
@@ -1514,6 +1509,11 @@ public class ThemeDisplay
 		else {
 			setPathThemeRoot(themeStaticResourcePath + rootPath);
 		}
+
+		setPathThemeSpritemap(
+			StringBundler.concat(
+				cdnBaseURL, themeStaticResourcePath, theme.getImagesPath(),
+				"/clay/icons.svg"));
 
 		setPathThemeTemplates(
 			cdnBaseURL + themeStaticResourcePath + theme.getTemplatesPath());
