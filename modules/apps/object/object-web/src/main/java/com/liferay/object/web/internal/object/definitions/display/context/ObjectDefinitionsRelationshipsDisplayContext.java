@@ -136,7 +136,6 @@ public class ObjectDefinitionsRelationshipsDisplayContext
 		ObjectDefinition objectDefinition1 =
 			_objectDefinitionService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId1());
-
 		ObjectDefinition objectDefinition2 =
 			_objectDefinitionService.getObjectDefinition(
 				objectRelationship.getObjectDefinitionId2());
