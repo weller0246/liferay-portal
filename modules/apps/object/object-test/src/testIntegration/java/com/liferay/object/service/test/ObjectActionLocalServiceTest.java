@@ -317,8 +317,6 @@ public class ObjectActionLocalServiceTest {
 			"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, null,
 			WorkflowConstants.STATUS_DRAFT);
 
-		// Execute standalone action
-
 		_executeStandaloneObjectAction(
 			StringBundler.concat(
 				_objectDefinition.getRESTContextPath(), StringPool.SLASH,
@@ -343,8 +341,6 @@ public class ObjectActionLocalServiceTest {
 		_assertWebhookObjectAction(
 			"João", ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, "John",
 			WorkflowConstants.STATUS_APPROVED);
-
-		// Execute standalone action
 
 		_executeStandaloneObjectAction(
 			StringBundler.concat(
