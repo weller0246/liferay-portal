@@ -143,7 +143,7 @@ public class JIRAUtil {
 			return jiraRestClient.getIssueClient();
 		}
 		catch (Exception exception) {
-			System.err.println("Unable to create JIRA rest client object.");
+			System.err.println("Unable to create JIRA rest client object");
 
 			exception.printStackTrace();
 
@@ -156,12 +156,12 @@ public class JIRAUtil {
 			return;
 		}
 
+		Map<String, Transition> transitions = new ConcurrentHashMap<>();
+
 		Promise<Iterable<Transition>> promise = _issueRestClient.getTransitions(
 			issue);
 
 		Iterable<Transition> iterable = promise.claim();
-
-		Map<String, Transition> transitions = new ConcurrentHashMap<>();
 
 		for (Transition transition : iterable) {
 			transitions.put(transition.getName(), transition);
