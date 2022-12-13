@@ -55,7 +55,7 @@ export function fetchConnection(token: string) {
 			method: 'POST',
 		},
 		Liferay.Language.get(
-			'token-not-valid.-please-insert-a-valid-analytics-cloud-token'
+			'token-is-not-valid.-please-insert-a-valid-analytics-cloud-token'
 		)
 	);
 }
