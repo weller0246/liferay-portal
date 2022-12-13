@@ -22,8 +22,11 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.social.bookmarks.SocialBookmark;
 import com.liferay.social.bookmarks.SocialBookmarksRegistry;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.osgi.framework.BundleContext;
@@ -51,6 +54,11 @@ public class SocialBookmarksRegistryImpl implements SocialBookmarksRegistry {
 		}
 
 		return socialBookmark;
+	}
+
+	@Override
+	public List<SocialBookmark> getSocialBookmarks() {
+		return new ArrayList<>(_socialBookmarks.values());
 	}
 
 	@Override
