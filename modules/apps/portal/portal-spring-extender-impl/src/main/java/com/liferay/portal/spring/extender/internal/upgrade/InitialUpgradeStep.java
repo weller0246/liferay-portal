@@ -68,11 +68,10 @@ public class InitialUpgradeStep implements UpgradeStep {
 			}
 		}
 
-		properties.put("upgrade.initial.database.creation", "true");
-
 		properties.put(
 			"upgrade.bundle.symbolic.name", _bundle.getSymbolicName());
 		properties.put("upgrade.from.schema.version", "0.0.0");
+		properties.put("upgrade.initial.database.creation", "true");
 
 		Dictionary<String, String> headers = _bundle.getHeaders(
 			StringPool.BLANK);
