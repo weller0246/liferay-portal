@@ -77,6 +77,28 @@ public class KBSelectParentDisplayContext {
 		return _parentResourcePrimKey;
 	}
 
+	public String getParentTitle() throws PortalException {
+		long resourcePrimKey = getParentResourcePrimKey();
+
+		if (resourcePrimKey == KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
+			return LanguageUtil.get(_httpServletRequest, "home");
+		}
+		else if (getParentResourceClassNameId() == PortalUtil.getClassNameId(
+					KBFolderConstants.getClassName())) {
+
+			KBFolder kbFolder = KBFolderServiceUtil.getKBFolder(
+				resourcePrimKey);
+
+			return kbFolder.getName();
+		}
+		else {
+			KBArticle kbArticle = KBArticleServiceUtil.getLatestKBArticle(
+				resourcePrimKey, WorkflowConstants.STATUS_APPROVED);
+
+			return kbArticle.getTitle();
+		}
+	}
+
 	public long getResourceClassNameId() {
 		if (_resourceClassNameId != null) {
 			return _resourceClassNameId;
@@ -125,28 +147,6 @@ public class KBSelectParentDisplayContext {
 		}
 
 		return _searchContainer;
-	}
-
-	public String getParentTitle() throws PortalException {
-		long resourcePrimKey = getParentResourcePrimKey();
-
-		if (resourcePrimKey == KBFolderConstants.DEFAULT_PARENT_FOLDER_ID) {
-			return LanguageUtil.get(_httpServletRequest, "home");
-		}
-		else if (getParentResourceClassNameId() == PortalUtil.getClassNameId(
-					KBFolderConstants.getClassName())) {
-
-			KBFolder kbFolder = KBFolderServiceUtil.getKBFolder(
-				resourcePrimKey);
-
-			return kbFolder.getName();
-		}
-		else {
-			KBArticle kbArticle = KBArticleServiceUtil.getLatestKBArticle(
-				resourcePrimKey, WorkflowConstants.STATUS_APPROVED);
-
-			return kbArticle.getTitle();
-		}
 	}
 
 	public int getStatus() {
