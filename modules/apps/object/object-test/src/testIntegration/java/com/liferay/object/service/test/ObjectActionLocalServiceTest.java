@@ -118,7 +118,6 @@ public class ObjectActionLocalServiceTest {
 					ObjectFieldConstants.BUSINESS_TYPE_TEXT,
 					ObjectFieldConstants.DB_TYPE_STRING, true, true, null,
 					"First Name", "firstName", true)));
-
 		_originalHttp = (Http)_getAndSetFieldValue(
 			Http.class, "_http", ObjectActionExecutorConstants.KEY_WEBHOOK);
 		_originalObjectScriptingExecutor =
@@ -320,7 +319,7 @@ public class ObjectActionLocalServiceTest {
 
 		// Execute standalone action
 
-		_executeStandaloneAction(
+		_executeStandaloneObjectAction(
 			StringBundler.concat(
 				_objectDefinition.getRESTContextPath(), StringPool.SLASH,
 				String.valueOf(objectEntry.getObjectEntryId()),
@@ -347,7 +346,7 @@ public class ObjectActionLocalServiceTest {
 
 		// Execute standalone action
 
-		_executeStandaloneAction(
+		_executeStandaloneObjectAction(
 			StringBundler.concat(
 				_objectDefinition.getRESTContextPath(),
 				"/by-external-reference-code/",
@@ -681,7 +680,9 @@ public class ObjectActionLocalServiceTest {
 		}
 	}
 
-	private void _executeStandaloneAction(String endpoint) throws Exception {
+	private void _executeStandaloneObjectAction(String endpoint)
+		throws Exception {
+
 		Http.Options options = new Http.Options();
 
 		options.addHeader(
