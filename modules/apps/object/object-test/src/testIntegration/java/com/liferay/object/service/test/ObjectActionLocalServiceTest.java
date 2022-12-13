@@ -313,16 +313,19 @@ public class ObjectActionLocalServiceTest {
 
 		// On after create
 
-		_assertGroovyObjectActionExecutorArguments("John", objectEntry);
 		_assertWebhookObjectAction(
 			"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, null,
 			WorkflowConstants.STATUS_DRAFT);
+
+		// Execute standalone action
 
 		_executeStandaloneObjectAction(
 			StringBundler.concat(
 				_objectDefinition.getRESTContextPath(), StringPool.SLASH,
 				String.valueOf(objectEntry.getObjectEntryId()),
 				"/object-actions/", objectAction4.getName()));
+
+		_assertGroovyObjectActionExecutorArguments("John", objectEntry);
 
 		// Update object entry
 
@@ -337,10 +340,11 @@ public class ObjectActionLocalServiceTest {
 
 		// On after update
 
-		_assertGroovyObjectActionExecutorArguments("João", objectEntry);
 		_assertWebhookObjectAction(
 			"João", ObjectActionTriggerConstants.KEY_ON_AFTER_UPDATE, "John",
 			WorkflowConstants.STATUS_APPROVED);
+
+		// Execute standalone action
 
 		_executeStandaloneObjectAction(
 			StringBundler.concat(
@@ -348,6 +352,8 @@ public class ObjectActionLocalServiceTest {
 				"/by-external-reference-code/",
 				objectEntry.getExternalReferenceCode(), "/object-actions/",
 				objectAction4.getName()));
+
+		_assertGroovyObjectActionExecutorArguments("João", objectEntry);
 
 		// Delete object entry
 
