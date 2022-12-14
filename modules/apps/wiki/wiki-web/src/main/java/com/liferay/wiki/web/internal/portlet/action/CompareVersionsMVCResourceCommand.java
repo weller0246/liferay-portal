@@ -69,12 +69,10 @@ public class CompareVersionsMVCResourceCommand extends BaseMVCResourceCommand {
 		}
 		else {
 			sb.append("<div class=\"alert alert-info\">");
-
 			sb.append(
 				_language.get(
 					_portal.getHttpServletRequest(resourceRequest),
 					"these-versions-are-not-comparable"));
-
 			sb.append("</div>");
 		}
 

@@ -58,13 +58,13 @@ public class CompareVersionsMVCResourceCommand extends BaseMVCResourceCommand {
 			ResourceRequest resourceRequest, ResourceResponse resourceResponse)
 		throws Exception {
 
-		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
-			WebKeys.THEME_DISPLAY);
-
 		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
 			resourceRequest);
 		HttpServletResponse httpServletResponse =
 			_portal.getHttpServletResponse(resourceResponse);
+
+		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
+			WebKeys.THEME_DISPLAY);
 
 		long groupId = ParamUtil.getLong(resourceRequest, "groupId");
 		String articleId = ParamUtil.getString(resourceRequest, "articleId");
