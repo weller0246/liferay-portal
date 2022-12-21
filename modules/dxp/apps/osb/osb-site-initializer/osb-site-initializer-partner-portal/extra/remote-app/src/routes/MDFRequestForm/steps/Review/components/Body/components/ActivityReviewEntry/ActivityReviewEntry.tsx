@@ -30,7 +30,6 @@ interface Item {
 type TypeOfActivityComponent = {
 	[key in TypeActivityKey]: Item[];
 };
-
 const ActivityReviewEntry = ({mdfRequestActivity}: IProps) => {
 	const fieldsByTypeActivity: TypeOfActivityComponent = {
 		[TypeActivityKey.DIGITAL_MARKETING]: getDigitalMarketFields(
