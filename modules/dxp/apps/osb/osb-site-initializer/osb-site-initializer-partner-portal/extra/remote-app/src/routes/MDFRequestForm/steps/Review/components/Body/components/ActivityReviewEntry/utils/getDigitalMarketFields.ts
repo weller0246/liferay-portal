@@ -24,7 +24,6 @@ export default function getDigitalMarketFields(
 					?.overallMessageContentCTA,
 		},
 	];
-
 	if (mdfRequestActivity.tactic.key === TacticKeys.EMAIL_CAMPAIGN) {
 		digitalMarketingFields.push(
 			{

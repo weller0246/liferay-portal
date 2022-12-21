@@ -70,5 +70,4 @@ export default function getEventFields(mdfRequestActivity: MDFRequestActivity) {
 	)
 	
 	return eventFields;
-
 }
