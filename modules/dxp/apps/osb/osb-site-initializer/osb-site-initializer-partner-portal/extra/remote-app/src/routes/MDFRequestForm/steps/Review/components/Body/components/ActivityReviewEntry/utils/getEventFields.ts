@@ -67,7 +67,7 @@ export default function getEventFields(mdfRequestActivity: MDFRequestActivity) {
 			title: 'Activity Promotion',
 			value: mdfRequestActivity.activityDescription?.activityPromotion,
 		}
-	)
-	
+	);
+
 	return eventFields;
 }
