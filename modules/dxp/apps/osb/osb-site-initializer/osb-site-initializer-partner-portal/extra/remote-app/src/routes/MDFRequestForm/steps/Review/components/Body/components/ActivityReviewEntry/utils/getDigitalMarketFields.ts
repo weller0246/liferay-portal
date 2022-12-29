@@ -34,21 +34,27 @@ export default function getDigitalMarketFields(
 				title: 'Nurture or drip campaign?',
 				value:
 					mdfRequestActivity.activityDescription?.nurtureDripCampaign,
-			},
-			{
+			}
+		);
+		if (mdfRequestActivity.activityDescription?.nurtureDripCampaign) {
+			digitalMarketingFields.push({
 				title: 'How many in series?',
 				value: mdfRequestActivity.activityDescription?.manySeries,
-			},
-			{
-				title: 'Do you require any assets from Liferay?',
-				value:
-					mdfRequestActivity.activityDescription
-						?.assetsLiferayRequired,
-			},
-			{
+			});
+		}
+
+		digitalMarketingFields.push({
+			title: 'Do you require any assets from Liferay?',
+			value:
+				mdfRequestActivity.activityDescription?.assetsLiferayRequired,
+		});
+		if (mdfRequestActivity.activityDescription?.assetsLiferayRequired) {
+			digitalMarketingFields.push({
 				title: 'Please describe including specifications and due dates',
 				value: mdfRequestActivity.activityDescription?.specificSites,
-			},
+			});
+		}
+		digitalMarketingFields.push(
 			{
 				title: 'Are you using any CIAB assets?',
 				value: mdfRequestActivity.activityDescription?.usingCIABAssets,
@@ -88,13 +94,20 @@ export default function getDigitalMarketFields(
 					mdfRequestActivity.activityDescription
 						?.assetsLiferayRequired as string
 				),
-			},
-			{
-				title: 'How will the Liferay brand be used in the campaign?',
-				value:
-					mdfRequestActivity.activityDescription?.howLiferayBrandUsed,
 			}
 		);
+		if (mdfRequestActivity.activityDescription?.assetsLiferayRequired) {
+			digitalMarketingFields.push({
+				title: 'Please describe including specifications and due dates',
+				value:
+					mdfRequestActivity.activityDescription
+						?.assetsLiferayDescription,
+			});
+		}
+		digitalMarketingFields.push({
+			title: 'How will the Liferay brand be used in the campaign?',
+			value: mdfRequestActivity.activityDescription?.howLiferayBrandUsed,
+		});
 	}
 
 	return digitalMarketingFields;
