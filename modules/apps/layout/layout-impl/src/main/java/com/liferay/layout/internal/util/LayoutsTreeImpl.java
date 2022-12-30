@@ -653,7 +653,14 @@ public class LayoutsTreeImpl implements LayoutsTree {
 			).put(
 				"privateLayout", layout.isPrivateLayout()
 			).put(
-				"regularURL", layout.getRegularURL(httpServletRequest)
+				"regularURL",
+				() -> {
+					if (hasUpdatePermission || layout.isPublished()) {
+						return layout.getRegularURL(httpServletRequest);
+					}
+
+					return StringPool.BLANK;
+				}
 			).put(
 				"sortable",
 				hasManageLayoutsPermission && !mobile &&
