@@ -226,7 +226,7 @@ public class OrganizationExpandoColumnModelListener
 
 		Map<Long, EntityField> entityFieldsMap = new HashMap<>();
 
-		long organizationClassNameId = _classNameLocalService.getClassNameId(
+		long classNameId = _classNameLocalService.getClassNameId(
 			Organization.class.getName());
 
 		List<ExpandoColumn> expandoColumns =
@@ -243,7 +243,7 @@ public class OrganizationExpandoColumnModelListener
 							ExpandoTableTable.INSTANCE
 						).where(
 							ExpandoTableTable.INSTANCE.classNameId.eq(
-								organizationClassNameId
+								classNameId
 							).and(
 								ExpandoTableTable.INSTANCE.name.eq(
 									ExpandoTableConstants.DEFAULT_TABLE_NAME)

@@ -221,7 +221,7 @@ public class UserExpandoColumnModelListener
 
 		Map<Long, EntityField> entityFieldsMap = new HashMap<>();
 
-		long userClassNameId = _classNameLocalService.getClassNameId(
+		long classNameId = _classNameLocalService.getClassNameId(
 			User.class.getName());
 
 		List<ExpandoColumn> expandoColumns =
@@ -238,7 +238,7 @@ public class UserExpandoColumnModelListener
 							ExpandoTableTable.INSTANCE
 						).where(
 							ExpandoTableTable.INSTANCE.classNameId.eq(
-								userClassNameId
+								classNameId
 							).and(
 								ExpandoTableTable.INSTANCE.name.eq(
 									ExpandoTableConstants.DEFAULT_TABLE_NAME)
