@@ -159,14 +159,13 @@ public class UserExpandoColumnModelListener
 			return null;
 		}
 
+		EntityField entityField = null;
+
 		String encodedName =
 			_entityModelFieldMapper.getExpandoColumnEntityFieldName(
 				expandoColumn);
-
 		String encodedIndexedFieldName = _expandoBridgeIndexer.encodeFieldName(
 			expandoColumn);
-
-		EntityField entityField = null;
 
 		if (expandoColumn.getType() == ExpandoColumnConstants.BOOLEAN) {
 			entityField = new BooleanEntityField(
