@@ -71,12 +71,12 @@ public class UserExpandoColumnModelListener
 		throws ModelListenerException {
 
 		try {
+			long classNameId = _classNameLocalService.getClassNameId(
+				User.class.getName());
 			ExpandoTable expandoTable = _expandoTableLocalService.getTable(
 				expandoColumn.getTableId());
-			long organizationClassNameId =
-				_classNameLocalService.getClassNameId(User.class.getName());
 
-			if ((expandoTable.getClassNameId() != organizationClassNameId) ||
+			if ((classNameId != expandoTable.getClassNameId()) ||
 				!ExpandoTableConstants.DEFAULT_TABLE_NAME.equals(
 					expandoTable.getName())) {
 
