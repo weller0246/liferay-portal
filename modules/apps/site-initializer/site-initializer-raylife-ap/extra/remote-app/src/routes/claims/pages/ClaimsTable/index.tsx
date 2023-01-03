@@ -24,7 +24,7 @@ import {useCallback, useEffect, useState} from 'react';
 
 import Header from '../../../../common/components/header';
 import Table from '../../../../common/components/table';
-import {Parameters, getPolicies} from '../../../../common/services';
+import {Parameters} from '../../../../common/services';
 import {
 	deleteClaimByExternalReferenceCode,
 	getClaims,
@@ -37,6 +37,7 @@ import {
 } from '../../../../common/services/liferay/liferay';
 import {capitalizeFirstLetter} from '../../../../common/utils/constantsType';
 import formatDate from '../../../../common/utils/dateFormatter';
+import useDebounce from '../../../../hooks/useDebounce';
 
 type ClaimTableType = {
 	claimCreateDate: string;
@@ -99,8 +100,7 @@ const ClaimsTable = () => {
 		[]
 	);
 	const [checkedStateStatus, setCheckedStateStatus] = useState<boolean[]>([]);
-	const [policyERCByPON, setPolicyERCByPON] = useState<string>();
-	const [policyERCByProduct, setPolicyERCByProduct] = useState<string[]>([]);
+
 	const [currentSort, setCurrentSort] = useState<string>('claimCreateDate');
 
 	const [sortState, setSortState] = useState<StateSortType>({
@@ -113,9 +113,9 @@ const ClaimsTable = () => {
 	});
 	const [isRemaining, setIsRemaining] = useState<boolean>(false);
 
-	const filterSearch = `contains(id, '${searchInput}') or contains(r_policyToClaims_c_raylifePolicyERC, '${searchInput}') or contains(r_policyToClaims_c_raylifePolicyERC, '${policyERCByPON}')`;
+	const filterSearch = `contains(id, '${searchInput}') or contains(r_policyToClaims_c_raylifePolicyERC, '${searchInput}')`;
 
-	const filterProduct = `r_policyToClaims_c_raylifePolicyERC in (${policyERCByProduct})`;
+	const filterProduct = `r_policyToClaims_c_raylifePolicyERC in ()`;
 
 	const filterStatus = `claimStatus in (${filterStatusCheck})`;
 
@@ -126,10 +126,6 @@ const ClaimsTable = () => {
 	const filterProductAndStatus = `${filterProduct} and ${filterStatus}`;
 
 	const filterSearchAndStatusAndProduct = `${filterSearch} and ${filterProduct} and ${filterStatus}`;
-
-	const PARAMETERS_GET_ALL_ITEMS = {
-		pageSize: '0',
-	};
 
 	const pageAndPageSize = {
 		page: page.toString(),
@@ -163,31 +159,60 @@ const ClaimsTable = () => {
 		return parameters;
 	};
 
+	const [parameters, setParameters] = useState<Parameters>(
+		generateParameters()
+	);
+
+	parameters.pageSize = pageSize.toString();
+	parameters.page = page.toString();
+
+	const parameterDebounce = useDebounce(parameters, 200);
+
 	const setFilterSearch = () => {
+		setPage(1);
+
 		if (searchInput) {
 			if (!filterProductCheck.length && !filterStatusCheck.length) {
-				return filterSearch;
+				return setParameters(generateParameters(filterSearch));
 			}
 			if (filterStatusCheck.length && !filterProductCheck.length) {
-				return filterSearchAndStatus;
+				return setParameters(generateParameters(filterSearchAndStatus));
 			}
 			if (filterProductCheck.length && !filterStatusCheck.length) {
-				return filterSearchAndProduct;
+				return setParameters(
+					generateParameters(filterSearchAndProduct)
+				);
 			}
 			if (filterStatusCheck.length && filterProductCheck.length) {
-				return filterSearchAndStatusAndProduct;
+				return setParameters(
+					generateParameters(filterSearchAndStatusAndProduct)
+				);
 			}
 		}
 		if (!searchInput) {
+			setParameters(generateParameters());
+
 			if (!filterProductCheck.length && filterStatusCheck.length) {
-				return filterStatus;
+				return setParameters(generateParameters(filterStatus));
 			}
 			if (!filterStatusCheck.length && filterProductCheck.length) {
-				return filterProduct;
+				return setParameters(generateParameters(filterProduct));
 			}
 			if (filterProductCheck.length && filterStatusCheck.length) {
-				return filterProductAndStatus;
+				return setParameters(
+					generateParameters(filterProductAndStatus)
+				);
 			}
+		}
+	};
+
+	const handleClick = () => {
+		setFilterSearch();
+	};
+
+	const handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
+		if (event.key === 'Enter') {
+			handleClick();
 		}
 	};
 
@@ -197,37 +222,6 @@ const ClaimsTable = () => {
 
 	const filterClick = () => {
 		setActiveFilter(!activeFilter);
-	};
-
-	const getPolicyERCByPolicyOwnerName = async () => {
-		const policies = await getPolicies(PARAMETERS_GET_ALL_ITEMS);
-
-		const filterPolicyByPolicyOwnerName = policies?.data?.items?.filter(
-			(data: {policyOwnerName: string}) =>
-				data?.policyOwnerName === searchInput
-		);
-
-		setPolicyERCByPON(
-			filterPolicyByPolicyOwnerName[0]?.externalReferenceCode
-		);
-	};
-
-	const getPolicyERCByProductName = async () => {
-		const policies = await getPolicies(PARAMETERS_GET_ALL_ITEMS);
-
-		const policyERCs: string[] = [];
-
-		filterProductCheck.forEach((productCheck) => {
-			for (const result of policies?.data?.items) {
-				if (productCheck === `'${result?.productName}'`) {
-					policyERCs.push("'" + result?.externalReferenceCode + "'");
-				}
-			}
-		});
-
-		const newPolicyERCs = [...new Set(policyERCs)];
-
-		setPolicyERCByProduct(newPolicyERCs);
 	};
 
 	const HEADERS = [
@@ -350,10 +344,16 @@ const ClaimsTable = () => {
 		setCheckedStateStatus(new Array(statusFilterItems.length).fill(false));
 	}, [productFilterItems, statusFilterItems]);
 
+	useEffect(() => {
+		setFilterSearch();
+
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [filterProductCheck, filterStatusCheck, filterCheckedLabel]);
+
 	const getClaimsAndPolicies = useCallback(async () => {
 		const claimList: TableContentType[] = [];
 
-		const results = await getClaims(generateParameters(setFilterSearch()));
+		const results = await getClaims(parameterDebounce);
 
 		for (const result of results?.data?.items as ClaimTableType[]) {
 			const {
@@ -403,12 +403,12 @@ const ClaimsTable = () => {
 		filterStatus,
 		filterProductCheck,
 		filterStatusCheck,
+		parameterDebounce,
 	]);
 
 	useEffect(() => {
 		getClaimsAndPolicies();
-		getPolicyERCByPolicyOwnerName();
-		getPolicyERCByProductName();
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [
 		page,
@@ -420,6 +420,7 @@ const ClaimsTable = () => {
 		filterStatus,
 		filterProductCheck,
 		filterStatusCheck,
+		parameterDebounce,
 	]);
 
 	const checkItemProduct = (productCheck: string) => {
@@ -737,13 +738,18 @@ const ClaimsTable = () => {
 						<ClayInput.GroupItem prepend>
 							<ClayInput
 								onChange={handleChangeSearch}
+								onKeyDown={handleKeyDown}
 								placeholder="Search for..."
 								type="text"
 							/>
 						</ClayInput.GroupItem>
 
 						<ClayInput.GroupItem append shrink>
-							<ClayButton displayType="secondary" type="submit">
+							<ClayButton
+								displayType="secondary"
+								onClick={handleClick}
+								type="submit"
+							>
 								<ClayIcon symbol="search" />
 							</ClayButton>
 						</ClayInput.GroupItem>
@@ -898,6 +904,7 @@ const ClaimsTable = () => {
 									setFilterCheckedLabel([]);
 									setFilterProductCheck([]);
 									setFilterStatusCheck([]);
+									setParameters(generateParameters());
 								}}
 							>
 								<ClayIcon
