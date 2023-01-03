@@ -32,7 +32,7 @@
 </tr>
 <tr>
 	<td>ITEM_REMOVE</td>
-	<td>//span[(contains(@class,'label-dismissible'))][contains(.,'${key_itemName}')]//button[contains(@class,'close')]</td>
+	<td>//div[contains(@class,'panel-body')]//*[contains(.,'${key_itemName}')]//button[contains(@class,'close')]</td>
 	<td></td>
 </tr>
 <tr>
