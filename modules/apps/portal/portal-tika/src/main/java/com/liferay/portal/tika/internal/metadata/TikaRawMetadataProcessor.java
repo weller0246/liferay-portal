@@ -33,8 +33,8 @@ import com.liferay.portal.kernel.util.ContentTypes;
 import com.liferay.portal.kernel.util.FileUtil;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.kernel.util.StringUtil;
+import com.liferay.portal.tika.internal.configuration.helper.TikaConfigurationHelper;
 import com.liferay.portal.tika.internal.util.ProcessConfigUtil;
-import com.liferay.portal.tika.internal.util.TikaConfigUtil;
 import com.liferay.portal.util.PropsValues;
 
 import java.io.File;
@@ -72,6 +72,7 @@ import org.apache.tika.parser.AutoDetectParser;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 
+import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -86,10 +87,6 @@ import org.xml.sax.helpers.DefaultHandler;
 @Component(service = RawMetadataProcessor.class)
 public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 
-	public TikaRawMetadataProcessor() throws Exception {
-		_parser = new AutoDetectParser(TikaConfigUtil.getTikaConfig());
-	}
-
 	@Override
 	public Set<String> getFieldNames() {
 		return _fields.keySet();
@@ -103,6 +100,12 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 		Metadata metadata = _extractMetadata(mimeType, inputStream);
 
 		return _createDDMFormValuesMap(metadata);
+	}
+
+	@Activate
+	protected void activate() throws Exception {
+		_parser = new AutoDetectParser(
+			_tikaConfigurationHelper.getTikaConfig());
 	}
 
 	private static void _addFields(Class<?> clazz, Map<String, String> fields)
@@ -300,10 +303,13 @@ public class TikaRawMetadataProcessor implements RawMetadataProcessor {
 		_fields = fields;
 	}
 
-	private final Parser _parser;
+	private Parser _parser;
 
 	@Reference
 	private ProcessExecutor _processExecutor;
+
+	@Reference
+	private TikaConfigurationHelper _tikaConfigurationHelper;
 
 	private static class ExtractMetadataProcessCallable
 		implements ProcessCallable<Metadata> {
