@@ -28,7 +28,7 @@ import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
 import com.liferay.portal.kernel.model.LayoutSet;
 import com.liferay.portal.kernel.model.LayoutTypeController;
-import com.liferay.portal.kernel.service.GroupService;
+import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.LayoutSetLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
@@ -194,7 +194,7 @@ public class SitemapImpl implements Sitemap {
 			ThemeDisplay themeDisplay)
 		throws PortalException {
 
-		Group currentGroup = _groupService.getGroup(groupId);
+		Group currentGroup = _groupLocalService.getGroup(groupId);
 
 		if (!currentGroup.isActive()) {
 			return null;
@@ -447,7 +447,7 @@ public class SitemapImpl implements Sitemap {
 		SitemapImpl.class.getName());
 
 	@Reference
-	private GroupService _groupService;
+	private GroupLocalService _groupLocalService;
 
 	@Reference
 	private Language _language;
