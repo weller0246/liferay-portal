@@ -67,7 +67,6 @@ public class PageElementDTOConverter
 		}
 
 		long groupId = GetterUtil.getLong(groupIdObject);
-
 		boolean saveInlineContent = GetterUtil.getBoolean(
 			dtoConverterContext.getAttribute("saveInlineContent"), true);
 		boolean saveMappingConfiguration = GetterUtil.getBoolean(

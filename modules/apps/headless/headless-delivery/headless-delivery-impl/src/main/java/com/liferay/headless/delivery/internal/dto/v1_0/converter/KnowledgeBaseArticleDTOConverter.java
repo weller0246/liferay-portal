@@ -99,15 +99,6 @@ public class KnowledgeBaseArticleDTOConverter
 					_assetTagLocalService.getTags(
 						KBArticle.class.getName(), kbArticle.getClassPK()),
 					AssetTag.NAME_ACCESSOR);
-				numberOfAttachments = 0;
-
-				List<FileEntry> fileEntries =
-					kbArticle.getAttachmentsFileEntries();
-
-				if (fileEntries != null) {
-					numberOfAttachments = fileEntries.size();
-				}
-
 				numberOfKnowledgeBaseArticles =
 					_kbArticleService.getKBArticlesCount(
 						kbArticle.getGroupId(), kbArticle.getResourcePrimKey(),
@@ -134,6 +125,17 @@ public class KnowledgeBaseArticleDTOConverter
 					TaxonomyCategoryBrief.class);
 				title = kbArticle.getTitle();
 
+				setNumberOfAttachments(
+					() -> {
+						List<FileEntry> fileEntries =
+							kbArticle.getAttachmentsFileEntries();
+
+						if (fileEntries != null) {
+							return fileEntries.size();
+						}
+
+						return 0;
+					});
 				setParentKnowledgeBaseFolder(
 					() -> {
 						if (kbArticle.getKbFolderId() <= 0) {

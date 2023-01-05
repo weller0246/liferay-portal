@@ -101,15 +101,6 @@ public class WikiPageDTOConverter
 						BlogsEntry.class.getName(), wikiPage.getPageId()),
 					AssetTag.NAME_ACCESSOR);
 				numberOfAttachments = wikiPage.getAttachmentsFileEntriesCount();
-				numberOfWikiPages = 0;
-
-				List<com.liferay.wiki.model.WikiPage> wikiPages =
-					wikiPage.getChildPages();
-
-				if (wikiPages != null) {
-					numberOfWikiPages = wikiPages.size();
-				}
-
 				relatedContents = RelatedContentUtil.toRelatedContents(
 					_assetEntryLocalService, _assetLinkLocalService,
 					_dtoConverterRegistry, wikiPage.getModelClassName(),
@@ -136,7 +127,19 @@ public class WikiPageDTOConverter
 								uriInfoOptional.orElse(null),
 								dtoConverterContext.getUser())),
 					TaxonomyCategoryBrief.class);
+				wikiNodeId = wikiPage.getNodeId();
 
+				setNumberOfWikiPages(
+					() -> {
+						List<com.liferay.wiki.model.WikiPage> wikiPages =
+							wikiPage.getChildPages();
+
+						if (wikiPages != null) {
+							return wikiPages.size();
+						}
+
+						return 0;
+					});
 				setParentWikiPageId(
 					() -> {
 						com.liferay.wiki.model.WikiPage parentWikiPage =
@@ -150,7 +153,6 @@ public class WikiPageDTOConverter
 
 						return parentWikiPage.getResourcePrimKey();
 					});
-				wikiNodeId = wikiPage.getNodeId();
 			}
 		};
 	}
