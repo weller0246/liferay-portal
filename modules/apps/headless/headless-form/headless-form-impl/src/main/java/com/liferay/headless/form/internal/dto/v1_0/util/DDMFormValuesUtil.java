@@ -75,12 +75,12 @@ public class DDMFormValuesUtil {
 			formFieldValue.getName());
 
 		if (ddmFormField != null) {
-			String stringValue = formFieldValue.getValue();
+			String string = formFieldValue.getValue();
 
-			if ((stringValue != null) && ddmFormField.isLocalizable()) {
+			if ((string != null) && ddmFormField.isLocalizable()) {
 				value = new LocalizedValue() {
 					{
-						addString(locale, stringValue);
+						addString(locale, string);
 					}
 				};
 			}
