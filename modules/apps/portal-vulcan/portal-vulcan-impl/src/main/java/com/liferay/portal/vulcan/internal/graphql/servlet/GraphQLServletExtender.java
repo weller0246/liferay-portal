@@ -177,7 +177,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Set;
 import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
@@ -2226,11 +2225,11 @@ public class GraphQLServletExtender {
 		}
 
 		private boolean _isRequiredField(GraphQLError graphQLError) {
-			List<Object> path = Optional.ofNullable(
-				graphQLError.getPath()
-			).orElse(
-				Collections.emptyList()
-			);
+			List<Object> path = graphQLError.getPath();
+
+			if (path == null) {
+				path = Collections.emptyList();
+			}
 
 			if (path.size() <= 1) {
 				return true;
