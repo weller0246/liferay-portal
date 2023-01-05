@@ -79,10 +79,9 @@ public class ConfigurationFileInstallerTest {
 
 			Assert.assertTrue(
 				StringBundler.concat(
-					"Configuration file", configFile, " which are in ",
+					"Configuration file ", configFile, " which is in ",
 					PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-					" folder should be able to be transformed by ",
-					"ConfigurationFileInstaller"),
+					" folder should transformed by ConfigurationFileInstaller"),
 				configurationFileInstaller.canTransformURL(configFile));
 
 			configFile = new File(
@@ -90,9 +89,9 @@ public class ConfigurationFileInstallerTest {
 
 			Assert.assertFalse(
 				StringBundler.concat(
-					"Configuration file", configFile, " which are not in ",
+					"Configuration file ", configFile, " which is not in ",
 					PropsValues.MODULE_FRAMEWORK_CONFIGS_DIR,
-					" folder should not be able to be transformed by ",
+					" folder should not be transformed by ",
 					"ConfigurationFileInstaller"),
 				configurationFileInstaller.canTransformURL(configFile));
 		}
