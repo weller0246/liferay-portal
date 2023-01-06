@@ -192,173 +192,68 @@
 					"value": {
 						"objectStates": [
 							{
-								"key": "pendingMarketingReview",
 								"objectStateTransitions": [
-									{
-										"key": "approved"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "rejected"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "approved"},
+									{"key": "marketingDirectorReview"},
+									{"key": "moreInfoRequested"},
+									{"key": "rejected"},
+									{"key": "canceled"}
+								],
+								"key": "pendingMarketingReview"
 							},
 							{
-								"key": "approved",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "rejected"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "expired"},
+									{"key": "canceled"}
+								],
+								"key": "approved"
 							},
 							{
-								"key": "marketingDirectorReview",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "rejected"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "approved"},
+									{"key": "moreInfoRequested"},
+									{"key": "rejected"},
+									{"key": "canceled"},
+									{"key": "pendingMarketingReview"}
+								],
+								"key": "marketingDirectorReview"
 							},
 							{
-								"key": "moreInfoRequested",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "rejected"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "marketingDirectorReview"},
+									{"key": "expired"},
+									{"key": "canceled"}
+								],
+								"key": "moreInfoRequested"
 							},
 							{
-								"key": "expired",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "rejected"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "marketingDirectorReview"},
+									{"key": "moreInfoRequested"},
+									{"key": "canceled"}
+								],
+								"key": "expired"
 							},
 							{
-								"key": "rejected",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "canceled"
-									}
-								]
+									{"key": "pendingMarketingReview"},
+									{"key": "marketingDirectorReview"},
+									{"key": "moreInfoRequested"},
+									{"key": "canceled"}
+								],
+								"key": "rejected"
 							},
 							{
-								"key": "canceled",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "marketingDirectorReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "expired"
-									},
-									{
-										"key": "rejected"
-									}
-								]
+								"objectStateTransitions": [{"key": "approved"}],
+								"key": "canceled"
 							},
 							{
-								"key": "draft",
 								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									}
-								]
+									{"key": "pendingMarketingReview"},
+									{"key": "canceled"},
+									{"key": "marketingDirectorReview"}
+								],
+								"key": "draft"
 							}
 						]
 					}
