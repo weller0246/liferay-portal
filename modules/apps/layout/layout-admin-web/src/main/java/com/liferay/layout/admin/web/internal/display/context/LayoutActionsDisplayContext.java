@@ -295,14 +295,7 @@ public class LayoutActionsDisplayContext {
 					segmentsExperienceId);
 
 			if (segmentsExperience != null) {
-				Long id = segmentsExperience.getSegmentsExperienceId();
-
-				if (id != null) {
-					segmentsExperienceId = id;
-				}
-				else {
-					segmentsExperienceId = -1L;
-				}
+				segmentsExperienceId = segmentsExperience.getSegmentsExperienceId();
 			}
 			else {
 				segmentsExperienceId = -1L;
