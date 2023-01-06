@@ -712,7 +712,8 @@ definition {
 		}
 	}
 
-	@description = "This is a use case for LRQA-72792. Users could login and logout using PingOne as OpenID Connect provider."
+	@description = "This is a use case for LRQA-72792. Users could login and logout using PingOne as OpenID Connect provider. Blocked by ISIT-28728."
+	@ignore = "true"
 	@priority = "5"
 	test OpenIDConnectSmokeWithPingOne {
 		property osgi.module.configuration.file.names = "com.liferay.portal.security.sso.openid.connect.configuration.OpenIdConnectConfiguration.config";
