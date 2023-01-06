@@ -192,68 +192,122 @@
 					"value": {
 						"objectStates": [
 							{
+								"key": "pendingMarketingReview",
 								"objectStateTransitions": [
-									{"key": "approved"},
-									{"key": "marketingDirectorReview"},
-									{"key": "moreInfoRequested"},
-									{"key": "rejected"},
-									{"key": "canceled"}
-								],
-								"key": "pendingMarketingReview"
+									{
+										"key": "approved"
+									},
+									{
+										"key": "marketingDirectorReview"
+									},
+									{
+										"key": "moreInfoRequested"
+									},
+									{
+										"key": "rejected"
+									},
+									{
+										"key": "canceled"
+									}
+								]
 							},
 							{
+								"key": "approved",
 								"objectStateTransitions": [
-									{"key": "expired"},
-									{"key": "canceled"}
-								],
-								"key": "approved"
+									{
+										"key": "expired"
+									},
+									{
+										"key": "canceled"
+									}
+								]
 							},
 							{
+								"key": "marketingDirectorReview",
 								"objectStateTransitions": [
-									{"key": "approved"},
-									{"key": "moreInfoRequested"},
-									{"key": "rejected"},
-									{"key": "canceled"},
-									{"key": "pendingMarketingReview"}
-								],
-								"key": "marketingDirectorReview"
+									{
+										"key": "approved"
+									},
+									{
+										"key": "moreInfoRequested"
+									},
+									{
+										"key": "rejected"
+									},
+									{
+										"key": "canceled"
+									},
+									{
+										"key": "pendingMarketingReview"
+									}
+								]
 							},
 							{
+								"key": "moreInfoRequested",
 								"objectStateTransitions": [
-									{"key": "marketingDirectorReview"},
-									{"key": "expired"},
-									{"key": "canceled"}
-								],
-								"key": "moreInfoRequested"
+									{
+										"key": "marketingDirectorReview"
+									},
+									{
+										"key": "expired"
+									},
+									{
+										"key": "canceled"
+									}
+								]
 							},
 							{
+								"key": "expired",
 								"objectStateTransitions": [
-									{"key": "marketingDirectorReview"},
-									{"key": "moreInfoRequested"},
-									{"key": "canceled"}
-								],
-								"key": "expired"
+									{
+										"key": "marketingDirectorReview"
+									},
+									{
+										"key": "moreInfoRequested"
+									},
+									{
+										"key": "canceled"
+									}
+								]
 							},
 							{
+								"key": "rejected",
 								"objectStateTransitions": [
-									{"key": "pendingMarketingReview"},
-									{"key": "marketingDirectorReview"},
-									{"key": "moreInfoRequested"},
-									{"key": "canceled"}
-								],
-								"key": "rejected"
+									{
+										"key": "pendingMarketingReview"
+									},
+									{
+										"key": "marketingDirectorReview"
+									},
+									{
+										"key": "moreInfoRequested"
+									},
+									{
+										"key": "canceled"
+									}
+								]
 							},
 							{
-								"objectStateTransitions": [{"key": "approved"}],
-								"key": "canceled"
+								"key": "canceled",
+								"objectStateTransitions": [
+									{
+										"key": "approved"
+									}
+								]
 							},
 							{
+								"key": "draft",
 								"objectStateTransitions": [
-									{"key": "pendingMarketingReview"},
-									{"key": "canceled"},
-									{"key": "marketingDirectorReview"}
-								],
-								"key": "draft"
+									{
+										"key": "pendingMarketingReview"
+									},
+									{
+										"key": "canceled"
+									},
+									{
+										"key": "marketingDirectorReview"
+									}
+								]
 							}
 						]
 					}
