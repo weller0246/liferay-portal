@@ -114,142 +114,127 @@
 			"listTypeDefinitionId": "[$LIST_TYPE_DEFINITION_ID:MDF Claim Status$]",
 			"name": "mdfClaimStatus",
 			"objectFieldSettings": [
-				{
-					"name": "stateFlow",
-					"value": {
-						"objectStates": [
-							{
-								"key": "pendingMarketingReview",
-								"objectStateTransitions": [
-									{
-										"key": "approved"
-									},
-									{
-										"key": "claimPaid"
-									},
-									{
-										"key": "inFinanceReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "rejected"
-									}
-								]
-							},
-							{
-								"key": "approved",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "claimPaid"
-									},
-									{
-										"key": "inFinanceReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "rejected"
-									}
-								]
-							},
-							{
-								"key": "claimPaid",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "inFinanceReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "rejected"
-									}
-								]
-							},
-							{
-								"key": "inFinanceReview",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "claimPaid"
-									},
-									{
-										"key": "moreInfoRequested"
-									},
-									{
-										"key": "rejected"
-									}
-								]
-							},
-							{
-								"key": "moreInfoRequested",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "claimPaid"
-									},
-									{
-										"key": "inFinanceReview"
-									},
-									{
-										"key": "rejected"
-									}
-								]
-							},
-							{
-								"key": "rejected",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									},
-									{
-										"key": "approved"
-									},
-									{
-										"key": "claimPaid"
-									},
-									{
-										"key": "inFinanceReview"
-									},
-									{
-										"key": "moreInfoRequested"
-									}
-								]
-							},
-							{
-								"key": "draft",
-								"objectStateTransitions": [
-									{
-										"key": "pendingMarketingReview"
-									}
-								]
-							}
-						]
-					}
-				}
-			],
+                {
+                    "name": "stateFlow",
+                    "value": {
+                        "objectStates": [
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "approved"
+                                    },
+                                    {
+                                        "key": "inFinanceReview"
+                                    },
+                                    {
+                                        "key": "moreInfoRequested"
+                                    },
+                                    {
+                                        "key": "rejected"
+                                    },
+                                    {
+                                        "key": "inDirectorReview"
+                                    }
+                                ],
+                                "key": "pendingMarketingReview"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "inFinanceReview"
+                                    }
+                                ],
+                                "key": "approved"
+                            },
+                            {
+                                "objectStateTransitions": [],
+                                "key": "claimPaid"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "approved"
+                                    },
+                                    {
+                                        "key": "claimPaid"
+                                    },
+                                    {
+                                        "key": "moreInfoRequested"
+                                    },
+                                    {
+                                        "key": "rejected"
+                                    },
+                                    {
+                                        "key": "inDirectorReview"
+                                    }
+                                ],
+                                "key": "inFinanceReview"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "pendingMarketingReview"
+                                    },
+                                    {
+                                        "key": "approved"
+                                    },
+                                    {
+                                        "key": "claimPaid"
+                                    },
+                                    {
+                                        "key": "inFinanceReview"
+                                    },
+                                    {
+                                        "key": "rejected"
+                                    }
+                                ],
+                                "key": "moreInfoRequested"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "pendingMarketingReview"
+                                    }
+                                ],
+                                "key": "rejected"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "pendingMarketingReview"
+                                    },
+                                    {
+                                        "key": "canceled"
+                                    }
+                                ],
+                                "key": "draft"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "approved"
+                                    },
+                                    {
+                                        "key": "inFinanceReview"
+                                    },
+                                    {
+                                        "key": "rejected"
+                                    }
+                                ],
+                                "key": "inDirectorReview"
+                            },
+                            {
+                                "objectStateTransitions": [
+                                    {
+                                        "key": "approved"
+                                    }
+                                ],
+                                "key": "canceled"
+                            }
+                        ]
+                    }
+                }
+            ],
 			"required": true,
 			"state": true,
 			"system": false,
