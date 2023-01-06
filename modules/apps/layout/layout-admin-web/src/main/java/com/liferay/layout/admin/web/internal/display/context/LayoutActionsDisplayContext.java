@@ -48,7 +48,6 @@ import com.liferay.segments.service.SegmentsExperienceLocalService;
 import com.liferay.taglib.security.PermissionsURLTag;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.portlet.PortletRequest;
 import javax.portlet.ResourceURL;
@@ -291,14 +290,23 @@ public class LayoutActionsDisplayContext {
 				unicodeProperties.getProperty("segmentsExperienceId"), -1));
 
 		if (segmentsExperienceId != -1) {
-			segmentsExperienceId = Optional.ofNullable(
+			SegmentsExperience segmentsExperience =
 				_segmentsExperienceLocalService.fetchSegmentsExperience(
-					segmentsExperienceId)
-			).map(
-				SegmentsExperience::getSegmentsExperienceId
-			).orElse(
-				-1L
-			);
+					segmentsExperienceId);
+
+			if (segmentsExperience != null) {
+				Long id = segmentsExperience.getSegmentsExperienceId();
+
+				if (id != null) {
+					segmentsExperienceId = id;
+				}
+				else {
+					segmentsExperienceId = -1L;
+				}
+			}
+			else {
+				segmentsExperienceId = -1L;
+			}
 		}
 
 		if (segmentsExperienceId == -1) {
