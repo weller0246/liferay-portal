@@ -42,6 +42,8 @@ if (searchFolderId > 0) {
 String keywords = ParamUtil.getString(request, "keywords");
 
 DLAdminDisplayContext dlAdminDisplayContext = (DLAdminDisplayContext)request.getAttribute(DLAdminDisplayContext.class.getName());
+DLViewEntriesDisplayContext dlViewEntriesDisplayContext = new DLViewEntriesDisplayContext(liferayPortletRequest, liferayPortletResponse);
+
 DLPortletInstanceSettingsHelper dlPortletInstanceSettingsHelper = new DLPortletInstanceSettingsHelper(dlRequestHelper);
 
 EntriesChecker entriesChecker = new EntriesChecker(liferayPortletResponse);
@@ -93,6 +95,11 @@ entriesChecker.setRememberCheckBoxStateURLRegex("^(?!.*" + liferayPortletRespons
 						}
 
 						String thumbnailSrc = DLURLHelperUtil.getThumbnailSrc(fileEntry, latestFileVersion, themeDisplay);
+
+						row.setData(
+							HashMapBuilder.<String, Object>put(
+								"actions", StringUtil.merge(dlViewEntriesDisplayContext.getAvailableActions(fileEntry))
+							).build());
 
 						row.setPrimaryKey(String.valueOf(fileEntry.getFileEntryId()));
 						%>
