@@ -135,6 +135,11 @@ public class KaleoDefinitionVersionLocalServiceImpl
 
 		kaleoDefinitionVersionPersistence.remove(kaleoDefinitionVersion);
 
+		// Resources
+
+		_resourceLocalService.deleteResource(
+			kaleoDefinitionVersion, ResourceConstants.SCOPE_INDIVIDUAL);
+
 		// Kaleo condition
 
 		_kaleoConditionLocalService.deleteKaleoDefinitionVersionKaleoCondition(
@@ -160,11 +165,6 @@ public class KaleoDefinitionVersionLocalServiceImpl
 		_kaleoTransitionLocalService.
 			deleteKaleoDefinitionVersionKaleoTransitions(
 				kaleoDefinitionVersion.getKaleoDefinitionVersionId());
-
-		// Resources
-
-		_resourceLocalService.deleteResource(
-			kaleoDefinitionVersion, ResourceConstants.SCOPE_INDIVIDUAL);
 
 		return kaleoDefinitionVersion;
 	}
