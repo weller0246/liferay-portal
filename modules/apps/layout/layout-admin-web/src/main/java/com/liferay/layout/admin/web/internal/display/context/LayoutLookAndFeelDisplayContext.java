@@ -165,6 +165,10 @@ public class LayoutLookAndFeelDisplayContext {
 		return HashMapBuilder.<String, Object>put(
 			"changeMasterLayoutURL",
 			() -> {
+				RequestBackedPortletURLFactory requestBackedPortletURLFactory =
+					RequestBackedPortletURLFactoryUtil.create(
+						_httpServletRequest);
+
 				MasterLayoutPageTemplateEntryItemSelectorCriterion
 					masterLayoutPageTemplateEntryItemSelectorCriterion =
 						new MasterLayoutPageTemplateEntryItemSelectorCriterion();
@@ -172,10 +176,6 @@ public class LayoutLookAndFeelDisplayContext {
 				masterLayoutPageTemplateEntryItemSelectorCriterion.
 					setDesiredItemSelectorReturnTypes(
 						new UUIDItemSelectorReturnType());
-
-				RequestBackedPortletURLFactory requestBackedPortletURLFactory =
-					RequestBackedPortletURLFactoryUtil.create(
-						_httpServletRequest);
 
 				return String.valueOf(
 					_itemSelector.getItemSelectorURL(
@@ -257,20 +257,19 @@ public class LayoutLookAndFeelDisplayContext {
 		return HashMapBuilder.<String, Object>put(
 			"changeStyleBookURL",
 			() -> {
+				RequestBackedPortletURLFactory requestBackedPortletURLFactory =
+					RequestBackedPortletURLFactoryUtil.create(
+						_httpServletRequest);
+
 				StyleBookEntryItemSelectorCriterion
 					styleBookEntryItemSelectorCriterion =
 						new StyleBookEntryItemSelectorCriterion();
 
-				styleBookEntryItemSelectorCriterion.setSelPlid(
-					_layoutsAdminDisplayContext.getSelPlid());
-
 				styleBookEntryItemSelectorCriterion.
 					setDesiredItemSelectorReturnTypes(
 						new UUIDItemSelectorReturnType());
-
-				RequestBackedPortletURLFactory requestBackedPortletURLFactory =
-					RequestBackedPortletURLFactoryUtil.create(
-						_httpServletRequest);
+				styleBookEntryItemSelectorCriterion.setSelPlid(
+					_layoutsAdminDisplayContext.getSelPlid());
 
 				return String.valueOf(
 					_itemSelector.getItemSelectorURL(
