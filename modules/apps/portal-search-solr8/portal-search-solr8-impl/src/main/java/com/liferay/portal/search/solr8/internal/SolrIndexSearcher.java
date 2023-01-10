@@ -349,10 +349,10 @@ public class SolrIndexSearcher extends BaseIndexSearcher {
 			baseSearchResponse.getSearchRequestString()
 		).responseString(
 			baseSearchResponse.getSearchResponseString()
-		).statsResponseMap(
-			baseSearchResponse.getStatsResponseMap()
 		).searchTimeValue(
 			baseSearchResponse.getSearchTimeValue()
+		).statsResponseMap(
+			baseSearchResponse.getStatsResponseMap()
 		);
 	}
 
