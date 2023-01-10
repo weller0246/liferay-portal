@@ -79,14 +79,14 @@ public class SearchEngineHelperImplTest {
 			_getRealSearchEngineComponentConfigurationDTO(
 				bundleContext, vendor);
 
-		// Assert real SearchEngine is on duty
+		// Assert real search engine is on duty
 
 		Assert.assertEquals(
 			ComponentConfigurationDTO.ACTIVE, componentConfigurationDTO.state);
 
 		Assert.assertNotEquals("MockSearchEngine", vendor);
 
-		// Register mock SeachEngine to swap out real SearchEngine
+		// Register mock SeachEngine to swap out real search engine
 
 		MockIndexSearcher mockIndexSearcher = new MockIndexSearcher();
 
@@ -124,7 +124,7 @@ public class SearchEngineHelperImplTest {
 
 			Assert.assertSame(document, mockIndexWriter._document);
 
-			// Assert real SearchEngine is off duty
+			// Assert real search engine is off duty
 
 			Assert.assertEquals(
 				ComponentConfigurationDTO.SATISFIED,
@@ -138,7 +138,7 @@ public class SearchEngineHelperImplTest {
 			_getRealSearchEngineComponentConfigurationDTO(
 				bundleContext, vendor);
 
-		// Assert real SearchEngine is back on duty
+		// Assert real search engine is back on duty
 
 		Assert.assertEquals(
 			ComponentConfigurationDTO.ACTIVE, componentConfigurationDTO.state);
