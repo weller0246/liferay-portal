@@ -46,6 +46,7 @@ public class TaxonomyCategoryExceptionMapper
 		AssetCategoryException assetCategoryException) {
 
 		String errorMessage = StringPool.BLANK;
+
 		String vocabularyName = StringPool.BLANK;
 
 		AssetVocabulary assetVocabulary =

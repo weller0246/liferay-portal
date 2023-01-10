@@ -51,10 +51,11 @@ public class CreatorStatisticsUtil {
 							MultivaluedMap<String, String> parameters =
 								uriInfo.getQueryParameters();
 
-							String fields = parameters.getFirst("nestedFields");
+							String nestedFields = parameters.getFirst(
+								"nestedFields");
 
-							if ((fields != null) &&
-								fields.contains("lastPostDate")) {
+							if ((nestedFields != null) &&
+								nestedFields.contains("lastPostDate")) {
 
 								return mbStatsUserLocalService.
 									getLastPostDateByUserId(

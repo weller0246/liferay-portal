@@ -533,13 +533,13 @@ public class TaxonomyVocabularyResourceImpl
 			return AssetCategoryConstants.ALL_CLASS_NAME_ID;
 		}
 
+		String className = null;
+
 		List<AssetRendererFactory<?>> categorizableAssetRenderFactories =
 			ListUtil.filter(
 				AssetRendererFactoryRegistryUtil.getAssetRendererFactories(
 					contextCompany.getCompanyId()),
 				AssetRendererFactory::isCategorizable);
-
-		String className = null;
 
 		for (AssetRendererFactory<?> assetRendererFactory :
 				categorizableAssetRenderFactories) {

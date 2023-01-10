@@ -360,13 +360,12 @@ public class WorkflowDefinitionResourceImpl
 				setTitle_i18n(
 					() -> {
 						Map<String, String> title_i18n = new HashMap<>();
-						Map<Locale, String> localeStringMap =
+
+						Map<Locale, String> map =
 							_localization.getLocalizationMap(
 								workflowDefinition.getTitle());
 
-						for (Map.Entry<Locale, String> entry :
-								localeStringMap.entrySet()) {
-
+						for (Map.Entry<Locale, String> entry : map.entrySet()) {
 							title_i18n.put(
 								_language.getLanguageId(entry.getKey()),
 								entry.getValue());

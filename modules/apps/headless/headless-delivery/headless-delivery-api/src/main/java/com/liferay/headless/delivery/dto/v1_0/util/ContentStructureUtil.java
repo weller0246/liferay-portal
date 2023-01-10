@@ -161,31 +161,30 @@ public class ContentStructureUtil {
 						DDMFormFieldOptions ddmFormFieldOptions =
 							ddmFormField.getDDMFormFieldOptions();
 
-						if (ddmFormFieldOptions != null) {
-							Map<String, LocalizedValue> localizedValueMap =
-								ddmFormFieldOptions.getOptions();
-
-							return TransformUtil.transformToArray(
-								localizedValueMap.entrySet(),
-								entry -> new Option() {
-									{
-										LocalizedValue localizedValue =
-											entry.getValue();
-
-										setLabel(
-											_toString(localizedValue, locale));
-										setLabel_i18n(
-											LocalizedMapUtil.getI18nMap(
-												acceptAllLanguage,
-												localizedValue.getValues()));
-
-										setValue(entry.getKey());
-									}
-								},
-								Option.class);
+						if (ddmFormFieldOptions == null) {
+							return new Option[0];
 						}
 
-						return new Option[0];
+						Map<String, LocalizedValue> map =
+							ddmFormFieldOptions.getOptions();
+
+						return TransformUtil.transformToArray(
+							map.entrySet(),
+							entry -> new Option() {
+								{
+									LocalizedValue localizedValue =
+										entry.getValue();
+
+									setLabel(_toString(localizedValue, locale));
+									setLabel_i18n(
+										LocalizedMapUtil.getI18nMap(
+											acceptAllLanguage,
+											localizedValue.getValues()));
+
+									setValue(entry.getKey());
+								}
+							},
+							Option.class);
 					});
 			}
 		};
