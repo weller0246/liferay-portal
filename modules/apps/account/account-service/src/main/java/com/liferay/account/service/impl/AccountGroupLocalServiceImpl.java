@@ -178,7 +178,7 @@ public class AccountGroupLocalServiceImpl
 		long companyId, String name, int start, int end,
 		OrderByComparator<AccountGroup> orderByComparator) {
 
-		if (name.isEmpty()) {
+		if (Validator.isNull(name)) {
 			return accountGroupPersistence.findByCompanyId(
 				companyId, start, end);
 		}
@@ -202,7 +202,7 @@ public class AccountGroupLocalServiceImpl
 
 	@Override
 	public long getAccountGroupsCount(long companyId, String name) {
-		if (name.isEmpty()) {
+		if (Validator.isNull(name)) {
 			return accountGroupPersistence.countByCompanyId(companyId);
 		}
 
