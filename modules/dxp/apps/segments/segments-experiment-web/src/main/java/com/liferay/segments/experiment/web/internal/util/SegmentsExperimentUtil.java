@@ -160,10 +160,10 @@ public class SegmentsExperimentUtil {
 	}
 
 	public static JSONObject toStatusJSONObject(Locale locale, int status) {
-		SegmentsExperimentConstants.Status statusObject =
+		SegmentsExperimentConstants.Status segmentsExperimentConstantsStatus =
 			SegmentsExperimentConstants.Status.parse(status);
 
-		if (statusObject == null) {
+		if (segmentsExperimentConstantsStatus == null) {
 			return null;
 		}
 
@@ -172,9 +172,9 @@ public class SegmentsExperimentUtil {
 			LanguageUtil.get(
 				ResourceBundleUtil.getBundle(
 					"content.Language", locale, SegmentsExperimentUtil.class),
-				statusObject.getLabel())
+				segmentsExperimentConstantsStatus.getLabel())
 		).put(
-			"value", statusObject.getValue()
+			"value", segmentsExperimentConstantsStatus.getValue()
 		);
 	}
 
