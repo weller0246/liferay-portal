@@ -74,63 +74,65 @@ public class CopyFragmentEntryMVCActionCommand extends BaseMVCActionCommand {
 			ActionRequest actionRequest, ActionResponse actionResponse)
 		throws Exception {
 
-		String redirect = PortletURLBuilder.createRenderURL(
-			_portal.getLiferayPortletResponse(actionResponse)
-		).setParameter(
-			"fragmentCollectionId",
-			() -> {
-				ServiceContext serviceContext =
-					ServiceContextFactory.getInstance(actionRequest);
-
-				ThemeDisplay themeDisplay =
-					(ThemeDisplay)actionRequest.getAttribute(
-						WebKeys.THEME_DISPLAY);
-
-				long[] fragmentEntryIds = StringUtil.split(
-					ParamUtil.getString(actionRequest, "fragmentEntryIds"), 0L);
-
-				long fragmentCollectionId = ParamUtil.getLong(
-					actionRequest, "fragmentCollectionId");
-
-				for (long fragmentEntryId : fragmentEntryIds) {
-					_fragmentEntryService.copyFragmentEntry(
-						themeDisplay.getScopeGroupId(), fragmentEntryId,
-						fragmentCollectionId, serviceContext);
-				}
-
-				String[] contributedEntryKeys = StringUtil.split(
-					ParamUtil.getString(actionRequest, "contributedEntryKeys"));
-
-				for (String contributedEntryKey : contributedEntryKeys) {
-					FragmentComposition fragmentComposition =
-						_fragmentCollectionContributorRegistry.
-							getFragmentComposition(contributedEntryKey);
-
-					FragmentEntry fragmentEntry =
-						_fragmentCollectionContributorRegistry.getFragmentEntry(
-							contributedEntryKey);
-
-					if (fragmentComposition != null) {
-						_addFragmentComposition(
-							fragmentCollectionId, fragmentComposition,
-							serviceContext, themeDisplay);
-					}
-					else if (fragmentEntry != null) {
-						_addFragmentEntry(
-							fragmentCollectionId, fragmentEntry, serviceContext,
-							themeDisplay);
-					}
-				}
-
-				return fragmentCollectionId;
-			}
-		).buildString();
-
 		hideDefaultSuccessMessage(actionRequest);
 
 		MultiSessionMessages.add(actionRequest, "fragmentEntryCopied");
 
-		sendRedirect(actionRequest, actionResponse, redirect);
+		sendRedirect(
+			actionRequest, actionResponse,
+			PortletURLBuilder.createRenderURL(
+				_portal.getLiferayPortletResponse(actionResponse)
+			).setParameter(
+				"fragmentCollectionId",
+				() -> {
+					ServiceContext serviceContext =
+						ServiceContextFactory.getInstance(actionRequest);
+
+					ThemeDisplay themeDisplay =
+						(ThemeDisplay)actionRequest.getAttribute(
+							WebKeys.THEME_DISPLAY);
+
+					long[] fragmentEntryIds = StringUtil.split(
+						ParamUtil.getString(actionRequest, "fragmentEntryIds"),
+						0L);
+
+					long fragmentCollectionId = ParamUtil.getLong(
+						actionRequest, "fragmentCollectionId");
+
+					for (long fragmentEntryId : fragmentEntryIds) {
+						_fragmentEntryService.copyFragmentEntry(
+							themeDisplay.getScopeGroupId(), fragmentEntryId,
+							fragmentCollectionId, serviceContext);
+					}
+
+					String[] contributedEntryKeys = StringUtil.split(
+						ParamUtil.getString(
+							actionRequest, "contributedEntryKeys"));
+
+					for (String contributedEntryKey : contributedEntryKeys) {
+						FragmentComposition fragmentComposition =
+							_fragmentCollectionContributorRegistry.
+								getFragmentComposition(contributedEntryKey);
+
+						FragmentEntry fragmentEntry =
+							_fragmentCollectionContributorRegistry.
+								getFragmentEntry(contributedEntryKey);
+
+						if (fragmentComposition != null) {
+							_addFragmentComposition(
+								fragmentCollectionId, fragmentComposition,
+								serviceContext, themeDisplay);
+						}
+						else if (fragmentEntry != null) {
+							_addFragmentEntry(
+								fragmentCollectionId, fragmentEntry,
+								serviceContext, themeDisplay);
+						}
+					}
+
+					return fragmentCollectionId;
+				}
+			).buildString());
 	}
 
 	private void _addFragmentComposition(
