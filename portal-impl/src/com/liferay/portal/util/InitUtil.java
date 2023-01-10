@@ -200,7 +200,7 @@ public class InitUtil {
 
 	public static synchronized void initWithSpring(
 		List<String> configLocations, boolean initModuleFramework,
-		boolean registerContext, Runnable initFrameworkCallback) {
+		boolean registerContext, Runnable initFrameworkCallbackRunnable) {
 
 		if (_initialized) {
 			return;
@@ -215,8 +215,8 @@ public class InitUtil {
 
 				ModuleFrameworkUtil.initFramework();
 
-				if (initFrameworkCallback != null) {
-					initFrameworkCallback.run();
+				if (initFrameworkCallbackRunnable != null) {
+					initFrameworkCallbackRunnable.run();
 				}
 			}
 
