@@ -120,6 +120,10 @@ public class DDMFormFieldTemplateContextContributorTestHelper {
 			selectDDMFormFieldTemplateContextContributor,
 			"_ddmFormInstanceLocalService", ddmFormInstanceLocalService);
 
+		ReflectionTestUtil.setFieldValue(
+			selectDDMFormFieldTemplateContextContributor, "_language",
+			_language);
+
 		ListTypeEntryLocalService listTypeEntryLocalService = Mockito.mock(
 			ListTypeEntryLocalService.class);
 
@@ -148,10 +152,6 @@ public class DDMFormFieldTemplateContextContributorTestHelper {
 			_jsonFactory);
 		ReflectionTestUtil.setFieldValue(
 			selectDDMFormFieldTemplateContextContributor, "portal", _portal);
-
-		ReflectionTestUtil.setFieldValue(
-			selectDDMFormFieldTemplateContextContributor, "_language",
-			_language);
 
 		return selectDDMFormFieldTemplateContextContributor;
 	}

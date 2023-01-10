@@ -175,7 +175,7 @@ public class SelectDDMFormFieldTemplateContextContributor
 		if ((objectDefinition != null) &&
 			Validator.isNotNull(objectFieldName)) {
 
-			return _getOptionsFromObject(
+			return _getOptionsFromObjectField(
 				objectDefinition.getObjectDefinitionId(), objectFieldName);
 		}
 
@@ -265,7 +265,7 @@ public class SelectDDMFormFieldTemplateContextContributor
 	@Reference
 	protected Portal portal;
 
-	private List<Map<String, String>> _getOptionsFromObject(
+	private List<Map<String, String>> _getOptionsFromObjectField(
 		long objectDefinitionId, String objectFieldName) {
 
 		ObjectField objectField = _objectFieldLocalService.fetchObjectField(
