@@ -137,7 +137,8 @@ const Activities = ({
 			onSaveAsDraft?.(values, formikHelpers);
 			setIsDraft(false);
 		}
-	}, [formikHelpers, isDraft, onSaveAsDraft, values]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [isDraft]);
 
 	return (
 		<PRMForm
