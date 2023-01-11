@@ -577,11 +577,9 @@ public class DLFileEntryLocalServiceImpl
 		DLFileEntry dlFileEntry = getFileEntry(fileEntryId);
 
 		String sourceFileName = "A";
-		String title = dlFileEntry.getTitle();
 
 		if (!Validator.isBlank(fileName)) {
 			sourceFileName = fileName;
-			title = fileName;
 		}
 
 		String extension = dlFileEntry.getExtension();
@@ -589,6 +587,12 @@ public class DLFileEntryLocalServiceImpl
 		if (Validator.isNotNull(extension)) {
 			sourceFileName = StringBundler.concat(
 				sourceFileName, StringPool.PERIOD, extension);
+		}
+
+		String title = dlFileEntry.getTitle();
+
+		if (!Validator.isBlank(fileName)) {
+			title = fileName;
 		}
 
 		InputStream inputStream = DLStoreUtil.getFileAsStream(
