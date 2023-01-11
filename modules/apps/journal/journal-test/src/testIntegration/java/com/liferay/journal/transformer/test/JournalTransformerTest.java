@@ -92,7 +92,6 @@ public class JournalTransformerTest {
 			"com.liferay.journal.internal.transformer.JournalTransformer");
 
 		_journalTransformer = journalTransformerClass.newInstance();
-
 		_transformMethod = ReflectionTestUtil.getMethod(
 			journalTransformerClass, "transform", JournalArticle.class,
 			DDMTemplate.class, JournalHelper.class, String.class,
