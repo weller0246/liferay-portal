@@ -749,22 +749,24 @@ public class GraphQLServletExtender {
 			Class<?> clazz = object.getClass();
 
 			for (Method method : clazz.getMethods()) {
-				if (_isMethodEnabled(method, servletData.getPath())) {
-					_servletDataMap.put(method, servletData);
-
-					methods.compute(
-						method.getName(),
-						(key, value) -> {
-							if ((value == null) ||
-								((value != null) &&
-								 (_getVersion(value) < _getVersion(method)))) {
-
-								return method;
-							}
-
-							return value;
-						});
+				if (!_isMethodEnabled(method, servletData.getPath())) {
+					continue;
 				}
+
+				_servletDataMap.put(method, servletData);
+
+				methods.compute(
+					method.getName(),
+					(key, value) -> {
+						if ((value == null) ||
+							((value != null) &&
+							 (_getVersion(value) < _getVersion(method)))) {
+
+							return method;
+						}
+
+						return value;
+					});
 			}
 		}
 
