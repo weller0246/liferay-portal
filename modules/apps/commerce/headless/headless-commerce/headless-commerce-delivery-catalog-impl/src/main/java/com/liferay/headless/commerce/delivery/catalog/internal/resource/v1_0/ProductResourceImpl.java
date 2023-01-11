@@ -137,10 +137,8 @@ public class ProductResourceImpl extends BaseProductResourceImpl {
 				_getBooleanClause(
 					booleanQuery -> booleanQuery.getPreBooleanFilter(), filter)
 			});
-
-		searchContext.setKeywords(search);
-
 		searchContext.setCompanyId(contextCompany.getCompanyId());
+		searchContext.setKeywords(search);
 
 		CPQuery cpQuery = new CPQuery();
 
