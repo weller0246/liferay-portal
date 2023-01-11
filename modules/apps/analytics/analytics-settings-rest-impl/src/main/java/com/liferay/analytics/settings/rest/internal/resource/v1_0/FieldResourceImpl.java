@@ -23,7 +23,6 @@ import com.liferay.analytics.settings.rest.constants.FieldProductConstants;
 import com.liferay.analytics.settings.rest.dto.v1_0.Field;
 import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.settings.rest.resource.v1_0.FieldResource;
-import com.liferay.expando.kernel.model.ExpandoColumn;
 import com.liferay.expando.kernel.model.ExpandoColumnConstants;
 import com.liferay.expando.kernel.model.ExpandoTable;
 import com.liferay.expando.kernel.model.ExpandoTableConstants;
@@ -383,16 +382,9 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			return new String[0];
 		}
 
-		List<String> fields = new ArrayList<>();
-
-		for (ExpandoColumn expandoColumn :
-				_expandoColumnLocalService.getColumns(
-					expandoTable.getTableId())) {
-
-			fields.add(expandoColumn.getName());
-		}
-
-		return fields.toArray(new String[0]);
+		return transformToArray(
+			_expandoColumnLocalService.getColumns(expandoTable.getTableId()),
+			expandoColumn -> expandoColumn.getName(), String.class);
 	}
 
 	private List<Field> _getExpandoFields(
@@ -406,25 +398,20 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			return Collections.emptyList();
 		}
 
-		List<Field> fields = new ArrayList<>();
+		return transform(
+			_expandoColumnLocalService.getColumns(expandoTable.getTableId()),
+			expandoColumn -> {
+				Field field = new Field();
 
-		for (ExpandoColumn expandoColumn :
-				_expandoColumnLocalService.getColumns(
-					expandoTable.getTableId())) {
+				field.setName(expandoColumn.getName());
+				field.setRequired(false);
+				field.setSelected(
+					ArrayUtil.contains(syncedNames, expandoColumn.getName()));
+				field.setSource(source);
+				field.setType(_getDataType(expandoColumn.getType()));
 
-			Field field = new Field();
-
-			field.setName(expandoColumn.getName());
-			field.setRequired(false);
-			field.setSelected(
-				ArrayUtil.contains(syncedNames, expandoColumn.getName()));
-			field.setSource(source);
-			field.setType(_getDataType(expandoColumn.getType()));
-
-			fields.add(field);
-		}
-
-		return fields;
+				return field;
+			});
 	}
 
 	private List<Field> _getFields(
