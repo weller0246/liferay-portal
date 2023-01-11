@@ -73,11 +73,12 @@ public class CopyLayoutMVCActionCommand extends BaseMVCActionCommand {
 		ThemeDisplay themeDisplay = (ThemeDisplay)actionRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
+		String redirect = ParamUtil.getString(actionRequest, "redirect");
+
 		long sourcePlid = ParamUtil.getLong(uploadPortletRequest, "sourcePlid");
 		long groupId = ParamUtil.getLong(actionRequest, "groupId");
 		boolean privateLayout = ParamUtil.getBoolean(
 			actionRequest, "privateLayout");
-		String redirectURL = ParamUtil.getString(actionRequest, "redirect");
 
 		String name = ParamUtil.getString(actionRequest, "name");
 
@@ -141,8 +142,8 @@ public class CopyLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 			_layoutLocalService.updateLayout(targetLayout);
 
-			if (Validator.isNull(redirectURL)) {
-				redirectURL = PortletURLBuilder.createRenderURL(
+			if (Validator.isNull(redirect)) {
+				redirect = PortletURLBuilder.createRenderURL(
 					_portal.getLiferayPortletResponse(actionResponse)
 				).setNavigation(
 					privateLayout ? "private-pages" : "public-pages"
@@ -155,7 +156,7 @@ public class CopyLayoutMVCActionCommand extends BaseMVCActionCommand {
 
 			JSONPortletResponseUtil.writeJSON(
 				actionRequest, actionResponse,
-				JSONUtil.put("redirectURL", redirectURL));
+				JSONUtil.put("redirectURL", redirect));
 		}
 		catch (Exception exception) {
 			SessionErrors.add(actionRequest, "layoutNameInvalid");
