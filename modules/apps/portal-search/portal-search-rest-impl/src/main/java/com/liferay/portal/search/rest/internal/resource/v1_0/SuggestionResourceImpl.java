@@ -29,6 +29,7 @@ import com.liferay.portal.kernel.security.permission.PermissionThreadLocal;
 import com.liferay.portal.kernel.service.LayoutLocalService;
 import com.liferay.portal.kernel.service.PortletLocalService;
 import com.liferay.portal.kernel.theme.ThemeDisplay;
+import com.liferay.portal.kernel.util.ArrayUtil;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.kernel.util.WebKeys;
@@ -45,9 +46,7 @@ import com.liferay.portlet.RenderRequestFactory;
 import com.liferay.portlet.RenderResponseFactory;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.LongStream;
 
 import javax.portlet.PortletConfig;
 import javax.portlet.PortletMode;
@@ -196,15 +195,10 @@ public class SuggestionResourceImpl extends BaseSuggestionResourceImpl {
 		searchContext.setCompanyId(contextCompany.getCompanyId());
 
 		if (StringUtil.equals(scope, "everything")) {
-			List<Long> groupIds = groupLocalService.getGroupIds(
-				contextCompany.getCompanyId(), true);
-
-			LongStream longStream = groupIds.stream(
-			).mapToLong(
-				l -> l
-			);
-
-			searchContext.setGroupIds(longStream.toArray());
+			searchContext.setGroupIds(
+				ArrayUtil.toLongArray(
+					groupLocalService.getGroupIds(
+						contextCompany.getCompanyId(), true)));
 		}
 		else {
 			searchContext.setGroupIds(new long[] {groupId});
