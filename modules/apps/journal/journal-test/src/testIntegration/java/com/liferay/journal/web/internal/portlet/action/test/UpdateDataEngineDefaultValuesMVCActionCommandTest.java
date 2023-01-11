@@ -82,7 +82,6 @@ public class UpdateDataEngineDefaultValuesMVCActionCommandTest {
 		mockActionRequest.setAttribute(
 			PortletServlet.PORTLET_SERVLET_REQUEST,
 			new MockHttpServletRequest());
-
 		mockActionRequest.addParameter(
 			ActionRequest.ACTION_NAME,
 			"/journal/add_data_engine_default_values");

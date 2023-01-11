@@ -100,8 +100,6 @@ public class UpdateDataEngineDefaultValuesMVCActionCommand
 		JournalArticle article = _addOrUpdateArticleDefaultValues(
 			actionRequest, _portal.getUploadPortletRequest(actionRequest));
 
-		// Asset display page
-
 		_assetDisplayPageEntryFormProcessor.process(
 			JournalArticle.class.getName(), article.getResourcePrimKey(),
 			actionRequest);
