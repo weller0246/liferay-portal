@@ -17,14 +17,12 @@ import {openToast} from 'frontend-js-web';
 import React from 'react';
 
 export default function ClaySampleToastAlert() {
-	const onClickSuccess = () => {
+	const onClick5Seconds = () => {
 		openToast({
-			autoClose: false,
 			message: Liferay.Language.get(
 				'your-request-completed-successfully'
 			),
-			title: Liferay.Language.get('success'),
-			type: 'success',
+			type: 'info',
 		});
 	};
 
@@ -37,12 +35,14 @@ export default function ClaySampleToastAlert() {
 		});
 	};
 
-	const onClick5Seconds = () => {
+	const onClickSuccess = () => {
 		openToast({
+			autoClose: false,
 			message: Liferay.Language.get(
 				'your-request-completed-successfully'
 			),
-			type: 'info',
+			title: Liferay.Language.get('success'),
+			type: 'success',
 		});
 	};
 
