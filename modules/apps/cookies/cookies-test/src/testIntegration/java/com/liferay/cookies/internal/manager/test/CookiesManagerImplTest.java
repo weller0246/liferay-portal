@@ -55,7 +55,7 @@ public class CookiesManagerImplTest {
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_CLASS_NAME_COOKIES_MANAGER_IMPL, LoggerTestUtil.WARN)) {
+				_CLASS_NAME, LoggerTestUtil.WARN)) {
 
 			Cookie cookie = new Cookie(
 				RandomTestUtil.randomString(), RandomTestUtil.randomString());
@@ -117,7 +117,7 @@ public class CookiesManagerImplTest {
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_CLASS_NAME_COOKIES_MANAGER_IMPL, LoggerTestUtil.WARN)) {
+				_CLASS_NAME, LoggerTestUtil.WARN)) {
 
 			_addCookie(true, CookiesConstants.CONSENT_TYPE_PERFORMANCE);
 
@@ -169,7 +169,7 @@ public class CookiesManagerImplTest {
 		throws Exception {
 
 		try (LogCapture logCapture = LoggerTestUtil.configureLog4JLogger(
-				_CLASS_NAME_COOKIES_MANAGER_IMPL, LoggerTestUtil.WARN)) {
+				_CLASS_NAME, LoggerTestUtil.WARN)) {
 
 			_addCookie(true, CookiesConstants.CONSENT_TYPE_FUNCTIONAL);
 
@@ -295,7 +295,7 @@ public class CookiesManagerImplTest {
 				cookie.getName(), _mockHttpServletRequest));
 	}
 
-	private static final String _CLASS_NAME_COOKIES_MANAGER_IMPL =
+	private static final String _CLASS_NAME =
 		"com.liferay.cookies.internal.manager.CookiesManagerImpl";
 
 	private final MockHttpServletRequest _mockHttpServletRequest =

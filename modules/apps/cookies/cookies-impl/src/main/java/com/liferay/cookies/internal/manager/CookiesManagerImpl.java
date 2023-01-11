@@ -185,7 +185,7 @@ public class CookiesManagerImpl implements CookiesManager {
 					"The ", cookie.getName(),
 					" cookie was previously added with consent type ",
 					_knownCookies.get(cookie.getName()),
-					" and will now be upgraded to consent type ", consentType));
+					" and will now be modified to consent type ", consentType));
 		}
 
 		_knownCookies.put(cookie.getName(), consentType);
@@ -500,18 +500,18 @@ public class CookiesManagerImpl implements CookiesManager {
 	private String[] _getProperty(
 		Map<String, Object> properties, String propertyName) {
 
-		String[] propertyStringArray = GetterUtil.getStringValues(
+		String[] propertyValues = GetterUtil.getStringValues(
 			properties.get(propertyName));
 
-		if ((propertyStringArray != null) && (propertyStringArray.length > 0)) {
-			return propertyStringArray;
+		if ((propertyValues != null) && (propertyValues.length > 0)) {
+			return propertyValues;
 		}
 
-		String propertyString = GetterUtil.getString(
+		String propertyValue = GetterUtil.getString(
 			properties.get(propertyName));
 
-		if (Validator.isNotNull(propertyString)) {
-			return new String[] {propertyString};
+		if (Validator.isNotNull(propertyValue)) {
+			return new String[] {propertyValue};
 		}
 
 		return new String[0];
@@ -537,10 +537,9 @@ public class CookiesManagerImpl implements CookiesManager {
 	private static final Log _log = LogFactoryUtil.getLog(
 		CookiesManagerImpl.class);
 
-	private static final HashMap<String, Integer> _internalCookies =
+	private static final Map<String, Integer> _internalCookies =
 		new HashMap<>();
-	private static final HashMap<String, Integer> _knownCookies =
-		new HashMap<>();
+	private static final Map<String, Integer> _knownCookies = new HashMap<>();
 
 	@Reference
 	private ConfigurationProvider _configurationProvider;
