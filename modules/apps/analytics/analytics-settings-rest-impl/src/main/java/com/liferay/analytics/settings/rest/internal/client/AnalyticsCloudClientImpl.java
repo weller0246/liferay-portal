@@ -130,7 +130,6 @@ public class AnalyticsCloudClientImpl implements AnalyticsCloudClient {
 		options.addPart("name", company.getName());
 		options.addPart("portalURL", company.getPortalURL(0));
 		options.addPart("token", connectionTokenJSONObject.getString("token"));
-
 		options.setLocation(connectionTokenJSONObject.getString("url"));
 
 		options.setPost(true);
