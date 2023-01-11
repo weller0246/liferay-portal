@@ -258,9 +258,6 @@ public class LayoutActionsDisplayContext {
 				ContentPageEditorPortletKeys.CONTENT_PAGE_EDITOR_PORTLET, 0, 0,
 				PortletRequest.RESOURCE_PHASE);
 
-		getPreviewLayoutURL.setResourceID(
-			"/layout_content_page_editor/get_page_preview");
-
 		getPreviewLayoutURL.setParameter("p_l_mode", Constants.PREVIEW);
 
 		Layout draftLayout = layout;
@@ -271,10 +268,12 @@ public class LayoutActionsDisplayContext {
 
 		getPreviewLayoutURL.setParameter(
 			"selPlid", String.valueOf(draftLayout.getPlid()));
-
 		getPreviewLayoutURL.setParameter(
 			"segmentsExperienceId",
 			String.valueOf(_getSegmentsExperienceId(draftLayout)));
+
+		getPreviewLayoutURL.setResourceID(
+			"/layout_content_page_editor/get_page_preview");
 
 		return getPreviewLayoutURL.toString();
 	}
