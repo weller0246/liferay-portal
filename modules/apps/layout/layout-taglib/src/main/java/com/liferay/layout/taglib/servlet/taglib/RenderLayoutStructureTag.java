@@ -911,8 +911,8 @@ public class RenderLayoutStructureTag extends IncludeTag {
 			jspWriter.write(
 				LanguageUtil.get(
 					getRequest(),
-					"due-to-permission-restrictions,-this-content-cannot-be-" +
-						"displayed"));
+					"this-content-cannot-be-displayed-due-to-permission-" +
+						"restrictions"));
 			jspWriter.write("</div>");
 
 			return;
