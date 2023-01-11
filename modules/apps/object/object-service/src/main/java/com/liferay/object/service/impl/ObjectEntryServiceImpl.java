@@ -119,7 +119,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				values);
 		}
 		else {
-			objectEntryService.checkModelResourcePermission(
+			checkModelResourcePermission(
 				objectDefinitionId, objectEntry.getObjectEntryId(),
 				ActionKeys.UPDATE);
 		}
@@ -195,7 +195,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				start, end);
 
 		for (ObjectEntry objectEntry : objectEntries) {
-			objectEntryService.checkModelResourcePermission(
+			checkModelResourcePermission(
 				objectEntry.getObjectDefinitionId(),
 				objectEntry.getObjectEntryId(), ActionKeys.VIEW);
 		}
@@ -262,7 +262,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 				groupId, objectRelationshipId, primaryKey, related, start, end);
 
 		for (ObjectEntry objectEntry : objectEntries) {
-			objectEntryService.checkModelResourcePermission(
+			checkModelResourcePermission(
 				objectEntry.getObjectDefinitionId(),
 				objectEntry.getObjectEntryId(), ActionKeys.VIEW);
 		}
@@ -357,7 +357,7 @@ public class ObjectEntryServiceImpl extends ObjectEntryServiceBaseImpl {
 		ObjectEntry objectEntry = objectEntryLocalService.getObjectEntry(
 			objectEntryId);
 
-		objectEntryService.checkModelResourcePermission(
+		checkModelResourcePermission(
 			objectEntry.getObjectDefinitionId(), objectEntry.getObjectEntryId(),
 			ActionKeys.UPDATE);
 
