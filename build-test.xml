@@ -14979,8 +14979,8 @@ mail.send.blacklist=</echo>
 		</if>
 
 		<get-testcase-property property.name="portal.version" />
-		<get-testcase-property property.name="skip.upgrade-legacy-database" />
 		<get-testcase-property property.name="rebuild.staging.database" />
+		<get-testcase-property property.name="skip.upgrade-legacy-database" />
 
 		<if>
 			<isset property="portal.version" />
