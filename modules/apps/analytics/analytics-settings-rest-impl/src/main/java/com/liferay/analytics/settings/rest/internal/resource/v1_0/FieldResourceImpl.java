@@ -379,17 +379,17 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			companyId, _portal.getClassNameId(className),
 			ExpandoTableConstants.DEFAULT_TABLE_NAME);
 
+		if (expandoTable == null) {
+			return new String[0];
+		}
+
 		List<String> fields = new ArrayList<>();
 
-		if (expandoTable != null) {
-			for (ExpandoColumn expandoColumn :
-					_expandoColumnLocalService.getColumns(
-						expandoTable.getTableId())) {
+		for (ExpandoColumn expandoColumn :
+				_expandoColumnLocalService.getColumns(
+					expandoTable.getTableId())) {
 
-				fields.add(expandoColumn.getName());
-			}
-
-			return fields.toArray(new String[0]);
+			fields.add(expandoColumn.getName());
 		}
 
 		return fields.toArray(new String[0]);
@@ -402,29 +402,29 @@ public class FieldResourceImpl extends BaseFieldResourceImpl {
 			companyId, _portal.getClassNameId(className),
 			ExpandoTableConstants.DEFAULT_TABLE_NAME);
 
-		if (expandoTable != null) {
-			List<Field> fields = new ArrayList<>();
-
-			for (ExpandoColumn expandoColumn :
-					_expandoColumnLocalService.getColumns(
-						expandoTable.getTableId())) {
-
-				Field field = new Field();
-
-				field.setName(expandoColumn.getName());
-				field.setRequired(false);
-				field.setSelected(
-					ArrayUtil.contains(syncedNames, expandoColumn.getName()));
-				field.setSource(source);
-				field.setType(_getDataType(expandoColumn.getType()));
-
-				fields.add(field);
-			}
-
-			return fields;
+		if (expandoTable == null) {
+			return Collections.emptyList();
 		}
 
-		return Collections.emptyList();
+		List<Field> fields = new ArrayList<>();
+
+		for (ExpandoColumn expandoColumn :
+				_expandoColumnLocalService.getColumns(
+					expandoTable.getTableId())) {
+
+			Field field = new Field();
+
+			field.setName(expandoColumn.getName());
+			field.setRequired(false);
+			field.setSelected(
+				ArrayUtil.contains(syncedNames, expandoColumn.getName()));
+			field.setSource(source);
+			field.setType(_getDataType(expandoColumn.getType()));
+
+			fields.add(field);
+		}
+
+		return fields;
 	}
 
 	private List<Field> _getFields(
