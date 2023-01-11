@@ -4780,6 +4780,19 @@ public class ServiceBuilder {
 	}
 
 	private String _formatXml(String xml) throws Exception {
+		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
+			new UnsyncByteArrayOutputStream();
+
+		OutputFormat outputFormat = new OutputFormat(StringPool.TAB, true);
+
+		outputFormat.setOmitEncoding(true);
+		outputFormat.setTrimText(true);
+
+		XMLWriter xmlWriter = new XMLWriter(
+			unsyncByteArrayOutputStream, outputFormat);
+
+		SAXReader saxReader = _getSAXReader();
+
 		String doctype = null;
 
 		int x = xml.indexOf("<!DOCTYPE");
@@ -4794,22 +4807,7 @@ public class ServiceBuilder {
 
 		xml = StringUtil.replace(xml, '\r', "");
 
-		SAXReader saxReader = _getSAXReader();
-
-		Document document = saxReader.read(new XMLSafeReader(xml));
-
-		UnsyncByteArrayOutputStream unsyncByteArrayOutputStream =
-			new UnsyncByteArrayOutputStream();
-
-		OutputFormat outputFormat = new OutputFormat(StringPool.TAB, true);
-
-		outputFormat.setTrimText(true);
-		outputFormat.setOmitEncoding(true);
-
-		XMLWriter xmlWriter = new XMLWriter(
-			unsyncByteArrayOutputStream, outputFormat);
-
-		xmlWriter.write(document);
+		xmlWriter.write(saxReader.read(new XMLSafeReader(xml)));
 
 		xml = StringUtil.trim(
 			unsyncByteArrayOutputStream.toString(StringPool.UTF8));
