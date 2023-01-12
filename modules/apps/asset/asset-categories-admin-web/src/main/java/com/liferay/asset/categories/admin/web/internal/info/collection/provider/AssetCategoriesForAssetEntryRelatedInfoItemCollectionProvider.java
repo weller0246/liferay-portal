@@ -46,7 +46,7 @@ public class AssetCategoriesForAssetEntryRelatedInfoItemCollectionProvider
 	public InfoPage<AssetCategory> getCollectionInfoPage(
 		CollectionQuery collectionQuery) {
 
-		Object relatedItem = collectionQuery.getRelatedItemObject();
+		Object relatedItem = collectionQuery.getRelatedItem();
 
 		if (!(relatedItem instanceof AssetEntry)) {
 			return InfoPage.of(

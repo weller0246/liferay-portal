@@ -50,7 +50,7 @@ public class CPAttachmentFileEntriesRelatedInfoItemCollectionProvider
 	public InfoPage<CPAttachmentFileEntry> getCollectionInfoPage(
 		CollectionQuery collectionQuery) {
 
-		Object relatedItem = collectionQuery.getRelatedItemObject();
+		Object relatedItem = collectionQuery.getRelatedItem();
 
 		Pagination pagination = collectionQuery.getPagination();
 

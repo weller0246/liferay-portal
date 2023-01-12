@@ -52,7 +52,7 @@ public class
 	public InfoPage<CPDefinition> getCollectionInfoPage(
 		CollectionQuery collectionQuery) {
 
-		Object relatedItem = collectionQuery.getRelatedItemObject();
+		Object relatedItem = collectionQuery.getRelatedItem();
 
 		Pagination pagination = collectionQuery.getPagination();
 

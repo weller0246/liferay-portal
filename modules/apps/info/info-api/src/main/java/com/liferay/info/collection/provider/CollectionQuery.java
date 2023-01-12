@@ -54,7 +54,7 @@ public class CollectionQuery {
 		return _pagination;
 	}
 
-	public Object getRelatedItemObject() {
+	public Object getRelatedItem() {
 		return _relatedItemObject;
 	}
 

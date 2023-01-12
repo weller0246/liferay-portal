@@ -83,7 +83,7 @@ public class DLFileEntryTypeRelatedInfoCollectionProvider
 		CollectionQuery collectionQuery) {
 
 		try {
-			Object relatedItem = collectionQuery.getRelatedItemObject();
+			Object relatedItem = collectionQuery.getRelatedItem();
 
 			if (!(relatedItem instanceof AssetCategory)) {
 				return InfoPage.of(
