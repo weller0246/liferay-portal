@@ -124,6 +124,7 @@ public class BaseSolrQueryAssemblerImpl implements BaseSolrQueryAssembler {
 		}
 
 		sb.setIndex(sb.index() - 1);
+
 		sb.append(StringPool.CLOSE_CURLY_BRACE);
 
 		return sb.toString();
