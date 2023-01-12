@@ -241,15 +241,13 @@ public class JournalArticleInfoItemFormProviderTest {
 
 		infoField = iterator.next();
 
+		Assert.assertNull(infoField.getAttribute(TextInfoFieldType.HTML));
+		Assert.assertTrue(
+			(Boolean)infoField.getAttribute(TextInfoFieldType.MULTILINE));
 		Assert.assertEquals(
 			TextInfoFieldType.INSTANCE, infoField.getInfoFieldType());
 		Assert.assertEquals("TextBox", infoField.getName());
 		Assert.assertTrue(infoField.isLocalizable());
-
-		Assert.assertNull(infoField.getAttribute(TextInfoFieldType.HTML));
-
-		Assert.assertTrue(
-			(Boolean)infoField.getAttribute(TextInfoFieldType.MULTILINE));
 
 		infoField = iterator.next();
 

@@ -169,15 +169,14 @@ public class TemplateInfoItemFieldSetProviderTest {
 
 		InfoField infoField = infoFields.get(0);
 
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 		Assert.assertEquals(
 			infoFields.toString(),
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
 				journalArticleTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
-
-		Assert.assertTrue(
-			GetterUtil.getBoolean(
-				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test
@@ -212,15 +211,14 @@ public class TemplateInfoItemFieldSetProviderTest {
 
 		InfoField infoField = infoFields.get(0);
 
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 		Assert.assertEquals(
 			infoFields.toString(),
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
 				categoryTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
-
-		Assert.assertTrue(
-			GetterUtil.getBoolean(
-				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test
@@ -271,21 +269,19 @@ public class TemplateInfoItemFieldSetProviderTest {
 
 		InfoField infoField = infoFieldValue.getInfoField();
 
+		Assert.assertTrue(
+			GetterUtil.getBoolean(
+				infoField.getAttribute(TextInfoFieldType.HTML)));
 		Assert.assertEquals(
 			infoField.toString(),
 			PortletDisplayTemplate.DISPLAY_STYLE_PREFIX +
 				journalArticleTemplateEntry.getTemplateEntryId(),
 			infoField.getName());
-
 		Assert.assertEquals(
 			infoFieldValue.toString(),
 			nameValue.getString(
 				_portal.getSiteDefaultLocale(_group.getGroupId())),
 			infoFieldValue.getValue());
-
-		Assert.assertTrue(
-			GetterUtil.getBoolean(
-				infoField.getAttribute(TextInfoFieldType.HTML)));
 	}
 
 	@Test

@@ -64,8 +64,6 @@ public class CPDefinitionInfoCollectionProvider
 					getCommerceChannelGroupIdBySiteGroupId(
 						serviceContext.getScopeGroupId());
 
-			Pagination pagination = collectionQuery.getPagination();
-
 			String keywords = null;
 
 			KeywordsInfoFilter keywordsInfoFilter =
@@ -74,6 +72,8 @@ public class CPDefinitionInfoCollectionProvider
 			if (keywordsInfoFilter != null) {
 				keywords = keywordsInfoFilter.getKeywords();
 			}
+
+			Pagination pagination = collectionQuery.getPagination();
 
 			Sort sort = null;
 
