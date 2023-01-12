@@ -280,16 +280,16 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	public void testDeleteCustomObjectDefinitionWithSystemObjectDefinition()
 		throws Exception {
 
-		_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinition(
+		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
-		_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
-		_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinition(
+		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
-		_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 	}
 
@@ -667,7 +667,7 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	}
 
 	private void
-			_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinition(
+			testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 				String type)
 		throws Exception {
 
@@ -702,7 +702,7 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	}
 
 	private void
-			_testDeleteOneToManyAndManyToManyCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+			testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 				String type)
 		throws Exception {
 
