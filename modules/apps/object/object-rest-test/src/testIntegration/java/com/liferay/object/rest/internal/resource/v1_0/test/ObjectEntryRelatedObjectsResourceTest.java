@@ -282,13 +282,10 @@ public class ObjectEntryRelatedObjectsResourceTest {
 
 		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
-
-		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
-			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
-
 		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
-
+		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 	}
