@@ -687,7 +687,6 @@
 			<type>boolean</type>
 		</attribute>
 		<attribute>
-			<description>Define an aria-label attribute for the menu trigger.</description>
 			<name>triggerAriaLabel</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
