@@ -663,9 +663,8 @@ public class ObjectEntryRelatedObjectsResourceTest {
 		Assert.assertEquals(1, itemsJSONArray.length());
 	}
 
-	private void
-			_testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
-				String type)
+	private void _testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
+			String type)
 		throws Exception {
 
 		ObjectRelationship objectRelationship = _addObjectRelationship(
