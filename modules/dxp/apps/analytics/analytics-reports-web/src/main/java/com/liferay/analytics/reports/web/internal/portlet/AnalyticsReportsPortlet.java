@@ -129,22 +129,22 @@ public class AnalyticsReportsPortlet extends MVCPortlet {
 			(InfoItemReference)httpServletRequest.getAttribute(
 				AnalyticsReportsWebKeys.ANALYTICS_INFO_ITEM_REFERENCE);
 
-		if (infoItemReference == null) {
-			String classTypeName = _getClassTypeName(httpServletRequest);
-
-			if (Validator.isNull(classTypeName)) {
-				return new InfoItemReference(
-					_getClassName(httpServletRequest),
-					_getClassPK(httpServletRequest));
-			}
-
-			return new InfoItemReference(
-				_getClassName(httpServletRequest),
-				new ClassNameClassPKInfoItemIdentifier(
-					classTypeName, _getClassPK(httpServletRequest)));
+		if (infoItemReference != null) {
+			return infoItemReference;
 		}
 
-		return infoItemReference;
+		String classTypeName = _getClassTypeName(httpServletRequest);
+
+		if (Validator.isNull(classTypeName)) {
+			return new InfoItemReference(
+				_getClassName(httpServletRequest),
+				_getClassPK(httpServletRequest));
+		}
+
+		return new InfoItemReference(
+			_getClassName(httpServletRequest),
+			new ClassNameClassPKInfoItemIdentifier(
+				classTypeName, _getClassPK(httpServletRequest)));
 	}
 
 	@Reference
