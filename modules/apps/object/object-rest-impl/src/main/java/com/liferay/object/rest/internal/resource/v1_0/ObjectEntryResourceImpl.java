@@ -228,13 +228,6 @@ public class ObjectEntryResourceImpl extends BaseObjectEntryResourceImpl {
 				_objectDefinition.getObjectDefinitionId());
 		}
 
-		if (predicate == null) {
-			return objectEntryManager.getObjectEntries(
-				contextCompany.getCompanyId(), _objectDefinition, null,
-				aggregation, _getDTOConverterContext(null), filter, pagination,
-				search, sorts);
-		}
-
 		return objectEntryManager.getObjectEntries(
 			contextCompany.getCompanyId(), _objectDefinition, null, aggregation,
 			_getDTOConverterContext(null), pagination, predicate, search,
