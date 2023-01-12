@@ -14,10 +14,6 @@
  */
 --%>
 
-<%
-UnicodeProperties typeSettingsUnicodeProperties = layout.getTypeSettingsProperties();
-%>
-
 <aui:script use="aui-autosize-iframe">
 	var iframe = A.one('#embeddedIframe');
 
@@ -48,6 +44,11 @@ UnicodeProperties typeSettingsUnicodeProperties = layout.getTypeSettingsProperti
 
 		iframe.set(
 			'src',
+
+			<%
+			UnicodeProperties typeSettingsUnicodeProperties = layout.getTypeSettingsProperties();
+			%>
+
 			'<%= HtmlUtil.escapeHREF(typeSettingsUnicodeProperties.getProperty("embeddedLayoutURL")) %>'
 		);
 	}
