@@ -45,24 +45,25 @@ public class SamlBindingProvider {
 		}
 
 		throw new SamlException(
-			"Unsupported binding " + communicationProfileId);
+			"Unsupported SAML binding " + communicationProfileId);
 	}
 
 	@Activate
 	protected void activate() {
-		SamlBinding httpPostBinding = new HttpPostBinding(
+		HttpPostBinding httpPostBinding = new HttpPostBinding(
 			_parserPool, _velocityEngineFactory.getVelocityEngine());
 
 		_samlBindings.put(
 			httpPostBinding.getCommunicationProfileId(), httpPostBinding);
 
-		SamlBinding httpRedirectBinding = new HttpRedirectBinding(_parserPool);
+		HttpRedirectBinding httpRedirectBinding = new HttpRedirectBinding(
+			_parserPool);
 
 		_samlBindings.put(
 			httpRedirectBinding.getCommunicationProfileId(),
 			httpRedirectBinding);
 
-		SamlBinding httpSoap11Binding = new HttpSoap11Binding(
+		HttpSoap11Binding httpSoap11Binding = new HttpSoap11Binding(
 			_parserPool, _httpClient);
 
 		_samlBindings.put(
