@@ -308,12 +308,6 @@ public class GetCollectionFieldMVCResourceCommand
 			jsonObject.put("content", unsyncStringWriter.toString());
 		}
 
-		String itemSubtype = null;
-
-		if (assetListEntry != null) {
-			itemSubtype = assetListEntry.getAssetEntrySubtype();
-		}
-
 		jsonObject.put(
 			"customCollectionSelectorURL",
 			_getCustomCollectionSelectorURL(
@@ -321,7 +315,14 @@ public class GetCollectionFieldMVCResourceCommand
 		).put(
 			"items", jsonArray
 		).put(
-			"itemSubtype", itemSubtype
+			"itemSubtype",
+			() -> {
+				if (assetListEntry == null) {
+					return null;
+				}
+
+				return assetListEntry.getAssetEntrySubtype();
+			}
 		).put(
 			"itemType", originalItemType
 		).put(
