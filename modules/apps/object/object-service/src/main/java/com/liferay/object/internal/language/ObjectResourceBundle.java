@@ -33,6 +33,8 @@ public class ObjectResourceBundle extends ResourceBundle {
 	public ObjectResourceBundle(
 		Locale locale, ObjectDefinition objectDefinition) {
 
+		setParent(LanguageResources.getResourceBundle(locale));
+
 		_map = HashMapBuilder.put(
 			"model.resource." + objectDefinition.getResourceName(),
 			objectDefinition.getPluralLabel(locale)
@@ -41,8 +43,6 @@ public class ObjectResourceBundle extends ResourceBundle {
 				objectDefinition.getObjectDefinitionId(),
 			objectDefinition.getLabel(locale)
 		).build();
-
-		setParent(LanguageResources.getResourceBundle(locale));
 	}
 
 	@Override
