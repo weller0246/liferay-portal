@@ -102,11 +102,11 @@ public class ObjectEntryTableInfoListRenderer
 
 		infoListBasicTableTag.setInfoListObjects(objectEntries);
 
-		String infoListItemRendererKey =
+		String listItemRendererKey =
 			infoListRendererContext.getListItemRendererKey();
 
-		if (Validator.isNotNull(infoListItemRendererKey)) {
-			infoListBasicTableTag.setItemRendererKey(infoListItemRendererKey);
+		if (Validator.isNotNull(listItemRendererKey)) {
+			infoListBasicTableTag.setItemRendererKey(listItemRendererKey);
 		}
 		else {
 			infoListBasicTableTag.setItemRendererKey(

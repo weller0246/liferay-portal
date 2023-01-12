@@ -70,11 +70,11 @@ public abstract class
 		infoListBasicListTag.setInfoListObjects(
 			cpDefinitionSpecificationOptionValues);
 
-		String infoListItemRendererKey =
+		String listItemRendererKey =
 			infoListRendererContext.getListItemRendererKey();
 
-		if (Validator.isNotNull(infoListItemRendererKey)) {
-			infoListBasicListTag.setItemRendererKey(infoListItemRendererKey);
+		if (Validator.isNotNull(listItemRendererKey)) {
+			infoListBasicListTag.setItemRendererKey(listItemRendererKey);
 		}
 		else {
 			infoListBasicListTag.setItemRendererKey(
