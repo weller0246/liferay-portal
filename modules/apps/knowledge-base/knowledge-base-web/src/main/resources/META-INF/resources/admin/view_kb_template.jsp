@@ -78,7 +78,7 @@ if (portletTitleBasedNavigation) {
 				<li class="nav-item">
 					<clay:dropdown-actions
 						aria-label='<%= LanguageUtil.get(request, "show-actions") %>'
-						dropdownItems="<%= kbDropdownItemsProvider.getKBTemplateMoreActionsDopdownItems(kbTemplate) %>"
+						dropdownItems="<%= kbDropdownItemsProvider.getKBTemplateMoreActionsDropdownItems(kbTemplate) %>"
 						propsTransformer="admin/js/KBDropdownPropsTransformer"
 					/>
 				</li>

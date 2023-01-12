@@ -298,7 +298,7 @@ public class KBDropdownItemsProvider {
 		).build();
 	}
 
-	public List<DropdownItem> getKBTemplateMoreActionsDopdownItems(
+	public List<DropdownItem> getKBTemplateMoreActionsDropdownItems(
 		KBTemplate kbTemplate) {
 
 		return DropdownItemListBuilder.addGroup(
