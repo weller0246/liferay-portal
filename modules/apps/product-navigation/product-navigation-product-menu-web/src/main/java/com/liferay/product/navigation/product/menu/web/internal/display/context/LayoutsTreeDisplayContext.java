@@ -409,7 +409,7 @@ public class LayoutsTreeDisplayContext {
 			layoutsJSONArray = JSONFactoryUtil.createJSONArray();
 		}
 
-		int numberOfLayouts = layoutsJSONArray.length();
+		int layoutsJSONArrayLength = layoutsJSONArray.length();
 
 		return JSONUtil.putAll(
 			JSONUtil.put(
@@ -429,7 +429,7 @@ public class LayoutsTreeDisplayContext {
 
 					if ((layoutsCount >
 							PropsValues.LAYOUT_MANAGE_PAGES_INITIAL_CHILDREN) &&
-						(layoutsCount > numberOfLayouts)) {
+						(layoutsCount > layoutsJSONArrayLength)) {
 
 						return true;
 					}
