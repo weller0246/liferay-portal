@@ -280,13 +280,13 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	public void testDeleteCustomObjectDefinitionWithSystemObjectDefinition()
 		throws Exception {
 
-		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
+		_testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
-		testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
+		_testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
-		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+		_testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
-		testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+		_testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 	}
 
@@ -664,7 +664,7 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	}
 
 	private void
-			testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
+			_testDeleteCustomObjectDefinitionWithSystemObjectDefinition(
 				String type)
 		throws Exception {
 
@@ -699,7 +699,7 @@ public class ObjectEntryRelatedObjectsResourceTest {
 	}
 
 	private void
-			testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
+			_testDeleteCustomObjectDefinitionWithSystemObjectDefinitionNotFound(
 				String type)
 		throws Exception {
 
