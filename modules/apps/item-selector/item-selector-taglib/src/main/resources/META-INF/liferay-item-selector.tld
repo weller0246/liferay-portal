@@ -137,7 +137,6 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 		<attribute>
-			<description>The target folder for the new files that are uploaded.</description>
 			<name>folderId</name>
 			<required>false</required>
 			<rtexprvalue>true</rtexprvalue>
