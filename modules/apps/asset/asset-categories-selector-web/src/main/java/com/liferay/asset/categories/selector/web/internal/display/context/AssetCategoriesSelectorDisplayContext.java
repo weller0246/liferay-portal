@@ -80,15 +80,14 @@ public class AssetCategoriesSelectorDisplayContext {
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		AssetVocabulary assetVocabulary = vocabularies.get(0);
+		AssetVocabulary vocabulary = vocabularies.get(0);
 
 		if (!AssetCategoryPermission.contains(
-				themeDisplay.getPermissionChecker(),
-				assetVocabulary.getGroupId(),
+				themeDisplay.getPermissionChecker(), vocabulary.getGroupId(),
 				AssetCategoryConstants.DEFAULT_PARENT_CATEGORY_ID,
 				ActionKeys.ADD_CATEGORY) ||
 			!Objects.equals(
-				assetVocabulary.getGroupId(), themeDisplay.getScopeGroupId())) {
+				vocabulary.getGroupId(), themeDisplay.getScopeGroupId())) {
 
 			return null;
 		}
@@ -103,11 +102,11 @@ public class AssetCategoriesSelectorDisplayContext {
 		).setRedirect(
 			themeDisplay.getURLCurrent()
 		).setParameter(
-			"groupId", assetVocabulary.getGroupId()
+			"groupId", vocabulary.getGroupId()
 		).setParameter(
 			"itemSelectorEventName", getEventName()
 		).setParameter(
-			"vocabularyId", assetVocabulary.getVocabularyId()
+			"vocabularyId", vocabulary.getVocabularyId()
 		).setWindowState(
 			LiferayWindowState.POP_UP
 		).buildString();
@@ -307,20 +306,20 @@ public class AssetCategoriesSelectorDisplayContext {
 		long[] vocabularyIds = StringUtil.split(
 			ParamUtil.getString(_httpServletRequest, "vocabularyIds"), 0L);
 
-		List<AssetVocabulary> assetVocabularies = new ArrayList<>();
+		List<AssetVocabulary> vocabularies = new ArrayList<>();
 
 		for (long vocabularyId : vocabularyIds) {
-			AssetVocabulary assetVocabulary =
+			AssetVocabulary vocabulary =
 				AssetVocabularyLocalServiceUtil.fetchAssetVocabulary(
 					vocabularyId);
 
-			if (assetVocabulary != null) {
-				assetVocabularies.add(assetVocabulary);
+			if (vocabulary != null) {
+				vocabularies.add(vocabulary);
 			}
 		}
 
-		if (assetVocabularies.isEmpty()) {
-			_vocabularies = assetVocabularies;
+		if (vocabularies.isEmpty()) {
+			_vocabularies = vocabularies;
 
 			return _vocabularies;
 		}
@@ -328,12 +327,12 @@ public class AssetCategoriesSelectorDisplayContext {
 		ThemeDisplay themeDisplay = (ThemeDisplay)_renderRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
 
-		assetVocabularies.sort(
+		vocabularies.sort(
 			new AssetVocabularyGroupLocalizedTitleComparator(
 				themeDisplay.getScopeGroupId(), themeDisplay.getLocale(),
 				true));
 
-		_vocabularies = assetVocabularies;
+		_vocabularies = vocabularies;
 
 		return _vocabularies;
 	}
