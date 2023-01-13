@@ -1,4 +1,5 @@
-// LPS-172471 this file can be removed when ticket is fixed
+// TODO Remove this file when LPS-172471 is fixed
+
 dockerDeploy {
 	destinationDir = file("${gradle.liferayWorkspace.dockerDir}/deploy")
 }
