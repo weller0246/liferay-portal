@@ -120,6 +120,8 @@ definition {
 			locator1 = "AuditReports#REPORTS_TABLE_RESOURCE_ACTION",
 			value1 = "${resourceAction}");
 
+		Refresh();
+
 		AssertTextEquals.assertPartialText(
 			locator1 = "AuditReports#REPORTS_DETAIL_RESOURCE_NAME",
 			value1 = "${resourceName}");
