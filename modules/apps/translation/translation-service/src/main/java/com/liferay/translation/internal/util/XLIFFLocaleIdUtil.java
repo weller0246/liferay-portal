@@ -58,19 +58,19 @@ public class XLIFFLocaleIdUtil {
 
 		Element rootElement = document.getRootElement();
 
-		LocaleId attributeValue = _getAttributeValue(
+		LocaleId localeId = _getAttributeValue(
 			rootElement, attributeName, LocaleId::fromString);
 
-		if (attributeValue != null) {
-			return attributeValue;
+		if (localeId != null) {
+			return localeId;
 		}
 
-		attributeValue = _getAttributeValue(
+		localeId = _getAttributeValue(
 			rootElement.element("file"), alternateAttributeName,
 			LocaleId::fromString);
 
-		if (attributeValue != null) {
-			return attributeValue;
+		if (localeId != null) {
+			return localeId;
 		}
 
 		return _defaultLocaleId;

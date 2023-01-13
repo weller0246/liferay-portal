@@ -310,6 +310,8 @@ public class XLIFFInfoFormTranslationImporter
 			XLIFFInfoFormTranslationImporter.class.getClassLoader());
 
 		try (AutoXLIFFFilter autoXLIFFFilter = new AutoXLIFFFilter()) {
+			List<Event> events = new ArrayList<>();
+
 			File tempFile = FileUtil.createTempFile(inputStream);
 
 			Document document = _saxReader.read(tempFile);
@@ -323,8 +325,6 @@ public class XLIFFInfoFormTranslationImporter
 				new RawDocument(
 					tempFile.toURI(), document.getXMLEncoding(), sourceLocaleId,
 					targetLocaleId));
-
-			List<Event> events = new ArrayList<>();
 
 			while (autoXLIFFFilter.hasNext()) {
 				events.add(autoXLIFFFilter.next());
