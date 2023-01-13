@@ -490,10 +490,8 @@ public class ExpressionVisitorImplTest {
 					new StringEntityField(
 						"fieldInsideComplexField",
 						locale -> "fieldInsideComplexFieldInternal")));
-
 			EntityField integerEntityField = new IntegerEntityField(
 				"id", locale -> "id");
-
 			EntityField stringEntityField = new StringEntityField(
 				"title", locale -> "title");
 
