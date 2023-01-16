@@ -49,12 +49,6 @@ public interface EntityModel {
 	 */
 	public Map<String, EntityField> getEntityFieldsMap();
 
-	/**
-	 * Returns a Map with all the entity fields used to create the EDM.
-	 *
-	 * @return the entity field map
-	 * @review
-	 */
 	public default Map<String, EntityRelationship> getEntityRelationshipsMap() {
 		return Collections.emptyMap();
 	}
