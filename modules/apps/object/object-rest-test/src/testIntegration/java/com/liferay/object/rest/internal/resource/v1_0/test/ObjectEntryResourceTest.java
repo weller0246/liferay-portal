@@ -255,6 +255,18 @@ public class ObjectEntryResourceTest {
 	}
 
 	private void _testFilterByRelatedObjectDefinitionSystemObjectField(
+			ObjectRelationship objectRelationship)
+		throws Exception {
+
+		_testFilterByRelatedObjectDefinitionSystemObjectField(
+			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1, _objectDefinition1,
+			objectRelationship, _objectEntry2.getObjectEntryId());
+		_testFilterByRelatedObjectDefinitionSystemObjectField(
+			_OBJECT_FIELD_NAME_2, _OBJECT_FIELD_VALUE_2, _objectDefinition2,
+			objectRelationship, _objectEntry1.getObjectEntryId());
+	}
+
+	private void _testFilterByRelatedObjectDefinitionSystemObjectField(
 			String expectedObjectFieldName, String expectedObjectFieldValue,
 			ObjectDefinition objectDefinition,
 			ObjectRelationship objectRelationship, long relatedObjectEntryId)
@@ -277,19 +289,6 @@ public class ObjectEntryResourceTest {
 		Assert.assertEquals(
 			expectedObjectFieldValue,
 			itemJSONObject.getString(expectedObjectFieldName));
-	}
-
-	private void
-			_testFilterByRelatedObjectDefinitionSystemObjectField(
-				ObjectRelationship objectRelationship)
-		throws Exception {
-
-		_testFilterByRelatedObjectDefinitionSystemObjectField(
-			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1, _objectDefinition1,
-			objectRelationship, _objectEntry2.getObjectEntryId());
-		_testFilterByRelatedObjectDefinitionSystemObjectField(
-			_OBJECT_FIELD_NAME_2, _OBJECT_FIELD_VALUE_2, _objectDefinition2,
-			objectRelationship, _objectEntry1.getObjectEntryId());
 	}
 
 	private void _testGetNestedFieldDetailsInOneToManyRelationships(
