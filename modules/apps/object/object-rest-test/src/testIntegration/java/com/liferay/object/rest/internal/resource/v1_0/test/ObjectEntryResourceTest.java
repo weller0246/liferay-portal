@@ -100,7 +100,7 @@ public class ObjectEntryResourceTest {
 		_objectRelationship = _addObjectRelationshipAndRelateObjectsEntries(
 			ObjectRelationshipConstants.TYPE_MANY_TO_MANY);
 
-		_testFilterByRelatedObjectDefinitionSystemObjectFieldInBothSides(
+		_testFilterByRelatedObjectDefinitionSystemObjectField(
 			_objectRelationship);
 
 		_objectRelationshipLocalService.deleteObjectRelationship(
@@ -109,7 +109,7 @@ public class ObjectEntryResourceTest {
 		_objectRelationship = _addObjectRelationshipAndRelateObjectsEntries(
 			ObjectRelationshipConstants.TYPE_ONE_TO_MANY);
 
-		_testFilterByRelatedObjectDefinitionSystemObjectFieldInBothSides(
+		_testFilterByRelatedObjectDefinitionSystemObjectField(
 			_objectRelationship);
 
 		PropsUtil.addProperties(
@@ -280,14 +280,13 @@ public class ObjectEntryResourceTest {
 	}
 
 	private void
-			_testFilterByRelatedObjectDefinitionSystemObjectFieldInBothSides(
+			_testFilterByRelatedObjectDefinitionSystemObjectField(
 				ObjectRelationship objectRelationship)
 		throws Exception {
 
 		_testFilterByRelatedObjectDefinitionSystemObjectField(
 			_OBJECT_FIELD_NAME_1, _OBJECT_FIELD_VALUE_1, _objectDefinition1,
 			objectRelationship, _objectEntry2.getObjectEntryId());
-
 		_testFilterByRelatedObjectDefinitionSystemObjectField(
 			_OBJECT_FIELD_NAME_2, _OBJECT_FIELD_VALUE_2, _objectDefinition2,
 			objectRelationship, _objectEntry1.getObjectEntryId());
