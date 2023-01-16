@@ -22,11 +22,6 @@ package com.liferay.portal.odata.filter.expression;
  */
 public interface NavigationPropertyExpression extends PropertyExpression {
 
-	/**
-	 * Returns the NavigationPropertyExpression type
-	 *
-	 * @return the type of the NavigationPropertyExpression.
-	 */
 	public Type getType();
 
 	public enum Type {
