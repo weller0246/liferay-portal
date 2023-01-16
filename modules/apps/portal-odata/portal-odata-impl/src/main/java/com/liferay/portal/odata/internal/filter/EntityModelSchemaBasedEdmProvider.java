@@ -162,27 +162,28 @@ public class EntityModelSchemaBasedEdmProvider extends SchemaBasedEdmProvider {
 	}
 
 	private List<CsdlNavigationProperty> _createCsdlNavigationProperties(
-		Map<String, EntityModel.EntityRelationship> entityRelationshipMap) {
+		Map<String, EntityModel.EntityRelationship> entityRelationshipsMap) {
 
 		List<CsdlNavigationProperty> csdlNavigationProperties = new ArrayList<>(
-			entityRelationshipMap.size());
+			entityRelationshipsMap.size());
 
 		for (EntityModel.EntityRelationship entityRelationship :
-				entityRelationshipMap.values()) {
+				entityRelationshipsMap.values()) {
 
 			CsdlNavigationProperty csdlNavigationProperty =
 				new CsdlNavigationProperty();
-
-			EntityModel entityModel = entityRelationship.getEntityModel();
-
-			csdlNavigationProperty.setName(entityRelationship.getName());
-			csdlNavigationProperty.setPartner(entityModel.getName());
 
 			if (entityRelationship.getType() ==
 					EntityModel.EntityRelationship.Type.COLLECTION) {
 
 				csdlNavigationProperty.setCollection(true);
 			}
+
+			csdlNavigationProperty.setName(entityRelationship.getName());
+
+			EntityModel entityModel = entityRelationship.getEntityModel();
+
+			csdlNavigationProperty.setPartner(entityModel.getName());
 
 			csdlNavigationProperty.setType(_getFullQualifiedName(entityModel));
 
