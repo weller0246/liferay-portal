@@ -140,8 +140,7 @@ public class RESTBuilderTest {
 					propertyName + "\""));
 
 		Assert.assertTrue(
-			_matches(
-				lines, "sb.append(\"\\\"" + propertyName + "\\\": \");"));
+			_matches(lines, "sb.append(\"\\\"" + propertyName + "\\\": \");"));
 	}
 
 	private void _assertPropertiesWithXML(
@@ -157,8 +156,7 @@ public class RESTBuilderTest {
 		List<String> lines = Files.readAllLines(file.toPath());
 
 		Assert.assertTrue(
-			_matches(
-				lines, "@XmlElement(name = \"" + xmlPropertyName + "\")"));
+			_matches(lines, "@XmlElement(name = \"" + xmlPropertyName + "\")"));
 	}
 
 	private void _assertResourceFilesExist(
@@ -201,16 +199,6 @@ public class RESTBuilderTest {
 		_assertDTOFile(filesPath, resourceName);
 	}
 
-	private boolean _matches(List<String> lines, String text) {
-		for (String line : lines) {
-			if (line.contains(text)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
 	private String _getDependenciesPath() {
 		URL resource = getClass().getResource("");
 
@@ -235,6 +223,16 @@ public class RESTBuilderTest {
 
 		return StringBundler.concat(
 			filesPath, resourcePathPrefix, resourceName, resourcePathSuffix);
+	}
+
+	private boolean _matches(List<String> lines, String text) {
+		for (String line : lines) {
+			if (line.contains(text)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }
