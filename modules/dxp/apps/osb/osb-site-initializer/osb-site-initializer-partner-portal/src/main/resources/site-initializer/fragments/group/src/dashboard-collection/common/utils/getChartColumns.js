@@ -103,7 +103,7 @@ function totalMDFActivities(mdfRequests, chartColumns) {
 			prevValue + (parseFloat(currValue.totalMDFRequestAmount) || 0),
 		0
 	);
-	chartColumns.push(['Requesteds', totalMDFActivitiesAmount]);
+	chartColumns.push(['Requested', totalMDFActivitiesAmount]);
 
 	return totalMDFActivitiesAmount;
 }
