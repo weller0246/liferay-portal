@@ -100,10 +100,10 @@ public class MetadataGeneratorTest extends BaseSamlTestCase {
 	}
 
 	private boolean _checkMatch(EntityDescriptor entityDescriptor) {
+		List<XMLObject> xmlObjects = new ArrayList<>();
+
 		List<RoleDescriptor> roleDescriptors =
 			entityDescriptor.getRoleDescriptors();
-
-		List<XMLObject> xmlObjects = new ArrayList<>();
 
 		for (RoleDescriptor roleDescriptor : roleDescriptors) {
 			Extensions extensions = roleDescriptor.getExtensions();

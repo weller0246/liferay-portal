@@ -75,9 +75,9 @@ public interface SAMLCommands {
 					return Collections.emptyMap();
 				}
 
-				Assertion assertion = subjectAssertionContext.getAssertion();
-
 				List<Attribute> attributes = new ArrayList<>();
+
+				Assertion assertion = subjectAssertionContext.getAssertion();
 
 				for (AttributeStatement attributeStatement :
 						assertion.getAttributeStatements()) {

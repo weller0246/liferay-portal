@@ -216,31 +216,44 @@ public class WebSsoProfileImpl extends BaseProfile implements WebSsoProfile {
 				}
 			}
 
-			if (messageContext != null) {
-				SAMLPeerEntityContext samlPeerEntityContext =
-					messageContext.getSubcontext(SAMLPeerEntityContext.class);
+			if (messageContext == null) {
+				ExceptionHandlerUtil.handleException(exception);
 
-				if (samlPeerEntityContext != null) {
-					SAMLSubjectNameIdentifierContext subcontext =
-						messageContext.getSubcontext(
-							SAMLSubjectNameIdentifierContext.class);
-
-					if (subcontext != null) {
-						NameID saml2SubjectNameID =
-							subcontext.getSAML2SubjectNameID();
-
-						if (saml2SubjectNameID != null) {
-							String nameIdValue = saml2SubjectNameID.getValue();
-
-							throw new EntityInteractionException(
-								samlPeerEntityContext.getEntityId(),
-								nameIdValue, exception);
-						}
-					}
-				}
+				return;
 			}
 
-			ExceptionHandlerUtil.handleException(exception);
+			SAMLPeerEntityContext samlPeerEntityContext =
+				messageContext.getSubcontext(SAMLPeerEntityContext.class);
+
+			if (samlPeerEntityContext == null) {
+				ExceptionHandlerUtil.handleException(exception);
+
+				return;
+			}
+
+			SAMLSubjectNameIdentifierContext samlSubjectNameIdentifierContext =
+				messageContext.getSubcontext(
+					SAMLSubjectNameIdentifierContext.class);
+
+			if (samlSubjectNameIdentifierContext == null) {
+				ExceptionHandlerUtil.handleException(exception);
+
+				return;
+			}
+
+			NameID saml2SubjectNameID =
+				samlSubjectNameIdentifierContext.getSAML2SubjectNameID();
+
+			if (saml2SubjectNameID == null) {
+				ExceptionHandlerUtil.handleException(exception);
+
+				return;
+			}
+
+			String nameIdValue = saml2SubjectNameID.getValue();
+
+			throw new EntityInteractionException(
+				samlPeerEntityContext.getEntityId(), nameIdValue, exception);
 		}
 	}
 
