@@ -108,12 +108,12 @@ public class AssetRendererFactoryRegistryUtil {
 			return classNameIds;
 		}
 
+		int i = 0;
+
 		Set<String> classNames =
 			_classNameAssetRenderFactoriesServiceTrackerMap.keySet();
 
 		long[] classNameIds = new long[classNames.size()];
-
-		int i = 0;
 
 		for (String className : classNames) {
 			AssetRendererFactory<?> assetRendererFactory =
