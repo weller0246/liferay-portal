@@ -649,55 +649,6 @@ public class BundleSiteInitializerTest {
 		Assert.assertEquals(productLayoutUuid, publicLayout.getUuid());
 	}
 
-	private void _assertDisplayPages(Group group) throws JSONException {
-		LayoutPageTemplateEntry layoutPageTemplateEntry =
-			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
-				group.getGroupId(), "Test Display Page Template",
-				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE);
-
-		Assert.assertNotNull(layoutPageTemplateEntry);
-		Assert.assertEquals(
-			"Test Display Page Template", layoutPageTemplateEntry.getName());
-
-		List<FragmentEntryLink> fragmentEntryLinks =
-			_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
-				group.getGroupId(), layoutPageTemplateEntry.getPlid());
-
-		Assert.assertEquals(
-			fragmentEntryLinks.toString(), 1, fragmentEntryLinks.size());
-
-		FragmentEntryLink fragmentEntryLink = fragmentEntryLinks.get(0);
-
-		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
-			fragmentEntryLink.getEditableValues());
-
-		Assert.assertNotNull(editableValuesJSONObject);
-
-		JSONObject editableFragmentEntryProcessorJSONObject =
-			editableValuesJSONObject.getJSONObject(
-				"com.liferay.fragment.entry.processor.editable." +
-					"EditableFragmentEntryProcessor");
-
-		Assert.assertNotNull(editableFragmentEntryProcessorJSONObject);
-
-		JSONObject linkJSONObject =
-			editableFragmentEntryProcessorJSONObject.getJSONObject("link");
-
-		Assert.assertNotNull(linkJSONObject);
-
-		JSONObject configJSONObject = linkJSONObject.getJSONObject("config");
-
-		Assert.assertNotNull(configJSONObject);
-
-		JSONObject layoutJSONObject = configJSONObject.getJSONObject("layout");
-
-		Assert.assertNotNull(layoutJSONObject);
-		Assert.assertEquals(
-			group.getGroupId(), layoutJSONObject.getLong("groupId"));
-		Assert.assertFalse(layoutJSONObject.getBoolean("privateLayout"));
-		Assert.assertEquals("/home", layoutJSONObject.getString("value"));
-	}
-
 	private void _assertDLFileEntry(Group group) throws Exception {
 		DLFileEntry dlFileEntry = _dlFileEntryLocalService.getFileEntry(
 			group.getGroupId(), DLFolderConstants.DEFAULT_PARENT_FOLDER_ID,
@@ -844,6 +795,70 @@ public class BundleSiteInitializerTest {
 			"This is the body for Test KB Article 3.", kbArticle3.getContent());
 	}
 
+	private void _assertLayoutPageTemplateEntries(Group group)
+		throws JSONException {
+
+		// Test Display Page Template
+
+		LayoutPageTemplateEntry layoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
+				group.getGroupId(), "Test Display Page Template",
+				LayoutPageTemplateEntryTypeConstants.TYPE_DISPLAY_PAGE);
+
+		Assert.assertNotNull(layoutPageTemplateEntry);
+		Assert.assertEquals(
+			"Test Display Page Template", layoutPageTemplateEntry.getName());
+
+		List<FragmentEntryLink> fragmentEntryLinks =
+			_fragmentEntryLinkLocalService.getFragmentEntryLinksByPlid(
+				group.getGroupId(), layoutPageTemplateEntry.getPlid());
+
+		Assert.assertEquals(
+			fragmentEntryLinks.toString(), 1, fragmentEntryLinks.size());
+
+		FragmentEntryLink fragmentEntryLink = fragmentEntryLinks.get(0);
+
+		JSONObject editableValuesJSONObject = JSONFactoryUtil.createJSONObject(
+			fragmentEntryLink.getEditableValues());
+
+		Assert.assertNotNull(editableValuesJSONObject);
+
+		JSONObject editableFragmentEntryProcessorJSONObject =
+			editableValuesJSONObject.getJSONObject(
+				"com.liferay.fragment.entry.processor.editable." +
+					"EditableFragmentEntryProcessor");
+
+		Assert.assertNotNull(editableFragmentEntryProcessorJSONObject);
+
+		JSONObject linkJSONObject =
+			editableFragmentEntryProcessorJSONObject.getJSONObject("link");
+
+		Assert.assertNotNull(linkJSONObject);
+
+		JSONObject configJSONObject = linkJSONObject.getJSONObject("config");
+
+		Assert.assertNotNull(configJSONObject);
+
+		JSONObject layoutJSONObject = configJSONObject.getJSONObject("layout");
+
+		Assert.assertNotNull(layoutJSONObject);
+		Assert.assertEquals(
+			group.getGroupId(), layoutJSONObject.getLong("groupId"));
+		Assert.assertFalse(layoutJSONObject.getBoolean("privateLayout"));
+		Assert.assertEquals("/home", layoutJSONObject.getString("value"));
+
+		// Test Master Page
+
+		layoutPageTemplateEntry =
+			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
+				group.getGroupId(), "Test Master Page",
+				LayoutPageTemplateEntryTypeConstants.TYPE_MASTER_LAYOUT);
+
+		Assert.assertNotNull(layoutPageTemplateEntry);
+		Assert.assertEquals(
+			"Test Master Page", layoutPageTemplateEntry.getName());
+	}
+
 	private void _assertLayouts(Group group, ServiceContext serviceContext)
 		throws Exception {
 
@@ -930,17 +945,6 @@ public class BundleSiteInitializerTest {
 
 		Assert.assertNotNull(listTypeEntry2);
 		Assert.assertEquals("testlisttypeentry2", listTypeEntry2.getKey());
-	}
-
-	private void _assertMasterLayouts(Group group) {
-		LayoutPageTemplateEntry layoutPageTemplateEntry =
-			_layoutPageTemplateEntryLocalService.fetchLayoutPageTemplateEntry(
-				group.getGroupId(), "Test Master Page",
-				LayoutPageTemplateEntryTypeConstants.TYPE_MASTER_LAYOUT);
-
-		Assert.assertNotNull(layoutPageTemplateEntry);
-		Assert.assertEquals(
-			"Test Master Page", layoutPageTemplateEntry.getName());
 	}
 
 	private void _assertNotificationTemplate(ServiceContext serviceContext)
@@ -1831,16 +1835,15 @@ public class BundleSiteInitializerTest {
 			_assertCPInstanceProperties(group);
 			_assertDDMStructure(group);
 			_assertDDMTemplate(group);
-			_assertDisplayPages(group);
 			_assertDLFileEntry(group);
 			_assertExpandoColumns(serviceContext);
 			_assertFragmentEntries(group, serviceContext);
 			_assertJournalArticles(group);
 			_assertKBArticles(group);
-			_assertLayouts(group, serviceContext);
+			_assertLayoutPageTemplateEntries(group);
 			_assertLayoutSets(group);
+			_assertLayouts(group, serviceContext);
 			_assertListTypeDefinitions(serviceContext);
-			_assertMasterLayouts(group);
 			_assertNotificationTemplate(serviceContext);
 			_assertObjectDefinitions(group, serviceContext);
 			_assertOrganizations(serviceContext);
