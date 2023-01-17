@@ -35,14 +35,14 @@ public class InvalidYAMLException extends IllegalArgumentException {
 			return _getProblem(throwable.getCause());
 		}
 
+		StringBundler sb = new StringBundler(4);
+
+		sb.append("Invalid YAML");
+
 		MarkedYAMLException markedYAMLException =
 			(MarkedYAMLException)throwable;
 
 		Mark mark = markedYAMLException.getProblemMark();
-
-		StringBundler sb = new StringBundler(4);
-
-		sb.append("Invalid YAML");
 
 		if (mark != null) {
 			sb.append(mark.toString());

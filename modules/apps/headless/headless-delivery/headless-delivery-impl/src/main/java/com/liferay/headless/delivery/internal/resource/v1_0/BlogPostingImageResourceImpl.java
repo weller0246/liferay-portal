@@ -117,12 +117,12 @@ public class BlogPostingImageResourceImpl
 			throw new BadRequestException("No file found in body");
 		}
 
+		String title = null;
+		String viewableBy = null;
+
 		BlogPostingImage blogPostingImage =
 			multipartBody.getValueAsNullableInstance(
 				"blogPostingImage", BlogPostingImage.class);
-
-		String title = null;
-		String viewableBy = null;
 
 		if (blogPostingImage != null) {
 			title = blogPostingImage.getTitle();

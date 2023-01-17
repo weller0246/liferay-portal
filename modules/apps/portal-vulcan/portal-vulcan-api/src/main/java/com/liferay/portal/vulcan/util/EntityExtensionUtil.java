@@ -35,13 +35,13 @@ public class EntityExtensionUtil {
 
 		S extendedEntity = extendedEntityClass.newInstance();
 
+		Map<String, Field> extendedEntityFieldsMap = new HashMap<>();
+
 		Class<?> extendedEntityClassSuperclass =
 			extendedEntityClass.getSuperclass();
 
 		Field[] extendedEntityFields =
 			extendedEntityClassSuperclass.getDeclaredFields();
-
-		Map<String, Field> extendedEntityFieldsMap = new HashMap<>();
 
 		for (Field field : extendedEntityFields) {
 			extendedEntityFieldsMap.put(field.getName(), field);

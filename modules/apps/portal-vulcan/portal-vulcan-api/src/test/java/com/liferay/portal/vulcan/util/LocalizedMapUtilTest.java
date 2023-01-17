@@ -122,9 +122,7 @@ public class LocalizedMapUtilTest {
 				}
 			}
 
-			Assert.assertTrue(
-				"Error message missing locales: " + missingNotFoundLocales,
-				missingNotFoundLocales.isEmpty());
+			Assert.assertTrue(missingNotFoundLocales.isEmpty());
 		}
 	}
 

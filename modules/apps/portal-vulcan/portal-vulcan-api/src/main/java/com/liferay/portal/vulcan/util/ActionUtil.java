@@ -320,10 +320,10 @@ public class ActionUtil {
 			UriInfo uriInfo)
 		throws PortalException {
 
+		Map<String, Object> parameterMap = new HashMap<>();
+
 		MultivaluedMap<String, String> pathParameters =
 			uriInfo.getPathParameters();
-
-		Map<String, Object> parameterMap = new HashMap<>();
 
 		for (Map.Entry<String, List<String>> entry :
 				pathParameters.entrySet()) {

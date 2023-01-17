@@ -131,11 +131,11 @@ public class WikiPageAttachmentResourceImpl
 			throw new BadRequestException("No file found in body");
 		}
 
+		String externalReferenceCode = null;
+
 		WikiPageAttachment wikiPageAttachment =
 			multipartBody.getValueAsNullableInstance(
 				"wikiPageAttachment", WikiPageAttachment.class);
-
-		String externalReferenceCode = null;
 
 		if (wikiPageAttachment != null) {
 			externalReferenceCode =
