@@ -156,9 +156,9 @@ public class OpenAPIParserUtil {
 
 		Map<String, PathItem> pathItems = openAPIYAML.getPathItems();
 
-		Components components = openAPIYAML.getComponents();
-
 		Map<String, Schema> schemas = new HashMap<>();
+
+		Components components = openAPIYAML.getComponents();
 
 		if ((components != null) && (components.getSchemas() != null)) {
 			schemas = components.getSchemas();

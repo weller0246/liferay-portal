@@ -33,12 +33,12 @@ public class InvalidYAMLException extends IllegalArgumentException {
 			return _getProblem(throwable.getCause());
 		}
 
+		String markString = "";
+
 		MarkedYAMLException markedYAMLException =
 			(MarkedYAMLException)throwable;
 
 		Mark mark = markedYAMLException.getProblemMark();
-
-		String markString = "";
 
 		if (mark != null) {
 			markString = mark.toString();

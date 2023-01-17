@@ -1035,11 +1035,10 @@ public class ResourceOpenAPIParser {
 		}
 
 		Integer httpStatusCode = null;
+		Response response = null;
 
 		Set<Map.Entry<ResponseCode, Response>> responseEntrySet =
 			responses.entrySet();
-
-		Response response = null;
 
 		for (Map.Entry<ResponseCode, Response> responseEntry :
 				responseEntrySet) {

@@ -134,13 +134,13 @@ public class RESTBuilderTest {
 		List<String> lines = Files.readAllLines(file.toPath());
 
 		Assert.assertTrue(
-			_checkMatch(
+			_matches(
 				lines,
 				"access = JsonProperty.Access.READ_WRITE, value = \"" +
 					propertyName + "\""));
 
 		Assert.assertTrue(
-			_checkMatch(
+			_matches(
 				lines, "sb.append(\"\\\"" + propertyName + "\\\": \");"));
 	}
 
@@ -157,7 +157,7 @@ public class RESTBuilderTest {
 		List<String> lines = Files.readAllLines(file.toPath());
 
 		Assert.assertTrue(
-			_checkMatch(
+			_matches(
 				lines, "@XmlElement(name = \"" + xmlPropertyName + "\")"));
 	}
 
@@ -201,7 +201,7 @@ public class RESTBuilderTest {
 		_assertDTOFile(filesPath, resourceName);
 	}
 
-	private boolean _checkMatch(List<String> lines, String text) {
+	private boolean _matches(List<String> lines, String text) {
 		for (String line : lines) {
 			if (line.contains(text)) {
 				return true;
