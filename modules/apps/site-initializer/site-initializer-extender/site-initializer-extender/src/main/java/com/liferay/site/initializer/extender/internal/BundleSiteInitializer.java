@@ -503,8 +503,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 					objectDefinitionIdsAndObjectEntryIdsStringUtilReplaceValues,
 					serviceContext));
 
-			// LPS-172108 Layouts have to be created first so that links in page
-			// templates work
+			// LPS-172108 Layouts have to be created first so that links in
+			// layout page templates work
 
 			_invoke(
 				() -> _addLayoutPageTemplates(

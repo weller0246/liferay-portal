@@ -692,11 +692,10 @@ public class BundleSiteInitializerTest {
 		JSONObject layoutJSONObject = configJSONObject.getJSONObject("layout");
 
 		Assert.assertNotNull(layoutJSONObject);
-
 		Assert.assertEquals(
 			group.getGroupId(), layoutJSONObject.getLong("groupId"));
-		Assert.assertEquals("/home", layoutJSONObject.getString("value"));
 		Assert.assertFalse(layoutJSONObject.getBoolean("privateLayout"));
+		Assert.assertEquals("/home", layoutJSONObject.getString("value"));
 	}
 
 	private void _assertDLFileEntry(Group group) throws Exception {
