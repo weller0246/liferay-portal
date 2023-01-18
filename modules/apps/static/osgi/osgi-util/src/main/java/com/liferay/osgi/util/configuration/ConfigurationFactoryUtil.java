@@ -100,11 +100,11 @@ public class ConfigurationFactoryUtil {
 
 				// LPS-172217
 
-				int pos = externalReferenceCode.indexOf('/');
+				int index = externalReferenceCode.indexOf('/');
 
-				if (pos != -1) {
+				if (index != -1) {
 					externalReferenceCode = externalReferenceCode.substring(
-						0, pos);
+						0, index);
 				}
 
 				return externalReferenceCode;
@@ -117,10 +117,10 @@ public class ConfigurationFactoryUtil {
 	}
 
 	public static String getFactoryPidFromPid(String pid) {
-		int pos = pid.indexOf('~');
+		int index = pid.indexOf('~');
 
-		if (pos != -1) {
-			return pid.substring(0, pos);
+		if (index != -1) {
+			return pid.substring(0, index);
 		}
 
 		return null;
