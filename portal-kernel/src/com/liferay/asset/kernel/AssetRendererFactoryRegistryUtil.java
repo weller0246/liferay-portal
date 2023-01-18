@@ -40,7 +40,8 @@ public class AssetRendererFactoryRegistryUtil {
 
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
-				companyId, _classNameAssetRenderFactoriesServiceTrackerMap,
+				companyId,
+				_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
 				false));
 	}
 
@@ -49,7 +50,8 @@ public class AssetRendererFactoryRegistryUtil {
 
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
-				companyId, _classNameAssetRenderFactoriesServiceTrackerMap,
+				companyId,
+				_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
 				filterSelectable));
 	}
 
@@ -91,7 +93,8 @@ public class AssetRendererFactoryRegistryUtil {
 		if (companyId > 0) {
 			Map<String, AssetRendererFactory<?>> assetRenderFactories =
 				_filterAssetRendererFactories(
-					companyId, _classNameAssetRenderFactoriesServiceTrackerMap,
+					companyId,
+					_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
 					filterSelectable);
 
 			long[] classNameIds = new long[assetRenderFactories.size()];
@@ -141,17 +144,21 @@ public class AssetRendererFactoryRegistryUtil {
 			AssetRendererFactory<?> assetRendererFactory =
 				assetRendererFactories.getService(key);
 
-			if (key.startsWith("com.liferay.object.model.ObjectDefinition#")) {
-				if (key.split("#")[2].equals(String.valueOf(companyId))) {
+			if (assetRendererFactory.isActive(companyId) &&
+				(!filterSelectable || assetRendererFactory.isSelectable())) {
+
+				if (key.startsWith(
+						"com.liferay.object.model.ObjectDefinition#")) {
+
+					if (key.split("#")[2].equals(String.valueOf(companyId))) {
+						filteredAssetRendererFactories.put(
+							key, assetRendererFactory);
+					}
+				}
+				else {
 					filteredAssetRendererFactories.put(
 						key, assetRendererFactory);
 				}
-			}
-			else if (assetRendererFactory.isActive(companyId) &&
-					 (!filterSelectable ||
-					  assetRendererFactory.isSelectable())) {
-
-				filteredAssetRendererFactories.put(key, assetRendererFactory);
 			}
 		}
 
@@ -165,7 +172,7 @@ public class AssetRendererFactoryRegistryUtil {
 		SystemBundleUtil.getBundleContext();
 
 	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_classNameAssetRenderFactoriesServiceTrackerMap =
+		_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				_bundleContext,
 				(Class<AssetRendererFactory<?>>)
@@ -189,6 +196,20 @@ public class AssetRendererFactoryRegistryUtil {
 					else {
 						emitter.emit(className);
 					}
+				});
+
+	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
+		_classNameAssetRenderFactoriesServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				_bundleContext,
+				(Class<AssetRendererFactory<?>>)
+					(Class<?>)AssetRendererFactory.class,
+				null,
+				(serviceReference, emitter) -> {
+					AssetRendererFactory<?> assetRendererFactory =
+						_bundleContext.getService(serviceReference);
+
+					emitter.emit(assetRendererFactory.getClassName());
 				});
 
 	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
