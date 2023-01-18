@@ -32,8 +32,8 @@ import org.junit.Test;
 public class ConfigurationFactoryUtilTest {
 
 	@Test
-	public void testGetExternalReferenceCodeFromMap() {
-		HashMap<String, HashMap<String, Object>> testValues =
+	public void testGetExternalReferenceCode() {
+		Map<String, HashMap<String, Object>> map =
 			HashMapBuilder.<String, HashMap<String, Object>>put(
 				"foo",
 				HashMapBuilder.<String, Object>put(
@@ -51,35 +51,21 @@ public class ConfigurationFactoryUtilTest {
 			).build();
 
 		for (Map.Entry<String, HashMap<String, Object>> entry :
-				testValues.entrySet()) {
+				map.entrySet()) {
 
 			Assert.assertEquals(
 				entry.getKey(),
 				ConfigurationFactoryUtil.getExternalReferenceCode(
 					entry.getValue()));
 		}
+
+		_testGetExternalReferenceCode("foo,com.bar,com.bar~foo");
+		_testGetExternalReferenceCode("foo,com.bar,com.bar~foo/liferay.com");
 	}
 
 	@Test
-	public void testGetExternalReferenceCodeFromPids() {
-		String[] testValues = {
-			"foo,com.bar,com.bar~foo", "foo,com.bar,com.bar~foo/liferay.com"
-		};
-
-		for (String testValue : testValues) {
-			String[] parts = StringUtil.split(testValue);
-
-			Assert.assertEquals(
-				parts[0],
-				ConfigurationFactoryUtil.getExternalReferenceCode(
-					parts[1], Arrays.asList(parts[2])));
-		}
-	}
-
-	@Test
-	public void testGetFactoryPid() {
+	public void testGetFactoryPidFromPid() {
 		Assert.assertNull(ConfigurationFactoryUtil.getFactoryPidFromPid("foo"));
-
 		Assert.assertEquals(
 			"com.foo",
 			ConfigurationFactoryUtil.getFactoryPidFromPid("com.foo~bar"));
@@ -87,5 +73,14 @@ public class ConfigurationFactoryUtilTest {
 
 	@Rule
 	public LiferayUnitTestRule liferayUnitTestRule = new LiferayUnitTestRule();
+
+	private void _testGetExternalReferenceCode(String string) {
+		String[] parts = StringUtil.split(string);
+
+		Assert.assertEquals(
+			parts[0],
+			ConfigurationFactoryUtil.getExternalReferenceCode(
+				parts[1], Arrays.asList(parts[2])));
+	}
 
 }
