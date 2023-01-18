@@ -14,8 +14,6 @@
 
 package com.liferay.analytics.web.internal.servlet.taglib;
 
-import com.liferay.analytics.settings.configuration.AnalyticsConfiguration;
-import com.liferay.analytics.settings.rest.manager.AnalyticsSettingsManager;
 import com.liferay.analytics.web.internal.constants.AnalyticsWebKeys;
 import com.liferay.petra.string.StringPool;
 import com.liferay.portal.kernel.json.JSONArray;
@@ -23,9 +21,9 @@ import com.liferay.portal.kernel.json.JSONFactory;
 import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
+import com.liferay.portal.kernel.model.Company;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.Layout;
-import com.liferay.portal.kernel.module.configuration.ConfigurationException;
 import com.liferay.portal.kernel.service.GroupLocalService;
 import com.liferay.portal.kernel.servlet.taglib.BaseJSPDynamicInclude;
 import com.liferay.portal.kernel.servlet.taglib.DynamicInclude;
@@ -70,20 +68,7 @@ public class AnalyticsTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
 
-		AnalyticsConfiguration analyticsConfiguration = null;
-
-		try {
-			analyticsConfiguration =
-				_analyticsSettingsManager.getAnalyticsConfiguration(
-					themeDisplay.getCompanyId());
-		}
-		catch (ConfigurationException configurationException) {
-			_log.error(configurationException);
-		}
-
-		if (!_isAnalyticsTrackingEnabled(
-				analyticsConfiguration, httpServletRequest, themeDisplay)) {
-
+		if (!_isAnalyticsTrackingEnabled(httpServletRequest, themeDisplay)) {
 			return;
 		}
 
@@ -95,13 +80,13 @@ public class AnalyticsTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 			_serialize(
 				HashMapBuilder.put(
 					"dataSourceId",
-					analyticsConfiguration.liferayAnalyticsDataSourceId()
+					_getLiferayAnalyticsDataSourceId(themeDisplay.getCompany())
 				).put(
 					"endpointUrl",
-					analyticsConfiguration.liferayAnalyticsEndpointURL()
+					_getLiferayAnalyticsEndpointURL(themeDisplay.getCompany())
 				).put(
 					"projectId",
-					analyticsConfiguration.liferayAnalyticsProjectId()
+					_getLiferayAnalyticsProjectId(themeDisplay.getCompany())
 				).build()));
 		httpServletRequest.setAttribute(
 			AnalyticsWebKeys.ANALYTICS_CLIENT_GROUP_IDS,
@@ -158,31 +143,59 @@ public class AnalyticsTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 		return group.getTypeSettingsProperty("analyticsChannelId");
 	}
 
+	private String _getLiferayAnalyticsDataSourceId(Company company) {
+		return PrefsPropsUtil.getString(
+			company.getCompanyId(), "liferayAnalyticsDataSourceId");
+	}
+
+	private String _getLiferayAnalyticsEndpointURL(Company company) {
+		return PrefsPropsUtil.getString(
+			company.getCompanyId(), "liferayAnalyticsEndpointURL");
+	}
+
+	private String _getLiferayAnalyticsProjectId(Company company) {
+		return PrefsPropsUtil.getString(
+			company.getCompanyId(), "liferayAnalyticsProjectId");
+	}
+
 	private boolean _isAnalyticsTrackingEnabled(
-		AnalyticsConfiguration analyticsConfiguration,
 		HttpServletRequest httpServletRequest, ThemeDisplay themeDisplay) {
 
 		Layout layout = themeDisplay.getLayout();
 
-		if ((analyticsConfiguration == null) || (layout == null) ||
-			layout.isTypeControlPanel() ||
-			Validator.isNull(
-				analyticsConfiguration.liferayAnalyticsDataSourceId()) ||
-			Validator.isNull(
-				analyticsConfiguration.liferayAnalyticsEndpointURL()) ||
+		if ((layout == null) || layout.isTypeControlPanel()) {
+			return false;
+		}
+
+		Company company = themeDisplay.getCompany();
+
+		if (Validator.isNull(_getLiferayAnalyticsDataSourceId(company)) ||
+			Validator.isNull(_getLiferayAnalyticsEndpointURL(company)) ||
 			Objects.equals(
 				httpServletRequest.getRequestURI(), "/c/portal/api/jsonws")) {
 
 			return false;
 		}
 
-		String[] syncedGroupIds = analyticsConfiguration.syncedGroupIds();
+		String[] liferayAnalyticsGroupIds = PrefsPropsUtil.getStringArray(
+			company.getCompanyId(), "liferayAnalyticsGroupIds",
+			StringPool.COMMA);
 
 		if (_isSharedFormEnabled(
-				syncedGroupIds, layout.getGroup(), httpServletRequest) ||
-			analyticsConfiguration.liferayAnalyticsEnableAllGroupIds() ||
+				liferayAnalyticsGroupIds, layout.getGroup(),
+				httpServletRequest)) {
+
+			return true;
+		}
+
+		Group group = layout.getGroup();
+
+		boolean liferayAnalyticsEnableAllGroupIds = PrefsPropsUtil.getBoolean(
+			company.getCompanyId(), "liferayAnalyticsEnableAllGroupIds");
+
+		if (liferayAnalyticsEnableAllGroupIds ||
 			ArrayUtil.contains(
-				syncedGroupIds, String.valueOf(layout.getGroupId()))) {
+				liferayAnalyticsGroupIds, String.valueOf(group.getGroupId()))) {
 
 			return true;
 		}
@@ -222,9 +235,6 @@ public class AnalyticsTopHeadJSPDynamicInclude extends BaseJSPDynamicInclude {
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		AnalyticsTopHeadJSPDynamicInclude.class);
-
-	@Reference
-	private AnalyticsSettingsManager _analyticsSettingsManager;
 
 	@Reference
 	private GroupLocalService _groupLocalService;
