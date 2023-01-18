@@ -139,8 +139,8 @@ public class ConfigurationTestUtil {
 			_bundleContext.registerService(
 				ManagedServiceFactory.class,
 				new InternalManagerServiceFactory(
-					(servicePid, props) -> countDownLatch.countDown(),
-					factoryPid),
+					factoryPid,
+					(servicePid, props) -> countDownLatch.countDown()),
 				MapUtil.singletonDictionary(Constants.SERVICE_PID, factoryPid));
 
 		unsafeRunnable.run();
@@ -169,13 +169,13 @@ public class ConfigurationTestUtil {
 		implements ManagedServiceFactory {
 
 		public InternalManagerServiceFactory(
+			String factoryPid,
 			UnsafeBiConsumer
 				<String, Dictionary<String, ?>, ConfigurationException>
-					consumer,
-			String factoryPid) {
+					unsafeBiConsumer) {
 
-			_consumer = consumer;
 			_factoryPid = factoryPid;
+			_unsafeBiConsumer = unsafeBiConsumer;
 		}
 
 		@Override
@@ -191,12 +191,13 @@ public class ConfigurationTestUtil {
 		public void updated(String pid, Dictionary<String, ?> properties)
 			throws ConfigurationException {
 
-			_consumer.accept(pid, properties);
+			_unsafeBiConsumer.accept(pid, properties);
 		}
 
-		private final UnsafeBiConsumer
-			<String, Dictionary<String, ?>, ConfigurationException> _consumer;
 		private final String _factoryPid;
+		private final UnsafeBiConsumer
+			<String, Dictionary<String, ?>, ConfigurationException>
+				_unsafeBiConsumer;
 
 	}
 
