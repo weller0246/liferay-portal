@@ -49,11 +49,11 @@ public class ReadingTimeCalculatorImplTest {
 			new ReadingTimeCalculatorImpl();
 
 		for (String contentType : _supportedContentTypes) {
-			Duration readingTime = readingTimeCalculator.calculate(
+			Duration readingTimeDuration = readingTimeCalculator.calculate(
 				StringUtil.randomString(), contentType,
 				LocaleUtil.getDefault());
 
-			Assert.assertNotNull(readingTime);
+			Assert.assertNotNull(readingTimeDuration);
 		}
 	}
 
@@ -124,11 +124,11 @@ public class ReadingTimeCalculatorImplTest {
 		ReadingTimeCalculator readingTimeCalculator =
 			new ReadingTimeCalculatorImpl();
 
-		Duration readingTime = readingTimeCalculator.calculate(
+		Duration readingTimeDuration = readingTimeCalculator.calculate(
 			StringUtil.randomString(), ContentTypes.APPLICATION_PDF,
 			LocaleUtil.getDefault());
 
-		Assert.assertNull(readingTime);
+		Assert.assertNull(readingTimeDuration);
 	}
 
 	private Duration _calculateReadingTime(

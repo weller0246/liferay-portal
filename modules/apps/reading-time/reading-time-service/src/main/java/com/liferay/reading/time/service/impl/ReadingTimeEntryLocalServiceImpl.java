@@ -120,16 +120,17 @@ public class ReadingTimeEntryLocalServiceImpl
 
 	@Override
 	public ReadingTimeEntry updateReadingTimeEntry(GroupedModel groupedModel) {
-		Duration readingTime = _readingTimeCalculator.calculate(groupedModel);
+		Duration readingTimeDuration = _readingTimeCalculator.calculate(
+			groupedModel);
 
-		if (readingTime == null) {
+		if (readingTimeDuration == null) {
 			return null;
 		}
 
 		return updateReadingTimeEntry(
 			groupedModel.getGroupId(),
 			_classNameLocalService.getClassNameId(groupedModel.getModelClass()),
-			(Long)groupedModel.getPrimaryKeyObj(), readingTime);
+			(Long)groupedModel.getPrimaryKeyObj(), readingTimeDuration);
 	}
 
 	@Override
