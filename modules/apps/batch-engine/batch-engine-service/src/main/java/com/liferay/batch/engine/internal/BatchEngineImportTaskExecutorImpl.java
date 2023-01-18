@@ -108,6 +108,10 @@ public class BatchEngineImportTaskExecutorImpl
 				throwable.toString());
 		}
 		finally {
+
+			// LPS-167011 Because of call to _updateBatchEngineImportTask when
+			// catching a Throwable
+
 			safeCloseable.close();
 		}
 	}
