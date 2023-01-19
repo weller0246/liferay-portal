@@ -82,10 +82,11 @@ public class AsahFaroBackendClient {
 	private String _getResponse(long companyId, String url) throws Exception {
 		Http.Options options = new Http.Options();
 
+		options.addHeader("Accept", "application/json");
+
 		AnalyticsConfiguration analyticsConfiguration =
 			_analyticsSettingsManager.getAnalyticsConfiguration(companyId);
 
-		options.addHeader("Accept", "application/json");
 		options.addHeader(
 			"OSB-Asah-Faro-Backend-Security-Signature",
 			analyticsConfiguration.
