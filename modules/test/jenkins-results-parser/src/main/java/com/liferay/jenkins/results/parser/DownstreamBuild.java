@@ -252,35 +252,39 @@ public class DownstreamBuild extends BaseBuild {
 			return Collections.emptyMap();
 		}
 
-		HashMap<String, List<String>> testClassMethodsMap = new HashMap<>();
+		Map<String, List<String>> testClassMethodsMap = new HashMap<>();
 
 		AxisTestClassGroup axisTestClassGroup = getAxisTestClassGroup();
 
-		if ((axisTestClassGroup != null) &&
-			axisTestClassGroup.hasTestClasses()) {
+		if ((axisTestClassGroup == null) ||
+			!axisTestClassGroup.hasTestClasses()) {
 
-			List<TestClass> testClasses = axisTestClassGroup.getTestClasses();
+			return testClassMethodsMap;
+		}
 
-			for (TestClass testClass : testClasses) {
-				if (testClass instanceof JUnitTestClass) {
-					JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
+		List<TestClass> testClasses = axisTestClassGroup.getTestClasses();
 
-					List<String> methodNames = new ArrayList<>();
+		for (TestClass testClass : testClasses) {
+			if (!(testClass instanceof JUnitTestClass)) {
+				continue;
+			}
 
-					for (TestClassMethod testClassMethod :
-							testClass.getTestClassMethods()) {
+			JUnitTestClass jUnitTestClass = (JUnitTestClass)testClass;
 
-						String testMethodName = testClassMethod.getName();
+			List<String> methodNames = new ArrayList<>();
 
-						if (!methodNames.contains(testMethodName)) {
-							methodNames.add(testClassMethod.getName());
-						}
-					}
+			for (TestClassMethod testClassMethod :
+					testClass.getTestClassMethods()) {
 
-					testClassMethodsMap.put(
-						jUnitTestClass.getTestClassName(), methodNames);
+				String testMethodName = testClassMethod.getName();
+
+				if (!methodNames.contains(testMethodName)) {
+					methodNames.add(testClassMethod.getName());
 				}
 			}
+
+			testClassMethodsMap.put(
+				jUnitTestClass.getTestClassName(), methodNames);
 		}
 
 		return testClassMethodsMap;
@@ -372,24 +376,26 @@ public class DownstreamBuild extends BaseBuild {
 
 			List<String> testClassMethods = entry.getValue();
 
-			if (!testClassMethods.isEmpty()) {
-				for (String methodName : testClassMethods) {
-					String testClassName = entry.getKey();
+			if (testClassMethods.isEmpty()) {
+				continue;
+			}
 
-					JSONObject caseJSONObject = new JSONObject();
+			for (String methodName : testClassMethods) {
+				JSONObject caseJSONObject = new JSONObject();
 
-					caseJSONObject.put("className", testClassName);
-					caseJSONObject.put("duration", 0);
-					caseJSONObject.put(
-						"errorDetails", "This test was untested.");
-					caseJSONObject.put("errorStackTrace", "");
-					caseJSONObject.put("name", methodName);
-					caseJSONObject.put("status", "UNTESTED");
-					caseJSONObject.put("testName", methodName);
+				String testClassName = entry.getKey();
 
-					untestedTestResults.add(
-						TestResultFactory.newTestResult(this, caseJSONObject));
-				}
+				caseJSONObject.put("className", testClassName);
+
+				caseJSONObject.put("duration", 0);
+				caseJSONObject.put("errorDetails", "This test was untested.");
+				caseJSONObject.put("errorStackTrace", "");
+				caseJSONObject.put("name", methodName);
+				caseJSONObject.put("status", "UNTESTED");
+				caseJSONObject.put("testName", methodName);
+
+				untestedTestResults.add(
+					TestResultFactory.newTestResult(this, caseJSONObject));
 			}
 		}
 
