@@ -81,14 +81,6 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 			layoutUtilityPageEntryPersistence.create(
 				counterLocalService.increment());
 
-		layoutUtilityPageEntry.setGroupId(groupId);
-
-		User user = _userLocalService.getUser(userId);
-
-		layoutUtilityPageEntry.setCompanyId(user.getCompanyId());
-		layoutUtilityPageEntry.setUserId(user.getUserId());
-		layoutUtilityPageEntry.setUserName(user.getFullName());
-
 		if (Validator.isNotNull(externalReferenceCode)) {
 			layoutUtilityPageEntry.setExternalReferenceCode(
 				externalReferenceCode);
@@ -98,6 +90,15 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 				_generateLayoutUtilityPageEntryExternalReferenceCode(
 					groupId, name));
 		}
+
+		layoutUtilityPageEntry.setGroupId(groupId);
+
+		User user = _userLocalService.getUser(userId);
+
+		layoutUtilityPageEntry.setCompanyId(user.getCompanyId());
+		layoutUtilityPageEntry.setUserId(user.getUserId());
+		layoutUtilityPageEntry.setUserName(user.getFullName());
+
 
 		if (plid == 0) {
 			Layout layout = _addLayout(
