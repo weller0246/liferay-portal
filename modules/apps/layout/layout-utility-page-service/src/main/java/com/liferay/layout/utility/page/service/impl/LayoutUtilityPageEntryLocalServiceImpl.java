@@ -87,8 +87,7 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 		}
 		else {
 			layoutUtilityPageEntry.setExternalReferenceCode(
-				_generateLayoutUtilityPageEntryExternalReferenceCode(
-					groupId, name));
+				_getExternalReferenceCode(groupId, name));
 		}
 
 		layoutUtilityPageEntry.setGroupId(groupId);
@@ -98,7 +97,6 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 		layoutUtilityPageEntry.setCompanyId(user.getCompanyId());
 		layoutUtilityPageEntry.setUserId(user.getUserId());
 		layoutUtilityPageEntry.setUserName(user.getFullName());
-
 
 		if (plid == 0) {
 			Layout layout = _addLayout(
@@ -403,40 +401,33 @@ public class LayoutUtilityPageEntryLocalServiceImpl
 		return copyDLFileEntry.getFileEntryId();
 	}
 
-	private String _generateLayoutUtilityPageEntryExternalReferenceCode(
-		long groupId, String name) {
+	private String _getColorSchemeId(long companyId, String themeId) {
+		ColorScheme colorScheme = _themeLocalService.getColorScheme(
+			companyId, themeId, StringPool.BLANK);
 
-		String layoutUtilityPageEntryReferenceCode = StringUtil.toLowerCase(
-			name.trim());
+		return colorScheme.getColorSchemeId();
+	}
 
-		layoutUtilityPageEntryReferenceCode = StringUtil.replace(
-			layoutUtilityPageEntryReferenceCode, CharPool.SPACE, CharPool.DASH);
+	private String _getExternalReferenceCode(long groupId, String name) {
+		String externalReferenceCode = StringUtil.toLowerCase(name.trim());
 
-		String curLayoutUtilityPageEntryReferenceCode =
-			layoutUtilityPageEntryReferenceCode;
+		externalReferenceCode = StringUtil.replace(
+			externalReferenceCode, CharPool.SPACE, CharPool.DASH);
 
 		int count = 0;
 
 		while (true) {
 			LayoutUtilityPageEntry layoutUtilityPageEntry =
 				layoutUtilityPageEntryPersistence.fetchByERC_G(
-					curLayoutUtilityPageEntryReferenceCode, groupId);
+					externalReferenceCode, groupId);
 
 			if (layoutUtilityPageEntry == null) {
-				return curLayoutUtilityPageEntryReferenceCode;
+				return externalReferenceCode;
 			}
 
-			curLayoutUtilityPageEntryReferenceCode =
-				curLayoutUtilityPageEntryReferenceCode + CharPool.DASH +
-					count++;
+			externalReferenceCode =
+				externalReferenceCode + CharPool.DASH + count++;
 		}
-	}
-
-	private String _getColorSchemeId(long companyId, String themeId) {
-		ColorScheme colorScheme = _themeLocalService.getColorScheme(
-			companyId, themeId, StringPool.BLANK);
-
-		return colorScheme.getColorSchemeId();
 	}
 
 	private String _getUniqueCopyName(
