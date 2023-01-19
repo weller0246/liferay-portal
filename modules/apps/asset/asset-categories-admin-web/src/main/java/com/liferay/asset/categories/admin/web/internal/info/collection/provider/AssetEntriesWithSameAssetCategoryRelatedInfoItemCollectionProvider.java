@@ -154,7 +154,7 @@ public class AssetEntriesWithSameAssetCategoryRelatedInfoItemCollectionProvider
 			).descriptionInfoLocalizedValue(
 				InfoLocalizedValue.localize(
 					getClass(),
-					"by-filtering-you-can-narrow-down-the-results-that-" +
+					"by-filtering,-you-can-narrow-down-the-results-that-" +
 						"appear-on-the-page")
 			).labelInfoLocalizedValue(
 				InfoLocalizedValue.localize(getClass(), "filter")
