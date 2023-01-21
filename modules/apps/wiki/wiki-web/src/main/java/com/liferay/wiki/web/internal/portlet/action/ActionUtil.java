@@ -201,6 +201,8 @@ public class ActionUtil {
 			nodeId, wikiGroupServiceConfiguration.frontPageName(), 0);
 
 		if (page == null) {
+			WikiNode node = WikiNodeLocalServiceUtil.getNode(nodeId);
+
 			ThemeDisplay themeDisplay =
 				(ThemeDisplay)portletRequest.getAttribute(
 					WebKeys.THEME_DISPLAY);
@@ -210,8 +212,6 @@ public class ActionUtil {
 
 			serviceContext.setAddGroupPermissions(true);
 			serviceContext.setAddGuestPermissions(true);
-
-			WikiNode node = WikiNodeLocalServiceUtil.getNode(nodeId);
 
 			boolean workflowEnabled = WorkflowThreadLocal.isEnabled();
 
