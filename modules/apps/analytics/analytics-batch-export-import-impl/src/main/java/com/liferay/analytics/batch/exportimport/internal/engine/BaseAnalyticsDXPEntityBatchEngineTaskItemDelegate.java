@@ -90,12 +90,13 @@ public abstract class BaseAnalyticsDXPEntityBatchEngineTaskItemDelegate
 	protected void getSearchContext(SearchUtil.SearchContext searchContext) {
 		searchContext.setCompanyId(contextCompany.getCompanyId());
 		searchContext.setGroupIds(new long[] {0});
-		searchContext.setUserId(0);
-		searchContext.setVulcanCheckPermissions(false);
 
 		if (contextUser.getLocale() != null) {
 			searchContext.setLocale(contextUser.getLocale());
 		}
+
+		searchContext.setUserId(0);
+		searchContext.setVulcanCheckPermissions(false);
 	}
 
 }
