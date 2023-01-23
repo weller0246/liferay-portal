@@ -170,16 +170,16 @@ public class NotificationTemplateLocalServiceImpl
 			notificationRecipient);
 
 		_addNotificationRecipientSetting(
-			LocaleUtil.getDefault(), "to",
-			notificationRecipient.getNotificationRecipientId(), user,
-			externalReferenceCode);
+			null, "from", notificationRecipient.getNotificationRecipientId(),
+			user, externalReferenceCode);
 		_addNotificationRecipientSetting(
 			LocaleUtil.getDefault(), "fromName",
 			notificationRecipient.getNotificationRecipientId(), user,
 			externalReferenceCode);
 		_addNotificationRecipientSetting(
-			null, "from", notificationRecipient.getNotificationRecipientId(),
-			user, externalReferenceCode);
+			LocaleUtil.getDefault(), "to",
+			notificationRecipient.getNotificationRecipientId(), user,
+			externalReferenceCode);
 
 		return notificationTemplate;
 	}
