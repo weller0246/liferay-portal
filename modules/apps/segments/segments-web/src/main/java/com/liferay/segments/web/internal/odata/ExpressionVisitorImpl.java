@@ -425,7 +425,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		throw new UnsupportedOperationException(
 			StringBundler.concat(
 				"Unsupported types in _sub with arithmetic operator SUB with ",
-				"left type ", left.getClass(), "and right type ",
+				"left type ", left.getClass(), " and right type ",
 				right.getClass()));
 	}
 
