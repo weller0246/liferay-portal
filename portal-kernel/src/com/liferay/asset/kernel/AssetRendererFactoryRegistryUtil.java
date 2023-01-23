@@ -41,7 +41,7 @@ public class AssetRendererFactoryRegistryUtil {
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
 				companyId,
-				_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
+				_companyAssetRenderFactoriesServiceTrackerMap,
 				false));
 	}
 
@@ -51,7 +51,7 @@ public class AssetRendererFactoryRegistryUtil {
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
 				companyId,
-				_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
+				_companyAssetRenderFactoriesServiceTrackerMap,
 				filterSelectable));
 	}
 
@@ -94,7 +94,7 @@ public class AssetRendererFactoryRegistryUtil {
 			Map<String, AssetRendererFactory<?>> assetRenderFactories =
 				_filterAssetRendererFactories(
 					companyId,
-					_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap,
+					_companyAssetRenderFactoriesServiceTrackerMap,
 					filterSelectable);
 
 			long[] classNameIds = new long[assetRenderFactories.size()];
@@ -172,7 +172,7 @@ public class AssetRendererFactoryRegistryUtil {
 		SystemBundleUtil.getBundleContext();
 
 	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_classNameAssetRenderFactoriesByCompanyIdServiceTrackerMap =
+		_companyAssetRenderFactoriesServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				_bundleContext,
 				(Class<AssetRendererFactory<?>>)
