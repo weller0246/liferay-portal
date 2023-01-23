@@ -24,12 +24,11 @@ import com.liferay.notification.service.NotificationRecipientSettingLocalService
 import com.liferay.notification.service.NotificationTemplateLocalService;
 import com.liferay.portal.kernel.model.User;
 import com.liferay.portal.kernel.test.rule.AggregateTestRule;
+import com.liferay.portal.kernel.test.util.RandomTestUtil;
 import com.liferay.portal.kernel.test.util.TestPropsValues;
 import com.liferay.portal.kernel.util.LocaleUtil;
 import com.liferay.portal.test.rule.Inject;
 import com.liferay.portal.test.rule.LiferayIntegrationTestRule;
-
-import java.util.UUID;
 
 import org.junit.Assert;
 import org.junit.ClassRule;
@@ -49,12 +48,9 @@ public class NotificationTemplateLocalServiceTest {
 		new LiferayIntegrationTestRule();
 
 	@Test
-	public void testAddNotificationTemplateByExternalReferenceCode()
-		throws Exception {
-
+	public void testAddNotificationTemplate() throws Exception {
+		String externalReferenceCode = RandomTestUtil.randomString();
 		User user = TestPropsValues.getUser();
-
-		String externalReferenceCode = String.valueOf(UUID.randomUUID());
 
 		NotificationTemplate notificationTemplate =
 			_notificationTemplateLocalService.addNotificationTemplate(

@@ -414,7 +414,7 @@ public class ObjectDefinitionLocalServiceTest {
 
 	@Test
 	public void testAddObjectDefinition() throws Exception {
-		String externalReferenceCode = String.valueOf(UUID.randomUUID());
+		String externalReferenceCode = RandomTestUtil.randomString();
 		User user = TestPropsValues.getUser();
 
 		ObjectDefinition objectDefinition =
