@@ -86,6 +86,7 @@ public class PoshiElementAttribute
 		}
 
 		sb.append(" = ");
+
 		value = value.replace("\"", "\\\"");
 
 		if (parentPoshiElement.isQuotedContent(value)) {
