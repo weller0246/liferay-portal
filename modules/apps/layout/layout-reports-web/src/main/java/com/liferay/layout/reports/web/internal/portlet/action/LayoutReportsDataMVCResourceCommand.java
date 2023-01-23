@@ -235,6 +235,15 @@ public class LayoutReportsDataMVCResourceCommand
 		PortletRequest portletRequest, PortletResponse portletResponse,
 		Layout layout) {
 
+		List<Locale> availableLocales = new ArrayList<>();
+
+		Group group = _groupLocalService.fetchGroup(layout.getGroupId());
+
+		if (group != null) {
+			availableLocales.addAll(
+				_language.getAvailableLocales(group.getGroupId()));
+		}
+
 		Locale defaultLocale = _getDefaultLocale(layout);
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)portletRequest.getAttribute(
@@ -242,15 +251,6 @@ public class LayoutReportsDataMVCResourceCommand
 
 		String canonicalURL = _getCanonicalURL(
 			_getCompleteURL(portletRequest), layout, themeDisplay);
-
-		Group group = _groupLocalService.fetchGroup(layout.getGroupId());
-
-		List<Locale> availableLocales = new ArrayList<>();
-
-		if (group != null) {
-			availableLocales.addAll(
-				_language.getAvailableLocales(group.getGroupId()));
-		}
 
 		return JSONUtil.putAll(
 			(Object[])TransformUtil.transformToArray(
