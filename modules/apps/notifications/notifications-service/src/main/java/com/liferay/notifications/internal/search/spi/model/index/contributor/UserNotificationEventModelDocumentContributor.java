@@ -37,10 +37,10 @@ public class UserNotificationEventModelDocumentContributor
 	public void contribute(
 		Document document, UserNotificationEvent userNotificationEvent) {
 
-		document.addKeyword("archived", userNotificationEvent.isArchived());
 		document.addDate(
 			Field.CREATE_DATE, new Date(userNotificationEvent.getTimestamp()));
 		document.addKeyword(Field.USER_ID, userNotificationEvent.getUserId());
+		document.addKeyword("archived", userNotificationEvent.isArchived());
 	}
 
 }
