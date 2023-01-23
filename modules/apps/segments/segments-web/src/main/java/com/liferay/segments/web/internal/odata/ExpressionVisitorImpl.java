@@ -415,8 +415,8 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 			}
 			catch (ParseException parseException) {
 				throw new ExpressionVisitException(
-					"Only a date with ISO 8601 format is supported as a " +
-						"left operator " + parseException.getMessage());
+					"Only a date with ISO 8601 format is supported as a left " +
+						"operator " + parseException.getMessage());
 			}
 		}
 
