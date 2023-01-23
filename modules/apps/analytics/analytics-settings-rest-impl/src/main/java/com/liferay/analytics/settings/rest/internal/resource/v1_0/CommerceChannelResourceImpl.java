@@ -30,7 +30,6 @@ import com.liferay.portal.vulcan.pagination.Pagination;
 
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -69,8 +68,6 @@ public class CommerceChannelResourceImpl
 			Collectors.toMap(
 				AnalyticsChannel::getId, AnalyticsChannel::getName));
 
-		Locale preferredLocale = contextAcceptLanguage.getPreferredLocale();
-
 		return Page.of(
 			transform(
 				_groupService.search(
@@ -78,10 +75,11 @@ public class CommerceChannelResourceImpl
 					_getParams(), pagination.getStartPosition(),
 					pagination.getEndPosition(),
 					SortUtil.getIgnoreCaseOrderByComparator(
-						preferredLocale, sorts)),
+						contextAcceptLanguage.getPreferredLocale(), sorts)),
 				group -> _commerceChannelDTOConverter.toDTO(
 					new CommerceChannelDTOConverterContext(
-						group.getGroupId(), preferredLocale,
+						group.getGroupId(),
+						contextAcceptLanguage.getPreferredLocale(),
 						analyticsChannelsMap),
 					group)),
 			pagination,
