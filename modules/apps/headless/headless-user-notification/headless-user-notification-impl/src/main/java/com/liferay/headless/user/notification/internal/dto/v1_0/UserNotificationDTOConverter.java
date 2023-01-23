@@ -72,19 +72,28 @@ public class UserNotificationDTOConverter
 
 		return new UserNotification() {
 			{
-				if (dtoConverterContext != null) {
-					actions = dtoConverterContext.getActions();
-				}
-
 				dateCreated = new Date(userNotificationEvent.getTimestamp());
 				id = userNotificationEvent.getUserNotificationEventId();
 				message = _getNotificationMessage(
 					dtoConverterContext, userNotificationEvent);
 				read = userNotificationEvent.isArchived();
 
-				if (jsonObject.has("notificationType")) {
-					type = jsonObject.getInt("notificationType");
-				}
+				setActions(
+					()-> {
+						if (dtoConverterContext == null) {
+							return null;
+						}
+
+						return dtoConverterContext.getActions();
+					});
+				setType(
+					()-> {
+						if (!jsonObject.has("notificationType")) {
+							return null;
+						}
+
+						return jsonObject.getInt("notificationType");
+					});
 			}
 		};
 	}
