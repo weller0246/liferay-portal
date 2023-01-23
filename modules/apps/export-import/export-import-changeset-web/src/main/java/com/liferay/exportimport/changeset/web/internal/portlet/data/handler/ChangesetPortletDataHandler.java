@@ -182,15 +182,17 @@ public class ChangesetPortletDataHandler extends BasePortletDataHandler {
 			}
 
 			for (StagedModel stagedModel : changeset.getStagedModels()) {
-				if (stagedModel != null) {
-					try {
-						StagedModelDataHandlerUtil.exportStagedModel(
-							portletDataContext, stagedModel);
-					}
-					catch (PortletDataException portletDataException) {
-						throw new ExportImportRuntimeException(
-							portletDataException);
-					}
+				if (stagedModel == null) {
+					continue;
+				}
+
+				try {
+					StagedModelDataHandlerUtil.exportStagedModel(
+						portletDataContext, stagedModel);
+				}
+				catch (PortletDataException portletDataException) {
+					throw new ExportImportRuntimeException(
+						portletDataException);
 				}
 			}
 		}

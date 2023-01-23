@@ -217,20 +217,22 @@ public class EventRemotePropagatorExportImportLifecycleListener
 		HttpPrincipal httpPrincipal = _getHttpPrincipal(
 			exportImportLifecycleEvent);
 
-		if (httpPrincipal != null) {
-			try {
-				StagingServiceHttp.propagateExportImportLifecycleEvent(
-					httpPrincipal, exportImportLifecycleEvent.getCode(),
-					exportImportLifecycleEvent.getProcessFlag(),
-					exportImportLifecycleEvent.getProcessId(),
-					exportImportLifecycleEvent.getAttributes());
-			}
-			catch (PortalException portalException) {
-				_log.error(
-					"Unable to propagate staging lifecycle event to the " +
-						"remote live site",
-					portalException);
-			}
+		if (httpPrincipal == null) {
+			return;
+		}
+
+		try {
+			StagingServiceHttp.propagateExportImportLifecycleEvent(
+				httpPrincipal, exportImportLifecycleEvent.getCode(),
+				exportImportLifecycleEvent.getProcessFlag(),
+				exportImportLifecycleEvent.getProcessId(),
+				exportImportLifecycleEvent.getAttributes());
+		}
+		catch (PortalException portalException) {
+			_log.error(
+				"Unable to propagate staging lifecycle event to the " +
+					"remote live site",
+				portalException);
 		}
 	}
 
