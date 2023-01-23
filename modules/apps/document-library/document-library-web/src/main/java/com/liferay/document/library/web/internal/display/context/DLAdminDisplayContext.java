@@ -931,11 +931,11 @@ public class DLAdminDisplayContext {
 
 		DLFileEntry dlFileEntry = liferayFileEntry.getDLFileEntry();
 
-		List<String> listTreePath = Arrays.asList(
+		List<String> treePaths = Arrays.asList(
 			StringUtil.split(
 				dlFileEntry.getTreePath(), CharPool.FORWARD_SLASH));
 
-		return listTreePath.contains(String.valueOf(folderId));
+		return treePaths.contains(String.valueOf(folderId));
 	}
 
 	private void _setPortletPreference(String name, String value) {
