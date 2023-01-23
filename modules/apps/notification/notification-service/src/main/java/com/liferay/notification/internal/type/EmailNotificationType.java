@@ -138,11 +138,11 @@ public class EmailNotificationType extends BaseNotificationType {
 	public void sendNotification(NotificationContext notificationContext)
 		throws PortalException {
 
+		long groupId = 0;
+
 		User user = userLocalService.getUser(notificationContext.getUserId());
 
 		Group userGroup = user.getGroup();
-
-		long groupId = 0;
 
 		if (userGroup != null) {
 			groupId = userGroup.getGroupId();
