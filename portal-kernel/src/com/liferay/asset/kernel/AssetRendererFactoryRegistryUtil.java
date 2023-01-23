@@ -40,8 +40,7 @@ public class AssetRendererFactoryRegistryUtil {
 
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
-				companyId,
-				_companyAssetRenderFactoriesServiceTrackerMap,
+				companyId, _companyAssetRenderFactoriesServiceTrackerMap,
 				false));
 	}
 
@@ -50,8 +49,7 @@ public class AssetRendererFactoryRegistryUtil {
 
 		return ListUtil.fromMapValues(
 			_filterAssetRendererFactories(
-				companyId,
-				_companyAssetRenderFactoriesServiceTrackerMap,
+				companyId, _companyAssetRenderFactoriesServiceTrackerMap,
 				filterSelectable));
 	}
 
@@ -93,8 +91,7 @@ public class AssetRendererFactoryRegistryUtil {
 		if (companyId > 0) {
 			Map<String, AssetRendererFactory<?>> assetRenderFactories =
 				_filterAssetRendererFactories(
-					companyId,
-					_companyAssetRenderFactoriesServiceTrackerMap,
+					companyId, _companyAssetRenderFactoriesServiceTrackerMap,
 					filterSelectable);
 
 			long[] classNameIds = new long[assetRenderFactories.size()];
@@ -172,6 +169,20 @@ public class AssetRendererFactoryRegistryUtil {
 		SystemBundleUtil.getBundleContext();
 
 	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
+		_classNameAssetRenderFactoriesServiceTrackerMap =
+			ServiceTrackerMapFactory.openSingleValueMap(
+				_bundleContext,
+				(Class<AssetRendererFactory<?>>)
+					(Class<?>)AssetRendererFactory.class,
+				null,
+				(serviceReference, emitter) -> {
+					AssetRendererFactory<?> assetRendererFactory =
+						_bundleContext.getService(serviceReference);
+
+					emitter.emit(assetRendererFactory.getClassName());
+				});
+
+	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
 		_companyAssetRenderFactoriesServiceTrackerMap =
 			ServiceTrackerMapFactory.openSingleValueMap(
 				_bundleContext,
@@ -196,20 +207,6 @@ public class AssetRendererFactoryRegistryUtil {
 					else {
 						emitter.emit(className);
 					}
-				});
-
-	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
-		_classNameAssetRenderFactoriesServiceTrackerMap =
-			ServiceTrackerMapFactory.openSingleValueMap(
-				_bundleContext,
-				(Class<AssetRendererFactory<?>>)
-					(Class<?>)AssetRendererFactory.class,
-				null,
-				(serviceReference, emitter) -> {
-					AssetRendererFactory<?> assetRendererFactory =
-						_bundleContext.getService(serviceReference);
-
-					emitter.emit(assetRendererFactory.getClassName());
 				});
 
 	private static final ServiceTrackerMap<String, AssetRendererFactory<?>>
