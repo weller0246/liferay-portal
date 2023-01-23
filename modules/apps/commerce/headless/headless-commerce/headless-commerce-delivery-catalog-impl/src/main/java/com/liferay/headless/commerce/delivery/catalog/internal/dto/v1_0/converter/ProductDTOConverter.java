@@ -96,7 +96,6 @@ public class ProductDTOConverter
 
 						return cProduct.getExternalReferenceCode();
 					});
-
 				setUrlImage(
 					() -> {
 						Company company = _companyLocalService.getCompany(
