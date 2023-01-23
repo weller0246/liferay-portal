@@ -69,7 +69,7 @@ public class UserNotificationResourceImpl
 			throw new NotFoundException();
 		}
 
-		return _getPageUserNotification(
+		return _getUserNotificationPage(
 			filter, pagination, search, sorts, contextUser.getUserId());
 	}
 
@@ -83,7 +83,7 @@ public class UserNotificationResourceImpl
 			throw new NotFoundException();
 		}
 
-		return _getPageUserNotification(
+		return _getUserNotificationPage(
 			filter, pagination, search, sorts, userAccountId);
 	}
 
@@ -134,7 +134,7 @@ public class UserNotificationResourceImpl
 			userNotificationEvent.getCompanyId(), false);
 	}
 
-	private Page<UserNotification> _getPageUserNotification(
+	private Page<UserNotification> _getUserNotificationPage(
 			Filter filter, Pagination pagination, String search, Sort[] sorts,
 			long userId)
 		throws Exception {
