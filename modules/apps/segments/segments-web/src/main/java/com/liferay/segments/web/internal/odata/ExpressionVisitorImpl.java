@@ -345,7 +345,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 		}
 		catch (DateTimeParseException dateTimeParseException) {
 			throw new ExpressionVisitException(
-				"Invalid duration, use a correct format " +
+				"Invalid duration, use a correct format: " +
 					dateTimeParseException.getMessage());
 		}
 	}
@@ -424,7 +424,7 @@ public class ExpressionVisitorImpl implements ExpressionVisitor<Object> {
 
 		throw new UnsupportedOperationException(
 			StringBundler.concat(
-				"Unsupported types in _sub with Arithmetic Operator SUB with ",
+				"Unsupported types in _sub with arithmetic operator SUB with ",
 				"left type ", left.getClass(), "and right type ",
 				right.getClass()));
 	}
