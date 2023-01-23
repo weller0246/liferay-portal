@@ -473,7 +473,7 @@ public class DBPartitionUtil {
 					_log.debug(
 						StringBundler.concat(
 							"Using database schema ", schemaName,
-							" and companyId ", companyId));
+							" and company ", companyId));
 				}
 			}
 
