@@ -39,6 +39,8 @@ if (enableKBArticleRatings && kbArticle.isDraft()) {
 	}
 }
 
+ViewKBArticleDisplayContext viewKBArticleDisplayContext = new ViewKBArticleDisplayContext(liferayPortletRequest, liferayPortletResponse);
+
 if (Validator.isNotNull(backURL)) {
 	portletDisplay.setURLBack(backURL);
 }
@@ -48,10 +50,9 @@ boolean portletTitleBasedNavigation = GetterUtil.getBoolean(portletConfig.getIni
 if (portletTitleBasedNavigation) {
 	portletDisplay.setShowBackIcon(true);
 	portletDisplay.setURLBack(redirect);
+
 	renderResponse.setTitle(kbArticle.getTitle());
 }
-
-ViewKBArticleDisplayContext viewKBArticleDisplayContext = new ViewKBArticleDisplayContext(liferayPortletRequest, liferayPortletResponse);
 %>
 
 <c:if test="<%= portletTitleBasedNavigation %>">
