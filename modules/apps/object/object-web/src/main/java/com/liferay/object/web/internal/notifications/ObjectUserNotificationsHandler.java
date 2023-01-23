@@ -98,8 +98,8 @@ public class ObjectUserNotificationsHandler
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		return _getMessage(jsonObject);
 	}

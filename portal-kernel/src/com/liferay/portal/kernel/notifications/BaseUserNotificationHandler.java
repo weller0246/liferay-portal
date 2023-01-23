@@ -64,9 +64,6 @@ public abstract class BaseUserNotificationHandler
 			else {
 				Locale locale = serviceContext.getLocale();
 
-				String portletTitle = PortalUtil.getPortletTitle(
-					getPortletId(), locale);
-
 				String title = LanguageUtil.get(
 					locale, "notification-no-longer-applies");
 
@@ -76,7 +73,9 @@ public abstract class BaseUserNotificationHandler
 					new String[] {
 						LanguageUtil.format(
 							locale, "notification-for-x-was-deleted",
-							portletTitle, false),
+							PortalUtil.getPortletTitle(
+								getPortletId(), locale),
+							false),
 						title
 					});
 

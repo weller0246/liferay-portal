@@ -58,8 +58,8 @@ public class MicroblogsUserNotificationHandler
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		String title = StringPool.BLANK;
 

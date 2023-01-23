@@ -68,7 +68,7 @@ public class ExportImportUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	@Override
@@ -109,12 +109,12 @@ public class ExportImportUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	private String _getMessage(
-			ServiceContext serviceContext,
-			UserNotificationEvent userNotificationEvent)
+			UserNotificationEvent userNotificationEvent,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		Locale locale = _portal.getLocale(serviceContext.getRequest());

@@ -148,8 +148,8 @@ public abstract class BaseModelUserNotificationHandler
 
 	protected String getTitle(
 			JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-			ServiceContext serviceContext,
-			UserNotificationEvent userNotificationEvent)
+			UserNotificationEvent userNotificationEvent,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		String message = StringPool.BLANK;
@@ -197,7 +197,7 @@ public abstract class BaseModelUserNotificationHandler
 		}
 
 		return getTitle(
-			jsonObject, assetRenderer, serviceContext, userNotificationEvent);
+			jsonObject, assetRenderer, userNotificationEvent, serviceContext);
 	}
 
 	private String _getUserFullName(JSONObject jsonObject) {

@@ -83,7 +83,7 @@ public class InviteMembersUserNotificationHandler
 		}
 
 		String title = _getTitle(
-			memberRequest, serviceContext, userNotificationEvent);
+			memberRequest, userNotificationEvent, serviceContext);
 
 		LiferayPortletResponse liferayPortletResponse =
 			serviceContext.getLiferayPortletResponse();
@@ -160,7 +160,7 @@ public class InviteMembersUserNotificationHandler
 			return StringPool.BLANK;
 		}
 
-		return _getTitle(memberRequest, serviceContext, userNotificationEvent);
+		return _getTitle(memberRequest, userNotificationEvent, serviceContext);
 	}
 
 	private String _getSiteDescriptiveName(
@@ -193,8 +193,9 @@ public class InviteMembersUserNotificationHandler
 	}
 
 	private String _getTitle(
-			MemberRequest memberRequest, ServiceContext serviceContext,
-			UserNotificationEvent userNotificationEvent)
+			MemberRequest memberRequest,
+			UserNotificationEvent userNotificationEvent,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		Group group = null;

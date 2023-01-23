@@ -93,8 +93,8 @@ public class CommentUserNotificationHandler
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		MBDiscussion mbDiscussion = _fetchDiscussion(jsonObject);
 

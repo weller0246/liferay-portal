@@ -107,7 +107,7 @@ public class WorkflowTaskUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class WorkflowTaskUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	private WorkflowTask _fetchWorkflowTask(
@@ -204,8 +204,8 @@ public class WorkflowTaskUserNotificationHandler
 	}
 
 	private String _getMessage(
-			ServiceContext serviceContext,
-			UserNotificationEvent userNotificationEvent)
+			UserNotificationEvent userNotificationEvent,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject(

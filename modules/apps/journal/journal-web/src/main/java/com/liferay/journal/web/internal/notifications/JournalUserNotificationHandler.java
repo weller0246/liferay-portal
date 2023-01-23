@@ -51,8 +51,8 @@ public class JournalUserNotificationHandler
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		String title = StringPool.BLANK;
 

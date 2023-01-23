@@ -61,7 +61,7 @@ public class PublicationInviteUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	@Override
@@ -99,12 +99,12 @@ public class PublicationInviteUserNotificationHandler
 			ServiceContext serviceContext)
 		throws Exception {
 
-		return _getMessage(serviceContext, userNotificationEvent);
+		return _getMessage(userNotificationEvent, serviceContext);
 	}
 
 	private String _getMessage(
-			ServiceContext serviceContext,
-			UserNotificationEvent userNotificationEvent)
+			UserNotificationEvent userNotificationEvent,
+			ServiceContext serviceContext)
 		throws Exception {
 
 		JSONObject jsonObject = _jsonFactory.createJSONObject(

@@ -69,8 +69,8 @@ public class MentionsUserNotificationHandler
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		MBMessage mbMessage = _mbMessageLocalService.fetchMBMessage(
 			jsonObject.getLong("classPK"));

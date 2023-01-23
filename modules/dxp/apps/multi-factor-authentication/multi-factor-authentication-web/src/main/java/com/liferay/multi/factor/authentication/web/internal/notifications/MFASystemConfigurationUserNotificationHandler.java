@@ -74,15 +74,15 @@ public class MFASystemConfigurationUserNotificationHandler
 			new String[] {
 				body,
 				getTitle(
-					jsonObject, null, serviceContext, userNotificationEvent)
+					jsonObject, null, userNotificationEvent, serviceContext)
 			});
 	}
 
 	@Override
 	protected String getTitle(
 		JSONObject jsonObject, AssetRenderer<?> assetRenderer,
-		ServiceContext serviceContext,
-		UserNotificationEvent userNotificationEvent) {
+		UserNotificationEvent userNotificationEvent,
+		ServiceContext serviceContext) {
 
 		return _language.get(
 			serviceContext.getLocale(), "multi-factor-authentication");
