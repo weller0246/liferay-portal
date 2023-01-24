@@ -151,7 +151,6 @@ public class DLServiceVerifyProcess extends VerifyProcess {
 		_companyLocalService.forEachCompanyId(
 			companyId -> {
 				Group group = _groupLocalService.getCompanyGroup(companyId);
-
 				String name =
 					com.liferay.portal.kernel.metadata.RawMetadataProcessor.
 						TIKA_RAW_METADATA;

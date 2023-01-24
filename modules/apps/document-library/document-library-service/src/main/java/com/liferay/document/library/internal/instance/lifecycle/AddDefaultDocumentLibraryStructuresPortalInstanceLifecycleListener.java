@@ -73,6 +73,10 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 	}
 
 	private void _addDLRawMetadataStructures(long companyId) throws Exception {
+		String name =
+			com.liferay.portal.kernel.metadata.RawMetadataProcessor.
+				TIKA_RAW_METADATA;
+
 		ServiceContext serviceContext = new ServiceContext();
 
 		serviceContext.setAddGroupPermissions(true);
@@ -85,10 +89,6 @@ public class AddDefaultDocumentLibraryStructuresPortalInstanceLifecycleListener
 		long defaultUserId = _userLocalService.getDefaultUserId(companyId);
 
 		serviceContext.setUserId(defaultUserId);
-
-		String name =
-			com.liferay.portal.kernel.metadata.RawMetadataProcessor.
-				TIKA_RAW_METADATA;
 
 		if (!_ddmStructureLocalService.hasStructure(
 				group.getGroupId(),
