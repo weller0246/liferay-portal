@@ -48,10 +48,6 @@ public class MessageBoardAttachmentResourceTest
 	public void setUp() throws Exception {
 		super.setUp();
 
-		ServiceContext serviceContext = new ServiceContext();
-
-		serviceContext.setScopeGroupId(testGroup.getGroupId());
-
 		MBMessage mbMessage = _addMBMessage();
 
 		_mbThread = mbMessage.getThread();
