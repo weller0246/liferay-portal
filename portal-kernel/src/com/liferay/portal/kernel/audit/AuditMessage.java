@@ -137,7 +137,7 @@ public class AuditMessage implements Serializable {
 			_userLogin = auditRequestThreadLocal.getRealUserLogin();
 		}
 
-		// LPS-172507: Suppress error that happens during testing
+		// LPS-172507
 
 		else if ((realUserId > 0) && !PortalRunMode.isTestMode()) {
 			_log.error(
