@@ -157,6 +157,7 @@ public class ReportEngineImpl implements ReportEngine {
 	@Deactivate
 	protected void deactivate() {
 		_reportFillManagerServiceTrackerMap.close();
+
 		_reportFormatExporterServiceTrackerMap.close();
 	}
 
