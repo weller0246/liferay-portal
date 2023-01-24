@@ -1867,12 +1867,12 @@ public class ContentPageEditorDisplayContext {
 				segmentsExperienceId);
 
 		if ((segmentsExperience != null) && !segmentsExperience.isActive()) {
-			List<SegmentsExperimentRel> segmentsExperimentRelList =
+			List<SegmentsExperimentRel> segmentsExperimentRels =
 				_segmentsExperimentRelLocalService.
 					getSegmentsExperimentRelsBySegmentsExperienceId(
 						segmentsExperienceId);
 
-			if (ListUtil.isNotEmpty(segmentsExperimentRelList)) {
+			if (ListUtil.isNotEmpty(segmentsExperimentRels)) {
 				return true;
 			}
 		}
