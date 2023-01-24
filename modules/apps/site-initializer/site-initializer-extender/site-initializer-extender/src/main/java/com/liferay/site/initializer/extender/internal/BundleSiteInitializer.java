@@ -3457,17 +3457,16 @@ public class BundleSiteInitializer implements SiteInitializer {
 	private void _addOrUpdateRole(JSONObject jsonObject, ServiceContext serviceContext)
 		throws Exception {
 
-		String name = jsonObject.getString("name");
-
 		Role role = _roleLocalService.fetchRole(
-			serviceContext.getCompanyId(), name);
+			serviceContext.getCompanyId(), jsonObject.getString("name"));
 
 		if (role == null) {
 			if (jsonObject.getInt("type") == RoleConstants.TYPE_ACCOUNT) {
 				com.liferay.account.model.AccountRole accountRole =
 					_accountRoleLocalService.addAccountRole(
 						serviceContext.getUserId(),
-						AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT, name,
+						AccountConstants.ACCOUNT_ENTRY_ID_DEFAULT,
+						jsonObject.getString("name"),
 						SiteInitializerUtil.toMap(
 							jsonObject.getString("name_i18n")),
 						SiteInitializerUtil.toMap(
@@ -3477,7 +3476,8 @@ public class BundleSiteInitializer implements SiteInitializer {
 			}
 			else {
 				role = _roleLocalService.addRole(
-					serviceContext.getUserId(), null, 0, name,
+					serviceContext.getUserId(), null, 0,
+					jsonObject.getString("name"),
 					SiteInitializerUtil.toMap(
 						jsonObject.getString("name_i18n")),
 					SiteInitializerUtil.toMap(
@@ -3488,7 +3488,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		}
 		else {
 			role = _roleLocalService.updateRole(
-				role.getRoleId(), name,
+				role.getRoleId(), jsonObject.getString("name"),
 				SiteInitializerUtil.toMap(
 					jsonObject.getString("name_i18n")),
 				SiteInitializerUtil.toMap(
