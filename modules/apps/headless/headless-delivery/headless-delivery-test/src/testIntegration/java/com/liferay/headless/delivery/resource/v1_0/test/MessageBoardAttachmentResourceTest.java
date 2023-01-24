@@ -84,6 +84,7 @@ public class MessageBoardAttachmentResourceTest
 					RandomTestUtil.randomString()));
 
 		// Message board attachment associated to a different message board
+		// message
 
 		MBMessage previousMBMessage = _mbMessage;
 
