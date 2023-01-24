@@ -33,6 +33,7 @@ import com.liferay.item.selector.criteria.UUIDItemSelectorReturnType;
 import com.liferay.item.selector.criteria.group.criterion.GroupItemSelectorCriterion;
 import com.liferay.learn.LearnMessage;
 import com.liferay.learn.LearnMessageUtil;
+import com.liferay.petra.function.transform.TransformUtil;
 import com.liferay.petra.reflect.GenericUtil;
 import com.liferay.petra.string.StringBundler;
 import com.liferay.petra.string.StringPool;
@@ -63,7 +64,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import com.liferay.portal.kernel.workflow.WorkflowConstants;
 import com.liferay.users.admin.item.selector.UserItemSelectorCriterion;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -296,25 +296,14 @@ public class ContentDashboardAdminDisplayContext {
 			_contentDashboardItemSubtypePayloads = Collections.emptyList();
 		}
 		else {
-			List<ContentDashboardItemSubtype> contentDashboardItemSubtypes =
-				new ArrayList<>();
-
-			for (String contentDashboardItemSubtypePayload :
-					contentDashboardItemSubtypePayloads) {
-
-				ContentDashboardItemSubtype contentDashboardItemSubtype =
-					ContentDashboardItemSubtypeUtil.
-						toContentDashboardItemSubtype(
-							_contentDashboardItemSubtypeFactoryRegistry,
-							contentDashboardItemSubtypePayload);
-
-				if (contentDashboardItemSubtype != null) {
-					contentDashboardItemSubtypes.add(
-						contentDashboardItemSubtype);
-				}
-			}
-
-			_contentDashboardItemSubtypePayloads = contentDashboardItemSubtypes;
+			_contentDashboardItemSubtypePayloads =
+				TransformUtil.transformToList(
+					contentDashboardItemSubtypePayloads,
+					contentDashboardItemSubtypePayload ->
+						ContentDashboardItemSubtypeUtil.
+							toContentDashboardItemSubtype(
+								_contentDashboardItemSubtypeFactoryRegistry,
+								contentDashboardItemSubtypePayload));
 		}
 
 		return _contentDashboardItemSubtypePayloads;
