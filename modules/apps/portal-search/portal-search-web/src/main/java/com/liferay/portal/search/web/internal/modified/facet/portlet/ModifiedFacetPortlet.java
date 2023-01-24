@@ -123,10 +123,10 @@ public class ModifiedFacetPortlet extends MVCPortlet {
 				parameterName + "From", renderRequest),
 			modifiedFacetDisplayContextBuilder::setFromParameterValue);
 
-		ThemeDisplay themeDisplay = _getThemeDisplay(renderRequest);
-
 		modifiedFacetDisplayContextBuilder.setFrequenciesVisible(
 			modifiedFacetPortletPreferences.isFrequenciesVisible());
+
+		ThemeDisplay themeDisplay = _getThemeDisplay(renderRequest);
 
 		modifiedFacetDisplayContextBuilder.setLocale(themeDisplay.getLocale());
 
