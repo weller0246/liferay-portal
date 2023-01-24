@@ -35,14 +35,14 @@ public class OAuth2RedirectURIInterpolator {
 	public static final String TOKEN_PROTOCOL = "@protocol@";
 
 	public static List<String> interpolateRedirectURIsList(
-		HttpServletRequest httpServletRequest, List<String> redirectURIs,
+		HttpServletRequest httpServletRequest, List<String> redirectURIsList,
 		Portal portal) {
 
-		List<String> interpolattedRedirectURIs = new ArrayList<>();
-
-		boolean secure = portal.isSecure(httpServletRequest);
+		List<String> interpolattedRedirectURIsList = new ArrayList<>();
 
 		String protocol = Http.HTTP;
+
+		boolean secure = portal.isSecure(httpServletRequest);
 
 		if (secure) {
 			protocol = Http.HTTPS;
@@ -59,14 +59,14 @@ public class OAuth2RedirectURIInterpolator {
 			portWithColon = StringPool.BLANK;
 		}
 
-		for (String redirectURI : redirectURIs) {
-			interpolattedRedirectURIs.add(
+		for (String redirectURI : redirectURIsList) {
+			interpolattedRedirectURIsList.add(
 				StringUtil.replace(
 					redirectURI, _TOKENS,
 					new String[] {portWithColon, protocol}));
 		}
 
-		return interpolattedRedirectURIs;
+		return interpolattedRedirectURIsList;
 	}
 
 	private static final String[] _TOKENS = {
