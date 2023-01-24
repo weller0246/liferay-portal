@@ -137,9 +137,6 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
 			_getMockLiferayPortletActionRequest();
 
-		MockLiferayPortletActionResponse mockLiferayPortletActionResponse =
-			new MockLiferayPortletActionResponse();
-
 		_addFragmentEntryLink(_draftLayout, defaultSegmentsExperienceId);
 
 		FragmentEntryLink draftLayoutFragmentEntryLink = _addFragmentEntryLink(
@@ -150,7 +147,8 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 			String.valueOf(segmentsExperience.getSegmentsExperienceId()));
 
 		_mvcActionCommand.processAction(
-			mockLiferayPortletActionRequest, mockLiferayPortletActionResponse);
+			mockLiferayPortletActionRequest,
+			new MockLiferayPortletActionResponse());
 
 		List<FragmentEntryLink>
 			defaultSegmentsExperienceLayoutFragmentEntryLinks =
