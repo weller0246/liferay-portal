@@ -865,22 +865,22 @@ public class OAuth2ApplicationLocalServiceImpl
 		}
 
 		for (String redirectURI : redirectURIsList) {
-			int pos = redirectURI.indexOf(StringPool.POUND);
+			int index = redirectURI.indexOf(StringPool.POUND);
 
-			if (pos != -1) {
+			if (index != -1) {
 				throw new OAuth2ApplicationRedirectURIFragmentException(
 					redirectURI);
 			}
 
-			pos = redirectURI.indexOf(Http.PROTOCOL_DELIMITER);
+			index = redirectURI.indexOf(Http.PROTOCOL_DELIMITER);
 
-			if (pos == -1) {
+			if (index == -1) {
 				throw new OAuth2ApplicationRedirectURISchemeException(
 					redirectURI);
 			}
 
 			String scheme = StringUtil.toLowerCase(
-				redirectURI.substring(0, pos));
+				redirectURI.substring(0, index));
 
 			if (!Objects.equals(
 					scheme, OAuth2RedirectURIInterpolator.TOKEN_PROTOCOL) &&
@@ -893,12 +893,12 @@ public class OAuth2ApplicationLocalServiceImpl
 			}
 
 			String domainAndPath = redirectURI.substring(
-				pos + Http.PROTOCOL_DELIMITER.length());
+				index + Http.PROTOCOL_DELIMITER.length());
 
-			pos = domainAndPath.indexOf(StringPool.SLASH);
+			index = domainAndPath.indexOf(StringPool.SLASH);
 
-			if (pos > -1) {
-				String path = domainAndPath.substring(pos);
+			if (index > -1) {
+				String path = domainAndPath.substring(index);
 
 				String normalizedPath = HttpComponentsUtil.normalizePath(path);
 
