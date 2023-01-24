@@ -14,7 +14,6 @@
 
 package com.liferay.oauth2.provider.redirect;
 
-import com.liferay.oauth2.provider.redirect.OAuth2RedirectURIInterpolator;
 import com.liferay.portal.kernel.util.Portal;
 import com.liferay.portal.test.rule.LiferayUnitTestRule;
 
@@ -51,55 +50,54 @@ public class OAuth2RedirectURIInterpolatorTest {
 	}
 
 	@Test
-	public void testInterpolateRedirectURIsListInsecureDefaultPort() {
-		Mockito.when(
-			_portal.getForwardedPort(_httpServletRequest)
-		).then(
-			new Answer<Integer>() {
+	public void testInterpolateRedirectURIsList() {
 
-				@Override
-				public Integer answer(InvocationOnMock invocation)
-					throws Throwable {
+		// Not secure, default port
 
-					return 80;
-				}
+		_testInterpolateRedirectURIsList(
+			80, "http://localhost/foo", "http://localhost/foo",
+			"http://localhost/foo",
+			Arrays.asList(
+				"http://localhost/foo", "@protocol@://localhost/foo",
+				"http://localhost@port-with-colon@/foo"),
+			false);
 
-			}
-		);
+		// Not secure, nondefault port
 
-		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
+		_testInterpolateRedirectURIsList(
+			8080, "http://localhost/foo", "http://localhost/foo",
+			"http://localhost:8080/foo",
+			Arrays.asList(
+				"http://localhost/foo", "@protocol@://localhost/foo",
+				"http://localhost@port-with-colon@/foo"),
+			false);
 
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
+		// Secure, default port
 
-					return false;
-				}
+		_testInterpolateRedirectURIsList(
+			443, "https://localhost/foo", "https://localhost/foo",
+			"https://localhost/foo",
+			Arrays.asList(
+				"https://localhost/foo", "@protocol@://localhost/foo",
+				"https://localhost@port-with-colon@/foo"),
+			true);
 
-			}
-		);
+		// Secure, nondefault port
 
-		List<String> redirectURIsList = Arrays.asList(
-			"http://localhost/foo", "@protocol@://localhost/foo",
-			"http://localhost@port-with-colon@/foo");
-
-		List<String> interpolatedRedirectURIsList =
-			OAuth2RedirectURIInterpolator.interpolateRedirectURIsList(
-				_httpServletRequest, redirectURIsList, _portal);
-
-		Assert.assertEquals(
-			"http://localhost/foo", interpolatedRedirectURIsList.get(0));
-		Assert.assertEquals(
-			"http://localhost/foo", interpolatedRedirectURIsList.get(1));
-		Assert.assertEquals(
-			"http://localhost/foo", interpolatedRedirectURIsList.get(2));
+		_testInterpolateRedirectURIsList(
+			6443, "https://localhost/foo", "https://localhost/foo",
+			"https://localhost:6443/foo",
+			Arrays.asList(
+				"https://localhost/foo", "@protocol@://localhost/foo",
+				"https://localhost@port-with-colon@/foo"),
+			true);
 	}
 
-	@Test
-	public void testInterpolateRedirectURIsListInsecureNondefaultPort() {
+	private void _testInterpolateRedirectURIsList(
+		int forwardedPort, String interpolatedRedirectURI1,
+		String interpolatedRedirectURI2, String interpolatedRedirectURI3,
+		List<String> redirectURIsList, boolean secure) {
+
 		Mockito.when(
 			_portal.getForwardedPort(_httpServletRequest)
 		).then(
@@ -109,7 +107,7 @@ public class OAuth2RedirectURIInterpolatorTest {
 				public Integer answer(InvocationOnMock invocation)
 					throws Throwable {
 
-					return 8080;
+					return forwardedPort;
 				}
 
 			}
@@ -124,122 +122,22 @@ public class OAuth2RedirectURIInterpolatorTest {
 				public Boolean answer(InvocationOnMock invocation)
 					throws Throwable {
 
-					return false;
+					return secure;
 				}
 
 			}
 		);
-
-		List<String> redirectURIsList = Arrays.asList(
-			"http://localhost/foo", "@protocol@://localhost/foo",
-			"http://localhost@port-with-colon@/foo");
 
 		List<String> interpolatedRedirectURIsList =
 			OAuth2RedirectURIInterpolator.interpolateRedirectURIsList(
 				_httpServletRequest, redirectURIsList, _portal);
 
 		Assert.assertEquals(
-			"http://localhost/foo", interpolatedRedirectURIsList.get(0));
+			interpolatedRedirectURI1, interpolatedRedirectURIsList.get(0));
 		Assert.assertEquals(
-			"http://localhost/foo", interpolatedRedirectURIsList.get(1));
+			interpolatedRedirectURI2, interpolatedRedirectURIsList.get(1));
 		Assert.assertEquals(
-			"http://localhost:8080/foo", interpolatedRedirectURIsList.get(2));
-	}
-
-	@Test
-	public void testInterpolateRedirectURIsListSecureDefaultPort() {
-		Mockito.when(
-			_portal.getForwardedPort(_httpServletRequest)
-		).then(
-			new Answer<Integer>() {
-
-				@Override
-				public Integer answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return 443;
-				}
-
-			}
-		);
-
-		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return true;
-				}
-
-			}
-		);
-
-		List<String> redirectURIsList = Arrays.asList(
-			"https://localhost/foo", "@protocol@://localhost/foo",
-			"https://localhost@port-with-colon@/foo");
-
-		List<String> interpolatedRedirectURIsList =
-			OAuth2RedirectURIInterpolator.interpolateRedirectURIsList(
-				_httpServletRequest, redirectURIsList, _portal);
-
-		Assert.assertEquals(
-			"https://localhost/foo", interpolatedRedirectURIsList.get(0));
-		Assert.assertEquals(
-			"https://localhost/foo", interpolatedRedirectURIsList.get(1));
-		Assert.assertEquals(
-			"https://localhost/foo", interpolatedRedirectURIsList.get(2));
-	}
-
-	@Test
-	public void testInterpolateRedirectURIsListSecureNondefaultPort() {
-		Mockito.when(
-			_portal.getForwardedPort(_httpServletRequest)
-		).then(
-			new Answer<Integer>() {
-
-				@Override
-				public Integer answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return 6443;
-				}
-
-			}
-		);
-
-		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return true;
-				}
-
-			}
-		);
-
-		List<String> redirectURIsList = Arrays.asList(
-			"https://localhost/foo", "@protocol@://localhost/foo",
-			"https://localhost@port-with-colon@/foo");
-
-		List<String> interpolatedRedirectURIsList =
-			OAuth2RedirectURIInterpolator.interpolateRedirectURIsList(
-				_httpServletRequest, redirectURIsList, _portal);
-
-		Assert.assertEquals(
-			"https://localhost/foo", interpolatedRedirectURIsList.get(0));
-		Assert.assertEquals(
-			"https://localhost/foo", interpolatedRedirectURIsList.get(1));
-		Assert.assertEquals(
-			"https://localhost:6443/foo", interpolatedRedirectURIsList.get(2));
+			interpolatedRedirectURI3, interpolatedRedirectURIsList.get(2));
 	}
 
 	@Mock
