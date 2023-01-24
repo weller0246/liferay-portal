@@ -84,7 +84,7 @@ public class MessageBoardAttachmentResourceTest
 					testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getMessageBoardMessageExternalReferenceCode(),
 					RandomTestUtil.randomString()));
 
-		// Message board Attachment associated to a different message board
+		// Message board attachment associated to a different message board
 
 		MBMessage previousMBMessage = _mbMessage;
 
