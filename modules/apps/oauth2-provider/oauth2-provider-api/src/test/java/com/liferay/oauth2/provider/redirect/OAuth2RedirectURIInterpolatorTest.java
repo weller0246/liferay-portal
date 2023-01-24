@@ -53,21 +53,6 @@ public class OAuth2RedirectURIInterpolatorTest {
 	@Test
 	public void testInterpolateRedirectURIsListInsecureDefaultPort() {
 		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return false;
-				}
-
-			}
-		);
-
-		Mockito.when(
 			_portal.getForwardedPort(_httpServletRequest)
 		).then(
 			new Answer<Integer>() {
@@ -77,6 +62,21 @@ public class OAuth2RedirectURIInterpolatorTest {
 					throws Throwable {
 
 					return 80;
+				}
+
+			}
+		);
+
+		Mockito.when(
+			_portal.isSecure(_httpServletRequest)
+		).then(
+			new Answer<Boolean>() {
+
+				@Override
+				public Boolean answer(InvocationOnMock invocation)
+					throws Throwable {
+
+					return false;
 				}
 
 			}
@@ -101,21 +101,6 @@ public class OAuth2RedirectURIInterpolatorTest {
 	@Test
 	public void testInterpolateRedirectURIsListInsecureNondefaultPort() {
 		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return false;
-				}
-
-			}
-		);
-
-		Mockito.when(
 			_portal.getForwardedPort(_httpServletRequest)
 		).then(
 			new Answer<Integer>() {
@@ -125,6 +110,21 @@ public class OAuth2RedirectURIInterpolatorTest {
 					throws Throwable {
 
 					return 8080;
+				}
+
+			}
+		);
+
+		Mockito.when(
+			_portal.isSecure(_httpServletRequest)
+		).then(
+			new Answer<Boolean>() {
+
+				@Override
+				public Boolean answer(InvocationOnMock invocation)
+					throws Throwable {
+
+					return false;
 				}
 
 			}
@@ -149,21 +149,6 @@ public class OAuth2RedirectURIInterpolatorTest {
 	@Test
 	public void testInterpolateRedirectURIsListSecureDefaultPort() {
 		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return true;
-				}
-
-			}
-		);
-
-		Mockito.when(
 			_portal.getForwardedPort(_httpServletRequest)
 		).then(
 			new Answer<Integer>() {
@@ -173,6 +158,21 @@ public class OAuth2RedirectURIInterpolatorTest {
 					throws Throwable {
 
 					return 443;
+				}
+
+			}
+		);
+
+		Mockito.when(
+			_portal.isSecure(_httpServletRequest)
+		).then(
+			new Answer<Boolean>() {
+
+				@Override
+				public Boolean answer(InvocationOnMock invocation)
+					throws Throwable {
+
+					return true;
 				}
 
 			}
@@ -197,21 +197,6 @@ public class OAuth2RedirectURIInterpolatorTest {
 	@Test
 	public void testInterpolateRedirectURIsListSecureNondefaultPort() {
 		Mockito.when(
-			_portal.isSecure(_httpServletRequest)
-		).then(
-			new Answer<Boolean>() {
-
-				@Override
-				public Boolean answer(InvocationOnMock invocation)
-					throws Throwable {
-
-					return true;
-				}
-
-			}
-		);
-
-		Mockito.when(
 			_portal.getForwardedPort(_httpServletRequest)
 		).then(
 			new Answer<Integer>() {
@@ -221,6 +206,21 @@ public class OAuth2RedirectURIInterpolatorTest {
 					throws Throwable {
 
 					return 6443;
+				}
+
+			}
+		);
+
+		Mockito.when(
+			_portal.isSecure(_httpServletRequest)
+		).then(
+			new Answer<Boolean>() {
+
+				@Override
+				public Boolean answer(InvocationOnMock invocation)
+					throws Throwable {
+
+					return true;
 				}
 
 			}
