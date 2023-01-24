@@ -134,13 +134,13 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 			segmentsExperiment.getSegmentsExperimentId(),
 			segmentsExperience.getSegmentsExperienceId(), _serviceContext);
 
-		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
-			_getMockLiferayPortletActionRequest();
-
 		_addFragmentEntryLink(_draftLayout, defaultSegmentsExperienceId);
 
 		FragmentEntryLink draftLayoutFragmentEntryLink = _addFragmentEntryLink(
 			_draftLayout, segmentsExperience.getSegmentsExperienceId());
+
+		MockLiferayPortletActionRequest mockLiferayPortletActionRequest =
+			_getMockLiferayPortletActionRequest();
 
 		mockLiferayPortletActionRequest.setParameter(
 			"segmentsExperienceId",
@@ -157,6 +157,10 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 						_group.getGroupId(), defaultSegmentsExperienceId,
 						_layout.getPlid());
 
+		Assert.assertEquals(
+			defaultSegmentsExperienceLayoutFragmentEntryLinks.toString(), 0,
+			defaultSegmentsExperienceLayoutFragmentEntryLinks.size());
+
 		List<FragmentEntryLink>
 			variantSegmentsExperienceDraftLayoutFragmentEntryLinks =
 				_fragmentEntryLinkLocalService.
@@ -164,7 +168,6 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 						_group.getGroupId(),
 						segmentsExperience.getSegmentsExperienceId(),
 						_draftLayout.getPlid());
-
 		List<FragmentEntryLink>
 			variantSegmentsExperienceLayoutFragmentEntryLinks =
 				_fragmentEntryLinkLocalService.
@@ -173,9 +176,6 @@ public class SaveVariantSegmentsExperienceMVCActionCommandTest {
 						segmentsExperience.getSegmentsExperienceId(),
 						_layout.getPlid());
 
-		Assert.assertEquals(
-			defaultSegmentsExperienceLayoutFragmentEntryLinks.toString(), 0,
-			defaultSegmentsExperienceLayoutFragmentEntryLinks.size());
 		Assert.assertEquals(
 			variantSegmentsExperienceLayoutFragmentEntryLinks.toString(),
 			variantSegmentsExperienceDraftLayoutFragmentEntryLinks.size(),
