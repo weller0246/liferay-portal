@@ -67,9 +67,9 @@ public class CheckNotificationQueueEntryMessageListener
 			_configurationProvider.saveCompanyConfiguration(
 				NotificationQueueConfiguration.class, companyId,
 				HashMapDictionaryBuilder.<String, Object>put(
-					"checkInterval", NotificationConstants.CHECK_INTERVAL
+					"checkInterval", 15
 				).put(
-					"deleteInterval", NotificationConstants.DELETE_INTERVAL
+					"deleteInterval", 43200
 				).build());
 		}
 		catch (ConfigurationException configurationException) {
