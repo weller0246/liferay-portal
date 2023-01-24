@@ -20,7 +20,6 @@ import com.liferay.headless.delivery.client.http.HttpInvoker;
 import com.liferay.message.boards.model.MBMessage;
 import com.liferay.message.boards.model.MBThread;
 import com.liferay.message.boards.test.util.MBTestUtil;
-import com.liferay.portal.kernel.service.ServiceContext;
 import com.liferay.portal.kernel.service.UserLocalServiceUtil;
 import com.liferay.portal.kernel.test.constants.TestDataConstants;
 import com.liferay.portal.kernel.test.util.RandomTestUtil;
@@ -159,6 +158,7 @@ public class MessageBoardAttachmentResourceTest
 				getMultipartFiles());
 	}
 
+	@Override
 	protected MessageBoardAttachment
 			testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_addMessageBoardAttachment()
 		throws Exception {
@@ -171,6 +171,7 @@ public class MessageBoardAttachmentResourceTest
 				getMultipartFiles());
 	}
 
+	@Override
 	protected String
 			testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getMessageBoardMessageExternalReferenceCode()
 		throws Exception {
@@ -211,6 +212,7 @@ public class MessageBoardAttachmentResourceTest
 		return _mbThread.getThreadId();
 	}
 
+	@Override
 	protected MessageBoardAttachment
 			testGetSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_addMessageBoardAttachment()
 		throws Exception {
@@ -223,6 +225,7 @@ public class MessageBoardAttachmentResourceTest
 				getMultipartFiles());
 	}
 
+	@Override
 	protected String
 			testGetSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getMessageBoardMessageExternalReferenceCode()
 		throws Exception {
@@ -230,6 +233,7 @@ public class MessageBoardAttachmentResourceTest
 		return _mbMessage.getExternalReferenceCode();
 	}
 
+	@Override
 	protected Long
 			testGetSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getSiteId()
 		throws Exception {
@@ -245,6 +249,7 @@ public class MessageBoardAttachmentResourceTest
 		return testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_addMessageBoardAttachment();
 	}
 
+	@Override
 	protected String
 			testGraphQLGetSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getMessageBoardMessageExternalReferenceCode()
 		throws Exception {
@@ -252,6 +257,7 @@ public class MessageBoardAttachmentResourceTest
 		return _mbMessage.getExternalReferenceCode();
 	}
 
+	@Override
 	protected Long
 			testGraphQLGetSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getSiteId()
 		throws Exception {
