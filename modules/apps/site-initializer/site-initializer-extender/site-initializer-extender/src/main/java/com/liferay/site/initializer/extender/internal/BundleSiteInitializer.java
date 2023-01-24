@@ -3454,7 +3454,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 			_classLoader, serviceContext, _servletContext);
 	}
 
-	private void _addRole(JSONObject jsonObject, ServiceContext serviceContext)
+	private void _addOrUpdateRole(JSONObject jsonObject, ServiceContext serviceContext)
 		throws Exception {
 
 		String name = jsonObject.getString("name");
@@ -3484,6 +3484,17 @@ public class BundleSiteInitializer implements SiteInitializer {
 					jsonObject.getInt("type"), jsonObject.getString("subtype"),
 					serviceContext);
 			}
+		}
+		else {
+			role = _roleLocalService.updateRole(
+				role.getRoleId(), name,
+				SiteInitializerUtil.toMap(
+					jsonObject.getString("name_i18n")),
+				SiteInitializerUtil.toMap(
+					jsonObject.getString("description")),
+				jsonObject.getString("subtype"),
+				serviceContext
+			);
 		}
 
 		JSONArray jsonArray = jsonObject.getJSONArray("actions");
@@ -3542,7 +3553,7 @@ public class BundleSiteInitializer implements SiteInitializer {
 		JSONArray jsonArray = _jsonFactory.createJSONArray(json);
 
 		for (int i = 0; i < jsonArray.length(); i++) {
-			_addRole(jsonArray.getJSONObject(i), serviceContext);
+			_addOrUpdateRole(jsonArray.getJSONObject(i), serviceContext);
 		}
 
 		_addOrUpdateResourcePermissions(
