@@ -86,7 +86,7 @@ public class MessageBoardAttachmentResourceTest
 		// Message board attachment associated to a different message board
 		// message
 
-		MBMessage previousMBMessage = _mbMessage;
+		MBMessage mbMessage = _mbMessage;
 
 		MessageBoardAttachment newMessageBoardAttachment =
 			testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_addMessageBoardAttachment();
@@ -96,7 +96,7 @@ public class MessageBoardAttachmentResourceTest
 			messageBoardAttachmentResource.
 				deleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCodeHttpResponse(
 					testDeleteSiteMessageBoardMessageByExternalReferenceCodeMessageBoardMessageExternalReferenceCodeMessageBoardAttachmentByExternalReferenceCode_getSiteId(),
-					previousMBMessage.getExternalReferenceCode(),
+					mbMessage.getExternalReferenceCode(),
 					newMessageBoardAttachment.getExternalReferenceCode()));
 	}
 
