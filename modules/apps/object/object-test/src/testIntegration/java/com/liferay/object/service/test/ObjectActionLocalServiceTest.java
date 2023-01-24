@@ -352,7 +352,7 @@ public class ObjectActionLocalServiceTest {
 				"John", ObjectActionTriggerConstants.KEY_ON_AFTER_ADD, null,
 				WorkflowConstants.STATUS_DRAFT);
 
-			// Execute standalone action to run a groovy script
+			// Execute standalone action to run a Groovy script
 
 			ObjectEntryResource objectEntryResource = _getObjectEntryResource(
 				user);
@@ -373,7 +373,7 @@ public class ObjectActionLocalServiceTest {
 							" permission for")));
 			}
 
-			_addModelResourcePermission(
+			_addModelResourcePermissions(
 				objectAction4.getName(), objectEntry.getObjectEntryId(),
 				user.getUserId());
 
@@ -419,7 +419,7 @@ public class ObjectActionLocalServiceTest {
 							" permission for")));
 			}
 
-			_addModelResourcePermission(
+			_addModelResourcePermissions(
 				objectAction5.getName(), objectEntry.getObjectEntryId(),
 				user.getUserId());
 
@@ -645,7 +645,7 @@ public class ObjectActionLocalServiceTest {
 			ObjectActionConstants.STATUS_NEVER_RAN);
 	}
 
-	private void _addModelResourcePermission(
+	private void _addModelResourcePermissions(
 			String objectActionName, long objectEntryId, long userId)
 		throws Exception {
 
