@@ -67,7 +67,7 @@ public class CheckNotificationQueueEntryMessageListener
 			_configurationProvider.saveCompanyConfiguration(
 				NotificationQueueConfiguration.class, companyId,
 				HashMapDictionaryBuilder.<String, Object>put(
-					"checkInterval", 15
+					"checkInterval", _CHECK_INTERVAL
 				).put(
 					"deleteInterval", 43200
 				).build());
@@ -81,8 +81,8 @@ public class CheckNotificationQueueEntryMessageListener
 			new SchedulerEntryImpl(
 				className,
 				_triggerFactory.createTrigger(
-					className, className, null, null,
-					NotificationConstants.CHECK_INTERVAL, TimeUnit.MINUTE)),
+					className, className, null, null, _CHECK_INTERVAL,
+					TimeUnit.MINUTE)),
 			DestinationNames.SCHEDULER_DISPATCH);
 	}
 
@@ -152,6 +152,8 @@ public class CheckNotificationQueueEntryMessageListener
 			throw new SystemException(configurationException);
 		}
 	}
+
+	private static final int _CHECK_INTERVAL = 15;
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		CheckNotificationQueueEntryMessageListener.class);
