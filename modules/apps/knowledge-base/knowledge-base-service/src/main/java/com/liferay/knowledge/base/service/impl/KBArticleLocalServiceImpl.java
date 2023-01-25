@@ -1616,8 +1616,8 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		if (_log.isDebugEnabled()) {
 			_log.debug(
 				StringBundler.concat(
-					"Sending review notification for articles with reviewDate ",
-					"between ", _previousCheckDate, " and ", reviewDate));
+					"Sending review notification for articles with review ",
+					"date between ", _previousCheckDate, " and ", reviewDate));
 		}
 
 		_companyLocalService.forEachCompany(
@@ -1819,7 +1819,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 
 		String controlPanelFullURL = _portal.getControlPanelFullURL(
 			kbArticle.getGroupId(), KBPortletKeys.KNOWLEDGE_BASE_ADMIN, null);
-
 		String namespace = _portal.getPortletNamespace(
 			KBPortletKeys.KNOWLEDGE_BASE_ADMIN);
 
@@ -1827,6 +1826,11 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 			controlPanelFullURL, namespace + "mvcRenderCommandName",
 			"/knowledge_base/view_kb_article");
 
+		kbArticleURL = HttpComponentsUtil.addParameter(
+			kbArticleURL, namespace + "redirect",
+			HttpComponentsUtil.addParameter(
+				controlPanelFullURL, namespace + "mvcRenderCommandName",
+				"/knowledge_base/view"));
 		kbArticleURL = HttpComponentsUtil.addParameter(
 			kbArticleURL, namespace + "resourceClassNameId",
 			kbArticle.getClassNameId());
@@ -1836,11 +1840,6 @@ public class KBArticleLocalServiceImpl extends KBArticleLocalServiceBaseImpl {
 		kbArticleURL = HttpComponentsUtil.addParameter(
 			kbArticleURL, namespace + "selectedItemId",
 			kbArticle.getResourcePrimKey());
-		kbArticleURL = HttpComponentsUtil.addParameter(
-			kbArticleURL, namespace + "redirect",
-			HttpComponentsUtil.addParameter(
-				controlPanelFullURL, namespace + "mvcRenderCommandName",
-				"/knowledge_base/view"));
 
 		return kbArticleURL;
 	}
