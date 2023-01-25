@@ -103,10 +103,11 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 		JSONObject collaboratorDataJSONObject =
 			ctCollectionTemplate.getJSONObject();
 
-		JSONArray userIdsJSONArray = collaboratorDataJSONObject.getJSONArray(
-			"userIds");
 		JSONArray roleValuesJSONArray = collaboratorDataJSONObject.getJSONArray(
 			"roleValues");
+
+		JSONArray userIdsJSONArray = collaboratorDataJSONObject.getJSONArray(
+			"userIds");
 
 		for (int i = 0; i < userIdsJSONArray.length(); i++) {
 			long userId = userIdsJSONArray.getLong(i);
@@ -117,13 +118,13 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 				continue;
 			}
 
-			long roleValue = roleValuesJSONArray.getLong(i);
-
 			String portraitURL = StringPool.BLANK;
 
 			if (user.getPortraitId() > 0) {
 				portraitURL = user.getPortraitURL(themeDisplay);
 			}
+
+			long roleValue = roleValuesJSONArray.getLong(i);
 
 			jsonArray.put(
 				JSONUtil.put(
@@ -152,14 +153,14 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 			resourceRequest, resourceResponse, jsonArray);
 	}
 
-	private String _getRoleLabel(long name) {
-		if (name == PublicationRoleConstants.ROLE_ADMIN) {
+	private String _getRoleLabel(long roleValue) {
+		if (roleValue == PublicationRoleConstants.ROLE_ADMIN) {
 			return PublicationRoleConstants.LABEL_ADMIN;
 		}
-		else if (name == PublicationRoleConstants.ROLE_EDITOR) {
+		else if (roleValue == PublicationRoleConstants.ROLE_EDITOR) {
 			return PublicationRoleConstants.LABEL_EDITOR;
 		}
-		else if (name == PublicationRoleConstants.ROLE_PUBLISHER) {
+		else if (roleValue == PublicationRoleConstants.ROLE_PUBLISHER) {
 			return PublicationRoleConstants.LABEL_PUBLISHER;
 		}
 
