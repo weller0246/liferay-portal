@@ -129,10 +129,12 @@ public class LangSanitizerTest {
 		LangSanitizerTest.class.getClassLoader();
 
 	private static final String _CORRECT_PROPERTIES_FILE_NAME =
-		"Correct_Language_test.properties";
+		"com/liferay/lang/sanitizer/dependencies" +
+			"/Correct_Language_test.properties";
 
 	private static final String _INCORRECT_PROPERTIES_FILE_NAME =
-		"Incorrect_Language_test.properties";
+		"com/liferay/lang/sanitizer/dependencies" +
+			"/Incorrect_Language_test.properties";
 
 	private Policy _policy;
 
