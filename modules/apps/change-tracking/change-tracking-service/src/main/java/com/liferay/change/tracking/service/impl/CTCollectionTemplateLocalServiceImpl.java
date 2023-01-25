@@ -81,12 +81,6 @@ public class CTCollectionTemplateLocalServiceImpl
 		ctCollectionTemplate.setName(name);
 		ctCollectionTemplate.setDescription(description);
 
-		_jsonStorageEntryLocalService.addJSONStorageEntries(
-			user.getCompanyId(),
-			_classNameLocalService.getClassNameId(
-				CTCollectionTemplate.class.getName()),
-			ctCollectionTemplateId, json);
-
 		ctCollectionTemplate = ctCollectionTemplatePersistence.update(
 			ctCollectionTemplate);
 
@@ -96,6 +90,12 @@ public class CTCollectionTemplateLocalServiceImpl
 			CTCollectionTemplate.class.getName(),
 			ctCollectionTemplate.getCtCollectionTemplateId(), false, false,
 			false);
+
+		_jsonStorageEntryLocalService.addJSONStorageEntries(
+			user.getCompanyId(),
+			_classNameLocalService.getClassNameId(
+				CTCollectionTemplate.class.getName()),
+			ctCollectionTemplateId, json);
 
 		return ctCollectionTemplate;
 	}
