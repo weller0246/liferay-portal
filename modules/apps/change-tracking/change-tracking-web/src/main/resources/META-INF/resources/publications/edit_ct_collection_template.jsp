@@ -56,48 +56,51 @@ portletDisplay.setShowBackIcon(true);
 	</liferay-portlet:actionURL>
 
 	<%
-	HashMapBuilder.HashMapWrapper<String, Object> hashMapWrapper = new HashMapBuilder.HashMapWrapper<>();
-	%>
-
-	<c:if test="<%= ctCollectionTemplateId != 0 %>">
-		<liferay-portlet:resourceURL id="/change_tracking/get_template_collaborators" var="getTemplateCollaboratorsURL">
-			<portlet:param name="ctCollectionTemplateId" value="<%= String.valueOf(ctCollectionTemplateId) %>" />
-		</liferay-portlet:resourceURL>
-
-		<%
-		hashMapWrapper.put("getTemplateCollaboratorsURL", getTemplateCollaboratorsURL);
-		%>
-
-	</c:if>
-
-	<%
-	hashMapWrapper.put(
-		"actionUrl", actionURL
-	).put(
-		"collaboratorsProps", publicationsDisplayContext.getCollaboratorsReactData(ctCollectionTemplateId, true)
-	).put(
-		"ctCollectionTemplateId", ctCollectionTemplateId
-	).put(
-		"description", description
-	).put(
-		"name", name
-	).put(
-		"namespace", liferayPortletResponse.getNamespace()
-	).put(
-		"publicationDescription", publicationDescription
-	).put(
-		"publicationName", publicationName
-	).put(
-		"redirect", redirect
-	).put(
-		"saveButtonLabel", LanguageUtil.get(request, saveButtonLabel)
-	).put(
-		"tokens", CTCollectionTemplateLocalServiceUtil.getTokens()
-	);
+	long finalCTCollectionTemplateId = ctCollectionTemplateId;
+	RenderResponse finalRenderResponse = renderResponse;
 	%>
 
 	<react:component
 		module="publications/js/views/PublicationTemplateEditView"
-		props="<%= hashMapWrapper.build() %>"
+		props='<%=
+			HashMapBuilder.<String, Object>put(
+				"actionUrl", actionURL
+			).put(
+				"collaboratorsProps", publicationsDisplayContext.getCollaboratorsReactData(ctCollectionTemplateId, true)
+			).put(
+				"ctCollectionTemplateId", ctCollectionTemplateId
+			).put(
+				"description", description
+			).put(
+				"getTemplateCollaboratorsURL",
+				() -> {
+					if (finalCTCollectionTemplateId == 0) {
+						return null;
+					}
+
+					return ResourceURLBuilder.createResourceURL(
+						finalRenderResponse
+					).setParameter(
+						"ctCollectionTemplateId", finalCTCollectionTemplateId
+					).setResourceID(
+						"/change_tracking/get_template_collaborators"
+					).buildString();
+				}
+			).put(
+				"name", name
+			).put(
+				"namespace", liferayPortletResponse.getNamespace()
+			).put(
+				"publicationDescription", publicationDescription
+			).put(
+				"publicationName", publicationName
+			).put(
+				"redirect", redirect
+			).put(
+				"saveButtonLabel", LanguageUtil.get(request, saveButtonLabel)
+			).put(
+				"tokens", CTCollectionTemplateLocalServiceUtil.getTokens()
+			).build()
+		%>'
 	/>
 </clay:container-fluid>

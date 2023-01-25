@@ -42,7 +42,6 @@ import com.liferay.portal.kernel.util.Validator;
 import java.time.Instant;
 import java.time.LocalDate;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -136,8 +135,7 @@ public class CTCollectionTemplateLocalServiceImpl
 				int x = s.indexOf(
 					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE, current);
 
-				int y = s.indexOf(
-					StringPool.CLOSE_CURLY_BRACE, x);
+				int y = s.indexOf(StringPool.CLOSE_CURLY_BRACE, x);
 
 				sb.append(s.substring(current, x));
 

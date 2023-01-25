@@ -55,6 +55,7 @@ page import="com.liferay.portal.kernel.dao.search.ResultRow" %><%@
 page import="com.liferay.portal.kernel.dao.search.SearchContainer" %><%@
 page import="com.liferay.portal.kernel.language.LanguageUtil" %><%@
 page import="com.liferay.portal.kernel.model.ModelHintsUtil" %><%@
+page import="com.liferay.portal.kernel.portlet.url.builder.ResourceURLBuilder" %><%@
 page import="com.liferay.portal.kernel.servlet.MultiSessionErrors" %><%@
 page import="com.liferay.portal.kernel.util.FastDateFormatFactoryUtil" %><%@
 page import="com.liferay.portal.kernel.util.GetterUtil" %><%@
@@ -69,6 +70,8 @@ page import="com.liferay.portal.kernel.util.WebKeys" %>
 
 <%@ page import="java.util.Date" %><%@
 page import="java.util.Objects" %>
+
+<%@ page import="javax.portlet.RenderResponse" %>
 
 <liferay-frontend:defineObjects />
 
