@@ -166,7 +166,6 @@ public class CTCollectionTemplateLocalServiceImpl
 			ctCollectionTemplatePersistence.findByPrimaryKey(
 				ctCollectionTemplateId);
 
-		ctCollectionTemplate.setModifiedDate(new Date());
 		ctCollectionTemplate.setName(name);
 		ctCollectionTemplate.setDescription(description);
 
