@@ -192,15 +192,15 @@ public class InviteUsersMVCResourceCommand
 			Map<Locale, String> nameMap = null;
 
 			if (ctCollectionId == CTConstants.CT_COLLECTION_ID_PRODUCTION) {
+				userId = themeDisplay.getDefaultUserId();
 				className = null;
 				classPK = 0;
-				userId = themeDisplay.getDefaultUserId();
 				nameMap = new HashMap<>();
 			}
 			else {
+				userId = ctCollection.getUserId();
 				className = CTCollection.class.getName();
 				classPK = ctCollection.getCtCollectionId();
-				userId = ctCollection.getUserId();
 				nameMap = HashMapBuilder.put(
 					LocaleUtil.getDefault(), ctCollection.getName()
 				).build();
