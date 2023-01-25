@@ -940,12 +940,10 @@ public class PoshiRunnerPlugin implements Plugin<Project> {
 			url = _getChromeDriverURL(
 				_getChromeDriverVersion(project, chromeBinaryPath));
 		}
-
-		if (browserType.equals("edge")) {
+		else if (browserType.equals("edge")) {
 			url = _getEdgeDriverURL(_getEdgeDriverVersion(project, null));
 		}
-
-		if (browserType.equals("firefox")) {
+		else if (browserType.equals("firefox")) {
 			url = _getGeckoDriverURL(_DEFAULT_GECKO_DRIVER_VERSION);
 		}
 
