@@ -44,8 +44,6 @@ else {
 	renderResponse.setTitle(LanguageUtil.get(request, "create-a-new-publication-template"));
 }
 
-HashMapBuilder.HashMapWrapper<String, Object> hashMapWrapper = new HashMapBuilder.HashMapWrapper<>();
-
 portletDisplay.setURLBack(backURL);
 portletDisplay.setShowBackIcon(true);
 %>
@@ -56,6 +54,10 @@ portletDisplay.setShowBackIcon(true);
 	<liferay-portlet:actionURL name="/change_tracking/edit_ct_collection_template" var="actionURL">
 		<liferay-portlet:param name="redirect" value="<%= redirect %>" />
 	</liferay-portlet:actionURL>
+
+	<%
+	HashMapBuilder.HashMapWrapper<String, Object> hashMapWrapper = new HashMapBuilder.HashMapWrapper<>();
+	%>
 
 	<c:if test="<%= ctCollectionTemplateId != 0 %>">
 		<liferay-portlet:resourceURL id="/change_tracking/get_template_collaborators" var="getTemplateCollaboratorsURL">
@@ -69,17 +71,29 @@ portletDisplay.setShowBackIcon(true);
 	</c:if>
 
 	<%
-	hashMapWrapper.put("actionUrl", actionURL);
-	hashMapWrapper.put("collaboratorsProps", publicationsDisplayContext.getCollaboratorsReactData(ctCollectionTemplateId, true));
-	hashMapWrapper.put("ctCollectionTemplateId", ctCollectionTemplateId);
-	hashMapWrapper.put("description", description);
-	hashMapWrapper.put("name", name);
-	hashMapWrapper.put("namespace", liferayPortletResponse.getNamespace());
-	hashMapWrapper.put("publicationDescription", publicationDescription);
-	hashMapWrapper.put("publicationName", publicationName);
-	hashMapWrapper.put("redirect", redirect);
-	hashMapWrapper.put("saveButtonLabel", LanguageUtil.get(request, saveButtonLabel));
-	hashMapWrapper.put("tokens", CTCollectionTemplateLocalServiceUtil.getTokens());
+	hashMapWrapper.put(
+		"actionUrl", actionURL
+	).put(
+		"collaboratorsProps", publicationsDisplayContext.getCollaboratorsReactData(ctCollectionTemplateId, true)
+	).put(
+		"ctCollectionTemplateId", ctCollectionTemplateId
+	).put(
+		"description", description
+	).put(
+		"name", name
+	).put(
+		"namespace", liferayPortletResponse.getNamespace()
+	).put(
+		"publicationDescription", publicationDescription
+	).put(
+		"publicationName", publicationName
+	).put(
+		"redirect", redirect
+	).put(
+		"saveButtonLabel", LanguageUtil.get(request, saveButtonLabel)
+	).put(
+		"tokens", CTCollectionTemplateLocalServiceUtil.getTokens()
+	);
 	%>
 
 	<react:component
