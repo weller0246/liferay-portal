@@ -169,13 +169,16 @@ public class CTCollectionTemplateLocalServiceImpl
 		ctCollectionTemplate.setName(name);
 		ctCollectionTemplate.setDescription(description);
 
+		ctCollectionTemplate = ctCollectionTemplatePersistence.update(
+			ctCollectionTemplate);
+
 		_jsonStorageEntryLocalService.updateJSONStorageEntries(
 			ctCollectionTemplate.getCompanyId(),
 			_classNameLocalService.getClassNameId(
 				CTCollectionTemplate.class.getName()),
 			ctCollectionTemplateId, json);
 
-		return ctCollectionTemplatePersistence.update(ctCollectionTemplate);
+		return ctCollectionTemplate;
 	}
 
 	private Map<String, String> _getTokensMap(long ctCollectionTemplateId) {
