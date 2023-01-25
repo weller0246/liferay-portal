@@ -18,7 +18,6 @@ import com.liferay.arquillian.extension.junit.bridge.junit.Arquillian;
 import com.liferay.journal.model.JournalArticle;
 import com.liferay.journal.test.util.JournalTestUtil;
 import com.liferay.petra.string.StringPool;
-import com.liferay.portal.kernel.json.JSONObject;
 import com.liferay.portal.kernel.json.JSONUtil;
 import com.liferay.portal.kernel.model.Group;
 import com.liferay.portal.kernel.model.User;
@@ -81,14 +80,13 @@ public class SXPParameterDataCreatorTest {
 	@Before
 	public void setUp() throws Exception {
 		_group = GroupTestUtil.addGroup();
-
 		_user = TestPropsValues.getUser();
 
 		_serviceContext = ServiceContextTestUtil.getServiceContext(
 			_group, _user.getUserId());
 
 		_sxpBlueprint = _sxpBlueprintLocalService.addSXPBlueprint(
-			null, _user.getUserId(), _defaultConfigurationJSONObject.toString(),
+			null, _user.getUserId(), _DEFAULT_CONFIGURATION_JSON,
 			Collections.singletonMap(LocaleUtil.US, StringPool.BLANK),
 			StringPool.BLANK, StringPool.BLANK,
 			Collections.singletonMap(
@@ -121,10 +119,11 @@ public class SXPParameterDataCreatorTest {
 		_assertSearch("[phrase search]", "\"phrase search\"");
 	}
 
-	// https://issues.liferay.com/browse/LPS-173239
-
 	@Test
 	public void testPropertyExpanderLoopResolves() throws Exception {
+
+		// LPS-173239
+
 		_addJournalArticle(
 			_group.getGroupId(), 0,
 			Collections.singletonMap(LocaleUtil.US, "substitution"),
@@ -174,14 +173,14 @@ public class SXPParameterDataCreatorTest {
 			"title_en_US", expected);
 	}
 
-	private final JSONObject _defaultConfigurationJSONObject = JSONUtil.put(
+	private static final String _DEFAULT_CONFIGURATION_JSON = JSONUtil.put(
 		"generalConfiguration",
 		JSONUtil.put(
 			"searchableAssetTypes",
 			JSONUtil.put("com.liferay.journal.model.JournalArticle"))
 	).put(
 		"queryConfiguration", JSONUtil.put("applyIndexerClauses", true)
-	);
+	).toString();
 
 	@DeleteAfterTestRun
 	private Group _group;
