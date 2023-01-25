@@ -40,18 +40,20 @@ public class AddLayoutPrototypePortalInstanceLifecycleListener
 		Layout layout = searchLayoutFactory.createSearchLayoutPrototype(
 			company);
 
-		if (layout != null) {
-			Group guestGroup = groupLocalService.getGroup(
-				company.getCompanyId(), GroupConstants.GUEST);
+		if (layout == null) {
+			return;
+		}
 
-			try {
-				MergeLayoutPrototypesThreadLocal.setInProgress(true);
+		Group guestGroup = groupLocalService.getGroup(
+			company.getCompanyId(), GroupConstants.GUEST);
 
-				searchLayoutFactory.createSearchLayout(guestGroup);
-			}
-			finally {
-				MergeLayoutPrototypesThreadLocal.setInProgress(false);
-			}
+		try {
+			MergeLayoutPrototypesThreadLocal.setInProgress(true);
+
+			searchLayoutFactory.createSearchLayout(guestGroup);
+		}
+		finally {
+			MergeLayoutPrototypesThreadLocal.setInProgress(false);
 		}
 	}
 
