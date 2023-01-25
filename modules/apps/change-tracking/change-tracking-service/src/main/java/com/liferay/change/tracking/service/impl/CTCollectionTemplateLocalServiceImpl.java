@@ -133,19 +133,19 @@ public class CTCollectionTemplateLocalServiceImpl
 				ctCollectionTemplateId);
 
 			while (current < s.length()) {
-				int openBrace = s.indexOf(
+				int x = s.indexOf(
 					StringPool.DOLLAR_AND_OPEN_CURLY_BRACE, current);
 
-				int closeBrace = s.indexOf(
-					StringPool.CLOSE_CURLY_BRACE, openBrace);
+				int y = s.indexOf(
+					StringPool.CLOSE_CURLY_BRACE, x);
 
-				sb.append(s.substring(current, openBrace));
+				sb.append(s.substring(current, x));
 
-				String token = s.substring(openBrace, closeBrace + 1);
+				String token = s.substring(x, y + 1);
 
 				sb.append(tokensMap.get(token));
 
-				current = closeBrace + 1;
+				current = y + 1;
 			}
 
 			return sb.toString();
