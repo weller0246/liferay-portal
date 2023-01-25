@@ -259,7 +259,7 @@ function getItemTitle(item) {
 
 	if (!item.layoutRevisionHead) {
 		return Liferay.Language.get(
-			'there-is-not-a-version-of-this-page-marked-as-ready-for-publication'
+			'there-is-no-version-of-this-page-marked-as-ready-for-publication'
 		);
 	}
 
