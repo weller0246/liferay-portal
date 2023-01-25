@@ -1640,7 +1640,7 @@ public class VerifyProperties {
 			"com.liferay.calendar.service"
 		},
 
-		// Tika config
+		// Tika
 
 		{
 			"tika.config", "tika-config-xml", "com.liferay.portal.tika"
