@@ -101,7 +101,7 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 	}
 
 	public Map<String, Object> getCollaboratorsReactData(
-			long id, boolean publicationTemplate)
+			long ctCollectionId, boolean publicationTemplate)
 		throws PortalException {
 
 		return HashMapBuilder.<String, Object>put(
@@ -116,7 +116,8 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 					"ctCollectionId",
 					String.valueOf(
 						publicationTemplate ?
-							CTConstants.CT_COLLECTION_ID_PRODUCTION : id));
+							CTConstants.CT_COLLECTION_ID_PRODUCTION :
+								ctCollectionId));
 
 				return autocompleteUserURL.toString();
 			}
@@ -132,7 +133,8 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 					"ctCollectionId",
 					String.valueOf(
 						publicationTemplate ?
-							CTConstants.CT_COLLECTION_ID_PRODUCTION : id));
+							CTConstants.CT_COLLECTION_ID_PRODUCTION :
+								ctCollectionId));
 
 				return getCollaboratorsURL.toString();
 			}
@@ -147,7 +149,8 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 					"ctCollectionId",
 					String.valueOf(
 						publicationTemplate ?
-							CTConstants.CT_COLLECTION_ID_PRODUCTION : id));
+							CTConstants.CT_COLLECTION_ID_PRODUCTION :
+								ctCollectionId));
 
 				return inviteUsersURL.toString();
 			}
@@ -156,14 +159,15 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 		).put(
 			"readOnly",
 			() -> {
-				if ((id == CTConstants.CT_COLLECTION_ID_PRODUCTION) ||
+				if ((ctCollectionId ==
+						CTConstants.CT_COLLECTION_ID_PRODUCTION) ||
 					publicationTemplate) {
 
 					return false;
 				}
 
 				return !CTCollectionPermission.contains(
-					_themeDisplay.getPermissionChecker(), id,
+					_themeDisplay.getPermissionChecker(), ctCollectionId,
 					ActionKeys.PERMISSIONS);
 			}
 		).put(
@@ -269,7 +273,8 @@ public class PublicationsDisplayContext extends BasePublicationsDisplayContext {
 					"ctCollectionId",
 					String.valueOf(
 						publicationTemplate ?
-							CTConstants.CT_COLLECTION_ID_PRODUCTION : id));
+							CTConstants.CT_COLLECTION_ID_PRODUCTION :
+								ctCollectionId));
 
 				return sharingVerifyEmailAddressURL.toString();
 			}
