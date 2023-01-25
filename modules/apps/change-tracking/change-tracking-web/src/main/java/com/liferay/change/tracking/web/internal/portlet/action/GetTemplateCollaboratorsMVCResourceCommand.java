@@ -39,8 +39,6 @@ import com.liferay.portal.kernel.util.WebKeys;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Reference;
 
@@ -87,10 +85,10 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 
 		JSONArray jsonArray = _jsonFactory.createJSONArray();
 
-		User owner = _userLocalService.fetchUser(
+		User ctCollectionTemplateUser = _userLocalService.fetchUser(
 			ctCollectionTemplate.getUserId());
 
-		Group group = owner.getGroup();
+		Group group = ctCollectionTemplateUser.getGroup();
 
 		if (group == null) {
 			JSONPortletResponseUtil.writeJSON(
@@ -101,9 +99,6 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 
 		ThemeDisplay themeDisplay = (ThemeDisplay)resourceRequest.getAttribute(
 			WebKeys.THEME_DISPLAY);
-
-		HttpServletRequest httpServletRequest = _portal.getHttpServletRequest(
-			resourceRequest);
 
 		JSONObject collaboratorDataJSONObject =
 			ctCollectionTemplate.getJSONObject();
@@ -144,7 +139,8 @@ public class GetTemplateCollaboratorsMVCResourceCommand
 					"portraitURL", portraitURL
 				).put(
 					"roleLabel",
-					_language.get(httpServletRequest, _getRoleLabel(roleValue))
+					_language.get(
+						themeDisplay.getLocale(), _getRoleLabel(roleValue))
 				).put(
 					"roleValue", roleValue
 				).put(
