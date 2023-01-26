@@ -20,7 +20,7 @@ package com.liferay.portal.search.ml.embedding;
 public interface EmbeddingProviderInformation {
 
 	public EmbeddingProviderStatus getEmbeddingProviderStatus(
-		String configurationJSON);
+		String embeddingProviderConfigurationJSON);
 
 	public EmbeddingProviderStatus[] getEmbeddingProviderStatuses();
 
