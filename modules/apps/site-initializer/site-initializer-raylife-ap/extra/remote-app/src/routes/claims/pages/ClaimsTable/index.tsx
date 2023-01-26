@@ -928,8 +928,8 @@ const ClaimsTable = () => {
 									setFilterCheckedLabel([]);
 									setFilterProductCheck([]);
 									setFilterStatusCheck([]);
-									setParameters(generateParameters());
 									setIsRemaining(false);
+									setParameters(generateParameters());
 								}}
 							>
 								<ClayIcon
