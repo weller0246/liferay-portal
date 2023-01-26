@@ -105,9 +105,10 @@ public class PoshiElementAttribute
 		}
 
 		String originalPoshiScript = getPoshiScript();
-		String generatedPoshiScript = toPoshiScript();
 
 		originalPoshiScript = originalPoshiScript.replaceAll("\\s+", "");
+
+		String generatedPoshiScript = toPoshiScript();
 
 		generatedPoshiScript = generatedPoshiScript.replaceAll("\\s+", "");
 
