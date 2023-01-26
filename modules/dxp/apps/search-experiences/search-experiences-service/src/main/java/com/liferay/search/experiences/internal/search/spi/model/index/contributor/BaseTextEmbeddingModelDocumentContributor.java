@@ -194,11 +194,11 @@ public abstract class BaseTextEmbeddingModelDocumentContributor
 	}
 
 	private Double[] _getTextEmbedding(
-		BiFunction<String, String, Double[]> function, String providerName,
+		BiFunction<String, String, Double[]> biFunction, String providerName,
 		String text) {
 
 		try {
-			return function.apply(providerName, text);
+			return biFunction.apply(providerName, text);
 		}
 		catch (Exception exception) {
 			_log.error(exception);
