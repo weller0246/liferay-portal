@@ -113,10 +113,10 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 			}
 		}
 
-		boolean hideIdpRedirectMessage = GetterUtil.getBoolean(
-			_props.get("hide.idp.redirect.message"));
+		boolean samlIdpRedirectMessageEnabled = GetterUtil.getBoolean(
+			_props.get("saml.idp.redirect.message.enabled"), true);
 
-		if (!hideIdpRedirectMessage) {
+		if (samlIdpRedirectMessageEnabled) {
 			httpServletRequest.setAttribute(
 				SamlWebKeys.SAML_IDP_REDIRECT_MESSAGE,
 				_language.get(
@@ -131,7 +131,8 @@ public class SamlLoginAction extends BaseSamlStrutsAction {
 		JspUtil.dispatch(
 			httpServletRequest, httpServletResponse,
 			"/portal/saml/select_idp.jsp",
-			"please-select-your-identity-provider", hideIdpRedirectMessage);
+			"please-select-your-identity-provider",
+			!samlIdpRedirectMessageEnabled);
 
 		return null;
 	}
