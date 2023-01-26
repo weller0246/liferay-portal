@@ -1358,8 +1358,7 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 
 				PathItem pathItem = entry.getValue();
 
-				Matcher matcher = _pathParamValuePattern.matcher(
-					entry.getKey());
+				Matcher matcher = _pattern.matcher(entry.getKey());
 
 				String path = matcher.replaceAll("{$1}");
 
@@ -1383,7 +1382,7 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 		}
 	}
 
-	private static final Pattern _pathParamValuePattern = Pattern.compile(
+	private static final Pattern _pattern = Pattern.compile(
 		"\\{(.*)(:.*)(/?)\\}");
 
 	@Reference
