@@ -244,15 +244,15 @@ public class StartupHelperUtil {
 			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
 			UpgradeStep.class
 		};
+		private final Map<String, String> _context = Collections.singletonMap(
+			PropsValues.UPGRADE_LOG_CONTEXT_NAME,
+			PropsValues.UPGRADE_LOG_CONTEXT_NAME);
 		private final Set<String> _upgradeClassNames = SetUtil.fromArray(
 			DBUpgrader.class.getName(), LoggingTimer.class.getName(),
 			VerifyProperties.class.getName(),
 			"com.liferay.portal.upgrade.internal.registry." +
 				"UpgradeStepRegistratorTracker",
 			"com.liferay.portal.upgrade.internal.release.ReleaseManagerImpl");
-		private final Map<String, String> _context = Collections.singletonMap(
-			PropsValues.UPGRADE_LOG_CONTEXT_NAME,
-			PropsValues.UPGRADE_LOG_CONTEXT_NAME);
 
 	}
 
