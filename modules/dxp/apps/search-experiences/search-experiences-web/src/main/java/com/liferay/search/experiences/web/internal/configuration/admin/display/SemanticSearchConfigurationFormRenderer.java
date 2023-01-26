@@ -83,10 +83,11 @@ public class SemanticSearchConfigurationFormRenderer
 			ParamUtil.getInteger(
 				httpServletRequest, "textEmbeddingCacheTimeout")
 		).put(
-			"textEmbeddingProviderConfigurations",
+			"textEmbeddingProviderConfigurationJSONs",
 			StringUtil.split(
 				ParamUtil.getString(
-					httpServletRequest, "textEmbeddingProviderConfigurations"),
+					httpServletRequest,
+					"textEmbeddingProviderConfigurationJSONs"),
 				CharPool.PIPE)
 		).put(
 			"textEmbeddingsEnabled",
@@ -136,9 +137,9 @@ public class SemanticSearchConfigurationFormRenderer
 			setTextEmbeddingsEnabled(
 				_semanticSearchConfiguration.textEmbeddingsEnabled());
 		semanticSearchCompanyConfigurationDisplayContext.
-			setTextEmbeddingProviderConfigurations(
+			setTextEmbeddingProviderConfigurationJSONs(
 				_semanticSearchConfiguration.
-					textEmbeddingProviderConfigurations());
+					textEmbeddingProviderConfigurationJSONs());
 
 		httpServletRequest.setAttribute(
 			SemanticSearchCompanyConfigurationDisplayContext.class.getName(),

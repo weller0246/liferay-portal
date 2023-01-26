@@ -122,12 +122,12 @@ public class MLSXPParameterContributor implements SXPParameterContributor {
 		}
 
 		try {
-			for (String configurationJSON :
+			for (String textEmbeddingProviderConfigurationJSON :
 					semanticSearchConfiguration.
-						textEmbeddingProviderConfigurations()) {
+						textEmbeddingProviderConfigurationJSONs()) {
 
 				return EmbeddingProviderConfiguration.unsafeToDTO(
-					configurationJSON);
+					textEmbeddingProviderConfigurationJSON);
 			}
 		}
 		catch (Exception exception) {

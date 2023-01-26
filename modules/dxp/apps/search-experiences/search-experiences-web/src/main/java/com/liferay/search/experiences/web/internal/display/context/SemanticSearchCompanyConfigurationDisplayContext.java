@@ -46,8 +46,8 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 		return _textEmbeddingCacheTimeout;
 	}
 
-	public String[] getTextEmbeddingProviderConfigurations() {
-		return _textEmbeddingProviderConfigurations;
+	public String[] getTextEmbeddingProviderConfigurationJSONs() {
+		return _textEmbeddingProviderConfigurationJSONs;
 	}
 
 	public boolean isTextEmbeddingsEnabled() {
@@ -89,11 +89,11 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 		return _textEmbeddingCacheTimeout = textEmbeddingCacheTimeout;
 	}
 
-	public void setTextEmbeddingProviderConfigurations(
-		String[] textEmbeddingProviderConfigurations) {
+	public void setTextEmbeddingProviderConfigurationJSONs(
+		String[] textEmbeddingProviderConfigurationJSONs) {
 
-		_textEmbeddingProviderConfigurations =
-			textEmbeddingProviderConfigurations;
+		_textEmbeddingProviderConfigurationJSONs =
+			textEmbeddingProviderConfigurationJSONs;
 	}
 
 	public void setTextEmbeddingsEnabled(boolean textEmbeddingsEnabled) {
@@ -106,7 +106,7 @@ public class SemanticSearchCompanyConfigurationDisplayContext {
 	private Map<String, String> _availableTextEmbeddingProviders;
 	private Map<String, String> _availableTextTruncationStrategies;
 	private int _textEmbeddingCacheTimeout;
-	private String[] _textEmbeddingProviderConfigurations;
+	private String[] _textEmbeddingProviderConfigurationJSONs;
 	private boolean _textEmbeddingsEnabled;
 
 }

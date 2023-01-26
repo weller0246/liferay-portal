@@ -47,7 +47,7 @@ SemanticSearchCompanyConfigurationDisplayContext semanticSearchCompanyConfigurat
 			).put(
 				"initialTextEmbeddingCacheTimeout", semanticSearchCompanyConfigurationDisplayContext.getTextEmbeddingCacheTimeout()
 			).put(
-				"initialTextEmbeddingProviderConfigurations", semanticSearchCompanyConfigurationDisplayContext.getTextEmbeddingProviderConfigurations()
+				"initialTextEmbeddingProviderConfigurationJSONs", semanticSearchCompanyConfigurationDisplayContext.getTextEmbeddingProviderConfigurationJSONs()
 			).put(
 				"initialTextEmbeddingsEnabled", semanticSearchCompanyConfigurationDisplayContext.isTextEmbeddingsEnabled()
 			).put(

@@ -38,10 +38,10 @@ public interface SemanticSearchConfiguration {
 	public boolean textEmbeddingsEnabled();
 
 	@Meta.AD(
-		deflt = "", name = "text-embedding-provider-configurations",
+		deflt = "", name = "text-embedding-provider-configuration-jsons",
 		required = false
 	)
-	public String[] textEmbeddingProviderConfigurations();
+	public String[] textEmbeddingProviderConfigurationJSONs();
 
 	@Meta.AD(
 		deflt = "604800", name = "text-embedding-cache-timeout",

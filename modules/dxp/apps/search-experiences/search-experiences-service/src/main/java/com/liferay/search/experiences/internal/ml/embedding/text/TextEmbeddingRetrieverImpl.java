@@ -119,12 +119,13 @@ public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 		List<EmbeddingProviderStatus> embeddingProviderStatuses =
 			new ArrayList<>();
 
-		for (String configurationJSON :
+		for (String textEmbeddingProviderConfigurationJSON :
 				_semanticSearchConfiguration.
-					textEmbeddingProviderConfigurations()) {
+					textEmbeddingProviderConfigurationJSONs()) {
 
 			embeddingProviderStatuses.add(
-				getEmbeddingProviderStatus(configurationJSON));
+				getEmbeddingProviderStatus(
+					textEmbeddingProviderConfigurationJSON));
 		}
 
 		return embeddingProviderStatuses.toArray(
@@ -182,12 +183,13 @@ public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 	private EmbeddingProviderConfiguration _getEmbeddingProviderConfiguration(
 		String providerName) {
 
-		for (String configurationJSON :
+		for (String textEmbeddingProviderConfigurationJSON :
 				_semanticSearchConfiguration.
-					textEmbeddingProviderConfigurations()) {
+					textEmbeddingProviderConfigurationJSONs()) {
 
 			EmbeddingProviderConfiguration embeddingProviderConfiguration =
-				EmbeddingProviderConfiguration.toDTO(configurationJSON);
+				EmbeddingProviderConfiguration.toDTO(
+					textEmbeddingProviderConfigurationJSON);
 
 			if (providerName.equals(
 					embeddingProviderConfiguration.getProviderName())) {

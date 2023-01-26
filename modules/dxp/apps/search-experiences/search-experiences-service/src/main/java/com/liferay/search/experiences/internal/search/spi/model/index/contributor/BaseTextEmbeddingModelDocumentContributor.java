@@ -159,13 +159,13 @@ public abstract class BaseTextEmbeddingModelDocumentContributor
 		Class<?> clazz = baseModel.getClass();
 
 		try {
-			for (String configurationJSON :
+			for (String textEmbeddingProviderConfigurationJSON :
 					semanticSearchConfiguration.
-						textEmbeddingProviderConfigurations()) {
+						textEmbeddingProviderConfigurationJSONs()) {
 
 				EmbeddingProviderConfiguration embeddingProviderConfiguration =
 					EmbeddingProviderConfiguration.unsafeToDTO(
-						configurationJSON);
+						textEmbeddingProviderConfigurationJSON);
 
 				if (ArrayUtil.contains(
 						embeddingProviderConfiguration.getModelClassNames(),
