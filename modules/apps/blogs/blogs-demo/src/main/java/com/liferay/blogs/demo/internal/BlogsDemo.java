@@ -105,8 +105,6 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 
 	@Deactivate
 	protected void deactivate() throws PortalException {
-		_multipleCommentDemoDataCreator.delete();
-
 		for (BlogsEntryDemoDataCreator blogsEntryDemoDataCreator :
 				_serviceTrackerList) {
 
@@ -116,6 +114,7 @@ public class BlogsDemo extends BasePortalInstanceLifecycleListener {
 		_serviceTrackerList.close();
 
 		_basicUserDemoDataCreator.delete();
+		_multipleCommentDemoDataCreator.delete();
 		_omniAdminUserDemoDataCreator.delete();
 		_siteAdminUserDemoDataCreator.delete();
 	}
