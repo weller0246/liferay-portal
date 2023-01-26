@@ -32,8 +32,8 @@ public class TextEmbeddingProviderWebCacheItem implements WebCacheItem {
 
 	public static Double[] get(
 		ExceptionListener exceptionListener, String providerName,
-		long refreshTime, TextEmbeddingRetriever textEmbeddingRetriever,
-		String text) {
+		long refreshTime, String text,
+		TextEmbeddingRetriever textEmbeddingRetriever) {
 
 		try {
 			return (Double[])WebCachePoolUtil.get(
@@ -41,7 +41,7 @@ public class TextEmbeddingProviderWebCacheItem implements WebCacheItem {
 					TextEmbeddingProviderWebCacheItem.class.getName(),
 					StringPool.POUND, providerName, StringPool.POUND, text),
 				new TextEmbeddingProviderWebCacheItem(
-					providerName, refreshTime, textEmbeddingRetriever, text));
+					providerName, refreshTime, text, textEmbeddingRetriever));
 		}
 		catch (Exception exception) {
 			if (_log.isDebugEnabled()) {
@@ -55,13 +55,13 @@ public class TextEmbeddingProviderWebCacheItem implements WebCacheItem {
 	}
 
 	public TextEmbeddingProviderWebCacheItem(
-		String providerName, long refreshTime,
-		TextEmbeddingRetriever textEmbeddingRetriever, String text) {
+		String providerName, long refreshTime, String text,
+		TextEmbeddingRetriever textEmbeddingRetriever) {
 
 		_providerName = providerName;
 		_refreshTime = refreshTime;
-		_textEmbeddingRetriever = textEmbeddingRetriever;
 		_text = text;
+		_textEmbeddingRetriever = textEmbeddingRetriever;
 	}
 
 	@Override
