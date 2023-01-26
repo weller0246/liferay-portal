@@ -461,8 +461,13 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 			return;
 		}
 
-		schema.set$ref(
-			_getUpdatedSchemaReference(schema.get$ref(), schemaPrefix));
+		Object additionalProperties = schema.getAdditionalProperties();
+
+		if (additionalProperties instanceof Schema) {
+			Schema additionalPropertiesSchema = (Schema)additionalProperties;
+
+			_updateSchemaReferences(additionalPropertiesSchema, schemaPrefix);
+		}
 
 		if (schema instanceof ArraySchema) {
 			ArraySchema arraySchema = (ArraySchema)schema;
@@ -480,13 +485,8 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 			}
 		}
 
-		Object additionalProperties = schema.getAdditionalProperties();
-
-		if (additionalProperties instanceof Schema) {
-			Schema additionalPropertiesSchema = (Schema)additionalProperties;
-
-			_updateSchemaReferences(additionalPropertiesSchema, schemaPrefix);
-		}
+		schema.set$ref(
+			_getUpdatedSchemaReference(schema.get$ref(), schemaPrefix));
 	}
 
 	private String _getBasePath(
