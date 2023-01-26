@@ -165,7 +165,6 @@ public class PortalLog4jTest {
 		String logContextName = "TestLogContext";
 
 		_testLogOutputWithLogContext(
-			logContextName,
 			HashMapBuilder.put(
 				key1, value1
 			).put(
@@ -175,7 +174,8 @@ public class PortalLog4jTest {
 				StringPool.OPEN_CURLY_BRACE, logContextName, StringPool.PERIOD,
 				key1, StringPool.EQUAL, value1, ", ", logContextName,
 				StringPool.PERIOD, key2, StringPool.EQUAL, value2,
-				StringPool.CLOSE_CURLY_BRACE));
+				StringPool.CLOSE_CURLY_BRACE),
+			logContextName);
 	}
 
 	@Test
@@ -186,7 +186,6 @@ public class PortalLog4jTest {
 		String value2 = "test.value.2";
 
 		_testLogOutputWithLogContext(
-			StringPool.BLANK,
 			HashMapBuilder.put(
 				key1, value1
 			).put(
@@ -195,14 +194,16 @@ public class PortalLog4jTest {
 			StringBundler.concat(
 				StringPool.OPEN_CURLY_BRACE, key1, StringPool.EQUAL, value1,
 				", ", key2, StringPool.EQUAL, value2,
-				StringPool.CLOSE_CURLY_BRACE));
+				StringPool.CLOSE_CURLY_BRACE),
+			StringPool.BLANK);
 	}
 
 	@Test
 	public void testLogOutputWithLogContextWithEmptyLogContext() {
 		_testLogOutputWithLogContext(
-			"TestLogContext", Collections.emptyMap(),
-			StringPool.OPEN_CURLY_BRACE + StringPool.CLOSE_CURLY_BRACE);
+			Collections.emptyMap(),
+			StringPool.OPEN_CURLY_BRACE + StringPool.CLOSE_CURLY_BRACE,
+			"TestLogContext");
 	}
 
 	private static Path _initFileAppender(
@@ -562,8 +563,8 @@ public class PortalLog4jTest {
 	}
 
 	private void _testLogOutputWithLogContext(
-		String logContextName, Map<String, String> contexts,
-		String expectedLogContextMessage) {
+		Map<String, String> contexts, String logContextMessage,
+		String logContextName) {
 
 		Bundle bundle = FrameworkUtil.getBundle(PortalLog4jTest.class);
 
@@ -604,17 +605,17 @@ public class PortalLog4jTest {
 		logger.addAppender(logContextWriterAppender);
 
 		_testLogOutputWithLogContext(
-			"DEBUG", unsyncStringWriter, expectedLogContextMessage);
+			"DEBUG", logContextMessage, unsyncStringWriter);
 		_testLogOutputWithLogContext(
-			"ERROR", unsyncStringWriter, expectedLogContextMessage);
+			"ERROR", logContextMessage, unsyncStringWriter);
 		_testLogOutputWithLogContext(
-			"FATAL", unsyncStringWriter, expectedLogContextMessage);
+			"FATAL", logContextMessage, unsyncStringWriter);
 		_testLogOutputWithLogContext(
-			"INFO", unsyncStringWriter, expectedLogContextMessage);
+			"INFO", logContextMessage, unsyncStringWriter);
 		_testLogOutputWithLogContext(
-			"TRACE", unsyncStringWriter, expectedLogContextMessage);
+			"TRACE", logContextMessage, unsyncStringWriter);
 		_testLogOutputWithLogContext(
-			"WARN", unsyncStringWriter, expectedLogContextMessage);
+			"WARN", logContextMessage, unsyncStringWriter);
 
 		serviceRegistration.unregister();
 
@@ -622,8 +623,8 @@ public class PortalLog4jTest {
 	}
 
 	private void _testLogOutputWithLogContext(
-		String level, UnsyncStringWriter unsyncStringWriter,
-		String logContextMessage) {
+		String level, String logContextMessage,
+		UnsyncStringWriter unsyncStringWriter) {
 
 		_outputLog(level, level + " message", null);
 
