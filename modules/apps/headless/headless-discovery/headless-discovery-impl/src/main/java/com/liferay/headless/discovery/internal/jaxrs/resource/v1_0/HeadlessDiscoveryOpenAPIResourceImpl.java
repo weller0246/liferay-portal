@@ -146,10 +146,10 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		}
 
 		return _openAPIResource.mergeOpenAPIs(
+			"OpenAPI specification of all Liferay REST APIs", responses,
 			StringUtil.removeLast(
 				UriInfoUtil.getBasePath(_uriInfo),
 				HeadlessDiscoveryOpenAPIApplication.BASE_PATH + CharPool.SLASH),
-			"OpenAPI specification of all Liferay REST APIs", responses,
 			"Global REST API - OpenAPI", type);
 	}
 

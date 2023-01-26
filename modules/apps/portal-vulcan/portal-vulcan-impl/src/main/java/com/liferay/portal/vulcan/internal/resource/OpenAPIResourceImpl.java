@@ -163,9 +163,8 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 
 	@Override
 	public Response mergeOpenAPIs(
-		String path, String description,
-		Map<OpenAPIContext, Response> openAPIResponses, String title,
-		String type) {
+		String description, Map<OpenAPIContext, Response> openAPIResponses,
+		String path, String title, String type) {
 
 		if (openAPIResponses.isEmpty()) {
 			return null;
