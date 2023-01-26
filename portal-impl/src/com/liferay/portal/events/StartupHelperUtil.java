@@ -213,7 +213,7 @@ public class StartupHelperUtil {
 
 		private boolean _isUpgradeClass(String name) {
 			try {
-				if (_classNamesUpgrade.contains(name)) {
+				if (_upgradeClassNames.contains(name)) {
 					return true;
 				}
 
@@ -222,7 +222,7 @@ public class StartupHelperUtil {
 				Class<?> clazz = Class.forName(
 					name, true, thread.getContextClassLoader());
 
-				for (Class<?> baseClazz : _classesBaseUpgrade) {
+				for (Class<?> baseClazz : _baseUpgradeClasses) {
 					if (baseClazz.isAssignableFrom(clazz)) {
 						return true;
 					}
@@ -240,11 +240,11 @@ public class StartupHelperUtil {
 		private static final UpgradeLogContext _INSTANCE =
 			new UpgradeLogContext();
 
-		private final Class<?>[] _classesBaseUpgrade = new Class<?>[] {
+		private final Class<?>[] _baseUpgradeClasses = new Class<?>[] {
 			BaseDB.class, BaseDBProcess.class, BaseUpgradeCallable.class,
 			UpgradeStep.class
 		};
-		private final Set<String> _classNamesUpgrade = SetUtil.fromArray(
+		private final Set<String> _upgradeClassNames = SetUtil.fromArray(
 			DBUpgrader.class.getName(), LoggingTimer.class.getName(),
 			VerifyProperties.class.getName(),
 			"com.liferay.portal.upgrade.internal.registry." +
