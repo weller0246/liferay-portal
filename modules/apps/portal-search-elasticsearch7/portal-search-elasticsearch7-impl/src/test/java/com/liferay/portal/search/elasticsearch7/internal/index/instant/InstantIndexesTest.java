@@ -62,12 +62,12 @@ public class InstantIndexesTest {
 
 	@BeforeClass
 	public static void setUpClass() throws Exception {
+		_bundleContext = SystemBundleUtil.getBundleContext();
+
 		_elasticsearchFixture = new ElasticsearchFixture(
 			InstantIndexesTest.class.getSimpleName());
 
 		_elasticsearchFixture.setUp();
-
-		_bundleContext = SystemBundleUtil.getBundleContext();
 	}
 
 	@AfterClass
@@ -105,10 +105,9 @@ public class InstantIndexesTest {
 		_instancesAndProcessesIndexRegistrar =
 			new InstancesAndProcessesIndexRegistrar();
 		_microcontainer = microcontainer;
-		_tasksIndexDefinition = new TasksIndexDefinition();
-
 		_serviceRegistration = _bundleContext.registerService(
 			IndexRegistrar.class, _instancesAndProcessesIndexRegistrar, null);
+		_tasksIndexDefinition = new TasksIndexDefinition();
 	}
 
 	@After
