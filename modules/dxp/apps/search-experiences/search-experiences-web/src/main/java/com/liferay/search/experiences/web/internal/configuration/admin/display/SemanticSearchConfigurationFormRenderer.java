@@ -172,11 +172,11 @@ public class SemanticSearchConfigurationFormRenderer
 	private Map<String, String> _getAvailableLanguageDisplayNames(
 		HttpServletRequest httpServletRequest) {
 
+		Map<String, String> availableLanguageDisplayNames = new HashMap<>();
+
 		ThemeDisplay themeDisplay =
 			(ThemeDisplay)httpServletRequest.getAttribute(
 				WebKeys.THEME_DISPLAY);
-
-		Map<String, String> availableLanguageDisplayNames = new HashMap<>();
 
 		for (Locale locale :
 				_language.getCompanyAvailableLocales(
