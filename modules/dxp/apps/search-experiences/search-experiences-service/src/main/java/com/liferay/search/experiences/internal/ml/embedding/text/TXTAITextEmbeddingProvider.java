@@ -81,9 +81,18 @@ public class TXTAITextEmbeddingProvider
 
 			String hostAddress = MapUtil.getString(attributes, "hostAddress");
 
-			options.setLocation(_getLocation(hostAddress, text));
+			String basicAuthUsername = MapUtil.getString(
+				attributes, "basicAuthUsername");
 
-			_setAuthOptions(attributes, hostAddress, options);
+			if (!Validator.isBlank(basicAuthUsername)) {
+				options.setAuth(
+					HttpComponentsUtil.getDomain(hostAddress), -1, null,
+					basicAuthUsername,
+					MapUtil.getString(
+						attributes, "basicAuthPassword", StringPool.BLANK));
+			}
+
+			options.setLocation(_getLocation(hostAddress, text));
 
 			String responseJSON = _http.URLtoString(options);
 
@@ -116,24 +125,6 @@ public class TXTAITextEmbeddingProvider
 		}
 
 		return false;
-	}
-
-	private void _setAuthOptions(
-		Map<String, Object> attributes, String hostAddress,
-		Http.Options options) {
-
-		String basicAuthUsername = MapUtil.getString(
-			attributes, "basicAuthUsername");
-
-		if (Validator.isBlank(basicAuthUsername)) {
-			return;
-		}
-
-		options.setAuth(
-			HttpComponentsUtil.getDomain(hostAddress), -1, null,
-			basicAuthUsername,
-			MapUtil.getString(
-				attributes, "basicAuthPassword", StringPool.BLANK));
 	}
 
 	private static final Log _log = LogFactoryUtil.getLog(
