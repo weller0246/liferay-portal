@@ -1343,10 +1343,9 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 
 				_updateSchemaReferences(entry.getValue(), schemaPrefix);
 
-				String newSchemaName = _getUpdatedReference(
-					entry.getKey(), schemaPrefix);
-
-				schemas.put(newSchemaName, schemas.remove(entry.getKey()));
+				schemas.put(
+					_getUpdatedReference(entry.getKey(), schemaPrefix),
+					schemas.remove(entry.getKey()));
 			}
 		}
 
