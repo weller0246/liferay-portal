@@ -37,7 +37,7 @@ public abstract class BaseTextEmbeddingProvider {
 			return text;
 		}
 
-		String sentences;
+		String sentences = null;
 
 		if (truncationStrategy.equals("end")) {
 			sentences = _extractSentencesFromEnd(maxCharacterCount, text);
