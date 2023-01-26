@@ -302,8 +302,7 @@ public class DLFileEntryModelDocumentContributor
 		}
 		catch (PortalException portalException) {
 			if (_log.isDebugEnabled()) {
-				_log.debug(
-					"Unable to retrieve document stream", portalException);
+				_log.debug("Unable to get input stream", portalException);
 			}
 
 			return null;
