@@ -40,8 +40,8 @@ public class BlogsEntryTextEmbeddingModelDocumentContributor
 	@Override
 	public void contribute(Document document, BlogsEntry blogsEntry) {
 		addTextEmbeddings(
-			blogsEntry, blogsEntry.getCompanyId(), document,
-			_textEmbeddingRetriever::getTextEmbedding);
+			blogsEntry, _textEmbeddingRetriever::getTextEmbedding,
+			blogsEntry.getCompanyId(), document);
 	}
 
 	@Override

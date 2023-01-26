@@ -40,8 +40,8 @@ public class MBMessageTextEmbeddingModelDocumentContributor
 	@Override
 	public void contribute(Document document, MBMessage mbMessage) {
 		addTextEmbeddings(
-			mbMessage, mbMessage.getCompanyId(), document,
-			_textEmbeddingRetriever::getTextEmbedding);
+			mbMessage, _textEmbeddingRetriever::getTextEmbedding,
+			mbMessage.getCompanyId(), document);
 	}
 
 	@Override

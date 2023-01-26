@@ -88,8 +88,8 @@ public abstract class BaseTextEmbeddingModelDocumentContributor
 	}
 
 	protected void addTextEmbeddings(
-		T baseModel, long companyId, Document document,
-		BiFunction<String, String, Double[]> biFunction) {
+		T baseModel, BiFunction<String, String, Double[]> biFunction,
+		long companyId, Document document) {
 
 		EmbeddingProviderConfiguration embeddingProviderConfiguration =
 			_getEmbeddingProviderConfiguration(baseModel);

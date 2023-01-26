@@ -40,8 +40,8 @@ public class KBArticleTextEmbeddingModelDocumentContributor
 	@Override
 	public void contribute(Document document, KBArticle kbArticle) {
 		addTextEmbeddings(
-			kbArticle, kbArticle.getCompanyId(), document,
-			_textEmbeddingRetriever::getTextEmbedding);
+			kbArticle, _textEmbeddingRetriever::getTextEmbedding,
+			kbArticle.getCompanyId(), document);
 	}
 
 	@Override

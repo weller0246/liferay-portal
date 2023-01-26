@@ -40,8 +40,8 @@ public class WikiPageTextEmbeddingModelDocumentContributor
 	@Override
 	public void contribute(Document document, WikiPage wikiPage) {
 		addTextEmbeddings(
-			wikiPage, wikiPage.getCompanyId(), document,
-			_textEmbeddingRetriever::getTextEmbedding);
+			wikiPage, _textEmbeddingRetriever::getTextEmbedding,
+			wikiPage.getCompanyId(), document);
 	}
 
 	@Override
