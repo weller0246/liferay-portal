@@ -111,17 +111,17 @@ export default function ({
 	availableTextEmbeddingProviders,
 	availableTextTruncationStrategies,
 	initialTextEmbeddingCacheTimeout,
+	initialTextEmbeddingProviderConfigurationJSONs,
 	initialTextEmbeddingsEnabled,
-	initialtextEmbeddingProviderConfigurationJSONs,
 	learnMessages,
 	namespace = '',
 }) {
-	const initialtextEmbeddingProviderConfigurationJSONsRef = useRef(
-		Array.isArray(initialtextEmbeddingProviderConfigurationJSONs)
+	const initialTextEmbeddingProviderConfigurationJSONsRef = useRef(
+		Array.isArray(initialTextEmbeddingProviderConfigurationJSONs)
 			? parseArrayOfJSONStrings(
-					initialtextEmbeddingProviderConfigurationJSONs
+					initialTextEmbeddingProviderConfigurationJSONs
 			  )
-			: parseJSONString(initialtextEmbeddingProviderConfigurationJSONs)
+			: parseJSONString(initialTextEmbeddingProviderConfigurationJSONs)
 	);
 
 	const _handleFormikValidate = (values) => {
@@ -315,10 +315,10 @@ export default function ({
 	const formik = useFormik({
 		initialValues: {
 			textEmbeddingCacheTimeout: initialTextEmbeddingCacheTimeout,
-			textEmbeddingProviderConfigurationJSONs: !initialtextEmbeddingProviderConfigurationJSONsRef
+			textEmbeddingProviderConfigurationJSONs: !initialTextEmbeddingProviderConfigurationJSONsRef
 				.current?.length
 				? DEFAULT_TEXT_EMBEDDING_PROVIDER_CONFIGURATIONS
-				: initialtextEmbeddingProviderConfigurationJSONsRef.current,
+				: initialTextEmbeddingProviderConfigurationJSONsRef.current,
 			textEmbeddingsEnabled: initialTextEmbeddingsEnabled,
 		},
 		validate: _handleFormikValidate,
