@@ -29,7 +29,7 @@ import org.apache.logging.log4j.ThreadContext;
  */
 public class Log4jLogContextLogWrapper extends LogWrapper {
 
-	public Log4jLogContextLogWrapper(String name, Log log) {
+	public Log4jLogContextLogWrapper(Log log, String name) {
 		super(log);
 
 		_name = name;

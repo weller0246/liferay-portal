@@ -32,7 +32,7 @@ public class Log4jLogFactoryImpl implements LogFactory {
 	@Override
 	public Log getLog(String name) {
 		return new Log4jLogContextLogWrapper(
-			name, new Log4jLogImpl(LogManager.getLogger(name)));
+			new Log4jLogImpl(LogManager.getLogger(name)), name);
 	}
 
 }
