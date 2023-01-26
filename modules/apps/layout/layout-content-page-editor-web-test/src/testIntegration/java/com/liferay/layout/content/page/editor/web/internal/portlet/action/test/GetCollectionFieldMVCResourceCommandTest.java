@@ -108,11 +108,10 @@ public class GetCollectionFieldMVCResourceCommandTest {
 
 		_serviceContext = new ServiceContext();
 
-		_serviceContext.setScopeGroupId(_group.getGroupId());
-		_serviceContext.setUserId(_user.getUserId());
-
 		_serviceContext.setAddGroupPermissions(true);
 		_serviceContext.setAddGuestPermissions(true);
+		_serviceContext.setScopeGroupId(_group.getGroupId());
+		_serviceContext.setUserId(_user.getUserId());
 
 		ServiceContextThreadLocal.pushServiceContext(_serviceContext);
 
@@ -350,7 +349,6 @@ public class GetCollectionFieldMVCResourceCommandTest {
 			new MockHttpServletRequest();
 
 		mockHttpServletRequest.setAttribute(WebKeys.LAYOUT, _layout);
-		mockHttpServletRequest.setAttribute(WebKeys.USER_ID, _user.getUserId());
 
 		ThemeDisplay themeDisplay = ContentLayoutTestUtil.getThemeDisplay(
 			_companyLocalService.fetchCompany(_group.getCompanyId()), _group,
@@ -360,6 +358,8 @@ public class GetCollectionFieldMVCResourceCommandTest {
 
 		mockHttpServletRequest.setAttribute(
 			WebKeys.THEME_DISPLAY, themeDisplay);
+
+		mockHttpServletRequest.setAttribute(WebKeys.USER_ID, _user.getUserId());
 
 		return mockHttpServletRequest;
 	}

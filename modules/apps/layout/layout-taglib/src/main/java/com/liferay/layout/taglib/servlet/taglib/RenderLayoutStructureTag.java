@@ -278,11 +278,9 @@ public class RenderLayoutStructureTag extends IncludeTag {
 		jspWriter.write(StringPool.SPACE);
 		jspWriter.write(collectionStyledLayoutStructureItem.getCssClass());
 		jspWriter.write("\" style=\"");
-
 		jspWriter.write(
 			renderLayoutStructureDisplayContext.getStyle(
 				collectionStyledLayoutStructureItem));
-
 		jspWriter.write("\">");
 
 		List<String> collectionStyledLayoutStructureItemIds =
