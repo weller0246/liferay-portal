@@ -105,9 +105,7 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		for (Map.Entry<String, List<String>> entry : openAPIMap.entrySet()) {
 			String path = entry.getKey();
 
-			List<String> openAPIPaths = entry.getValue();
-
-			for (String openAPIPath : openAPIPaths) {
+			for (String openAPIPath : entry.getValue()) {
 				String version = _getVersion(path, openAPIPath);
 
 				Object resource = _getOpenAPIResource(path, version);
@@ -146,7 +144,7 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 		}
 
 		return _openAPIResource.mergeOpenAPIs(
-			"OpenAPI specification of all Liferay REST APIs", responses,
+			"OpenAPI Specification of All Liferay REST APIs", responses,
 			StringUtil.removeLast(
 				UriInfoUtil.getBasePath(_uriInfo),
 				HeadlessDiscoveryOpenAPIApplication.BASE_PATH + CharPool.SLASH),
@@ -253,7 +251,7 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 	}
 
 	private Map<String, List<String>> _getOpenAPIMap(String accept) {
-		Map<String, List<String>> pathsMap = new TreeMap<>();
+		Map<String, List<String>> openAPIMap = new TreeMap<>();
 
 		String serverURL =
 			_portal.getPortalURL(_httpServletRequest) + _portal.getPathProxy() +
@@ -278,28 +276,30 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 
 			_addPaths(base, paths, applicationDTO.resourceMethods, serverURL);
 
-			if (!paths.isEmpty()) {
-				String baseURL = base;
-
-				if ((accept != null) &&
-					accept.contains(MediaType.APPLICATION_XML)) {
-
-					baseURL = baseURL.substring(1);
-				}
-
-				pathsMap.put(baseURL, paths);
+			if (paths.isEmpty()) {
+				continue;
 			}
+
+			String baseURL = base;
+
+			if ((accept != null) &&
+				accept.contains(MediaType.APPLICATION_XML)) {
+
+				baseURL = baseURL.substring(1);
+			}
+
+			openAPIMap.put(baseURL, paths);
 		}
 
-		return pathsMap;
+		return openAPIMap;
 	}
 
 	private Object _getOpenAPIResource(String path, String version) {
 		try {
-			String versionFilter = "(api.version=" + version + ")";
+			String filterString = "(api.version=" + version + ")";
 
 			if (version == null) {
-				versionFilter = "(!(api.version=*))";
+				filterString = "(!(api.version=*))";
 			}
 
 			ServiceReference<?>[] serviceReferences =
@@ -307,15 +307,15 @@ public class HeadlessDiscoveryOpenAPIResourceImpl {
 					(String)null,
 					StringBundler.concat(
 						"(&(openapi.resource=true)(openapi.resource.path=",
-						path, ")", versionFilter, ")"));
+						path, ")", filterString, ")"));
 
-			for (ServiceReference<?> serviceReference2 : serviceReferences) {
+			for (ServiceReference<?> serviceReference : serviceReferences) {
 				long companyId = GetterUtil.get(
-					serviceReference2.getProperty("companyId"),
+					serviceReference.getProperty("companyId"),
 					_company.getCompanyId());
 
 				if (companyId == _company.getCompanyId()) {
-					return _bundleContext.getService(serviceReference2);
+					return _bundleContext.getService(serviceReference);
 				}
 			}
 		}
