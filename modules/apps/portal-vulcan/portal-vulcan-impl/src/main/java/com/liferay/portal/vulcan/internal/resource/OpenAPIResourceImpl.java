@@ -188,11 +188,11 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 		for (Map.Entry<OpenAPIContext, Response> entry :
 				openAPIResponses.entrySet()) {
 
-			OpenAPIContext openAPIContext = entry.getKey();
-
 			Response response = entry.getValue();
 
 			OpenAPI openAPI = (OpenAPI)response.getEntity();
+
+			OpenAPIContext openAPIContext = entry.getKey();
 
 			_updateOpenAPIReferences(openAPI, openAPIContext);
 
@@ -440,17 +440,17 @@ public class OpenAPIResourceImpl implements OpenAPIResource {
 			}
 		}
 
+		if (operation.getOperationId() != null) {
+			operation.setOperationId(
+				_getUpdatedReference(operation.getOperationId(), schemaPrefix));
+		}
+
 		if (operation.getTags() != null) {
 			List<String> tags = operation.getTags();
 
 			for (int i = 0; i < tags.size(); i++) {
 				tags.set(i, _getUpdatedReference(tags.get(i), schemaPrefix));
 			}
-		}
-
-		if (operation.getOperationId() != null) {
-			operation.setOperationId(
-				_getUpdatedReference(operation.getOperationId(), schemaPrefix));
 		}
 	}
 

@@ -206,7 +206,7 @@ public class ObjectEntryOpenAPIContributor extends BaseOpenAPIContributor {
 			return;
 		}
 
-		Map<String, Schema> sourceSchemas;
+		Map<String, Schema> sourceSchemas = null;
 
 		if (objectDefinition.isSystem()) {
 			sourceSchemas = OpenAPIContributorUtil.getSystemObjectSchemas(
