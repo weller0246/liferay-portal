@@ -59,30 +59,30 @@ public class StartupHelperUtilTest {
 		Assert.assertFalse(context.isEmpty());
 
 		Assert.assertSame(
-			context, logContext.getContext(DBUpgrader.class.getName()));
-		Assert.assertSame(
-			context, logContext.getContext(LoggingTimer.class.getName()));
-		Assert.assertSame(
-			context,
-			logContext.getContext(
-				"com.liferay.portal.upgrade.internal.release." +
-					"ReleaseManagerImpl"));
-		Assert.assertSame(
-			context,
-			logContext.getContext(
-				"com.liferay.portal.upgrade.internal.registry." +
-					"UpgradeStepRegistratorTracker"));
-		Assert.assertSame(
-			context, logContext.getContext(VerifyProperties.class.getName()));
-		Assert.assertSame(
-			context, logContext.getContext(MySQLDB.class.getName()));
-		Assert.assertSame(
 			context,
 			logContext.getContext(
 				BaseAdminPortletsUpgradeProcess.class.getName()));
 		Assert.assertSame(
 			context,
 			logContext.getContext(BasePortletIdUpgradeProcess.class.getName()));
+		Assert.assertSame(
+			context, logContext.getContext(DBUpgrader.class.getName()));
+		Assert.assertSame(
+			context, logContext.getContext(LoggingTimer.class.getName()));
+		Assert.assertSame(
+			context, logContext.getContext(MySQLDB.class.getName()));
+		Assert.assertSame(
+			context, logContext.getContext(VerifyProperties.class.getName()));
+		Assert.assertSame(
+			context,
+			logContext.getContext(
+				"com.liferay.portal.upgrade.internal.registry." +
+					"UpgradeStepRegistratorTracker"));
+		Assert.assertSame(
+			context,
+			logContext.getContext(
+				"com.liferay.portal.upgrade.internal.release." +
+					"ReleaseManagerImpl"));
 
 		Assert.assertSame(
 			Collections.emptyMap(),
