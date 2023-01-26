@@ -22,6 +22,7 @@ import com.liferay.portal.kernel.log.LogFactoryUtil;
 import com.liferay.portal.kernel.util.GetterUtil;
 import com.liferay.portal.kernel.util.ListUtil;
 import com.liferay.portal.kernel.util.PropsUtil;
+import com.liferay.portal.kernel.util.StringUtil;
 import com.liferay.portal.search.ml.embedding.EmbeddingProviderInformation;
 import com.liferay.portal.search.ml.embedding.EmbeddingProviderStatus;
 import com.liferay.search.experiences.configuration.SemanticSearchConfiguration;
@@ -54,9 +55,7 @@ public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 	}
 
 	@Override
-	public EmbeddingProviderStatus getEmbeddingProviderStatus(
-		String text) {
-
+	public EmbeddingProviderStatus getEmbeddingProviderStatus(String text) {
 		if (!GetterUtil.getBoolean(PropsUtil.get("feature.flag.LPS-163688"))) {
 			return null;
 		}
@@ -92,7 +91,7 @@ public class TextEmbeddingRetrieverImpl implements TextEmbeddingRetriever {
 			}
 
 			Double[] textEmbedding = textEmbeddingProvider.getEmbedding(
-				embeddingProviderConfiguration, "hello liferay");
+				embeddingProviderConfiguration, StringUtil.randomString());
 
 			return new EmbeddingProviderStatus.EmbeddingProviderStatusBuilder(
 			).embeddingVectorDimensions(
