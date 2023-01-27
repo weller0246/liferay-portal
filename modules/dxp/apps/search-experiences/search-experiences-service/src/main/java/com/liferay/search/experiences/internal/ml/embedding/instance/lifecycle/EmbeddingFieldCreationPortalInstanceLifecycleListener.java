@@ -56,7 +56,7 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 		String indexName = _indexNameBuilder.getIndexName(
 			company.getCompanyId());
 
-		if (!_indexExists(indexName)) {
+		if (!_isExists(indexName)) {
 			return;
 		}
 
@@ -103,7 +103,7 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 		return false;
 	}
 
-	private boolean _indexExists(String indexName) {
+	private boolean _isExists(String indexName) {
 		IndicesExistsIndexRequest indicesExistsIndexRequest =
 			new IndicesExistsIndexRequest(indexName);
 
