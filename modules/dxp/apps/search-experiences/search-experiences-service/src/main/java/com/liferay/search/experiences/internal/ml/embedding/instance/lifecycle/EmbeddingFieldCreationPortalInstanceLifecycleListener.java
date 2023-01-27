@@ -66,16 +66,22 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 			return;
 		}
 
-		_updateMappings(
-			company.getCompanyId(),
-			JSONUtil.put(
-				"dynamic_templates",
-				JSONUtil.concat(
-					jsonArray,
-					_jsonFactory.createJSONArray(
-						StringUtil.read(
-							getClass(),
-							_TEXT_EMBEDDING_DYNAMIC_TEMPLATES_RESOURCE_NAME)))));
+		jsonArray = JSONUtil.concat(
+			jsonArray,
+			_jsonFactory.createJSONArray(
+				StringUtil.read(
+					getClass(),
+					"dependencies/text-embedding-dynamic-templates.json")));
+
+		_searchEngineAdapter.execute(
+			new PutMappingIndexRequest(
+				new String[] {
+					_indexNameBuilder.getIndexName(company.getCompanyId())
+				},
+				"LiferayDocumentType",
+				JSONUtil.put(
+					"dynamic_templates", jsonArray
+				).toString()));
 	}
 
 	private JSONArray _getDynamicTemplatesJSONArray(String indexName) {
@@ -116,19 +122,6 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 
 		return indicesExistsIndexResponse.isExists();
 	}
-
-	private void _updateMappings(long companyId, JSONObject jsonObject) {
-		PutMappingIndexRequest putMappingIndexRequest =
-			new PutMappingIndexRequest(
-				new String[] {_indexNameBuilder.getIndexName(companyId)},
-				"LiferayDocumentType", jsonObject.toString());
-
-		_searchEngineAdapter.execute(putMappingIndexRequest);
-	}
-
-	private static final String
-		_TEXT_EMBEDDING_DYNAMIC_TEMPLATES_RESOURCE_NAME =
-			"dependencies/text-embedding-dynamic-templates.json";
 
 	private static final Log _log = LogFactoryUtil.getLog(
 		EmbeddingFieldCreationPortalInstanceLifecycleListener.class);
