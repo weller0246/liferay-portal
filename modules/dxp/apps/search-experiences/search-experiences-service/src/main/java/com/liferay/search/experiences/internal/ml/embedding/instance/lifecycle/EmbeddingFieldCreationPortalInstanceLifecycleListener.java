@@ -62,18 +62,20 @@ public class EmbeddingFieldCreationPortalInstanceLifecycleListener
 
 		JSONArray jsonArray = _getDynamicTemplatesJSONArray(indexName);
 
-		if (!_hasTextEmbeddingDynamicTemplates(jsonArray)) {
-			_updateMappings(
-				company.getCompanyId(),
-				JSONUtil.put(
-					"dynamic_templates",
-					JSONUtil.concat(
-						jsonArray,
-						_jsonFactory.createJSONArray(
-							StringUtil.read(
-								getClass(),
-								_TEXT_EMBEDDING_DYNAMIC_TEMPLATES_RESOURCE_NAME)))));
+		if (_hasTextEmbeddingDynamicTemplates(jsonArray)) {
+			return;
 		}
+
+		_updateMappings(
+			company.getCompanyId(),
+			JSONUtil.put(
+				"dynamic_templates",
+				JSONUtil.concat(
+					jsonArray,
+					_jsonFactory.createJSONArray(
+						StringUtil.read(
+							getClass(),
+							_TEXT_EMBEDDING_DYNAMIC_TEMPLATES_RESOURCE_NAME)))));
 	}
 
 	private JSONArray _getDynamicTemplatesJSONArray(String indexName) {
