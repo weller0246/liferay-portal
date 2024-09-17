@@ -142,6 +142,7 @@ definition {
 	@priority = "5"
 	test CanCaptureEventsAboutUserActions {
 		property portal.acceptance = "true";
+		property portal.upstream = "marcell";
 		property test.name.skip.portal.instance = "AuditPortlet#CanCaptureEventsAboutUserActions";
 
 		ApplicationsMenu.gotoPortlet(
