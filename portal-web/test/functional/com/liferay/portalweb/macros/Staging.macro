@@ -1730,6 +1730,10 @@ definition {
 		var key_pageName = "${pageName}";
 		var key_title = "${title}";
 
+		ScrollWebElementIntoView(
+			key_pageName = "${pageName}",
+			locator1 = "StagingPublishToLive#PAGES_TO_PUBLISH_PAGE_NAME");
+
 		MouseOver(
 			key_pageName = "${pageName}",
 			locator1 = "StagingPublishToLive#PAGES_TO_PUBLISH_PAGE_NAME");
